@@ -1,0 +1,607 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Benchmarks" href="../tutorial/benchmarks.html" /><link rel="prev" title="First examples with onnx-array-api" href="plot_first_example.html" />
+
+    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+        <title>First examples with onnxruntime - onnx-array-api 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">onnx-array-api 0.1.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-array-api 0.1.2 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../tutorial/overview.html">Numpy API for ONNX</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">First examples with onnxruntime</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_functions.html">npx.npx_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_var.html">npx.npx_var</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_jit.html">npx, jit and eager mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_annot.html">npx.npx_types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_numpy.html">npx.npx_numpy_tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/onnx_tools.html">onnx tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/ort.html">ort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/tools.html">tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_f8.html">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">First examples with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_optimization.html">Optimization with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_profiling.html">Profiling with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-onnxruntime-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="first-examples-with-onnxruntime">
+<span id="l-onnx-array-first-onnxruntime"></span><span id="sphx-glr-auto-examples-plot-onnxruntime-py"></span><h1>First examples with onnxruntime<a class="headerlink" href="#first-examples-with-onnxruntime" title="Permalink to this heading">#</a></h1>
+<p>Example <a class="reference internal" href="plot_first_example.html#l-onnx-array-first-api-example"><span class="std std-ref">First examples with onnx-array-api</span></a> defines a custom
+loss and then executes it with class
+<a class="reference external" href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator" title="(in ONNX v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx.reference.ReferenceEvaluator</span></code></a>.
+Next example replaces it with <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>.</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">onnx_array_api.npx</span> <span class="kn">import</span> <span class="n">absolute</span><span class="p">,</span> <span class="n">jit_onnx</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.ort.ort_tensors</span> <span class="kn">import</span> <span class="n">JitOrtTensor</span><span class="p">,</span> <span class="n">OrtTensor</span>
+
+
+<span class="k">def</span> <span class="nf">l1_loss</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">):</span>
+    <span class="k">return</span> <span class="n">absolute</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">-</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">l2_loss</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">-</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">myloss</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">):</span>
+    <span class="n">l1</span> <span class="o">=</span> <span class="n">l1_loss</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">l2</span> <span class="o">=</span> <span class="n">l2_loss</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">l1</span> <span class="o">+</span> <span class="n">l2</span>
+
+
+<span class="n">ort_myloss</span> <span class="o">=</span> <span class="n">jit_onnx</span><span class="p">(</span><span class="n">myloss</span><span class="p">,</span> <span class="n">JitOrtTensor</span><span class="p">,</span> <span class="n">target_opsets</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">},</span> <span class="n">ir_version</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.44</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+
+<span class="n">xort</span> <span class="o">=</span> <span class="n">OrtTensor</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">)</span>
+<span class="n">yort</span> <span class="o">=</span> <span class="n">OrtTensor</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">ort_myloss</span><span class="p">(</span><span class="n">xort</span><span class="p">,</span> <span class="n">yort</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.042
+</pre></div>
+</div>
+</section>
+<section id="profiling">
+<h2>Profiling<a class="headerlink" href="#profiling" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyquickhelper.pycode.profiling</span> <span class="kn">import</span> <span class="n">profile</span><span class="p">,</span> <span class="n">profile2graph</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+<span class="n">xort</span> <span class="o">=</span> <span class="n">OrtTensor</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">)</span>
+<span class="n">yort</span> <span class="o">=</span> <span class="n">OrtTensor</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">loop_ort</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">):</span>
+        <span class="n">ort_myloss</span><span class="p">(</span><span class="n">xort</span><span class="p">,</span> <span class="n">yort</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">loop_numpy</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">):</span>
+        <span class="n">myloss</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">loop</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">loop_numpy</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">)</span>
+    <span class="n">loop_ort</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">)</span>
+
+
+<a href="https://docs.python.org/3/library/profile.html#pstats.Stats" title="pstats.Stats" class="sphx-glr-backref-module-pstats sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ps</span></a> <span class="o">=</span> <span class="n">profile</span><span class="p">(</span><span class="n">loop</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">root</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">nodes</span></a> <span class="o">=</span> <span class="n">profile2graph</span><span class="p">(</span><a href="https://docs.python.org/3/library/profile.html#pstats.Stats" title="pstats.Stats" class="sphx-glr-backref-module-pstats sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ps</span></a><span class="p">,</span> <span class="n">clean_text</span><span class="o">=</span><span class="k">lambda</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span><span class="o">.</span><span class="n">split</span></a><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">text</span></a> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">to_text</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">text</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>var                                                          --   2000   2000 -- 0.00227 0.01890 -- npx_core_api.py:44:var (var)
+    __init__                                                 --   2000   2000 -- 0.01192 0.01663 -- npx_var.py:273:__init__ (__init__) +++
+info                                                         --   4000   4000 -- 0.00634 0.00968 -- npx_jit_eager.py:52:info (info)
+    info                                                     --   4000   4000 -- 0.00159 0.00279 -- __init__.py:1467:info (info)
+        isEnabledFor                                         --   4000   4000 -- 0.00120 0.00120 -- __init__.py:1724:isEnabledFor (isEnabledFor)
+    &lt;built-in method builtins.len&gt;                           --   4000   4000 -- 0.00055 0.00055 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+get_cst_var                                                  --   2000   2000 -- 0.00442 0.00677 -- npx_var.py:202:get_cst_var (get_cst_var)
+    parent                                                   --   2000   2000 -- 0.00167 0.00235 -- &lt;frozen importlib._bootstrap&gt;:404:parent (parent)
+        &lt;method &#39;rpartition&#39; of &#39;str&#39; objects&gt;               --   2000   2000 -- 0.00068 0.00068 -- ~:0:&lt;method &#39;rpartition&#39; of &#39;str&#39; objects&gt; (&lt;method &#39;rpartition&#39; of &#39;str&#39; objects&gt;)
+__init__                                                     --   3000   3000 -- 0.01840 0.02614 -- npx_var.py:273:__init__ (__init__)
+    __init__                                                 --   3000   3000 -- 0.00071 0.00071 -- npx_var.py:267:__init__ (__init__)
+    &lt;listcomp&gt;                                               --   3000   3000 -- 0.00108 0.00108 -- npx_var.py:330:&lt;listcomp&gt; (&lt;listcomp&gt;)
+    self_var                                                 --   2000   2000 -- 0.00060 0.00081 -- npx_var.py:350:self_var (self_var) +++
+    &lt;method &#39;items&#39; of &#39;dict&#39; objects&gt;                       --   3000   3000 -- 0.00033 0.00033 -- ~:0:&lt;method &#39;items&#39; of &#39;dict&#39; objects&gt; (&lt;method &#39;items&#39; of &#39;dict&#39; objects&gt;) +++
+    &lt;built-in method builtins.hasattr&gt;                       --   3000   3000 -- 0.00039 0.00039 -- ~:0:&lt;built-in method builtins.hasattr&gt; (&lt;built-in method builtins.hasattr&gt;) +++
+    &lt;built-in method builtins.isinstance&gt;                    --  23000  23000 -- 0.00334 0.00334 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;) +++
+    &lt;built-in method builtins.len&gt;                           --   6000   6000 -- 0.00069 0.00069 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+    &lt;method &#39;ravel&#39; of &#39;numpy.ndarray&#39; objects&gt;              --   1000   1000 -- 0.00041 0.00041 -- ~:0:&lt;method &#39;ravel&#39; of &#39;numpy.ndarray&#39; objects&gt; (&lt;method &#39;ravel&#39; of &#39;numpy.ndarray&#39; objects&gt;)
+self_var                                                     --   4000   4000 -- 0.00137 0.00186 -- npx_var.py:350:self_var (self_var)
+    &lt;built-in method builtins.hasattr&gt;                       --   4000   4000 -- 0.00049 0.00049 -- ~:0:&lt;built-in method builtins.hasattr&gt; (&lt;built-in method builtins.hasattr&gt;) +++
+__init__                                                     --   3000   3000 -- 0.00240 0.00353 -- ort_tensors.py:126:__init__ (__init__)
+    &lt;built-in method builtins.isinstance&gt;                    --   5000   5000 -- 0.00113 0.00113 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;) +++
+value                                                        --   3000   3000 -- 0.00049 0.00049 -- ort_tensors.py:149:value (value)
+loop                                                         --      1      1 -- 0.00001 0.51995 -- plot_onnxruntime.py:69:loop (loop)
+    loop_ort                                                 --      1      1 -- 0.00355 0.42836 -- plot_onnxruntime.py:59:loop_ort (loop_ort)
+        __call__                                             --   1000   1000 -- 0.00288 0.42481 -- npx_jit_eager.py:419:__call__ (__call__)
+            info                                             --   2000   2000 -- 0.00257 0.00393 -- npx_jit_eager.py:52:info (info) +++
+            cast_to_tensor_class                             --   1000   1000 -- 0.00262 0.00523 -- npx_jit_eager.py:266:cast_to_tensor_class (cast_to_tensor_class)
+                __init__                                     --   2000   2000 -- 0.00143 0.00234 -- ort_tensors.py:126:__init__ (__init__) +++
+                &lt;method &#39;append&#39; of &#39;list&#39; objects&gt;          --   2000   2000 -- 0.00026 0.00026 -- ~:0:&lt;method &#39;append&#39; of &#39;list&#39; objects&gt; (&lt;method &#39;append&#39; of &#39;list&#39; objects&gt;) +++
+            cast_from_tensor_class                           --   1000   1000 -- 0.00145 0.00208 -- npx_jit_eager.py:283:cast_from_tensor_class (cast_from_tensor_class)
+                value                                        --   1000   1000 -- 0.00020 0.00020 -- ort_tensors.py:149:value (value) +++
+                &lt;built-in method builtins.isinstance&gt;        --   1000   1000 -- 0.00029 0.00029 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;) +++
+                &lt;built-in method builtins.len&gt;               --   1000   1000 -- 0.00014 0.00014 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+            jit_call                                         --   1000   1000 -- 0.00465 0.41070 -- npx_jit_eager.py:327:jit_call (jit_call)
+                info                                         --   2000   2000 -- 0.00377 0.00575 -- npx_jit_eager.py:52:info (info) +++
+                make_key                                     --   1000   1000 -- 0.00295 0.00911 -- npx_jit_eager.py:123:make_key (make_key)
+                    key                                      --   2000   2000 -- 0.00197 0.00550 -- ort_tensors.py:144:key (key)
+                        shape                                --   2000   2000 -- 0.00126 0.00126 -- ort_tensors.py:134:shape (shape)
+                        dtype                                --   2000   2000 -- 0.00198 0.00198 -- ort_tensors.py:139:dtype (dtype)
+                        &lt;built-in method builtins.len&gt;       --   2000   2000 -- 0.00029 0.00029 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+                    &lt;method &#39;append&#39; of &#39;list&#39; objects&gt;      --   2000   2000 -- 0.00020 0.00020 -- ~:0:&lt;method &#39;append&#39; of &#39;list&#39; objects&gt; (&lt;method &#39;append&#39; of &#39;list&#39; objects&gt;) +++
+                    &lt;built-in method builtins.isinstance&gt;    --   2000   2000 -- 0.00047 0.00047 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;) +++
+                move_input_to_kwargs                         --   1000   1000 -- 0.00064 0.00074 -- npx_jit_eager.py:298:move_input_to_kwargs (move_input_to_kwargs)
+                    &lt;built-in method builtins.len&gt;           --   1000   1000 -- 0.00010 0.00010 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+                run                                          --   1000   1000 -- 0.38875 0.39044 -- ort_tensors.py:106:run (run)
+                    __init__                                 --   1000   1000 -- 0.00097 0.00118 -- ort_tensors.py:126:__init__ (__init__) +++
+                    value                                    --   2000   2000 -- 0.00029 0.00029 -- ort_tensors.py:149:value (value) +++
+                    &lt;built-in method builtins.len&gt;           --   2000   2000 -- 0.00022 0.00022 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+    loop_numpy                                               --      1      1 -- 0.00049 0.09158 -- plot_onnxruntime.py:64:loop_numpy (loop_numpy)
+        myloss                                               --   1000   1000 -- 0.00307 0.09109 -- plot_onnxruntime.py:31:myloss (myloss)
+            __add__                                          --   1000   1000 -- 0.00057 0.01748 -- npx_var.py:604:__add__ (__add__)
+                _binary_op                                   --   1000   1000 -- 0.00213 0.01691 -- npx_var.py:574:_binary_op (_binary_op)
+                    var                                      --   1000   1000 -- 0.00099 0.01009 -- npx_core_api.py:44:var (var) +++
+                    get_cst_var                              --   1000   1000 -- 0.00232 0.00386 -- npx_var.py:202:get_cst_var (get_cst_var) +++
+                    self_var                                 --   1000   1000 -- 0.00036 0.00052 -- npx_var.py:350:self_var (self_var) +++
+                    &lt;built-in method builtins.isinstance&gt;    --   1000   1000 -- 0.00031 0.00031 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;) +++
+            l1_loss                                          --   1000   1000 -- 0.01014 0.04745 -- plot_onnxruntime.py:23:l1_loss (l1_loss)
+                wrapper                                      --   1000   1000 -- 0.00928 0.02190 -- npx_core_api.py:120:wrapper (wrapper)
+                    annotation                               --   1000   1000 -- 0.00021 0.00021 -- inspect.py:2688:annotation (annotation)
+                    kind                                     --   2000   2000 -- 0.00023 0.00023 -- inspect.py:2692:kind (kind)
+                    parameters                               --   2000   2000 -- 0.00029 0.00029 -- inspect.py:2999:parameters (parameters)
+                    return_annotation                        --   1000   1000 -- 0.00015 0.00015 -- inspect.py:3003:return_annotation (return_annotation)
+                    __init__                                 --   1000   1000 -- 0.00648 0.00951 -- npx_var.py:273:__init__ (__init__) +++
+                    &lt;method &#39;items&#39; of ...ingproxy&#39; objects&gt; --   1000   1000 -- 0.00030 0.00030 -- ~:0:&lt;method &#39;items&#39; of &#39;mappingproxy&#39; objects&gt; (&lt;method &#39;items&#39; of &#39;mappingproxy&#39; objects&gt;)
+                    &lt;method &#39;items&#39; of &#39;dict&#39; objects&gt;       --   1000   1000 -- 0.00011 0.00011 -- ~:0:&lt;method &#39;items&#39; of &#39;dict&#39; objects&gt; (&lt;method &#39;items&#39; of &#39;dict&#39; objects&gt;) +++
+                    &lt;method &#39;append&#39; of &#39;list&#39; objects&gt;      --   1000   1000 -- 0.00016 0.00016 -- ~:0:&lt;method &#39;append&#39; of &#39;list&#39; objects&gt; (&lt;method &#39;append&#39; of &#39;list&#39; objects&gt;) +++
+                    &lt;built-in method builtins.any&gt;           --   1000   1000 -- 0.00051 0.00103 -- ~:0:&lt;built-in method builtins.any&gt; (&lt;built-in method builtins.any&gt;)
+                        &lt;lambda&gt;                             --   1000   1000 -- 0.00034 0.00052 -- npx_core_api.py:121:&lt;lambda&gt; (&lt;lambda&gt;)
+                            &lt;built-in metho...ns.isinstance&gt; --   1000   1000 -- 0.00018 0.00018 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;) +++
+                    &lt;built-in method builtins.isinstance&gt;    --   2000   2000 -- 0.00025 0.00025 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;) +++
+                    &lt;built-in method builtins.issubclass&gt;    --   2000   2000 -- 0.00026 0.00026 -- ~:0:&lt;built-in method builtins.issubclass&gt; (&lt;built-in method builtins.issubclass&gt;)
+                    &lt;built-in method builtins.len&gt;           --   1000   1000 -- 0.00011 0.00011 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+                sum                                          --   1000   1000 -- 0.00182 0.01542 -- npx_var.py:878:sum (sum)
+                    reduce_function                          --   1000   1000 -- 0.00135 0.01360 -- npx_var.py:859:reduce_function (reduce_function)
+                        var                                  --   1000   1000 -- 0.00127 0.00880 -- npx_core_api.py:44:var (var) +++
+                        get_cst_var                          --   1000   1000 -- 0.00210 0.00291 -- npx_var.py:202:get_cst_var (get_cst_var) +++
+                        self_var                             --   1000   1000 -- 0.00041 0.00053 -- npx_var.py:350:self_var (self_var) +++
+            l2_loss                                          --   1000   1000 -- 0.01517 0.02309 -- plot_onnxruntime.py:27:l2_loss (l2_loss)
+                &lt;method &#39;sum&#39; of &#39;numpy.ndarray&#39; objects&gt;    --   1000   1000 -- 0.00070 0.00792 -- ~:0:&lt;method &#39;sum&#39; of &#39;numpy.ndarray&#39; objects&gt; (&lt;method &#39;sum&#39; of &#39;numpy.ndarray&#39; objects&gt;)
+                    _sum                                     --   1000   1000 -- 0.00050 0.00723 -- _methods.py:47:_sum (_sum)
+                        &lt;method &#39;reduce&#39; ....ufunc&#39; objects&gt; --   1000   1000 -- 0.00673 0.00673 -- ~:0:&lt;method &#39;reduce&#39; of &#39;numpy.ufunc&#39; objects&gt; (&lt;method &#39;reduce&#39; of &#39;numpy.ufunc&#39; objects&gt;)
+&lt;built-in method builtins.len&gt;                               --  17000  17000 -- 0.00209 0.00209 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;)
+&lt;method &#39;append&#39; of &#39;list&#39; objects&gt;                          --   5000   5000 -- 0.00061 0.00061 -- ~:0:&lt;method &#39;append&#39; of &#39;list&#39; objects&gt; (&lt;method &#39;append&#39; of &#39;list&#39; objects&gt;)
+&lt;built-in method builtins.isinstance&gt;                        --  35000  35000 -- 0.00596 0.00596 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;)
+&lt;method &#39;items&#39; of &#39;dict&#39; objects&gt;                           --   4000   4000 -- 0.00044 0.00044 -- ~:0:&lt;method &#39;items&#39; of &#39;dict&#39; objects&gt; (&lt;method &#39;items&#39; of &#39;dict&#39; objects&gt;)
+&lt;built-in method builtins.hasattr&gt;                           --   7000   7000 -- 0.00088 0.00088 -- ~:0:&lt;built-in method builtins.hasattr&gt; (&lt;built-in method builtins.hasattr&gt;)
+</pre></div>
+</div>
+</section>
+<section id="benchmark">
+<h2>Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">onnx_array_api.ext_test_case</span> <span class="kn">import</span> <span class="n">measure_time</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">]):</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">myloss</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">))</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;numpy&quot;</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">)</span>
+
+    <span class="n">xort</span> <span class="o">=</span> <span class="n">OrtTensor</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">)</span>
+    <span class="n">yort</span> <span class="o">=</span> <span class="n">OrtTensor</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ort_myloss</span><span class="p">(</span><span class="n">xort</span><span class="p">,</span> <span class="n">yort</span><span class="p">))</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ort&quot;</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n</span></a>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">)</span>
+
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">)</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">pivot</span></a><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/6 [00:00&lt;?, ?it/s]
+ 33%|###3      | 2/6 [00:00&lt;00:00, 16.09it/s]
+ 67%|######6   | 4/6 [00:00&lt;00:00, 11.50it/s]
+100%|##########| 6/6 [00:03&lt;00:00,  1.25it/s]
+100%|##########| 6/6 [00:03&lt;00:00,  1.66it/s]
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>name</th>
+      <th>numpy</th>
+      <th>ort</th>
+    </tr>
+    <tr>
+      <th>n</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>0.000029</td>
+      <td>0.000099</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.000026</td>
+      <td>0.000087</td>
+    </tr>
+    <tr>
+      <th>100</th>
+      <td>0.000031</td>
+      <td>0.000112</td>
+    </tr>
+    <tr>
+      <th>1000</th>
+      <td>0.000045</td>
+      <td>0.000220</td>
+    </tr>
+    <tr>
+      <th>10000</th>
+      <td>0.000098</td>
+      <td>0.000482</td>
+    </tr>
+    <tr>
+      <th>100000</th>
+      <td>0.000677</td>
+      <td>0.005248</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /></section>
+<section id="plots">
+<h2>Plots<a class="headerlink" href="#plots" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Comparison between numpy and onnxruntime&quot;</span><span class="p">,</span> <span class="n">logx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a><span class="p">[</span><span class="s2">&quot;ort/numpy&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a><span class="p">[</span><span class="s2">&quot;ort&quot;</span><span class="p">]</span> <span class="o">/</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a><span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">]</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a><span class="p">[</span><span class="s2">&quot;ort/numpy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Ratio ort/numpy&quot;</span><span class="p">,</span> <span class="n">logx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_onnxruntime.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_onnxruntime_001.png" srcset="../_images/sphx_glr_plot_onnxruntime_001.png" alt="Comparison between numpy and onnxruntime, Ratio ort/numpy" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.037 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-onnxruntime-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/8f8229fc734633da583673388e7aeca9/plot_onnxruntime.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_onnxruntime.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/46f0b8cf259997a8311e7258389dae12/plot_onnxruntime.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_onnxruntime.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../tutorial/benchmarks.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Benchmarks</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="plot_first_example.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">First examples with onnx-array-api</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">First examples with onnxruntime</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#profiling">Profiling</a></li>
+<li><a class="reference internal" href="#benchmark">Benchmark</a></li>
+<li><a class="reference internal" href="#plots">Plots</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    </body>
+</html>

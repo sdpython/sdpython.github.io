@@ -1,0 +1,878 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+        <title>onnx_array_api.npx.npx_jit_eager - onnx-array-api 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">onnx-array-api 0.1.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-array-api 0.1.2 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/overview.html">Numpy API for ONNX</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_var.html">npx.npx_var</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_jit.html">npx, jit and eager mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_annot.html">npx.npx_types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_numpy.html">npx.npx_numpy_tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_tools.html">onnx tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/ort.html">ort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/tools.html">tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_f8.html">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimization.html">Optimization with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profiling.html">Profiling with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for onnx_array_api.npx.npx_jit_eager</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.npx_tensors</span> <span class="kn">import</span> <span class="n">EagerTensor</span><span class="p">,</span> <span class="n">JitTensor</span>
+<span class="kn">from</span> <span class="nn">.npx_types</span> <span class="kn">import</span> <span class="n">TensorType</span>
+<span class="kn">from</span> <span class="nn">.npx_var</span> <span class="kn">import</span> <span class="n">Cst</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Var</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;onnx-array-api&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="JitEager"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager">[docs]</a><span class="k">class</span> <span class="nc">JitEager</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a function into an executable function</span>
+<span class="sd">    based on a backend. The new function is converted</span>
+<span class="sd">    to onnx on the first call.</span>
+
+<span class="sd">    :param f: function to convert</span>
+<span class="sd">    :param tensor_class: wrapper around a class defining the backend,</span>
+<span class="sd">        if None, it defaults to :class:`onnx.reference.ReferenceEvalutor`</span>
+<span class="sd">    :param target_opsets: dictionary `{opset: version}`</span>
+<span class="sd">    :param output_types: shape and type inference cannot be run before</span>
+<span class="sd">        the onnx graph is created and type is needed to do such,</span>
+<span class="sd">        if not specified, the class assumes there is only one output</span>
+<span class="sd">        of the same type as the input</span>
+<span class="sd">    :param ir_version: defines the IR version to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">tensor_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+        <span class="n">target_opsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">TensorType</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ir_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span> <span class="o">=</span> <span class="n">tensor_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">versions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onxs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_opsets</span> <span class="o">=</span> <span class="n">tensor_class</span><span class="o">.</span><span class="n">get_opsets</span><span class="p">(</span><span class="n">target_opsets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_types</span> <span class="o">=</span> <span class="n">output_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="n">tensor_class</span><span class="o">.</span><span class="n">get_ir_version</span><span class="p">(</span><span class="n">ir_version</span><span class="p">)</span>
+        <span class="c1"># parameters necessary after the function was converting to</span>
+        <span class="c1"># onnx to remember an input in fact a mandatory parameter.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_inputs_</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name_</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="JitEager.info"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">method_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logs a status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> [</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">] nx=</span><span class="si">%d</span><span class="s2"> ni=</span><span class="si">%d</span><span class="s2"> kw=</span><span class="si">%d</span><span class="s2"> f=</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2"> cl=</span><span class="si">%s</span><span class="s2"> me=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">method_name</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_inputs_</span><span class="p">,</span>
+            <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">method_name_</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="JitEager.status"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.status">[docs]</a>    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">me</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a short string indicating the status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">me</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;nx=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;ni=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_inputs_</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;kw=</span><span class="si">{</span><span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;f=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cl=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;me=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method_name_</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_versions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of jitted functions.</span>
+<span class="sd">        There is one per type and number of dimensions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">available_versions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the key used to distinguish between every jitted version.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">))</span>
+
+<div class="viewcode-block" id="JitEager.get_onnx"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.get_onnx">[docs]</a>    <span class="k">def</span> <span class="nf">get_onnx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the jitted function associated to one key.</span>
+<span class="sd">        If key is None, the assumes there is only one available jitted function</span>
+<span class="sd">        and it returns it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;There is more than one jitted function. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;The key must be specified among &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">available_versions</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">available_versions</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Not jitted function indexed with &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;key=</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">available_versions</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="JitEager.make_key"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.make_key">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_key</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builds a key based on the input types and parameters.</span>
+<span class="sd">        Every set of inputs or parameters producing the same</span>
+<span class="sd">        key (or signature) must use the same compiled ONNX.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">iv</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">Var</span><span class="p">,</span> <span class="n">EagerTensor</span><span class="p">,</span> <span class="n">JitTensor</span><span class="p">)):</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">step</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">subkey</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">sk</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+                        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="n">sk</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">sk</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">sk</span><span class="o">.</span><span class="n">step</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sk</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="n">sk</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input </span><span class="si">{</span><span class="n">iv</span><span class="si">}</span><span class="s2"> cannot have such tuple: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">subkey</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unable to build a key, input </span><span class="si">{</span><span class="n">iv</span><span class="si">}</span><span class="s2"> has type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">)):</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="n">newv</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Var</span><span class="p">):</span>
+                            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Cannot support Var in argument </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                            <span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+                            <span class="n">newv</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">step</span><span class="p">))</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">newv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">newv</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not yet supported, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;v=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> and parameter </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">key</span></div>
+
+<div class="viewcode-block" id="JitEager.to_jit"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.to_jit">[docs]</a>    <span class="k">def</span> <span class="nf">to_jit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the function into ONNX based on the provided inputs</span>
+<span class="sd">        and parameters. It then wraps it by calling</span>
+<span class="sd">        `self.tensor_class.create_function`.</span>
+<span class="sd">        The onnx graph built by the function defines the input</span>
+<span class="sd">        types and the expected number of dimensions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;to_jit&quot;</span><span class="p">)</span>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__annotations__</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">input_to_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">annot_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">constraints</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">iname</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">names</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">EagerTensor</span><span class="p">,</span> <span class="n">JitTensor</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">annot_values</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">annot_values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">TensorType</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="n">constraints</span><span class="p">[</span><span class="n">iname</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">tensor_type_dims</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_kwargs</span><span class="p">[</span><span class="n">iname</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                    <span class="n">input_to_kwargs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">iname</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_inputs_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_to_kwargs</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="o">=</span> <span class="n">input_to_kwargs</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="o">!=</span> <span class="n">input_to_kwargs</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected input and argument. Previous call produced &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;self.input_to_kwargs_=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span><span class="si">}</span><span class="s2"> and &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;input_to_kwargs=</span><span class="si">{</span><span class="n">input_to_kwargs</span><span class="si">}</span><span class="s2"> for function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;from module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span><span class="p">:</span>
+            <span class="n">constraints</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">iname</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">names</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">EagerTensor</span><span class="p">,</span> <span class="n">JitTensor</span><span class="p">))</span>
+                    <span class="ow">and</span> <span class="p">(</span>
+                        <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">annot_values</span><span class="p">)</span>
+                        <span class="ow">or</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">annot_values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">TensorType</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span>
+                <span class="p">):</span>
+                    <span class="n">constraints</span><span class="p">[</span><span class="n">iname</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">tensor_type_dims</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_kwargs</span><span class="p">[</span><span class="n">iname</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;x</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">))]</span>
+            <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">constraints</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">iname</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">tensor_type_dims</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">iname</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">names</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">EagerTensor</span><span class="p">,</span> <span class="n">JitTensor</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_inputs_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">constraints</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_types</span><span class="p">)</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Input</span><span class="p">(</span><span class="n">iname</span><span class="p">)</span> <span class="k">for</span> <span class="n">iname</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="n">iname</span> <span class="ow">in</span> <span class="n">constraints</span>
+        <span class="p">]</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_kwargs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># An attribute is not named in the numpy API</span>
+            <span class="c1"># but is the ONNX definition.</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="n">new_kwargs</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">onx</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span>
+            <span class="n">constraints</span><span class="o">=</span><span class="n">constraints</span><span class="p">,</span>
+            <span class="n">target_opsets</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target_opsets</span><span class="p">,</span>
+            <span class="n">ir_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ir_version</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">exe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">onx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;to_jit&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">onx</span><span class="p">,</span> <span class="n">exe</span></div>
+
+<div class="viewcode-block" id="JitEager.cast_to_tensor_class"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.cast_to_tensor_class">[docs]</a>    <span class="k">def</span> <span class="nf">cast_to_tensor_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">EagerTensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wraps input into `self.tensor_class`.</span>
+
+<span class="sd">        :param inputs: python inputs (including numpy)</span>
+<span class="sd">        :return: wrapped inputs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unable to convert input </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, with type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="k">return</span> <span class="n">values</span></div>
+
+<div class="viewcode-block" id="JitEager.cast_from_tensor_class"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.cast_from_tensor_class">[docs]</a>    <span class="k">def</span> <span class="nf">cast_from_tensor_class</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EagerTensor</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wraps input from `self.tensor_class` to python types.</span>
+
+<span class="sd">        :param results: python inputs (including numpy)</span>
+<span class="sd">        :return: wrapped inputs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="JitEager.move_input_to_kwargs"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.move_input_to_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">move_input_to_kwargs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mandatory parameters not usually not named. Some inputs must</span>
+<span class="sd">        be moved to the parameter list before calling ONNX.</span>
+
+<span class="sd">        :param values: list of inputs</span>
+<span class="sd">        :param kwargs: dictionary of arguments</span>
+<span class="sd">        :return: new values, new arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># if self.bypass_eager or self.f.__annotations__:</span>
+            <span class="c1">#    return values, kwargs</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;self.input_to_kwargs_ is not initialized for function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;from module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">kwargs</span>
+        <span class="n">new_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span><span class="p">:</span>
+                <span class="n">new_kwargs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_values</span><span class="p">),</span> <span class="n">new_kwargs</span></div>
+
+<div class="viewcode-block" id="JitEager.jit_call"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitEager.jit_call">[docs]</a>    <span class="k">def</span> <span class="nf">jit_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The method builds a key which identifies the signature</span>
+<span class="sd">        (input types + parameters value).</span>
+<span class="sd">        It then checks if the function was already converted into ONNX</span>
+<span class="sd">        from a previous. If not, it converts it and caches the results</span>
+<span class="sd">        indexed by the previous key. Finally, it executes the onnx graph</span>
+<span class="sd">        and returns the result or the results in a tuple if there are several.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;jit_call&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># No jitting was ever called.</span>
+            <span class="n">onx</span><span class="p">,</span> <span class="n">fct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_jit</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Attribute &#39;input_to_kwargs_&#39; should be set for &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> form module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">onx</span><span class="p">,</span> <span class="n">fct</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">values</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move_input_to_kwargs</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_key</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;method_name&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;method_name&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">method_name_</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">onx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># First jitting.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">fct</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">onx</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">:</span>
+            <span class="c1"># Already jitted.</span>
+            <span class="n">fct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># One version was already jitted but types or parameter</span>
+            <span class="c1"># are different.</span>
+            <span class="n">onx</span><span class="p">,</span> <span class="n">fct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_jit</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">fct</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">onx</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">fct</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to run function for key=</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;types=</span><span class="si">{</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;kwargs=</span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;self.input_to_kwargs_=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_to_kwargs_</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;onnx=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">onxs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;jit_call&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div></div>
+
+
+<div class="viewcode-block" id="JitOnnx"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.JitOnnx">[docs]</a><span class="k">class</span> <span class="nc">JitOnnx</span><span class="p">(</span><span class="n">JitEager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a function into an executable function</span>
+<span class="sd">    based on a backend. The new function is converted</span>
+<span class="sd">    to onnx on the first call.</span>
+
+<span class="sd">    :param f: function to convert</span>
+<span class="sd">    :param tensor_class: wrapper around a class defining the backend,</span>
+<span class="sd">        if None, it defaults to :class:`onnx.reference.ReferenceEvalutor`</span>
+<span class="sd">    :param target_opsets: dictionary `{opset: version}`</span>
+<span class="sd">    :param output_types: shape and type inference cannot be run before</span>
+<span class="sd">        the onnx graph is created and type is needed to do such,</span>
+<span class="sd">        if not specified, the class assumes there is only one output</span>
+<span class="sd">        of the same type as the input</span>
+<span class="sd">    :param ir_version: defines the IR version to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">tensor_class</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">target_opsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">TensorType</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ir_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">tensor_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.npx_numpy_tensors</span> <span class="kn">import</span> <span class="n">JitNumpyTensor</span>
+
+            <span class="n">tensor_class</span> <span class="o">=</span> <span class="n">JitNumpyTensor</span>
+        <span class="n">JitEager</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">f</span><span class="p">,</span>
+            <span class="n">tensor_class</span><span class="p">,</span>
+            <span class="n">target_opsets</span><span class="o">=</span><span class="n">target_opsets</span><span class="p">,</span>
+            <span class="n">output_types</span><span class="o">=</span><span class="n">output_types</span><span class="p">,</span>
+            <span class="n">ir_version</span><span class="o">=</span><span class="n">ir_version</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The method builds a key which identifies the signature</span>
+<span class="sd">        (input types + parameters value).</span>
+<span class="sd">        It then checks if the function was already converted into ONNX</span>
+<span class="sd">        from a previous. If not, it converts it and caches the results</span>
+<span class="sd">        indexed by the previous key. Finally, it executes the onnx graph</span>
+<span class="sd">        and returns the result or the results in a tuple if there are several.</span>
+<span class="sd">        The method first wraps the inputs with `self.tensor_class`</span>
+<span class="sd">        and converts them into python types just after.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cast_to_tensor_class</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jit_call</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cast_from_tensor_class</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;jit_call&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<span class="k">class</span> <span class="nc">EagerOnnx</span><span class="p">(</span><span class="n">JitEager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a function into an executable function</span>
+<span class="sd">    based on a backend. The new function is converted</span>
+<span class="sd">    to onnx on the first call.</span>
+
+<span class="sd">    :param f: function to convert</span>
+<span class="sd">    :param tensor_class: wrapper around a class defining the backend,</span>
+<span class="sd">        if None, it defaults to :class:`onnx.reference.ReferenceEvalutor`</span>
+<span class="sd">    :param target_opsets: dictionary `{opset: version}`</span>
+<span class="sd">    :param output_types: shape and type inference cannot be run before</span>
+<span class="sd">        the onnx graph is created and type is needed to do such,</span>
+<span class="sd">        if not specified, the class assumes there is only one output</span>
+<span class="sd">        of the same type as the input</span>
+<span class="sd">    :param bypass_eager: this parameter must be true if the function</span>
+<span class="sd">        has not annotation and is not decorated by `xapi_inline` or</span>
+<span class="sd">        `xapi_function`</span>
+<span class="sd">    :param ir_version: defines the IR version to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">tensor_class</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">target_opsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">TensorType</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ir_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">bypass_eager</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">tensor_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.npx_numpy_tensors</span> <span class="kn">import</span> <span class="n">EagerNumpyTensor</span>
+
+            <span class="n">tensor_class</span> <span class="o">=</span> <span class="n">EagerNumpyTensor</span>
+        <span class="n">JitEager</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">f</span><span class="p">,</span>
+            <span class="n">tensor_class</span><span class="p">,</span>
+            <span class="n">target_opsets</span><span class="o">=</span><span class="n">target_opsets</span><span class="p">,</span>
+            <span class="n">output_types</span><span class="o">=</span><span class="n">output_types</span><span class="p">,</span>
+            <span class="n">ir_version</span><span class="o">=</span><span class="n">ir_version</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_eager_parameter</span> <span class="o">=</span> <span class="s2">&quot;eager&quot;</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eager_cache</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bypass_eager</span> <span class="o">=</span> <span class="n">bypass_eager</span>
+
+    <span class="k">def</span> <span class="nf">_preprocess_constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An input may be a constant. It needs to be replaced by a tensor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">new_args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="p">):</span>
+                <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">Cst</span><span class="p">):</span>
+                <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># elif isinstance(n, tuple):</span>
+            <span class="c1">#    if any(map(lambda t: isinstance(t, Var), n)):</span>
+            <span class="c1">#        raise TypeError(</span>
+            <span class="c1">#            f&quot;Unexpected types in tuple &quot;</span>
+            <span class="c1">#            f&quot;({[type(t) for t in n]}) for input {i}, &quot;</span>
+            <span class="c1">#            f&quot;function {self.f} from module {self.f.__module__!r}.&quot;</span>
+            <span class="c1">#        )</span>
+            <span class="c1">#    new_args.append(n)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+                <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tensor_class</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+                <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="c1"># usually used to cast</span>
+                <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">new_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected type (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2">) for input </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> from module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">modified</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">already_eager</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The method builds a key which identifies the signature</span>
+<span class="sd">        (input types + parameters value).</span>
+<span class="sd">        It then checks if the function was already converted into ONNX</span>
+<span class="sd">        from a previous. If not, it converts it and caches the results</span>
+<span class="sd">        indexed by the previous key. Finally, it executes the onnx graph</span>
+<span class="sd">        and returns the result or the results in a tuple if there are several.</span>
+
+<span class="sd">        :param already_eager: already in eager mode, inputs must be of type</span>
+<span class="sd">            EagerTensor and the returned outputs must be the same</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">already_eager</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="nb">map</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="n">t</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">EagerTensor</span><span class="p">,</span> <span class="n">Cst</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">slice</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span>
+                    <span class="p">),</span>
+                    <span class="n">args</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;One of the input is not an EagerTensor or a constant, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;types are </span><span class="si">{</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span><span class="si">}</span><span class="s2"> for function &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> from module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">values_tensor</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cast_to_tensor_class</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess_constants</span><span class="p">(</span><span class="o">*</span><span class="n">values_tensor</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eager_cache</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">bypass_eager</span><span class="p">:</span>
+            <span class="c1"># The function was already converted into onnx</span>
+            <span class="c1"># reuse it or create a new one for different types.</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jit_call</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;1__call__&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># tries to call the version</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">inp1</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">args</span><span class="p">)))</span>
+                <span class="n">inp2</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected types, input types are </span><span class="si">{</span><span class="n">inp1</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="sa">f</span><span class="s2">&quot;and </span><span class="si">{</span><span class="n">inp2</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">EagerTensor</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">EagerTensor</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">already_eager</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;EagerTensor (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">}</span><span class="s2">) is not &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;expected for function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;from module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="vm">__module__</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;type of first input is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">Var</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Var</span><span class="p">),</span> <span class="n">res</span><span class="p">)):</span>
+                <span class="c1"># The function returns instance of type Var.</span>
+                <span class="c1"># It does not support eager mode and needs</span>
+                <span class="c1"># to be converted into onnx.</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jit_call</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_eager_cache</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;2__call__&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">already_eager</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cast_from_tensor_class</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="jit_onnx"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.jit_onnx">[docs]</a><span class="k">def</span> <span class="nf">jit_onnx</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns an instance of :class:`JitOnnx`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">JitOnnx</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="eager_onnx"><a class="viewcode-back" href="../../../api/npx_jit.html#onnx_array_api.npx.npx_jit_eager.eager_onnx">[docs]</a><span class="k">def</span> <span class="nf">eager_onnx</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns an instance of :class:`EagerOnnx`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">EagerOnnx</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    </body>
+</html>

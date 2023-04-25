@@ -1,0 +1,850 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Optimization with onnxruntime" href="plot_optimization.html" /><link rel="prev" title="Example gallery" href="index.html" />
+
+    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+        <title>About float 8 - onnx-array-api 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">onnx-array-api 0.1.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-array-api 0.1.2 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/overview.html">Numpy API for ONNX</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_onnxruntime.html">First examples with onnxruntime</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_functions.html">npx.npx_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_var.html">npx.npx_var</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_jit.html">npx, jit and eager mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_annot.html">npx.npx_types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/npx_numpy.html">npx.npx_numpy_tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/onnx_tools.html">onnx tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/ort.html">ort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/tools.html">tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_onnxruntime.html">First examples with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_optimization.html">Optimization with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_profiling.html">Profiling with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-f8-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="about-float-8">
+<span id="l-example-float8"></span><span id="sphx-glr-auto-examples-plot-f8-py"></span><h1>About float 8<a class="headerlink" href="#about-float-8" title="Permalink to this heading">#</a></h1>
+<p>Float 8 types were recently introduced to speed up the
+training of deep learning models.</p>
+<section id="possible-values">
+<h2>Possible values<a class="headerlink" href="#possible-values" title="Permalink to this heading">#</a></h2>
+<p>First E4M3FN.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.validation.f8</span> <span class="kn">import</span> <span class="n">CastFloat8</span>
+
+<a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">CastFloat8</span><span class="o">.</span><span class="n">values_e4m3fn</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(-448.0, 254),
+ (-416.0, 253),
+ (-384.0, 252),
+ (-352.0, 251),
+ (-320.0, 250),
+ (-288.0, 249),
+ (-256.0, 248),
+ (-240.0, 247),
+ (-224.0, 246),
+ (-208.0, 245),
+ (-192.0, 244),
+ (-176.0, 243),
+ (-160.0, 242),
+ (-144.0, 241),
+ (-128.0, 240),
+ (-120.0, 239),
+ (-112.0, 238),
+ (-104.0, 237),
+ (-96.0, 236),
+ (-88.0, 235),
+ (-80.0, 234),
+ (-72.0, 233),
+ (-64.0, 232),
+ (-60.0, 231),
+ (-56.0, 230),
+ (-52.0, 229),
+ (-48.0, 228),
+ (-44.0, 227),
+ (-40.0, 226),
+ (-36.0, 225),
+ (-32.0, 224),
+ (-30.0, 223),
+ (-28.0, 222),
+ (-26.0, 221),
+ (-24.0, 220),
+ (-22.0, 219),
+ (-20.0, 218),
+ (-18.0, 217),
+ (-16.0, 216),
+ (-15.0, 215),
+ (-14.0, 214),
+ (-13.0, 213),
+ (-12.0, 212),
+ (-11.0, 211),
+ (-10.0, 210),
+ (-9.0, 209),
+ (-8.0, 208),
+ (-7.5, 207),
+ (-7.0, 206),
+ (-6.5, 205),
+ (-6.0, 204),
+ (-5.5, 203),
+ (-5.0, 202),
+ (-4.5, 201),
+ (-4.0, 200),
+ (-3.75, 199),
+ (-3.5, 198),
+ (-3.25, 197),
+ (-3.0, 196),
+ (-2.75, 195),
+ (-2.5, 194),
+ (-2.25, 193),
+ (-2.0, 192),
+ (-1.875, 191),
+ (-1.75, 190),
+ (-1.625, 189),
+ (-1.5, 188),
+ (-1.375, 187),
+ (-1.25, 186),
+ (-1.125, 185),
+ (-1.0, 184),
+ (-0.9375, 183),
+ (-0.875, 182),
+ (-0.8125, 181),
+ (-0.75, 180),
+ (-0.6875, 179),
+ (-0.625, 178),
+ (-0.5625, 177),
+ (-0.5, 176),
+ (-0.46875, 175),
+ (-0.4375, 174),
+ (-0.40625, 173),
+ (-0.375, 172),
+ (-0.34375, 171),
+ (-0.3125, 170),
+ (-0.28125, 169),
+ (-0.25, 168),
+ (-0.234375, 167),
+ (-0.21875, 166),
+ (-0.203125, 165),
+ (-0.1875, 164),
+ (-0.171875, 163),
+ (-0.15625, 162),
+ (-0.140625, 161),
+ (-0.125, 160),
+ (-0.1171875, 159),
+ (-0.109375, 158),
+ (-0.1015625, 157),
+ (-0.09375, 156),
+ (-0.0859375, 155),
+ (-0.078125, 154),
+ (-0.0703125, 153),
+ (-0.0625, 152),
+ (-0.05859375, 151),
+ (-0.0546875, 150),
+ (-0.05078125, 149),
+ (-0.046875, 148),
+ (-0.04296875, 147),
+ (-0.0390625, 146),
+ (-0.03515625, 145),
+ (-0.03125, 144),
+ (-0.029296875, 143),
+ (-0.02734375, 142),
+ (-0.025390625, 141),
+ (-0.0234375, 140),
+ (-0.021484375, 139),
+ (-0.01953125, 138),
+ (-0.017578125, 137),
+ (-0.015625, 136),
+ (-0.013671875, 135),
+ (-0.01171875, 134),
+ (-0.009765625, 133),
+ (-0.0078125, 132),
+ (-0.005859375, 131),
+ (-0.00390625, 130),
+ (-0.001953125, 129),
+ (0.0, 0),
+ (-0.0, 128),
+ (0.001953125, 1),
+ (0.00390625, 2),
+ (0.005859375, 3),
+ (0.0078125, 4),
+ (0.009765625, 5),
+ (0.01171875, 6),
+ (0.013671875, 7),
+ (0.015625, 8),
+ (0.017578125, 9),
+ (0.01953125, 10),
+ (0.021484375, 11),
+ (0.0234375, 12),
+ (0.025390625, 13),
+ (0.02734375, 14),
+ (0.029296875, 15),
+ (0.03125, 16),
+ (0.03515625, 17),
+ (0.0390625, 18),
+ (0.04296875, 19),
+ (0.046875, 20),
+ (0.05078125, 21),
+ (0.0546875, 22),
+ (0.05859375, 23),
+ (0.0625, 24),
+ (0.0703125, 25),
+ (0.078125, 26),
+ (0.0859375, 27),
+ (0.09375, 28),
+ (0.1015625, 29),
+ (0.109375, 30),
+ (0.1171875, 31),
+ (0.125, 32),
+ (0.140625, 33),
+ (0.15625, 34),
+ (0.171875, 35),
+ (0.1875, 36),
+ (0.203125, 37),
+ (0.21875, 38),
+ (0.234375, 39),
+ (0.25, 40),
+ (0.28125, 41),
+ (0.3125, 42),
+ (0.34375, 43),
+ (0.375, 44),
+ (0.40625, 45),
+ (0.4375, 46),
+ (0.46875, 47),
+ (0.5, 48),
+ (0.5625, 49),
+ (0.625, 50),
+ (0.6875, 51),
+ (0.75, 52),
+ (0.8125, 53),
+ (0.875, 54),
+ (0.9375, 55),
+ (1.0, 56),
+ (1.125, 57),
+ (1.25, 58),
+ (1.375, 59),
+ (1.5, 60),
+ (1.625, 61),
+ (1.75, 62),
+ (1.875, 63),
+ (2.0, 64),
+ (2.25, 65),
+ (2.5, 66),
+ (2.75, 67),
+ (3.0, 68),
+ (3.25, 69),
+ (3.5, 70),
+ (3.75, 71),
+ (4.0, 72),
+ (4.5, 73),
+ (5.0, 74),
+ (5.5, 75),
+ (6.0, 76),
+ (6.5, 77),
+ (7.0, 78),
+ (7.5, 79),
+ (8.0, 80),
+ (9.0, 81),
+ (10.0, 82),
+ (11.0, 83),
+ (12.0, 84),
+ (13.0, 85),
+ (14.0, 86),
+ (15.0, 87),
+ (16.0, 88),
+ (18.0, 89),
+ (20.0, 90),
+ (22.0, 91),
+ (24.0, 92),
+ (26.0, 93),
+ (28.0, 94),
+ (30.0, 95),
+ (32.0, 96),
+ (36.0, 97),
+ (40.0, 98),
+ (44.0, 99),
+ (48.0, 100),
+ (52.0, 101),
+ (56.0, 102),
+ (60.0, 103),
+ (64.0, 104),
+ (72.0, 105),
+ (80.0, 106),
+ (88.0, 107),
+ (96.0, 108),
+ (104.0, 109),
+ (112.0, 110),
+ (120.0, 111),
+ (128.0, 112),
+ (144.0, 113),
+ (160.0, 114),
+ (176.0, 115),
+ (192.0, 116),
+ (208.0, 117),
+ (224.0, 118),
+ (240.0, 119),
+ (256.0, 120),
+ (288.0, 121),
+ (320.0, 122),
+ (352.0, 123),
+ (384.0, 124),
+ (416.0, 125),
+ (448.0, 126)]
+</pre></div>
+</div>
+<p>Then E5M2.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">CastFloat8</span><span class="o">.</span><span class="n">values_e5m2</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(-inf, 252),
+ (-57344.0, 251),
+ (-49152.0, 250),
+ (-40960.0, 249),
+ (-32768.0, 248),
+ (-28672.0, 247),
+ (-24576.0, 246),
+ (-20480.0, 245),
+ (-16384.0, 244),
+ (-14336.0, 243),
+ (-12288.0, 242),
+ (-10240.0, 241),
+ (-8192.0, 240),
+ (-7168.0, 239),
+ (-6144.0, 238),
+ (-5120.0, 237),
+ (-4096.0, 236),
+ (-3584.0, 235),
+ (-3072.0, 234),
+ (-2560.0, 233),
+ (-2048.0, 232),
+ (-1792.0, 231),
+ (-1536.0, 230),
+ (-1280.0, 229),
+ (-1024.0, 228),
+ (-896.0, 227),
+ (-768.0, 226),
+ (-640.0, 225),
+ (-512.0, 224),
+ (-448.0, 223),
+ (-384.0, 222),
+ (-320.0, 221),
+ (-256.0, 220),
+ (-224.0, 219),
+ (-192.0, 218),
+ (-160.0, 217),
+ (-128.0, 216),
+ (-112.0, 215),
+ (-96.0, 214),
+ (-80.0, 213),
+ (-64.0, 212),
+ (-56.0, 211),
+ (-48.0, 210),
+ (-40.0, 209),
+ (-32.0, 208),
+ (-28.0, 207),
+ (-24.0, 206),
+ (-20.0, 205),
+ (-16.0, 204),
+ (-14.0, 203),
+ (-12.0, 202),
+ (-10.0, 201),
+ (-8.0, 200),
+ (-7.0, 199),
+ (-6.0, 198),
+ (-5.0, 197),
+ (-4.0, 196),
+ (-3.5, 195),
+ (-3.0, 194),
+ (-2.5, 193),
+ (-2.0, 192),
+ (-1.75, 191),
+ (-1.5, 190),
+ (-1.25, 189),
+ (-1.0, 188),
+ (-0.875, 187),
+ (-0.75, 186),
+ (-0.625, 185),
+ (-0.5, 184),
+ (-0.4375, 183),
+ (-0.375, 182),
+ (-0.3125, 181),
+ (-0.25, 180),
+ (-0.21875, 179),
+ (-0.1875, 178),
+ (-0.15625, 177),
+ (-0.125, 176),
+ (-0.109375, 175),
+ (-0.09375, 174),
+ (-0.078125, 173),
+ (-0.0625, 172),
+ (-0.0546875, 171),
+ (-0.046875, 170),
+ (-0.0390625, 169),
+ (-0.03125, 168),
+ (-0.02734375, 167),
+ (-0.0234375, 166),
+ (-0.01953125, 165),
+ (-0.015625, 164),
+ (-0.013671875, 163),
+ (-0.01171875, 162),
+ (-0.009765625, 161),
+ (-0.0078125, 160),
+ (-0.0068359375, 159),
+ (-0.005859375, 158),
+ (-0.0048828125, 157),
+ (-0.00390625, 156),
+ (-0.0034179688, 155),
+ (-0.0029296875, 154),
+ (-0.0024414062, 153),
+ (-0.001953125, 152),
+ (-0.0017089844, 151),
+ (-0.0014648438, 150),
+ (-0.0012207031, 149),
+ (-0.0009765625, 148),
+ (-0.0008544922, 147),
+ (-0.0007324219, 146),
+ (-0.00061035156, 145),
+ (-0.00048828125, 144),
+ (-0.0004272461, 143),
+ (-0.00036621094, 142),
+ (-0.00030517578, 141),
+ (-0.00024414062, 140),
+ (-0.00021362305, 139),
+ (-0.00018310547, 138),
+ (-0.00015258789, 137),
+ (-0.00012207031, 136),
+ (-0.00010681152, 135),
+ (-9.1552734e-05, 134),
+ (-7.6293945e-05, 133),
+ (-6.1035156e-05, 132),
+ (-4.5776367e-05, 131),
+ (-3.0517578e-05, 130),
+ (-1.5258789e-05, 129),
+ (0.0, 0),
+ (0.0, 128),
+ (1.5258789e-05, 1),
+ (3.0517578e-05, 2),
+ (4.5776367e-05, 3),
+ (6.1035156e-05, 4),
+ (7.6293945e-05, 5),
+ (9.1552734e-05, 6),
+ (0.00010681152, 7),
+ (0.00012207031, 8),
+ (0.00015258789, 9),
+ (0.00018310547, 10),
+ (0.00021362305, 11),
+ (0.00024414062, 12),
+ (0.00030517578, 13),
+ (0.00036621094, 14),
+ (0.0004272461, 15),
+ (0.00048828125, 16),
+ (0.00061035156, 17),
+ (0.0007324219, 18),
+ (0.0008544922, 19),
+ (0.0009765625, 20),
+ (0.0012207031, 21),
+ (0.0014648438, 22),
+ (0.0017089844, 23),
+ (0.001953125, 24),
+ (0.0024414062, 25),
+ (0.0029296875, 26),
+ (0.0034179688, 27),
+ (0.00390625, 28),
+ (0.0048828125, 29),
+ (0.005859375, 30),
+ (0.0068359375, 31),
+ (0.0078125, 32),
+ (0.009765625, 33),
+ (0.01171875, 34),
+ (0.013671875, 35),
+ (0.015625, 36),
+ (0.01953125, 37),
+ (0.0234375, 38),
+ (0.02734375, 39),
+ (0.03125, 40),
+ (0.0390625, 41),
+ (0.046875, 42),
+ (0.0546875, 43),
+ (0.0625, 44),
+ (0.078125, 45),
+ (0.09375, 46),
+ (0.109375, 47),
+ (0.125, 48),
+ (0.15625, 49),
+ (0.1875, 50),
+ (0.21875, 51),
+ (0.25, 52),
+ (0.3125, 53),
+ (0.375, 54),
+ (0.4375, 55),
+ (0.5, 56),
+ (0.625, 57),
+ (0.75, 58),
+ (0.875, 59),
+ (1.0, 60),
+ (1.25, 61),
+ (1.5, 62),
+ (1.75, 63),
+ (2.0, 64),
+ (2.5, 65),
+ (3.0, 66),
+ (3.5, 67),
+ (4.0, 68),
+ (5.0, 69),
+ (6.0, 70),
+ (7.0, 71),
+ (8.0, 72),
+ (10.0, 73),
+ (12.0, 74),
+ (14.0, 75),
+ (16.0, 76),
+ (20.0, 77),
+ (24.0, 78),
+ (28.0, 79),
+ (32.0, 80),
+ (40.0, 81),
+ (48.0, 82),
+ (56.0, 83),
+ (64.0, 84),
+ (80.0, 85),
+ (96.0, 86),
+ (112.0, 87),
+ (128.0, 88),
+ (160.0, 89),
+ (192.0, 90),
+ (224.0, 91),
+ (256.0, 92),
+ (320.0, 93),
+ (384.0, 94),
+ (448.0, 95),
+ (512.0, 96),
+ (640.0, 97),
+ (768.0, 98),
+ (896.0, 99),
+ (1024.0, 100),
+ (1280.0, 101),
+ (1536.0, 102),
+ (1792.0, 103),
+ (2048.0, 104),
+ (2560.0, 105),
+ (3072.0, 106),
+ (3584.0, 107),
+ (4096.0, 108),
+ (5120.0, 109),
+ (6144.0, 110),
+ (7168.0, 111),
+ (8192.0, 112),
+ (10240.0, 113),
+ (12288.0, 114),
+ (14336.0, 115),
+ (16384.0, 116),
+ (20480.0, 117),
+ (24576.0, 118),
+ (28672.0, 119),
+ (32768.0, 120),
+ (40960.0, 121),
+ (49152.0, 122),
+ (57344.0, 123),
+ (inf, 124)]
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.034 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-f8-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/64dbc26c33a25b9341d26dcb61e67e3f/plot_f8.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_f8.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/975bbb89d7b57a51de424215b563a7a8/plot_f8.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_f8.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="plot_optimization.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Optimization with onnxruntime</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Example gallery</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">About float 8</a><ul>
+<li><a class="reference internal" href="#possible-values">Possible values</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    </body>
+</html>

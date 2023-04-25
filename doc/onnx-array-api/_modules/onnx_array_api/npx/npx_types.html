@@ -1,0 +1,836 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+        <title>onnx_array_api.npx.npx_types - onnx-array-api 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">onnx-array-api 0.1.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-array-api 0.1.2 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/overview.html">Numpy API for ONNX</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_var.html">npx.npx_var</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_jit.html">npx, jit and eager mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_annot.html">npx.npx_types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/npx_numpy.html">npx.npx_numpy_tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_tools.html">onnx tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/ort.html">ort</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/tools.html">tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_f8.html">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimization.html">Optimization with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profiling.html">Profiling with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for onnx_array_api.npx.npx_types</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">AttributeProto</span>
+
+
+<span class="k">class</span> <span class="nc">WrapperType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    WrapperType.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">ElemTypeCstInner</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines all possible types and tensor element type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">undefined</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">bool_</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">int8</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">int16</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">int32</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">int64</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">uint8</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">uint16</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">uint32</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">uint64</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="n">float16</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">float32</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">float64</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="n">bfloat16</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">complex64</span> <span class="o">=</span> <span class="mi">14</span>
+    <span class="n">complex128</span> <span class="o">=</span> <span class="mi">15</span>
+
+
+<span class="k">class</span> <span class="nc">ElemTypeCstSet</span><span class="p">(</span><span class="n">ElemTypeCstInner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets of element types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">allowed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">))</span>
+
+    <span class="n">ints</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint64</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">floats</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">numerics</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint64</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">combined</span><span class="p">(</span><span class="n">type_set</span><span class="p">):</span>
+        <span class="s2">&quot;Combines all types into a single integer by using power of 2.&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">type_set</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">dt</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="k">class</span> <span class="nc">ElemTypeCst</span><span class="p">(</span><span class="n">ElemTypeCstSet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Combination of element types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Undefined</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Bool</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">bool_</span>
+    <span class="n">Int8</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int8</span>
+    <span class="n">Int16</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int16</span>
+    <span class="n">Int32</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int32</span>
+    <span class="n">Int64</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">int64</span>
+    <span class="n">UInt8</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint8</span>
+    <span class="n">UInt16</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint16</span>
+    <span class="n">UInt32</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint32</span>
+    <span class="n">UInt64</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">uint64</span>
+    <span class="n">BFloat16</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">bfloat16</span>
+    <span class="n">Float16</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float16</span>
+    <span class="n">Float32</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float32</span>
+    <span class="n">Float64</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">float64</span>
+    <span class="n">Complex64</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">complex64</span>
+    <span class="n">Complex128</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ElemTypeCstInner</span><span class="o">.</span><span class="n">complex128</span>
+
+    <span class="n">Numerics</span> <span class="o">=</span> <span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">combined</span><span class="p">(</span><span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">numerics</span><span class="p">)</span>
+    <span class="n">Floats</span> <span class="o">=</span> <span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">combined</span><span class="p">(</span><span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">floats</span><span class="p">)</span>
+    <span class="n">Ints</span> <span class="o">=</span> <span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">combined</span><span class="p">(</span><span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">ints</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ElemType"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.ElemType">[docs]</a><span class="k">class</span> <span class="nc">ElemType</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Allowed element type based on numpy dtypes.</span>
+
+<span class="sd">    :param dtype: integer or a string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">names_int</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">att</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCstInner</span><span class="p">,</span> <span class="n">att</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">ElemTypeCstInner</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCstInner</span><span class="p">,</span> <span class="n">att</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="n">int_names</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCstInner</span><span class="p">,</span> <span class="n">att</span><span class="p">):</span> <span class="n">att</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">ElemTypeCstInner</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCstInner</span><span class="p">,</span> <span class="n">att</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="n">set_names</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">,</span> <span class="n">att</span><span class="p">):</span> <span class="n">att</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">,</span> <span class="n">att</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;A&quot;</span> <span class="o">&lt;=</span> <span class="n">att</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="s2">&quot;Z&quot;</span>
+    <span class="p">}</span>
+
+    <span class="n">numpy_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">**</span><span class="p">{</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">att</span><span class="p">):</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">,</span> <span class="n">att</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">,</span> <span class="n">att</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">att</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="o">**</span><span class="p">{</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">att</span><span class="p">):</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">,</span> <span class="n">att</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">,</span> <span class="n">att</span><span class="p">),</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">att</span><span class="p">)</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">names_int</span><span class="p">[</span><span class="n">dtype</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">numpy_map</span><span class="p">:</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">numpy_map</span><span class="p">[</span><span class="n">dtype</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">allowed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2"> not in </span><span class="si">{</span><span class="n">ElemType</span><span class="o">.</span><span class="n">allowed</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="s2">&quot;Compares types.&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">dtype</span>
+
+<div class="viewcode-block" id="ElemType.type_name"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.ElemType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;Returns its fullname.&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">int_names</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="ElemType.get_set_name"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.ElemType.get_set_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_set_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
+        <span class="s2">&quot;Returns the set name.&quot;</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">tt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">dtypes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dtypes</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">d</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="ParType"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.ParType">[docs]</a><span class="k">class</span> <span class="nc">ParType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a parameter type.</span>
+
+<span class="sd">    :param dtype: parameter type</span>
+<span class="sd">    :param optional: is optional or not</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">map_names</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span>
+
+<div class="viewcode-block" id="ParType.type_name"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.ParType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;Returns its full name.&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="n">ParType</span><span class="o">.</span><span class="n">map_names</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ParType[</span><span class="si">{</span><span class="n">ParType</span><span class="o">.</span><span class="n">map_names</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ParType[</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span></div>
+
+<div class="viewcode-block" id="ParType.onnx_type"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.ParType.onnx_type">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">onnx_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="s2">&quot;Returns the onnx corresponding type.&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INT</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOAT</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRING</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unsupported attribute type </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2"> &quot;</span> <span class="sa">f</span><span class="s2">&quot;for parameter </span><span class="si">{</span><span class="bp">cls</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="OptParType"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.OptParType">[docs]</a><span class="k">class</span> <span class="nc">OptParType</span><span class="p">(</span><span class="n">ParType</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines an optional parameter type.</span>
+
+<span class="sd">    :param dtype: parameter type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span>
+
+<div class="viewcode-block" id="OptParType.type_name"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.OptParType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;Returns its full name.&quot;</span>
+        <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;OptParType[</span><span class="si">{</span><span class="n">ParType</span><span class="o">.</span><span class="n">map_names</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">ShapeType</span><span class="p">(</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a shape type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">)),</span> <span class="n">args</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unexpected value for args=</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">, every element should int or str.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+        <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;usual&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">]&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;usual&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">]&quot;</span>
+
+
+<div class="viewcode-block" id="TensorType"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.TensorType">[docs]</a><span class="k">class</span> <span class="nc">TensorType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used to annotate functions.</span>
+
+<span class="sd">    :param dtypes: tuple of :class:`ElemType`</span>
+<span class="sd">    :param shape: tuple of integer or strings or None</span>
+<span class="sd">    :param name: name of the type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">dtypes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ElemType</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">dtypes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ElemType</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+                    <span class="n">dtypes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">set</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">v</span><span class="p">,)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">a</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+                <span class="n">dtypes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="n">a</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">dtypes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="n">dtypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">numpy_map</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dtypes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="n">dtypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ElemType</span><span class="o">.</span><span class="n">numpy_map</span><span class="p">[</span><span class="n">a</span><span class="p">],)</span>
+                <span class="k">continue</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">ElemType</span><span class="p">):</span>
+            <span class="n">dtypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtypes</span><span class="p">,)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtypes</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">dtypes</span> <span class="ow">in</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">allowed</span>
+            <span class="ow">or</span> <span class="n">dtypes</span> <span class="ow">in</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">numpy_map</span>
+        <span class="p">):</span>
+            <span class="n">dtypes</span> <span class="o">=</span> <span class="p">(</span><span class="n">ElemType</span><span class="p">[</span><span class="n">dtypes</span><span class="p">],)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtypes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dtypes must be a tuple not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dtypes</span><span class="p">)</span><span class="si">}</span><span class="s2">, args=</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">check</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">dtypes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">ElemType</span><span class="p">):</span>
+                <span class="n">check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">dt</span> <span class="ow">in</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">allowed</span><span class="p">:</span>
+                <span class="n">check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ElemType</span><span class="p">[</span><span class="n">dt</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ElemType</span><span class="p">[</span><span class="n">dt</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">dtypes</span><span class="si">}</span><span class="s2">, args=</span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="n">dtypes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">check</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">,)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dtypes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="n">dtypes</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">shape</span><span class="p">)))</span>
+        <span class="n">final</span> <span class="o">=</span> <span class="s2">&quot;__&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">final</span><span class="p">:</span>
+            <span class="n">final</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">final</span>
+        <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">final</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">dtypes</span><span class="o">=</span><span class="n">dtypes</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span>
+
+<div class="viewcode-block" id="TensorType.type_name"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.TensorType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;Returns its full name.&quot;</span>
+        <span class="n">set_name</span> <span class="o">=</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">get_set_name</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">set_name</span><span class="p">:</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type_name</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="k">else</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">type_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">set_name</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TensorType[</span><span class="si">{</span><span class="n">set_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">]&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TensorType[</span><span class="si">{</span><span class="n">set_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s2">]&quot;</span>
+        <span class="k">elif</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TensorType[</span><span class="si">{</span><span class="n">set_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">]&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TensorType[</span><span class="si">{</span><span class="n">set_name</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span></div>
+
+    <span class="k">def</span> <span class="nf">_name_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">dt</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">set_names</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to guess element type name for </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">ElemType</span><span class="o">.</span><span class="n">set_names</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="TensorType.issuperset"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.TensorType.issuperset">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">issuperset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tensor_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells if *cls* is a superset of *tensor_type*.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">set1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dtype</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="n">set2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dtype</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tensor_type</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">set1</span><span class="o">.</span><span class="n">issuperset</span><span class="p">(</span><span class="n">set2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="SequenceType"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.SequenceType">[docs]</a><span class="k">class</span> <span class="nc">SequenceType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a sequence of tensors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SequenceType&quot;</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexected value </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">elem_type</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">elem_type</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span>
+                <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">elem_type</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span>
+
+<div class="viewcode-block" id="SequenceType.type_name"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.SequenceType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;Returns its full name.&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SequenceType[</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">elem_type</span><span class="o">.</span><span class="n">type_name</span><span class="p">()</span><span class="si">}</span><span class="s2">], </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SequenceType[</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">elem_type</span><span class="o">.</span><span class="n">type_name</span><span class="p">()</span><span class="si">!r}</span><span class="s2">]&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span></div></div>
+
+
+<div class="viewcode-block" id="TupleType"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.TupleType">[docs]</a><span class="k">class</span> <span class="nc">TupleType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a sequence of tensors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TupleType&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">elem_types</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">elem_types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">a</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">TensorType</span><span class="p">):</span>
+                <span class="n">elem_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">elem_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected value type=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">elem_types</span><span class="p">:</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">final</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">newt</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">final</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="bp">cls</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_types</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">elem_types</span><span class="p">)),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span>
+
+<div class="viewcode-block" id="TupleType.len"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.TupleType.len">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">len</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="s2">&quot;Returns the number of types.&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">elem_types</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TupleType.type_name"><a class="viewcode-back" href="../../../api/npx_annot.html#onnx_array_api.npx.npx_types.TupleType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="s2">&quot;Returns its full name.&quot;</span>
+        <span class="n">dts</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">type_name</span><span class="p">(),</span> <span class="bp">cls</span><span class="o">.</span><span class="n">elem_types</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TupleType[</span><span class="si">{</span><span class="n">dts</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">]&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TupleType[</span><span class="si">{</span><span class="n">dts</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newt</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_make_type</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">class_getitem</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ShapeType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TensorType</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="n">TensorType</span><span class="p">[</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="p">]</span>
+
+    <span class="n">new_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(),</span> <span class="p">{})</span>
+    <span class="n">new_type</span><span class="o">.</span><span class="n">__class_getitem__</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">class_getitem</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_type</span>
+
+
+<span class="n">Bool</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;Bool&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">bool_</span><span class="p">)</span>
+
+<span class="n">BFloat16</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;BFloat16&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">)</span>
+<span class="n">Float16</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;Float16&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+<span class="n">Float32</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;Float32&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">Float64</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;Float32&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">Int8</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;int8&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="n">Int16</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;int16&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="n">Int32</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">Int64</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;int64&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+<span class="n">UInt8</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">UInt16</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;uint16&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
+<span class="n">UInt32</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;uint32&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+<span class="n">UInt64</span> <span class="o">=</span> <span class="n">_make_type</span><span class="p">(</span><span class="s2">&quot;uint64&quot;</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">uint64</span><span class="p">)</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    </body>
+</html>
