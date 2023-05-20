@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Measuring CPU/GPU performance with a vector sum" href="plot_bench_gpu_vector_sum_gpu.html" /><link rel="prev" title="Measuring CPU performance with a parallelized vector sum" href="plot_bench_cpu_vector_sum_parallel.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+    <!-- Generated with Sphinx 6.2.1 and Furo 2022.12.07 -->
         <title>Measuring CPU performance with a parallelized vector sum and AVX - onnx-extended 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
@@ -167,14 +167,23 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/usefulcmd.html">Useful commands on Linux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_cython.html">Build with cython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_pybind11.html">Build with pybind11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_cuda.html">Build with CUDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_ortext.html">Build with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_ort.html">Measuring onnxruntime performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm.html">Measuring performance about Gemm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/ortcy.html">ortcy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/ortops.html">ortops</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/validation.html">validation</a></li>
 </ul>
@@ -182,10 +191,13 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_ort.html">Measuring onnxruntime performance</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm.html">Measuring performance about Gemm</a></li>
 </ul>
 </li>
 </ul>
@@ -224,7 +236,7 @@
         <article role="main">
           <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-bench-cpu-vector-sum-avx-parallel-py"><span class="std std-ref">here</span></a>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-bench-cpu-vector-sum-avx-parallel-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="measuring-cpu-performance-with-a-parallelized-vector-sum-and-avx">
@@ -250,7 +262,7 @@ AVX instructions.</p>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a> <span class="o">=</span> <span class="p">[]</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dims</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1100</span><span class="p">,</span> <span class="mi">1200</span><span class="p">,</span> <span class="mi">1300</span><span class="p">,</span> <span class="mi">1400</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">1700</span><span class="p">,</span> <span class="mi">1800</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]</span>
 <span class="k">if</span> <span class="n">unit_test_going</span><span class="p">():</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dims</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dims</span></a><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dims</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dims</span></a><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
 <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dim</span></a> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dims</span></a><span class="p">):</span>
     <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html#numpy.ones" title="numpy.ones" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">ones</span></a><span class="p">((</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dim</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dim</span></a><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
     <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">diff</span></a> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">vector_sum</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dim</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dim</span></a><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -316,37 +328,37 @@ AVX instructions.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/14 [00:00&lt;?, ?it/s]
-  7%|7         | 1/14 [00:23&lt;05:07, 23.69s/it]
- 14%|#4        | 2/14 [00:29&lt;02:38, 13.18s/it]
- 21%|##1       | 3/14 [00:36&lt;01:53, 10.31s/it]
- 29%|##8       | 4/14 [00:39&lt;01:15,  7.53s/it]
- 36%|###5      | 5/14 [00:44&lt;01:00,  6.69s/it]
- 43%|####2     | 6/14 [00:48&lt;00:46,  5.78s/it]
- 50%|#####     | 7/14 [00:52&lt;00:35,  5.01s/it]
- 57%|#####7    | 8/14 [00:57&lt;00:30,  5.03s/it]
- 64%|######4   | 9/14 [01:02&lt;00:25,  5.04s/it]
- 71%|#######1  | 10/14 [01:07&lt;00:20,  5.15s/it]
- 79%|#######8  | 11/14 [01:11&lt;00:13,  4.55s/it]
- 86%|########5 | 12/14 [01:14&lt;00:08,  4.30s/it]
- 93%|#########2| 13/14 [01:17&lt;00:03,  3.78s/it]
-100%|##########| 14/14 [01:20&lt;00:00,  3.64s/it]
-100%|##########| 14/14 [01:20&lt;00:00,  5.76s/it]
+  7%|7         | 1/14 [00:02&lt;00:31,  2.41s/it]
+ 14%|#4        | 2/14 [00:04&lt;00:28,  2.40s/it]
+ 21%|##1       | 3/14 [00:07&lt;00:26,  2.42s/it]
+ 29%|##8       | 4/14 [00:09&lt;00:23,  2.39s/it]
+ 36%|###5      | 5/14 [00:11&lt;00:20,  2.32s/it]
+ 43%|####2     | 6/14 [00:14&lt;00:18,  2.30s/it]
+ 50%|#####     | 7/14 [00:16&lt;00:16,  2.31s/it]
+ 57%|#####7    | 8/14 [00:18&lt;00:13,  2.30s/it]
+ 64%|######4   | 9/14 [00:20&lt;00:11,  2.31s/it]
+ 71%|#######1  | 10/14 [00:23&lt;00:09,  2.37s/it]
+ 79%|#######8  | 11/14 [00:25&lt;00:06,  2.31s/it]
+ 86%|########5 | 12/14 [00:28&lt;00:04,  2.35s/it]
+ 93%|#########2| 13/14 [00:30&lt;00:02,  2.35s/it]
+100%|##########| 14/14 [00:32&lt;00:00,  2.40s/it]
+100%|##########| 14/14 [00:32&lt;00:00,  2.35s/it]
 direction           avx         avx//          rows        rows//
 dim
-500        1.169482e-10  6.584677e-09  1.294117e-09  4.492941e-09
-700        1.164437e-10  8.354547e-10  1.572818e-09  3.314939e-09
-800        2.354458e-10  2.275965e-09  1.252802e-09  5.260128e-09
-900        1.646671e-10  1.576197e-09  1.442125e-09  2.144507e-09
-1000       2.336233e-10  1.399248e-09  1.777096e-09  3.377276e-09
-1100       2.447942e-10  1.888272e-09  1.238211e-09  1.887679e-09
-1200       2.531974e-10  6.634164e-10  1.330335e-09  2.130782e-09
-1300       2.830117e-10  1.407723e-09  1.426193e-09  1.544761e-09
-1400       2.648387e-10  1.611463e-09  1.474442e-09  1.899156e-09
-1500       2.828198e-10  6.430161e-10  1.199285e-09  9.434222e-10
-1600       2.950141e-10  1.053861e-09  1.338651e-09  1.315141e-09
-1700       2.817763e-10  9.724717e-10  1.217194e-09  1.163081e-09
-1800       2.738288e-10  7.743195e-10  1.427345e-09  9.821519e-10
-2000       3.530068e-10  9.458257e-10  1.412058e-09  1.037141e-09
+500        1.059248e-10  3.865310e-11  1.077842e-09  3.704749e-10
+700        1.006593e-10  3.523020e-11  1.047398e-09  2.730899e-10
+800        9.975837e-11  3.288589e-11  1.035791e-09  2.779642e-10
+900        1.075340e-10  3.163742e-11  1.035512e-09  2.809239e-10
+1000       1.050240e-10  3.188596e-11  1.047334e-09  2.752942e-10
+1100       1.149290e-10  3.253687e-11  1.058407e-09  3.439727e-10
+1200       1.192887e-10  3.193561e-11  1.083497e-09  2.773717e-10
+1300       1.397562e-10  3.373039e-11  1.083241e-09  2.680050e-10
+1400       1.790026e-10  6.056787e-11  1.084998e-09  2.728521e-10
+1500       2.162933e-10  9.248547e-11  1.097359e-09  2.735049e-10
+1600       2.360564e-10  2.849613e-10  1.116801e-09  2.784604e-10
+1700       2.487883e-10  1.460957e-10  1.166250e-09  3.628977e-10
+1800       2.476984e-10  1.279601e-10  1.152840e-09  2.780817e-10
+2000       2.595007e-10  1.555451e-10  1.136534e-09  2.659470e-10
 </pre></div>
 </div>
 </section>
@@ -363,7 +375,7 @@ dim
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_bench_cpu_vector_sum_avx_parallel_001.png" srcset="../_images/sphx_glr_plot_bench_cpu_vector_sum_avx_parallel_001.png" alt="Comparison between two summation, Summation errors, Total time" class = "sphx-glr-single-img"/><p>AVX is faster.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  21.620 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  33.640 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-bench-cpu-vector-sum-avx-parallel-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a59031e01c2baeedc643ffce31bc02a1/plot_bench_cpu_vector_sum_avx_parallel.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_bench_cpu_vector_sum_avx_parallel.py</span></code></a></p>

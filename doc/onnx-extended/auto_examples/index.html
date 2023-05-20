@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="validation" href="../api/validation.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+    <!-- Generated with Sphinx 6.2.1 and Furo 2022.12.07 -->
         <title>Example gallery - onnx-extended 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
@@ -167,14 +167,23 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/usefulcmd.html">Useful commands on Linux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_cython.html">Build with cython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_pybind11.html">Build with pybind11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_cuda.html">Build with CUDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/build_ortext.html">Build with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_ort.html">Measuring onnxruntime performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm.html">Measuring performance about Gemm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/ortcy.html">ortcy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/ortops.html">ortops</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/validation.html">validation</a></li>
 </ul>
@@ -182,10 +191,13 @@
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_ort.html">Measuring onnxruntime performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm.html">Measuring performance about Gemm</a></li>
 </ul>
 </li>
 </ul>
@@ -226,24 +238,33 @@
 <h1>Example gallery<a class="headerlink" href="#example-gallery" title="Permalink to this heading">#</a></h1>
 <p>A couple of examples to illustrate different implementation
 of dot product (see also <a class="reference external" href="https://github.com/sphinx-gallery/sphinx-gallery">sphinx-gallery</a>).</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t..."><img alt="Measuring CPU performance with a vector sum" src="../_images/sphx_glr_plot_bench_cpu_vector_sum_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t..."><img alt="" src="../_images/sphx_glr_plot_bench_cpu_vector_sum_thumb.png" />
 <p><a class="reference internal" href="plot_bench_cpu_vector_sum.html#sphx-glr-auto-examples-plot-bench-cpu-vector-sum-py"><span class="std std-ref">Measuring CPU performance with a vector sum</span></a></p>
   <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a vector sum</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t..."><img alt="Measuring CPU performance with a parallelized vector sum" src="../_images/sphx_glr_plot_bench_cpu_vector_sum_parallel_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t..."><img alt="" src="../_images/sphx_glr_plot_bench_cpu_vector_sum_parallel_thumb.png" />
 <p><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html#sphx-glr-auto-examples-plot-bench-cpu-vector-sum-parallel-py"><span class="std std-ref">Measuring CPU performance with a parallelized vector sum</span></a></p>
   <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a parallelized vector sum</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t..."><img alt="Measuring CPU performance with a parallelized vector sum and AVX" src="../_images/sphx_glr_plot_bench_cpu_vector_sum_avx_parallel_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="The following code measures the performance of the python bindings. The time spent in it is not..."><img alt="" src="../_images/sphx_glr_plot_bench_ort_thumb.png" />
+<p><a class="reference internal" href="plot_bench_ort.html#sphx-glr-auto-examples-plot-bench-ort-py"><span class="std std-ref">Measuring onnxruntime performance</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Measuring onnxruntime performance</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t..."><img alt="" src="../_images/sphx_glr_plot_bench_cpu_vector_sum_avx_parallel_thumb.png" />
 <p><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html#sphx-glr-auto-examples-plot-bench-cpu-vector-sum-avx-parallel-py"><span class="std std-ref">Measuring CPU performance with a parallelized vector sum and AVX</span></a></p>
   <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a parallelized vector sum and AVX</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Processor caches must be taken into account when writing an algorithm, see `Memory part 2: CPU ..."><img alt="Measuring CPU performance" src="../_images/sphx_glr_plot_bench_cpu_thumb.png" />
-<p><a class="reference internal" href="plot_bench_cpu.html#sphx-glr-auto-examples-plot-bench-cpu-py"><span class="std std-ref">Measuring CPU performance</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Measuring CPU performance</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="*onnx-extended* includes an implementation of operator Conv in language C++ must faster than th..."><img alt="Using C implementation of operator Conv" src="../_images/sphx_glr_plot_conv_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="onnx-extended includes an implementation of operator Conv in language C++ must faster than the ..."><img alt="" src="../_images/sphx_glr_plot_conv_thumb.png" />
 <p><a class="reference internal" href="plot_conv.html#sphx-glr-auto-examples-plot-conv-py"><span class="std std-ref">Using C implementation of operator Conv</span></a></p>
   <div class="sphx-glr-thumbnail-title">Using C implementation of operator Conv</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The examples compares multiple versions of a vector sum, CPU, GPU."><img alt="Measuring CPU/GPU performance with a vector sum" src="../_images/sphx_glr_plot_bench_gpu_vector_sum_gpu_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="Processor caches must be taken into account when writing an algorithm, see Memory part 2: CPU c..."><img alt="" src="../_images/sphx_glr_plot_bench_cpu_thumb.png" />
+<p><a class="reference internal" href="plot_bench_cpu.html#sphx-glr-auto-examples-plot-bench-cpu-py"><span class="std std-ref">Measuring CPU performance</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Measuring CPU performance</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The examples compares multiple versions of a vector sum, CPU, GPU."><img alt="" src="../_images/sphx_glr_plot_bench_gpu_vector_sum_gpu_thumb.png" />
 <p><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html#sphx-glr-auto-examples-plot-bench-gpu-vector-sum-gpu-py"><span class="std std-ref">Measuring CPU/GPU performance with a vector sum</span></a></p>
   <div class="sphx-glr-thumbnail-title">Measuring CPU/GPU performance with a vector sum</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An example with Conv. The floats followed the IEEE standard Single-precision floating-point for..."><img alt="" src="../_images/sphx_glr_plot_conv_denorm_thumb.png" />
+<p><a class="reference internal" href="plot_conv_denorm.html#sphx-glr-auto-examples-plot-conv-denorm-py"><span class="std std-ref">How float format has an impact on speed computation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">How float format has an impact on speed computation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Differents types, differents backend, differents"><img alt="" src="../_images/sphx_glr_plot_bench_gemm_thumb.png" />
+<p><a class="reference internal" href="plot_bench_gemm.html#sphx-glr-auto-examples-plot-bench-gemm-py"><span class="std std-ref">Measuring performance about Gemm</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Measuring performance about Gemm</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 <div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">

@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_conv.py>`
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_conv.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -143,9 +143,9 @@ Time measurement
 
  .. code-block:: none
 
-    ReferenceEvaluator: 0.005605475768003089s
-    CReferenceEvaluator: 3.3326793998639914e-05s
-    speedup is 168.19726998738167
+    ReferenceEvaluator: 0.0012023031539974906s
+    CReferenceEvaluator: 8.0376197998703e-05s
+    speedup is 14.958447698868412
 
 
 
@@ -176,8 +176,8 @@ Let's add :epkg:`onnxruntime` as well.
 
  .. code-block:: none
 
-    InferenceSession: 2.6541995996012697e-05s
-    speedup is 211.19269887785296
+    InferenceSession: 2.1825000003445895e-05s
+    speedup is 55.088346108025746
 
 
 
@@ -187,7 +187,7 @@ Let's add :epkg:`onnxruntime` as well.
 Plotting
 ++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-119
+.. GENERATED FROM PYTHON SOURCE LINES 98-118
 
 .. code-block:: default
 
@@ -204,13 +204,12 @@ Plotting
         t2 = measure_time(lambda: sess2.run(None, feeds))
         obs = dict(size=i, onnx=t1["average"], onnx_extended=t2["average"])
         data.append(obs)
-        if unit_test_going() and len(data) >= 3:
+        if unit_test_going() and len(data) >= 2:
             break
 
     df = DataFrame(data)
     df
 
-    print(df)
 
 
 
@@ -220,21 +219,72 @@ Plotting
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|##5       | 1/4 [00:00<00:00,  5.53it/s]     50%|#####     | 2/4 [00:00<00:00,  2.25it/s]     75%|#######5  | 3/4 [00:02<00:00,  1.23it/s]    100%|##########| 4/4 [00:04<00:00,  1.40s/it]    100%|##########| 4/4 [00:04<00:00,  1.09s/it]
-       size      onnx  onnx_extended
-    0    16  0.000338       0.000021
-    1    32  0.001225       0.000033
-    2    48  0.002464       0.000028
-    3    64  0.004547       0.000037
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|##5       | 1/4 [00:00<00:00,  9.62it/s]     50%|#####     | 2/4 [00:00<00:00,  7.43it/s]     75%|#######5  | 3/4 [00:00<00:00,  7.76it/s]    100%|##########| 4/4 [00:00<00:00,  4.05it/s]    100%|##########| 4/4 [00:00<00:00,  4.94it/s]
 
 
+.. raw:: html
 
+    <div class="output_subarea output_html rendered_html output_result">
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-121
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>size</th>
+          <th>onnx</th>
+          <th>onnx_extended</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>16</td>
+          <td>0.000192</td>
+          <td>0.000015</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>32</td>
+          <td>0.000292</td>
+          <td>0.000018</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>48</td>
+          <td>0.000225</td>
+          <td>0.000017</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>64</td>
+          <td>0.000776</td>
+          <td>0.000076</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 119-120
 
 Finally.
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-133
+.. GENERATED FROM PYTHON SOURCE LINES 120-132
 
 .. code-block:: default
 
@@ -265,7 +315,7 @@ Finally.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.896 seconds)
+   **Total running time of the script:** ( 0 minutes  9.729 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_conv.py:
@@ -273,6 +323,8 @@ Finally.
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

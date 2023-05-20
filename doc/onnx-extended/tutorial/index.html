@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Useful commands on Linux" href="usefulcmd.html" /><link rel="prev" title="onnx-extended: more operator for onnx" href="../index.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+    <!-- Generated with Sphinx 6.2.1 and Furo 2022.12.07 -->
         <title>Tutorial - onnx-extended 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
@@ -167,14 +167,23 @@
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Tutorial</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="usefulcmd.html">Useful commands on Linux</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_cython.html">Build with cython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_pybind11.html">Build with pybind11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_cuda.html">Build with CUDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_ortext.html">Build with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_ort.html">Measuring onnxruntime performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm.html">Measuring performance about Gemm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/ortcy.html">ortcy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/ortops.html">ortops</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/validation.html">validation</a></li>
 </ul>
@@ -182,10 +191,13 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_ort.html">Measuring onnxruntime performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm.html">Measuring performance about Gemm</a></li>
 </ul>
 </li>
 </ul>
@@ -240,6 +252,32 @@
 </ul>
 </div>
 </section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Permalink to this heading">#</a></h2>
+<p>The packages relies on <a class="reference external" href="https://cmake.org/">cmake</a> to build the C++ extensions.
+whether it wrapped with <a class="reference external" href="https://github.com/pybind/pybind11">pybind11</a> or <a class="reference external" href="https://cython.org/">cython</a>.
+Both options are available and can be linked with <a class="reference external" href="https://www.openmp.org/">openmp</a>,
+<a class="reference external" href="https://eigen.tuxfamily.org/">eigen</a>, <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>, <a class="reference external" href="https://developer.nvidia.com/">CUDA</a>.
+<em>cmake</em> is called from <a class="reference external" href="https://github.com/sdpython/onnx-extended/blob/main/setup.py#L198">setup.py</a>
+with two instructions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build_ext</span> <span class="pre">--inplace</span></code>, the legacy way</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code>, the new way</p></li>
+</ul>
+<p>By default, <em>cmake</em> builds with CUDA if it is available. It can be disabled:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build_ext</span> <span class="pre">--inplace</span> <span class="pre">--with-cuda=0</span></code>, the legacy way</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">--config-settings=&quot;--with-cuda=0&quot;</span></code>, the new way</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_cython.html">Build with cython</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_pybind11.html">Build with pybind11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_cuda.html">Build with CUDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_ortext.html">Build with onnxruntime</a></li>
+</ul>
+</div>
+</section>
 <section id="validation-experiments">
 <h2>Validation, Experiments<a class="headerlink" href="#validation-experiments" title="Permalink to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
@@ -249,6 +287,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_bench_ort.html">Measuring onnxruntime performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_bench_gemm.html">Measuring performance about Gemm</a></li>
+</ul>
+</div>
+</section>
+<section id="technical-details-in-practice">
+<h2>Technical details in practice<a class="headerlink" href="#technical-details-in-practice" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
 </ul>
 </div>
 </section>
@@ -312,7 +360,9 @@
 <li><a class="reference internal" href="#">Tutorial</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#operators">Operators</a></li>
+<li><a class="reference internal" href="#build">Build</a></li>
 <li><a class="reference internal" href="#validation-experiments">Validation, Experiments</a></li>
+<li><a class="reference internal" href="#technical-details-in-practice">Technical details in practice</a></li>
 </ul>
 </li>
 </ul>
