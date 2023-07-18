@@ -3,12 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="epkg" href="epkg.html" /><link rel="prev" title="API" href="index.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="docassert" href="docassert.html" /><link rel="prev" title="blocreflist, exreflist, mathdeflist" href="blocdefs_list.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>collapse - sphinx-runpython 0.1 documentation</title>
+        <title>collapse - sphinx-runpython 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
@@ -128,7 +129,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">sphinx-runpython 0.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">sphinx-runpython 0.2.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -139,7 +140,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -154,7 +155,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">sphinx-runpython 0.1 documentation</span>
+  <span class="sidebar-brand-text">sphinx-runpython 0.2.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -164,8 +165,12 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blocdefs.html">blocref, exref, mathdef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blocdefs_list.html">blocreflist, exreflist, mathdeflist</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">collapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docassert.html">docassert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="epkg.html">epkg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gdot.html">gdot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="runpython.html">runpython</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html">helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_object_helper.html">import_object_helper</a></li>
@@ -203,7 +208,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -211,12 +216,15 @@
         <article role="main">
           <section id="collapse">
 <h1>collapse<a class="headerlink" href="#collapse" title="Permalink to this heading">#</a></h1>
-<p>Location: <code class="xref py py-func docutils literal notranslate"><span class="pre">collapse</span> <span class="pre">setup</span></code>.</p>
-<p>This extension adds a button to hide or show a limited part of the
-documentation.</p>
+<p>This directive hides or unhides a part of the documentation, usually
+snippets of code. The user can click on a button to fold or unfold
+a section.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
 <p>In <em>conf.py</em>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span> <span class="o">...</span>
-    <span class="s1">&#39;sphinx_runpython.collapse&#39;</span><span class="p">]</span>
+    <span class="s1">&#39;sphinx_runpython.collapse&#39;</span><span class="p">,</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <aside class="sidebar">
@@ -228,41 +236,78 @@ documentation.</p>
 </div>
 </aside>
 <script>
-function myFunction140353118892480() {
-    var x = document.getElementById("collapse140353118892480");
-    var b = document.getElementById("colidb140353118892480");
+function myFunction140116822531280() {
+    var x = document.getElementById("collapse140116822531280");
+    var b = document.getElementById("colidb140116822531280");
     if (x.style.display === "none") { 
         x.style.display = "block"; b.innerText = 'hide';
     }
     else { x.style.display = "none"; b.innerText = 'unhide'; }
 }
 </script>
-<p style="margin-bottom:10px;"><button id="colidb140353118892480" onclick="myFunction140353118892480()">hide</button></p>
-<div id="collapse140353118892480""><p>Show or hide a part of the documentation.</p>
+<p style="margin-bottom:10px;"><button id="colidb140116822531280" onclick="myFunction140116822531280()">hide</button></p>
+<div id="collapse140116822531280""><p>Show or hide a part of the documentation.</p>
 </div></section>
+<section id="directive">
+<h2>Directive<a class="headerlink" href="#directive" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="sphinx_runpython.collapse.sphinx_collapse_extension.CollapseDirective">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sphinx_runpython.collapse.sphinx_collapse_extension.</span></span><span class="sig-name descname"><span class="pre">CollapseDirective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arguments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_machine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sphinx_runpython/collapse/sphinx_collapse_extension.html#CollapseDirective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sphinx_runpython.collapse.sphinx_collapse_extension.CollapseDirective" title="Permalink to this definition">#</a></dt>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">collapse</span></code> adds hide/unhide button
+for a part of HTML page. It has no effect
+in other formats.</p>
+<ul class="simple">
+<li><p><em>legend</em>: legend for the button, if not precise,
+it will be hide / unhide. Example: <code class="docutils literal notranslate"><span class="pre">:legend:</span> <span class="pre">hide/unhide</span></code>.</p></li>
+<li><p><em>hide</em>: the text is shown by default unless this option is set up.</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">collapse</span><span class="p">::</span>
+    <span class="p">:</span><span class="n">legend</span><span class="p">:</span> <span class="n">hide</span><span class="o">/</span><span class="n">unhide</span>
+
+    <span class="n">some</span> <span class="n">text</span> <span class="n">to</span> <span class="n">hide</span> <span class="ow">or</span> <span class="n">unhide</span>
+</pre></div>
+</div>
+<p>Which gives:</p>
+<script>
+function myFunction140116822706256() {
+    var x = document.getElementById("collapse140116822706256");
+    var b = document.getElementById("colidb140116822706256");
+    if (x.style.display === "none") { 
+        x.style.display = "block"; b.innerText = 'hide';
+    }
+    else { x.style.display = "none"; b.innerText = 'unhide'; }
+}
+</script>
+<p style="margin-bottom:10px;"><button id="colidb140116822706256" onclick="myFunction140116822706256()">hide</button></p>
+<div id="collapse140116822706256""><p>some text to hide or unhide</p>
+</div></dd></dl>
+
+</section>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="epkg.html">
+          <a class="next-page" href="docassert.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">epkg</div>
+                <div class="title">docassert</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="index.html">
+          <a class="prev-page" href="blocdefs_list.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">API</div>
+                <div class="title">blocreflist, exreflist, mathdeflist</div>
                 
               </div>
             </a>
@@ -284,8 +329,31 @@ function myFunction140353118892480() {
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">collapse</a><ul>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#directive">Directive</a><ul>
+<li><a class="reference internal" href="#sphinx_runpython.collapse.sphinx_collapse_extension.CollapseDirective"><code class="docutils literal notranslate"><span class="pre">CollapseDirective</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

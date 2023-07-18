@@ -3,12 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="helpers" href="helpers.html" /><link rel="prev" title="epkg" href="epkg.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="helpers" href="helpers.html" /><link rel="prev" title="gdot" href="gdot.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>runpython - sphinx-runpython 0.1 documentation</title>
+        <title>runpython - sphinx-runpython 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
@@ -128,7 +129,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">sphinx-runpython 0.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">sphinx-runpython 0.2.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -154,7 +155,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">sphinx-runpython 0.1 documentation</span>
+  <span class="sidebar-brand-text">sphinx-runpython 0.2.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -164,8 +165,12 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blocdefs.html">blocref, exref, mathdef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blocdefs_list.html">blocreflist, exreflist, mathdeflist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="collapse.html">collapse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docassert.html">docassert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="epkg.html">epkg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gdot.html">gdot</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">runpython</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html">helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_object_helper.html">import_object_helper</a></li>
@@ -211,20 +216,21 @@
         <article role="main">
           <section id="runpython">
 <h1>runpython<a class="headerlink" href="#runpython" title="Permalink to this heading">#</a></h1>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>Location: <code class="xref py py-class docutils literal notranslate"><span class="pre">RunPythonDirective</span></code>.</p>
+<p>This directive executes snippets of code inserted and add
+the output to the documentation, as plain text or even RST format.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
 <p>In <em>conf.py</em>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span> <span class="o">...</span>
-    <span class="s1">&#39;sphinx_runpython.runpython.sphinxext_runpython_extension&#39;</span><span class="p">]</span>
+    <span class="s1">&#39;sphinx_runpython.runpython&#39;</span><span class="p">,</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <p>Documentation means many examples which needs to be updated when a change
 happen unless the documentation runs the example itself and update its output.
 That’s what this directive does. It adds as raw text whatever comes out
 throught the standard output.</p>
-<aside class="sidebar">
-<p class="sidebar-title">runpython</p>
+<p>One example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">runpython</span><span class="p">::</span>
     <span class="p">:</span><span class="n">showcode</span><span class="p">:</span>
 
@@ -233,7 +239,7 @@ throught the standard output.</p>
         <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-</aside>
+<p>Which gives:</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)):</span>
@@ -241,23 +247,24 @@ throught the standard output.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">0</span> <span class="n">sphinx_runpython</span>
-    <span class="mi">1</span> <span class="o">.</span><span class="n">git</span>
-    <span class="mi">2</span> <span class="n">setup</span><span class="o">.</span><span class="n">cfg</span>
-    <span class="mi">3</span> <span class="o">.</span><span class="n">gitignore</span>
-    <span class="mi">4</span> <span class="n">MANIFEST</span><span class="o">.</span><span class="ow">in</span>
-    <span class="mi">5</span> <span class="n">pyproject</span><span class="o">.</span><span class="n">toml</span>
-    <span class="mi">6</span> <span class="n">requirements</span><span class="o">-</span><span class="n">dev</span><span class="o">.</span><span class="n">txt</span>
-    <span class="mi">7</span> <span class="n">dist</span>
-    <span class="mi">8</span> <span class="n">README</span><span class="o">.</span><span class="n">rst</span>
-    <span class="mi">9</span> <span class="n">LICENSE</span>
-    <span class="mi">10</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
-    <span class="mi">11</span> <span class="n">CHANGELOGS</span><span class="o">.</span><span class="n">rst</span>
-    <span class="mi">12</span> <span class="n">_doc</span>
-    <span class="mi">13</span> <span class="n">_unittests</span>
-    <span class="mi">14</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">0</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+    <span class="mi">1</span> <span class="n">setup</span><span class="o">.</span><span class="n">cfg</span>
+    <span class="mi">2</span> <span class="n">doc</span><span class="o">.</span><span class="n">txt</span>
+    <span class="mi">3</span> <span class="n">sphinx_runpython</span>
+    <span class="mi">4</span> <span class="n">README</span><span class="o">.</span><span class="n">rst</span>
+    <span class="mi">5</span> <span class="o">.</span><span class="n">github</span>
+    <span class="mi">6</span> <span class="o">.</span><span class="n">gitignore</span>
+    <span class="mi">7</span> <span class="n">CHANGELOGS</span><span class="o">.</span><span class="n">rst</span>
+    <span class="mi">8</span> <span class="n">MANIFEST</span><span class="o">.</span><span class="ow">in</span>
+    <span class="mi">9</span> <span class="o">.</span><span class="n">git</span>
+    <span class="mi">10</span> <span class="n">LICENSE</span>
+    <span class="mi">11</span> <span class="n">_doc</span>
+    <span class="mi">12</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span>
+    <span class="mi">13</span> <span class="n">pyproject</span><span class="o">.</span><span class="n">toml</span>
+    <span class="mi">14</span> <span class="n">_unittests</span>
     <span class="mi">15</span> <span class="n">azure</span><span class="o">-</span><span class="n">pipelines</span><span class="o">.</span><span class="n">yml</span>
-    <span class="mi">16</span> <span class="o">.</span><span class="n">github</span>
+    <span class="mi">16</span> <span class="n">requirements</span><span class="o">-</span><span class="n">dev</span><span class="o">.</span><span class="n">txt</span>
+    <span class="mi">17</span> <span class="n">dist</span>
 </pre></div>
 </div>
 <p>The output can also be compiled as RST format and the code can be hidden.
@@ -275,28 +282,30 @@ modules.</p>
 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mod</span> <span class="ow">in</span> <span class="p">[</span><span class="n">sphinx</span><span class="p">,</span> <span class="n">pandas</span><span class="p">,</span> <span class="n">numpy</span><span class="p">]:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* version of *</span><span class="si">{0}</span><span class="s2">*: *</span><span class="si">{1}</span><span class="s2">*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">))</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span>
+        <span class="p">))</span>
 </pre></div>
 </div>
 </aside>
 <ul class="simple">
-<li><p>file <strong>0</strong>: <em>sphinx_runpython</em></p></li>
-<li><p>file <strong>1</strong>: <em>.git</em></p></li>
-<li><p>file <strong>2</strong>: <em>setup.cfg</em></p></li>
-<li><p>file <strong>3</strong>: <em>.gitignore</em></p></li>
-<li><p>file <strong>4</strong>: <em>MANIFEST.in</em></p></li>
-<li><p>file <strong>5</strong>: <em>pyproject.toml</em></p></li>
-<li><p>file <strong>6</strong>: <em>requirements-dev.txt</em></p></li>
-<li><p>file <strong>7</strong>: <em>dist</em></p></li>
-<li><p>file <strong>8</strong>: <em>README.rst</em></p></li>
-<li><p>file <strong>9</strong>: <em>LICENSE</em></p></li>
-<li><p>file <strong>10</strong>: <em>requirements.txt</em></p></li>
-<li><p>file <strong>11</strong>: <em>CHANGELOGS.rst</em></p></li>
-<li><p>file <strong>12</strong>: <em>_doc</em></p></li>
-<li><p>file <strong>13</strong>: <em>_unittests</em></p></li>
-<li><p>file <strong>14</strong>: <em>setup.py</em></p></li>
+<li><p>file <strong>0</strong>: <em>requirements.txt</em></p></li>
+<li><p>file <strong>1</strong>: <em>setup.cfg</em></p></li>
+<li><p>file <strong>2</strong>: <em>doc.txt</em></p></li>
+<li><p>file <strong>3</strong>: <em>sphinx_runpython</em></p></li>
+<li><p>file <strong>4</strong>: <em>README.rst</em></p></li>
+<li><p>file <strong>5</strong>: <em>.github</em></p></li>
+<li><p>file <strong>6</strong>: <em>.gitignore</em></p></li>
+<li><p>file <strong>7</strong>: <em>CHANGELOGS.rst</em></p></li>
+<li><p>file <strong>8</strong>: <em>MANIFEST.in</em></p></li>
+<li><p>file <strong>9</strong>: <em>.git</em></p></li>
+<li><p>file <strong>10</strong>: <em>LICENSE</em></p></li>
+<li><p>file <strong>11</strong>: <em>_doc</em></p></li>
+<li><p>file <strong>12</strong>: <em>setup.py</em></p></li>
+<li><p>file <strong>13</strong>: <em>pyproject.toml</em></p></li>
+<li><p>file <strong>14</strong>: <em>_unittests</em></p></li>
 <li><p>file <strong>15</strong>: <em>azure-pipelines.yml</em></p></li>
-<li><p>file <strong>16</strong>: <em>.github</em></p></li>
+<li><p>file <strong>16</strong>: <em>requirements-dev.txt</em></p></li>
+<li><p>file <strong>17</strong>: <em>dist</em></p></li>
 </ul>
 <p>If the code throws an exception (except a syntax error),
 it can be caught by adding the option <code class="docutils literal notranslate"><span class="pre">:exception:</span></code>.
@@ -314,7 +323,7 @@ The directive displays the traceback.</p>
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">6</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140353119102272</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140116820971072</span>
     <span class="ne">FileNotFoundError</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">2</span><span class="p">]</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span><span class="p">:</span> <span class="s1">&#39;not existing&#39;</span>
 </pre></div>
 </div>
@@ -341,14 +350,14 @@ directory.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__WD__</span><span class="p">,</span> <span class="s2">&quot;oo.png&quot;</span><span class="p">))</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;.. image:: oo.png</span><span class="se">\\\\</span><span class="s2">n    :width: 202px&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;.. image:: oo.png&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 </div>
 </aside>
 <p>The image needs to be save in the same folder than
 the <em>rst</em> file.</p>
-<img alt="api/oo.png\n:width:201px" src="api/oo.png\n:width:201px" />
+<a class="reference internal image-reference" href="../_images/oo.png"><img alt="../_images/oo.png" src="../_images/oo.png" style="width: 201px;" /></a>
 <p>Option <code class="docutils literal notranslate"><span class="pre">:toggle:</span></code> can hide the code or the output or both
 but let the user unhide it by clicking on a button.</p>
 <aside class="sidebar">
@@ -368,17 +377,17 @@ but let the user unhide it by clicking on a button.</p>
 </pre></div>
 </div>
 <script>
-function myFunction140353137915744() {
-    var x = document.getElementById("collapse140353137915744");
-    var b = document.getElementById("colidb140353137915744");
+function myFunction140116818890704() {
+    var x = document.getElementById("collapse140116818890704");
+    var b = document.getElementById("colidb140116818890704");
     if (x.style.display === "none") { 
         x.style.display = "block"; b.innerText = 'hide output';
     }
     else { x.style.display = "none"; b.innerText = 'unhide output'; }
 }
 </script>
-<p style="margin-bottom:10px;"><button id="colidb140353137915744" onclick="myFunction140353137915744()">unhide output</button></p>
-<div id="collapse140353137915744" style="display:none;"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">i</span><span class="o">=</span> <span class="mi">0</span>
+<p style="margin-bottom:10px;"><button id="colidb140116818890704" onclick="myFunction140116818890704()">unhide output</button></p>
+<div id="collapse140116818890704" style="display:none;"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">i</span><span class="o">=</span> <span class="mi">0</span>
     <span class="n">i</span><span class="o">=</span> <span class="mi">1</span>
     <span class="n">i</span><span class="o">=</span> <span class="mi">2</span>
     <span class="n">i</span><span class="o">=</span> <span class="mi">3</span>
@@ -429,7 +438,7 @@ some context from one execution to the next one.</p>
 </pre></div>
 </div>
 <p id="index-0"><a class="reference external" href="https://pypi.org/project/sphinx-autorun/">sphinx-autorun</a> offers a similar
-service except it cannot produce compile <a href="#id1"><span class="problematic" id="id2">:epkg:`RST`</span></a> content,
+service except it cannot produce compile <a class="reference external" href="https://fr.wikipedia.org/wiki/ReStructuredText">RST</a> content,
 hide the source and a couple of other options.</p>
 </section>
 <section id="interesting-functions">
@@ -479,7 +488,7 @@ waiting for ever (<em>timeout</em> is in seconds)</p></li>
 <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">run_cmd</span><span class="p">(</span><span class="s2">&quot;python setup.py install&quot;</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If you are using this function to run <a href="#id3"><span class="problematic" id="id4">:epkg:`git`</span></a> function, parameter
+<p>If you are using this function to run <a class="reference external" href="https://git-scm.com/">git</a> function, parameter
 <code class="docutils literal notranslate"><span class="pre">shell</span></code> must be True.
 The function catches <em>SystemExit</em> exception.
 See <a class="reference external" href="http://stackoverflow.com/questions/4417546/constantly-print-subprocess-output-while-process-is-running/4417735">Constantly print Subprocess output while process is running</a>.
@@ -487,6 +496,152 @@ If <em>wait</em> is False, the function returns the started process.
 <code class="docutils literal notranslate"><span class="pre">__exit__</span></code> should be called if wait if False.
 Parameter <em>prefix_log</em> was added.</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sphinx_runpython.runpython.sphinx_runpython_extension.remove_extra_spaces_and_pep8">
+<span class="sig-prename descclassname"><span class="pre">sphinx_runpython.runpython.sphinx_runpython_extension.</span></span><span class="sig-name descname"><span class="pre">remove_extra_spaces_and_pep8</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_pep8</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggressive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sphinx_runpython/runpython/sphinx_runpython_extension.html#remove_extra_spaces_and_pep8"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sphinx_runpython.runpython.sphinx_runpython_extension.remove_extra_spaces_and_pep8" title="Permalink to this definition">#</a></dt>
+<dd><p>Removes extra spaces in a filename, replaces the file in place.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – file name or string (but it assumes it is python).</p></li>
+<li><p><strong>apply_pep8</strong> – if True, calls <a class="reference external" href="https://pypi.org/project/autopep8/">autopep8</a> on the file</p></li>
+<li><p><strong>aggressive</strong> – more aggressive</p></li>
+<li><p><strong>is_string</strong> – force <em>filename</em> to be a string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>number of removed extra spaces</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="directive">
+<h2>Directive<a class="headerlink" href="#directive" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="sphinx_runpython.runpython.sphinx_runpython_extension.RunPythonDirective">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sphinx_runpython.runpython.sphinx_runpython_extension.</span></span><span class="sig-name descname"><span class="pre">RunPythonDirective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arguments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_machine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sphinx_runpython/runpython/sphinx_runpython_extension.html#RunPythonDirective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sphinx_runpython.runpython.sphinx_runpython_extension.RunPythonDirective" title="Permalink to this definition">#</a></dt>
+<dd><p>Extracts script to run described by <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">runpython::</span></code>
+and modifies the documentation.</p>
+<p>The following code prints the version of Python
+on the standard output. It is added to the documentation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">runpython</span><span class="p">::</span>
+    <span class="p">:</span><span class="n">showcode</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sys.version_info=&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If give the following results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">(</span><span class="n">major</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">micro</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">releaselevel</span><span class="o">=</span><span class="s1">&#39;final&#39;</span><span class="p">,</span> <span class="n">serial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Options <em>showcode</em> can be used to display the code.
+The option <em>rst</em> will assume the output is in RST format and must be
+interpreted. <em>showout</em> will complement the RST output with the raw format.</p>
+<p>The directive has a couple of options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">:assert:</span></code> condition to validate at the end of the execution
+to check it went right</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:current:</span></code> runs the script in the source file directory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:exception:</span></code> the code throws an exception but it is expected.
+The error is displayed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:indent:&lt;int&gt;</span></code> to indent the output</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:language:</span></code>: changes <code class="docutils literal notranslate"><span class="pre">::</span></code> into <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">code-block::</span> <span class="pre">language</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:linenos:</span></code> to show line numbers</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:nopep8:</span></code> if present, leaves the code as it is and does
+not apply pep8 by default,
+see <a class="reference internal" href="#sphinx_runpython.runpython.sphinx_runpython_extension.remove_extra_spaces_and_pep8" title="sphinx_runpython.runpython.sphinx_runpython_extension.remove_extra_spaces_and_pep8"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove_extra_spaces_and_pep8()</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:numpy_precision:</span> <span class="pre">&lt;precision&gt;</span></code>, run <code class="docutils literal notranslate"><span class="pre">numpy.set_printoptions(precision=...)</span></code>,
+precision is 3 by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:process:</span></code> run the script in an another process</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:restore:</span></code> restore the local context stored in <a class="reference external" href="https://www.sphinx-doc.org/en/master/">sphinx</a> application
+by the previous call to <em>runpython</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:rst:</span></code> to interpret the output, otherwise, it is considered as raw text</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:setsysvar:</span></code> adds a member to <em>sys</em> module,
+the module can act differently based on that information,
+if the value is left empty, <em>sys.enable_disabled_documented_pieces_of_code</em>
+will be be set up to <em>True</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:showcode:</span></code> to show the code before its output</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:showout</span></code> if <em>:rst:</em> is set up, this flag adds the raw rst
+output to check what is happening</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:sin:&lt;text_for_in&gt;</span></code> which text to display before the code (by default <em>In</em>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:sout:&lt;text_for_in&gt;</span></code> which text to display before the output (by default <em>Out</em>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:sphinx:</span></code> by default, function <a class="reference external" href="http://sphinx-doc.org/extdev/markupapi.html?highlight=nested_parse_with_titles">nested_parse_with_titles</a> is
+used to parse the output of the script, if this option is set to false,
+<a class="reference external" href="http://code.nabla.net/doc/docutils/api/docutils/core/docutils.core.publish_doctree.html">public_doctree</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:store:</span></code> stores the local context in <a class="reference external" href="https://www.sphinx-doc.org/en/master/">sphinx</a>
+application to restore it later by another call to <em>runpython</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:toggle:</span></code> add a button to hide or show the code, it takes the values
+<code class="docutils literal notranslate"><span class="pre">code</span></code> or <code class="docutils literal notranslate"><span class="pre">out</span></code> or <code class="docutils literal notranslate"><span class="pre">both</span></code>. The direction then hides the given section
+but adds a button to show it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:warningout:</span></code> name of warnings to disable (ex: <code class="docutils literal notranslate"><span class="pre">ImportWarning</span></code>),
+separated by spaces</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">:store_in_file:</span></code> the directive store the script in a file,</dt><dd><p>then executes this file (only if <code class="docutils literal notranslate"><span class="pre">:process:</span></code> is enabled),
+this trick is needed when the script to executes relies on
+function such <a class="reference external" href="https://docs.python.org/3/library/inspect.html#inspect.getsource">inspect.getsource</a> which requires
+the script to be stored somewhere in order to retrieve it.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Option <em>rst</em> can be used the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">runpython</span><span class="p">::</span>
+    <span class="p">:</span><span class="n">rst</span><span class="p">:</span>
+
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;**line**&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Which displays interpreted <a class="reference external" href="https://fr.wikipedia.org/wiki/ReStructuredText">RST</a>:</p>
+<p><strong>line</strong> <em>0</em></p>
+<p><strong>line</strong> <em>1</em></p>
+<p><strong>line</strong> <em>2</em></p>
+<p><strong>line</strong> <em>3</em></p>
+<p><strong>line</strong> <em>4</em></p>
+<p><strong>line</strong> <em>5</em></p>
+<p><strong>line</strong> <em>6</em></p>
+<p><strong>line</strong> <em>7</em></p>
+<p><strong>line</strong> <em>8</em></p>
+<p><strong>line</strong> <em>9</em></p>
+<p>If the directive produces RST text to be included later in the documentation,
+it is able to interpret
+<a class="reference external" href="http://docutils.sourceforge.net/docs/ref/rst/directives.html">docutils directives</a>
+and <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html">Sphinx directives</a>
+with function <a class="reference external" href="http://sphinx-doc.org/extdev/markupapi.html?highlight=nested_parse_with_titles">nested_parse_with_titles</a>. However, if this text contains
+titles, it is better to use option <code class="docutils literal notranslate"><span class="pre">:sphinx:</span> <span class="pre">false</span></code>.
+Unless <em>process</em> option is enabled, global variables cannot be used.
+<a class="reference external" href="https://pypi.org/project/sphinx-autorun/">sphinx-autorun</a> offers a similar
+service except it cannot produce compile <a class="reference external" href="https://fr.wikipedia.org/wiki/ReStructuredText">RST</a> content,
+hide the source and a couple of other options.
+Option <em>toggle</em> can hide or unhide the piece of code
+or/and its output.
+The directive also adds local variables such as
+<code class="docutils literal notranslate"><span class="pre">__WD__</span></code> which contains the path to the documentation
+which contains the directive. It is useful to load additional
+files <code class="docutils literal notranslate"><span class="pre">os.path.join(__WD__,</span> <span class="pre">...)</span></code>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hide or unhide this output.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<script>
+function myFunction140116822104208() {
+    var x = document.getElementById("collapse140116822104208");
+    var b = document.getElementById("colidb140116822104208");
+    if (x.style.display === "none") { 
+        x.style.display = "block"; b.innerText = 'hide output';
+    }
+    else { x.style.display = "none"; b.innerText = 'unhide output'; }
+}
+</script>
+<p style="margin-bottom:10px;"><button id="colidb140116822104208" onclick="myFunction140116822104208()">unhide output</button></p>
+<div id="collapse140116822104208" style="display:none;"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Hide</span> <span class="ow">or</span> <span class="n">unhide</span> <span class="n">this</span> <span class="n">output</span><span class="o">.</span>
+</pre></div>
+</div>
+</div></dd></dl>
 
 </section>
 </section>
@@ -505,14 +660,14 @@ Parameter <em>prefix_log</em> was added.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="epkg.html">
+          <a class="prev-page" href="gdot.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">epkg</div>
+                <div class="title">gdot</div>
                 
               </div>
             </a>
@@ -547,9 +702,14 @@ Parameter <em>prefix_log</em> was added.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">runpython</a><ul>
-<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
 <li><a class="reference internal" href="#interesting-functions">Interesting functions</a><ul>
 <li><a class="reference internal" href="#sphinx_runpython.runpython.run_cmd"><code class="docutils literal notranslate"><span class="pre">run_cmd()</span></code></a></li>
+<li><a class="reference internal" href="#sphinx_runpython.runpython.sphinx_runpython_extension.remove_extra_spaces_and_pep8"><code class="docutils literal notranslate"><span class="pre">remove_extra_spaces_and_pep8()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#directive">Directive</a><ul>
+<li><a class="reference internal" href="#sphinx_runpython.runpython.sphinx_runpython_extension.RunPythonDirective"><code class="docutils literal notranslate"><span class="pre">RunPythonDirective</span></code></a></li>
 </ul>
 </li>
 </ul>
