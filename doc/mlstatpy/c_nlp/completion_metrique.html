@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_nlp/completion_metrique';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -581,7 +579,7 @@ Pour les mots de fréquence identique, l’ordre a peu d’importance.</p></li>
 <p>Les intuitions 2 et 3 seront sans doute remise en question en considérant
 une nouvelle métrique.
 On considère l’ensemble des complétions
-<span class="math notranslate nohighlight">\(S\)</span> composé de deux mots <em>actuellement</em>, <em>actualité</em>.
+<img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> composé de deux mots <em>actuellement</em>, <em>actualité</em>.
 Le gain moyen par mots est de 9 caractères économisés.
 Si on ajoute le grand préfixe commun à la liste <em>actu</em>,
 ce gain moyen tombe à 6.33 (voir <a class="reference internal" href="../notebooks/nlp/completion_trie.html"><span class="std std-ref">Complétion</span></a>) quelque
@@ -633,34 +631,36 @@ plus grand. L’effect position perdrait un peu de son influence.</p>
 <section id="formalisation">
 <span id="mp-completion-metrique-formalisation"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Formalisation</a><a class="headerlink" href="#formalisation" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On reprend la première métrique <a class="reference internal" href="completion_formalisation.html#equation-completion-metric1">(1)</a> :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/55ecb0b07c915774810fcdb8c106ab756f98c0a4.svg" alt="\begin{eqnarray*}
 M(q, S) &amp;=&amp; \min_{0 \infegal k \infegal l(q)}  k + K(q, k, S)
-\end{eqnarray*}</div><p>La fonction <span class="math notranslate nohighlight">\(K(q, k, S)\)</span> est définie par <a class="reference internal" href="completion_formalisation.html#equation-nlp-comp-k">(2)</a>.</p>
+\end{eqnarray*}"/></p>
+</div><p>La fonction <img class="math" src="../_images/math/5aa4583d34305932fc13e2a09f8be44c7f033098.svg" alt="K(q, k, S)"/> est définie par <a class="reference internal" href="completion_formalisation.html#equation-nlp-comp-k">(2)</a>.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="def-mks2">Définition D1 : Dynamic Minimum Keystroke</p>
 <p>On définit la façon optimale de saisir une requête sachant
-un système de complétion <span class="math notranslate nohighlight">\(S\)</span> comme étant le
+un système de complétion <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> comme étant le
 minimum obtenu :</p>
-<div class="math notranslate nohighlight" id="equation-completion-metric2">
-\begin{eqnarray*}
+<div class="math" id="equation-completion-metric2">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-completion-metric2" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/49f4a62cafd6b78e740a584e934840fe401365b4.svg" alt="\begin{eqnarray*}
 M'(q, S) &amp;=&amp; \min_{0 \infegal k &lt; l(q)} \acc{ M'(q[1..k], S) +
             \min( K(q, k, S), l(q) - k) }
-\end{eqnarray*}</div></div>
-<p>On prend comme convention <span class="math notranslate nohighlight">\(M'(\emptyset, S)=0\)</span>. Le calcul de la métrique
+\end{eqnarray*}"/></p>
+</div></div>
+<p>On prend comme convention <img class="math" src="../_images/math/14339d9e824b280b99a71fe2767fddb7983f7b20.svg" alt="M'(\emptyset, S)=0"/>. Le calcul de la métrique
 se construit comme une suite qui part des chaînes les plus courtes aux plus longues.
 La métrique est donc bien définie.
 Contrairement à la première métrique, le calcul dépend du résultat pour
 tous les préfixes d’une complétion.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-propriété0">
 <p class="admonition-title">propriété P1 : métriques</p>
-<p><span class="math notranslate nohighlight">\(\forall q, \; M'(q, S) \infegal M(q, S)\)</span></p>
+<p><img class="math" src="../_images/math/ceedd8ff7caa46ffbc917c4f1a3723542ed4a397.svg" alt="\forall q, \; M'(q, S) \infegal M(q, S)"/></p>
 </div>
-<p>Si <span class="math notranslate nohighlight">\(q \notin S\)</span>, c’est évident puisque <span class="math notranslate nohighlight">\(M'(q, S) \infegal M'(\emptyset, S) + l(q)\)</span>.
-Si <span class="math notranslate nohighlight">\(q \in S\)</span>, cela découle de la constation précédente puisque :
-<span class="math notranslate nohighlight">\(M'(q, S) \infegal M'(q[[1..k]], S) + K(q, k, S) \infegal k + K(q, k, S)\)</span>.</p>
+<p>Si <img class="math" src="../_images/math/8bacc9453dccc02f3beb640c5e4b482e995df8ce.svg" alt="q \notin S"/>, c’est évident puisque <img class="math" src="../_images/math/e921727e176cb4a6efc0611813d4ed9ca8ec8cf8.svg" alt="M'(q, S) \infegal M'(\emptyset, S) + l(q)"/>.
+Si <img class="math" src="../_images/math/2f5d343abd469fcf6b3312e3738ad8f1173db609.svg" alt="q \in S"/>, cela découle de la constation précédente puisque :
+<img class="math" src="../_images/math/fd850081576927afe7857f7a329b2fd00e144e0b.svg" alt="M'(q, S) \infegal M'(q[[1..k]], S) + K(q, k, S) \infegal k + K(q, k, S)"/>.</p>
 </section>
 <section id="quelques-resultats">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Quelques résultats</a><a class="headerlink" href="#quelques-resultats" title="Lien permanent vers cette rubrique">#</a></h2>
@@ -693,15 +693,16 @@ considéré comme préfixe. C’est ce que prend en compte la définition suivan
 </div>
 <p class="admonition-title" id="def-mks3">Définition D2 : Dynamic Minimum Keystroke modifié</p>
 <p>On définit la façon optimale de saisir une requête sachant
-un système de complétion <span class="math notranslate nohighlight">\(S\)</span> comme étant le
+un système de complétion <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> comme étant le
 minimum obtenu :</p>
-<div class="math notranslate nohighlight" id="equation-completion-metric3">
-\begin{eqnarray*}
+<div class="math" id="equation-completion-metric3">
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-completion-metric3" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/9cb7af5a74517149db512b641566adc45fafbb75.svg" alt="\begin{eqnarray*}
 M&quot;(q, S) &amp;=&amp; \min \left\{ \begin{array}{l}
                 \min_{1 \infegal k \infegal l(q)} \acc{ M&quot;(q[1..k-1], S) + 1 +\min( K(q, k, S), l(q) - k) } \\
                 \min_{0 \infegal k \infegal l(q)} \acc{ M&quot;(q[1..k], S) + \delta + \min( K(q, k, S), l(q) - k) }
                 \end{array} \right .
-\end{eqnarray*}</div></div>
+\end{eqnarray*}"/></p>
+</div></div>
 <p>Si on prend comme exemple la requête <em>machine learning</em>, le premier cas correspond à la séquence :</p>
 <ul class="simple">
 <li><p>sélection de la complétion <em>machine</em></p></li>
@@ -714,12 +715,12 @@ M&quot;(q, S) &amp;=&amp; \min \left\{ \begin{array}{l}
 <li><p>pression de la touche droite pour afficher les nouvelles complétions</p></li>
 <li><p>sélection de la complétion <em>machine learning</em></p></li>
 </ul>
-<p>Le coût de la pression de la touche droite est noté <span class="math notranslate nohighlight">\(\delta \infegal 1\)</span> qu’on prendra inférieur à 1.
+<p>Le coût de la pression de la touche droite est noté <img class="math" src="../_images/math/f99e4aa5fbc722a266a342e97bb0cce3acd63066.svg" alt="\delta \infegal 1"/> qu’on prendra inférieur à 1.
 On remarque également qu’avec cette nouvelle métrique, il est possible
 de diminuer le nombre minimum de touches à presser pour des requêtes en dehors
-de l’ensemble <span class="math notranslate nohighlight">\(S\)</span> à partir du moment où elles prolongent une complétion existante.
+de l’ensemble <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> à partir du moment où elles prolongent une complétion existante.
 C’est là un point très intéressant de cette métrique.
-De manière évidente, <span class="math notranslate nohighlight">\(\forall q, \; M'(q, S) \infegal M&quot;(q, S)\)</span>.</p>
+De manière évidente, <img class="math" src="../_images/math/dd45100a9c3c4f8672a227ca830eb2592acf8b10.svg" alt="\forall q, \; M'(q, S) \infegal M&quot;(q, S)"/>.</p>
 </section>
 <section id="questions">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Questions</a><a class="headerlink" href="#questions" title="Lien permanent vers cette rubrique">#</a></h2>
@@ -729,9 +730,9 @@ De manière évidente, <span class="math notranslate nohighlight">\(\forall q, \
 <li><p>Ajouter des complétions non présentes dans le corpus améliore-t-elle la métrique ?
 Même question pour la suppression ?</p></li>
 <li><p>Existe-t-il un moyen de construire de façon itérative l’ensemble des complétions
-ou plutôt l’ordre qui minimise la métrice <span class="math notranslate nohighlight">\(M'(q, S)\)</span> ?</p></li>
+ou plutôt l’ordre qui minimise la métrice <img class="math" src="../_images/math/456dc0b0f1a0338e3cd6d4136ce4275fdf1a799d.svg" alt="M'(q, S)"/> ?</p></li>
 <li><p>Comment calculer rapidement les métriques pour les requêtes dans l’ensemble
-<span class="math notranslate nohighlight">\(S\)</span> et en dehors ?</p></li>
+<img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> et en dehors ?</p></li>
 </ol>
 <p>Pour la première question, une expérience devrait donner une piste
 à défaut d’y répondre. Pour la seconde, il n’est pas nécessaire d’envisager
@@ -756,8 +757,8 @@ préfixe commun à beaucoup de complétions et cela améliore le gain moyen
 dans le cas présent (sans compter le gain sur la requête
 <em>machine</em>). Enfin, la troisième et la quatrième question,
 la réponse requiert la démonstration de quelques propriétés mathématiques.
-Mais avant j’ajouterai que la première métrique <span class="math notranslate nohighlight">\(M\)</span> correspond
-à la ligne de commande Windows et la métrique <span class="math notranslate nohighlight">\(M'\)</span> correspond à
+Mais avant j’ajouterai que la première métrique <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> correspond
+à la ligne de commande Windows et la métrique <img class="math" src="../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/> correspond à
 la ligne de commande Linux.</p>
 </section>
 </section>

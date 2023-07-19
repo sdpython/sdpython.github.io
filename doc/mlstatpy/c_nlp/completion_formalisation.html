@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_nlp/completion_formalisation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -576,10 +574,10 @@ faut d’abord mettre au point une façon de les comparer.
 Je me place dans le cadre d’un moteur de recherche car c’est l’usage principal,
 que celui-ci soit un moteur de recherche ou une recherche incluse sur un site de vente.
 A la fin de la journée, on sait quelles sont les requêtes saisies par les utilisateurs
-et le nombre de fois qu’elles ont été saisies : <span class="math notranslate nohighlight">\((q_i, w_i)\)</span> pour
-<span class="math notranslate nohighlight">\(i \in [[1, N]]\)</span>.</p>
-<p id="index-0">Sans système de complétion, les utilisateurs saisissent donc <span class="math notranslate nohighlight">\(K=\sum_{i=1}^N l(q_i) w_i\)</span>
-où <span class="math notranslate nohighlight">\(l(q_i)\)</span> est la longueur de la complétion <span class="math notranslate nohighlight">\(q_i\)</span>. Avec le système de complétion,
+et le nombre de fois qu’elles ont été saisies : <img class="math" src="../_images/math/ca9ddb4605740698485194bd14484e9b21b411a4.svg" alt="(q_i, w_i)"/> pour
+<img class="math" src="../_images/math/5f65d47057687c6729ae8857129cce2809f61436.svg" alt="i \in [[1, N]]"/>.</p>
+<p id="index-0">Sans système de complétion, les utilisateurs saisissent donc <img class="math" src="../_images/math/f6e5ce8e380d86dd951d644f2de783cbedf25966.svg" alt="K=\sum_{i=1}^N l(q_i) w_i"/>
+où <img class="math" src="../_images/math/c55893061547dba9226ada37ea0e57f16d2f6e1f.svg" alt="l(q_i)"/> est la longueur de la complétion <img class="math" src="../_images/math/7658fac56197f48af7997489b46e9cd9baa5d509.svg" alt="q_i"/>. Avec le système de complétion,
 les utilisateurs saisissent moins de caractères, c’est ce chiffre là qu’on cherche à minimiser.
 L’unité est le charactère saisi ou <em>keystroke</em> en anglais.</p>
 <p>Même avec le même système de complétion,
@@ -595,58 +593,58 @@ dans le premier cas ou 8+1=9 touches dans le second cas.</p>
 </div>
 <p class="admonition-title" id="def-mks">Définition D1 : Minimum Keystroke</p>
 <p>On définit la façon optimale de saisir une requête sachant un système de complétion
-<span class="math notranslate nohighlight">\(S\)</span> comme étant le minimum obtenu :</p>
-<div class="math notranslate nohighlight" id="equation-completion-metric1">
-<span class="eqno">(1)<a class="headerlink" href="#equation-completion-metric1" title="Lien permanent vers cette équation">#</a></span>\[M(q,S) = \min_{0 \infegal k \infegal l(q)}  k + K(q, k, S)\]</div>
-<p>La quantité <span class="math notranslate nohighlight">\(K(q, k, S)\)</span> représente le nombre de touche vers le bas qu’il faut taper pour
-obtenir la chaîne <span class="math notranslate nohighlight">\(q\)</span> avec le système de complétion <span class="math notranslate nohighlight">\(S\)</span> et les <span class="math notranslate nohighlight">\(k\)</span>
-premières lettres de <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> comme étant le minimum obtenu :</p>
+<div class="math" id="equation-completion-metric1">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-completion-metric1" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/ae6807901ed6f289516769917fca2acbbddde02a.svg" alt="M(q,S) = \min_{0 \infegal k \infegal l(q)}  k + K(q, k, S)"/></p>
+</div><p>La quantité <img class="math" src="../_images/math/5aa4583d34305932fc13e2a09f8be44c7f033098.svg" alt="K(q, k, S)"/> représente le nombre de touche vers le bas qu’il faut taper pour
+obtenir la chaîne <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> avec le système de complétion <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> et les <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>
+premières lettres de <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/>.</p>
 </div>
-<p>De façon évidente, <span class="math notranslate nohighlight">\(K(q, l(q), S)=0\)</span> et <span class="math notranslate nohighlight">\(M(q,S) \infegal l(q)\)</span>
-et <span class="math notranslate nohighlight">\(K(q, k, S) &gt; 0\)</span> si <span class="math notranslate nohighlight">\(k &lt; l(q)\)</span>. On prend également
-comme convention <span class="math notranslate nohighlight">\(\forall q \notin S, \; K(q, k, S) = \infty\)</span>
-et <span class="math notranslate nohighlight">\(\forall q \notin S, \; M(q, S) = l(q)\)</span>.
+<p>De façon évidente, <img class="math" src="../_images/math/70cfdcdb0fe37ee78a0da4359668260fb5624ff4.svg" alt="K(q, l(q), S)=0"/> et <img class="math" src="../_images/math/aebe1d0219da8535959ccee9f1b20ab8f715be31.svg" alt="M(q,S) \infegal l(q)"/>
+et <img class="math" src="../_images/math/c5ebf1e5ef987bc51d2cdab24672bc10e063c192.svg" alt="K(q, k, S) &gt; 0"/> si <img class="math" src="../_images/math/c586cdf2e4bcb48dfc76bffa411075e75f138fe7.svg" alt="k &lt; l(q)"/>. On prend également
+comme convention <img class="math" src="../_images/math/044b4d2ad1b21c64e906341639441cde55eadfd7.svg" alt="\forall q \notin S, \; K(q, k, S) = \infty"/>
+et <img class="math" src="../_images/math/0533e5f49e23fbdf1a92fb7ed496906f3c56cf38.svg" alt="\forall q \notin S, \; M(q, S) = l(q)"/>.
 Certains systèmes proposent des requêtes avant de saisir quoique ce soit,
-c’est pourquoi on inclut la valeur <span class="math notranslate nohighlight">\(M(q, 0)\)</span> qui représente ce cas.
+c’est pourquoi on inclut la valeur <img class="math" src="../_images/math/a3273d87fd4d360b3e5d66859efe59dd1ff95f98.svg" alt="M(q, 0)"/> qui représente ce cas.
 Construire un système de complétion revient à minimiser la quantité :</p>
-<div class="math notranslate nohighlight">
-\[M(S) = \sum_{i=1}^N M(q_i,S) w_i\]</div>
-</section>
+<div class="math">
+<p><img src="../_images/math/67cc625fba5e01cf26b42ad44739e21985e8d053.svg" alt="M(S) = \sum_{i=1}^N M(q_i,S) w_i"/></p>
+</div></section>
 <section id="ensemble-des-completions">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Ensemble des complétions</a><a class="headerlink" href="#ensemble-des-completions" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Il n’y a pas de restriction sur la fonction <span class="math notranslate nohighlight">\(K(q, k, S)\)</span> mais on se limitera
+<p>Il n’y a pas de restriction sur la fonction <img class="math" src="../_images/math/5aa4583d34305932fc13e2a09f8be44c7f033098.svg" alt="K(q, k, S)"/> mais on se limitera
 dans un premier temps à une fonction simple. On suppose que le système d’autocomplétion
-dispose d’un ensemble de requêtes ordonnées <span class="math notranslate nohighlight">\(S = (s_i)\)</span> et la fonction :</p>
-<div class="math notranslate nohighlight">
-\[K(q, k, S) = position(q, S(q[1..k]))\]</div>
-<p>Où <span class="math notranslate nohighlight">\(S(q[1..k])\)</span> est le sous-ensemble ordonné de <span class="math notranslate nohighlight">\(S\)</span> des complétions
-qui commencent par les <span class="math notranslate nohighlight">\(k\)</span> premières lettres de <span class="math notranslate nohighlight">\(q\)</span> et de longueur supérieure strictement à <span class="math notranslate nohighlight">\(k\)</span>.
-<span class="math notranslate nohighlight">\(position(q, S(q[1..k]))\)</span> est la position de <span class="math notranslate nohighlight">\(q\)</span> dans cet ensemble ordonné
-ou <span class="math notranslate nohighlight">\(\infty\)</span> si elle n’y est pas. Cette position est strictement positive
-<span class="math notranslate nohighlight">\(K(q, k, S) \supegal 1\)</span> sauf si <span class="math notranslate nohighlight">\(k=l(q)\)</span> auquel cas, elle est nulle.
+dispose d’un ensemble de requêtes ordonnées <img class="math" src="../_images/math/a89f5fd9a5ab8bbdc4ed7fd9b4059ba0e540ac1c.svg" alt="S = (s_i)"/> et la fonction :</p>
+<div class="math">
+<p><img src="../_images/math/fe0b0c32b82640075ab1e7eaf79819e25ccdc40d.svg" alt="K(q, k, S) = position(q, S(q[1..k]))"/></p>
+</div><p>Où <img class="math" src="../_images/math/30c93e55b3ff10c4189d2f2692b9ac0f4a03b944.svg" alt="S(q[1..k])"/> est le sous-ensemble ordonné de <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> des complétions
+qui commencent par les <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> premières lettres de <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> et de longueur supérieure strictement à <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>.
+<img class="math" src="../_images/math/cd79e2e1fe4c8539ce79889601acf46fe293399f.svg" alt="position(q, S(q[1..k]))"/> est la position de <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> dans cet ensemble ordonné
+ou <img class="math" src="../_images/math/70a1e79525aa38979548db07fcbf9898706eb45a.svg" alt="\infty"/> si elle n’y est pas. Cette position est strictement positive
+<img class="math" src="../_images/math/1b792e955e0e467399eb0fc23015ef8a55e33470.svg" alt="K(q, k, S) \supegal 1"/> sauf si <img class="math" src="../_images/math/93d998f535ad3dc6945952dbc20f093ae4278fbb.svg" alt="k=l(q)"/> auquel cas, elle est nulle.
 Cela signifie que l’utilisateur doit descendre d’au moins un cran
 pour sélectionner une complétion.
-On note <span class="math notranslate nohighlight">\(\sigma(q)\)</span> la position de la complétion <span class="math notranslate nohighlight">\(q\)</span> dans l’ensemble <span class="math notranslate nohighlight">\(S\)</span>.
-Par construction, <span class="math notranslate nohighlight">\(s_ \neq s_2 \Longrightarrow \sigma(s_1) \neq \sigma(s_2)\)</span>.</p>
-<div class="math notranslate nohighlight" id="equation-nlp-comp-k">
-<span class="eqno">(2)<a class="headerlink" href="#equation-nlp-comp-k" title="Lien permanent vers cette équation">#</a></span>\[K(q, k, S) = \#\acc{ i | s_i \succ q[1..k], s_i \in S, \sigma(s_i) &lt; \sigma(q)  }\]</div>
-<p><span class="math notranslate nohighlight">\(\#\)</span> désigne le cardinal de l’ensemble.
-Trouver le meilleur système de complétion <span class="math notranslate nohighlight">\(S\)</span> revient à trouver la meilleure
-fonction <span class="math notranslate nohighlight">\(K(q, k, S)\)</span> et dans le cas restreint l’ordre sur <span class="math notranslate nohighlight">\(S\)</span> qui minimise
+On note <img class="math" src="../_images/math/31e66f1620193aa6b8a9d9b1624cebf37d504456.svg" alt="\sigma(q)"/> la position de la complétion <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> dans l’ensemble <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/>.
+Par construction, <img class="math" src="../_images/math/8dc2aa8a4b7628050f841d097bfb0b3709c7c821.svg" alt="s_ \neq s_2 \Longrightarrow \sigma(s_1) \neq \sigma(s_2)"/>.</p>
+<div class="math" id="equation-nlp-comp-k">
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-nlp-comp-k" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/ed92341dd18f0bd2d20b4f4ae54af954fc526168.svg" alt="K(q, k, S) = \#\acc{ i | s_i \succ q[1..k], s_i \in S, \sigma(s_i) &lt; \sigma(q)  }"/></p>
+</div><p><img class="math" src="../_images/math/bda946325ce7f3f3c1e9277a1918e24a309f58dd.svg" alt="\#"/> désigne le cardinal de l’ensemble.
+Trouver le meilleur système de complétion <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> revient à trouver la meilleure
+fonction <img class="math" src="../_images/math/5aa4583d34305932fc13e2a09f8be44c7f033098.svg" alt="K(q, k, S)"/> et dans le cas restreint l’ordre sur <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> qui minimise
 cette fonction. Le plus souvent, on se contente de trier les complétions par ordre
 décroissant de popularité. On considérera par la suite qu’on est dans ce cas.</p>
 </section>
 <section id="gain">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Gain</a><a class="headerlink" href="#gain" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On définit le gain en keystroke comme étant le nombre de caractères saisis en moins :</p>
-<div class="math notranslate nohighlight">
-\[G(q, S) = l(s) - M(q,S)\]</div>
-<p>Minimier <span class="math notranslate nohighlight">\(M(S)\)</span> ou maximiser <span class="math notranslate nohighlight">\(G(S) = \sum_{i=1}^N G(q_i, S) w_i\)</span>
+<div class="math">
+<p><img src="../_images/math/17d9fd1754921e758c2217ac50436782022e00e8.svg" alt="G(q, S) = l(s) - M(q,S)"/></p>
+</div><p>Minimier <img class="math" src="../_images/math/931b5a11bc58cccf0c457d1aea74de21c938214f.svg" alt="M(S)"/> ou maximiser <img class="math" src="../_images/math/0b79d7eeea4d0016eb9dc178eb4464cef537611a.svg" alt="G(S) = \sum_{i=1}^N G(q_i, S) w_i"/>
 revient au même.</p>
-<div class="math notranslate nohighlight">
-\[G(S) = \sum_{i=1}^N w_i (l(s) - M(q,S)) = \sum_{i=1}^N w_i l(s) - \sum_{i=1}^N w_i  M(q,S))  = K - M(S)\]</div>
-<p>Où <span class="math notranslate nohighlight">\(K=\sum_{i=1}^N l(q_i) w_i\)</span> l’ensemble des caractères tapés par les utilisateurs.
-<span class="math notranslate nohighlight">\(\frac{G(S)}{K}\)</span> est en quelque sorte le ratio de caractères économisés
+<div class="math">
+<p><img src="../_images/math/19ab394236badc4ddeb54c8982a16cce0d52c1b3.svg" alt="G(S) = \sum_{i=1}^N w_i (l(s) - M(q,S)) = \sum_{i=1}^N w_i l(s) - \sum_{i=1}^N w_i  M(q,S))  = K - M(S)"/></p>
+</div><p>Où <img class="math" src="../_images/math/f6e5ce8e380d86dd951d644f2de783cbedf25966.svg" alt="K=\sum_{i=1}^N l(q_i) w_i"/> l’ensemble des caractères tapés par les utilisateurs.
+<img class="math" src="../_images/math/20f695b6c733ee48cc85ebf162d2e56ddf0624ae.svg" alt="\frac{G(S)}{K}"/> est en quelque sorte le ratio de caractères économisés
 par le système de complétion.</p>
 <div role="list" class="citation-list">
 <div class="citation" id="bampoulidis2017" role="doc-biblioentry">

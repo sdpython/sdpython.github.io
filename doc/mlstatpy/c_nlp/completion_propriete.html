@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_nlp/completion_propriete';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -559,7 +557,7 @@ document.write(`
                   
   <section id="proprietes-mathematiques">
 <h1>Propriétés mathématiques<a class="headerlink" href="#proprietes-mathematiques" title="Lien permanent vers cette rubrique">#</a></h1>
-<p>On s’intéresse principalement à la métrique <span class="math notranslate nohighlight">\(M'\)</span> définie par
+<p>On s’intéresse principalement à la métrique <img class="math" src="../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/> définie par
 Dynamic Minimum Keystroke <a class="reference internal" href="completion_metrique.html#equation-completion-metric2">(1)</a> mais les résultats
 seront étendues aux autres quand cela est possible.</p>
 <nav class="contents local" id="sommaire">
@@ -578,18 +576,19 @@ pour l’ensemble des complétions.</p>
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="lemme-mks-last">Lemme L1 : Dynamic Minimum Keystroke</p>
-<p>On note <span class="math notranslate nohighlight">\(d(q, S)\)</span> la longueur du plus long préfixe de <span class="math notranslate nohighlight">\(q\)</span> inclus dans <span class="math notranslate nohighlight">\(S\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[d(q, S) = \max\acc{ l(p) | p \prec q, \; p \in S, \; p \neq q}\]</div>
-<div class="math notranslate nohighlight" id="equation-lemme-m2-nlp-comp">
-\begin{eqnarray*}
+<p>On note <img class="math" src="../_images/math/6dd2a012c57cda82b5cfd19f59a139413e5506ff.svg" alt="d(q, S)"/> la longueur du plus long préfixe de <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> inclus dans <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/>.</p>
+<div class="math">
+<p><img src="../_images/math/6b1ab5e49cca45f89b47edc048e501989f8f77e9.svg" alt="d(q, S) = \max\acc{ l(p) | p \prec q, \; p \in S, \; p \neq q}"/></p>
+</div><div class="math" id="equation-lemme-m2-nlp-comp">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-lemme-m2-nlp-comp" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/ca5d23c06433c80908a3789e334aea956e8a5b9a.svg" alt="\begin{eqnarray*}
 M'(q, S) &amp;=&amp; \min_{d(q, S) \infegal k &lt; l(q)} \acc{ M'(q[1..k], S) + \min( K(q, k, S), l(q) - k) }
-\end{eqnarray*}</div></div>
+\end{eqnarray*}"/></p>
+</div></div>
 <p>Il n’est pas nécessaire de regarder tous les préfixes mais seulement ceux entre le plus long préfixe
-qui est aussi une complétion et la requête <span class="math notranslate nohighlight">\(q\)</span>. La démonstration est identique à la démonstration
+qui est aussi une complétion et la requête <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/>. La démonstration est identique à la démonstration
 du lemme qui suit. L’idée de cette propriété est de pouvoir réduire le coût de l’algorithme
 de calcul des métriques. Ce n’est pas la seule écriture qu’on puisse en fait.</p>
-<p>Le calcul de la métrique <span class="math notranslate nohighlight">\(M'\)</span> suggère qu’on doit faire ce calcul dans le sens
+<p>Le calcul de la métrique <img class="math" src="../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/> suggère qu’on doit faire ce calcul dans le sens
 des préfixes croissants mais il serait plus simple de le faire dans le sens des complétions
 de poids croissant (les complétions de moindre poids sont toujours affichées avant).</p>
 <img alt="../_images/algocomp.png" src="../_images/algocomp.png" />
@@ -599,49 +598,51 @@ plusieurs itérations pour obtenir la valeur finale.</p>
 <section id="calcul-pour-une-requete-en-dehors">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Calcul pour une requête en dehors</a><a class="headerlink" href="#calcul-pour-une-requete-en-dehors" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Mais il est faux de dire que pour deux requêtes en dehors de l’ensemble
-des complétions, <span class="math notranslate nohighlight">\(q_1 \preceq q_2 \Longrightarrow M'(q_1, S) \infegal M'(q_2, S)\)</span>.
+des complétions, <img class="math" src="../_images/math/766ba82b25bba19025eef3eb6c8955e2c26d91fc.svg" alt="q_1 \preceq q_2 \Longrightarrow M'(q_1, S) \infegal M'(q_2, S)"/>.
 Le lemme suivant précise pourquoi</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Lemme1">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="lemme-nlp-long-completion">Lemme L2 : calcul de *M”(q, S)*</p>
-<p>On suppose que <span class="math notranslate nohighlight">\(p(q, S)\)</span> est la complétion la plus longue
-de l’ensemble <span class="math notranslate nohighlight">\(S\)</span> qui commence <span class="math notranslate nohighlight">\(q\)</span> :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<p>On suppose que <img class="math" src="../_images/math/d0fa7de4da53225f5e05b0a9f5685db9d00ff638.svg" alt="p(q, S)"/> est la complétion la plus longue
+de l’ensemble <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> qui commence <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> :</p>
+<div class="math">
+<p><img src="../_images/math/e35e9815279f875e42d6a461ad6dc04132497f67.svg" alt="\begin{eqnarray*}
 k^* &amp;=&amp; \max\acc{ k | q[[1..k]] \prec q \text{ et } q \in S}  \\
 p(q, S) &amp;=&amp; q[[1..k^*]]
-\end{eqnarray*}</div><p>La métrique <span class="math notranslate nohighlight">\(M'(q, S)\)</span> vérifie la propriété suivante :</p>
-<div class="math notranslate nohighlight">
-\[M'(q, S) = M'(p(q, S), S) + l(q) - l(p(q, S))\]</div>
-</div>
-<p>La métrique <span class="math notranslate nohighlight">\(M'(q, S)\)</span> est égale à celle du plus long préfixe inclus
+\end{eqnarray*}"/></p>
+</div><p>La métrique <img class="math" src="../_images/math/456dc0b0f1a0338e3cd6d4136ce4275fdf1a799d.svg" alt="M'(q, S)"/> vérifie la propriété suivante :</p>
+<div class="math">
+<p><img src="../_images/math/bf10b89589f7ef2f10701ac0166b01c60b953ee9.svg" alt="M'(q, S) = M'(p(q, S), S) + l(q) - l(p(q, S))"/></p>
+</div></div>
+<p>La métrique <img class="math" src="../_images/math/456dc0b0f1a0338e3cd6d4136ce4275fdf1a799d.svg" alt="M'(q, S)"/> est égale à celle du plus long préfixe inclus
 dans l’ensemble les complétions à laquelle on ajoute la différence des longueurs.
 Cela correspond aux caractères que l’utilisateur doit saisir.
 La démonstration est assez simple. On suppose que cela n’est pas vrai et qu’il existe
-un existe <span class="math notranslate nohighlight">\(k &lt; k^*\)</span> tel que :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+un existe <img class="math" src="../_images/math/e2b9bb0394846e0f50d2dc147bb28c215cd3cbca.svg" alt="k &lt; k^*"/> tel que :</p>
+<div class="math">
+<p><img src="../_images/math/7b38f75e96d5a0573080bdd342983f81fb4e6e9b.svg" alt="\begin{eqnarray*}
 &amp;&amp; M'(q[[1..k]], S) + l(q) - l(q[[1..k]]) &lt; M'(q[[1..k^*]], S) + l(q) - l(q[[1..k^*]]) \\
 &amp; \Longrightarrow &amp; M'(q[[1..k]], S) - k &lt; M'(q[[1..k^*]], S) - k^* \\
 &amp; \Longrightarrow &amp; M'(q[[1..k]], S) + (k^* - k) &lt; M'(q[[1..k^*]], S)
-\end{eqnarray*}</div><p>Cela signifie qu’on a réussi une façon plus efficace d’écrire le préfixe
-<span class="math notranslate nohighlight">\(q[[1..k^*]]\)</span>. Or par définition <span class="math notranslate nohighlight">\(M'(q[[1..k^*]], S)\)</span>
-est censée être le nombre de caractères minimal pour obtenir <span class="math notranslate nohighlight">\(q[[1..k^*]]\)</span>.
+\end{eqnarray*}"/></p>
+</div><p>Cela signifie qu’on a réussi une façon plus efficace d’écrire le préfixe
+<img class="math" src="../_images/math/956539b36a65f4a2bb00fd9c9468513218e55a61.svg" alt="q[[1..k^*]]"/>. Or par définition <img class="math" src="../_images/math/e0585173ca8ffb3af1de6dd78d186601d6165b51.svg" alt="M'(q[[1..k^*]], S)"/>
+est censée être le nombre de caractères minimal pour obtenir <img class="math" src="../_images/math/956539b36a65f4a2bb00fd9c9468513218e55a61.svg" alt="q[[1..k^*]]"/>.
 Ce n’est donc pas possible.
-Cette propriété est importante puisque pour calculer <span class="math notranslate nohighlight">\(M'(q[[1..k^*]], S)\)</span>,
+Cette propriété est importante puisque pour calculer <img class="math" src="../_images/math/e0585173ca8ffb3af1de6dd78d186601d6165b51.svg" alt="M'(q[[1..k^*]], S)"/>,
 il suffit de regarder le plus long préfixe appartenant à l’ensemble des complétions
 et seulement celui-ci. Cet algorithme et implémenté par la méthode
 <a class="reference internal" href="../api/modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionSystem.enumerate_test_metric" title="mlstatpy.nlp.completion_simple.CompletionSystem.enumerate_test_metric"><code class="xref py py-meth docutils literal notranslate"><span class="pre">enumerate_test_metric</span></code></a>.
-En ce qui concerne la métrique <span class="math notranslate nohighlight">\(M\)</span>, par définition
-<span class="math notranslate nohighlight">\(\forall q \notin S, \; M(q, S) = 0\)</span>. La métrique
-<span class="math notranslate nohighlight">\(M&quot;\)</span> m’évoque la <a class="reference external" href="https://www.youtube.com/watch?v=YV54e3R-rLg">côte anglaise</a>.
-L’itération <span class="math notranslate nohighlight">\(n\)</span> fonctionne de la même manière à partir du moment où
+En ce qui concerne la métrique <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/>, par définition
+<img class="math" src="../_images/math/68c0689d6e996e8e288b2b50ffee223cef608ef5.svg" alt="\forall q \notin S, \; M(q, S) = 0"/>. La métrique
+<img class="math" src="../_images/math/681c59afdf25ce7f3e21cb5f3453eed6c3a7cb07.svg" alt="M&quot;"/> m’évoque la <a class="reference external" href="https://www.youtube.com/watch?v=YV54e3R-rLg">côte anglaise</a>.
+L’itération <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> fonctionne de la même manière à partir du moment où
 la requête considérée ne fait pas partie de l’ensemble des complétions mais
 il y a l’étage d’en dessous qui pose un doute.
 Il y a un brin de poésie dans ce +1. L’application de l’implémentation du calcul
-de la métrique montre que <span class="math notranslate nohighlight">\(M'\)</span> et <span class="math notranslate nohighlight">\(M&quot;\)</span> sont très souvent égales.
-Je vais laisser ce <span class="math notranslate nohighlight">\(\delta\)</span> sous forme de poésie pour le moment.</p>
+de la métrique montre que <img class="math" src="../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/> et <img class="math" src="../_images/math/681c59afdf25ce7f3e21cb5f3453eed6c3a7cb07.svg" alt="M&quot;"/> sont très souvent égales.
+Je vais laisser ce <img class="math" src="../_images/math/c3c53fe92058364e84e0d2731859244c933d674c.svg" alt="\delta"/> sous forme de poésie pour le moment.</p>
 <p>Il faudrait terminer la démonstration pour <em>M</em>…</p>
 </section>
 <section id="completions-emboitees">
@@ -661,9 +662,9 @@ Par conséquent, pour construire les listes de complétions associées à chaque
 il paraît de partir des feuilles de l’arbre puis de fusionner les listes
 de complétions jusqu’au noeud racine.
 Plus concrètement, si deux complétions
-vérifie <span class="math notranslate nohighlight">\(q_1 \preceq q_2\)</span> alors l’ensemble des complétions
-vérifie <span class="math notranslate nohighlight">\(C(q_1) \supset C(q_2)\)</span>. On peut même dire que :
-<span class="math notranslate nohighlight">\(C(q) = \cup \acc{ C(s) | s \succ q \in S}\)</span>. Cela signifie qu’une fois qu’on
+vérifie <img class="math" src="../_images/math/de40ff65bd3e247f49d76096f7159361954a174c.svg" alt="q_1 \preceq q_2"/> alors l’ensemble des complétions
+vérifie <img class="math" src="../_images/math/3c4e84718d3c65ca4888cb3fc1e9803b1fa88a25.svg" alt="C(q_1) \supset C(q_2)"/>. On peut même dire que :
+<img class="math" src="../_images/math/b68ed6876ca41a98d5493f0a8f63335bbfc2aea6.svg" alt="C(q) = \cup \acc{ C(s) | s \succ q \in S}"/>. Cela signifie qu’une fois qu’on
 a construit un trie représentant l’ensemble des complétions, il suffit de
 partir des feuilles de l’arbre jusqu’à la racine pour construire la
 liste des complétions à chaque étape et que pour un noeud précis,
@@ -673,14 +674,15 @@ fils.</p>
 <section id="listes-tronquees-de-completions">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Listes tronquées de complétions</a><a class="headerlink" href="#listes-tronquees-de-completions" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On reprend la première métrique <a class="reference internal" href="completion_formalisation.html#equation-completion-metric1">(1)</a> qui
-utilise la fonction <span class="math notranslate nohighlight">\(K(q, k, S)\)</span> définie en <a class="reference internal" href="completion_formalisation.html#equation-nlp-comp-k">(2)</a>.</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+utilise la fonction <img class="math" src="../_images/math/5aa4583d34305932fc13e2a09f8be44c7f033098.svg" alt="K(q, k, S)"/> définie en <a class="reference internal" href="completion_formalisation.html#equation-nlp-comp-k">(2)</a>.</p>
+<div class="math">
+<p><img src="../_images/math/55ecb0b07c915774810fcdb8c106ab756f98c0a4.svg" alt="\begin{eqnarray*}
 M(q, S) &amp;=&amp; \min_{0 \infegal k \infegal l(q)}  k + K(q, k, S)
-\end{eqnarray*}</div><p>Etant donné que le nombre minimum de caractères pour obtenir une complétion dans le trie
-ne peut pas être supérieur à la longueur, si <span class="math notranslate nohighlight">\(K(q, k, S) &gt; l(q) - k\)</span>, on sait déjà que
-que le préfixe <span class="math notranslate nohighlight">\(q[1..k]\)</span> ne sera pas le minimum. Cette remarque est applicable
-aux métriques <span class="math notranslate nohighlight">\(M'\)</span> et <span class="math notranslate nohighlight">\(M&quot;\)</span>.</p>
+\end{eqnarray*}"/></p>
+</div><p>Etant donné que le nombre minimum de caractères pour obtenir une complétion dans le trie
+ne peut pas être supérieur à la longueur, si <img class="math" src="../_images/math/fdc344d4614b73d4386ca3340d2a3d3c026714f8.svg" alt="K(q, k, S) &gt; l(q) - k"/>, on sait déjà que
+que le préfixe <img class="math" src="../_images/math/20f3297caf0b3989e836574ef7d7a57df4731b9d.svg" alt="q[1..k]"/> ne sera pas le minimum. Cette remarque est applicable
+aux métriques <img class="math" src="../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/> et <img class="math" src="../_images/math/681c59afdf25ce7f3e21cb5f3453eed6c3a7cb07.svg" alt="M&quot;"/>.</p>
 </section>
 </section>
 

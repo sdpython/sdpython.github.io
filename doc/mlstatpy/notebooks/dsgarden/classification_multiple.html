@@ -46,8 +46,6 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/dsgarden/classification_multiple';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -720,39 +718,39 @@ window.setTimeout(update_menu,2000);
 </div>
 <section id="Début-de-l'histoire">
 <h2>Début de l’histoire<a class="headerlink" href="#Début-de-l'histoire" title="Lien permanent vers cette rubrique">#</a></h2>
-<p><span class="math notranslate nohighlight">\(\mathbf{1\!\!1}_{y_i}\)</span></p>
+<p><img class="math" src="../../_images/math/33f5fa3377b5bc51759cf5d49e36a1c9ed3563c4.svg" alt="\mathbf{1\!\!1}_{y_i}"/></p>
 <section id="Confusions">
 <h3>Confusions<a class="headerlink" href="#Confusions" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Un des premiers réflexes après avoir appris une classification multi-classe est de regarder la <a class="reference external" href="https://fr.wikipedia.org/wiki/Matrice_de_confusion">matrice de confusion</a>. Certaines classes sont difficiles à classer, d’autres non. Je me demandais s’il existait un moyen de déterminer cela sans apprendre un classifieur. On souhaite apprendre la classification des points <span class="math notranslate nohighlight">\((X_i, y_i)\)</span>, <span class="math notranslate nohighlight">\(X_i\)</span> est un vecteur, <span class="math notranslate nohighlight">\(y_i\)</span> la classe attendue. Si <span class="math notranslate nohighlight">\(\hat{y_i}\)</span> est la classe prédite,
+<p>Un des premiers réflexes après avoir appris une classification multi-classe est de regarder la <a class="reference external" href="https://fr.wikipedia.org/wiki/Matrice_de_confusion">matrice de confusion</a>. Certaines classes sont difficiles à classer, d’autres non. Je me demandais s’il existait un moyen de déterminer cela sans apprendre un classifieur. On souhaite apprendre la classification des points <img class="math" src="../../_images/math/3190ad9816294c28609eb295103dfe16eb2f1af9.svg" alt="(X_i, y_i)"/>, <img class="math" src="../../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> est un vecteur, <img class="math" src="../../_images/math/821c42333b9f5768eea78b4df1a948b0a5deb5ea.svg" alt="y_i"/> la classe attendue. Si <img class="math" src="../../_images/math/f09a4b6a3933675711885d42ffc8e16f38ffaea8.svg" alt="\hat{y_i}"/> est la classe prédite,
 l’erreur de classification est :</p>
-<div class="math notranslate nohighlight">
-\[E=\sum_i \mathbb{1}_{y_i \neq \hat{y_i}}\]</div>
-<p>On note <span class="math notranslate nohighlight">\(c_{ij} = \mathbb{1}_{y_i = j}\)</span> et <span class="math notranslate nohighlight">\(\hat{c_{ij}} = \mathbb{1}_{\hat{y_i} = j}\)</span>. On note le vecteur <span class="math notranslate nohighlight">\(C_j=(c_{ij})_i\)</span> et <span class="math notranslate nohighlight">\(\hat{C_j}=(\hat{c_{ij}})_i\)</span>. On peut réécrire l’erreur comme :</p>
-<div class="math notranslate nohighlight">
-\[E=\sum_{ij} \mathbb{1}_{y_i = j} \mathbb{1}_{\hat{y_i} \neq j} =\sum_{ij} \mathbb{1}_{y_i = j} (1-\mathbb{1}_{\hat{y_i} = j})  =\sum_{ij} c_{ij} (1-\hat{c_{ij}})= \sum_j &lt; C_j , 1-\hat{C_j}&gt;\]</div>
-<p>C’est aussi égal à :</p>
-<div class="math notranslate nohighlight">
-\[E = \sum_{k \neq j} &lt;C_j , \hat{C_k}&gt;\]</div>
-<p>Et <span class="math notranslate nohighlight">\(&lt;C_j,\hat{C_k}&gt;\)</span> correspond au nombre d’erreurs de confusion : le nombre d’éléments de la classe <span class="math notranslate nohighlight">\(j\)</span> classés dans la classe <span class="math notranslate nohighlight">\(k\)</span>. <span class="math notranslate nohighlight">\(&lt;C_j,\hat{C_k}&gt;\)</span> est le nombre d’éléments correctement classés dans la classe <span class="math notranslate nohighlight">\(j\)</span>. On peut montrer que</p>
-<div class="math notranslate nohighlight">
-\[\sum_{k, j} &lt;C_j , \hat{C_k}&gt; = N\]</div>
-<p>où <span class="math notranslate nohighlight">\(N\)</span> est le nombre d’observations.</p>
+<div class="math">
+<p><img src="../../_images/math/1b9db1a3d19aa905d034b8c0428e556a2de9cff1.svg" alt="E=\sum_i \mathbb{1}_{y_i \neq \hat{y_i}}"/></p>
+</div><p>On note <img class="math" src="../../_images/math/aca6299a2c55ca8437c8c261e5619ed4a24b882a.svg" alt="c_{ij} = \mathbb{1}_{y_i = j}"/> et <img class="math" src="../../_images/math/c23283ab24ea478f06974871493420b84e85cc3a.svg" alt="\hat{c_{ij}} = \mathbb{1}_{\hat{y_i} = j}"/>. On note le vecteur <img class="math" src="../../_images/math/f1818a210ca77f92827e65341f4d84e56300fc68.svg" alt="C_j=(c_{ij})_i"/> et <img class="math" src="../../_images/math/72c0f14ae1cb9d964859af0db34f96e5db8c7918.svg" alt="\hat{C_j}=(\hat{c_{ij}})_i"/>. On peut réécrire l’erreur comme :</p>
+<div class="math">
+<p><img src="../../_images/math/65f457f329871fae519971ed24272e61bcfa1555.svg" alt="E=\sum_{ij} \mathbb{1}_{y_i = j} \mathbb{1}_{\hat{y_i} \neq j} =\sum_{ij} \mathbb{1}_{y_i = j} (1-\mathbb{1}_{\hat{y_i} = j})  =\sum_{ij} c_{ij} (1-\hat{c_{ij}})= \sum_j &lt; C_j , 1-\hat{C_j}&gt;"/></p>
+</div><p>C’est aussi égal à :</p>
+<div class="math">
+<p><img src="../../_images/math/c809f641b5eb1ae5d101fb7116443e3ce674cd71.svg" alt="E = \sum_{k \neq j} &lt;C_j , \hat{C_k}&gt;"/></p>
+</div><p>Et <img class="math" src="../../_images/math/349bfbe83521fb696c2bbe3596fb8d59195e9018.svg" alt="&lt;C_j,\hat{C_k}&gt;"/> correspond au nombre d’erreurs de confusion : le nombre d’éléments de la classe <img class="math" src="../../_images/math/c2ca7da683b1e0aa549bb4675efbd6008c4ffa6e.svg" alt="j"/> classés dans la classe <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>. <img class="math" src="../../_images/math/349bfbe83521fb696c2bbe3596fb8d59195e9018.svg" alt="&lt;C_j,\hat{C_k}&gt;"/> est le nombre d’éléments correctement classés dans la classe <img class="math" src="../../_images/math/c2ca7da683b1e0aa549bb4675efbd6008c4ffa6e.svg" alt="j"/>. On peut montrer que</p>
+<div class="math">
+<p><img src="../../_images/math/442b3cb86d6806f1f2ae763ef29578cc42b65141.svg" alt="\sum_{k, j} &lt;C_j , \hat{C_k}&gt; = N"/></p>
+</div><p>où <img class="math" src="../../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> est le nombre d’observations.</p>
 </section>
 <section id="Clustering">
 <h3>Clustering<a class="headerlink" href="#Clustering" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Et si nous introduisions un clustering intermédiaire. On construit <span class="math notranslate nohighlight">\(Q\)</span> cluster, <span class="math notranslate nohighlight">\(q_i\)</span> est le cluster du point <span class="math notranslate nohighlight">\(X_i\)</span> et on note <span class="math notranslate nohighlight">\(d_{il} = \mathbb{1}_{q_i = l}\)</span> et le vecteur <span class="math notranslate nohighlight">\(D_l=(d_{il})_i\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[E = \sum_{k \neq j} &lt;C_j , \hat{C_k}&gt;\]</div>
-<p>On note <span class="math notranslate nohighlight">\(X.Y\)</span> le produit terme à terme de deux vecteurs.</p>
-<div class="math notranslate nohighlight">
-\[E = \sum_{k \neq j, l } &lt;C_j.D_l , \hat{C_k}&gt; = \sum_{k \neq j, l } &lt;C_j.D_l , \hat{C_k}.D_l&gt;\]</div>
-<p>Le nombre d’erreurs est la somme des erreurs faites sur chaque cluster. Supposons maintenant qu’un classifieur retourne une réponse constante sur chacun des clusters, on choisit la classe plus représentée. Ca ressemble beaucoup à un <a class="reference external" href="http://scikit-learn.org/stable/modules/naive_bayes.html">classifieur bayésien</a>. On note <span class="math notranslate nohighlight">\(f(l)\)</span> cette classe la plus représentée. Elle vérifie :</p>
-<div class="math notranslate nohighlight">
-\[f(l) = \arg \max_j &lt;C_j,D_l&gt;\]</div>
-<p>Cela signifie que <span class="math notranslate nohighlight">\(\hat{c_{ij}} = \sum_l \mathbb{1}_{j = f(l)} d_{il}\)</span>. Si on note <span class="math notranslate nohighlight">\(l(i)\)</span> le cluster associé à <span class="math notranslate nohighlight">\(i\)</span>. On continue : <span class="math notranslate nohighlight">\(\hat{c_{ij}} = \mathbb{1}_{j = f(l(i))}\)</span>. On définit l’erreur <span class="math notranslate nohighlight">\(e(l)\)</span> l’erreur de classification faite sur chaque cluster <span class="math notranslate nohighlight">\(l\)</span> :</p>
-<div class="math notranslate nohighlight">
-\[e(l) = \sum_i d_{il}\sum_j c_{ij} (1-\mathbb{1}_{j = f(l)}) = \sum_i d_{il}\left(\sum_j c_{ij} -\sum_j c_{ij}\mathbb{1}_{j = f(l)}\right) = \sum_i d_{il}\left(1 -c_{i,f(l)}\right)= \sum_i d_{il} -\sum_i d_{il}c_{i,f(l)}\]</div>
-<p>Pour résumer, l’erreur est le nombre d’éléments moins le nombre d’éléments dans la classe majoritaire du cluster. Si le nombre de clusters <span class="math notranslate nohighlight">\(Q\)</span> devient supérieur ou égal au nombre d’observations, cette erreur devient nulle.</p>
+<p>Et si nous introduisions un clustering intermédiaire. On construit <img class="math" src="../../_images/math/f1684ba112ca809c951a79c74b133785f6bd3b93.svg" alt="Q"/> cluster, <img class="math" src="../../_images/math/7658fac56197f48af7997489b46e9cd9baa5d509.svg" alt="q_i"/> est le cluster du point <img class="math" src="../../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> et on note <img class="math" src="../../_images/math/5e4e2be63c2785d395b2d5785a106fef69a0f40a.svg" alt="d_{il} = \mathbb{1}_{q_i = l}"/> et le vecteur <img class="math" src="../../_images/math/74906a43f545106141d8cf5fa137478a1b407fa8.svg" alt="D_l=(d_{il})_i"/>.</p>
+<div class="math">
+<p><img src="../../_images/math/c809f641b5eb1ae5d101fb7116443e3ce674cd71.svg" alt="E = \sum_{k \neq j} &lt;C_j , \hat{C_k}&gt;"/></p>
+</div><p>On note <img class="math" src="../../_images/math/651b87e7c68aa50ce6530972902eb6537d2703ea.svg" alt="X.Y"/> le produit terme à terme de deux vecteurs.</p>
+<div class="math">
+<p><img src="../../_images/math/e8af071999edd210de749e3db41ca4c62c193654.svg" alt="E = \sum_{k \neq j, l } &lt;C_j.D_l , \hat{C_k}&gt; = \sum_{k \neq j, l } &lt;C_j.D_l , \hat{C_k}.D_l&gt;"/></p>
+</div><p>Le nombre d’erreurs est la somme des erreurs faites sur chaque cluster. Supposons maintenant qu’un classifieur retourne une réponse constante sur chacun des clusters, on choisit la classe plus représentée. Ca ressemble beaucoup à un <a class="reference external" href="http://scikit-learn.org/stable/modules/naive_bayes.html">classifieur bayésien</a>. On note <img class="math" src="../../_images/math/057dbd0598310e585427e69ba9d47a40550e0ca8.svg" alt="f(l)"/> cette classe la plus représentée. Elle vérifie :</p>
+<div class="math">
+<p><img src="../../_images/math/57b1d39184abe073c0621804741acad62312e534.svg" alt="f(l) = \arg \max_j &lt;C_j,D_l&gt;"/></p>
+</div><p>Cela signifie que <img class="math" src="../../_images/math/e79bdd5a1defc5e1c1cc43da7d7379ed011de10d.svg" alt="\hat{c_{ij}} = \sum_l \mathbb{1}_{j = f(l)} d_{il}"/>. Si on note <img class="math" src="../../_images/math/033b11de79bf601f668a7470be2ca1b86cf8a06a.svg" alt="l(i)"/> le cluster associé à <img class="math" src="../../_images/math/6c9c36eeb0679ad71efe34ded19d79168983fb38.svg" alt="i"/>. On continue : <img class="math" src="../../_images/math/4a60446ce19c8e61c8a82f0a624b0bffeee68cbd.svg" alt="\hat{c_{ij}} = \mathbb{1}_{j = f(l(i))}"/>. On définit l’erreur <img class="math" src="../../_images/math/256a6d24ff4ff5ca9a67bb7f0d11d9fc4578f512.svg" alt="e(l)"/> l’erreur de classification faite sur chaque cluster <img class="math" src="../../_images/math/b40d7de3530507b378090edb54198bdc06e33be9.svg" alt="l"/> :</p>
+<div class="math">
+<p><img src="../../_images/math/e44f7ebb30005282f8c04c140d6a3f7383416294.svg" alt="e(l) = \sum_i d_{il}\sum_j c_{ij} (1-\mathbb{1}_{j = f(l)}) = \sum_i d_{il}\left(\sum_j c_{ij} -\sum_j c_{ij}\mathbb{1}_{j = f(l)}\right) = \sum_i d_{il}\left(1 -c_{i,f(l)}\right)= \sum_i d_{il} -\sum_i d_{il}c_{i,f(l)}"/></p>
+</div><p>Pour résumer, l’erreur est le nombre d’éléments moins le nombre d’éléments dans la classe majoritaire du cluster. Si le nombre de clusters <img class="math" src="../../_images/math/f1684ba112ca809c951a79c74b133785f6bd3b93.svg" alt="Q"/> devient supérieur ou égal au nombre d’observations, cette erreur devient nulle.</p>
 </section>
 </section>
 <section id="Mise-en-pratique">

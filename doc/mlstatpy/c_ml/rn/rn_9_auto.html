@@ -45,8 +45,6 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/rn/rn_9_auto';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -586,9 +584,9 @@ avec des modèles non linéaires.</p>
 <p>subsection{Principe}</p>
 <p>L’algorithme implémentant l’analyse en composantes principales
 est basé sur un réseau linéaire dit <em>« diabolo »</em>, ce réseau
-possède une couche d’entrées à <span class="math notranslate nohighlight">\(N\)</span> entrées, une couche cachée et une couche
-de sortie à <span class="math notranslate nohighlight">\(N\)</span> sorties. L’objectif est
-d’apprendre la fonction identité sur l’espace <span class="math notranslate nohighlight">\(\R^N\)</span>.
+possède une couche d’entrées à <img class="math" src="../../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> entrées, une couche cachée et une couche
+de sortie à <img class="math" src="../../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> sorties. L’objectif est
+d’apprendre la fonction identité sur l’espace <img class="math" src="../../_images/math/cd812dcc80d48ccbacc00d59d47335f43339484f.svg" alt="\R^N"/>.
 Ce ne sont plus les sorties qui nous intéressent mais la couche
 cachée intermédiaire qui effectue une compression ou projection
 des vecteurs d’entrées puisque les entrées et les
@@ -597,8 +595,8 @@ sorties du réseau auront pour but d’être identiques.</p>
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="figure-rn-acp-fig">Figure F1 : Principe de la compression par un réseau diabolo</p>
-<div class="math notranslate nohighlight">
-\begin{picture}(241,100)(0,-10)
+<div class="math">
+<p><img src="../../_images/math/d58e768969e112d472cec2a659fa7561635c83b3.svg" alt="\begin{picture}(241,100)(0,-10)
 
 \put(1,1)   {\framebox(40,22){\footnotesize \begin{tabular}{c}vecteur \\ $X \in \R^N$ \end{tabular}}}
 \put(85,-9)  {\framebox(45,32){\footnotesize \begin{tabular}{c}vecteur \\ $Y \in \R^M$ \\ et $M &lt; N$ \end{tabular}}}
@@ -619,15 +617,16 @@ sorties du réseau auront pour but d’être identiques.</p>
 \put(90,39) {\vector(1,-1){17}}
 \put(190,39) {\vector(1,-1){17}}
 
-\end{picture}</div></div>
-<p>La figure suivante illustre un exemple de compression de vecteur de <span class="math notranslate nohighlight">\(\R^3\)</span>
-dans <span class="math notranslate nohighlight">\(\R^2\)</span>.</p>
+\end{picture}"/></p>
+</div></div>
+<p>La figure suivante illustre un exemple de compression de vecteur de <img class="math" src="../../_images/math/e028441775c2f8b414d23ebfe719359a0379d1dd.svg" alt="\R^3"/>
+dans <img class="math" src="../../_images/math/a18e789be48f7a5bcbba38b8e9b81f58bbe5229d.svg" alt="\R^2"/>.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Figure1">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="figure-rn-acp-exemple">Figure F2 : Réseau diabolo : réduction d’une dimension</p>
-<div class="math notranslate nohighlight">
-\begin{picture}(130,75)(0,0)
+<div class="math">
+<p><img src="../../_images/math/3e07234566b7a7ef49986fd78590d542b73c5dee.svg" alt="\begin{picture}(130,75)(0,0)
 
 \put(20,10) {\circle{20}}
 \put(20,40) {\circle{20}}
@@ -667,8 +666,9 @@ dans <span class="math notranslate nohighlight">\(\R^2\)</span>.</p>
 \drawline(75,55)(100,40)
 \drawline(75,55)(100,70)
 
-\end{picture}</div><p>Ce réseau possède 3 entrées et 3 sorties
-Minimiser l’erreur <span class="math notranslate nohighlight">\(\sum_{k=1}^N E\left(  X_{k},X_{k}\right)\)</span>
+\end{picture}"/></p>
+</div><p>Ce réseau possède 3 entrées et 3 sorties
+Minimiser l’erreur <img class="math" src="../../_images/math/c58cd6b362d0024c43d80f37d3334279c6a8fcc7.svg" alt="\sum_{k=1}^N E\left(  X_{k},X_{k}\right)"/>
 revient à compresser un vecteur de dimension 3 en un vecteur de dimension 2.
 Les coefficients de la
 première couche du réseau de neurones permettent de compresser les données.
@@ -687,31 +687,32 @@ Dans le cas de l’ACP, la compression est <em>« linéaire »</em>, c’est u
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="problem-acp">Problème P1 : analyse en composantes principales (ACP)</p>
-<p>Soit <span class="math notranslate nohighlight">\(\pa{X_i}_{1 \infegal i \infegal N}\)</span> avec <span class="math notranslate nohighlight">\(\forall i \in \ensemble{1}{N},
-\; X_i \in \R^p\)</span>.
-Soit <span class="math notranslate nohighlight">\(W \in M_{p,d}\pa{\R}\)</span>, <span class="math notranslate nohighlight">\(W = \vecteur{C_1}{C_d}\)</span>
-où les vecteurs <span class="math notranslate nohighlight">\(\pa{C_i}\)</span>
-sont les colonnes de <span class="math notranslate nohighlight">\(W\)</span> et <span class="math notranslate nohighlight">\(d &lt; p\)</span>.
-On suppose également que les <span class="math notranslate nohighlight">\(\pa{C_i}\)</span> forment une base othonormée.
+<p>Soit <img class="math" src="../../_images/math/00dd3b4fd33cae92bbef5deabaf91b05055161b6.svg" alt="\pa{X_i}_{1 \infegal i \infegal N}"/> avec <img class="math" src="../../_images/math/41bd6aa9dfa35a9f5cb5454ddb3dad299d75f6fe.svg" alt="\forall i \in \ensemble{1}{N},
+\; X_i \in \R^p"/>.
+Soit <img class="math" src="../../_images/math/66f878524ad1bd684ecd4edb28c08fba381f9624.svg" alt="W \in M_{p,d}\pa{\R}"/>, <img class="math" src="../../_images/math/3d6763db94356af2543fbe01842e42c447bb6e2c.svg" alt="W = \vecteur{C_1}{C_d}"/>
+où les vecteurs <img class="math" src="../../_images/math/936d7096b7463912deba16fb988dcda0ccfd54fa.svg" alt="\pa{C_i}"/>
+sont les colonnes de <img class="math" src="../../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/> et <img class="math" src="../../_images/math/36f51f0e5becd76a0496c70189796312585985f3.svg" alt="d &lt; p"/>.
+On suppose également que les <img class="math" src="../../_images/math/936d7096b7463912deba16fb988dcda0ccfd54fa.svg" alt="\pa{C_i}"/> forment une base othonormée.
 Par conséquent :</p>
-<div class="math notranslate nohighlight">
-\[W'W = I_d\]</div>
-<p><span class="math notranslate nohighlight">\(\pa{W'X_i}_{1 \infegal i \infegal N}\)</span> est l’ensemble des
-vecteurs <span class="math notranslate nohighlight">\(\pa{X_i}\)</span> projetés sur le sous-espace vectoriel
-engendré par les vecteurs <span class="math notranslate nohighlight">\(\pa{C_i}\)</span>.
+<div class="math">
+<p><img src="../../_images/math/81b070da7ecb461e905f9f4be735a7b968c571d7.svg" alt="W'W = I_d"/></p>
+</div><p><img class="math" src="../../_images/math/20237aad5bd659488b1ca4b7743f0c452a427194.svg" alt="\pa{W'X_i}_{1 \infegal i \infegal N}"/> est l’ensemble des
+vecteurs <img class="math" src="../../_images/math/146d79ee1ed6c74315411e2c3f72f53fe19ae507.svg" alt="\pa{X_i}"/> projetés sur le sous-espace vectoriel
+engendré par les vecteurs <img class="math" src="../../_images/math/936d7096b7463912deba16fb988dcda0ccfd54fa.svg" alt="\pa{C_i}"/>.
 Réaliser une analyse en composantes principales, c’est trouver le
 meilleur plan de projection pour les vecteurs
-<span class="math notranslate nohighlight">\(\pa{X_i}\)</span>, celui qui maximise l’inertie de ce nuage de points,
-c’est donc trouver <span class="math notranslate nohighlight">\(W^*\)</span> tel que :</p>
-<div class="math notranslate nohighlight" id="equation-rn-equation-acp-error">
-\begin{eqnarray*}
+<img class="math" src="../../_images/math/146d79ee1ed6c74315411e2c3f72f53fe19ae507.svg" alt="\pa{X_i}"/>, celui qui maximise l’inertie de ce nuage de points,
+c’est donc trouver <img class="math" src="../../_images/math/4d4f4910fb33f542260bd4f5593ffb800c330e49.svg" alt="W^*"/> tel que :</p>
+<div class="math" id="equation-rn-equation-acp-error">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-rn-equation-acp-error" title="Lien permanent vers cette équation">#</a></span><img src="../../_images/math/01eb153ded542d8467a8a5f241864fa0cba0da28.svg" alt="\begin{eqnarray*}
 W^* &amp;=&amp; \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} }
                                     { \arg \max } \; E\pa{W}
     =  \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
                     \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 }
-\end{eqnarray*}</div><p>Le terme <span class="math notranslate nohighlight">\(E\pa{W}\)</span> est l’inertie du nuage de points <span class="math notranslate nohighlight">\(\pa{X_i}\)</span>
+\end{eqnarray*}"/></p>
+</div><p>Le terme <img class="math" src="../../_images/math/dd1ae49ba41cce059d20a1b88a25aac2f5f49ddc.svg" alt="E\pa{W}"/> est l’inertie du nuage de points <img class="math" src="../../_images/math/146d79ee1ed6c74315411e2c3f72f53fe19ae507.svg" alt="\pa{X_i}"/>
 projeté sur le sous-espace vectoriel défini par les
-vecteurs colonnes de la matrice <span class="math notranslate nohighlight">\(W\)</span>.</p>
+vecteurs colonnes de la matrice <img class="math" src="../../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/>.</p>
 </div>
 </section>
 <section id="resolution-d-une-acp-avec-un-reseau-de-neurones-diabolo">
@@ -725,39 +726,40 @@ afin de passer d’une optimisation sous contrainte à une optimisation sans con
 <p class="admonition-title" id="theorem-acp-resolution">Théorème T1 : résolution de l’ACP</p>
 <p>Les notations utilisées sont celles du problème de l”<a class="reference internal" href="#problem-acp"><span class="std std-ref">ACP</span></a>.
 Dans ce cas :</p>
-<div class="math notranslate nohighlight" id="equation-rn-acp-contrainte">
-\begin{eqnarray*}
+<div class="math" id="equation-rn-acp-contrainte">
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-rn-acp-contrainte" title="Lien permanent vers cette équation">#</a></span><img src="../../_images/math/8fabc1a2f4633caf8ffe2665655402618f2bd574.svg" alt="\begin{eqnarray*}
 S =
 \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
                     \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 } &amp;=&amp;
 \underset{ W \in M_{p,d}\pa{\R} } { \arg \min } \;  \cro { \sum_{i=1}^{N} \norm{WW'X_i - X_i}^2 }
-\end{eqnarray*}</div><p>De plus <span class="math notranslate nohighlight">\(S\)</span> est l’espace vectoriel engendré par les <span class="math notranslate nohighlight">\(d\)</span>
+\end{eqnarray*}"/></p>
+</div><p>De plus <img class="math" src="../../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> est l’espace vectoriel engendré par les <img class="math" src="../../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/>
 vecteurs propres de la matrice
-<span class="math notranslate nohighlight">\(XX' = \sum_{i=1}^{N} X_i X_i'\)</span> associées aux
-<span class="math notranslate nohighlight">\(d\)</span> valeurs propres de plus grand module.</p>
+<img class="math" src="../../_images/math/6f68f090726441eda65e675d45b3d6fd6482d965.svg" alt="XX' = \sum_{i=1}^{N} X_i X_i'"/> associées aux
+<img class="math" src="../../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/> valeurs propres de plus grand module.</p>
 </div>
 <p><strong>Démonstration</strong></p>
 <p><em>Partie 1</em></p>
 <p>L’objectif de cette partie est de chercher la valeur de :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; E\pa{W}\end{split}\]</div>
-<p>Soit <span class="math notranslate nohighlight">\(X=\vecteur{X_1}{X_N} \in \pa{\R^p}^N\)</span>, alors :</p>
-<div class="math notranslate nohighlight">
-\[E\pa{W} = \sum_{i=1}^{N} \norm{W'X_i}^2 = \trace{X'WW'X} = \trace{XX'WW'}\]</div>
-<p>La matrice <span class="math notranslate nohighlight">\(XX'\)</span> est symétrique, elle est donc diagonalisable
-et il existe une matrice <span class="math notranslate nohighlight">\(P \in M_p\pa{\R}:math:\)</span> telle qu :</p>
-<div class="math notranslate nohighlight" id="equation-acp-equation-memo-1">
-<span class="eqno">(3)<a class="headerlink" href="#equation-acp-equation-memo-1" title="Lien permanent vers cette équation">#</a></span>\[\begin{split}\begin{array}{l}
+<div class="math">
+<p><img src="../../_images/math/acc38adfffb86e4d2b6de40f67a50f9f9e9e8d09.svg" alt="\underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; E\pa{W}"/></p>
+</div><p>Soit <img class="math" src="../../_images/math/40c7c422b8c62f2bc226277242346b1e311a4ddb.svg" alt="X=\vecteur{X_1}{X_N} \in \pa{\R^p}^N"/>, alors :</p>
+<div class="math">
+<p><img src="../../_images/math/1df2d2305f2951d4056c83082338fbadeb18a5f0.svg" alt="E\pa{W} = \sum_{i=1}^{N} \norm{W'X_i}^2 = \trace{X'WW'X} = \trace{XX'WW'}"/></p>
+</div><p>La matrice <img class="math" src="../../_images/math/b76263214f71739be5bb4c2908eef6c70f655fb3.svg" alt="XX'"/> est symétrique, elle est donc diagonalisable
+et il existe une matrice <img class="math" src="../../_images/math/d47c92f3b5a08bf4e83eb230a5811f5cad3d39f4.svg" alt="P \in M_p\pa{\R}:math:"/> telle qu :</p>
+<div class="math" id="equation-acp-equation-memo-1">
+<p><span class="eqno">(3)<a class="headerlink" href="#equation-acp-equation-memo-1" title="Lien permanent vers cette équation">#</a></span><img src="../../_images/math/cdfbfaccae21acad8ced266c9a4331fe4ff9e8ad.svg" alt="\begin{array}{l}
 P'XX'P = D_X \text{ avec } D_X \text{ diagonale} \\
 P'P = I_p
-\end{array}\end{split}\]</div>
-<p>Soit <span class="math notranslate nohighlight">\(P = \vecteur{P_1}{P_p}\)</span> les vecteurs propres de la matrice
-<span class="math notranslate nohighlight">\(XX'\)</span> associés aux valeurs propres
-<span class="math notranslate nohighlight">\(\vecteur{\lambda_1}{\lambda_p}\)</span> telles que
-<span class="math notranslate nohighlight">\(\abs{\lambda_1} \supegal ... \supegal \abs{\lambda_p}\)</span>.
-Pour mémoire, <span class="math notranslate nohighlight">\(W = \vecteur{C_1}{C_d}\)</span>, et on a :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{l}
+\end{array}"/></p>
+</div><p>Soit <img class="math" src="../../_images/math/a97ce923a5682ce2fe0ca375711968c170783b29.svg" alt="P = \vecteur{P_1}{P_p}"/> les vecteurs propres de la matrice
+<img class="math" src="../../_images/math/b76263214f71739be5bb4c2908eef6c70f655fb3.svg" alt="XX'"/> associés aux valeurs propres
+<img class="math" src="../../_images/math/efd89499045b35fe06445c5b87f781821fc1779a.svg" alt="\vecteur{\lambda_1}{\lambda_p}"/> telles que
+<img class="math" src="../../_images/math/69a7d540ad993cee780d225990ed06d7b5d63d5c.svg" alt="\abs{\lambda_1} \supegal ... \supegal \abs{\lambda_p}"/>.
+Pour mémoire, <img class="math" src="../../_images/math/3d6763db94356af2543fbe01842e42c447bb6e2c.svg" alt="W = \vecteur{C_1}{C_d}"/>, et on a :</p>
+<div class="math">
+<p><img src="../../_images/math/e6ee94b918e59fb526535806ba082e2bfb316f7d.svg" alt="\begin{array}{l}
 \forall i \in \ensemble{1}{p}, \; XX'P_i = \lambda_i P_i \\
 \forall i \in \ensemble{1}{d}, \; C_i = P_i \Longrightarrow XX'WW' = D_{X,d} = \pa{
                                                     \begin{array}{ccc}
@@ -766,64 +768,68 @@ Pour mémoire, <span class="math notranslate nohighlight">\(W = \vecteur{C_1}{C_
                                                     0 &amp; 0 &amp; \lambda_d
                                                     \end{array}
                                                     }
-\end{array}\end{split}\]</div>
-<p>D’où :</p>
-<div class="math notranslate nohighlight">
-\[E\pa{W} = \trace{ XX'WW' } = \trace{P D_X P' WW'} = \trace{ D_X P'WW'P }\]</div>
-<p>Donc :</p>
-<div class="math notranslate nohighlight" id="equation-acp-demo-partie-a">
-\begin{eqnarray*}
+\end{array}"/></p>
+</div><p>D’où :</p>
+<div class="math">
+<p><img src="../../_images/math/eb26a35700a60ca499ed8db216b40a2be6ba0953.svg" alt="E\pa{W} = \trace{ XX'WW' } = \trace{P D_X P' WW'} = \trace{ D_X P'WW'P }"/></p>
+</div><p>Donc :</p>
+<div class="math" id="equation-acp-demo-partie-a">
+<p><span class="eqno">(4)<a class="headerlink" href="#equation-acp-demo-partie-a" title="Lien permanent vers cette équation">#</a></span><img src="../../_images/math/8f3db171b944ab76fb6a138009e9700387d440cf.svg" alt="\begin{eqnarray*}
 \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; E\pa{W} =
         \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\;
             \trace{ D_X P'WW'P }
 = \underset{ \begin{subarray}{c} Y \in M_{p,d}\pa{\R} \\ Y'Y = I_d \end{subarray} } { \max }\; \trace{ D_X YY'
             }
 = \sum_{i=1}{d} \lambda_i
-\end{eqnarray*}</div><p><em>Partie 2</em></p>
-<p>Soit <span class="math notranslate nohighlight">\(Y \in \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; \trace{X'WW'X}\)</span>,
-<span class="math notranslate nohighlight">\(Y = \vecteur{Y_1}{Y_d} = \pa{y_i^k}_{ \begin{subarray}{c} 1 \infegal i \infegal d \\ 1 \infegal k \infegal p \end{subarray} }\)</span>.</p>
-<p>Chaque vecteur <span class="math notranslate nohighlight">\(Y_i\)</span> est écrit dans la base
-<span class="math notranslate nohighlight">\(\vecteur{P_1}{P_p}\)</span> définie en <a class="reference internal" href="#equation-acp-equation-memo-1">(3)</a> :</p>
-<div class="math notranslate nohighlight">
-\[\forall i \in \ensemble{1}{d}, \; Y_i = \sum_{k=1}^{p} y_i^k P_p\]</div>
-<p>Comme <span class="math notranslate nohighlight">\(Y'Y = I_d\)</span>, les vecteurs <span class="math notranslate nohighlight">\(\vecteur{Y_1}{Y_d}\)</span>
+\end{eqnarray*}"/></p>
+</div><p><em>Partie 2</em></p>
+<p>Soit <img class="math" src="../../_images/math/c122abc1cc8c5474723523dfd5abbaf445f8e27b.svg" alt="Y \in \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; \trace{X'WW'X}"/>,
+<img class="math" src="../../_images/math/05ea8513dc3f10b038e5c2cd9c48687c4e75d1db.svg" alt="Y = \vecteur{Y_1}{Y_d} = \pa{y_i^k}_{ \begin{subarray}{c} 1 \infegal i \infegal d \\ 1 \infegal k \infegal p \end{subarray} }"/>.</p>
+<p>Chaque vecteur <img class="math" src="../../_images/math/e63ad1df0bd53729398b2396d31657f135c528dc.svg" alt="Y_i"/> est écrit dans la base
+<img class="math" src="../../_images/math/ef4bcbd25fba7bd017133088bc0f477f4191e02d.svg" alt="\vecteur{P_1}{P_p}"/> définie en <a class="reference internal" href="#equation-acp-equation-memo-1">(3)</a> :</p>
+<div class="math">
+<p><img src="../../_images/math/993ea1556038b014dc7968f6ad62324fab0d95fa.svg" alt="\forall i \in \ensemble{1}{d}, \; Y_i = \sum_{k=1}^{p} y_i^k P_p"/></p>
+</div><p>Comme <img class="math" src="../../_images/math/eac72bc5b8945e8b589b6df52c5f99eadcc786ca.svg" alt="Y'Y = I_d"/>, les vecteurs <img class="math" src="../../_images/math/6d69e82fdd19b5c00eebd41b37529702680bac16.svg" alt="\vecteur{Y_1}{Y_d}"/>
 sont orthogonaux deux à deux et normés, ils vérifient donc :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\left\{
+<div class="math">
+<p><img src="../../_images/math/8d25eb41ed3d5afaa36dfee1d055592bc340fd59.svg" alt="\left\{
 \begin{array}{rl}
 \forall i \in \ensemble{1}{d},          &amp; \sum_{k=1}^{p} \pa{y_i^k}^2 = 1 \\
 \forall \pa{i,j} \in \ensemble{1}{d}^2, &amp; \sum_{k=1}^{p} y_i^k y_j^k = 0
 \end{array}
-\right.\end{split}\]</div>
-<p>De plus :</p>
-<div class="math notranslate nohighlight">
-\[XX'YY' = XX' \pa{ \sum_{i=1}^{d} Y_i Y_i'} =   \sum_{i=1}^{d} XX' Y_i Y_i'\]</div>
-<p>On en déduit que :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\right."/></p>
+</div><p>De plus :</p>
+<div class="math">
+<p><img src="../../_images/math/dcf868580989a5aec0eabfb8c42d6a1c7364288a.svg" alt="XX'YY' = XX' \pa{ \sum_{i=1}^{d} Y_i Y_i'} =   \sum_{i=1}^{d} XX' Y_i Y_i'"/></p>
+</div><p>On en déduit que :</p>
+<div class="math">
+<p><img src="../../_images/math/56fc92391d164c251959a7f9819359649373a7c8.svg" alt="\begin{eqnarray*}
 \forall i \in \ensemble{1}{d}, \; XX' Y_i Y'_i
             &amp;=&amp; XX' \pa{ \sum_{k=1}^{p} y_i^k P_k }\pa{ \sum_{k=1}^{p} y_i^k P_k }' \\
             &amp;=&amp; \pa{ \sum_{k=1}^{p} \lambda_k y_i^k P_k }\pa{ \sum_{k=1}^{p} y_i^k P_k }'
-\end{eqnarray*}</div><p>D’où :</p>
-<div class="math notranslate nohighlight">
-\[\forall i \in \ensemble{1}{d}, \; \trace{ XX' Y_i Y'_i} = \sum_{k=1}^{p} \lambda_k \pa{y_i^k}^2\]</div>
-<p>Et :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>D’où :</p>
+<div class="math">
+<p><img src="../../_images/math/e39c35998590e157d317a0d9f86ebd8bd8ca5423.svg" alt="\forall i \in \ensemble{1}{d}, \; \trace{ XX' Y_i Y'_i} = \sum_{k=1}^{p} \lambda_k \pa{y_i^k}^2"/></p>
+</div><p>Et :</p>
+<div class="math">
+<p><img src="../../_images/math/6306323c2db7707a55c734f50e331b53e818b8b4.svg" alt="\begin{eqnarray*}
 \trace{ XX' YY'} &amp;=&amp; \sum_{i=1}^{d} \sum_{k=1}^{p} \lambda_k \pa{y_i^k}^2 \\
 \trace{ XX' YY'} &amp;=&amp; \sum_{k=1}^{p} \lambda_k \pa {\sum_{i=1}^{d} \pa{y_i^k}^2} =
                 \sum_{k=1}^{p} \; \lambda_k
-\end{eqnarray*}</div><p>Ceci permet d’affirmer que :</p>
-<div class="math notranslate nohighlight" id="equation-acp-demo-partie-b">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>Ceci permet d’affirmer que :</p>
+<div class="math" id="equation-acp-demo-partie-b">
+<p><span class="eqno">(5)<a class="headerlink" href="#equation-acp-demo-partie-b" title="Lien permanent vers cette équation">#</a></span><img src="../../_images/math/5a353bc76fe39bb894663f043caa5742ece244d5.svg" alt="\begin{eqnarray*}
 Y \in \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\;
             \trace{X'WW'X}  \Longrightarrow
 vect \vecteur{Y_1}{Y_d} = vect \vecteur{P_1}{P_d}
-\end{eqnarray*}</div><p>Les équations <a class="reference internal" href="#equation-acp-demo-partie-a">(4)</a> et <a class="reference internal" href="#equation-acp-demo-partie-b">(5)</a> démontrent la seconde partie du
+\end{eqnarray*}"/></p>
+</div><p>Les équations <a class="reference internal" href="#equation-acp-demo-partie-a">(4)</a> et <a class="reference internal" href="#equation-acp-demo-partie-b">(5)</a> démontrent la seconde partie du
 théorème.</p>
 <p><em>Partie 3</em></p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../../_images/math/7411d3dc7e372bcdac7fcc40d02997a40ff9ae9b.svg" alt="\begin{eqnarray*}
 \sum_{i=1}^n \left\|  WW^{\prime}X_{i}-X_{i}\right\|^{2} &amp;=&amp;
 \sum_{i=1}^n \left\|
     \left(  WW^{\prime} -I_{N}\right)  X_{i}\right\|  ^{2} \\
@@ -832,127 +838,133 @@ théorème.</p>
 &amp;=&amp; tr\left(  XX^{\prime}\left(  WW^{\prime}WW^{\prime}-2WW^{\prime}+I_{p}\right)  \right) \\
 &amp;=&amp; tr\left(  XX^{\prime}\left(  -WW^{\prime} +I_{p}\right)  \right) \\
 &amp;=&amp; -tr\left(  XX^{\prime}WW^{\prime}\right)  +tr\left(XX^{\prime}\right)
-\end{eqnarray*}</div><p>D’où :</p>
-<div class="math notranslate nohighlight" id="equation-acp-demo-partie-c">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>D’où :</p>
+<div class="math" id="equation-acp-demo-partie-c">
+<p><span class="eqno">(6)<a class="headerlink" href="#equation-acp-demo-partie-c" title="Lien permanent vers cette équation">#</a></span><img src="../../_images/math/79c1c1e895f46a2e6bff4b97e6dfedda615b7ca7.svg" alt="\begin{eqnarray*}
 \underset{ \begin{subarray} \, W \in M_{p,d} \pa{\R} \\
                         W'W=I_d \end{subarray}} { \; \max \; } \;  \pa {  \sum_{i=1}^{N} \norm{ W'X_i}^2 }  =
 \underset{ \begin{subarray} \, W \in M_{p,d} \pa{\R} \\
                         W'W=I_d \end{subarray}} { \; \min \; } \;  \pa {  \sum_{i=1}^{N} \norm{ WW'X_i - X_i}^2 }
-\end{eqnarray*}</div><p><em>Partie 4</em></p>
-<p><span class="math notranslate nohighlight">\(XX'\)</span> est une matrice symétrique, elle est donc diagonalisable :</p>
-<div class="math notranslate nohighlight">
-\[\exists P\in GL_N \pa{\R}  \text{ telle que } P'XX'P=D_p \text{ où } D_p \text{ est diagonale}\]</div>
-<p>On en déduit que :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p><em>Partie 4</em></p>
+<p><img class="math" src="../../_images/math/b76263214f71739be5bb4c2908eef6c70f655fb3.svg" alt="XX'"/> est une matrice symétrique, elle est donc diagonalisable :</p>
+<div class="math">
+<p><img src="../../_images/math/333edc0b491b5383488f31e9426ac3b5097952e6.svg" alt="\exists P\in GL_N \pa{\R}  \text{ telle que } P'XX'P=D_p \text{ où } D_p \text{ est diagonale}"/></p>
+</div><p>On en déduit que :</p>
+<div class="math">
+<p><img src="../../_images/math/42d88a4e83c96d3aa7b3d9ed18981fde6d146d76.svg" alt="\begin{eqnarray*}
     \sum_{i=1}^{N} \norm{  WW' X_i - X_i }^2
 &amp;=&amp; \trace{ XX' \pa{ WW'-I_p }^{2} } \\
 &amp;=&amp; \trace{ PP' XX' PP' \pa{ WW'-I_p }^{2} } \\
 &amp;=&amp; \trace{ P D_p P' \pa{ WW'-I_p }^{2} } \\
 &amp;=&amp; \trace{ D_p \pa{ P'WW'P-I_p }^{2} } \\
 &amp;=&amp; \trace{ D_p \pa{ YY'-I_p }^{2} } \text{ avec } Y = P'W
-\end{eqnarray*}</div><p>D’où :</p>
-<div class="math notranslate nohighlight" id="equation-acp-demo-partie-d">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>D’où :</p>
+<div class="math" id="equation-acp-demo-partie-d">
+<p><span class="eqno">(7)<a class="headerlink" href="#equation-acp-demo-partie-d" title="Lien permanent vers cette équation">#</a></span><img src="../../_images/math/e80d3f4feccd5deb88f9376ada77d8b28e6eb119.svg" alt="\begin{eqnarray*}
 \underset{Y}{\arg\min}\acc{ tr\left(  D_{p}\left( YY^{\prime}-I_{p}\right)  ^{2}\right)}  = \left\{  Y\in
 M_{Nd}\left( \R\right) \left|
     YY^{\prime}=I_{d}\right.  \right\}
-\end{eqnarray*}</div><p>Finalement, l’équation <a class="reference internal" href="#equation-acp-demo-partie-d">(7)</a> permet de démontrer la
+\end{eqnarray*}"/></p>
+</div><p>Finalement, l’équation <a class="reference internal" href="#equation-acp-demo-partie-d">(7)</a> permet de démontrer la
 première partie du théorème, à savoir <a class="reference internal" href="#equation-rn-acp-contrainte">(2)</a> :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../../_images/math/8fabc1a2f4633caf8ffe2665655402618f2bd574.svg" alt="\begin{eqnarray*}
 S =
 \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
                     \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 } &amp;=&amp;
 \underset{ W \in M_{p,d}\pa{\R} } { \arg \min } \;  \cro { \sum_{i=1}^{N} \norm{WW'X_i - X_i}^2 }
-\end{eqnarray*}</div></section>
+\end{eqnarray*}"/></p>
+</div></section>
 <section id="calcul-de-valeurs-propres-et-de-vecteurs-propres">
 <span id="par-acp-deux"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Calcul de valeurs propres et de vecteurs propres</a><a class="headerlink" href="#calcul-de-valeurs-propres-et-de-vecteurs-propres" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Le calcul des valeurs propres et des vecteurs propres d’une
 matrice fait intervenir un réseau diabolo composé d’une
 seule couche cachée et d’une couche de sortie avec des fonctions
 de transfert linéaires. On note sous forme de matrice
-<span class="math notranslate nohighlight">\(\left( W\right)\)</span> les coefficients de la seconde couche
-du réseau dont les biais sont nuls. On note <span class="math notranslate nohighlight">\(d\)</span> le nombre de
-neurones sur la couche cachée, et <span class="math notranslate nohighlight">\(p\)</span> le nombre d’entrées.</p>
-<div class="math notranslate nohighlight">
-\[\forall i\in\left\{  1,...,d\right\}  ,\,y_{1,i}=\sum_{j=1}^p w_{ji}x_{j}\]</div>
-<p>Soit <span class="math notranslate nohighlight">\(X\in\R^{p}\)</span> les entrées,
-<span class="math notranslate nohighlight">\(Y=\left(  y_{1,1},...,y_{1,d}\right)  \in\R^{d}\)</span>,
-on obtient que : <span class="math notranslate nohighlight">\(Y=W'X\)</span>.</p>
+<img class="math" src="../../_images/math/6ae0c608efe99af7882579d9221a8fcf45168f7f.svg" alt="\left( W\right)"/> les coefficients de la seconde couche
+du réseau dont les biais sont nuls. On note <img class="math" src="../../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/> le nombre de
+neurones sur la couche cachée, et <img class="math" src="../../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> le nombre d’entrées.</p>
+<div class="math">
+<p><img src="../../_images/math/211afeb19425487b1e93565fdc1d5961043b1b5f.svg" alt="\forall i\in\left\{  1,...,d\right\}  ,\,y_{1,i}=\sum_{j=1}^p w_{ji}x_{j}"/></p>
+</div><p>Soit <img class="math" src="../../_images/math/dc31ba1c30d6ef18b64ea38dfe443a36d75699be.svg" alt="X\in\R^{p}"/> les entrées,
+<img class="math" src="../../_images/math/3ce3c8102e44ecbbd03903b016916d5058fbfb0e.svg" alt="Y=\left(  y_{1,1},...,y_{1,d}\right)  \in\R^{d}"/>,
+on obtient que : <img class="math" src="../../_images/math/2da8384549d0c2dc84e4fe5ba135a398cd722807.svg" alt="Y=W'X"/>.</p>
 <p>Les poids de la seconde couche sont définis comme suit :</p>
-<div class="math notranslate nohighlight">
-\[\forall\left( i,j\right)  \in\left\{  1,...,p\right\}  \times\left\{ 1,...,d\right\} \,w_{2,j,i}=w_{1,i,j}\]</div>
-<p>Par conséquent, le vecteur des sorties <span class="math notranslate nohighlight">\(Z\in\R^{p}\)</span>
-du réseau ainsi construit est <span class="math notranslate nohighlight">\(Z=WW'X\)</span>.
-On veut minimiser l’erreur pour <span class="math notranslate nohighlight">\(\left(  X_{i}\right)  _{1\leqslant i\leqslant N}\)</span> :</p>
-<div class="math notranslate nohighlight">
-\[E=\sum_{i=1}^N\left\|  WW'X_{i}-X_{i}\right\|  ^{2}\]</div>
-<p>Il suffit d’apprendre le réseau de neurones pour obtenir :</p>
-<div class="math notranslate nohighlight">
-\[W_{d}^{\ast}=\underset{W\in M_{pd}\left(  \R\right)  }
+<div class="math">
+<p><img src="../../_images/math/08d6e2d9ac8347a5ce4b439854ed00203766b8cc.svg" alt="\forall\left( i,j\right)  \in\left\{  1,...,p\right\}  \times\left\{ 1,...,d\right\} \,w_{2,j,i}=w_{1,i,j}"/></p>
+</div><p>Par conséquent, le vecteur des sorties <img class="math" src="../../_images/math/a5665268e1a97e0242b12c8ea1dbd43102a12eda.svg" alt="Z\in\R^{p}"/>
+du réseau ainsi construit est <img class="math" src="../../_images/math/c51ed3cc84beeb298c17d33e145714509e270083.svg" alt="Z=WW'X"/>.
+On veut minimiser l’erreur pour <img class="math" src="../../_images/math/2f4e410624078762dc7e899a5c9d6f7f5dc4eb0a.svg" alt="\left(  X_{i}\right)  _{1\leqslant i\leqslant N}"/> :</p>
+<div class="math">
+<p><img src="../../_images/math/58512dc82236c27a52456c1a16c9cb4d3df38e29.svg" alt="E=\sum_{i=1}^N\left\|  WW'X_{i}-X_{i}\right\|  ^{2}"/></p>
+</div><p>Il suffit d’apprendre le réseau de neurones pour obtenir :</p>
+<div class="math">
+<p><img src="../../_images/math/4da3e20baeb1b6945a64bf9f472832dfdbed795c.svg" alt="W_{d}^{\ast}=\underset{W\in M_{pd}\left(  \R\right)  }
 {\arg\max }\,\sum_{i=1}^N\left\| WW'X_{i}-X_{i}\right\|
-^{2}\]</div>
-<p>D’après ce qui précède, l’espace engendré par les vecteurs
-colonnes de <span class="math notranslate nohighlight">\(W\)</span> est l’espace engendré par les <span class="math notranslate nohighlight">\(k\)</span>
+^{2}"/></p>
+</div><p>D’après ce qui précède, l’espace engendré par les vecteurs
+colonnes de <img class="math" src="../../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/> est l’espace engendré par les <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>
 premiers vecteurs propres de la matrice
-<span class="math notranslate nohighlight">\(XX^{\prime}=\left(  X_{1},...,X_{P}\right)  \left( X_{1},...,X_{P}\right)  ^{\prime}\)</span>
-associés aux <span class="math notranslate nohighlight">\(k\)</span> premières valeurs propres classées par ordre décroissant de module.</p>
-<p>On en déduit que <span class="math notranslate nohighlight">\(W_{1}^{\ast}\)</span> est le vecteur propre de la matrice
-<span class="math notranslate nohighlight">\(M\)</span> associée à la valeur propre de plus grand module.
-<span class="math notranslate nohighlight">\(W_{2}^{\ast}\)</span> est l’espace engendré par les deux premiers vecteurs.
+<img class="math" src="../../_images/math/3bc898ef7e40da111dd905878ce6e70b60e52a07.svg" alt="XX^{\prime}=\left(  X_{1},...,X_{P}\right)  \left( X_{1},...,X_{P}\right)  ^{\prime}"/>
+associés aux <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> premières valeurs propres classées par ordre décroissant de module.</p>
+<p>On en déduit que <img class="math" src="../../_images/math/05e979be195b0796b116a3c049410f23fd6c75e1.svg" alt="W_{1}^{\ast}"/> est le vecteur propre de la matrice
+<img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> associée à la valeur propre de plus grand module.
+<img class="math" src="../../_images/math/ad576d2b85b80a82773e427e141fc863fe6a9074.svg" alt="W_{2}^{\ast}"/> est l’espace engendré par les deux premiers vecteurs.
 Grâce à une <a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_de_Gram-Schmidt">orthonormalisation de Schmidt</a>.
-On en déduit à partir de <span class="math notranslate nohighlight">\(W_{1}^{\ast}\)</span> et <span class="math notranslate nohighlight">\(W_{2}^{\ast}\)</span>,
+On en déduit à partir de <img class="math" src="../../_images/math/05e979be195b0796b116a3c049410f23fd6c75e1.svg" alt="W_{1}^{\ast}"/> et <img class="math" src="../../_images/math/ad576d2b85b80a82773e427e141fc863fe6a9074.svg" alt="W_{2}^{\ast}"/>,
 les deux premiers vecteurs propres. Par récurrence,
-on trouve l’ensemble des vecteurs propres de la matrice <span class="math notranslate nohighlight">\(XX^{\prime}\)</span>.</p>
+on trouve l’ensemble des vecteurs propres de la matrice <img class="math" src="../../_images/math/2d1e9f1b6566ae7b866aab5475dbaef16491551c.svg" alt="XX^{\prime}"/>.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="orthonormalisation-schmidt">Définition D1 : orthonormalisation de Schmidt</p>
 <p>L’orthonormalisation de Shmidt :</p>
-<p>Soit <span class="math notranslate nohighlight">\(\left(  e_{i}\right)  _{1\leqslant i\leqslant N}\)</span>
-une base de <span class="math notranslate nohighlight">\(\R^{p}\)</span></p>
-<p>On définit la famille <span class="math notranslate nohighlight">\(\left(  \varepsilon_{i}\right)  _{1\leqslant i\leqslant p}\)</span>
+<p>Soit <img class="math" src="../../_images/math/81ab2930f626725451db38872745a4b6c7027019.svg" alt="\left(  e_{i}\right)  _{1\leqslant i\leqslant N}"/>
+une base de <img class="math" src="../../_images/math/a8f9d7c5b71e0384d420a7093ae6133982936e8d.svg" alt="\R^{p}"/></p>
+<p>On définit la famille <img class="math" src="../../_images/math/d1204ba96637403ff00987ad1870d1cffda334e9.svg" alt="\left(  \varepsilon_{i}\right)  _{1\leqslant i\leqslant p}"/>
 par :</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../../_images/math/974d41ca44336d910cd394728b59f24ee87c464b.svg" alt="\begin{eqnarray*}
 \varepsilon_{1} &amp;=&amp; \dfrac{e_{1}}{\left\| e_{1}\right\|}\\
 \forall i \in \intervalle{1}{p}, \; \varepsilon_{i} &amp;=&amp; \dfrac{e_{i}-\overset{i-1}{\underset{j=1}
 {\sum}}&lt;e_{i},\varepsilon_{j}&gt;\varepsilon_{j}}{\left\|
             e_{i}-\overset {i-1}{\underset{j=1}{\sum}}&lt;e_{i},\varepsilon_{j}&gt;\varepsilon_{j}\right\| }
-\end{eqnarray*}</div></div>
+\end{eqnarray*}"/></p>
+</div></div>
 <p>On vérifie que le dénominateur n’est jamais nul.
-<span class="math notranslate nohighlight">\(e_{i}-\overset{i-1}{\underset{j=1}{\sum}}&lt;e_{i},\varepsilon_{j}&gt;\varepsilon_{j}\neq 0\)</span>
-car <span class="math notranslate nohighlight">\(\forall k\in\left\{ 1,...,N\right\}  ,\; vect\left( e_{1},...,e_{k}\right)
-=vect\left(  \varepsilon_{1} ,...,\varepsilon_{k}\right)\)</span></p>
+<img class="math" src="../../_images/math/17285743617a6d8f9bbe960bc95370c3f3103300.svg" alt="e_{i}-\overset{i-1}{\underset{j=1}{\sum}}&lt;e_{i},\varepsilon_{j}&gt;\varepsilon_{j}\neq 0"/>
+car <img class="math" src="../../_images/math/847f36ec039f26c3f642fbf5f1f362d87c4ba573.svg" alt="\forall k\in\left\{ 1,...,N\right\}  ,\; vect\left( e_{1},...,e_{k}\right)
+=vect\left(  \varepsilon_{1} ,...,\varepsilon_{k}\right)"/></p>
 <div class="admonition-mathdef admonition" id="indexmathe-Propriété0">
 <p class="admonition-title">Propriété P1 : base orthonormée</p>
-<p>La famille <span class="math notranslate nohighlight">\(\left(  \varepsilon_{i}\right)  _{1\leqslant i\leqslant p}\)</span>
-est une base orthonormée de <span class="math notranslate nohighlight">\(\R^{p}\)</span>.</p>
+<p>La famille <img class="math" src="../../_images/math/d1204ba96637403ff00987ad1870d1cffda334e9.svg" alt="\left(  \varepsilon_{i}\right)  _{1\leqslant i\leqslant p}"/>
+est une base orthonormée de <img class="math" src="../../_images/math/a8f9d7c5b71e0384d420a7093ae6133982936e8d.svg" alt="\R^{p}"/>.</p>
 </div>
-<p>L’algorithme qui permet de déterminer les vecteurs propres de la matrice <span class="math notranslate nohighlight">\(XX'\)</span>
+<p>L’algorithme qui permet de déterminer les vecteurs propres de la matrice <img class="math" src="../../_images/math/b76263214f71739be5bb4c2908eef6c70f655fb3.svg" alt="XX'"/>
 définie par le théorème de l”<a class="reference internal" href="#theorem-acp-resolution"><span class="std std-ref">ACP</span></a> est le suivant :</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Algorithme0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="algorithm-vecteur-propre">Algorithme A1 : vecteurs propres</p>
 <p>Les notations utilisées sont celles du théorème de l”<a class="reference internal" href="#theorem-acp-resolution"><span class="std std-ref">ACP</span></a>.
-On note <span class="math notranslate nohighlight">\(V^*_d\)</span> la matrice des <span class="math notranslate nohighlight">\(d\)</span>
-vecteurs propres de la matrice <span class="math notranslate nohighlight">\(XX'\)</span> associés aux
-<span class="math notranslate nohighlight">\(d\)</span> valeurs propres de plus grands module.</p>
+On note <img class="math" src="../../_images/math/215ed18d79dd22f4c7e39be853f79d03c5e5a7ec.svg" alt="V^*_d"/> la matrice des <img class="math" src="../../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/>
+vecteurs propres de la matrice <img class="math" src="../../_images/math/b76263214f71739be5bb4c2908eef6c70f655fb3.svg" alt="XX'"/> associés aux
+<img class="math" src="../../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/> valeurs propres de plus grands module.</p>
 <div class="line-block">
-<div class="line">for <span class="math notranslate nohighlight">\(d, p\)</span></div>
+<div class="line">for <img class="math" src="../../_images/math/d8e346dc342afc46eebdfb8afd6a3804d10ff23a.svg" alt="d, p"/></div>
 <div class="line-block">
-<div class="line">Un réseau diabolo est construit avec les poids <span class="math notranslate nohighlight">\(W_d \in M_{p,d}\pa{\R}\)</span> puis appris.</div>
-<div class="line">Le résultat de cet apprentissage sont les poids <span class="math notranslate nohighlight">\(W^*_d\)</span>.</div>
-<div class="line">if <span class="math notranslate nohighlight">\(d &gt; 1\)</span></div>
+<div class="line">Un réseau diabolo est construit avec les poids <img class="math" src="../../_images/math/8117ec7a559161f6e75d62f5c7fdb443b649b29c.svg" alt="W_d \in M_{p,d}\pa{\R}"/> puis appris.</div>
+<div class="line">Le résultat de cet apprentissage sont les poids <img class="math" src="../../_images/math/1ee5d52376f7ad187f4546ccca31a0529d8808e6.svg" alt="W^*_d"/>.</div>
+<div class="line">if <img class="math" src="../../_images/math/991b919976a4b6cede2f0f0b089efaf43c0bb179.svg" alt="d &gt; 1"/></div>
 <div class="line-block">
-<div class="line">L’orthonormalisation de Schmit permet de déduire <span class="math notranslate nohighlight">\(V^*_d\)</span> de <span class="math notranslate nohighlight">\(V^*_{d-1}\)</span> et <span class="math notranslate nohighlight">\(W^*_d\)</span>.</div>
+<div class="line">L’orthonormalisation de Schmit permet de déduire <img class="math" src="../../_images/math/215ed18d79dd22f4c7e39be853f79d03c5e5a7ec.svg" alt="V^*_d"/> de <img class="math" src="../../_images/math/9be7d822d9d29782ecd11c25873c119d6d98673b.svg" alt="V^*_{d-1}"/> et <img class="math" src="../../_images/math/1ee5d52376f7ad187f4546ccca31a0529d8808e6.svg" alt="W^*_d"/>.</div>
 </div>
 <div class="line">else</div>
 <div class="line-block">
-<div class="line"><span class="math notranslate nohighlight">\(V^*_d = W^*_d\)</span></div>
+<div class="line"><img class="math" src="../../_images/math/210c0fa29b128b4c0355dfe8dabddf0fee1f1480.svg" alt="V^*_d = W^*_d"/></div>
 </div>
 </div>
 </div>
@@ -967,40 +979,40 @@ extraites du recensement de la population française
 qui permet de décrire chaque habitant par des
 variables telles que la catégorie socio-professionnelle,
 la salaire ou le niveau d’étude.
-Soit <span class="math notranslate nohighlight">\(\left(  X_{1},...,X_{N}\right)\)</span> un ensemble de
-<span class="math notranslate nohighlight">\(N\)</span> individus décrits par <span class="math notranslate nohighlight">\(p\)</span> variables :</p>
-<div class="math notranslate nohighlight">
-\[\forall i\in\left\{  1,...,N\right\},\;X_{i}\in\R^{p}\]</div>
-<p>L’ACP consiste à projeter ce nuage de point sur un plan
+Soit <img class="math" src="../../_images/math/f0ab4abbc6aaf1868ef8a39d1be5b5a590f2756a.svg" alt="\left(  X_{1},...,X_{N}\right)"/> un ensemble de
+<img class="math" src="../../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> individus décrits par <img class="math" src="../../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> variables :</p>
+<div class="math">
+<p><img src="../../_images/math/56fa1ed837cd60fbd182d8ef85e1390d2af8624b.svg" alt="\forall i\in\left\{  1,...,N\right\},\;X_{i}\in\R^{p}"/></p>
+</div><p>L’ACP consiste à projeter ce nuage de point sur un plan
 qui conserve le maximum d’information. Par conséquent, il
 s’agit de résoudre le problème :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}W^{\ast}=\underset{ \begin{subarray} \, W\in M_{p,d}\left(  \R\right)  \\
+<div class="math">
+<p><img src="../../_images/math/1606f71e5e6c9eca5c1f2f4372f2a7ea628e0948.svg" alt="W^{\ast}=\underset{ \begin{subarray} \, W\in M_{p,d}\left(  \R\right)  \\
 W^{\prime }W=I_{d} \end{subarray}}{\arg\min}%
-\left(\underset{i=1}{\overset{N}{\sum}}\left\| W'X_{i}\right\|  ^{2}\right)  \text{ avec }d&lt;N\end{split}\]</div>
-<p>Ce problème a été résolu dans les paragraphes <a class="reference internal" href="#par-acp-un"><span class="std std-ref">Problème de l’analyse en composantes principales</span></a>
+\left(\underset{i=1}{\overset{N}{\sum}}\left\| W'X_{i}\right\|  ^{2}\right)  \text{ avec }d&lt;N"/></p>
+</div><p>Ce problème a été résolu dans les paragraphes <a class="reference internal" href="#par-acp-un"><span class="std std-ref">Problème de l’analyse en composantes principales</span></a>
 et <a class="reference internal" href="#par-acp-deux"><span class="std std-ref">Calcul de valeurs propres et de vecteurs propres</span></a>, il suffit d’appliquer
 l’algorithme <a class="reference internal" href="#algorithm-vecteur-propre"><span class="std std-ref">vecteurs propres</span></a>.</p>
-<p>Soit <span class="math notranslate nohighlight">\(\left(  X_{i}\right)  _{1\leqslant i\leqslant N}\)</span> avec
-<span class="math notranslate nohighlight">\(\forall i\in\left\{  1,...,N\right\} ,\,X_{i}\in\R^{p}\)</span>.
-Soit <span class="math notranslate nohighlight">\(\pa{P_1,\dots,P_p}\)</span> l’ensemble des vecteurs propres
-normés de la matrice <span class="math notranslate nohighlight">\(XX'\)</span> associés aux valeurs propres
-<span class="math notranslate nohighlight">\(\pa{\lambda_1,\dots,\lambda_p}\)</span> classées par ordre décroissant de modules.
-On définit <span class="math notranslate nohighlight">\(\forall d \in \intervalle{1}{p}, \; W_d = \pa{P_1,\dots,P_d} \in M_{p,d}\)</span>.
-On définit alors l’inertie <span class="math notranslate nohighlight">\(I_d\)</span> du nuage de points projeté sur
-l’espace vectoriel défini par <span class="math notranslate nohighlight">\(P_d\)</span>.
+<p>Soit <img class="math" src="../../_images/math/2f4e410624078762dc7e899a5c9d6f7f5dc4eb0a.svg" alt="\left(  X_{i}\right)  _{1\leqslant i\leqslant N}"/> avec
+<img class="math" src="../../_images/math/22f1d61a7a632e8911d57c000a179de99b344aaf.svg" alt="\forall i\in\left\{  1,...,N\right\} ,\,X_{i}\in\R^{p}"/>.
+Soit <img class="math" src="../../_images/math/1525ed08044996e7a5d3217b0f507c22a3cab1cd.svg" alt="\pa{P_1,\dots,P_p}"/> l’ensemble des vecteurs propres
+normés de la matrice <img class="math" src="../../_images/math/b76263214f71739be5bb4c2908eef6c70f655fb3.svg" alt="XX'"/> associés aux valeurs propres
+<img class="math" src="../../_images/math/80aa45f611ac990d1311c6e426d245895ff8e9e2.svg" alt="\pa{\lambda_1,\dots,\lambda_p}"/> classées par ordre décroissant de modules.
+On définit <img class="math" src="../../_images/math/b9b457da5a7d123f6bbf252a292a2956cb4e0dc1.svg" alt="\forall d \in \intervalle{1}{p}, \; W_d = \pa{P_1,\dots,P_d} \in M_{p,d}"/>.
+On définit alors l’inertie <img class="math" src="../../_images/math/2909f22a0101729b833311de248b52ab4ab59f14.svg" alt="I_d"/> du nuage de points projeté sur
+l’espace vectoriel défini par <img class="math" src="../../_images/math/fb0b29d1cae9d11d9a6e7e64a9db7b33ddba7f16.svg" alt="P_d"/>.
 On suppose que le nuage de points est centré, alors :</p>
-<div class="math notranslate nohighlight">
-\[\forall d \in \intervalle{1}{p}, \; I_d = \sum_{k=1}^{N}
-\pa{P_d' X_k}^2 = tr \pa{X' P_d P_d' X} = tr \pa{XX' P_d P_d'} = \lambda_d\]</div>
-<p>Comme <span class="math notranslate nohighlight">\(\pa{P_1,\dots,P_p}\)</span> est une base orthonormée de <span class="math notranslate nohighlight">\(\R^p\)</span>,
+<div class="math">
+<p><img src="../../_images/math/bde2038ddeb5a490c5c0530dcfabae421a3b3783.svg" alt="\forall d \in \intervalle{1}{p}, \; I_d = \sum_{k=1}^{N}
+\pa{P_d' X_k}^2 = tr \pa{X' P_d P_d' X} = tr \pa{XX' P_d P_d'} = \lambda_d"/></p>
+</div><p>Comme <img class="math" src="../../_images/math/1525ed08044996e7a5d3217b0f507c22a3cab1cd.svg" alt="\pa{P_1,\dots,P_p}"/> est une base orthonormée de <img class="math" src="../../_images/math/22df7dfe54ba00a8469b0e962f822a541c85c3d8.svg" alt="\R^p"/>,
 on en déduit que :</p>
-<div class="math notranslate nohighlight">
-\[I = \sum_{k=1}^{P} X_k'X_k = \sum_{d=1}^{N} I_d = \sum_{d=1}^{p} \lambda_d\]</div>
-<p>De manière empirique, on observe fréquemment que la courbe
-<span class="math notranslate nohighlight">\(\pa{d,I_d}_{1 \infegal d \infegal p}\)</span> montre un point
+<div class="math">
+<p><img src="../../_images/math/5cc51782833acb449abf0a268203c1f684a0c1e8.svg" alt="I = \sum_{k=1}^{P} X_k'X_k = \sum_{d=1}^{N} I_d = \sum_{d=1}^{p} \lambda_d"/></p>
+</div><p>De manière empirique, on observe fréquemment que la courbe
+<img class="math" src="../../_images/math/524009db25f8c399a327a43ba4e090052280a148.svg" alt="\pa{d,I_d}_{1 \infegal d \infegal p}"/> montre un point
 d’inflexion (voir figure ci-dessous). Dans cet exemple, le point
-d’inflexion correspond à <span class="math notranslate nohighlight">\(d=4\)</span>. En
+d’inflexion correspond à <img class="math" src="../../_images/math/7cde82e07df1fcfc08d0ce538d414a1958a4c6b1.svg" alt="d=4"/>. En
 analyse des données, on considère empiriquement que seuls les
 quatres premières dimensions contiennent de l’information.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Figure2">
@@ -1008,7 +1020,7 @@ quatres premières dimensions contiennent de l’information.</p>
 </div>
 <p class="admonition-title" id="figure-point-inflexion">Figure F3 : Courbe d’inertie pour l’ACP</p>
 <img alt="../../_images/acp_inertie.png" src="../../_images/acp_inertie.png" />
-<p>Courbe d’inertie : point d’inflexion pour <span class="math notranslate nohighlight">\(d=4\)</span>,
+<p>Courbe d’inertie : point d’inflexion pour <img class="math" src="../../_images/math/7cde82e07df1fcfc08d0ce538d414a1958a4c6b1.svg" alt="d=4"/>,
 l’expérience montre que généralement, seules les
 projections sur un ou plusieurs des quatre premiers vecteurs propres
 reflètera l’information contenue par le nuage de points.</p>

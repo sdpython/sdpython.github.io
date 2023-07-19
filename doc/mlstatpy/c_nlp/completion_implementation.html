@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_nlp/completion_implementation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -574,8 +572,8 @@ Et puis, c’était sous mes yeux. Il y a plus simple et aussi efficace quand
 les listes des mots et des complétions sont connues à l’avance.</p>
 <section id="notion-de-trie">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Notion de trie</a><a class="headerlink" href="#notion-de-trie" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Une implémentation des tries est décrites dans deux notebooks :
-<a class="reference external" href="http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/notebooks/_gs1a_A_arbre_trie.html">Arbre et Trie</a>.
+<p>Une implémentation des tries est décrite dans ce notebook :
+<a class="reference external" href="http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/notebooks/td1a_cenonce_session8.html">Arbre et Trie</a>.
 Les résultats de ce chapitre ont été produits avec le module <a class="reference internal" href="../api/modules/completion.html#module-mlstatpy.nlp.completion" title="mlstatpy.nlp.completion"><code class="xref py py-mod docutils literal notranslate"><span class="pre">completion</span></code></a>
 et le notebook <a class="reference internal" href="../notebooks/nlp/completion_trie.html"><span class="std std-ref">Complétion</span></a>. Le notebook
 <a class="reference internal" href="../notebooks/nlp/completion_profiling.html"><span class="std std-ref">Completion profiling</span></a> montre les résultats du profiling.
@@ -599,22 +597,22 @@ plus longue complétioms.</p>
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Algorithme élégant</a><a class="headerlink" href="#algorithme-elegant" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Il faut relire le premier problème d”<a class="reference internal" href="completion_optimisation.html#optim-nlp-comp"><span class="std std-ref">optimisation</span></a>
 pour commencer à se poser la question : comment calculer la quantité
-<span class="math notranslate nohighlight">\(E(C, C, \sigma)\)</span> lorsque <span class="math notranslate nohighlight">\(\sigma\)</span> correspond à l’ordre alphabétique ?
+<img class="math" src="../_images/math/c87ccb4cbf33777f7ef8ac33199ee7a689ee9a52.svg" alt="E(C, C, \sigma)"/> lorsque <img class="math" src="../_images/math/4baabecff72a0674c9a5d1c8aee4cdecf96e884d.svg" alt="\sigma"/> correspond à l’ordre alphabétique ?
 La réponse est simple : il suffit de parcourir les complétions une et une seule fois.
-Supposons qu’au cours de ce parcours, on est à la complétion d’indice <span class="math notranslate nohighlight">\(i\)</span>.
-On conserve un compteur <span class="math notranslate nohighlight">\(p(k, i)=K(c(i), k, C)\)</span> qui représente la position de la
-complétion <span class="math notranslate nohighlight">\(c(i)\)</span> dans la liste des complétions affichées par le système de complétion
-pour le préfixe <span class="math notranslate nohighlight">\(c(i)[[1..k]]\)</span>. Le coût de l’algorithme est en <span class="math notranslate nohighlight">\(O(N\ln N + LN)\)</span> où
-<span class="math notranslate nohighlight">\(N\)</span> est le nombre de complétions et <span class="math notranslate nohighlight">\(L\)</span> la longueur maximale d’une complétion.</p>
-<p>Dans le cas où <span class="math notranslate nohighlight">\(\sigma\)</span> est quelconque et <span class="math notranslate nohighlight">\(C \neq Q\)</span>, on procède en deux étapes.
+Supposons qu’au cours de ce parcours, on est à la complétion d’indice <img class="math" src="../_images/math/6c9c36eeb0679ad71efe34ded19d79168983fb38.svg" alt="i"/>.
+On conserve un compteur <img class="math" src="../_images/math/2f474a85e314ab9b435dd9d4639cce8989b34d13.svg" alt="p(k, i)=K(c(i), k, C)"/> qui représente la position de la
+complétion <img class="math" src="../_images/math/287d214a2785b1c68fd2d74bc99851e4852e93dd.svg" alt="c(i)"/> dans la liste des complétions affichées par le système de complétion
+pour le préfixe <img class="math" src="../_images/math/6e05393761f59d8e581d7d64dacebbfd58da2090.svg" alt="c(i)[[1..k]]"/>. Le coût de l’algorithme est en <img class="math" src="../_images/math/752e741815e8a2838dc27b4d1ab4afeb7ed9f1d5.svg" alt="O(N\ln N + LN)"/> où
+<img class="math" src="../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> est le nombre de complétions et <img class="math" src="../_images/math/7056772e5bdb6f5a322dc20ea2669bbc5dc5d6bb.svg" alt="L"/> la longueur maximale d’une complétion.</p>
+<p>Dans le cas où <img class="math" src="../_images/math/4baabecff72a0674c9a5d1c8aee4cdecf96e884d.svg" alt="\sigma"/> est quelconque et <img class="math" src="../_images/math/807f80970c06c177570abe8163523328743b49da.svg" alt="C \neq Q"/>, on procède en deux étapes.
 Dans un premier temps, on utilise une variante de l’algorithme précédent pour calculer
-<span class="math notranslate nohighlight">\(M'(q, C)\)</span> pour les requêtes <span class="math notranslate nohighlight">\(q\)</span> dans l’ensemble des complétions.</p>
+<img class="math" src="../_images/math/bccfda41852d59681cccca8a8047c1b43a7063c2.svg" alt="M'(q, C)"/> pour les requêtes <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> dans l’ensemble des complétions.</p>
 <p>Dans un second temps, on effectue une sorte de fusion entre les deux listes
-triées alphabétiquement. Le coût de l’algorithme est en <span class="math notranslate nohighlight">\(O(ILN + 2 N\ln N + M \ln M + max(N,M))\)</span>
-où <span class="math notranslate nohighlight">\(M\)</span> est le nombre de requêtes dans l’ensemble <span class="math notranslate nohighlight">\(Q\)</span>. Cette partie repose sur le
+triées alphabétiquement. Le coût de l’algorithme est en <img class="math" src="../_images/math/83a85ff0252289da16a63ad87b0ad4586b6e9ab3.svg" alt="O(ILN + 2 N\ln N + M \ln M + max(N,M))"/>
+où <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> est le nombre de requêtes dans l’ensemble <img class="math" src="../_images/math/f1684ba112ca809c951a79c74b133785f6bd3b93.svg" alt="Q"/>. Cette partie repose sur le
 <a class="reference internal" href="completion_propriete.html#lemme-nlp-long-completion"><span class="std std-ref">lemme</span></a> lié au calcul des métriques
-pour les réquêtes hors de l’ensemble des complétions. <span class="math notranslate nohighlight">\(I\)</span> est un nombre d’itération nécessaires
-pour que les métriques <span class="math notranslate nohighlight">\(M'\)</span> convergent pour l’ensemble des complétions. En pratique, c’est très petit.</p>
+pour les réquêtes hors de l’ensemble des complétions. <img class="math" src="../_images/math/49d95c6215d3875f7504526ed066025568d9ebd7.svg" alt="I"/> est un nombre d’itération nécessaires
+pour que les métriques <img class="math" src="../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/> convergent pour l’ensemble des complétions. En pratique, c’est très petit.</p>
 <p>L’algorithme est implémenté dans le module
 <a class="reference internal" href="../api/modules/completion_simple.html#module-mlstatpy.nlp.completion_simple" title="mlstatpy.nlp.completion_simple"><code class="xref py py-mod docutils literal notranslate"><span class="pre">completion_simple</span></code></a> et plus particulièrement la fonction
 <a class="reference internal" href="../api/modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionSystem.compute_metrics" title="mlstatpy.nlp.completion_simple.CompletionSystem.compute_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CompletionSystem.compute_metrics</span></code></a>.</p>

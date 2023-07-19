@@ -46,8 +46,6 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/ml/regression_no_inversion';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -745,7 +743,7 @@ document.write(`
 75.5 µs ± 2.57 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
 </pre></div></div>
 </div>
-<p>Il serait sans doute possible d’optimiser les calculs en réduisant le nombre de copie et de transposées. La version utilisant une décomposition <a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_QR">QR</a> est assez rapide. Le code est là <a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/master/src/mlstatpy/ml/matrices.py">matrices.py</a>. Pour dépasser <a class="reference external" href="https://www.numpy.org/">numpy</a>, il faut passer au C++. <em>scikit-learn</em> ajoute des étapes intermédiaires pour vérifier les données ce qui explique la
+<p>Il serait sans doute possible d’optimiser les calculs en réduisant le nombre de copie et de transposées. La version utilisant une décomposition <a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_QR">QR</a> est assez rapide. Le code est là <a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/main/mlstatpy/ml/matrices.py">matrices.py</a>. Pour dépasser <a class="reference external" href="https://www.numpy.org/">numpy</a>, il faut passer au C++. <em>scikit-learn</em> ajoute des étapes intermédiaires pour vérifier les données ce qui explique la
 longueur. On résume le tout par un graphique.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1384,7 +1382,7 @@ longueur. On résume le tout par un graphique.</p>
 <img alt="../../_images/notebooks_ml_regression_no_inversion_20_0.png" src="../../_images/notebooks_ml_regression_no_inversion_20_0.png" />
 </div>
 </div>
-<p>La version streaming devient plus intéressante à partir de 1000 observations, le coût en linéaire en <em>N</em> contrairement à la version classique qui est en <span class="math notranslate nohighlight">\(N^2\)</span>. La version Gram-Schmidt devrait être réécrite en C++ pour proposer des temps comparables.</p>
+<p>La version streaming devient plus intéressante à partir de 1000 observations, le coût en linéaire en <em>N</em> contrairement à la version classique qui est en <img class="math" src="../../_images/math/8f9e3ccaa8cb839bd719b5ee3fd9c4289a1e97d1.svg" alt="N^2"/>. La version Gram-Schmidt devrait être réécrite en C++ pour proposer des temps comparables.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>

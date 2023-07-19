@@ -46,8 +46,6 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/dsgarden/discret_gradient';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -784,10 +782,10 @@ array([[49,  1,  0],
 </section>
 <section id="Multiplication-des-observations">
 <h2>Multiplication des observations<a class="headerlink" href="#Multiplication-des-observations" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Le paramètre <code class="docutils literal notranslate"><span class="pre">multi_class='ovr'</span></code> stipule que le modèle cache en fait l’estimation de 3 régressions logistiques binaire. Essayons de n’en faire qu’une seule en ajouter le label <code class="docutils literal notranslate"><span class="pre">Y</span></code> aux variables. Soit un couple <span class="math notranslate nohighlight">\((X_i \in \mathbb{R^d}, Y_i \in \mathbb{N})\)</span> qui correspond à une observation pour un problème multi-classe. Comme il y a <span class="math notranslate nohighlight">\(C\)</span> classes, on multiplie cette ligne par le nombre de classes <span class="math notranslate nohighlight">\(C\)</span> pour obtenir :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\forall c \in \mathbb{[}1, ..., C\mathbb{]}, \; \left\{ \begin{array}{ll} X_i' = (X_{i,1}, ..., X_{i,d}, Y_{i,1}, ..., Y_{i,C}) \\ Y_i' = \mathbb{1}_{Y_i = c} \\ Y_{i,k} = \mathbb{1}_{c = k}\end{array} \right.\end{split}\]</div>
-<p>Voyons ce que cela donne sur un exemple :</p>
+<p>Le paramètre <code class="docutils literal notranslate"><span class="pre">multi_class='ovr'</span></code> stipule que le modèle cache en fait l’estimation de 3 régressions logistiques binaire. Essayons de n’en faire qu’une seule en ajouter le label <code class="docutils literal notranslate"><span class="pre">Y</span></code> aux variables. Soit un couple <img class="math" src="../../_images/math/98f69645d7ed238f4f308d8f6b78ecee1a40153f.svg" alt="(X_i \in \mathbb{R^d}, Y_i \in \mathbb{N})"/> qui correspond à une observation pour un problème multi-classe. Comme il y a <img class="math" src="../../_images/math/2c0e77bc741b692ecdf6e85966263a89422af4c8.svg" alt="C"/> classes, on multiplie cette ligne par le nombre de classes <img class="math" src="../../_images/math/2c0e77bc741b692ecdf6e85966263a89422af4c8.svg" alt="C"/> pour obtenir :</p>
+<div class="math">
+<p><img src="../../_images/math/1f12dc85060cf2da5c7fd058937ce8cda1797d34.svg" alt="\forall c \in \mathbb{[}1, ..., C\mathbb{]}, \; \left\{ \begin{array}{ll} X_i' = (X_{i,1}, ..., X_{i,d}, Y_{i,1}, ..., Y_{i,C}) \\ Y_i' = \mathbb{1}_{Y_i = c} \\ Y_{i,k} = \mathbb{1}_{c = k}\end{array} \right."/></p>
+</div><p>Voyons ce que cela donne sur un exemple :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -884,7 +882,7 @@ array([[49,  1,  0],
 </table>
 </div></div>
 </div>
-<p>Trois colonnes ont été ajoutées côté <span class="math notranslate nohighlight">\(X\)</span>, la ligne a été multipliée 3 fois, la dernière colonne est <span class="math notranslate nohighlight">\(Y\)</span> qui ne vaut 1 que lorsque le 1 est au bon endroit dans une des colonnes ajoutées. Le problème de classification qui été de prédire la bonne classe devient : est-ce la classe à prédire est <span class="math notranslate nohighlight">\(k\)</span> ? On applique cela sur toutes les lignes de la base et cela donne :</p>
+<p>Trois colonnes ont été ajoutées côté <img class="math" src="../../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/>, la ligne a été multipliée 3 fois, la dernière colonne est <img class="math" src="../../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/> qui ne vaut 1 que lorsque le 1 est au bon endroit dans une des colonnes ajoutées. Le problème de classification qui été de prédire la bonne classe devient : est-ce la classe à prédire est <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> ? On applique cela sur toutes les lignes de la base et cela donne :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -1167,7 +1165,7 @@ array([[278,  22],
 </table>
 </div></div>
 </div>
-<p>Le problème est le même qu’avant excepté les variables <span class="math notranslate nohighlight">\(Y_i\)</span> qui sont maintenant réel. Au lieu d’être nul, on prend une valeur <span class="math notranslate nohighlight">\(Y_i &lt; 0.4\)</span>.</p>
+<p>Le problème est le même qu’avant excepté les variables <img class="math" src="../../_images/math/e63ad1df0bd53729398b2396d31657f135c528dc.svg" alt="Y_i"/> qui sont maintenant réel. Au lieu d’être nul, on prend une valeur <img class="math" src="../../_images/math/e731938c89b9b4a0c688dcf19a81ab6188bd8e9a.svg" alt="Y_i &lt; 0.4"/>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -1523,7 +1521,7 @@ array([[299,   1],
 </table>
 </div></div>
 </div>
-<p><em>err1</em> correspond à <span class="math notranslate nohighlight">\(Y_0, Y_1, Y_2\)</span> binaire, <em>err2</em> aux mêmes variables mais avec un peu de bruit. L’ajout ne semble pas faire décroître la performance et l’améliore dans certains cas. C’est une piste à suivre. Reste à savoir si les modèles n’apprennent pas le bruit.</p>
+<p><em>err1</em> correspond à <img class="math" src="../../_images/math/5db12baa45ddcad258091c109cfb21b7b5f21605.svg" alt="Y_0, Y_1, Y_2"/> binaire, <em>err2</em> aux mêmes variables mais avec un peu de bruit. L’ajout ne semble pas faire décroître la performance et l’améliore dans certains cas. C’est une piste à suivre. Reste à savoir si les modèles n’apprennent pas le bruit.</p>
 </section>
 <section id="Avec-une-ACP">
 <h2>Avec une ACP<a class="headerlink" href="#Avec-une-ACP" title="Lien permanent vers cette rubrique">#</a></h2>

@@ -45,8 +45,6 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/rn/rn_3_clas';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -568,44 +566,44 @@ document.write(`
   <section id="la-classification">
 <span id="nn-classification"></span><h1>La classification<a class="headerlink" href="#la-classification" title="Lien permanent vers cette rubrique">#</a></h1>
 <p>Comme la régression, la classification consiste aussi à trouver le
-lien entre une variable <span class="math notranslate nohighlight">\(X\)</span> et une variable aléatoire discrète
-suivant une <a class="reference external" href="https://fr.wikipedia.org/wiki/Loi_multinomiale">loi multinomiale</a> <span class="math notranslate nohighlight">\(Y\)</span>.</p>
+lien entre une variable <img class="math" src="../../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> et une variable aléatoire discrète
+suivant une <a class="reference external" href="https://fr.wikipedia.org/wiki/Loi_multinomiale">loi multinomiale</a> <img class="math" src="../../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/>.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Problème0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="probleme-classification">Problème P1 : Classification</p>
-<p>Soit une variable aléatoire <span class="math notranslate nohighlight">\(X\)</span>
-et une variable aléatoire discrète <span class="math notranslate nohighlight">\(Y \in \N\)</span>,
-l’objectif est d’approximer la fonction <span class="math notranslate nohighlight">\(\esp\pa{Y | X} = f\pa{X}\)</span>.
+<p>Soit une variable aléatoire <img class="math" src="../../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/>
+et une variable aléatoire discrète <img class="math" src="../../_images/math/237f5a8609a34f289cf7a584099202f3caeb76dc.svg" alt="Y \in \N"/>,
+l’objectif est d’approximer la fonction <img class="math" src="../../_images/math/26dd33582a109acc7b3e573073998e1980e7d5b1.svg" alt="\esp\pa{Y | X} = f\pa{X}"/>.
 Les données du problème sont
-un échantillon de points : <span class="math notranslate nohighlight">\(\acc { \pa{ X_{i},Y_{i} } | 1 \infegal i \infegal N }\)</span>
-avec <span class="math notranslate nohighlight">\(\forall i \in \ensemble{1}{N}, \; Y_i \in \ensemble{1}{C}\)</span>
-et un modèle paramétré avec <span class="math notranslate nohighlight">\(\theta\)</span> :</p>
-<div class="math notranslate nohighlight">
-\[\forall  i \in \intervalle{1}{N}, \;  \forall  c \in \intervalle{1}{C}, \;
-           \pr { Y_i = c | X_i, \theta} = h \pa{\theta,X_i,c }\]</div>
-<p>avec <span class="math notranslate nohighlight">\(n \in \N\)</span>,  <span class="math notranslate nohighlight">\(h\)</span> est une fonction de paramètre
-<span class="math notranslate nohighlight">\(\theta\)</span> à valeur dans <span class="math notranslate nohighlight">\(\cro{0,1}\)</span> et vérifiant la
-contrainte : <span class="math notranslate nohighlight">\(\sum_{c=1}^C h(\theta,X,c) = 1\)</span>.</p>
+un échantillon de points : <img class="math" src="../../_images/math/eb42ce493973440ebeac79a2975dc3d5f02c94fd.svg" alt="\acc { \pa{ X_{i},Y_{i} } | 1 \infegal i \infegal N }"/>
+avec <img class="math" src="../../_images/math/f4f942b1fad3df85b85b9e3d90a3cc8a3083a300.svg" alt="\forall i \in \ensemble{1}{N}, \; Y_i \in \ensemble{1}{C}"/>
+et un modèle paramétré avec <img class="math" src="../../_images/math/38b8dfb3d1a10a5197333bf027a6a9c326563ed9.svg" alt="\theta"/> :</p>
+<div class="math">
+<p><img src="../../_images/math/53285bda84cc5cc9b54f0fc776237dc165a84bbe.svg" alt="\forall  i \in \intervalle{1}{N}, \;  \forall  c \in \intervalle{1}{C}, \;
+           \pr { Y_i = c | X_i, \theta} = h \pa{\theta,X_i,c }"/></p>
+</div><p>avec <img class="math" src="../../_images/math/927ae9ea273d21dce23af63addd38a52af901d71.svg" alt="n \in \N"/>,  <img class="math" src="../../_images/math/777afd6041e6d265ef21483c121300e1c7aa565a.svg" alt="h"/> est une fonction de paramètre
+<img class="math" src="../../_images/math/38b8dfb3d1a10a5197333bf027a6a9c326563ed9.svg" alt="\theta"/> à valeur dans <img class="math" src="../../_images/math/489397ecb18cc5f4c6c3261586aa60ca231d3657.svg" alt="\cro{0,1}"/> et vérifiant la
+contrainte : <img class="math" src="../../_images/math/52cba11c0c3410db159b51f45c87000ecdf62a14.svg" alt="\sum_{c=1}^C h(\theta,X,c) = 1"/>.</p>
 </div>
 <p>Le premier exemple
 est une classification en deux classes, elle consiste à découvrir le lien qui
-unit une variable aléatoire réelle <span class="math notranslate nohighlight">\(X\)</span> et une variable aléatoire
-discrète et <span class="math notranslate nohighlight">\(Y \in \acc{0,1}\)</span>, on dispose pour cela d’une liste :</p>
-<div class="math notranslate nohighlight">
-\[\acc{ \pa{ X_i,Y_i } \in \R \times \acc{0,1} | 1 \infegal i \infegal N }\]</div>
-<img alt="../../_images/classificationnd.png" src="../../_images/classificationnd.png" />
+unit une variable aléatoire réelle <img class="math" src="../../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> et une variable aléatoire
+discrète et <img class="math" src="../../_images/math/77f3e2baa5e3cba0f0610b45a15b9a18ff1d1000.svg" alt="Y \in \acc{0,1}"/>, on dispose pour cela d’une liste :</p>
+<div class="math">
+<p><img src="../../_images/math/3b542a38802d306272583170baf235857c776fbf.svg" alt="\acc{ \pa{ X_i,Y_i } \in \R \times \acc{0,1} | 1 \infegal i \infegal N }"/></p>
+</div><img alt="../../_images/classificationnd.png" src="../../_images/classificationnd.png" />
 <p>Il n’est pas facile de déterminer directement une fonction
-<span class="math notranslate nohighlight">\(h\)</span> qui approxime <span class="math notranslate nohighlight">\(Y | X\)</span> car <span class="math notranslate nohighlight">\(h\)</span> et <span class="math notranslate nohighlight">\(Y\)</span>
+<img class="math" src="../../_images/math/777afd6041e6d265ef21483c121300e1c7aa565a.svg" alt="h"/> qui approxime <img class="math" src="../../_images/math/2ba8ca130560d5126721e635e08844f3394344ee.svg" alt="Y | X"/> car <img class="math" src="../../_images/math/777afd6041e6d265ef21483c121300e1c7aa565a.svg" alt="h"/> et <img class="math" src="../../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/>
 sont toutes deux discrètes. C’est pourquoi, plutôt que de résoudre
 directement ce problème, il est préférable de déterminer la
-loi marginale <span class="math notranslate nohighlight">\(\pr{Y=c|X} = f \pa{X,\theta,c}\)</span>.
-<span class="math notranslate nohighlight">\(f\)</span> est alors une fonction dont les sorties sont continues et peut
-être choisie dérivable. Par exemple, <span class="math notranslate nohighlight">\(f\)</span> peut être un réseau de
+loi marginale <img class="math" src="../../_images/math/70054b2799e4a7b083c23269e498172c36568138.svg" alt="\pr{Y=c|X} = f \pa{X,\theta,c}"/>.
+<img class="math" src="../../_images/math/bd1e0600a66dbe0f8deddbd57953774419ba4e4f.svg" alt="f"/> est alors une fonction dont les sorties sont continues et peut
+être choisie dérivable. Par exemple, <img class="math" src="../../_images/math/bd1e0600a66dbe0f8deddbd57953774419ba4e4f.svg" alt="f"/> peut être un réseau de
 neurones dont les sorties vérifient :</p>
-<div class="math notranslate nohighlight">
-\[f \pa{X,0} + f \pa{X,1} = \pr{0|X} + \pr{1|X} = 1\]</div>
-<p>Le réseau de neurones utilisé pour cette tâche est légèrement
+<div class="math">
+<p><img src="../../_images/math/e6e937101e69b1d4306978404e93e11dbc05aea8.svg" alt="f \pa{X,0} + f \pa{X,1} = \pr{0|X} + \pr{1|X} = 1"/></p>
+</div><p>Le réseau de neurones utilisé pour cette tâche est légèrement
 différent du précédent, il sera présenté ultérieurement.
 Un plan a été divisé en deux demi-plan par une droite délimitant deux classes,
 le réseau de neurones dont la couche cachée contient deux neurones linéaires,

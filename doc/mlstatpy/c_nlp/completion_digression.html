@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_nlp/completion_digression';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -585,7 +583,7 @@ de Ziv Bar-Yossef et Naama Kraus.</p>
 </section>
 <section id="source">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Source</a><a class="headerlink" href="#source" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Dans le cas d’un moteur de recherche, le trie ou l’ensemble <span class="math notranslate nohighlight">\(S\)</span> des requêtes complètes
+<p>Dans le cas d’un moteur de recherche, le trie ou l’ensemble <img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> des requêtes complètes
 est construit à partir des requêtes des utilisateurs. Lorsque le système
 de complétion est mise en place, la distribution des requêtes changent. Les requêtes
 les plus utilisées vont être encore plus utilisées car les utilisateurs vont moins
@@ -635,19 +633,21 @@ en fonction du nombre de touches nécessaires pour le former par rapport
 <section id="completion-partielle">
 <h2><a class="toc-backref" href="#id7" role="doc-backlink">Complétion partielle</a><a class="headerlink" href="#completion-partielle" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On rappelle la métrique <a class="reference internal" href="completion_metrique.html#equation-completion-metric2">(1)</a> (voir aussi <a class="reference internal" href="completion_formalisation.html#equation-nlp-comp-k">(2)</a>).</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/b7c06ab9d28d5b4a356a5bb99a49df1eadace89c.svg" alt="\begin{eqnarray*}
 M'(q, S) &amp;=&amp; \min_{0 \infegal k \infegal l(q)} \acc{ M'(q[1..k], S) + K(q, k, S) }
-\end{eqnarray*}</div><p>Si on note <span class="math notranslate nohighlight">\(L(p, S)\)</span> l’ensemble des complétions
-pour le préfixe <span class="math notranslate nohighlight">\(p\)</span>.
+\end{eqnarray*}"/></p>
+</div><p>Si on note <img class="math" src="../_images/math/c1dbfd6445a31539c76e7f1577623b4cb2e7727e.svg" alt="L(p, S)"/> l’ensemble des complétions
+pour le préfixe <img class="math" src="../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/>.
 Que dire de la définition suivante ?</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/501be0ed6901e018a469ffe7bbd337d9785ea5b6.svg" alt="\begin{eqnarray*}
 M'_p(q, S) &amp;=&amp; \min_{0 \infegal k \infegal l(q)} \acc{ \begin{array}{l}
                         \indicatrice{ L(q[1..k], S) \neq \emptyset} \cro{M'_p(q[1..k], S) +  K(q, k, S)} + \\
                         \;\;\;\;\indicatrice{L(q[1..k], S) = \emptyset} \cro { \min_j M'_p(q[1..j], S) + M'_p(q[j+1..], S)  }
                         \end{array} }
-\end{eqnarray*}</div><p>Cela revient à considérer que si le système de complétion ne propose aucune complétion
+\end{eqnarray*}"/></p>
+</div><p>Cela revient à considérer que si le système de complétion ne propose aucune complétion
 avec le préfixe en cours, on propose des complétions avec un préfixe
 qui ne tient compte que des dernières lettres.</p>
 </section>
@@ -676,22 +676,23 @@ en cours est <em>faceboo</em> perturbe.</p>
 le meilleur chemin en donnant la possibilité de revenir en
 arrière. Par exemple, pour saisir <em>éléphant</em>, un utilisateur
 pourrait utiliser la suggestion <em>éléphants</em> puis enlever le dernier <em>s</em>.
-On note la métrique <span class="math notranslate nohighlight">\(M'_b\)</span>.</p>
+On note la métrique <img class="math" src="../_images/math/a5841042e6786412398fe7cf212f6634b89a1e58.svg" alt="M'_b"/>.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="def-mks2">Définition D1 : Dynamic Minimum Keystroke arrière</p>
 <p>On définit la façon optimale de saisir une requête
 sachant un système de complétion
-<span class="math notranslate nohighlight">\(S\)</span> comme étant le minimum obtenu :</p>
-<div class="math notranslate nohighlight" id="equation-completion-metric2-back">
-\begin{eqnarray*}
+<img class="math" src="../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> comme étant le minimum obtenu :</p>
+<div class="math" id="equation-completion-metric2-back">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-completion-metric2-back" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/0db417e6ca4b7a9ead8bd90c574b43e916ad37c2.svg" alt="\begin{eqnarray*}
 M'_b(q, S) &amp;=&amp; \min\acc{\begin{array}{l}
         \min_{0 \infegal k &lt; l(q)} \acc{ M'_b(q[1..k], S) +
             \min( K(q, k, S), l(q) - k) } \\
         \min_{s \succ q} \acc{ M'_b(s, S) + l(s) - l(q) }
         \end{array} }
-\end{eqnarray*}</div></div>
+\end{eqnarray*}"/></p>
+</div></div>
 <p>Le second terme de la métrique nécessite de considérer
 toutes les suggestions dans <em>S</em> qui commencent par le préfixe <em>q</em>.
 Le calcul de la métrique peut être fait en adaptant l’algorithme

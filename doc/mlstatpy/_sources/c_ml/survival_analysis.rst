@@ -120,7 +120,7 @@ L'hypothèse des risques proportionnel est en quelque sorte intuitive.
 Plus on ingère un poison, plus on a de chances d'en subir les conséquences.
 Mais ce n'est pas toujours le cas, le documentaire
 `La fabrique de l'ignorance
-<https://www.arte.tv/fr/videos/091148-000-A/la-fabrique-de-l-ignorance/>`_
+<https://boutique.arte.tv/detail/la-fabrique-de-lignorance>`_
 revient sur les effets du `bisphénol A <https://fr.wikipedia.org/wiki/Bisph%C3%A9nol_A>`_
 qui serait déjà pertubateur à très petite dose. Il ne prend pas en compte
 les effets croisés non plus (voir `Les perturbateurs endocriniens Comprendre où en est la recherche
@@ -133,7 +133,7 @@ splines. On peut aussi le calculer avec l'estimateur
 de Breslow (voir `Analyse de survie : Méthodes non paramétriques
 <http://helios.mi.parisdescartes.fr/~obouaziz/KMSurv.pdf>`_,
 `Introduction à l'analyse des durées de survie
-<http://www.lsta.upmc.fr/psp/Cours_Survie_1.pdf>`_).
+<https://perso.math.univ-toulouse.fr/psaintpi/files/2021/04/Cours_Survie_1.pdf>`_).
 qui repose aussi la courbe de Kaplan-Meier.
 
 On sait que si :math:`g(t) = \log S'(t)` alors

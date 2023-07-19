@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/regression_quantile';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -571,41 +569,41 @@ Elle peut être définie comme une régression avec une norme
 <section id="mediane-et-valeur-absolue">
 <span id="l-reg-quantile-demo"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Médiane et valeur absolue</a><a class="headerlink" href="#mediane-et-valeur-absolue" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On considère un ensemble de nombre réels
-<span class="math notranslate nohighlight">\(\acc{X_1,...,X_n}\)</span>. La médiane est le
+<img class="math" src="../_images/math/7bc3fe9235bb9b687cec3debdb8adde1f940b4e4.svg" alt="\acc{X_1,...,X_n}"/>. La médiane est le
 nombre <em>M</em> qui vérifie :</p>
-<div class="math notranslate nohighlight">
-\[\sum_i \indicatrice{X_i &lt; M} = \sum_i \indicatrice{X_i &gt; M}\]</div>
-<p>Plus simplement, la médiane est obtenue en triant les éléments
-<span class="math notranslate nohighlight">\(\acc{X_1,...,X_n}\)</span> par ordre croissant. La médiane
-est alors le nombre au milieu <span class="math notranslate nohighlight">\(X_{\cro{\frac{n}{2}}}\)</span>.</p>
+<div class="math">
+<p><img src="../_images/math/dca665f82cc491f89018d8b011ff17e643a6da30.svg" alt="\sum_i \indicatrice{X_i &lt; M} = \sum_i \indicatrice{X_i &gt; M}"/></p>
+</div><p>Plus simplement, la médiane est obtenue en triant les éléments
+<img class="math" src="../_images/math/7bc3fe9235bb9b687cec3debdb8adde1f940b4e4.svg" alt="\acc{X_1,...,X_n}"/> par ordre croissant. La médiane
+est alors le nombre au milieu <img class="math" src="../_images/math/ae90a3badb8bf681f2a46c9162cb1f35bdbaebe2.svg" alt="X_{\cro{\frac{n}{2}}}"/>.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-propriété0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="l-th-med-abs">propriété P1 : Médiane et valeur absolue</p>
-<p>La médiane <em>M</em> de l’ensemble <span class="math notranslate nohighlight">\(\acc{X_1,...,X_n}\)</span>
-minimise la quantité <span class="math notranslate nohighlight">\(E = \sum_i \abs{X_i - M}\)</span>.</p>
+<p>La médiane <em>M</em> de l’ensemble <img class="math" src="../_images/math/7bc3fe9235bb9b687cec3debdb8adde1f940b4e4.svg" alt="\acc{X_1,...,X_n}"/>
+minimise la quantité <img class="math" src="../_images/math/0cbbe5093f2547a3e676651e750cbfce16409d2f.svg" alt="E = \sum_i \abs{X_i - M}"/>.</p>
 </div>
 <p>Avant de démontrer la propriété, voyons ce qu’il
-se passe entre deux réels. La médiane de <span class="math notranslate nohighlight">\(\acc{A,B}\)</span>
+se passe entre deux réels. La médiane de <img class="math" src="../_images/math/b64c7bad7dcc6838ff6d69be2edfb03bd8bfc776.svg" alt="\acc{A,B}"/>
 peut être n’importe où sur le segment.</p>
 <a class="reference internal image-reference" href="../_images/mediane1.png"><img alt="../_images/mediane1.png" src="../_images/mediane1.png" style="height: 100px;" /></a>
 <p>De manière évidente, les distances
 des deux côtés du point <em>M</em> sont égales :
-<span class="math notranslate nohighlight">\(a+b = c+d\)</span>. Mais si <em>M</em> n’est pas sur le segment,
+<img class="math" src="../_images/math/1b771d13a2de90e5532298cee8b89ad0a32c80ca.svg" alt="a+b = c+d"/>. Mais si <em>M</em> n’est pas sur le segment,
 on voit de manière évidente que la somme
 des distances sera plus grande.</p>
 <a class="reference internal image-reference" href="../_images/mediane2.png"><img alt="../_images/mediane2.png" src="../_images/mediane2.png" style="height: 100px;" /></a>
 <p>N’importe quel point sur le segment <em>M</em> minimise
-<span class="math notranslate nohighlight">\(\abs{A - M} + \abs{B - M}\)</span>.
+<img class="math" src="../_images/math/ec7ca0a44bd9b101d9fb3e1215f28491d8184104.svg" alt="\abs{A - M} + \abs{B - M}"/>.
 On revient aux <em>n</em> réels triés par ordre croissant
-<span class="math notranslate nohighlight">\(\acc{X_1,...,X_n}\)</span> et on considère les paires
-<span class="math notranslate nohighlight">\((X_1, X_n)\)</span>, <span class="math notranslate nohighlight">\((X_2, X_{n-1})\)</span>, …,
-<span class="math notranslate nohighlight">\(\pa{X_{\cro{\frac{n}{2}}}, X_{\cro{\frac{n}{2}+1}}}\)</span>.
+<img class="math" src="../_images/math/7bc3fe9235bb9b687cec3debdb8adde1f940b4e4.svg" alt="\acc{X_1,...,X_n}"/> et on considère les paires
+<img class="math" src="../_images/math/0293491da3da02208ba4f81aa9f74b4fcc5eb63c.svg" alt="(X_1, X_n)"/>, <img class="math" src="../_images/math/2d088eba29000a660af03f9765f2f7bf466522ea.svg" alt="(X_2, X_{n-1})"/>, …,
+<img class="math" src="../_images/math/5747a6dc3cd3bf757b2f6dc0a6851738d9a4505c.svg" alt="\pa{X_{\cro{\frac{n}{2}}}, X_{\cro{\frac{n}{2}+1}}}"/>.
 L’intersection de tous ces intervalles est
-<span class="math notranslate nohighlight">\(\pa{X_{\cro{\frac{n}{2}}}, X_{\cro{\frac{n}{2}+1}}}\)</span>
+<img class="math" src="../_images/math/5747a6dc3cd3bf757b2f6dc0a6851738d9a4505c.svg" alt="\pa{X_{\cro{\frac{n}{2}}}, X_{\cro{\frac{n}{2}+1}}}"/>
 et on sait d’après la petit exemple avec deux points
 que n’importe quel point dans cet intervalle minimise
-<span class="math notranslate nohighlight">\(\abs{X_1 - M} + \abs{X_n - M} + \abs{X_2 - M} + \abs{X_{n-1} - M} + ... = E\)</span>.
+<img class="math" src="../_images/math/6bb828ebf6efa96a9c6b716d5fc467a04958cc6a.svg" alt="\abs{X_1 - M} + \abs{X_n - M} + \abs{X_2 - M} + \abs{X_{n-1} - M} + ... = E"/>.
 La propriété est démontrée.</p>
 </section>
 <section id="regression-et-quantile">
@@ -616,10 +614,10 @@ problème de régression.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition0">
 <p class="admonition-title">Définition D1 : Régression quantile</p>
 <p>On dispose d’un ensemble de <em>n</em> couples
-<span class="math notranslate nohighlight">\((X_i, Y_i)\)</span> avec <span class="math notranslate nohighlight">\(X_i \in \R^d\)</span>
-et <span class="math notranslate nohighlight">\(Y_i \in \R\)</span>. La régression quantile
-consiste à trouver <span class="math notranslate nohighlight">\(\alpha, \beta\)</span> tels que la
-somme <span class="math notranslate nohighlight">\(\sum_i \abs{\alpha + \beta X_i - Y_i}\)</span>
+<img class="math" src="../_images/math/1694ea2dd2b8ef2b567244ec4cf39e7192b1b7c7.svg" alt="(X_i, Y_i)"/> avec <img class="math" src="../_images/math/02a0e4eeaebf353bfe8785b985e826009c9a5181.svg" alt="X_i \in \R^d"/>
+et <img class="math" src="../_images/math/148e6e72ac4e7a61f03a6a976f981ee535604f63.svg" alt="Y_i \in \R"/>. La régression quantile
+consiste à trouver <img class="math" src="../_images/math/29bb234ecf267bba0af9362a4fece486818bf843.svg" alt="\alpha, \beta"/> tels que la
+somme <img class="math" src="../_images/math/ed6aad8e0485c9afa5806d9f9a1b7d8469336cde.svg" alt="\sum_i \abs{\alpha + \beta X_i - Y_i}"/>
 est minimale.</p>
 </div>
 </section>
@@ -627,7 +625,7 @@ est minimale.</p>
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Résolution d’une régression quantile</a><a class="headerlink" href="#resolution-d-une-regression-quantile" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>La première option consiste à utiliser une méthode
 de descente de gradient puisque la fonction
-<span class="math notranslate nohighlight">\(E = \sum_i \abs{X_i - M}\)</span> est presque
+<img class="math" src="../_images/math/0cbbe5093f2547a3e676651e750cbfce16409d2f.svg" alt="E = \sum_i \abs{X_i - M}"/> est presque
 partout dérivable. Une autre option consiste à
 utiliser l’algorithme
 <a class="reference external" href="https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares">Iteratively reweighted least squares</a>.
@@ -637,47 +635,47 @@ L’algorithme est tiré de <a class="reference internal" href="#chen2014" id="i
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="iteratiive-least-square">Algorithme A1 : Iteratively reweighted least squares</p>
-<p>On souhaite trouver les paramètres <span class="math notranslate nohighlight">\(\Omega\)</span>
+<p>On souhaite trouver les paramètres <img class="math" src="../_images/math/3faa456651cdf798d57ca5023238282293128b54.svg" alt="\Omega"/>
 qui minimise :</p>
-<div class="math notranslate nohighlight">
-\[E = \sum_i \abs{Y_i - f(X_i, \Omega)}\]</div>
-<p><em>Etape 1</em></p>
-<p>On pose <span class="math notranslate nohighlight">\(\forall i, \, w_i^t = 1\)</span>.</p>
+<div class="math">
+<p><img src="../_images/math/691675c3c50b1001b94267ca8bf64576192b6fb3.svg" alt="E = \sum_i \abs{Y_i - f(X_i, \Omega)}"/></p>
+</div><p><em>Etape 1</em></p>
+<p>On pose <img class="math" src="../_images/math/267a020b0a86a64eb16fe3afae66e6706c35e157.svg" alt="\forall i, \, w_i^t = 1"/>.</p>
 <p><em>Etape 2</em></p>
-<p>On calcule <span class="math notranslate nohighlight">\(\Omega_t = \arg \min E(\Omega)\)</span> avec
-<span class="math notranslate nohighlight">\(E_t(\Omega) = \sum_i w_i^t \pa{Y_i - f(X_i, \Omega)}^2\)</span>.</p>
+<p>On calcule <img class="math" src="../_images/math/c4e7037b6cedc8da73b0ec4d07911c2cf8475688.svg" alt="\Omega_t = \arg \min E(\Omega)"/> avec
+<img class="math" src="../_images/math/f1646eccc1a4a360de718ca7e39151aeb128a5e6.svg" alt="E_t(\Omega) = \sum_i w_i^t \pa{Y_i - f(X_i, \Omega)}^2"/>.</p>
 <p><em>Etape 3</em></p>
 <p>On met à jour les poids
-<span class="math notranslate nohighlight">\(w_i^{t+1} = \frac{1}{\max\acc{\delta, \abs{Y_i - f(X_i, \Omega_t)}}}\)</span>.
+<img class="math" src="../_images/math/fef0f1fc6120df65d7ea432503b1931f84032b42.svg" alt="w_i^{t+1} = \frac{1}{\max\acc{\delta, \abs{Y_i - f(X_i, \Omega_t)}}}"/>.
 Puis on retourne à l’étape 2.</p>
 </div>
-<p>Le paramètre <span class="math notranslate nohighlight">\(\delta\)</span> gère le cas où la prédiction est identique
-à la valeur attendue pour un point <span class="math notranslate nohighlight">\(X_i\)</span> donné.
+<p>Le paramètre <img class="math" src="../_images/math/c3c53fe92058364e84e0d2731859244c933d674c.svg" alt="\delta"/> gère le cas où la prédiction est identique
+à la valeur attendue pour un point <img class="math" src="../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> donné.
 Il y a plusieurs choses à démontrer. On suppose que l’algorithme
 converge, ce qu’on n’a pas encore démontré. Dans ce cas,
-<span class="math notranslate nohighlight">\(\Omega_t = \Omega_{t+1}\)</span> et les coefficients
-<span class="math notranslate nohighlight">\(\Omega_t\)</span> optimise la quantité :</p>
-<div class="math notranslate nohighlight">
-\[\sum_i w_i^t \pa{Y_i - f(X_i, \Omega)}^2 =
+<img class="math" src="../_images/math/1caa20c211ba95d91b32df7d39e4702e4405067c.svg" alt="\Omega_t = \Omega_{t+1}"/> et les coefficients
+<img class="math" src="../_images/math/c2ec42778c7bf5d13ee5a4f75cf200c56d674040.svg" alt="\Omega_t"/> optimise la quantité :</p>
+<div class="math">
+<p><img src="../_images/math/744b210a8669dc2e430b8ec09e9aa800dd49d534.svg" alt="\sum_i w_i^t \pa{Y_i - f(X_i, \Omega)}^2 =
 \sum_i \frac{\pa{Y_i - f(X_i, \Omega)}^2}{\max{\delta, \abs{Y_i - f(X_i, \Omega_t)}}}
-\underset{\delta \rightarrow 0}{\longrightarrow} \sum_i \abs{Y_i - f(X_i, \Omega)}\]</div>
-<p>On remarque également que <span class="math notranslate nohighlight">\(E_t(\Omega_t)\)</span> est l’erreur <em>L1</em>
-pour les paramètres <span class="math notranslate nohighlight">\(\Omega\)</span>.
+\underset{\delta \rightarrow 0}{\longrightarrow} \sum_i \abs{Y_i - f(X_i, \Omega)}"/></p>
+</div><p>On remarque également que <img class="math" src="../_images/math/dfb9327473e8177f68297681157165421c8d8da4.svg" alt="E_t(\Omega_t)"/> est l’erreur <em>L1</em>
+pour les paramètres <img class="math" src="../_images/math/3faa456651cdf798d57ca5023238282293128b54.svg" alt="\Omega"/>.
 Donc si l’algorithme converge, celui-ci optimise bien
 l’erreur de la régression quantile. Dans le cas d’une régression
 linéaire, on sait exprimer la solution :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rcl}
+<div class="math">
+<p><img src="../_images/math/95961441d98b307a30bbd8b040a550194cf57bc3.svg" alt="\begin{array}{rcl}
 \Omega_{t+1} &amp;=&amp; (X' W_t X)^{-1} X' W_t y = g(\Omega_t) \\
 \text{avec } W_t &amp;=&amp; diag( \frac{1}{\max\acc{\delta, \abs{y_i - \Omega_t X_i}}})
-\end{array}\end{split}\]</div>
-<p>D’après le théorème du
+\end{array}"/></p>
+</div><p>D’après le théorème du
 <a class="reference external" href="https://fr.wikipedia.org/wiki/Point_fixe">point fixe</a>,
 on sait que la suite converge si la fonction <em>g</em> est
 <a class="reference external" href="https://fr.wikipedia.org/wiki/Application_contractante">contractante</a>.</p>
-<div class="math notranslate nohighlight">
-\[\forall x,y, \; \abs{f(x) - f(y)} \leqslant k \norm{x-y} \text{ avec } k &lt; 1\]</div>
-</section>
+<div class="math">
+<p><img src="../_images/math/cd06b8f2b7f2e1c8420e8f8d6d4675151741974d.svg" alt="\forall x,y, \; \abs{f(x) - f(y)} \leqslant k \norm{x-y} \text{ avec } k &lt; 1"/></p>
+</div></section>
 <section id="quantile-et-optimisation">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">Quantile et optimisation</a><a class="headerlink" href="#quantile-et-optimisation" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>De la même manière que nous avons défini
@@ -686,42 +684,42 @@ d’optimisation, nous pouvons définir n’importe quel
 quantile comme tel.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-propriété1">
 <p class="admonition-title">propriété P2 : Quantile et optimisation</p>
-<p>Le quantile <span class="math notranslate nohighlight">\(Q_p\)</span> de l’ensemble <span class="math notranslate nohighlight">\(\acc{X_1,...,X_n}\)</span>
+<p>Le quantile <img class="math" src="../_images/math/55a59b1c69a9550a4e9fd1a847e7132d512eb256.svg" alt="Q_p"/> de l’ensemble <img class="math" src="../_images/math/7bc3fe9235bb9b687cec3debdb8adde1f940b4e4.svg" alt="\acc{X_1,...,X_n}"/>
 est le nombre qui vérifie :</p>
-<div class="math notranslate nohighlight">
-\[\sum_{i=1}^n \indicatrice{X_i &lt; Q_p} = np\]</div>
-<p>Ce nombre minimise la quantité :</p>
-<div class="math notranslate nohighlight">
-\[E = \sum_i p \abs{X_i - Q_p}^+ + (1-p) \abs{X_i - Q_p}^-\]</div>
-<p>Où <span class="math notranslate nohighlight">\(\abs{a}^+ = \max\acc{a, 0}\)</span> et
-<span class="math notranslate nohighlight">\(\abs{a}^- = \max\acc{-a, 0}\)</span>.</p>
+<div class="math">
+<p><img src="../_images/math/215fabe533b33b127ee08ef119ca394f52f66ffe.svg" alt="\sum_{i=1}^n \indicatrice{X_i &lt; Q_p} = np"/></p>
+</div><p>Ce nombre minimise la quantité :</p>
+<div class="math">
+<p><img src="../_images/math/068047e70624e2bb9485cce389e1a5d758def207.svg" alt="E = \sum_i p \abs{X_i - Q_p}^+ + (1-p) \abs{X_i - Q_p}^-"/></p>
+</div><p>Où <img class="math" src="../_images/math/f622d59d938825fac46c2c891c99a3c463cdeedc.svg" alt="\abs{a}^+ = \max\acc{a, 0}"/> et
+<img class="math" src="../_images/math/105200946f81a51fca5ff11c1e6a6ddd51a2f778.svg" alt="\abs{a}^- = \max\acc{-a, 0}"/>.</p>
 </div>
 <p>On vérifie qu’on retrouve bien ce qui était énoncé pour
-la médiane avec <span class="math notranslate nohighlight">\(p=\frac{1}{2}\)</span>. Il faut démontrer
+la médiane avec <img class="math" src="../_images/math/12f1c82530505d770932b9b1d05ef3f008b8adaa.svg" alt="p=\frac{1}{2}"/>. Il faut démontrer
 que la solution de ce programme d’optimisation
 atterrit dans l’intervalle souhaité.</p>
 <a class="reference internal image-reference" href="../_images/q02.png"><img alt="../_images/q02.png" src="../_images/q02.png" style="height: 80px;" /></a>
 <p>On choisit un réel <em>P</em> à l’intérieur d’un intervale et on calcule :
-<span class="math notranslate nohighlight">\(E(P) = \sum_i p \abs{X_i - P}^+ + (1-p) \abs{X_i - P}^-\)</span>.
-On note <span class="math notranslate nohighlight">\(a(P) = \sum_{i=1}^n \indicatrice{X_i &lt; P}\)</span> et
-<span class="math notranslate nohighlight">\(b(P) = \sum_{i=1}^n \indicatrice{X_i &gt; P}\)</span>. Comme le point <em>P</em>
-est à l’intérieur d’un intervalle, <span class="math notranslate nohighlight">\(a+b = n\)</span>.
-Soit <em>dx</em> un réel tel que <span class="math notranslate nohighlight">\(P+dx\)</span> soit toujours dans l’intervalle :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rcl}
+<img class="math" src="../_images/math/82f5e266e34537be473899cbe94270c7ccf6bc4d.svg" alt="E(P) = \sum_i p \abs{X_i - P}^+ + (1-p) \abs{X_i - P}^-"/>.
+On note <img class="math" src="../_images/math/a6aa8fd0a0d923b16886a1d1a665da60e819a57d.svg" alt="a(P) = \sum_{i=1}^n \indicatrice{X_i &lt; P}"/> et
+<img class="math" src="../_images/math/6e8b22969ef3cd64beca18bb927fefc24085e423.svg" alt="b(P) = \sum_{i=1}^n \indicatrice{X_i &gt; P}"/>. Comme le point <em>P</em>
+est à l’intérieur d’un intervalle, <img class="math" src="../_images/math/fe1b90a874397bb56c8978594578cdb5207a66ea.svg" alt="a+b = n"/>.
+Soit <em>dx</em> un réel tel que <img class="math" src="../_images/math/af598bbe987aee202de86a58a76fb9f1d7abee80.svg" alt="P+dx"/> soit toujours dans l’intervalle :</p>
+<div class="math">
+<p><img src="../_images/math/e2d90774f164ec13fc2e2656eaf8d918d994e85b.svg" alt="\begin{array}{rcl}
 E(P+dx) &amp;=&amp; \sum_i p \abs{X_i - P - dx}^+ + (1-p) \abs{X_i - P - dx}^- \\
 &amp;=&amp; - b(P)pdx + a(P)(1-p)dx = (a(P) - a(P)p -b(P)p)dx = (a(P) - pn) dx
-\end{array}\end{split}\]</div>
-<p>On voit que si <em>P</em> est choisi de telle sorte que <span class="math notranslate nohighlight">\(a(P) = np\)</span>, la fonction
-<span class="math notranslate nohighlight">\(E(P)\)</span> est constante sur cette intervalle et c’est précisément le cas
-lorsque <span class="math notranslate nohighlight">\(P=Q_p\)</span>. Comme la fonction <em>E</em> est une somme positive de fonctions
+\end{array}"/></p>
+</div><p>On voit que si <em>P</em> est choisi de telle sorte que <img class="math" src="../_images/math/2fa52cbfdcd79b2c09c226790037e76475598ffa.svg" alt="a(P) = np"/>, la fonction
+<img class="math" src="../_images/math/3221cf1b41bd88e119dc4bc3cbf595bdee44d0fe.svg" alt="E(P)"/> est constante sur cette intervalle et c’est précisément le cas
+lorsque <img class="math" src="../_images/math/856ef95853e303cf5a5e8221cd13ab872fe9b3ad.svg" alt="P=Q_p"/>. Comme la fonction <em>E</em> est une somme positive de fonctions
 convexes, elle l’est aussi. Si on a trouvé un intervalle où la fonction est
 constante alors celui-ci contient la solution. Sinon, il suffit juste de
-trouver les intervalles <span class="math notranslate nohighlight">\((X_{i-1}, X_i)\)</span> et <span class="math notranslate nohighlight">\((X_i, X_{i+1})\)</span>
+trouver les intervalles <img class="math" src="../_images/math/77a26ff92b7473c0fe9701e53abd3833d6fe9fd5.svg" alt="(X_{i-1}, X_i)"/> et <img class="math" src="../_images/math/5a47de8d3f236ba4359c4828a1e69503303df1e8.svg" alt="(X_i, X_{i+1})"/>
 pour lesquelles la fonction <em>E</em> est respectivement décroissante et croissante.
-On cherche donc le point <em>P</em> tel que <span class="math notranslate nohighlight">\(a(P) &lt; pn\)</span> si <span class="math notranslate nohighlight">\(P &lt; X_i\)</span>
-et <span class="math notranslate nohighlight">\(a(P) &gt; pn\)</span> si <span class="math notranslate nohighlight">\(P &gt; X_i\)</span> et ce point correspond au quantile
-<span class="math notranslate nohighlight">\(Q_p\)</span>. Ceci conclut la démonstration.</p>
+On cherche donc le point <em>P</em> tel que <img class="math" src="../_images/math/3c83028f50339ac83b5b68773fe08ab9deb042e3.svg" alt="a(P) &lt; pn"/> si <img class="math" src="../_images/math/51ec886fe15441521418ef70eef7c99b6cfca350.svg" alt="P &lt; X_i"/>
+et <img class="math" src="../_images/math/1cce03f1660cb7b063c2a8dd93f48363e4d9477e.svg" alt="a(P) &gt; pn"/> si <img class="math" src="../_images/math/17e872400bb3e67496fa821cbb7852dc4adf06e1.svg" alt="P &gt; X_i"/> et ce point correspond au quantile
+<img class="math" src="../_images/math/55a59b1c69a9550a4e9fd1a847e7132d512eb256.svg" alt="Q_p"/>. Ceci conclut la démonstration.</p>
 </section>
 <section id="regression-quantile-pour-un-quantile-p-quelconque">
 <h2><a class="toc-backref" href="#id7" role="doc-backlink">Régression quantile pour un quantile p quelconque</a><a class="headerlink" href="#regression-quantile-pour-un-quantile-p-quelconque" title="Lien permanent vers cette rubrique">#</a></h2>
@@ -730,10 +728,10 @@ pour un quantile autre que la médiane.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition1">
 <p class="admonition-title">Définition D2 : Régression quantile</p>
 <p>On dispose d’un ensemble de <em>n</em> couples
-<span class="math notranslate nohighlight">\((X_i, Y_i)\)</span> avec <span class="math notranslate nohighlight">\(X_i \in \R^d\)</span>
-et <span class="math notranslate nohighlight">\(Y_i \in \R\)</span>. La régression quantile
-consiste à trouver <span class="math notranslate nohighlight">\(\alpha, \beta\)</span> tels que la
-somme <span class="math notranslate nohighlight">\(\sum_i p \abs{\alpha + \beta X_i - Y_i}^+ + (1-p) \abs{\alpha + \beta X_i - Y_i}^-\)</span>
+<img class="math" src="../_images/math/1694ea2dd2b8ef2b567244ec4cf39e7192b1b7c7.svg" alt="(X_i, Y_i)"/> avec <img class="math" src="../_images/math/02a0e4eeaebf353bfe8785b985e826009c9a5181.svg" alt="X_i \in \R^d"/>
+et <img class="math" src="../_images/math/148e6e72ac4e7a61f03a6a976f981ee535604f63.svg" alt="Y_i \in \R"/>. La régression quantile
+consiste à trouver <img class="math" src="../_images/math/29bb234ecf267bba0af9362a4fece486818bf843.svg" alt="\alpha, \beta"/> tels que la
+somme <img class="math" src="../_images/math/3393602228377dba4075274efb05b18a6ddd8e10.svg" alt="\sum_i p \abs{\alpha + \beta X_i - Y_i}^+ + (1-p) \abs{\alpha + \beta X_i - Y_i}^-"/>
 est minimale.</p>
 </div>
 </section>
@@ -748,31 +746,31 @@ L’implémentation est faite par la classe <a class="reference external" href="
 (voir <a class="reference internal" href="#koenker2017" id="id2"><span>[Koenker2017]</span></a>).</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Algorithme1">
 <p class="admonition-title">Algorithme A2 : Iteratively reweighted least squares</p>
-<p>On souhaite trouver les paramètres <span class="math notranslate nohighlight">\(\Omega\)</span>
+<p>On souhaite trouver les paramètres <img class="math" src="../_images/math/3faa456651cdf798d57ca5023238282293128b54.svg" alt="\Omega"/>
 qui minimise :</p>
-<div class="math notranslate nohighlight">
-\[E = \sum_i p \abs{Y_i - f(X_i, \Omega)}^+ + (1-p) \abs{Y_i - f(X_i, \Omega)}^-\]</div>
-<p><em>Etape 1</em></p>
-<p>On pose <span class="math notranslate nohighlight">\(\forall i, \, w_i^t = 1\)</span>.</p>
+<div class="math">
+<p><img src="../_images/math/703a53c8ea0f4c8c425a44f3e08e33e2dd6c4266.svg" alt="E = \sum_i p \abs{Y_i - f(X_i, \Omega)}^+ + (1-p) \abs{Y_i - f(X_i, \Omega)}^-"/></p>
+</div><p><em>Etape 1</em></p>
+<p>On pose <img class="math" src="../_images/math/267a020b0a86a64eb16fe3afae66e6706c35e157.svg" alt="\forall i, \, w_i^t = 1"/>.</p>
 <p><em>Etape 2</em></p>
-<p>On calcule <span class="math notranslate nohighlight">\(\Omega_t = \arg \min E(\Omega)\)</span> avec
-<span class="math notranslate nohighlight">\(E_t(\Omega) = \sum_i w_i^t \pa{Y_i - f(X_i, \Omega)}^2\)</span>.</p>
+<p>On calcule <img class="math" src="../_images/math/c4e7037b6cedc8da73b0ec4d07911c2cf8475688.svg" alt="\Omega_t = \arg \min E(\Omega)"/> avec
+<img class="math" src="../_images/math/f1646eccc1a4a360de718ca7e39151aeb128a5e6.svg" alt="E_t(\Omega) = \sum_i w_i^t \pa{Y_i - f(X_i, \Omega)}^2"/>.</p>
 <p><em>Etape 3</em></p>
 <p>On met à jour les poids
-<span class="math notranslate nohighlight">\(w_i^{t+1} = \frac{1}{\max\acc{\delta, \frac{1}{p} \abs{\alpha + \beta X_i - Y_i}^+ + \frac{1}{1-p} \abs{\alpha + \beta X_i - Y_i}^-}}\)</span>.
+<img class="math" src="../_images/math/c343ece77d819484ae3923f1e19f7810eb50c21d.svg" alt="w_i^{t+1} = \frac{1}{\max\acc{\delta, \frac{1}{p} \abs{\alpha + \beta X_i - Y_i}^+ + \frac{1}{1-p} \abs{\alpha + \beta X_i - Y_i}^-}}"/>.
 Puis on retourne à l’étape 2.</p>
 </div>
 <p>On suppose que l’algorithme
 converge, ce qu’on n’a pas encore démontré. Dans ce cas,
-<span class="math notranslate nohighlight">\(\Omega_t = \Omega_{t+1}\)</span> et les coefficients
-<span class="math notranslate nohighlight">\(\Omega_t\)</span> optimise la quantité :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rcl}
+<img class="math" src="../_images/math/1caa20c211ba95d91b32df7d39e4702e4405067c.svg" alt="\Omega_t = \Omega_{t+1}"/> et les coefficients
+<img class="math" src="../_images/math/c2ec42778c7bf5d13ee5a4f75cf200c56d674040.svg" alt="\Omega_t"/> optimise la quantité :</p>
+<div class="math">
+<p><img src="../_images/math/5327fe0dd39b4525466b50313660d1443c3e8aac.svg" alt="\begin{array}{rcl}
 \sum_i w_i^t \pa{Y_i - f(X_i, \Omega)}^2 &amp;=&amp;
 \sum_i \frac{\pa{Y_i - f(X_i, \Omega)}^2}{\max\acc{\delta, \frac{1}{p} \abs{\alpha + \beta X_i - Y_i}^+ + \frac{1}{1-p} \abs{\alpha + \beta X_i - Y_i}^-}} \\
 &amp;\underset{\delta \rightarrow 0}{\longrightarrow}&amp; p \abs{Y_i - f(X_i, \Omega)}^+ + (1-p) \abs{Y_i - f(X_i, \Omega)}^-
-\end{array}\end{split}\]</div>
-</section>
+\end{array}"/></p>
+</div></section>
 <section id="notebook">
 <h2><a class="toc-backref" href="#id9" role="doc-backlink">Notebook</a><a class="headerlink" href="#notebook" title="Lien permanent vers cette rubrique">#</a></h2>
 <div class="toctree-wrapper compound">
@@ -790,7 +788,7 @@ converge, ce qu’on n’a pas encore démontré. Dans ce cas,
 <h2><a class="toc-backref" href="#id10" role="doc-backlink">Bilbiographie</a><a class="headerlink" href="#bilbiographie" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Des références sont disponibles sur la page de <a class="reference external" href="http://www.statsmodels.org/stable/index.html">statsmodels</a> :
 <a class="reference external" href="http://www.statsmodels.org/stable/generated/statsmodels.regression.quantile_regression.QuantReg.html">QuantReg</a> ou
-là : <a class="reference external" href="https://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/ml2a/td2a_mlplus_regression_quantile.html">Régression quantile</a>.</p>
+là : <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/notebooks/quantile_regression.html">Régression quantile</a>.</p>
 <div role="list" class="citation-list">
 <div class="citation" id="koenker2017" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Koenker2017</a><span class="fn-bracket">]</span></span>

@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/missing_values_mf';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -593,22 +591,22 @@ Lire également <a class="reference internal" href="#acara2011" id="id1"><span>[
 <h2><a class="toc-backref" href="#id8" role="doc-backlink">Factorisation de matrices et rang</a><a class="headerlink" href="#factorisation-de-matrices-et-rang" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>La <a class="reference external" href="https://en.wikipedia.org/wiki/Non-negative_matrix_factorization">factorisation d’une matrice</a>
 est un problème d’optimisation qui consiste à trouver pour une matrice
-<span class="math notranslate nohighlight">\(M \in \mathcal{M}_{pq}\)</span> à coefficients positifs ou nuls :</p>
-<div class="math notranslate nohighlight">
-\[M = WH\]</div>
-<p>Où <span class="math notranslate nohighlight">\(W\)</span> et <span class="math notranslate nohighlight">\(H\)</span> sont de rang <span class="math notranslate nohighlight">\(k\)</span> et de dimension
-<span class="math notranslate nohighlight">\(W \in \mathcal{M}_{pk}\)</span> et <span class="math notranslate nohighlight">\(H \in \mathcal{M}_{kq}\)</span>.
+<img class="math" src="../_images/math/37c41e916e78ff665214e87954500647c5ce8889.svg" alt="M \in \mathcal{M}_{pq}"/> à coefficients positifs ou nuls :</p>
+<div class="math">
+<p><img src="../_images/math/a4a2b97f013c87ff5f2904a77df8c130dc5dae09.svg" alt="M = WH"/></p>
+</div><p>Où <img class="math" src="../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/> et <img class="math" src="../_images/math/dd8a8ece0b1684a9537eb7947dc6b8fdc1652abc.svg" alt="H"/> sont de rang <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> et de dimension
+<img class="math" src="../_images/math/626cd4298d9ff7ff6262744ac25451f6882f5506.svg" alt="W \in \mathcal{M}_{pk}"/> et <img class="math" src="../_images/math/b1e93b8c32e4e1b85a895cd2872c3720203ad8a5.svg" alt="H \in \mathcal{M}_{kq}"/>.
 <em>On s’intéresse ici au cas où les coefficients ne sont pas nécessairement positifs.</em>
-Si <span class="math notranslate nohighlight">\(k &lt; rang(M)\)</span>, le produit <span class="math notranslate nohighlight">\(WH\)</span> ne peut être égal à <span class="math notranslate nohighlight">\(M\)</span>.
+Si <img class="math" src="../_images/math/4bc53c52b647e95ff42bdfa33859df2170b1d86f.svg" alt="k &lt; rang(M)"/>, le produit <img class="math" src="../_images/math/b17e4d72fbcc273dfd8b44bd45e91bb37c3920a8.svg" alt="WH"/> ne peut être égal à <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/>.
 Dans ce cas, on cherchera les matrices qui minimise :</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Problème0">
 <p class="admonition-title">Problème P1 : Factorisation de matrices positifs</p>
-<p>Soit <span class="math notranslate nohighlight">\(M \in \mathcal{M}_{pq}\)</span>, on cherche les matrices à coefficients positifs
-<span class="math notranslate nohighlight">\(W \in \mathcal{M}_{pk}\)</span> et <span class="math notranslate nohighlight">\(H \in \mathcal{M}_{kq}\)</span> qui sont solution
+<p>Soit <img class="math" src="../_images/math/37c41e916e78ff665214e87954500647c5ce8889.svg" alt="M \in \mathcal{M}_{pq}"/>, on cherche les matrices à coefficients positifs
+<img class="math" src="../_images/math/626cd4298d9ff7ff6262744ac25451f6882f5506.svg" alt="W \in \mathcal{M}_{pk}"/> et <img class="math" src="../_images/math/b1e93b8c32e4e1b85a895cd2872c3720203ad8a5.svg" alt="H \in \mathcal{M}_{kq}"/> qui sont solution
 du problème d’optimisation :</p>
-<div class="math notranslate nohighlight">
-\[\min_{W,H}\acc{\norme{M-WH}^2} = \min_{W,H} \sum_{ij} (m_{ij} - \sum_k w_{ik} h_{kj})^2\]</div>
-</div>
+<div class="math">
+<p><img src="../_images/math/90e7608cf68377ea855c030aa24dc7cebff52a05.svg" alt="\min_{W,H}\acc{\norme{M-WH}^2} = \min_{W,H} \sum_{ij} (m_{ij} - \sum_k w_{ik} h_{kj})^2"/></p>
+</div></div>
 </section>
 <section id="quelques-cas-simples">
 <h2><a class="toc-backref" href="#id9" role="doc-backlink">Quelques cas simples</a><a class="headerlink" href="#quelques-cas-simples" title="Lien permanent vers cette rubrique">#</a></h2>
@@ -638,12 +636,12 @@ Les trois points forment un triangle dans un plan.</p>
 <figure class="align-default">
 <img alt="../_images/missing_values_mf-1.png" class="plot-directive" src="../_images/missing_values_mf-1.png" />
 </figure>
-<p>On peut voir la matrice <span class="math notranslate nohighlight">\(M\)</span> comme un ensemble de <span class="math notranslate nohighlight">\(n=3\)</span> points dans un espace vectoriel.
-La matrice <span class="math notranslate nohighlight">\(W\)</span> est un ensemble de <span class="math notranslate nohighlight">\(k &lt; n\)</span> points dans le même espace.
-La matrice <span class="math notranslate nohighlight">\(WH\)</span>, de rang <span class="math notranslate nohighlight">\(k\)</span> est une approximation de cet ensemble
-dans le même espace, c’est aussi <span class="math notranslate nohighlight">\(n\)</span> combinaisons linéaires de <span class="math notranslate nohighlight">\(k\)</span>
-points de façon à former <span class="math notranslate nohighlight">\(n\)</span> points les plus proches proches de
-<span class="math notranslate nohighlight">\(n\)</span> points de la matrice <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<p>On peut voir la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> comme un ensemble de <img class="math" src="../_images/math/59966a3ae98aee3c5ee17f5d0f476547dfca18af.svg" alt="n=3"/> points dans un espace vectoriel.
+La matrice <img class="math" src="../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/> est un ensemble de <img class="math" src="../_images/math/50dc162459fdef562c50063a7066032446c791e8.svg" alt="k &lt; n"/> points dans le même espace.
+La matrice <img class="math" src="../_images/math/b17e4d72fbcc273dfd8b44bd45e91bb37c3920a8.svg" alt="WH"/>, de rang <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> est une approximation de cet ensemble
+dans le même espace, c’est aussi <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> combinaisons linéaires de <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>
+points de façon à former <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> points les plus proches proches de
+<img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> points de la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/>.</p>
 </section>
 <section id="intuition-geometrique">
 <h2><a class="toc-backref" href="#id10" role="doc-backlink">Intuition géométrique</a><a class="headerlink" href="#intuition-geometrique" title="Lien permanent vers cette rubrique">#</a></h2>
@@ -656,109 +654,110 @@ Nous allons le montrer grâce à quelques lemmes et théorèmes.</p>
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="lemme-mf-0">Lemme L1 : Rang k</p>
-<p>On note <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span>,
-<span class="math notranslate nohighlight">\(W^k=(w^k_{il})\)</span>, <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> avec
-<span class="math notranslate nohighlight">\(1 \infegal i \infegal p\)</span>, <span class="math notranslate nohighlight">\(1 \infegal j \infegal q\)</span>,
-et <span class="math notranslate nohighlight">\(1 \infegal l \infegal k\)</span> avec <span class="math notranslate nohighlight">\(k &lt; \min(p,q)\)</span>.
+<p>On note <img class="math" src="../_images/math/8238a702c12f033ac30d4d4d5f17c7aae479fe0f.svg" alt="M=(m_{ij})"/>,
+<img class="math" src="../_images/math/4c617a7dca9991a77882a5cbad371f1e95ac8ae6.svg" alt="W^k=(w^k_{il})"/>, <img class="math" src="../_images/math/56f38c2cfa1bdbfda46a9ec81300dd04fa97a73e.svg" alt="H^k=(h^k_{lj})"/> avec
+<img class="math" src="../_images/math/067cb36e5f478d238eeefdafff9d76e543581b4f.svg" alt="1 \infegal i \infegal p"/>, <img class="math" src="../_images/math/40724ff9ba095878aa541680ad23885ef7fae588.svg" alt="1 \infegal j \infegal q"/>,
+et <img class="math" src="../_images/math/4f428f6c384da5417b47766804b368ac91cb9107.svg" alt="1 \infegal l \infegal k"/> avec <img class="math" src="../_images/math/bcfaefa268474c5f871fb357ea7466c718b12d5d.svg" alt="k &lt; \min(p,q)"/>.
 On suppose que les matrices
 sont solution du problème d’optimisation
-<span class="math notranslate nohighlight">\(\min_{W,H} \norm{ M - WH }^2\)</span>.
-On suppose que <span class="math notranslate nohighlight">\(rang(M) \supegal k\)</span>.
-Alors les les matrices <span class="math notranslate nohighlight">\(W^k\)</span> et <span class="math notranslate nohighlight">\(H^k\)</span>
-sont de rang <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<img class="math" src="../_images/math/6050136482b81262e78d932b12f3d4206f932799.svg" alt="\min_{W,H} \norm{ M - WH }^2"/>.
+On suppose que <img class="math" src="../_images/math/6cc0a501c984ae0a4ca0bd94513c39318ce0be5d.svg" alt="rang(M) \supegal k"/>.
+Alors les les matrices <img class="math" src="../_images/math/68455bc6e7d697a95a84b4db49e97d6f22d97ac1.svg" alt="W^k"/> et <img class="math" src="../_images/math/03ef7c41d1afe22800dc5a10d54c10cfd1a1e7a0.svg" alt="H^k"/>
+sont de rang <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>.</p>
 </div>
 <p>On procède par récurrence. Ce lemme est nécessairement vrai pour
-<span class="math notranslate nohighlight">\(k=1\)</span> car la matrice <span class="math notranslate nohighlight">\(M\)</span> n’est pas nulle.
+<img class="math" src="../_images/math/a93fc678804463d20118c9d381587ffe845be391.svg" alt="k=1"/> car la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> n’est pas nulle.
 De manière évidente,
-<span class="math notranslate nohighlight">\(\norm{ M - W^{k-1}H^{k-1} }^2 \supegal \norm{ M - W^kH^k }^2\)</span>.
-Comme <span class="math notranslate nohighlight">\(rang(M) \supegal k\)</span>, il existe un vecteur colonne <span class="math notranslate nohighlight">\(V\)</span> de la matrice
-<span class="math notranslate nohighlight">\(M\)</span> qui ne fait pas partie de l’espace vectoriel engendré par les
-<span class="math notranslate nohighlight">\(k-1\)</span> vecteurs de la matrice <span class="math notranslate nohighlight">\(W^{k-1}\)</span>. On construit la matrice
-<span class="math notranslate nohighlight">\(Y^k= [W^{k-1}, V]\)</span>. Par construction, <span class="math notranslate nohighlight">\(rang(Y) = k\)</span>. De même,
-on construit <span class="math notranslate nohighlight">\(G^k\)</span> à partir de <span class="math notranslate nohighlight">\(H^{k-1}\)</span> en remplaçant la dernière colonne et
+<img class="math" src="../_images/math/93c55d0f8d669beb33768e0790f703d117479fc6.svg" alt="\norm{ M - W^{k-1}H^{k-1} }^2 \supegal \norm{ M - W^kH^k }^2"/>.
+Comme <img class="math" src="../_images/math/6cc0a501c984ae0a4ca0bd94513c39318ce0be5d.svg" alt="rang(M) \supegal k"/>, il existe un vecteur colonne <img class="math" src="../_images/math/3f07e082745e744a189091767318aa64a01add9c.svg" alt="V"/> de la matrice
+<img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> qui ne fait pas partie de l’espace vectoriel engendré par les
+<img class="math" src="../_images/math/0c4dd8d0be506d0d237b24221334da3307eb3d78.svg" alt="k-1"/> vecteurs de la matrice <img class="math" src="../_images/math/84c77ac8908fea06dc104f7b299a7637e9169c7a.svg" alt="W^{k-1}"/>. On construit la matrice
+<img class="math" src="../_images/math/0980e342fb3a8ff9b13bcb435ba77248e8ee32d1.svg" alt="Y^k= [W^{k-1}, V]"/>. Par construction, <img class="math" src="../_images/math/e9bc2aff8231a98ce6321847b2d5a97e92970016.svg" alt="rang(Y) = k"/>. De même,
+on construit <img class="math" src="../_images/math/a187ea727afc1268182cdc1b033e9e8e82365d36.svg" alt="G^k"/> à partir de <img class="math" src="../_images/math/4e3efc17635be30dd8f4f988bab90d67e01aa39d.svg" alt="H^{k-1}"/> en remplaçant la dernière colonne et
 en ajoutant une ligne :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}G^k=\cro{\begin{array}{cc} H^{k-1}[1..p-1] &amp; 0 \\ 0 &amp; 1 \end{array}}\end{split}\]</div>
-<p>Par construction, le dernier vecteur est de la matrice produit est identique
-à celui de la matrice <span class="math notranslate nohighlight">\(M\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\norme{M - Y^{k-1}G^{k-1}}^2 = \norme{M - W^{k-1}H^{k-1}}^2 - \sum_i (m_{iq} - w^{k-1}_{ik} h^{k-1}_{kq})^2\]</div>
-<p>Nous avons fabriqué une matrice de rang <em>k</em> qui fait décroître l’erreur
+<div class="math">
+<p><img src="../_images/math/dffeb25674d4677655104896dc01c1d0982716dc.svg" alt="G^k=\cro{\begin{array}{cc} H^{k-1}[1..p-1] &amp; 0 \\ 0 &amp; 1 \end{array}}"/></p>
+</div><p>Par construction, le dernier vecteur est de la matrice produit est identique
+à celui de la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/>.</p>
+<div class="math">
+<p><img src="../_images/math/8c74a1482df22020618699a26518f7d0adf587a9.svg" alt="\norme{M - Y^{k-1}G^{k-1}}^2 = \norme{M - W^{k-1}H^{k-1}}^2 - \sum_i (m_{iq} - w^{k-1}_{ik} h^{k-1}_{kq})^2"/></p>
+</div><p>Nous avons fabriqué une matrice de rang <em>k</em> qui fait décroître l’erreur
 du problème d’optimisation.
 On procède par l’absurde pour dire que si
-<span class="math notranslate nohighlight">\(rang(W) = k-1\)</span>, on peut construire une matrice de rang <em>k</em>
+<img class="math" src="../_images/math/b66fc654d79f0894a63461dc2d32aa11a07cc4f9.svg" alt="rang(W) = k-1"/>, on peut construire une matrice de rang <em>k</em>
 qui fait décroître l’erreur ce qui est impossible. Le lemme est donc vrai.</p>
 <p>Ce lemme fait également apparaître la construction de <em>q</em> points
 dans un espace vectoriel engendré par les <em>k</em> vecteurs colonnes
-de la matrice <span class="math notranslate nohighlight">\(W_k\)</span>. Il est donc possible de choisir
-n’importe quel base <span class="math notranslate nohighlight">\(W'_{k}\)</span> de cet espace et d’exprimer
-les <em>q</em> points de <span class="math notranslate nohighlight">\(W_kH_k\)</span> avec cette nouvelle base.
-Cela signifie qu’on peut écrire la matrice <span class="math notranslate nohighlight">\(W_k\)</span> dans une base
-<span class="math notranslate nohighlight">\(B_k\)</span> comme <span class="math notranslate nohighlight">\(W_k = B_k C_k\)</span> et <span class="math notranslate nohighlight">\(W_k H_k = B_k C_k C_k^{-1} G_k\)</span>.</p>
+de la matrice <img class="math" src="../_images/math/a3987d12830f259e455cc788b6e7dcdbf68d25d4.svg" alt="W_k"/>. Il est donc possible de choisir
+n’importe quel base <img class="math" src="../_images/math/d415cc4aa35b7097b7251a80986ca13eb28581fe.svg" alt="W'_{k}"/> de cet espace et d’exprimer
+les <em>q</em> points de <img class="math" src="../_images/math/1a03b0483414ab03e90a11bdcb088d94d97e201b.svg" alt="W_kH_k"/> avec cette nouvelle base.
+Cela signifie qu’on peut écrire la matrice <img class="math" src="../_images/math/a3987d12830f259e455cc788b6e7dcdbf68d25d4.svg" alt="W_k"/> dans une base
+<img class="math" src="../_images/math/0e2f9507d1dde2041630f02ed78d9e2d7fca2b3e.svg" alt="B_k"/> comme <img class="math" src="../_images/math/cfb5b457f734429e30722a02ebaa46a4994d8b80.svg" alt="W_k = B_k C_k"/> et <img class="math" src="../_images/math/92b8ac473cd62f54d9dea56e4a1c0c9958e7f94e.svg" alt="W_k H_k = B_k C_k C_k^{-1} G_k"/>.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Lemme1">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="lemme-mf-1">Lemme L2 : Projection</p>
-<p>On note <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span>,
-<span class="math notranslate nohighlight">\(W^k=(w^k_{il})\)</span>, <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> avec
-<span class="math notranslate nohighlight">\(1 \infegal i \infegal p\)</span>, <span class="math notranslate nohighlight">\(1 \infegal j \infegal q\)</span>,
-et <span class="math notranslate nohighlight">\(1 \infegal l \infegal k\)</span> avec <span class="math notranslate nohighlight">\(k &lt; \min(p,q)\)</span>.
+<p>On note <img class="math" src="../_images/math/8238a702c12f033ac30d4d4d5f17c7aae479fe0f.svg" alt="M=(m_{ij})"/>,
+<img class="math" src="../_images/math/4c617a7dca9991a77882a5cbad371f1e95ac8ae6.svg" alt="W^k=(w^k_{il})"/>, <img class="math" src="../_images/math/56f38c2cfa1bdbfda46a9ec81300dd04fa97a73e.svg" alt="H^k=(h^k_{lj})"/> avec
+<img class="math" src="../_images/math/067cb36e5f478d238eeefdafff9d76e543581b4f.svg" alt="1 \infegal i \infegal p"/>, <img class="math" src="../_images/math/40724ff9ba095878aa541680ad23885ef7fae588.svg" alt="1 \infegal j \infegal q"/>,
+et <img class="math" src="../_images/math/4f428f6c384da5417b47766804b368ac91cb9107.svg" alt="1 \infegal l \infegal k"/> avec <img class="math" src="../_images/math/bcfaefa268474c5f871fb357ea7466c718b12d5d.svg" alt="k &lt; \min(p,q)"/>.
 On suppose que les matrices
 sont solution du problème d’optimisation
-<span class="math notranslate nohighlight">\(\min_{W,H} \norm{ M - WH }^2\)</span>.
-On considère que la matrice <span class="math notranslate nohighlight">\(M\)</span> est un ensemble de <span class="math notranslate nohighlight">\(q\)</span>
-points dans dans un espace vectoriel de dimension <span class="math notranslate nohighlight">\(p\)</span>.
-La matrice <span class="math notranslate nohighlight">\(WH\)</span> représente des projections de ces points
-dans l’espace vectoriel engendré par les <span class="math notranslate nohighlight">\(k\)</span> vecteurs colonnes
-de la matrice <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<img class="math" src="../_images/math/6050136482b81262e78d932b12f3d4206f932799.svg" alt="\min_{W,H} \norm{ M - WH }^2"/>.
+On considère que la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> est un ensemble de <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/>
+points dans dans un espace vectoriel de dimension <img class="math" src="../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/>.
+La matrice <img class="math" src="../_images/math/b17e4d72fbcc273dfd8b44bd45e91bb37c3920a8.svg" alt="WH"/> représente des projections de ces points
+dans l’espace vectoriel engendré par les <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> vecteurs colonnes
+de la matrice <img class="math" src="../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/>.</p>
 </div>
 <p>La figure suivante illustre ce lemme.
-<span class="math notranslate nohighlight">\(\norm{ M - WH }^2\)</span> s’écrit comme la somme des distances entre
+<img class="math" src="../_images/math/babfe967ef6a4c2fb4e6775eea33157c27e97e53.svg" alt="\norm{ M - WH }^2"/> s’écrit comme la somme des distances entre
 <em>q</em> points :</p>
-<div class="math notranslate nohighlight">
-\[\norm{ M - WH }^2 = \sum_{j=1}^q \norme{M[j] - W_kH_k[j]}^2\]</div>
-<a class="reference internal image-reference" href="../_images/plan.jpg"><img alt="../_images/plan.jpg" src="../_images/plan.jpg" style="width: 400px;" /></a>
-<p>Or on sait que si <span class="math notranslate nohighlight">\(W_k\)</span> est fixé, les <em>q</em> points de la matrice
-<span class="math notranslate nohighlight">\(W_kH_k\)</span> évolue sur un hyperplan de dimension <span class="math notranslate nohighlight">\(k\)</span>.
-Le point de ce plan le plus du vecteur <span class="math notranslate nohighlight">\(M[j]\)</span> est sa projection
+<div class="math">
+<p><img src="../_images/math/57d0ccecc393ab6b40fed122dbe268e48b566833.svg" alt="\norm{ M - WH }^2 = \sum_{j=1}^q \norme{M[j] - W_kH_k[j]}^2"/></p>
+</div><a class="reference internal image-reference" href="../_images/plan.jpg"><img alt="../_images/plan.jpg" src="../_images/plan.jpg" style="width: 400px;" /></a>
+<p>Or on sait que si <img class="math" src="../_images/math/a3987d12830f259e455cc788b6e7dcdbf68d25d4.svg" alt="W_k"/> est fixé, les <em>q</em> points de la matrice
+<img class="math" src="../_images/math/1a03b0483414ab03e90a11bdcb088d94d97e201b.svg" alt="W_kH_k"/> évolue sur un hyperplan de dimension <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>.
+Le point de ce plan le plus du vecteur <img class="math" src="../_images/math/f87c6da6694698ed1e64ed901149a07b07797052.svg" alt="M[j]"/> est sa projection
 sur ce plan.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="th-mf-1">Théorème T1 : La factorisation de matrice est équivalente à une analyse en composantes principales</p>
-<p>On note <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span>,
-<span class="math notranslate nohighlight">\(W^k=(w^k_{il})\)</span>, <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> avec
-<span class="math notranslate nohighlight">\(1 \infegal i \infegal p\)</span>, <span class="math notranslate nohighlight">\(1 \infegal j \infegal q\)</span>,
-et <span class="math notranslate nohighlight">\(1 \infegal l \infegal k\)</span> avec <span class="math notranslate nohighlight">\(k &lt; \min(p,q)\)</span>.
+<p>On note <img class="math" src="../_images/math/8238a702c12f033ac30d4d4d5f17c7aae479fe0f.svg" alt="M=(m_{ij})"/>,
+<img class="math" src="../_images/math/4c617a7dca9991a77882a5cbad371f1e95ac8ae6.svg" alt="W^k=(w^k_{il})"/>, <img class="math" src="../_images/math/56f38c2cfa1bdbfda46a9ec81300dd04fa97a73e.svg" alt="H^k=(h^k_{lj})"/> avec
+<img class="math" src="../_images/math/067cb36e5f478d238eeefdafff9d76e543581b4f.svg" alt="1 \infegal i \infegal p"/>, <img class="math" src="../_images/math/40724ff9ba095878aa541680ad23885ef7fae588.svg" alt="1 \infegal j \infegal q"/>,
+et <img class="math" src="../_images/math/4f428f6c384da5417b47766804b368ac91cb9107.svg" alt="1 \infegal l \infegal k"/> avec <img class="math" src="../_images/math/bcfaefa268474c5f871fb357ea7466c718b12d5d.svg" alt="k &lt; \min(p,q)"/>.
 On suppose que les matrices
 sont solution du problème d’optimisation
-<span class="math notranslate nohighlight">\(\min_{W,H} \norm{ M - WH }^2\)</span>.
-On considère que la matrice <span class="math notranslate nohighlight">\(M\)</span> est un ensemble de <span class="math notranslate nohighlight">\(q\)</span>
-points dans dans un espace vectoriel de dimension <span class="math notranslate nohighlight">\(p\)</span>.
-On suppose <span class="math notranslate nohighlight">\(p &lt; q\)</span>.
-La matrice <span class="math notranslate nohighlight">\(W_k\)</span> définit un hyperplan identique à celui défini
-par les <span class="math notranslate nohighlight">\(k\)</span> vecteurs propres associés aux <span class="math notranslate nohighlight">\(k\)</span>
+<img class="math" src="../_images/math/6050136482b81262e78d932b12f3d4206f932799.svg" alt="\min_{W,H} \norm{ M - WH }^2"/>.
+On considère que la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> est un ensemble de <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/>
+points dans dans un espace vectoriel de dimension <img class="math" src="../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/>.
+On suppose <img class="math" src="../_images/math/3eb85d561484bde4d2ebc095a9188d915cac7264.svg" alt="p &lt; q"/>.
+La matrice <img class="math" src="../_images/math/a3987d12830f259e455cc788b6e7dcdbf68d25d4.svg" alt="W_k"/> définit un hyperplan identique à celui défini
+par les <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> vecteurs propres associés aux <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>
 plus grande valeurs propres de la matrice
-<span class="math notranslate nohighlight">\(MM'\)</span> où <span class="math notranslate nohighlight">\(M'\)</span> est la transposée de <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<img class="math" src="../_images/math/aa64ac2d27336d78ca51b4ff594fdc65d64fb7a8.svg" alt="MM'"/> où <img class="math" src="../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/> est la transposée de <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/>.</p>
 </div>
 <p>Une analyse en composante principale consiste à trouver
 l’hyperplan qui maximise l’inertie de la projection d’un nuage
 sur ce plan.
 Le théorème <a class="reference internal" href="rn/rn_9_auto.html#theorem-acp-resolution"><span class="std std-ref">résolution de l’ACP</span></a>
 a montré que :</p>
-<div class="math notranslate nohighlight" id="equation-rn-acp-contrainte-rep">
-\begin{eqnarray*}
+<div class="math" id="equation-rn-acp-contrainte-rep">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-rn-acp-contrainte-rep" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/8fabc1a2f4633caf8ffe2665655402618f2bd574.svg" alt="\begin{eqnarray*}
 S =
 \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
                     \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 } &amp;=&amp;
 \underset{ W \in M_{p,d}\pa{\R} } { \arg \min } \;  \cro { \sum_{i=1}^{N} \norm{WW'X_i - X_i}^2 }
-\end{eqnarray*}</div><p>Dans notre cas, chaque ligne de la matrice <span class="math notranslate nohighlight">\(M\)</span> est un vecteur <span class="math notranslate nohighlight">\(X_i\)</span>.
-La matrice <span class="math notranslate nohighlight">\(W_k\)</span> est identique à celle cherchée lors du problème de factorisation
-de matrices. Les colonnes de la matrice <span class="math notranslate nohighlight">\(H_k\)</span> sont égales à <span class="math notranslate nohighlight">\(W'X_i\)</span>.
+\end{eqnarray*}"/></p>
+</div><p>Dans notre cas, chaque ligne de la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> est un vecteur <img class="math" src="../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/>.
+La matrice <img class="math" src="../_images/math/a3987d12830f259e455cc788b6e7dcdbf68d25d4.svg" alt="W_k"/> est identique à celle cherchée lors du problème de factorisation
+de matrices. Les colonnes de la matrice <img class="math" src="../_images/math/b9ef0c6cb32b01d873d98765aa13747981d3afc2.svg" alt="H_k"/> sont égales à <img class="math" src="../_images/math/06e1f57f94f06669420bef14f900c49aea4af9e8.svg" alt="W'X_i"/>.
 Il reste à montrer que le minimum trouvé dans les deux problèmes est le même.
-La démonstration du théorème montre également que <span class="math notranslate nohighlight">\(W'W = I_d\)</span>
-et dans ce cas précis, <span class="math notranslate nohighlight">\(WW'X_i\)</span> représente les coordonnées de la projection
-du point <span class="math notranslate nohighlight">\(X_i\)</span> sur le plan défini par les vecteurs <span class="math notranslate nohighlight">\(W\)</span>.
+La démonstration du théorème montre également que <img class="math" src="../_images/math/53ee03fba0a5ac8c290fff60225b93e2c56ffa62.svg" alt="W'W = I_d"/>
+et dans ce cas précis, <img class="math" src="../_images/math/125247a0f788db0f0edf0cb774701e0e63885577.svg" alt="WW'X_i"/> représente les coordonnées de la projection
+du point <img class="math" src="../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> sur le plan défini par les vecteurs <img class="math" src="../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/>.
 C’est aussi ce que montre <a class="reference internal" href="#lemme-mf-1"><span class="std std-ref">second lemmme</span></a>.
 S’il s’agit du même plan, cela signifie que les deux formulations, ACP et factorisation
 de matrices, aboutissent au même minimum. Comme l’algorithme de l’ACP détermine le meilleur
@@ -766,16 +765,16 @@ plan projecteur, nécessairement, il correspond à celui trouvé par la factoris
 </section>
 <section id="k-means">
 <h2><a class="toc-backref" href="#id11" role="doc-backlink">k-means</a><a class="headerlink" href="#k-means" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>On peut construire deux matrices <span class="math notranslate nohighlight">\(W\)</span> et <span class="math notranslate nohighlight">\(H\)</span> à partir des résultats d’un
-<a class="reference internal" href="../c_clus/kmeans.html#l-k-means"><span class="std std-ref">k-means</span></a>. Celui-ci détermine <span class="math notranslate nohighlight">\(k\)</span> centres auxquels on effecte les points
-du nuage de départ. Dans ce cas-ci, la matrice <span class="math notranslate nohighlight">\(W\)</span> est constituée des coordonnées
-de ces centres. On note <span class="math notranslate nohighlight">\(C_l\)</span> le cluster <span class="math notranslate nohighlight">\(l\)</span>,
-la matrice <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> est définie comme suit :</p>
-<div class="math notranslate nohighlight">
-\[h^k_{lj} = \indicatrice{X_j \in C_l}\]</div>
-<p>Les coefficients sont soit 0 ou 1.
+<p>On peut construire deux matrices <img class="math" src="../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/> et <img class="math" src="../_images/math/dd8a8ece0b1684a9537eb7947dc6b8fdc1652abc.svg" alt="H"/> à partir des résultats d’un
+<a class="reference internal" href="../c_clus/kmeans.html#l-k-means"><span class="std std-ref">k-means</span></a>. Celui-ci détermine <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> centres auxquels on effecte les points
+du nuage de départ. Dans ce cas-ci, la matrice <img class="math" src="../_images/math/6ed861ef9c1c0829f1587232c699cfac35dacce7.svg" alt="W"/> est constituée des coordonnées
+de ces centres. On note <img class="math" src="../_images/math/ef00b3853db500e11bb0e3304f9a95bc3ffb1471.svg" alt="C_l"/> le cluster <img class="math" src="../_images/math/b40d7de3530507b378090edb54198bdc06e33be9.svg" alt="l"/>,
+la matrice <img class="math" src="../_images/math/56f38c2cfa1bdbfda46a9ec81300dd04fa97a73e.svg" alt="H^k=(h^k_{lj})"/> est définie comme suit :</p>
+<div class="math">
+<p><img src="../_images/math/30ded5b45662c03db5177e2df3b0351231c01f4b.svg" alt="h^k_{lj} = \indicatrice{X_j \in C_l}"/></p>
+</div><p>Les coefficients sont soit 0 ou 1.
 On peut alors essayer de forcer la factorisation de matrice vers une matrice
-<span class="math notranslate nohighlight">\(H\)</span> avec pas de un 1 sur chaque colonne et des zéros partout ailleurs.
+<img class="math" src="../_images/math/dd8a8ece0b1684a9537eb7947dc6b8fdc1652abc.svg" alt="H"/> avec pas de un 1 sur chaque colonne et des zéros partout ailleurs.
 Le résultat sera assez proche d’un clustering.</p>
 </section>
 <section id="quelques-resultats">
@@ -801,7 +800,7 @@ factorisation de matrices en deux dimensions.</p>
 </section>
 <section id="prolongements">
 <h2><a class="toc-backref" href="#id13" role="doc-backlink">Prolongements</a><a class="headerlink" href="#prolongements" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Tous les résultats montrés ici ne sont valables que si la norme <span class="math notranslate nohighlight">\(L_2\)</span>
+<p>Tous les résultats montrés ici ne sont valables que si la norme <img class="math" src="../_images/math/e8db2cfafd3b476938645cbf31d05c45bb5a9796.svg" alt="L_2"/>
 est utilisée. Cela permet de mieux comprendre
 les références proposées dans la documentation de
 <a class="reference external" href="http://scikit-learn.org/stable/modules/decomposition.html#nmf">Non-negative matrix factorization (NMF or NNMF)</a>.
@@ -818,32 +817,32 @@ tous être positifs ou nuls. Il n’est bien sûr plus équivalent
 à une ACP. En revanche, la factorisation de matrice est un problème
 équivalent à celui résolu par la
 <a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_en_valeurs_singuli%C3%A8res">Décomposition en Valeur Singulière (SVD)</a>
-qui cherche à décomposer une matrice <span class="math notranslate nohighlight">\(M=U\Sigma V^*\)</span>. La matrice <span class="math notranslate nohighlight">\(\Sigma\)</span>
+qui cherche à décomposer une matrice <img class="math" src="../_images/math/654ded547f61cb27eb4abc9e12b3871a0ad973ee.svg" alt="M=U\Sigma V^*"/>. La matrice <img class="math" src="../_images/math/c2c1631ee66d456484eaf1742ce908c0d4cb206d.svg" alt="\Sigma"/>
 est une matrice diagonale et la matrice initiale <em>M</em>
 n’est pas nécessairement carrée contrairement au cas d’une ACP
 mais SVD et ACP sont très similaires.</p>
 </section>
 <section id="prediction">
 <h3><a class="toc-backref" href="#id15" role="doc-backlink">Prédiction</a><a class="headerlink" href="#prediction" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Prédire revient à supposer que la matrice <span class="math notranslate nohighlight">\(M\)</span> est composée de vecteurs
-lignes <span class="math notranslate nohighlight">\(X_1, ..., X_q\)</span>. La matrice <span class="math notranslate nohighlight">\(H\)</span> reste inchangée et la prédiction
-revient à déterminer les coordonnées de la projection d’un nouveau point <span class="math notranslate nohighlight">\(X_{q+1}\)</span>
-dans le plan défini par les vecteurs de la matrice <span class="math notranslate nohighlight">\(H\)</span>.
-Pour de nouvelles observations <span class="math notranslate nohighlight">\(M_2=X_{q+1}\)</span>,
+<p>Prédire revient à supposer que la matrice <img class="math" src="../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> est composée de vecteurs
+lignes <img class="math" src="../_images/math/c2c17c26588a557c3e5a5c09a15c6a9fd83d0201.svg" alt="X_1, ..., X_q"/>. La matrice <img class="math" src="../_images/math/dd8a8ece0b1684a9537eb7947dc6b8fdc1652abc.svg" alt="H"/> reste inchangée et la prédiction
+revient à déterminer les coordonnées de la projection d’un nouveau point <img class="math" src="../_images/math/8399617dd56edad930099c90e02b77cd09a8ecd0.svg" alt="X_{q+1}"/>
+dans le plan défini par les vecteurs de la matrice <img class="math" src="../_images/math/dd8a8ece0b1684a9537eb7947dc6b8fdc1652abc.svg" alt="H"/>.
+Pour de nouvelles observations <img class="math" src="../_images/math/100b83286521b8b15121ea7b71c614b1dd5bfc90.svg" alt="M_2=X_{q+1}"/>,
 la fonction <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF.transform">transform</a>
 de la classe <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.decomposition.NMF</span></code></a> réestime une matrice
-<span class="math notranslate nohighlight">\(W_2\)</span> qui projette les vecteurs lignes de <span class="math notranslate nohighlight">\(M_2\)</span> sur
+<img class="math" src="../_images/math/ea56299ac24b89737f6ad22910ce4115fc028ab3.svg" alt="W_2"/> qui projette les vecteurs lignes de <img class="math" src="../_images/math/e48f98cc1aae5697620af23b319e2e6611bdb867.svg" alt="M_2"/> sur
 les vecteurs de <em>H</em> en conservant des coefficients de projection positifs.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Problème1">
 <p class="admonition-title">Problème P2 : Prédiction</p>
-<p>Soit <span class="math notranslate nohighlight">\(M \in \mathcal{M}_{pq}\)</span> et <span class="math notranslate nohighlight">\(H \in \mathcal{M}_{kq}\)</span>,
+<p>Soit <img class="math" src="../_images/math/37c41e916e78ff665214e87954500647c5ce8889.svg" alt="M \in \mathcal{M}_{pq}"/> et <img class="math" src="../_images/math/b1e93b8c32e4e1b85a895cd2872c3720203ad8a5.svg" alt="H \in \mathcal{M}_{kq}"/>,
 on cherche les matrices à coefficients positifs
-<span class="math notranslate nohighlight">\(W \in \mathcal{M}_{pk}\)</span> qui sont solution
+<img class="math" src="../_images/math/626cd4298d9ff7ff6262744ac25451f6882f5506.svg" alt="W \in \mathcal{M}_{pk}"/> qui sont solution
 du problème d’optimisation :</p>
-<div class="math notranslate nohighlight">
-\[\min_{W}\acc{\norme{M-WH}^2} = \min_{W,H} \sum_{ij} (m_{ij} - \sum_k w_{ik} h_{kj})^2\]</div>
-</div>
-<p>Les recommandations s’obtiennent en multipliant <span class="math notranslate nohighlight">\(W_2\)</span> par <span class="math notranslate nohighlight">\(X_{q+1}\)</span>.
+<div class="math">
+<p><img src="../_images/math/f8c9fc1b2c5db72b658d588e5c960a27c4ad473d.svg" alt="\min_{W}\acc{\norme{M-WH}^2} = \min_{W,H} \sum_{ij} (m_{ij} - \sum_k w_{ik} h_{kj})^2"/></p>
+</div></div>
+<p>Les recommandations s’obtiennent en multipliant <img class="math" src="../_images/math/ea56299ac24b89737f6ad22910ce4115fc028ab3.svg" alt="W_2"/> par <img class="math" src="../_images/math/8399617dd56edad930099c90e02b77cd09a8ecd0.svg" alt="X_{q+1}"/>.
 Ce produit peut être approchée en relâchant la contrainte des poids
 positifs pour la matrice <em>W</em>. C’est la piste proposée par le
 modèle <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/mlinsights/mlmodel/anmf_predictor.html">ApproximateNMFPredictor</a> qui utilise une transformation
@@ -852,10 +851,10 @@ de <em>H</em>.</p>
 </section>
 <section id="norme">
 <h3><a class="toc-backref" href="#id16" role="doc-backlink">Norme</a><a class="headerlink" href="#norme" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>L’ACP avec une norme <span class="math notranslate nohighlight">\(L_1\)</span> revient à trouver le plan qui minimise la somme
+<p>L’ACP avec une norme <img class="math" src="../_images/math/1a5b3c907a4bcdbe74db6675750947320ee0c514.svg" alt="L_1"/> revient à trouver le plan qui minimise la somme
 des distances à la projection et non la somme des distances au carrés. Cela réduit
 l’impact des points aberrants mais le problème n’est plus équivalent à la factorisation
-de matrices avec une norme <span class="math notranslate nohighlight">\(L_1\)</span>.</p>
+de matrices avec une norme <img class="math" src="../_images/math/1a5b3c907a4bcdbe74db6675750947320ee0c514.svg" alt="L_1"/>.</p>
 </section>
 <section id="sparsite">
 <h3><a class="toc-backref" href="#id17" role="doc-backlink">Sparsité</a><a class="headerlink" href="#sparsite" title="Lien permanent vers cette rubrique">#</a></h3>
@@ -877,7 +876,7 @@ avec une factorisation de matrices. On peut également se server de la méthode
 pour calculer une ACP avec des valeurs manquantes.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-m-app-idm.pdf">Imputation de données manquantes</a></p></li>
-<li><p><a class="reference external" href="http://pbil.univ-lyon1.fr/members/dray/files/articles/dray2015a.pdf">Principal component analysis with missing values: a comparative survey of methods</a></p></li>
+<li><p><a class="reference external" href="https://www.researchgate.net/publication/273901434_Principal_component_analysis_with_missing_values_a_comparative_survey_of_methods">Principal component analysis with missing values: a comparative survey of methods</a></p></li>
 </ul>
 </section>
 <section id="interpretation">

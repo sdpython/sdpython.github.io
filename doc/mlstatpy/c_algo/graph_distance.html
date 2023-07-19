@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_algo/graph_distance';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -622,22 +620,22 @@ But because both graphs do not contain any cycle, we can extract all
 paths from them. Every path starts with the same vertex - the only root -
 and ends with the same one - the only leave -.
 We also consider each edge or vertex as an element of the sequence.
-Before describing the edit distance, let’s denote <span class="math notranslate nohighlight">\(p_1\)</span> as a path
-from the first graph, <span class="math notranslate nohighlight">\(p_2\)</span> as a path from the second one.
-<span class="math notranslate nohighlight">\(p_k(i)\)</span> is the element <em>i</em> of this sequence. Following Levenstein description,
+Before describing the edit distance, let’s denote <img class="math" src="../_images/math/b29fce1ac5c3f1ce205970580aa7c12a360d3d2d.svg" alt="p_1"/> as a path
+from the first graph, <img class="math" src="../_images/math/94d0d1de88757489d0cce7de475fc357c8b52e26.svg" alt="p_2"/> as a path from the second one.
+<img class="math" src="../_images/math/3eddf4cbef6147c9d45ab13893ddb7c7e3de1239.svg" alt="p_k(i)"/> is the element <em>i</em> of this sequence. Following Levenstein description,
 we denote <em>d(i,j)</em> as the distance between the two subsequences
-<span class="math notranslate nohighlight">\(p_1(1..i), p_2(1..j)\)</span>. Based on that, we use an edit distance defined as follows:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}d(i,j) = \min \left \{ \begin{array}{l}
+<img class="math" src="../_images/math/9fab0b22df219b36670e7862568f7d2a8c5870c6.svg" alt="p_1(1..i), p_2(1..j)"/>. Based on that, we use an edit distance defined as follows:</p>
+<div class="math">
+<p><img src="../_images/math/4948ddfa5cf762df59a9dd766f6eafabd544af6e.svg" alt="d(i,j) = \min \left \{ \begin{array}{l}
                             d( i-1,j) + insertion(p_1(i)) \\
                             d( i,j-1) + insertion(p_2(j)) \\
                             d( i-1,j-1) + comparison(p_1(i),p_2(j))
                             \end{array}
-                            \right .\end{split}\]</div>
-<p>First of all, we are not only interested in the distance but also
+                            \right ."/></p>
+</div><p>First of all, we are not only interested in the distance but also
 in the alignment which would imply to keep which element was
-chosen as a minimum for each <em>d(i,j)</em>. If we denote <span class="math notranslate nohighlight">\(n_k\)</span>
-the length of path <em>k</em>, then <span class="math notranslate nohighlight">\(d(n_1,n_2)\)</span> is the distance we are looking for.</p>
+chosen as a minimum for each <em>d(i,j)</em>. If we denote <img class="math" src="../_images/math/9ae927a030a2b54336b17be6b5e0a7bb1d16016a.svg" alt="n_k"/>
+the length of path <em>k</em>, then <img class="math" src="../_images/math/683c769ec75e2bb008533596c6b8e3c0ee2bcb39.svg" alt="d(n_1,n_2)"/> is the distance we are looking for.</p>
 <p>Second, if two paths do not have the same length,
 it implies some elements could be compared between each others even
 if one is an edge and the other one is a vertex.
@@ -668,15 +666,15 @@ or to keep the structure. Here are the chosen weights:</p>
 <td><p>if edges <em>a</em> and <em>b</em> share the same label and if vertices at both ends share the same label</p></td>
 </tr>
 <tr class="row-odd"><td><p><em>comparison(a,b)</em></p></td>
-<td><p><span class="math notranslate nohighlight">\(w(a)+w(b)\)</span></p></td>
+<td><p><img class="math" src="../_images/math/7551d5ec7c6babcbc5ad89d40036fa0f6ef6b9b3.svg" alt="w(a)+w(b)"/></p></td>
 <td><p>if edges <em>a</em> and <em>b</em> share the same label and if vertices at both ends do not share the same label</p></td>
 </tr>
 <tr class="row-even"><td><p><em>comparison(a,b)</em></p></td>
-<td><p><span class="math notranslate nohighlight">\(\frac{w(a)+w(b)}{2}\)</span></p></td>
+<td><p><img class="math" src="../_images/math/6da107dbca4ee8fde9c3ef20d3d798d7ea9fb1ee.svg" alt="\frac{w(a)+w(b)}{2}"/></p></td>
 <td><p>if <em>a</em> and <em>b</em> do not share the same kind</p></td>
 </tr>
 <tr class="row-odd"><td><p><em>comparison(a,b)</em></p></td>
-<td><p><span class="math notranslate nohighlight">\(\frac{3(w(a)+w(b))}{2}\)</span></p></td>
+<td><p><img class="math" src="../_images/math/4bc0f5fc0d0de44eb5d93f55f19d54963a852063.svg" alt="\frac{3(w(a)+w(b))}{2}"/></p></td>
 <td><p>if <em>a</em> and <em>b</em> share the same kind but not the label</p></td>
 </tr>
 </tbody>
@@ -713,12 +711,12 @@ a path from a graph must be associated to only one path.</p></li>
 <p>Now that we have a kind of bijection between paths, it also means we have a series
 of alignments between paths: one from the first graph, one from the second
 graph and an alignment between them computed during the step.
-We build two matrices, one for the edges <span class="math notranslate nohighlight">\(M_e\)</span>, one for
-the vertices <span class="math notranslate nohighlight">\(M_v\)</span> defined as follows:</p>
+We build two matrices, one for the edges <img class="math" src="../_images/math/9d9c751fd349263d2f36a9c7b323f5d7d9c94285.svg" alt="M_e"/>, one for
+the vertices <img class="math" src="../_images/math/30d5c7b8f6d59ea034728ad7d8c89dfefecfd11d.svg" alt="M_v"/> defined as follows:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(M_e(i,j)\)</span> contains the number of times edge <em>i</em> from graph 1
+<li><p><img class="math" src="../_images/math/8a9f998e257a07b96d142a35bc5cfdab2666b7e8.svg" alt="M_e(i,j)"/> contains the number of times edge <em>i</em> from graph 1
 is associated to edge <em>j</em> from graph 2 among all paths associated by the previous step.</p></li>
-<li><p><span class="math notranslate nohighlight">\(M_v(i,j)\)</span> contains the same for the vertices.</p></li>
+<li><p><img class="math" src="../_images/math/ba3e7fa05341bed7bdea0464106a21ace43ab214.svg" alt="M_v(i,j)"/> contains the same for the vertices.</p></li>
 </ul>
 </section>
 <section id="step-4-kruskal-kind-the-return-bijection-on-edges-and-vertices">
@@ -755,44 +753,44 @@ defined to compute the alignment between two paths from both graphs.
 Let’s defined an aligned graph <em>G = { (a,b) }</em>, <em>G</em> is the set of edges and
 vertices of the final graph, <em>a</em>, <em>b</em> are an edge of a vertex from the first
 graph for <em>a</em> and from the second graph for <em>b</em>. <em>a</em> or <em>b</em> can be null.
-We also defined <span class="math notranslate nohighlight">\(insertion(a) = comparison(\emptyset,a)\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}d(G_1,G_2) = \sum_{ \begin{subarray}{c} a \in G_1\cup \emptyset \\ b \in G_2 \cup \emptyset \end{subarray} }
-comparison(a,b) \indicatrice{ (a,b) \in G }\end{split}\]</div>
-<p>It is obvioulsy symmetric. To proove it verifies
-<span class="math notranslate nohighlight">\(d(G_1,G_2) = 0 \Longleftrightarrow G_1 = G_2\)</span>,
-we could proove that every path from <span class="math notranslate nohighlight">\(G_1\)</span> will be associated to itself during the first step.
+We also defined <img class="math" src="../_images/math/cb2baf2fe50c41d873ec443c85f5bb3d43d2c72c.svg" alt="insertion(a) = comparison(\emptyset,a)"/>.</p>
+<div class="math">
+<p><img src="../_images/math/128318d6f343244c4154876d3efdae14e176e558.svg" alt="d(G_1,G_2) = \sum_{ \begin{subarray}{c} a \in G_1\cup \emptyset \\ b \in G_2 \cup \emptyset \end{subarray} }
+comparison(a,b) \indicatrice{ (a,b) \in G }"/></p>
+</div><p>It is obvioulsy symmetric. To proove it verifies
+<img class="math" src="../_images/math/57d5cc45a1f0dce3dfd4b485db72da1a4e1e7714.svg" alt="d(G_1,G_2) = 0 \Longleftrightarrow G_1 = G_2"/>,
+we could proove that every path from <img class="math" src="../_images/math/752bf9732952a38e84f249be2dd0f661f03deeaf.svg" alt="G_1"/> will be associated to itself during the first step.
 It is not necessarily true because two different paths could share the same
 sequence of labels. Let’s consider the following example:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\xymatrix{
+<div class="math">
+<p><img src="../_images/math/092ea94d2ce8e3ceb789b6d49d9791df42472fc2.svg" alt="\xymatrix{
 begin \ar[r]\ar[dr] &amp; 1,a \ar[r]  &amp; 2,b \ar[r]\ar[dl]  &amp; end \\
                     &amp; 3,a \ar[r]  &amp; 4,b \ar[ur]        &amp;
-}\end{split}\]</div>
-<p>This graph contains three paths:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{lll}
+}"/></p>
+</div><p>This graph contains three paths:</p>
+<div class="math">
+<p><img src="../_images/math/c6007c260a9c5f0871872aec2b1e3b0b0e8c4436.svg" alt="\begin{array}{lll}
 path 1 &amp; 1,2 &amp; ab\\
 path 2 &amp; 3,4 &amp; ab \\
 path 3 &amp; 1,2,3,4 &amp; abab
-\end{array}\end{split}\]</div>
-<p>The matrix distance between paths will give (<em>x&gt; 0</em>):</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\pa{\begin{array}{ccc}
+\end{array}"/></p>
+</div><p>The matrix distance between paths will give (<em>x&gt; 0</em>):</p>
+<div class="math">
+<p><img src="../_images/math/3c9c575f441297c025524ddf553c7db3727cd1cf.svg" alt="\pa{\begin{array}{ccc}
 0  &amp; \mathbf{0.} &amp; x  \\
 \mathbf{0.}  &amp; 0 &amp; x  \\
 x  &amp; x &amp; \mathbf{0.}
- \end{array}}\end{split}\]</div>
-<p>The bolded values <span class="math notranslate nohighlight">\(\mathbf{0.}\)</span> represent one possible association between
+ \end{array}}"/></p>
+</div><p>The bolded values <img class="math" src="../_images/math/ec8ca147708e65178932dd346536f2db0e0fe874.svg" alt="\mathbf{0.}"/> represent one possible association between
 paths which could lead to the possible association between vertices:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\pa{\begin{array}{cccc}
+<div class="math">
+<p><img src="../_images/math/8cf1fd885fef935271f4744ab9b3b0f5da8e1cce.svg" alt="\pa{\begin{array}{cccc}
 1           &amp; 0          &amp; 1           &amp; 0 \\
 0           &amp; 1          &amp; 0           &amp; 1 \\
 1           &amp; 0          &amp; 1           &amp; 0 \\
 0           &amp; 1          &amp; 0           &amp; 1
-\end{array}}\end{split}\]</div>
-<p>In that particular case, the algorithm will not return a null
+\end{array}}"/></p>
+</div><p>In that particular case, the algorithm will not return a null
 distance mostly because while aligning sequences, we do not pay too much attention
 to the local structure. One edge could be missing from the alignment.
 We could try to correct that by adding some cost when two vertices

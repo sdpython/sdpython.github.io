@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_metric/pvalues';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -579,131 +577,145 @@ related to complete different variables. Their nature prevents you from doing th
 Howerver p-Values and confidence interval are similar: they tell you whether
 or not a metric difference is significant.</p>
 <p>Usually, it starts from a set of identically distributed random variables
-<span class="math notranslate nohighlight">\((X_i)_{1 \infegal i \infegal N}\)</span>. We then estimate the average
-<span class="math notranslate nohighlight">\(\widehat{\theta}_N = \frac{1}{N} \sum_{i=1}^{N} X_i\)</span> and we ask
-the question is <span class="math notranslate nohighlight">\(\widehat{\theta}_N\)</span> null? In others terms, we
+<img class="math" src="../_images/math/589b87e5844d6b4ab128bb802c93f6916bd5c467.svg" alt="(X_i)_{1 \infegal i \infegal N}"/>. We then estimate the average
+<img class="math" src="../_images/math/bc06c4176017f1c68ce9d08358ea2dc6258e8273.svg" alt="\widehat{\theta}_N = \frac{1}{N} \sum_{i=1}^{N} X_i"/> and we ask
+the question is <img class="math" src="../_images/math/b491ae30ba617c96145c0ca6f5f3fbedc0a7b120.svg" alt="\widehat{\theta}_N"/> null? In others terms, we
 want to know if the average is significantly different from zero. If
-the random variable <span class="math notranslate nohighlight">\(X\)</span> follows a random law which has a standard
+the random variable <img class="math" src="../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> follows a random law which has a standard
 deviation, we can use the <a class="reference external" href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>
 which tells us:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/b42503a2fc0d7284d6868b018fead4b8e7e3f41f.svg" alt="\begin{eqnarray*}
 \sqrt{N} \widehat{\theta}_N \underset{N \rightarrow \infty}{\longrightarrow}   \loinormale{0}{\sigma}
-\end{eqnarray*}</div><p>Not all of them have a standard deviation. For example, if <span class="math notranslate nohighlight">\(X\)</span> follows a
+\end{eqnarray*}"/></p>
+</div><p>Not all of them have a standard deviation. For example, if <img class="math" src="../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> follows a
 <a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy_distribution">Cauchy law</a>,
-<span class="math notranslate nohighlight">\(\esp{X^2} \sim \int \frac{x^2}{1+x^2}dx\)</span> which does not exist.
+<img class="math" src="../_images/math/60532d12dc1f68fd1dcd0d2ada5e297ef1130805.svg" alt="\esp{X^2} \sim \int \frac{x^2}{1+x^2}dx"/> which does not exist.
 This remark also concerns every distribution known as heavy tail distribution.</p>
-<p>If <span class="math notranslate nohighlight">\(Y \sim \loinormale{0}{\sigma}\)</span>, then we have
-<span class="math notranslate nohighlight">\(\pr{\abs{Y} \infegal 1.96} = 0.95\)</span>. That is why we can say:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<p>If <img class="math" src="../_images/math/541210c426adf291f270ab865df44acdc6e2a83c.svg" alt="Y \sim \loinormale{0}{\sigma}"/>, then we have
+<img class="math" src="../_images/math/9cd074420890de693ffbfc03a59e246232a67b48.svg" alt="\pr{\abs{Y} \infegal 1.96} = 0.95"/>. That is why we can say:</p>
+<div class="math">
+<p><img src="../_images/math/9aab13bbbf084f4287e96ddd783b560500ea99b5.svg" alt="\begin{eqnarray*}
 \widehat{\theta}_N \text{ is not null with 95\% confidence if }
 \sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma} &gt; 1.96
-\end{eqnarray*}</div><p>And the confidence intervalle at 95% would be:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>And the confidence intervalle at 95% would be:</p>
+<div class="math">
+<p><img src="../_images/math/1e1f16f9d3390ebff82a9da685e0ee9425830768.svg" alt="\begin{eqnarray*}
 \cro{ %\widehat{\theta}_N
             - \frac{1.96 \sigma}{\sqrt{N}},
             %\widehat{\theta}_N +
             \frac{1.96 \sigma}{\sqrt{N}}}
-\end{eqnarray*}</div><p>When <span class="math notranslate nohighlight">\(\esp{ \widehat{\theta}_N } = \theta_0 \neq 0\)</span>, it becomes:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>When <img class="math" src="../_images/math/848399a44872dfb5fa3806b0ce3a945626893a7d.svg" alt="\esp{ \widehat{\theta}_N } = \theta_0 \neq 0"/>, it becomes:</p>
+<div class="math">
+<p><img src="../_images/math/9fe30695557fd519350520d14e731b2930e1116b.svg" alt="\begin{eqnarray*}
 \sqrt{N} \cro{ \widehat{\theta}_N - \theta_0}
 \underset{N \rightarrow \infty}{\longrightarrow}
 \loinormale{0}{\sigma}
-\end{eqnarray*}</div><p>We usually want to check if the mean is equal to a specific value
+\end{eqnarray*}"/></p>
+</div><p>We usually want to check if the mean is equal to a specific value
 using a statistical test:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/d0d91a5c526412fea23f1d81a3d4483f283a5589.svg" alt="\begin{eqnarray*}
 H0: &amp;&amp; \widehat{\theta}_N = \theta_0 \\
 H1: &amp;&amp; \widehat{\theta}_N \neq  \theta_0
-\end{eqnarray*}</div><p>We validate <span class="math notranslate nohighlight">\(H0\)</span> if:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>We validate <img class="math" src="../_images/math/bea31eb8d4d9fd1d5bbfaa8bf5c926533877893f.svg" alt="H0"/> if:</p>
+<div class="math">
+<p><img src="../_images/math/86c213281cad6baf0033401bb5e1cc7df690ff83.svg" alt="\begin{eqnarray*}
 \widehat{\theta}_N \in \cro{ \theta_0 - \frac{1.96 \sigma}{\sqrt{N}},
 \theta_0 + \frac{1.96 \sigma}{\sqrt{N}}}
-\end{eqnarray*}</div></section>
+\end{eqnarray*}"/></p>
+</div></section>
 <section id="why-p-value">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Why p-value?</a><a class="headerlink" href="#why-p-value" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>With confidence intervals, you first choose a confidence level and then you
 get an interval. You then check if your value is inside or outside your interval.
 Inside, the gain is not significant, outside, it is.</p>
 <p>With a p-value, we consider the problem the other way, given
-<span class="math notranslate nohighlight">\(\widehat{\theta}_N\)</span>, what is the probability that the
-difference <span class="math notranslate nohighlight">\(\abs{\widehat{\theta}_N - \theta_0}\)</span> is significant?
-Let’s consider <span class="math notranslate nohighlight">\(Y\)</span> following a normal law <span class="math notranslate nohighlight">\(\loinormale{0}{1}\)</span>.
+<img class="math" src="../_images/math/b491ae30ba617c96145c0ca6f5f3fbedc0a7b120.svg" alt="\widehat{\theta}_N"/>, what is the probability that the
+difference <img class="math" src="../_images/math/75fece4ea7279e6423cf68b48ff29d406286cded.svg" alt="\abs{\widehat{\theta}_N - \theta_0}"/> is significant?
+Let’s consider <img class="math" src="../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/> following a normal law <img class="math" src="../_images/math/405981d3eea95ba3c42d0ac77b78e4837072ba51.svg" alt="\loinormale{0}{1}"/>.
 We are looking for:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/d79662b154b80e520522ae4985ea0a5b01f7bd67.svg" alt="\begin{eqnarray*}
 \pr{ \abs{Y} &gt; \sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma} } = \alpha
-\end{eqnarray*}</div><p><span class="math notranslate nohighlight">\(\alpha\)</span> is the p-value.</p>
-<div class="math notranslate nohighlight" id="equation-p-value-expression">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p><img class="math" src="../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/> is the p-value.</p>
+<div class="math" id="equation-p-value-expression">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-p-value-expression" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/19451b23319914915e2c4ec460a7870498a67412.svg" alt="\begin{eqnarray*}
 \alpha &amp;=&amp; 1-\int_{-\beta_N}^{\beta_N} \frac{1}{\sqrt{2\pi}}
 e^{\frac{-x^2}{2}} dx =
 2 \int_{\beta_N}^{\infty} \frac{1}{\sqrt{2\pi}} e^{\frac{-x^2}{2}} dx \\
 \text{where } \beta_N &amp;=&amp; \sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma}
-\end{eqnarray*}</div><p>At this point, we should not forget that we use a theorem which tells us that
-<span class="math notranslate nohighlight">\(\sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma} \sim \loinormale{0}{1}\)</span>
-when <span class="math notranslate nohighlight">\(N \rightarrow \infty\)</span>, which means everything we said is true
-when <span class="math notranslate nohighlight">\(N\)</span> is great enough.</p>
+\end{eqnarray*}"/></p>
+</div><p>At this point, we should not forget that we use a theorem which tells us that
+<img class="math" src="../_images/math/8254c5168b12b2590c77880767e464cf41b81fc6.svg" alt="\sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma} \sim \loinormale{0}{1}"/>
+when <img class="math" src="../_images/math/fc50bcc40e676b6a5241a7a5430022975a6907dd.svg" alt="N \rightarrow \infty"/>, which means everything we said is true
+when <img class="math" src="../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> is great enough.</p>
 </section>
 <section id="significant-difference-between-samples-mean">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Significant difference between samples mean</a><a class="headerlink" href="#significant-difference-between-samples-mean" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Usually, we do not want to test if an average is null but if the difference
 between two averages is null. We consider two random samples having the same
-size, each of them described by <span class="math notranslate nohighlight">\((X_i)\)</span> and <span class="math notranslate nohighlight">\((Y_i)\)</span>.
-All variables are independant. <span class="math notranslate nohighlight">\((X_i)\)</span> are distributed according the
-same law, we assume the same for <span class="math notranslate nohighlight">\((Y_i)\)</span>. We expect the following
+size, each of them described by <img class="math" src="../_images/math/27472567e50161aef46885272e223c61b9956296.svg" alt="(X_i)"/> and <img class="math" src="../_images/math/9f52d5eea733fc02cbe44bafa7f8f7015452f524.svg" alt="(Y_i)"/>.
+All variables are independant. <img class="math" src="../_images/math/27472567e50161aef46885272e223c61b9956296.svg" alt="(X_i)"/> are distributed according the
+same law, we assume the same for <img class="math" src="../_images/math/9f52d5eea733fc02cbe44bafa7f8f7015452f524.svg" alt="(Y_i)"/>. We expect the following
 difference to be null.</p>
-<div class="math notranslate nohighlight" id="equation-pvalues-exp2">
-\begin{eqnarray*}
+<div class="math" id="equation-pvalues-exp2">
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-pvalues-exp2" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/c44065ea6997c10bc5f4aa3c6ed51f92e9f5c9b5.svg" alt="\begin{eqnarray*}
 \widehat{\eta}_N &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} X_i -
 \frac{1}{N} \sum_{i=1}^{N} Y_i
 = \frac{1}{N} \cro{ \sum_{i=1}^{N} X_i -  Y_i }
-\end{eqnarray*}</div><p>Considering expression <a class="reference internal" href="#equation-pvalues-exp2">(2)</a>, we can applying the central
-limit theorem on variable <span class="math notranslate nohighlight">\(Z=X-Y\)</span>, we get (<span class="math notranslate nohighlight">\(\eta_0=0\)</span>):</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>Considering expression <a class="reference internal" href="#equation-pvalues-exp2">(2)</a>, we can applying the central
+limit theorem on variable <img class="math" src="../_images/math/be8050fa58a1a8ab98cde57f6a4abf3676591902.svg" alt="Z=X-Y"/>, we get (<img class="math" src="../_images/math/221ce895d74b074c67da1955c0e77a8b1f1d4375.svg" alt="\eta_0=0"/>):</p>
+<div class="math">
+<p><img src="../_images/math/b04604070cc97c8923ecc2324211a829162100c3.svg" alt="\begin{eqnarray*}
 \sqrt{N} \widehat{\eta}_N \underset{N \rightarrow \infty}{\longrightarrow}
 \loinormale{\eta_0}{\sqrt{ \frac{\var{Z} }{N  } }}
-\end{eqnarray*}</div><p>If both samples do not have the same number of observations,
+\end{eqnarray*}"/></p>
+</div><p>If both samples do not have the same number of observations,
 this expression becomes:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/fb04bb1b5d9490ed952ce9eb8541f2511bb6b988.svg" alt="\begin{eqnarray*}
 \sqrt{N} \widehat{\eta}_N \underset{ \begin{subarray}{c} N_1
 \rightarrow \infty \\
 N_2 \rightarrow \infty \\
 \frac{N_1}{N_2} \rightarrow x \end{subarray}}{\longrightarrow}
 \loinormale{\eta_0}{\sqrt{ \frac{\var{X}}{N_1}+\frac{\var{Y}}{N_2} }}
-\end{eqnarray*}</div></section>
+\end{eqnarray*}"/></p>
+</div></section>
 <section id="application-on-binomial-variables">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Application on binomial variables</a><a class="headerlink" href="#application-on-binomial-variables" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>A binomial variable <span class="math notranslate nohighlight">\(X \sim \loibinomialea{p}\)</span> is defined by:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<p>A binomial variable <img class="math" src="../_images/math/419c9ea59701ce43e7d043b5339d4cb8bbedf418.svg" alt="X \sim \loibinomialea{p}"/> is defined by:</p>
+<div class="math">
+<p><img src="../_images/math/b19e4a335a93d46078f6805f1fff43311ea9b543.svg" alt="\begin{eqnarray*}
 \pr{X=0} &amp;=&amp; 1-p \\
 \pr{X=1} &amp;=&amp; p
-\end{eqnarray*}</div><p>Let’s consider two series of observations <span class="math notranslate nohighlight">\((X_i) \sim \loibinomialea{p}\)</span>
-and <span class="math notranslate nohighlight">\((Y_i) \sim \loibinomialea{q}\)</span>. We assume <span class="math notranslate nohighlight">\(p \neq q\)</span> and we want
+\end{eqnarray*}"/></p>
+</div><p>Let’s consider two series of observations <img class="math" src="../_images/math/50273ccc4f548d27428eb0ae63079f3860a4c771.svg" alt="(X_i) \sim \loibinomialea{p}"/>
+and <img class="math" src="../_images/math/e6fc42ef171c75c0fe8b955b11343a6193238cb8.svg" alt="(Y_i) \sim \loibinomialea{q}"/>. We assume <img class="math" src="../_images/math/7fa794a6094d9642edb31ae441a01db5591f6b59.svg" alt="p \neq q"/> and we want
 to determine how many observations we need to get a p-value below 5%.
-We know that <span class="math notranslate nohighlight">\(\variance{X_i}=p(1-p)\)</span> and <span class="math notranslate nohighlight">\(\variance{Y_i}=q(1-q)\)</span>.
-Next table shows the values. First column contains values for <span class="math notranslate nohighlight">\(p\)</span>,
-first row contains values for <span class="math notranslate nohighlight">\(q-p\)</span>. We also assume we have the same number
-<span class="math notranslate nohighlight">\(N\)</span> of random observations for each variable. The statistical
+We know that <img class="math" src="../_images/math/e27040185eafb682896fb8b37b61a870f6f5aac8.svg" alt="\variance{X_i}=p(1-p)"/> and <img class="math" src="../_images/math/a5c29f149d8b8da904a19b675eb718629aff7274.svg" alt="\variance{Y_i}=q(1-q)"/>.
+Next table shows the values. First column contains values for <img class="math" src="../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/>,
+first row contains values for <img class="math" src="../_images/math/41e218c0609dcc02c1e03f12f065fe6b70d3b300.svg" alt="q-p"/>. We also assume we have the same number
+<img class="math" src="../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> of random observations for each variable. The statistical
 test cen be defined like following:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/f94938a28b8f753cca44aa1bd9e25fb2a5ecf26d.svg" alt="\begin{eqnarray*}
 H0: &amp;&amp; p = q = p_0 \\
 H1: &amp;&amp; p \neq q
-\end{eqnarray*}</div><p>If H0 is true, then:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray}
+\end{eqnarray*}"/></p>
+</div><p>If H0 is true, then:</p>
+<div class="math">
+<p><img src="../_images/math/d9784e255b591e4d5f254812b20ef83740a77b3c.svg" alt="\begin{eqnarray}
 \sqrt{N} \widehat{\theta}_N \underset{N \rightarrow \infty}{\longrightarrow}   \loinormale{0}{\sqrt{p_0(1-p_0)}
 \sqrt{ \frac{1}{N_1}+\frac{1}{N_2} }}
-\end{eqnarray}</div><div class="math notranslate nohighlight">
-\begin{tabular}{r|r|r|r|r|r|r|r|r|r|r|r|r}
+\end{eqnarray}"/></p>
+</div><div class="math">
+<p><img src="../_images/math/aafe5b2f9755060eab2b9404e743302332342205.svg" alt="\begin{tabular}{r|r|r|r|r|r|r|r|r|r|r|r|r}
 $p/d$&amp;\textbf{-0.200}&amp;\textbf{-0.100}&amp;\textbf{-0.020}&amp;\textbf{-0.010}&amp;\textbf{-0.002}&amp;\textbf{-0.001}&amp;\textbf{0.001}&amp;\textbf{0.002}&amp;\textbf{0.010}&amp;\textbf{0.020}&amp;\textbf{0.100}&amp;\textbf{0.200}\\\hline
 \textbf{0.05}&amp;&amp;&amp;913&amp;3650&amp;91235&amp;364939&amp;364939&amp;91235&amp;3650&amp;913&amp;37&amp;10\\\hline
 \textbf{0.10}&amp;&amp;70&amp;1729&amp;6915&amp;172866&amp;691463&amp;691463&amp;172866&amp;6915&amp;1729&amp;70&amp;18\\\hline
@@ -724,71 +736,78 @@ $p/d$&amp;\textbf{-0.200}&amp;\textbf{-0.100}&amp;\textbf{-0.020}&amp;\textbf{-0
 \textbf{0.85}&amp;25&amp;98&amp;2449&amp;9796&amp;244893&amp;979572&amp;979572&amp;244893&amp;9796&amp;2449&amp;98&amp;\\\hline
 \textbf{0.90}&amp;18&amp;70&amp;1729&amp;6915&amp;172866&amp;691463&amp;691463&amp;172866&amp;6915&amp;1729&amp;70&amp;\\\hline
 \textbf{0.95}&amp;10&amp;37&amp;913&amp;3650&amp;91235&amp;364939&amp;364939&amp;91235&amp;3650&amp;913&amp;&amp;\\\hline
-\end{tabular}</div><p>Given a binomial law with parameter <span class="math notranslate nohighlight">\(p\)</span> and a difference
-<span class="math notranslate nohighlight">\(d\)</span>, this table gives the number of
+\end{tabular}"/></p>
+</div><p>Given a binomial law with parameter <img class="math" src="../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> and a difference
+<img class="math" src="../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/>, this table gives the number of
 observations needed on both sides to get a significant difference
-assuming <span class="math notranslate nohighlight">\(p\)</span> is the expected pourcentage</p>
+assuming <img class="math" src="../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> is the expected pourcentage</p>
 </section>
 <section id="estimate-a-p-value-by-using-the-distribution-function">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Estimate a p-value by using the distribution function</a><a class="headerlink" href="#estimate-a-p-value-by-using-the-distribution-function" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Expression <a class="reference internal" href="#equation-p-value-expression">(1)</a> gives a way to estimate the p-value.
 Computing the integral is not always possible but there is a way to do it
 using <a class="reference external" href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a>.
-Let’s assume <span class="math notranslate nohighlight">\(X \sim \loinormale{0}{1}\)</span>. We denote <span class="math notranslate nohighlight">\(f_X\)</span> as the
-density function of <span class="math notranslate nohighlight">\(X\)</span>. We also consider an interval
-<span class="math notranslate nohighlight">\(I=\cro{-a,a}\)</span>. Then we have <span class="math notranslate nohighlight">\(f(a)=f(-a)\)</span> and:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+Let’s assume <img class="math" src="../_images/math/08a962419337b7d494a46c6544e753ae8c53cd2b.svg" alt="X \sim \loinormale{0}{1}"/>. We denote <img class="math" src="../_images/math/f696aa8b745774e3457cdc878aa064c1d85322d6.svg" alt="f_X"/> as the
+density function of <img class="math" src="../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/>. We also consider an interval
+<img class="math" src="../_images/math/90ba82909f2c062b4b51b9831b6b7ca09d310ff9.svg" alt="I=\cro{-a,a}"/>. Then we have <img class="math" src="../_images/math/8ce271565a3261585547c880e152dc060c1db25a.svg" alt="f(a)=f(-a)"/> and:</p>
+<div class="math">
+<p><img src="../_images/math/f2c09289d937c32eeed5ae962152523d0597e4de.svg" alt="\begin{eqnarray*}
 \pr{X \in I} = \pr{ \abs{X} \infegal a } = \pr{ f(X) \supegal f(a)}
-\end{eqnarray*}</div><p>This is true because <span class="math notranslate nohighlight">\(f\)</span> is decreasing for <span class="math notranslate nohighlight">\(x&gt;0\)</span>.
-The p-value <span class="math notranslate nohighlight">\(\alpha\)</span> for a estimator <span class="math notranslate nohighlight">\(\beta\)</span> using Monte Carlo method is:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray}
+\end{eqnarray*}"/></p>
+</div><p>This is true because <img class="math" src="../_images/math/bd1e0600a66dbe0f8deddbd57953774419ba4e4f.svg" alt="f"/> is decreasing for <img class="math" src="../_images/math/7554ee702596b4b557e263f5883c5a4f1e1d1119.svg" alt="x&gt;0"/>.
+The p-value <img class="math" src="../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/> for a estimator <img class="math" src="../_images/math/bd898b02c226d1ce791865c51d30012165adf53d.svg" alt="\beta"/> using Monte Carlo method is:</p>
+<div class="math">
+<p><img src="../_images/math/1f2a8750a2b7d7a775ff1c64aaf9bd586000cf51.svg" alt="\begin{eqnarray}
 \frac{1}{N}\sum_{i=1}^{N} \indicatrice{ f(X_i) &lt; f(\beta)} \longrightarrow \alpha
-\end{eqnarray}</div><p>Assuming every <span class="math notranslate nohighlight">\((X_i)_i\)</span> follows a normal law <span class="math notranslate nohighlight">\(\loinormale{0}{1}\)</span>.</p>
+\end{eqnarray}"/></p>
+</div><p>Assuming every <img class="math" src="../_images/math/6cba74bdce3a6f91d99d7701293b0aa6c9400f0c.svg" alt="(X_i)_i"/> follows a normal law <img class="math" src="../_images/math/405981d3eea95ba3c42d0ac77b78e4837072ba51.svg" alt="\loinormale{0}{1}"/>.</p>
 </section>
 <section id="correlated-variables">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">Correlated variables</a><a class="headerlink" href="#correlated-variables" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Let’s assume we now have a vector a correlated variables <span class="math notranslate nohighlight">\(X=(X_1,...X_d)\)</span>
-drawn following a law <span class="math notranslate nohighlight">\(\loinormale{\theta_0}{\Sigma}\)</span>.</p>
+<p>Let’s assume we now have a vector a correlated variables <img class="math" src="../_images/math/392324266f555f73d7737e04d1f08f2cea45e072.svg" alt="X=(X_1,...X_d)"/>
+drawn following a law <img class="math" src="../_images/math/4b107155196156aa398a182ed7db419570d0b6ac.svg" alt="\loinormale{\theta_0}{\Sigma}"/>.</p>
 <p>The central limit theorem is still valid:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/5958bc7b5676ecff6b3f449e189277f136d5804c.svg" alt="\begin{eqnarray*}
 \sqrt{N} \widehat{\theta}_N \underset{N \rightarrow \infty}{\longrightarrow}   \loinormale{\theta_0}{\Sigma}
-\end{eqnarray*}</div><p>We know estimators for the average and the covariance matrix defined as follows:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>We know estimators for the average and the covariance matrix defined as follows:</p>
+<div class="math">
+<p><img src="../_images/math/7f1e82cdbbab4f1f2193b93e94859707bfb83ed6.svg" alt="\begin{eqnarray*}
 \widehat{\theta_N} &amp;=&amp; \frac{1}{n} \sum_{i=1}^{N} X_i \\
 \widehat{\Sigma_N} &amp;=&amp; \frac{1}{n} \sum_{i=1}^{N} (X_i - \widehat{\theta_N})(X_i - \widehat{\theta_N})'
-\end{eqnarray*}</div><p>We usually want to check if:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>We usually want to check if:</p>
+<div class="math">
+<p><img src="../_images/math/d0d91a5c526412fea23f1d81a3d4483f283a5589.svg" alt="\begin{eqnarray*}
 H0: &amp;&amp; \widehat{\theta}_N = \theta_0 \\
 H1: &amp;&amp; \widehat{\theta}_N \neq  \theta_0
-\end{eqnarray*}</div><p>If <span class="math notranslate nohighlight">\(\Lambda\)</span> is diagonal matrix of <span class="math notranslate nohighlight">\(\Sigma\)</span> (diagonal matrix with eigen values).
+\end{eqnarray*}"/></p>
+</div><p>If <img class="math" src="../_images/math/b1af3dc07c90134c73c60fe7f1e002ccaced8485.svg" alt="\Lambda"/> is diagonal matrix of <img class="math" src="../_images/math/c2c1631ee66d456484eaf1742ce908c0d4cb206d.svg" alt="\Sigma"/> (diagonal matrix with eigen values).
 All eigen values are real and positive, we then define:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<div class="math">
+<p><img src="../_images/math/f3741f2aaa767a622ddcfee080bf0a5910b9abc3.svg" alt="\begin{eqnarray*}
 \Sigma &amp;=&amp; P \Lambda P' \text { and } \Sigma^{\frac{1}{2}} =  P \Lambda^{\frac{1}{2}} P'
-\end{eqnarray*}</div><p>We consider <span class="math notranslate nohighlight">\(Z_i = (X_i - \widehat{\theta_N}) \Sigma^{-\frac{1}{2}}\)</span>.
-We then have <span class="math notranslate nohighlight">\(\esp{Z_i} = 0\)</span> and <span class="math notranslate nohighlight">\(\var{Z_i} = I_2\)</span> where
-<span class="math notranslate nohighlight">\(I_2\)</span> is the identity matrix. We could now consider each
-dimension of <span class="math notranslate nohighlight">\(Z_i\)</span> independently as illustrated in next figure:
+\end{eqnarray*}"/></p>
+</div><p>We consider <img class="math" src="../_images/math/61519b9598ce428b68128dfb857fc943caf5367c.svg" alt="Z_i = (X_i - \widehat{\theta_N}) \Sigma^{-\frac{1}{2}}"/>.
+We then have <img class="math" src="../_images/math/edc642f548f0a6d9e8a4e6f7def44014633a89f5.svg" alt="\esp{Z_i} = 0"/> and <img class="math" src="../_images/math/52b0ad86cf93c0110e2a0852132f0e2264f288c1.svg" alt="\var{Z_i} = I_2"/> where
+<img class="math" src="../_images/math/4cd6dce13bc9092f588909348a55b2e40c471447.svg" alt="I_2"/> is the identity matrix. We could now consider each
+dimension of <img class="math" src="../_images/math/f17e8c265d7e0200ae83cb0ab155527cc9338d22.svg" alt="Z_i"/> independently as illustrated in next figure:
 it shows the difference on an example if we consider the correlation of
 two variables correlated such as
-<span class="math notranslate nohighlight">\(\Sigma=\pa{\begin{array}{cc} 0.1 &amp; 0.05 \\ 0.05 &amp;  0.2 \end{array}}\)</span>.</p>
+<img class="math" src="../_images/math/27523a2a20d4880c138ab37666995651bd740259.svg" alt="\Sigma=\pa{\begin{array}{cc} 0.1 &amp; 0.05 \\ 0.05 &amp;  0.2 \end{array}}"/>.</p>
 <img alt="../_images/pvaluescor.png" src="../_images/pvaluescor.png" />
 <p>We assume we observe two <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernouilli</a>
 variables correlated. Red points represents the area
 for which we would accept hypothesis <em>H0</em> in case both variables are independant.
 Blue area represents the same but with the correlation.
 But that would not be the best way to do it. The confidence interval for a couple
-of indenpendant gaussian <span class="math notranslate nohighlight">\((N_1,N_2)\)</span> variables is an ellipse.
-Two independent normal variables <span class="math notranslate nohighlight">\(N_1^2+N_2^2\)</span> with a null mean
-and standard deviation equal to one follows a <span class="math notranslate nohighlight">\(\chi_2\)</span> law. Based on that,
+of indenpendant gaussian <img class="math" src="../_images/math/1b90718368ea70eb40f4e2a46974acb8f9c8288c.svg" alt="(N_1,N_2)"/> variables is an ellipse.
+Two independent normal variables <img class="math" src="../_images/math/6022d1125f29d9d904368f44f010eb49cfa258d5.svg" alt="N_1^2+N_2^2"/> with a null mean
+and standard deviation equal to one follows a <img class="math" src="../_images/math/88916934485ceae0b8c64aa3009ae62950c7fbee.svg" alt="\chi_2"/> law. Based on that,
 we can deduce a boundary for the confidence zone at 95%.
 Next figure shows this zone for a non-correlated couple and a correlated couple
-(<span class="math notranslate nohighlight">\(\Sigma=\pa{\begin{array}{cc} 0.1 &amp; 0.05 \\ 0.05 &amp;  0.2 \end{array}}\)</span>).</p>
+(<img class="math" src="../_images/math/27523a2a20d4880c138ab37666995651bd740259.svg" alt="\Sigma=\pa{\begin{array}{cc} 0.1 &amp; 0.05 \\ 0.05 &amp;  0.2 \end{array}}"/>).</p>
 <img alt="../_images/pvaluescor2.png" src="../_images/pvaluescor2.png" />
 <p>We assume we observe two Bernouilli variables correlated. Red points represents the area
 for which we would accept hypothesis <em>H0</em> in case both variables are independant.
@@ -807,33 +826,37 @@ proposes a way to define an hypthesis on the top of the existing ones.</p>
 </section>
 <section id="algorithm-expectation-maximization">
 <h2><a class="toc-backref" href="#id8" role="doc-backlink">Algorithm Expectation-Maximization</a><a class="headerlink" href="#algorithm-expectation-maximization" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>We here assume there are two populations mixed defined by random variable <span class="math notranslate nohighlight">\(C\)</span>.
-Let’s <span class="math notranslate nohighlight">\(X\)</span> be a mixture of two binomial laws of parameters <span class="math notranslate nohighlight">\(p\)</span>
-and <span class="math notranslate nohighlight">\(q\)</span>. It is for example the case for a series draws coming from two different coins.</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+<p>We here assume there are two populations mixed defined by random variable <img class="math" src="../_images/math/2c0e77bc741b692ecdf6e85966263a89422af4c8.svg" alt="C"/>.
+Let’s <img class="math" src="../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> be a mixture of two binomial laws of parameters <img class="math" src="../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/>
+and <img class="math" src="../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/>. It is for example the case for a series draws coming from two different coins.</p>
+<div class="math">
+<p><img src="../_images/math/cde0736f6e2d3df2522076c63ee287fcd114f3f4.svg" alt="\begin{eqnarray*}
 \pr{X} &amp;=&amp;  \pr{ X | C = a} \pr{C=a} + \pr{X | X =b} \pr{C = b}
-\end{eqnarray*}</div><p>The likelihood of a random sample <span class="math notranslate nohighlight">\((X_1,...X_n)\)</span>,
-the class we do not observe are <span class="math notranslate nohighlight">\((C_1,...C_n)\)</span>:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>The likelihood of a random sample <img class="math" src="../_images/math/e5d39b159c64d098f66e9caf3790115f11566ab6.svg" alt="(X_1,...X_n)"/>,
+the class we do not observe are <img class="math" src="../_images/math/dcd14ebe388510cd4ee4756d2caffb156e23edd3.svg" alt="(C_1,...C_n)"/>:</p>
+<div class="math">
+<p><img src="../_images/math/ec0bfc9e3dd631cc15c782c2ad4c44871d335c8d.svg" alt="\begin{eqnarray*}
 L(\theta) = \prod_i \cro{ p^{X_i}(1-p)^{(1-X_i)} \pi }^{1-C_i} \cro{q^{X_i}(1-q)^{(1-X_i)}  (1-\pi)  }^{C_i}
-\end{eqnarray*}</div><p>The parameters are <span class="math notranslate nohighlight">\(\theta=(\pi,p,q)\)</span>. We use an algorithm
+\end{eqnarray*}"/></p>
+</div><p>The parameters are <img class="math" src="../_images/math/4505c21b0ccb09d4810afceb347cedf8f447500b.svg" alt="\theta=(\pi,p,q)"/>. We use an algorithm
 <a class="reference external" href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation-Maximization (EM)</a>
 to determine the parameters.
-We define at iteration <span class="math notranslate nohighlight">\(t\)</span>:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+We define at iteration <img class="math" src="../_images/math/09c7628f51842c683db31bd6826cff8cc447ece3.svg" alt="t"/>:</p>
+<div class="math">
+<p><img src="../_images/math/e0fc687d6d4b1ee8bdf4a5ffbb359d65bd05f965.svg" alt="\begin{eqnarray*}
 w_i &amp;=&amp; \espf{C_i | X_i, \theta_t }{X_i}  \\
     &amp;=&amp; \frac{ p_t^{X_i} (1-p_t)^{1-X_i} \pi_t }
                { p_t^{X_i}(1-p_t)^{1-X_i} \pi_t + q_t^{X_i} (1-q_t)^{1-X_i} (1-\pi_t) }
-\end{eqnarray*}</div><p>We then update the parameters:</p>
-<div class="math notranslate nohighlight">
-\begin{eqnarray*}
+\end{eqnarray*}"/></p>
+</div><p>We then update the parameters:</p>
+<div class="math">
+<p><img src="../_images/math/abddf7e650dc4e58e71f8d7912f778f6331fc119.svg" alt="\begin{eqnarray*}
 \widehat{\pi}   &amp;=&amp;  \frac{1}{n} \sum_{i = 1}^n w_i \\
 \widehat{p}     &amp;=&amp;  \frac{  \sum_{i = 1}^n w_i X_i }{  \sum_{i = 1}^n w_i} \\
 \widehat{q}     &amp;=&amp;  \frac{  \sum_{i = 1}^n (1-w_i) X_i }{  \sum_{i = 1}^n (1-w_i)}
-\end{eqnarray*}</div><p>See also <a class="reference external" href="https://statisticalrecipes.blogspot.fr/2012/04/applying-em-algorithm-binomial-mixtures.html">Applying the EM Algorithm: Binomial Mixtures</a>.</p>
+\end{eqnarray*}"/></p>
+</div><p>See also <a class="reference external" href="https://statisticalrecipes.blogspot.fr/2012/04/applying-em-algorithm-binomial-mixtures.html">Applying the EM Algorithm: Binomial Mixtures</a>.</p>
 </section>
 <section id="notebooks">
 <h2><a class="toc-backref" href="#id9" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
@@ -854,7 +877,7 @@ w_i &amp;=&amp; \espf{C_i | X_i, \theta_t }{X_i}  \\
 <section id="bibliographie">
 <h2><a class="toc-backref" href="#id10" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.stat.columbia.edu/~gelman/research/published/pvalues3.pdf">p-Value and Statistical Practice</a></p></li>
+<li><p><a class="reference external" href="http://www.stat.columbia.edu/~gelman/research/published/pvalues3.pdf">p-Value and Statistical Practice</a></p></li>
 <li><p><a class="reference external" href="https://rsos.royalsocietypublishing.org/content/royopensci/1/3/140216.full.pdf">An investigation of the false discovery rate and the misinterpretation of p-values</a></p></li>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Holm-Bonferroni method</a></p></li>
 </ul>

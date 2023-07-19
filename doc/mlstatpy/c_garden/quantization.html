@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_garden/quantization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -558,6 +556,7 @@ document.write(`
 <li><p><a class="reference internal" href="#discretisation-sur-un-octet" id="id2">Discrétisation sur un octet</a></p></li>
 <li><p><a class="reference internal" href="#discretisation-sur-une-float-8" id="id3">Discrétisation sur une float 8</a></p></li>
 <li><p><a class="reference internal" href="#optimisation" id="id4">Optimisation</a></p></li>
+<li><p><a class="reference internal" href="#resolution" id="id5">Résolution</a></p></li>
 </ul>
 </nav>
 <section id="un-probleme-simple">
@@ -573,41 +572,41 @@ Voir aussi :
 Neural Network Inference</a>.</p>
 <p>Les produits matriciels sont fréquents dans les réseaux de neurones où
 on multiple les entrées <em>X</em> d’une couche de neurones avec les coefficients
-<em>A</em> : <span class="math notranslate nohighlight">\(X B\)</span>. Lors de l’apprentissage, la matrice B est apprise soit en float 32 bit
+<em>A</em> : <img class="math" src="../_images/math/f7d5f3fc0ac76b7575be288ada01918d33391286.svg" alt="X B"/>. Lors de l’apprentissage, la matrice B est apprise soit en float 32 bit
 soit en float 16 bit puis elle est discrétisée sur 8 bit, soit 256 valeurs.
 Si on note <em>q(B)</em> la forme <em>discrétisée</em> de <em>B</em>, le plus simple de minimiser
-<span class="math notranslate nohighlight">\(\norm{B - q(B)}^2\)</span>. On pourrait également se pencher sur la minimisation
-de <span class="math notranslate nohighlight">\(X (B - q(B))^2\)</span> mais la matrice <em>X</em> vient des données.
+<img class="math" src="../_images/math/12ff89be6b16e901ca54b25f11a0912eeb9765eb.svg" alt="\norm{B - q(B)}^2"/>. On pourrait également se pencher sur la minimisation
+de <img class="math" src="../_images/math/cf3da5d8e73d821b84168280330f27f41353bbbc.svg" alt="X (B - q(B))^2"/> mais la matrice <em>X</em> vient des données.
 Il faudrait soit prendre des hypothèses de distribution sur X
-ou optimiser sur un jeu de données <span class="math notranslate nohighlight">\((X_i)_i\)</span>.</p>
+ou optimiser sur un jeu de données <img class="math" src="../_images/math/6cba74bdce3a6f91d99d7701293b0aa6c9400f0c.svg" alt="(X_i)_i"/>.</p>
 <p>On considère le cas simple qui consiste à minimiser
-<span class="math notranslate nohighlight">\(\norm{B - q(B)}^2\)</span>.</p>
+<img class="math" src="../_images/math/12ff89be6b16e901ca54b25f11a0912eeb9765eb.svg" alt="\norm{B - q(B)}^2"/>.</p>
 </section>
 <section id="discretisation-sur-un-octet">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Discrétisation sur un octet</a><a class="headerlink" href="#discretisation-sur-un-octet" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On discrétise sur 256 valeurs espacées de façon régulière sur un intervalle.
 Mais les coefficients ne sont pas tous situés dans un même intervalle.
-On doit alors trouver les meilleurs paramètres <span class="math notranslate nohighlight">\(z\)</span> et <span class="math notranslate nohighlight">\(\lambda\)</span>
+On doit alors trouver les meilleurs paramètres <img class="math" src="../_images/math/087a0408283a772ee60faa3753a3c453801e7b4b.svg" alt="z"/> et <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/>
 qui définissent la quantization au travers de deux fonctions. On note
-<span class="math notranslate nohighlight">\(c_{0}^{255}(x)=\max(0, \min(255, x))\)</span> la fonction qui <em>x</em>
+<img class="math" src="../_images/math/ffe4c77ee5d9daa5ff1b063a7cf4cc1586a7659a.svg" alt="c_{0}^{255}(x)=\max(0, \min(255, x))"/> la fonction qui <em>x</em>
 dans l’intervalle <em>[0, 255]</em>, 0 à gauche, 255 à droite.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rcl}
-q_1(z, \lambda, x) &amp;=&amp; c_{0}^{255}\pa{\intf_{i8}{\frac{x}{\lambda}} + z} \text{ quantization}\\
+<div class="math">
+<p><img src="../_images/math/0584982e2fa5a9a10996713051b7a64809046554.svg" alt="\begin{array}{rcl}
+q_1(z, \lambda, x) &amp;=&amp; c_{0}^{255}\pa{\intf{\frac{x}{\lambda}}_{i8} + z} \text{ quantization}\\
 q_2(z, \lambda, i) &amp;=&amp; \lambda(i - z) \text{ déquantization} \\
 q(z, \lambda, x) &amp;=&amp; q_2(z, \lambda, q_1(z, \lambda, x)) \\
-&amp;=&amp; \lambda\pa{c_{0}^{255}\pa{\intf_{i8}{\frac{x}{\lambda}} + z} - z} \\
-&amp;=&amp; \lambda\intf_{i8,z}{\frac{x}{\lambda}}
-\end{array}\end{split}\]</div>
-<p>La fonction <span class="math notranslate nohighlight">\(\intf_{i8,z}{x}\)</span> est la partie entière asociée à la fonction
-<span class="math notranslate nohighlight">\(c_{0}^{255}(i)\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\norm{B - q(z,\lambda,B)}^2 = \sum_{ij} \pa{b_{ij} - \lambda\intf_{i8,z}{\frac{x}{\lambda}}}^2\]</div>
-<p>Le problème est la fonction <span class="math notranslate nohighlight">\(\intf_{i8,z}{.}\)</span> qui n’est pas dérivable.
-C’est un problème d’optimisation discrète. Le paramètre <span class="math notranslate nohighlight">\(\lambda\)</span>
+&amp;=&amp; \lambda\pa{c_{0}^{255}\pa{\intf{\frac{x}{\lambda}}_{i8} + z} - z} \\
+&amp;=&amp; \lambda\intf{\frac{x}{\lambda}}_{i8,z}
+\end{array}"/></p>
+</div><p>La fonction <img class="math" src="../_images/math/505af13fdcc47a42e6128228e5330aa1a8592e54.svg" alt="\intf{x}_{i8,z}"/> est la partie entière asociée à la fonction
+<img class="math" src="../_images/math/718e27a846d7703ce50adca8267d69a6e0aa9ca6.svg" alt="c_{0}^{255}(i)"/>.</p>
+<div class="math">
+<p><img src="../_images/math/0ea1f8c8726fb4cb2b269c73a88321252c6085d9.svg" alt="\norm{B - q(z,\lambda,B)}^2 = \sum_{ij} \pa{b_{ij} - \lambda\intf{\frac{x}{\lambda}}_{i8,z}}^2"/></p>
+</div><p>Le problème est la fonction <img class="math" src="../_images/math/ebe2e3c6e0a6fb3896aa961254065ca9042bde7a.svg" alt="\intf{.}_{i8,z}"/> qui n’est pas dérivable.
+C’est un problème d’optimisation discrète. Le paramètre <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/>
 est appelé <em>scale</em> ou <em>échelle</em>. Il peut y en avoir un ou plusieurs
 mais dans ce cas, on considère les différentes parties de <em>B</em>
-qui sont quantizées avec les mêmes paramètres <span class="math notranslate nohighlight">\(\lambda\)</span> et <em>z</em></p>
+qui sont quantizées avec les mêmes paramètres <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/> et <em>z</em></p>
 <p>Cette quantization est appelée <em>quantization linéaire</em>. Elle est privilégiée
 car elle est très rapide et la transformation inverse (ou déquantization)
 l’est tout autant.</p>
@@ -615,7 +614,7 @@ l’est tout autant.</p>
 <section id="discretisation-sur-une-float-8">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Discrétisation sur une float 8</a><a class="headerlink" href="#discretisation-sur-une-float-8" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Un float 8 est un réel codé sur 8 bits. Il y a plusieurs variantes.
-Nous allons considérer la version <em>E4M3FN</em>, <span class="math notranslate nohighlight">\(S.1111.111_2\)</span> :</p>
+Nous allons considérer la version <em>E4M3FN</em>, <img class="math" src="../_images/math/50c5c41cd44b506f95499aa9d6c2115dd4dba89a.svg" alt="S.1111.111_2"/> :</p>
 <ul class="simple">
 <li><p>1 bit pour le signe</p></li>
 <li><p>4 bits pour l’exposant</p></li>
@@ -624,30 +623,59 @@ Nous allons considérer la version <em>E4M3FN</em>, <span class="math notranslat
 <p>Et la valeur réelle est :</p>
 <ul class="simple">
 <li><p>si l’exposant est nul,
-<span class="math notranslate nohighlight">\((-1)^S 2^{\sum_{i=3}^6 b_i 2^{i-3}- 7}\left(1+\sum_{i=0}^2 b_i 2^{i-3}\right)\)</span></p></li>
-<li><p>sinon <span class="math notranslate nohighlight">\((-1)^S 2^{-6} \sum_{i=0}^2 b_i 2^{i-3}\)</span></p></li>
-<li><p>le réel vaut NaN s’il suit le format : <span class="math notranslate nohighlight">\(S.1111.111_2\)</span> (255 ou 127),</p></li>
-<li><p>le réel vaut zéro s’il suit le format : <span class="math notranslate nohighlight">\(S.0000.000_2\)</span> (0 ou 128)</p></li>
+<img class="math" src="../_images/math/a250bff1f68a2d94e927d1cd0824ed4b3020f262.svg" alt="(-1)^S 2^{\sum_{i=3}^6 b_i 2^{i-3}- 7}\left(1+\sum_{i=0}^2 b_i 2^{i-3}\right)"/></p></li>
+<li><p>sinon <img class="math" src="../_images/math/9be8c0343051d6d296f75940d8e5f561b228ac0e.svg" alt="(-1)^S 2^{-6} \sum_{i=0}^2 b_i 2^{i-3}"/></p></li>
+<li><p>le réel vaut NaN s’il suit le format : <img class="math" src="../_images/math/50c5c41cd44b506f95499aa9d6c2115dd4dba89a.svg" alt="S.1111.111_2"/> (255 ou 127),</p></li>
+<li><p>le réel vaut zéro s’il suit le format : <img class="math" src="../_images/math/3f6fb28418654113e68788b82d47fd2c1efec89e.svg" alt="S.0000.000_2"/> (0 ou 128)</p></li>
 </ul>
 <p>Les valeurs ne sont plus uniformément espacées mais il y en a toujours entre 252 et 255
 selon les formats de float 8 et on cherche toujours à trouver les meilleurs
-paramètres <span class="math notranslate nohighlight">\(\lambda\)</span> et <em>z</em>. La formule est quasiment la même. On n’arrondit
+paramètres <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/> et <em>z</em>. La formule est quasiment la même. On n’arrondit
 plus à l’entier inférieur (ou le plus proche) mais au float 8
 inférieur (ou le plus proche).</p>
-<div class="math notranslate nohighlight">
-\[\norm{B - q(z,\lambda,B)}^2 = \sum_{ij} \pa{b_{ij} - \lambda\intf_{f8,z}{\frac{x}{\lambda}} }^2\]</div>
-</section>
+<div class="math">
+<p><img src="../_images/math/fb38ced33539b9f18a5822e8508116a0d5db3c4c.svg" alt="\norm{B - q(z,\lambda,B)}^2 = \sum_{ij} \pa{b_{ij} - \lambda\intf{\frac{x}{\lambda}}_{f8,z} }^2"/></p>
+</div></section>
 <section id="optimisation">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Optimisation</a><a class="headerlink" href="#optimisation" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>L’idée est de traiter la discrétisation sur un ensemble fini de valeurs,
-quel qu’il soit, des entiers ou des réels codés sur 8 bits. On note Cette
-ensemble <span class="math notranslate nohighlight">\((d_1, ..., d_n)\)</span>. On réécrit le problème d’optimisation :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rcl}
-\norm{B - q(z,\lambda,B)}^2 &amp;=&amp; \sum_{ij} \pa{b_{ij} - \lambda\intf_{f8,z}{\frac{x}{\lambda}} }^2 \\
-&amp;=&amp; \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda\intf_{f8}{\frac{x}{\lambda}} }^2
-\indicatrice{\intf_{f8}{\frac{x}{\lambda}} = d_k}
-\end{array}\end{split}\]</div>
+quel qu’il soit, des entiers ou des réels codés sur 8 bits. On note cet
+ensemble <img class="math" src="../_images/math/2ddb0707b3d63b4d93bdf92385e7621e79dbcb32.svg" alt="(d_1, ..., d_n)"/>. On réécrit le problème d’optimisation :</p>
+<div class="math">
+<p><img src="../_images/math/3f92aa0f256411a6ab23c1704a23e33e483c4dd0.svg" alt="\begin{array}{rcl}
+\norm{B - q(z,\lambda,B)}^2 &amp;=&amp; \sum_{ij} \pa{b_{ij} - \lambda\intf{\frac{x}{\lambda}}_{f8,z} }^2 \\
+&amp;=&amp; \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda\intf{\frac{x}{\lambda}}_{f8} }^2
+\indicatrice{\intf{\frac{x}{\lambda}}_{f8} = d_k} \\
+&amp;=&amp; \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda d_k }^2
+\indicatrice{\intf{\frac{x}{\lambda}}_{f8} = d_k} \\
+\end{array}"/></p>
+</div><p>On note <img class="math" src="../_images/math/0bc32f41ce1058be84dd4b96df6c971c8b40125e.svg" alt="K(u)=\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}u^2}"/> le noyau gaussien.</p>
+<div class="math">
+<p><img src="../_images/math/bc35bc26c7519c52789a1993beeb65a50100a3e9.svg" alt="\begin{array}{rcl}
+\norm{B - q(z,\lambda,B)}^2 &amp;=&amp; \lim_{h\to 0} \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda d_k }^2
+\frac{1}{h} K\pa{\frac{b_{ij} - \lambda d_k}{h}}\indicatrice{\intf{\frac{x}{\lambda}}_{f8} = d_k}
+\end{array}"/></p>
+</div><p>Cette notation ne tient pas compte du décalage <em>z</em> qu’on peut ajouter comme suit :</p>
+<div class="math">
+<p><img src="../_images/math/e6fba09b26bd55c5a790d95564690c0699a550ca.svg" alt="\begin{array}{rcl}
+\norm{B - q(z,\lambda,B)}^2 &amp;=&amp; \lim_{h\to 0} \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda d_k - z }^2
+\frac{1}{h} K\pa{\frac{b_{ij} - \lambda d_k - z}{h}}\indicatrice{\intf{\frac{x}{\lambda}}_{?,z} = d_k}
+\end{array}"/></p>
+</div><p>Le problème est beaucoup plus simple à résoudre si on enlève l’indicatrice
+et la fonction devient dérivable. L’idée est de regarder l’évolution des valeurs trouvées
+pour <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/> et <em>z</em> en faisant tendre <em>h</em> vers 0.
+On commence par le plus simple, le cas float 8 pour lequel on impose <img class="math" src="../_images/math/464430d64e32e0a29160753f3d5d93d60e52f3ee.svg" alt="z=0"/>.</p>
+<div class="math">
+<p><img src="../_images/math/0a09d5355035df319aabad219b3d4bf034f73232.svg" alt="f(B,\lambda,h) = \frac{1}{h} \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda d_k - z }^2
+K\pa{\frac{b_{ij} - \lambda d_k - z}{h}}"/></p>
+</div><p>Si on suppose que les coefficients de <em>B</em> suivent une certaine loi de probabilité,
+ce calcul devient une somme d’espérence.</p>
+<div class="math">
+<p><img src="../_images/math/9c2f0f8ecd9c62f80c37b459e07bcb86847b4b1a.svg" alt="f(X,\lambda,h) = \frac{1}{h} \sum_{k=1}^{n} \esp{X - \lambda d_k - z }^2
+K\pa{\frac{X - \lambda d_k - z}{h}}"/></p>
+</div></section>
+<section id="resolution">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Résolution</a><a class="headerlink" href="#resolution" title="Lien permanent vers cette rubrique">#</a></h2>
 </section>
 </section>
 
@@ -702,6 +730,7 @@ ensemble <span class="math notranslate nohighlight">\((d_1, ..., d_n)\)</span>. 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretisation-sur-un-octet">Discrétisation sur un octet</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretisation-sur-une-float-8">Discrétisation sur une float 8</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimisation">Optimisation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution">Résolution</a></li>
 </ul>
   </nav></div>
 

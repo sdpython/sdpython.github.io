@@ -46,8 +46,6 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/ml/neural_tree_onnx';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -1229,7 +1227,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 3.75 ms ± 311 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 </pre></div></div>
 </div>
-<p>Ce temps de calcul très long est attendu car le modèle contient une multiplication de matrice très grande et surtout que tous les seuils de l’arbre sont calculés pour chaque observation. Là où l’implémentation de l’arbre de décision calcule <em>d</em> seuils, la profondeur de l’arbre, la nouvelle implémentation calcule tous les seuils soit <span class="math notranslate nohighlight">\(2^d\)</span> pour chaque feuille. Il y a <span class="math notranslate nohighlight">\(2^d\)</span> feuilles. Même en étant sparse, on peut réduire les calculs à <span class="math notranslate nohighlight">\(d * 2^d\)</span> ce qui fait encore beaucoup de
+<p>Ce temps de calcul très long est attendu car le modèle contient une multiplication de matrice très grande et surtout que tous les seuils de l’arbre sont calculés pour chaque observation. Là où l’implémentation de l’arbre de décision calcule <em>d</em> seuils, la profondeur de l’arbre, la nouvelle implémentation calcule tous les seuils soit <img class="math" src="../../_images/math/1682d5137f90f59dfe3c374bc145e09fd8338436.svg" alt="2^d"/> pour chaque feuille. Il y a <img class="math" src="../../_images/math/1682d5137f90f59dfe3c374bc145e09fd8338436.svg" alt="2^d"/> feuilles. Même en étant sparse, on peut réduire les calculs à <img class="math" src="../../_images/math/737dcde232cf6ef3e1c0a36492a42743119ec6c2.svg" alt="d * 2^d"/> ce qui fait encore beaucoup de
 calculs inutiles.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:

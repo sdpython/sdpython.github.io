@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/l1l2';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -556,13 +554,13 @@ document.write(`
 <p>La régression linéaire est le modèle le plus simple pour
 construire une fonction de prédiction lorsque la variable
 à prédire est continue.</p>
-<div class="math notranslate nohighlight">
-\[f(X) = \sum_{k=1}^d a_k x_k\]</div>
-<p>Les coefficients s’obtiennent en minimisant l’erreur
-<span class="math notranslate nohighlight">\(E(X,a_1,...,a_d)=\sum_i (\sum_{k=1}^d a_k x_{ik} - y_i)^2=\norme{XA-y}^2\)</span>.
-La solution est explicite : <span class="math notranslate nohighlight">\((a_1,...,a_d) = (X'X)^{-1}X'y\)</span>.
+<div class="math">
+<p><img src="../_images/math/4ae61c7451665cd8c29fb8b8c7cf745d69f22c02.svg" alt="f(X) = \sum_{k=1}^d a_k x_k"/></p>
+</div><p>Les coefficients s’obtiennent en minimisant l’erreur
+<img class="math" src="../_images/math/86a33f260a7ae78ecfef2214f58d7cde7647a1ee.svg" alt="E(X,a_1,...,a_d)=\sum_i (\sum_{k=1}^d a_k x_{ik} - y_i)^2=\norme{XA-y}^2"/>.
+La solution est explicite : <img class="math" src="../_images/math/80d3f937e2b7e432f9448f0e509f17114edf9fc4.svg" alt="(a_1,...,a_d) = (X'X)^{-1}X'y"/>.
 Lorsque le nombre de dimensions augmentent et dépasse le nombre d’observations,
-il existe plus d’une solution et la matrice <span class="math notranslate nohighlight">\((X'X)\)</span> n’est plus =
+il existe plus d’une solution et la matrice <img class="math" src="../_images/math/242a417dd29e6c9c20adfc7ea8a87cb0f8520249.svg" alt="(X'X)"/> n’est plus =
 inversible. Une des astuces consiste à réduire le nombre de dimension
 avant avec une <a class="reference external" href="https://fr.wikipedia.org/wiki/Analyse_en_composantes_principales">ACP</a> ou une <a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_en_valeurs_singuli%C3%A8res">SVD</a> (Singular Value Decomposition)
 qui reviennent à trouver un espace de projection de dimension moindre
@@ -588,10 +586,10 @@ ensuite les coefficients dans la base initiale.</p>
 <section id="penalisation-l1-et-l2">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Pénalisation L1 et L2</a><a class="headerlink" href="#penalisation-l1-et-l2" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>La pénalisation revient à minimiser une erreur de la forme.</p>
-<div class="math notranslate nohighlight">
-\[E(X,a_1,...,a_d)=\sum_i \left(\sum_{k=1}^d a_k x_{ik} - y_i\right)^2 + \lambda \sum_{k=1}^d |a_k|^p
-= \norme{XA-y}^2 + \lambda \sum_{k=1}^d |a_k|^p\]</div>
-<p>Le paramètre <em>p</em> permet d’ajuster le poids donné aux petits coefficients
+<div class="math">
+<p><img src="../_images/math/29dfdf010a2d699c13dd15aa7565cdc7306b163d.svg" alt="E(X,a_1,...,a_d)=\sum_i \left(\sum_{k=1}^d a_k x_{ik} - y_i\right)^2 + \lambda \sum_{k=1}^d |a_k|^p
+= \norme{XA-y}^2 + \lambda \sum_{k=1}^d |a_k|^p"/></p>
+</div><p>Le paramètre <em>p</em> permet d’ajuster le poids donné aux petits coefficients
 et celui donnée aux grands. Lorsque <em>p=2</em>, c’est une pénalisation <strong>L2</strong>,
 lorsque <em>p=1</em>, c’est une pénalisation <strong>L1</strong>. Ces deux ont une incidence
 différente sur la nullité des coefficients. La pénalisation <em>L1</em> a tendance
@@ -602,32 +600,32 @@ illustre ce fait sur
 un jeu de données artificiel et montre que le nombre de
 coefficients non nuls reste plus ou moins constant malgré un nombre
 de variables <em>d</em> en hausse. Pour s’en convaincre, imaginons un problème
-à <em>d</em> variables pour lequel on connaît la solution <span class="math notranslate nohighlight">\((a_1^*, ..., a_d^*)\)</span>
+à <em>d</em> variables pour lequel on connaît la solution <img class="math" src="../_images/math/5e80ced150176f4a24582894178e35d07fc5a8c5.svg" alt="(a_1^*, ..., a_d^*)"/>
 qui minimise le problème.</p>
-<div class="math notranslate nohighlight">
-\[E(X,a^*_1,...,a^*_d)=\min \sum_i \left(\sum_{k=1}^d a^*_k x_{ik} - y_i\right)^2 + \lambda \sum_{k=1}^d |a^*_k|^p\]</div>
-<p>Lorsqu’on ajoute une variable, cette erreur devient :</p>
-<div class="math notranslate nohighlight">
-\[E(X,a^*_1,...,a^*_d, a_{d+1})=\sum_i \left(\sum_{k=1}^d a_k x_{ik} + a_{d+1}x_{i,d+1} - y_i\right)^2 +
-\lambda \sum_{k=1}^d |a_k|^p + \lambda |a_{d+1}|^p\]</div>
-<p>Et sa dérivée :</p>
-<div class="math notranslate nohighlight">
-\[\frac{dE(X,a^*_1,...,a^*_d, a_{d+1})}{da_{d+1}}= 2 \sum_i x_{i,d+1} (\sum_{k=1}^d a^*_k x_{ik} + a_{d+1}x_{i,d+1} - y_i) +
-\lambda p |a_{d+1}|^{p-1} sign(a_{d+1})\]</div>
-<p>On s’intéresse au cas particulier où les variables ne sont pas corrélées et centrées.
-Cela implique que <span class="math notranslate nohighlight">\(\sum_i x_{i,d+1} x_{i,k} = 0\)</span> si <span class="math notranslate nohighlight">\(k \neq d+1\)</span>.
+<div class="math">
+<p><img src="../_images/math/0de03c46b0de0c35963cb983215039fbcdbd2e6a.svg" alt="E(X,a^*_1,...,a^*_d)=\min \sum_i \left(\sum_{k=1}^d a^*_k x_{ik} - y_i\right)^2 + \lambda \sum_{k=1}^d |a^*_k|^p"/></p>
+</div><p>Lorsqu’on ajoute une variable, cette erreur devient :</p>
+<div class="math">
+<p><img src="../_images/math/9426eea2ece6b7f28486a83f16f291f305c21785.svg" alt="E(X,a^*_1,...,a^*_d, a_{d+1})=\sum_i \left(\sum_{k=1}^d a_k x_{ik} + a_{d+1}x_{i,d+1} - y_i\right)^2 +
+\lambda \sum_{k=1}^d |a_k|^p + \lambda |a_{d+1}|^p"/></p>
+</div><p>Et sa dérivée :</p>
+<div class="math">
+<p><img src="../_images/math/a8efb4c80cb236ea8f3dd1d9f019bc25e1ca4216.svg" alt="\frac{dE(X,a^*_1,...,a^*_d, a_{d+1})}{da_{d+1}}= 2 \sum_i x_{i,d+1} (\sum_{k=1}^d a^*_k x_{ik} + a_{d+1}x_{i,d+1} - y_i) +
+\lambda p |a_{d+1}|^{p-1} sign(a_{d+1})"/></p>
+</div><p>On s’intéresse au cas particulier où les variables ne sont pas corrélées et centrées.
+Cela implique que <img class="math" src="../_images/math/06721c142617b38e12c44025730be1b85edcc87a.svg" alt="\sum_i x_{i,d+1} x_{i,k} = 0"/> si <img class="math" src="../_images/math/6beb4fd76e2567d32ce7295ff83aeff6921c8b95.svg" alt="k \neq d+1"/>.
 Et lorsque <em>p&gt;1</em>, le gradient est nul si on peut résoudre l’équation :</p>
-<div class="math notranslate nohighlight">
-\[\frac{dE(X,a^*_1,...,a^*_d, a_{d+1})}{da_{d+1}}= 2 \sum_i   a_{d+1}x_{i,d+1}^2 - y_i x_{i,d+1} +
-\lambda sign(a_{d+1}) = 0\]</div>
-<p>La solution est simple :</p>
-<div class="math notranslate nohighlight">
-\[a_{d+1}^* = \frac{\sum_i  y_i x_{i,d+1} - \lambda sign(a_{d+1})}{2 \sum_i x_{i,d+1}^2}\]</div>
-<p>Et en fait, pour un <span class="math notranslate nohighlight">\(\lambda\)</span> assez grand,
+<div class="math">
+<p><img src="../_images/math/50bc6f10cb82b62b45f1c42f503c4f2aea0c7bd9.svg" alt="\frac{dE(X,a^*_1,...,a^*_d, a_{d+1})}{da_{d+1}}= 2 \sum_i   a_{d+1}x_{i,d+1}^2 - y_i x_{i,d+1} +
+\lambda sign(a_{d+1}) = 0"/></p>
+</div><p>La solution est simple :</p>
+<div class="math">
+<p><img src="../_images/math/311c006e028d92208e9e637a2dbdcd2ea5fddc3e.svg" alt="a_{d+1}^* = \frac{\sum_i  y_i x_{i,d+1} - \lambda sign(a_{d+1})}{2 \sum_i x_{i,d+1}^2}"/></p>
+</div><p>Et en fait, pour un <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/> assez grand,
 on peut facilement montrer que la solution est impossible puisqu’elle
-implique que le coefficient <span class="math notranslate nohighlight">\(a_{d+1}^*\)</span> soit de signe opposé
-à <span class="math notranslate nohighlight">\(\lambda sign(a_{d+1})\)</span>. Cela signifie que n’importe quelle valeur
-pour <span class="math notranslate nohighlight">\(a_{d+1}\)</span> augmente l’erreur. Sa valeur est donc nulle.
+implique que le coefficient <img class="math" src="../_images/math/23d9c4bb1c9d77d18840eec055392b63ade7a93e.svg" alt="a_{d+1}^*"/> soit de signe opposé
+à <img class="math" src="../_images/math/368ae8fc0cf0116a45694045b8b4776470355cbc.svg" alt="\lambda sign(a_{d+1})"/>. Cela signifie que n’importe quelle valeur
+pour <img class="math" src="../_images/math/ef760cf93686bc1d3fb158ae0795f5888983f593.svg" alt="a_{d+1}"/> augmente l’erreur. Sa valeur est donc nulle.
 Ceci n’est pas une démonstration mais donne une intuition de pourquoi
 une pénalisation L1 annule la plupart des coefficients et est utilisée
 comme moyen de sélectionner les variables. C’est une démonstration dans le cas

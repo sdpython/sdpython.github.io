@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/survival_analysis';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -584,108 +582,108 @@ et aujourd’hui.</p>
 </section>
 <section id="courbe-de-kaplan-meier">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Courbe de Kaplan-Meier</a><a class="headerlink" href="#courbe-de-kaplan-meier" title="Lien permanent vers cette rubrique">#</a></h2>
-<p id="index-1">On reprend la même terminologie. A une date <span class="math notranslate nohighlight">\(t_0\)</span>, on administre
+<p id="index-1">On reprend la même terminologie. A une date <img class="math" src="../_images/math/99e32ca3e2d44d329c8cf33835efe2cbf4106d05.svg" alt="t_0"/>, on administre
 un traitement à une personne, un animal, une plante. Cet être vivant
 meurt à un temps <em>t + d</em>. Le traitement a-t-il amélioré sa survie ?
-On considère deux temps <span class="math notranslate nohighlight">\(t_1\)</span> et <span class="math notranslate nohighlight">\(t_2\)</span>, la probabilité
+On considère deux temps <img class="math" src="../_images/math/13ba57ce42b269b1e4cb98468386645344737d2b.svg" alt="t_1"/> et <img class="math" src="../_images/math/301848a47e6c34ddde462fce0568479f125db026.svg" alt="t_2"/>, la probabilité
 de décès entre ces deux temps peut être estimé par
-<span class="math notranslate nohighlight">\(\frac{n_{t_2} - n_{t_1}}{n_{t_1}}\)</span> où <span class="math notranslate nohighlight">\(n_{t_i}\)</span> est la
-population vivante au temps <span class="math notranslate nohighlight">\(t_i\)</span> (depuis le début du traitement).</p>
-<p>On en déduit la probabilité de rester vivant jusqu’au temps <span class="math notranslate nohighlight">\(t_i\)</span>
+<img class="math" src="../_images/math/b5a5e5583877b7482a1e2625c21cc3db7f5cbb49.svg" alt="\frac{n_{t_2} - n_{t_1}}{n_{t_1}}"/> où <img class="math" src="../_images/math/6066b4b7ddbb1aec17db758c19a6f0942d94f5ea.svg" alt="n_{t_i}"/> est la
+population vivante au temps <img class="math" src="../_images/math/c94174ad26d3eb07144f942f8fa04cd466cfe3e6.svg" alt="t_i"/> (depuis le début du traitement).</p>
+<p>On en déduit la probabilité de rester vivant jusqu’au temps <img class="math" src="../_images/math/c94174ad26d3eb07144f942f8fa04cd466cfe3e6.svg" alt="t_i"/>
 qui est l’estimateur de <a class="reference external" href="https://fr.wikipedia.org/wiki/Estimateur_de_Kaplan-Meier">Kaplan-Meier</a>
-<span class="math notranslate nohighlight">\(\hat{S}(t_i)\)</span> :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rcl}
+<img class="math" src="../_images/math/4517be7c59ca2bbc841d221562f78a08f27b2493.svg" alt="\hat{S}(t_i)"/> :</p>
+<div class="math">
+<p><img src="../_images/math/b7580c0635e341359005b3b871c16a73a755b0ca.svg" alt="\begin{array}{rcl}
 \hat{S}(t_i) &amp;=&amp; \prod_{i=1}^i \left( 1 - \frac{n_{t_{i-1}} - n_{t_{i}}}{n_{t_{i-1}}} \right) \\
 &amp;=&amp; \prod_{i=1}^i \frac{n_{t_i}}{n_{t_{i-1}}} = \prod_{i=1}^i \frac{n_i}{n_{i-1}}
-\end{array}\end{split}\]</div>
-<p>Par simplification, on note <span class="math notranslate nohighlight">\(n_i = n_{t_i}\)</span>. On suppose les <span class="math notranslate nohighlight">\(t_i\)</span>
-des dates à intervalles plutôt réguliers et croissants. La suite <span class="math notranslate nohighlight">\((n_i)\)</span>
+\end{array}"/></p>
+</div><p>Par simplification, on note <img class="math" src="../_images/math/aed4b68d93aa7f8e17919ca831553aec759f9bfc.svg" alt="n_i = n_{t_i}"/>. On suppose les <img class="math" src="../_images/math/c94174ad26d3eb07144f942f8fa04cd466cfe3e6.svg" alt="t_i"/>
+des dates à intervalles plutôt réguliers et croissants. La suite <img class="math" src="../_images/math/853c1a9789560966c8045d76da6cbdda45e13e30.svg" alt="(n_i)"/>
 est décroissantes (on ne rescuscite pas).
 Ces calculs rappellent les calculs liés à l’espérance de vie
 (voir <a class="reference external" href="http://www.xavierdupre.fr/app/actuariat_python/helpsphinx/notebooks/seance4_projection_population_enonce.html">Evoluation d’une population - énoncé</a>,
 <a class="reference external" href="http://www.xavierdupre.fr/app/actuariat_python/helpsphinx/notebooks/seance4_projection_population_correction.html">Evoluation d’une population (correction)</a>).
 L’espérance de vie est définie par :</p>
-<div class="math notranslate nohighlight">
-\[\esp(D) = \sum_{i=1}^{\infty} t_i \pr{ \text{mort au temps } t_i} =
+<div class="math">
+<p><img src="../_images/math/890ead14dc15121916fea0b67a35fe7096cdd147.svg" alt="\esp(D) = \sum_{i=1}^{\infty} t_i \pr{ \text{mort au temps } t_i} =
 \sum_{i=1}^{\infty} t_i \frac{n_i - n_{i+1}}{n_{i}} \prod_{j=0}^i\frac{n_j}{n_{j-1}} =
 \sum_{i=1}^{\infty} t_i \frac{n_i - n_{i+1}}{n_{i}} \frac{n_i}{n_0} =
-\sum_{i=1}^{\infty} t_i \frac{n_i - n_{i+1}}{n_0}\]</div>
-<p id="index-2">La courbe <span class="math notranslate nohighlight">\(S(t)\)</span> est aussi appelée la fonction de survie. Si <em>T</em>
-est la durée de vie d’une personne, <span class="math notranslate nohighlight">\(S(t) = \pr{T &gt; t}\)</span>.
-On appelle <span class="math notranslate nohighlight">\(\lambda(t)\)</span> le taux de défaillance, c’est la probabilité
+\sum_{i=1}^{\infty} t_i \frac{n_i - n_{i+1}}{n_0}"/></p>
+</div><p id="index-2">La courbe <img class="math" src="../_images/math/326f0f5bf4b8d73eb5af1f721df13b2eb07e274c.svg" alt="S(t)"/> est aussi appelée la fonction de survie. Si <em>T</em>
+est la durée de vie d’une personne, <img class="math" src="../_images/math/a3267f672881847be77051b6c0157a6060db17f2.svg" alt="S(t) = \pr{T &gt; t}"/>.
+On appelle <img class="math" src="../_images/math/128a8811deaf7918f34301185acea2196ffd8d3d.svg" alt="\lambda(t)"/> le taux de défaillance, c’est la probabilité
 que le décès survienne au temps <em>t</em> :</p>
-<div class="math notranslate nohighlight">
-\[\lambda(t)dt = \pr{t \infegal T &lt; t + dt | T \supegal T} = - \frac{S'(t)}{S(t)} dt\]</div>
-</section>
+<div class="math">
+<p><img src="../_images/math/3df85d4ad83d1e8e6c09952e81f8560f2d7c1701.svg" alt="\lambda(t)dt = \pr{t \infegal T &lt; t + dt | T \supegal T} = - \frac{S'(t)}{S(t)} dt"/></p>
+</div></section>
 <section id="regression-de-cox">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Régression de Cox</a><a class="headerlink" href="#regression-de-cox" title="Lien permanent vers cette rubrique">#</a></h2>
 <p id="index-3">Le <a class="reference external" href="https://fr.wikipedia.org/wiki/R%C3%A9gression_de_Cox">modèle de Cox</a>
 modélise le risque de décès instantané au temps <em>t</em> selon le modèle qui suit.
-Une personne est décrite par les variables <span class="math notranslate nohighlight">\(X_1, ..., X_k\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\lambda(t, X_1, ..., X_k) = \lambda_0(t) \exp\left(\sum_{i=1}^k \beta_i X_i\right) =
-\lambda_0(t) \exp (\beta X)\]</div>
-<p>La partie <span class="math notranslate nohighlight">\(\lambda_0(t)\)</span> correspond à ce qu’on observe sans
+Une personne est décrite par les variables <img class="math" src="../_images/math/e5f4f326071976c6166439f2963fc322d320efc5.svg" alt="X_1, ..., X_k"/>.</p>
+<div class="math">
+<p><img src="../_images/math/c3422a943019681c4abdd029e9f32b7bb11fa5c2.svg" alt="\lambda(t, X_1, ..., X_k) = \lambda_0(t) \exp\left(\sum_{i=1}^k \beta_i X_i\right) =
+\lambda_0(t) \exp (\beta X)"/></p>
+</div><p>La partie <img class="math" src="../_images/math/d059e2d158a6eeef531d63d49a784116fff7f6ed.svg" alt="\lambda_0(t)"/> correspond à ce qu’on observe sans
 autre informations que les décès. On l’appelle aussi le <em>risque de base</em>.
 C’est la probabilité moyenne
 de décès instantanée. La seconde partie permet de faire varier
 cette quantité selon ce qu’on sait de chaque personne.</p>
 <p>On dit que c’est un modèle à risque proportionnel car si deux personnes sont quasiment
-identiques excepté sur une variable <span class="math notranslate nohighlight">\(X_i\)</span> (comme la quantité d’un poison ingérée), alors le ratio
+identiques excepté sur une variable <img class="math" src="../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> (comme la quantité d’un poison ingérée), alors le ratio
 de probabilité est :</p>
-<div class="math notranslate nohighlight">
-\[\frac{\lambda(t, X_1, ..., X_i^a, ..., X_k)}{\lambda(t, X_1, ..., X_i^b, ..., X_k)} =
+<div class="math">
+<p><img src="../_images/math/331235e75a1e3bb0d7f032d557f47af7ed829abc.svg" alt="\frac{\lambda(t, X_1, ..., X_i^a, ..., X_k)}{\lambda(t, X_1, ..., X_i^b, ..., X_k)} =
 \frac{\exp(\beta_i X_i^a)} {\exp(\beta_i X_i^b)} =
-\exp\left(\beta_i (X_i^a - X_i^b)\right)\]</div>
-<p>L’hypothèse des risques proportionnel est en quelque sorte intuitive.
+\exp\left(\beta_i (X_i^a - X_i^b)\right)"/></p>
+</div><p>L’hypothèse des risques proportionnel est en quelque sorte intuitive.
 Plus on ingère un poison, plus on a de chances d’en subir les conséquences.
 Mais ce n’est pas toujours le cas, le documentaire
-<a class="reference external" href="https://www.arte.tv/fr/videos/091148-000-A/la-fabrique-de-l-ignorance/">La fabrique de l’ignorance</a>
+<a class="reference external" href="https://boutique.arte.tv/detail/la-fabrique-de-lignorance">La fabrique de l’ignorance</a>
 revient sur les effets du <a class="reference external" href="https://fr.wikipedia.org/wiki/Bisph%C3%A9nol_A">bisphénol A</a>
 qui serait déjà pertubateur à très petite dose. Il ne prend pas en compte
 les effets croisés non plus (voir <a class="reference external" href="https://hal-anses.archives-ouvertes.fr/anses-02289024/document">Les perturbateurs endocriniens Comprendre où en est la recherche</a>).</p>
-<p>La fonction <span class="math notranslate nohighlight">\(\lambda_0(t)\)</span> est en quelque sorte le taux de défaillance
+<p>La fonction <img class="math" src="../_images/math/d059e2d158a6eeef531d63d49a784116fff7f6ed.svg" alt="\lambda_0(t)"/> est en quelque sorte le taux de défaillance
 moyen. On peut le calculer à partir des formules introduites au
 paragraphe précédent en lissant la courbe de Kaplan-Meier avec des
 splines. On peut aussi le calculer avec l’estimateur
 de Breslow (voir <a class="reference external" href="http://helios.mi.parisdescartes.fr/~obouaziz/KMSurv.pdf">Analyse de survie : Méthodes non paramétriques</a>,
-<a class="reference external" href="http://www.lsta.upmc.fr/psp/Cours_Survie_1.pdf">Introduction à l’analyse des durées de survie</a>).
+<a class="reference external" href="https://perso.math.univ-toulouse.fr/psaintpi/files/2021/04/Cours_Survie_1.pdf">Introduction à l’analyse des durées de survie</a>).
 qui repose aussi la courbe de Kaplan-Meier.</p>
-<p>On sait que si <span class="math notranslate nohighlight">\(g(t) = \log S'(t)\)</span> alors
-<span class="math notranslate nohighlight">\(g'(t) = \frac{S'(t)}{S(t)}\)</span>. On en déduit que :</p>
-<div class="math notranslate nohighlight">
-\[\hat{\lambda_0}(t) = - \frac{d (\log(\hat{S}(t)))}{dt}\]</div>
-<p>Pour la suite, on pose <span class="math notranslate nohighlight">\(h(X_i, \beta) = \exp(\beta X_i)\)</span>,
-et l’individu meurt au temps <span class="math notranslate nohighlight">\(t_i\)</span> de l’expérience.
+<p>On sait que si <img class="math" src="../_images/math/ffe7ab0589998d283654e27c038c067262bb2854.svg" alt="g(t) = \log S'(t)"/> alors
+<img class="math" src="../_images/math/6c13881d94fb04edfc726887ee9e219a4d41357c.svg" alt="g'(t) = \frac{S'(t)}{S(t)}"/>. On en déduit que :</p>
+<div class="math">
+<p><img src="../_images/math/4e1d6aaa6e35c9d7bbce0448dcff04e5f8dfa188.svg" alt="\hat{\lambda_0}(t) = - \frac{d (\log(\hat{S}(t)))}{dt}"/></p>
+</div><p>Pour la suite, on pose <img class="math" src="../_images/math/dbc592da61120419c9771b91f9b5ec21d312798b.svg" alt="h(X_i, \beta) = \exp(\beta X_i)"/>,
+et l’individu meurt au temps <img class="math" src="../_images/math/c94174ad26d3eb07144f942f8fa04cd466cfe3e6.svg" alt="t_i"/> de l’expérience.
 Une expérience est définie par la liste des couples
-<span class="math notranslate nohighlight">\((X_i, t_i)\)</span>. On souhaite trouver les paramètres
-<span class="math notranslate nohighlight">\(\beta\)</span> qui représentent au mieux les données
+<img class="math" src="../_images/math/f142406ae0f41af14cf0707e5b96455624d4e438.svg" alt="(X_i, t_i)"/>. On souhaite trouver les paramètres
+<img class="math" src="../_images/math/bd898b02c226d1ce791865c51d30012165adf53d.svg" alt="\beta"/> qui représentent au mieux les données
 de l’expérience. On définit donc :</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(R_t\)</span> : l’ensemble des personnes en vie au temps <em>t</em></p></li>
-<li><p><span class="math notranslate nohighlight">\(D_t\)</span> : l’ensemble qui décèdent au <em>t</em></p></li>
+<li><p><img class="math" src="../_images/math/e22a1d1473dae0d6e6632412b96eac34d23cccef.svg" alt="R_t"/> : l’ensemble des personnes en vie au temps <em>t</em></p></li>
+<li><p><img class="math" src="../_images/math/ad2b8e39cd22af737c4967ce1082a2a0da4424cb.svg" alt="D_t"/> : l’ensemble qui décèdent au <em>t</em></p></li>
 </ul>
-<p>Par définition <span class="math notranslate nohighlight">\(i \in R_{t_i}\)</span> et <span class="math notranslate nohighlight">\(i \in D_{t_i}\)</span>.
+<p>Par définition <img class="math" src="../_images/math/20803118f11ef4871d6d9ab3e6dfc0a16fd07be4.svg" alt="i \in R_{t_i}"/> et <img class="math" src="../_images/math/d4e9f1b0a2995ec2591e287c7a1ba16191ade185.svg" alt="i \in D_{t_i}"/>.
 On calcule le ratio :</p>
-<div class="math notranslate nohighlight">
-\[Pr(\beta, t, X_i) = \frac{h(X_i, \beta) \lambda_0(t)}{\sum_{j \in R_t} h(X_j, \beta) \lambda_0(t)} =
-\frac{h(X_i, \beta) }{\sum_{j \in R_t} h(X_j, \beta) }\]</div>
-<p>Pour une personne qui décède au temps <em>t</em>, ce ratio devrait être proche de 1
-car on souhaite que <span class="math notranslate nohighlight">\(h(X_i, \beta)\)</span> soit grand et tous les autres nuls.
+<div class="math">
+<p><img src="../_images/math/b210614b7ff1aa0610093913c1d0d84d94674e50.svg" alt="Pr(\beta, t, X_i) = \frac{h(X_i, \beta) \lambda_0(t)}{\sum_{j \in R_t} h(X_j, \beta) \lambda_0(t)} =
+\frac{h(X_i, \beta) }{\sum_{j \in R_t} h(X_j, \beta) }"/></p>
+</div><p>Pour une personne qui décède au temps <em>t</em>, ce ratio devrait être proche de 1
+car on souhaite que <img class="math" src="../_images/math/a8d776080eaf352bcc910fe1bc1f6c6242bb6058.svg" alt="h(X_i, \beta)"/> soit grand et tous les autres nuls.
 On définit la vraisemblance partielle du modèle par :</p>
-<div class="math notranslate nohighlight">
-\[L(\beta) = \prod_i Pr(\beta, t_i, X_i) =
-\prod_i \frac{h(X_i, \beta) }{\sum_{j \in R_{t_i}} h(X_j, \beta) }\]</div>
-<p id="index-4">Une fois qu’on a calculé les coefficients <span class="math notranslate nohighlight">\(\beta\)</span> optimaux,
-on peut affiner la partie <span class="math notranslate nohighlight">\(\lambda_0(t)\)</span>. L’estimateur
+<div class="math">
+<p><img src="../_images/math/1834365a6cbb51314c649d7673c5c6d67ad77aba.svg" alt="L(\beta) = \prod_i Pr(\beta, t_i, X_i) =
+\prod_i \frac{h(X_i, \beta) }{\sum_{j \in R_{t_i}} h(X_j, \beta) }"/></p>
+</div><p id="index-4">Une fois qu’on a calculé les coefficients <img class="math" src="../_images/math/bd898b02c226d1ce791865c51d30012165adf53d.svg" alt="\beta"/> optimaux,
+on peut affiner la partie <img class="math" src="../_images/math/d059e2d158a6eeef531d63d49a784116fff7f6ed.svg" alt="\lambda_0(t)"/>. L’estimateur
 de Breslow est :</p>
-<div class="math notranslate nohighlight">
-\[\hat{B}(t) = \sum_{i | t_i \infegal t} \frac{1}{ \sum_{j \in R_{t_i}} h(\beta, X_j)}\]</div>
-<p>C’est un estimateur de la fonction de survie :</p>
-<div class="math notranslate nohighlight">
-\[\hat{S}(t) = \exp(-\hat{B}(t))\]</div>
-</section>
+<div class="math">
+<p><img src="../_images/math/d0748e671a46ecc3b8eb06c7e21005e346393e1c.svg" alt="\hat{B}(t) = \sum_{i | t_i \infegal t} \frac{1}{ \sum_{j \in R_{t_i}} h(\beta, X_j)}"/></p>
+</div><p>C’est un estimateur de la fonction de survie :</p>
+<div class="math">
+<p><img src="../_images/math/025fc1ddbf9215ea47ba90b61fa73bc0dcc74558.svg" alt="\hat{S}(t) = \exp(-\hat{B}(t))"/></p>
+</div></section>
 <section id="notebooks">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
 <div class="toctree-wrapper compound">

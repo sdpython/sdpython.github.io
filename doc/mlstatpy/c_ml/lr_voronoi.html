@@ -45,8 +45,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/lr_voronoi';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -570,27 +568,27 @@ les régions créées par une régression logistique sont convexes.</p>
 <section id="diagramme-de-voronoi">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Diagramme de Voronoï</a><a class="headerlink" href="#diagramme-de-voronoi" title="Lien permanent vers cette rubrique">#</a></h2>
 <p id="index-1">Un <a class="reference external" href="https://fr.wikipedia.org/wiki/Diagramme_de_Vorono%C3%AF">diagramme de Voronoï</a>
-est le diagramme issu des intersections des médiatrices entre <span class="math notranslate nohighlight">\(n\)</span> points.</p>
+est le diagramme issu des intersections des médiatrices entre <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> points.</p>
 <a class="reference internal image-reference" href="../_images/Coloured_Voronoi_2D.png"><img alt="../_images/Coloured_Voronoi_2D.png" src="../_images/Coloured_Voronoi_2D.png" style="width: 200px;" /></a>
-<p>On définit un ensemble de points <span class="math notranslate nohighlight">\((X_1, ..., X_n)\)</span>.
+<p>On définit un ensemble de points <img class="math" src="../_images/math/bfe5330a47312509984b1f7abf71fd221d3d8dc1.svg" alt="(X_1, ..., X_n)"/>.
 La zone d’influence de chaque point est défini par
-<span class="math notranslate nohighlight">\(V(X_i) = \{ x | d(x, X_i) \leqslant d(x, X_j) \forall j\}\)</span>.
+<img class="math" src="../_images/math/0672c28660811b0c092db4d7cfba9c17b4378cec.svg" alt="V(X_i) = \{ x | d(x, X_i) \leqslant d(x, X_j) \forall j\}"/>.
 Si <em>d</em> est la distance euclidienne, la frontière entre deux
-points <span class="math notranslate nohighlight">\(X_i, X_j\)</span> est un segment sur la droite d’équation
-<span class="math notranslate nohighlight">\(d(x, X_i) = d(x, X_j)\)</span> :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{ll}
+points <img class="math" src="../_images/math/b6627373af21ae3d07eefe012a73eb3e6972a595.svg" alt="X_i, X_j"/> est un segment sur la droite d’équation
+<img class="math" src="../_images/math/6de446a45ce3cac88c7f8787bbf202fc76ceefab.svg" alt="d(x, X_i) = d(x, X_j)"/> :</p>
+<div class="math">
+<p><img src="../_images/math/70294a9da8fb9abab41f3ab2b2b7cd200167c1a1.svg" alt="\begin{array}{ll}
 &amp;\norme{x-X_i}^2 - \norme{x-X_j}^2 = 0 \\
 \Longrightarrow &amp; \norme{x}^2 - 2 \scal{x}{X_i} + \norme{X_i}^2 - (\norme{x}^2 - 2 \scal{x}{X_j} + \norme{X_j}^2) = 0 \\
 \Longrightarrow &amp; 2 \scal{x}{X_j - X_i} + \norme{X_i}^2 - \norme{X_j}^2 = 0 \\
 \Longrightarrow &amp; 2 \scal{x}{X_j - X_i} + \frac{1}{2} \scal{X_i + X_j}{X_i - X_j} = 0 \\
 \Longrightarrow &amp; \scal{x - \frac{X_i + X_j}{2}}{X_i - X_j} = 0
-\end{array}\end{split}\]</div>
-<p>Ce système constitue <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> droites ou hyperplans si
+\end{array}"/></p>
+</div><p>Ce système constitue <img class="math" src="../_images/math/0692dca563f82e458274cd586f613f726d3d6eff.svg" alt="\frac{n(n-1)}{2}"/> droites ou hyperplans si
 l’espace vectoriel est en dimension plus que deux.
 Le diagramme de Voronoï est formé par des segments de chacune
 de ces droites. On peut retourner le problème. On suppose
-qu’il existe <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> hyperplans,
+qu’il existe <img class="math" src="../_images/math/0692dca563f82e458274cd586f613f726d3d6eff.svg" alt="\frac{n(n-1)}{2}"/> hyperplans,
 existe-t-il <em>n</em> points de telle sorte que les hyperplans
 initiaux sont les frontières du diagramme de Voronoï formé
 par ces <em>n</em> points ? Les paragraphes qui suivent expliquent
@@ -624,91 +622,91 @@ en fonction des dimensions de leurs pétales.</p>
 </pre></div>
 </div>
 <p>La fonction de prédiction est assez simple :
-<span class="math notranslate nohighlight">\(f(x) = Ax + B\)</span>. La classe d’appartenance
-du point <em>x</em> est déterminé par <span class="math notranslate nohighlight">\(\max_i f(x)_i\)</span>.
+<img class="math" src="../_images/math/eb394ffff565a5a499fd66482194261ae6e2c1ef.svg" alt="f(x) = Ax + B"/>. La classe d’appartenance
+du point <em>x</em> est déterminé par <img class="math" src="../_images/math/da54c51ee7a79cc8112fba5e39affe0d6962df9a.svg" alt="\max_i f(x)_i"/>.
 La frontière entre deux classes <em>i, j</em> est définie
 par les deux conditions :
-<span class="math notranslate nohighlight">\(\max_k f(x)_k = f(x)_i = f(x)_j\)</span>.
-On retrouve bien <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> hyperplans.
+<img class="math" src="../_images/math/615039b742078513f96084b50bfd7bdb991ed6ad.svg" alt="\max_k f(x)_k = f(x)_i = f(x)_j"/>.
+On retrouve bien <img class="math" src="../_images/math/0692dca563f82e458274cd586f613f726d3d6eff.svg" alt="\frac{n(n-1)}{2}"/> hyperplans.
 On définit la matrice <em>A</em> comme une matrice
-ligne <span class="math notranslate nohighlight">\((L_1, ..., L_n)\)</span> où <em>n</em> est le nombre
+ligne <img class="math" src="../_images/math/dd48a4cc5b6dc9787e2c1192a6f69a042a49e8dc.svg" alt="(L_1, ..., L_n)"/> où <em>n</em> est le nombre
 de classes. L’équation de l’hyperplan entre deux classes devient :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{ll}
+<div class="math">
+<p><img src="../_images/math/ec866148b5ad5428aaa32e2e2fe27861111d068c.svg" alt="\begin{array}{ll}
 &amp; L_i X + B_i = L_j X + B_j \\
 \Longleftrightarrow &amp; \scal{L_i - L_j}{X} + B_i - B_j = 0 \\
 \Longleftrightarrow &amp; \scal{L_i - L_j}{X} + B_i - B_j = 0 \\
 \Longleftrightarrow &amp; \scal{L_i - L_j}{X - \frac{L_i + L_j}{2}} + \scal{L_i - L_j}{\frac{L_i + L_j}{2}} + B_i - B_j = 0 \\
 \Longleftrightarrow &amp; \scal{L_i - L_j}{X - \frac{L_i + L_j}{2}} + \frac{1}{2}\norme{L_i}^2 - \frac{1}{2}\norme{L_j}^2 + B_i - B_j = 0 \\
 \Longleftrightarrow &amp; \scal{L_i - L_j}{X - \frac{L_i + L_j}{2}} + \frac{1}{2}\norme{L_i}^2 + B_i - (\frac{1}{2}\norme{L_j}^2 + B_j) = 0
-\end{array}\end{split}\]</div>
-<p>Il y a peu de chance que cela fonctionne comme cela.
+\end{array}"/></p>
+</div><p>Il y a peu de chance que cela fonctionne comme cela.
 Avant de continuer, assurons-nous que les régions associées
 aux classes sont convexes. C’est une condition nécessaire mais
 pas suffisante pour avoir un diagramme de Voronoï.</p>
-<p>Soit <span class="math notranslate nohighlight">\(X_1\)</span> et <span class="math notranslate nohighlight">\(X_2\)</span> appartenant à la classe <em>i</em>.
-On sait que <span class="math notranslate nohighlight">\(\forall k, L_i X_1 + B_i \geqslant L_k X_1 + B_k\)</span>
-et <span class="math notranslate nohighlight">\(\forall k, L_i X_2 + B_i \geqslant L_k X_2 + B_k\)</span>.
-On considère un point <span class="math notranslate nohighlight">\(X\)</span> sur le segment <span class="math notranslate nohighlight">\([X_1, X_2]\)</span>, donc il existe
-<span class="math notranslate nohighlight">\(\alpha, \beta \geqslant 0\)</span> tel que <span class="math notranslate nohighlight">\(X = \alpha X_1 + \beta X_2\)</span> et
-<span class="math notranslate nohighlight">\(\alpha + \beta = 1\)</span>. On vérifie que :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{ll}
+<p>Soit <img class="math" src="../_images/math/4bd4cb3c78851a33f8380b338de7ef126fb3c74d.svg" alt="X_1"/> et <img class="math" src="../_images/math/67272339af25058949d56a3a223501543e900227.svg" alt="X_2"/> appartenant à la classe <em>i</em>.
+On sait que <img class="math" src="../_images/math/6ecccfc585be00c2568c8cca2af45d141875a8df.svg" alt="\forall k, L_i X_1 + B_i \geqslant L_k X_1 + B_k"/>
+et <img class="math" src="../_images/math/c31c318a679130ea1b64e3c3f7b388c775b76a70.svg" alt="\forall k, L_i X_2 + B_i \geqslant L_k X_2 + B_k"/>.
+On considère un point <img class="math" src="../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> sur le segment <img class="math" src="../_images/math/329ed018dcc48a330ee8c8331381a3287126cb3e.svg" alt="[X_1, X_2]"/>, donc il existe
+<img class="math" src="../_images/math/df3912f069c371cb4d15f086db88c34df70fee20.svg" alt="\alpha, \beta \geqslant 0"/> tel que <img class="math" src="../_images/math/7b2ff6075a27a1c133ad25d2a183693879eca529.svg" alt="X = \alpha X_1 + \beta X_2"/> et
+<img class="math" src="../_images/math/a02e337d4ff4ffa6f997630f84d360b68a342e53.svg" alt="\alpha + \beta = 1"/>. On vérifie que :</p>
+<div class="math">
+<p><img src="../_images/math/d37bad0826e365733ad0399e9226557b0912a279.svg" alt="\begin{array}{ll}
 &amp; L_i X + B_i = L_i (\alpha X_1 + \beta X_2) + B_i = \alpha(L_i X_1 + B_i) + \beta(L_i X_2 + B_i) \\
 \geqslant &amp; \alpha(L_k X_1 + B_k) + \beta(L_k X_2 + B_k) = L_k (\alpha X_1 + \beta X_2) + B_k \forall k
-\end{array}\end{split}\]</div>
-<p>Donc le point <em>X</em> appartient bien à classe <em>i</em> et celle-ci est convexe.
+\end{array}"/></p>
+</div><p>Donc le point <em>X</em> appartient bien à classe <em>i</em> et celle-ci est convexe.
 La régression logistique forme une partition convexe de l’espace
 des features.</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
 <div class="docutils container">
 </div>
 <p class="admonition-title" id="th-thlogregpartconv">Théorème T1 : convexité des classes formées par une régression logistique</p>
-<p>On définit l’application <span class="math notranslate nohighlight">\(\mathbb{R}^d \rightarrow \mathbb{N}\)</span>
+<p>On définit l’application <img class="math" src="../_images/math/daeb78f2f7bff99f49e72e47311e6feb22cd8c48.svg" alt="\mathbb{R}^d \rightarrow \mathbb{N}"/>
 qui associe la plus grande coordonnée
-<span class="math notranslate nohighlight">\(f(X) = \arg \max_k (AX + B)_k\)</span>.
-<em>A</em> est une matrice <span class="math notranslate nohighlight">\(\mathcal{M}_{dc}\)</span>,
-<em>B</em> est un vecteur de <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>,
+<img class="math" src="../_images/math/9ea078244165c5a9d7e2a043a0783f7231da0c13.svg" alt="f(X) = \arg \max_k (AX + B)_k"/>.
+<em>A</em> est une matrice <img class="math" src="../_images/math/425dcd5278a8c6d613110dccd9299c68affcea02.svg" alt="\mathcal{M}_{dc}"/>,
+<em>B</em> est un vecteur de <img class="math" src="../_images/math/7fdc49f03ed0e0ae6725c34c0c2e67049abba9bb.svg" alt="\mathbb{R}^d"/>,
 <em>c</em> est le nombre de parties.
 L’application <em>f</em> définit une partition convexe
-de l’espace vectoriel <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
+de l’espace vectoriel <img class="math" src="../_images/math/7fdc49f03ed0e0ae6725c34c0c2e67049abba9bb.svg" alt="\mathbb{R}^d"/>.</p>
 </div>
 <p>Revenons au cas de Voronoï. La classe prédite dépend de
-<span class="math notranslate nohighlight">\(\max_k (Ax + B)_k\)</span>. On veut trouver <em>n</em> points
-<span class="math notranslate nohighlight">\((P_1, ..., P_n)\)</span> tels que chaque couple <span class="math notranslate nohighlight">\((P_i, P_j)\)</span>
+<img class="math" src="../_images/math/388d1d2e34ee08acfe84f7566ff19ec550ab2e9a.svg" alt="\max_k (Ax + B)_k"/>. On veut trouver <em>n</em> points
+<img class="math" src="../_images/math/a5a5be2c6db1eb41dd78783e2d15b015699912b0.svg" alt="(P_1, ..., P_n)"/> tels que chaque couple <img class="math" src="../_images/math/6eb2f9261cda4dac92b5359d870fe4ec488c1d80.svg" alt="(P_i, P_j)"/>
 soit équidistant de la frontière qui sépare leurs classes.
 Il faut également les projections des deux points sur
 la frontière se confondent et donc que les vecteurs
-<span class="math notranslate nohighlight">\(P_i - P_j\)</span> et <span class="math notranslate nohighlight">\(L_i - L_j\)</span> sont colinéaires.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{ll}
+<img class="math" src="../_images/math/6ccb99f09decdd5a6111e4a747445badc6e924f7.svg" alt="P_i - P_j"/> et <img class="math" src="../_images/math/3f2fbcae51d117345f0d458febb6fe066c340ebc.svg" alt="L_i - L_j"/> sont colinéaires.</p>
+<div class="math">
+<p><img src="../_images/math/545a4dd7cde49e0aa403e3e5ba377c26d4bd88bf.svg" alt="\begin{array}{ll}
 &amp;\left\{\begin{array}{l}\scal{L_i - L_j}{P_i} + B_i - B_j = - \pa{ \scal{L_i - L_j}{P_j} + B_i - B_j } \\
 P_i-  P_j - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \frac{L_i-L_j}{\norm{L_i-L_j}}=0 \end{array} \right.
 \\
 \Longleftrightarrow &amp; \left\{\begin{array}{l}\scal{L_i - L_j}{P_i + P_j} + 2 (B_i - B_j) = 0 \\
 P_i-  P_j - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \frac{L_i-L_j}{\norm{L_i-L_j}}=0 \end{array} \right.
-\end{array}\end{split}\]</div>
-<p>La seconde équation en cache en fait plusieurs puisqu’elle est valable
+\end{array}"/></p>
+</div><p>La seconde équation en cache en fait plusieurs puisqu’elle est valable
 sur plusieurs dimensions mais elles sont redondantes.
-Il suffit de choisir un vecteur <span class="math notranslate nohighlight">\(u_{ij}\)</span> non perpendiculaire
-à <span class="math notranslate nohighlight">\(L_i - L_j\)</span> de sorte que
-qu’il n’est pas perpendiculaire au vecteur <span class="math notranslate nohighlight">\(L_i - L_j\)</span> et de
+Il suffit de choisir un vecteur <img class="math" src="../_images/math/ae9f7ab957eb5612d2cf2b08a900f5d7bfac2ec2.svg" alt="u_{ij}"/> non perpendiculaire
+à <img class="math" src="../_images/math/3f2fbcae51d117345f0d458febb6fe066c340ebc.svg" alt="L_i - L_j"/> de sorte que
+qu’il n’est pas perpendiculaire au vecteur <img class="math" src="../_images/math/3f2fbcae51d117345f0d458febb6fe066c340ebc.svg" alt="L_i - L_j"/> et de
 considérer la projection de cette équation sur ce vecteur.
 C’est pourquoi on réduit le système au suivant qui est
-équivalent au précédent si le vecteur <span class="math notranslate nohighlight">\(u_{ij}\)</span> est bien choisi.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{ll}
+équivalent au précédent si le vecteur <img class="math" src="../_images/math/ae9f7ab957eb5612d2cf2b08a900f5d7bfac2ec2.svg" alt="u_{ij}"/> est bien choisi.</p>
+<div class="math">
+<p><img src="../_images/math/b9b83176cac4835d345a99364065d48ea23ba260.svg" alt="\begin{array}{ll}
 \Longrightarrow &amp; \left\{\begin{array}{l}\scal{L_i - L_j}{P_i + P_j} + 2 (B_i - B_j) = 0 \\
 \scal{P_i-  P_j}{u_{ij}} - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \scal{\frac{L_i-L_j}{\norm{L_i-L_j}}}{u_{ij}}=0
 \end{array} \right.
-\end{array}\end{split}\]</div>
-</section>
+\end{array}"/></p>
+</div></section>
 <section id="diagramme-de-voronoi-et-partition-convexe">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Diagramme de Voronoï et partition convexe</a><a class="headerlink" href="#diagramme-de-voronoi-et-partition-convexe" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Faisons un peu de géométrie avant de résoudre ce problème car celui-ci
 a dans la plupart des cas plus d’équations que d’inconnues.
 Chaque frontière entre deux classes est la médiatrice d’un segment
-<span class="math notranslate nohighlight">\([P_i, P_j]\)</span>. Le dessin suivant trace un diagramme de Voronoï à
+<img class="math" src="../_images/math/39f4cf22f2c1f1ca2963ca5450129a6af99a7dff.svg" alt="[P_i, P_j]"/>. Le dessin suivant trace un diagramme de Voronoï à
 trois points. L’intersection est le centre des médiatrices du triangle
 formé par les points de Voronoï. Pour les trouver, on trace un cercle,
 n’importe lequel, puis une droite perpendiculaire à l’une des médiatrice.
@@ -718,21 +716,21 @@ perpendiculaire et par construsction, la troisième droite est perpendiculaire
 <a class="reference internal image-reference" href="../_images/vor2.png"><img alt="../_images/vor2.png" src="../_images/vor2.png" style="width: 200px;" /></a>
 <a class="reference internal image-reference" href="../_images/vor4.png"><img alt="../_images/vor4.png" src="../_images/vor4.png" style="width: 300px;" /></a>
 <p>Les triangles formés par les côtés jaunes sont isocèles. On en déduit que
-<span class="math notranslate nohighlight">\(a + b + c = 2\pi = 2(x + y + z)\)</span>. On en déduit aussi que :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rcl}
+<img class="math" src="../_images/math/89ef4147baeba1425a72a829a679eb1a529b35fb.svg" alt="a + b + c = 2\pi = 2(x + y + z)"/>. On en déduit aussi que :</p>
+<div class="math">
+<p><img src="../_images/math/00c4481f1e36b887e9b144d83b3d29f7ee8413ff.svg" alt="\begin{array}{rcl}
 x + y &amp;=&amp; a \\
 y + z &amp;=&amp; c \\
 x + z &amp;=&amp; b
-\end{array}\end{split}\]</div>
-<p>On en conclut que <span class="math notranslate nohighlight">\(a + b + c = 2\pi = 2(x + y + z) = 2(x + c)\)</span> et
-<span class="math notranslate nohighlight">\(x = \pi - c\)</span>. Il existe une infinité de triplets de 3 points
+\end{array}"/></p>
+</div><p>On en conclut que <img class="math" src="../_images/math/d212c3585d5827982b70eb3adbb184ef3b2513de.svg" alt="a + b + c = 2\pi = 2(x + y + z) = 2(x + c)"/> et
+<img class="math" src="../_images/math/f2a97cdbb9e72621c18b03d5e6d3acbaa2390536.svg" alt="x = \pi - c"/>. Il existe une infinité de triplets de 3 points
 qui aboutissent à ce diagramme de Voronoï. Il suffit de changer
 la taille du cercle. On montre aussi qu’en dimension 2 et 3 classes,
 il existe toujours une solution au problème posé.
 Maintenant, si on considère la configuration suivante avec des points
 disposés de telle sorte que le diagramme de Voronoï est un maillage
-hexagonal. <span class="math notranslate nohighlight">\(a=b=c=\frac{2\pi}{3}\)</span> et <span class="math notranslate nohighlight">\(x=y=z=\frac{\pi}{3}\)</span>.
+hexagonal. <img class="math" src="../_images/math/d98382ca4b7dcb00d9377fd8fe179c8210104f4d.svg" alt="a=b=c=\frac{2\pi}{3}"/> et <img class="math" src="../_images/math/47c336b62d3d903ea413504f1b2c92b3469c89de.svg" alt="x=y=z=\frac{\pi}{3}"/>.
 Il n’existe qu’un ensemble de points qui peut produire ce maillage
 comme diagramme de Voronoï. Mais si on ajoute une petite zone
 (dans le cercle vert ci-dessous), il est impossible que ce diagramme
@@ -750,7 +748,7 @@ tel est le cas pour une régression logistique.</p>
 partition convexe de l’espace vectoriel des variables.
 On note <em>L(n)</em> l’ensemble des partitions à <em>n</em> classes.
 Le diagramme de Voronoï correspondent également à un
-sous-ensemble <em>V(n)</em>. <span class="math notranslate nohighlight">\(L(n) = V(n)\)</span>, that is the
+sous-ensemble <em>V(n)</em>. <img class="math" src="../_images/math/a03b20e16d3f42ac6b058254d6806c481abb8259.svg" alt="L(n) = V(n)"/>, that is the
 question.</p>
 <p>On peut se poser la question de savoir si <em>L(n)</em> un sous-ensemble
 ou tout l’ensemble auquel cas la réponse à la question précédente
@@ -763,53 +761,53 @@ par une fonction telle que celle décrite par le théorème sur la
 La partie <em>A</em> l’est mais pas la partie <em>B</em>. En fait, il est facile
 de montrer que la seule frontière admissible entre deux parties convexe
 est un hyperplan. Si la partition contient <em>n</em> partie,
-il y a au pire <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> frontières,
+il y a au pire <img class="math" src="../_images/math/0692dca563f82e458274cd586f613f726d3d6eff.svg" alt="\frac{n(n-1)}{2}"/> frontières,
 ce qui correspond également au nombre d’hyperplans définis
 par la fonction de prédiction associée à la régression logistique.</p>
 <a class="reference internal image-reference" href="../_images/zoneangle.png"><img alt="../_images/zoneangle.png" src="../_images/zoneangle.png" style="width: 300px;" /></a>
 <p>L’image qui précède présente une classification en trois
 zones (droites noires). On a choisi une droite bleue au hasard.
 En prenant son symétrique par rapport à une des droites noires (<em>D</em>),
-on a deux droites <span class="math notranslate nohighlight">\(D_1\)</span>, <span class="math notranslate nohighlight">\(D_2\)</span>. L’ensemble des points
-<span class="math notranslate nohighlight">\(\acc{x | d(x, D_1) = d(x, D_2)}\)</span> correspond à la droite noire.
+on a deux droites <img class="math" src="../_images/math/f03b578d17e51d04e98a237629484dcd97191a71.svg" alt="D_1"/>, <img class="math" src="../_images/math/93a3a23c9fb071081706f35b2bd601f88febee69.svg" alt="D_2"/>. L’ensemble des points
+<img class="math" src="../_images/math/2c7a8b862be2c99cc94be080cce45ef37a1a96e9.svg" alt="\acc{x | d(x, D_1) = d(x, D_2)}"/> correspond à la droite noire.
 Il doit être de même pour les trois droites bleues, autrement
 dit, l’intersection des droites est le centre du cercle inscrit
 dans le triangle bleu ce qui n’est visiblement pas le cas sur l’image.
 Il paraît vraisemblable de dire que les régressions logisitiques ne permettent
 pas de former toutes les partitions convexes. On pourrait le montrer mais
 cela ne permettrait pas de répondre à la question initiale
-<span class="math notranslate nohighlight">\(L(n) = V(n)\)</span> ?</p>
+<img class="math" src="../_images/math/a03b20e16d3f42ac6b058254d6806c481abb8259.svg" alt="L(n) = V(n)"/> ?</p>
 </section>
 <section id="voronoi-et-regression-logistique">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">Voronoï et régression logistique</a><a class="headerlink" href="#voronoi-et-regression-logistique" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>On sait que <span class="math notranslate nohighlight">\(L(2)=V(2)\)</span> quelque soit la dimension,
-que <span class="math notranslate nohighlight">\(L(3)=V(3)\)</span> en dimension 2. La matrice <em>L</em>
+<p>On sait que <img class="math" src="../_images/math/a991337b9f07b1a8d71bc71024885205cc0a0f31.svg" alt="L(2)=V(2)"/> quelque soit la dimension,
+que <img class="math" src="../_images/math/43b7a7e30a49c2cfe58103fe4055a95ed5c11e65.svg" alt="L(3)=V(3)"/> en dimension 2. La matrice <em>L</em>
 définit une régression logistique. Le diagramme de Voronoï qui
 lui correspond est solution du système d’équations qui suit :</p>
-<div class="math notranslate nohighlight" id="equation-eq-lrvor-system">
-<span class="eqno">(1)<a class="headerlink" href="#equation-eq-lrvor-system" title="Lien permanent vers cette équation">#</a></span>\[\begin{split}\begin{array}{rcl}
+<div class="math" id="equation-eq-lrvor-system">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-eq-lrvor-system" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/a550dea894c76523d0d1d1db452ec7aabe7fa0c8.svg" alt="\begin{array}{rcl}
 &amp; \Longrightarrow &amp; \left\{\begin{array}{l}\scal{\frac{L_i-L_j}{\norm{L_i-L_j}}}{P_i + P_j} + 2 \frac{B_i - B_j}{\norm{L_i-L_j}} = 0 \\
 \scal{P_i-  P_j}{u_{ij}} - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \scal{\frac{L_i-L_j}{\norm{L_i-L_j}}}{u_{ij}}=0
 \end{array} \right.
-\end{array}\end{split}\]</div>
-<p>Avec <span class="math notranslate nohighlight">\(u_{ij}\)</span> choisi de telle sorte que les
-vecteur <span class="math notranslate nohighlight">\(L_i-L_j\)</span> et <span class="math notranslate nohighlight">\(u_{ij}\)</span> ne soit pas
+\end{array}"/></p>
+</div><p>Avec <img class="math" src="../_images/math/ae9f7ab957eb5612d2cf2b08a900f5d7bfac2ec2.svg" alt="u_{ij}"/> choisi de telle sorte que les
+vecteur <img class="math" src="../_images/math/c9c8cdd7d52775a98495a7df944dea681bddc0e2.svg" alt="L_i-L_j"/> et <img class="math" src="../_images/math/ae9f7ab957eb5612d2cf2b08a900f5d7bfac2ec2.svg" alt="u_{ij}"/> ne soit pas
 coliénaires. Ce système inclut des équations
 entre classes ou régions qui ne sont pas voisines.
-Il y a potentiellement <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span>
+Il y a potentiellement <img class="math" src="../_images/math/0692dca563f82e458274cd586f613f726d3d6eff.svg" alt="\frac{n(n-1)}{2}"/>
 équations pour <em>n</em> inconnues. Il n’est pas évident de dire
 si ce système à une solution. Voyons plutôt l’ensemble des droites
 formées par un diagramme de Voronoï. Un point appartient à un segment
 s’il est à égale distance de deux points.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{ll}
+<div class="math">
+<p><img src="../_images/math/4376e082e09069ef418529e1ddfd7f980af2e9fc.svg" alt="\begin{array}{ll}
 &amp;\forall i&lt;j, \, d(X, P_i) = d(X, P_j) \\
 \Longleftrightarrow &amp; \forall i&lt;j, \, \norm{X-P_i}^2 = \norm{X-P_j}^2 \\
 \Longleftrightarrow &amp; \forall i&lt;j, \, \scal{(X-P_i)+(X-P_j)}{(X-P_i)-(X-P_j)} \\
 \Longleftrightarrow &amp; \forall i&lt;j, \, \scal{X-\frac{P_i+P_j}{2}}{P_j-P_i}=0 \\
 \Longleftrightarrow &amp; \forall i&lt;j, \, \scal{X}{P_j-P_i} + \frac{\norm{P_i}^2}{2} - \frac{\norm{P_j}^2}{2}=0
-\end{array}\end{split}\]</div>
-<p>Pour une partition convexe formée à partir de droite,
+\end{array}"/></p>
+</div><p>Pour une partition convexe formée à partir de droite,
 comme c’est le cas d’une régression linéaire, un point
 appartient à un segment s’il est à égale distance de deux
 droites. L’ensemble de ces points correspond à deux droites,
@@ -817,17 +815,17 @@ les deux bissectrices.</p>
 <a class="reference internal image-reference" href="../_images/biss.png"><img alt="../_images/biss.png" src="../_images/biss.png" style="width: 150px;" /></a>
 <p>Seule l’une de ces droites est la bonne.
 L’équation d’une droite est donnée par
-<span class="math notranslate nohighlight">\(\scal{X}{L_i} +B_i=0\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\scal{X}{\frac{L_i}{\norm{L_i}}} + \frac{B_i}{\norm{L_i}} = \scal{X}{\frac{L_j}{\norm{L_j}}} + \frac{B_j}{\norm{L_j}} \text{ ou }
-\scal{X}{\frac{L_i}{\norm{L_i}}} + \frac{B_i}{\norm{L_i}} = - \scal{X}{\frac{L_j}{\norm{L_j}}} - \frac{B_j}{\norm{L_j}}\]</div>
-<p>On choisit l’une de ces droites.</p>
-<div class="math notranslate nohighlight">
-\[\forall i&lt;j, \, \scal{X}{\frac{L_j}{\norm{L_j}} -\frac{L_i}{\norm{L_i}}} + \frac{B_j}{\norm{L_j}} - \frac{B_i}{\norm{L_i}} = 0\]</div>
-<p>On peut voir que si tous les points sont situés
-sur la boule unité, à savoir <span class="math notranslate nohighlight">\(\norm{P_i}=1\)</span>,
+<img class="math" src="../_images/math/a59ffa962059039131a3d2b4b2756ed9dac740d2.svg" alt="\scal{X}{L_i} +B_i=0"/>.</p>
+<div class="math">
+<p><img src="../_images/math/141064da8f3b3a7c922e1f861f4049e8a34ccba4.svg" alt="\scal{X}{\frac{L_i}{\norm{L_i}}} + \frac{B_i}{\norm{L_i}} = \scal{X}{\frac{L_j}{\norm{L_j}}} + \frac{B_j}{\norm{L_j}} \text{ ou }
+\scal{X}{\frac{L_i}{\norm{L_i}}} + \frac{B_i}{\norm{L_i}} = - \scal{X}{\frac{L_j}{\norm{L_j}}} - \frac{B_j}{\norm{L_j}}"/></p>
+</div><p>On choisit l’une de ces droites.</p>
+<div class="math">
+<p><img src="../_images/math/daf6a4045934bea47dc41ba4b4d58652f5a5046e.svg" alt="\forall i&lt;j, \, \scal{X}{\frac{L_j}{\norm{L_j}} -\frac{L_i}{\norm{L_i}}} + \frac{B_j}{\norm{L_j}} - \frac{B_i}{\norm{L_i}} = 0"/></p>
+</div><p>On peut voir que si tous les points sont situés
+sur la boule unité, à savoir <img class="math" src="../_images/math/fe57eccce7f7e56be438dd873de42f03be7ed148.svg" alt="\norm{P_i}=1"/>,
 la régression logistique s’écrit simplement avec
-<span class="math notranslate nohighlight">\(L_i=P_i\)</span> et <span class="math notranslate nohighlight">\(B_i=-\frac{1}{2}\)</span>.
+<img class="math" src="../_images/math/49c3b0ac7379ea93f50a9c65ac10cf161583af67.svg" alt="L_i=P_i"/> et <img class="math" src="../_images/math/61c39269896f2bc1f95c567c74d46c143a9074d1.svg" alt="B_i=-\frac{1}{2}"/>.
 On revient au système d’équations linéaires
 <a class="reference internal" href="#equation-eq-lrvor-system">(1)</a> et on en cherche une solution
 approchée un peu à la façon

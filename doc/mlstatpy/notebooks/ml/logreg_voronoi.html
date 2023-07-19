@@ -46,8 +46,6 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/ml/logreg_voronoi';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -986,16 +984,16 @@ array([[2.75, 2.25]])
 </section>
 <section id="Un-diagramme-de-Voronoï-proche">
 <h2>Un diagramme de Voronoï proche<a class="headerlink" href="#Un-diagramme-de-Voronoï-proche" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>On applique la formule définie par <a class="reference external" href="http://www.xavierdupre.fr/app/mlstatpy/helpsphinx/c_ml/lr_voronoi.html">Régression logistique, diagramme de Voronoï, k-Means</a> et on résoud le système linéaire défini par :</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{ll}
+<p>On applique la formule définie par <a class="reference external" href="https://sdpython.github.io/doc/mlstatpy/c_ml/lr_voronoi.html">Régression logistique, diagramme de Voronoï, k-Means</a> et on résoud le système linéaire défini par :</p>
+<div class="math">
+<p><img src="../../_images/math/bd4fd0cf547508da6c2374a708e8937b2bebbcac.svg" alt="\begin{array}{ll}
 &amp;\left\{\begin{array}{l}\left&lt;L_i - L_j, P_i \right&gt; + B_i - B_j = - \left\{ \left&lt;L_i - L_j, P_j \right&gt; + B_i - B_j \right \} \\ P_i-  P_j - \left&lt;P_i - P_j, \frac{L_i-L_j}{\Vert L_i-L_j\Vert} \right&gt; \frac{L_i-L_j}{\Vert L_i-L_j\Vert }=0 \end{array} \right.
 \\
 \Longleftrightarrow &amp; \left\{\begin{array}{l}\left&lt;L_i - L_j, P_i + P_j\right&gt; + 2 (B_i - B_j) = 0 \\ P_i-  P_j - \left&lt;P_i - P_j, \frac{L_i-L_j}{\Vert L_i-L_j \Vert} \right&gt; \frac{L_i-L_j}{\Vert L_i-L_j\Vert}=0 \end{array} \right.
 \\
 \Longrightarrow &amp; \left\{\begin{array}{l} \left&lt;L_i - L_j, P_i + P_j \right&gt; + 2 (B_i - B_j) = 0 \\ \left&lt;P_i-  P_j, u \right&gt; - \left&lt;P_i - P_j, \frac{L_i-L_j}{\Vert L_i-L_j\Vert} \right&gt; \left&lt;\frac{L_i-L_j}{\Vert L_i-L_j\Vert},u \right&gt;=0 \end{array} \right.
-\end{array}\end{split}\]</div>
-<p>Où <span class="math notranslate nohighlight">\(u\)</span> est un vecteur unité quelconque. On cherche à résoudre sous la forme d’un système linéaire <span class="math notranslate nohighlight">\(LP=B\)</span> où le vecteur <span class="math notranslate nohighlight">\(P\)</span> est l’ensemble des coordonnées de tous les points cherchés. D’après la page cité ci-dessus, dans le cas d’un diagramme à trois classes, ce système a une infinité de solutions.</p>
+\end{array}"/></p>
+</div><p>Où <img class="math" src="../../_images/math/3ded7c5accc3db646e5a061facda1aef616d548f.svg" alt="u"/> est un vecteur unité quelconque. On cherche à résoudre sous la forme d’un système linéaire <img class="math" src="../../_images/math/e120195df98a27199dce0212a6bf512f335390a1.svg" alt="LP=B"/> où le vecteur <img class="math" src="../../_images/math/2f2a105c289b01c226ad6e0f506d96386c48d440.svg" alt="P"/> est l’ensemble des coordonnées de tous les points cherchés. D’après la page cité ci-dessus, dans le cas d’un diagramme à trois classes, ce système a une infinité de solutions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
