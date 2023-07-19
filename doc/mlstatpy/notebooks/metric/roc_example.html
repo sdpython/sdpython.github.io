@@ -1,0 +1,1543 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ROC &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/metric/roc_example';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Confidence Interval and p-Value" href="../../c_metric/pvalues.html" />
+    <link rel="prev" title="Courbe ROC" href="../../c_metric/roc.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dsgarden/index.html">Le petit coin des data scientists</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/classification_multiple.html">Classification multiple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/correlation_non_lineaire.html">Corrélations non linéaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/discret_gradient.html">Le gradient et le discret</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/quantile_regression_example.html">Régression quantile illustrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/regression_lineaire.html">Régression linéaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../image/index.html">Images</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../image/segment_detection.html">Détection de segments dans une image</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Métriques</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pvalues_examples.html">p-values</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml/index.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml/logreg_voronoi.html">Voronoï et régression logistique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/piecewise_linear_regression.html">Régression linéaire par morceaux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/regression_no_inversion.html">Régression sans inversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/reseau_neurones.html">Réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/survival.html">Analyse de survie en pratique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../nlp/index.html">NLP - Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_profiling.html">Completion profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_simple.html">Complétion Simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie.html">Complétion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie_long.html">Completion Trie and metrics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../c_metric/index.html" class="nav-link">Métriques</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../c_metric/roc.html" class="nav-link">Courbe ROC</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">ROC</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="ROC">
+<h1>ROC<a class="headerlink" href="#ROC" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>A few graphs about ROC on the iris datasets.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jyquickhelper</span> <span class="kn">import</span> <span class="n">add_notebook_menu</span>
+
+<span class="n">add_notebook_menu</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="my_id_menu_nb">run previous cell, wait for 2 seconds</div>
+<script>
+function repeat_indent_string(n){
+    var a = "" ;
+    for ( ; n > 0 ; --n) {
+        a += "    ";
+    }
+    return a;
+}
+var update_menu_string = function(begin, lfirst, llast, sformat, send, keep_item) {
+    var anchors = document.getElementsByClassName("section");
+    if (anchors.length == 0) {
+        anchors = document.getElementsByClassName("text_cell_render rendered_html");
+    }
+    var i,t;
+    var text_menu = begin;
+    var text_memo = "<pre>\nlength:" + anchors.length + "\n";
+    var ind = "";
+    var memo_level = 1;
+    var href;
+    var tags = [];
+    var main_item = 0;
+    for (i = 0; i <= llast; i++) {
+        tags.push("h" + i);
+    }
+
+    for (i = 0; i < anchors.length; i++) {
+        text_memo += "**" + anchors[i].id + "--\n";
+
+        var child = null;
+        for(t = 0; t < tags.length; t++) {
+            var r = anchors[i].getElementsByTagName(tags[t]);
+            if (r.length > 0) {
+child = r[0];
+break;
+            }
+        }
+        if (child == null){
+            text_memo += "null\n";
+            continue;
+        }
+        if (anchors[i].hasAttribute("id")) {
+            // when converted in RST
+            href = anchors[i].id;
+            text_memo += "#1-" + href;
+            // passer à child suivant (le chercher)
+        }
+        else if (child.hasAttribute("id")) {
+            // in a notebook
+            href = child.id;
+            text_memo += "#2-" + href;
+        }
+        else {
+            text_memo += "#3-" + "*" + "\n";
+            continue;
+        }
+        var title = child.textContent;
+        var level = parseInt(child.tagName.substring(1,2));
+
+        text_memo += "--" + level + "?" + lfirst + "--" + title + "\n";
+
+        if ((level < lfirst) || (level > llast)) {
+            continue ;
+        }
+        if (title.endsWith('¶')) {
+            title = title.substring(0,title.length-1).replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;")
+        }
+
+        if (title.length == 0) {
+            continue;
+        }
+
+        while (level < memo_level) {
+            text_menu += "</ul>\n";
+            memo_level -= 1;
+        }
+        if (level == lfirst) {
+            main_item += 1;
+        }
+        if (keep_item != -1 && main_item != keep_item + 1) {
+            // alert(main_item + " - " + level + " - " + keep_item);
+            continue;
+        }
+        while (level > memo_level) {
+            text_menu += "<ul>\n";
+            memo_level += 1;
+        }
+        text_menu += repeat_indent_string(level-2) + sformat.replace("__HREF__", href).replace("__TITLE__", title);
+    }
+    while (1 < memo_level) {
+        text_menu += "</ul>\n";
+        memo_level -= 1;
+    }
+    text_menu += send;
+    //text_menu += "\n" + text_memo;
+    return text_menu;
+};
+var update_menu = function() {
+    var sbegin = "";
+    var sformat = '<li><a href="#__HREF__">__TITLE__</a></li>';
+    var send = "";
+    var keep_item = -1;
+    var text_menu = update_menu_string(sbegin, 2, 4, sformat, send, keep_item);
+    var menu = document.getElementById("my_id_menu_nb");
+    menu.innerHTML=text_menu;
+};
+window.setTimeout(update_menu,2000);
+            </script></div>
+</div>
+<section id="Iris-datasets">
+<h2>Iris datasets<a class="headerlink" href="#Iris-datasets" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;, n_jobs=1,
+          penalty=&#39;l2&#39;, random_state=None, solver=&#39;liblinear&#39;, tol=0.0001,
+          verbose=0, warm_start=False)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">ypred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">yprob</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">yprob</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ypred</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ypred</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ypred</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">data</span><span class="p">[</span><span class="n">ypred</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[ 0.70495209,  1.        ],
+       [ 0.56148737,  0.        ],
+       [ 0.56148737,  1.        ],
+       [ 0.77416227,  1.        ],
+       [ 0.58631799,  0.        ]])
+</pre></div></div>
+</div>
+</section>
+<section id="ROC-with-scikit-learn">
+<h2>ROC with scikit-learn<a class="headerlink" href="#ROC-with-scikit-learn" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>We use the following example <a class="reference external" href="http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc.html#sphx-glr-auto-examples-model-selection-plot-roc-py">Receiver Operating Characteristic (ROC)</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
+
+<span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">th</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">ypred</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ROC curve&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;False Positive Rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;True Positive Rate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x268373a2128&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_metric_roc_example_11_1.png" src="../../_images/notebooks_metric_roc_example_11_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">fpr</span><span class="o">=</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="o">=</span><span class="n">tpr</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">th</span><span class="p">))</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fpr</th>
+      <th>threshold</th>
+      <th>tpr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000000</td>
+      <td>0.910712</td>
+      <td>0.032258</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000000</td>
+      <td>0.869794</td>
+      <td>0.096774</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.000000</td>
+      <td>0.863174</td>
+      <td>0.161290</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.000000</td>
+      <td>0.805864</td>
+      <td>0.258065</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000000</td>
+      <td>0.790909</td>
+      <td>0.387097</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.000000</td>
+      <td>0.650510</td>
+      <td>0.612903</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.052632</td>
+      <td>0.634499</td>
+      <td>0.612903</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.052632</td>
+      <td>0.620319</td>
+      <td>0.709677</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.105263</td>
+      <td>0.615015</td>
+      <td>0.709677</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.210526</td>
+      <td>0.607975</td>
+      <td>0.741935</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.210526</td>
+      <td>0.604496</td>
+      <td>0.774194</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.263158</td>
+      <td>0.586318</td>
+      <td>0.774194</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0.263158</td>
+      <td>0.584172</td>
+      <td>0.806452</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0.315789</td>
+      <td>0.561487</td>
+      <td>0.838710</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0.421053</td>
+      <td>0.556499</td>
+      <td>0.838710</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>0.578947</td>
+      <td>0.525449</td>
+      <td>0.838710</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>0.578947</td>
+      <td>0.522579</td>
+      <td>0.870968</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0.631579</td>
+      <td>0.522551</td>
+      <td>0.870968</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0.684211</td>
+      <td>0.520835</td>
+      <td>0.903226</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>0.736842</td>
+      <td>0.516687</td>
+      <td>0.903226</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0.736842</td>
+      <td>0.453826</td>
+      <td>0.967742</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0.842105</td>
+      <td>0.417941</td>
+      <td>0.967742</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>0.842105</td>
+      <td>0.412703</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1.000000</td>
+      <td>0.375573</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="ROC---TPR-/-FPR">
+<h2>ROC - TPR / FPR<a class="headerlink" href="#ROC---TPR-/-FPR" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>We do the same with the class this module provides <a class="reference external" href="http://www.xavierdupre.fr/app/mlstatpy/helpsphinx/mlstatpy/ml/roc.html?highlight=roc#module-mlstatpy.ml.roc">ROC</a>.</p>
+<ul class="simple">
+<li><p>TPR = True Positive Rate</p></li>
+<li><p>FPR = False Positive Rate</p></li>
+</ul>
+<p>You can see as TPR the distribution function of a score for a positive example and the FPR the same for a negative example.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlstatpy.ml.roc</span> <span class="kn">import</span> <span class="n">ROC</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roc</span> <span class="o">=</span> <span class="n">ROC</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roc</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overall precision: 0.63 - AUC=0.850594
+--------------
+      score  label  weight
+0  0.375573    0.0     1.0
+1  0.385480    0.0     1.0
+2  0.412314    0.0     1.0
+3  0.412703    1.0     1.0
+4  0.417941    0.0     1.0
+--------------
+       score  label  weight
+45  0.863174    1.0     1.0
+46  0.863174    1.0     1.0
+47  0.869794    1.0     1.0
+48  0.903335    1.0     1.0
+49  0.910712    1.0     1.0
+--------------
+    False Positive Rate  True Positive Rate  threshold
+0              0.000000            0.032258   0.910712
+1              0.000000            0.193548   0.828617
+2              0.000000            0.354839   0.790909
+3              0.000000            0.516129   0.737000
+4              0.052632            0.645161   0.627589
+5              0.157895            0.741935   0.607975
+6              0.263158            0.838710   0.561487
+7              0.526316            0.838710   0.542211
+8              0.684211            0.903226   0.520835
+9              0.842105            0.967742   0.417941
+10             1.000000            1.000000   0.375573
+--------------
+       error  recall  threshold
+0   0.000000    0.02   0.910712
+1   0.000000    0.12   0.828617
+2   0.000000    0.22   0.790909
+3   0.000000    0.32   0.737000
+4   0.047619    0.42   0.627589
+5   0.115385    0.52   0.607975
+6   0.161290    0.62   0.561487
+7   0.277778    0.72   0.542211
+8   0.317073    0.82   0.520835
+9   0.347826    0.92   0.417941
+10  0.380000    1.00   0.375573
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roc</span><span class="o">.</span><span class="n">auc</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.85059422750424452
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nb</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x2683ff2b668&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_metric_roc_example_18_1.png" src="../../_images/notebooks_metric_roc_example_18_1.png" />
+</div>
+</div>
+<p>This function draws the curve with only 10 points but we can ask for more.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nb</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x2683feba240&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_metric_roc_example_20_1.png" src="../../_images/notebooks_metric_roc_example_20_1.png" />
+</div>
+</div>
+<p>We can also ask to draw bootstropped curves to get a sense of the confidence.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nb</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x26840008748&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_metric_roc_example_22_1.png" src="../../_images/notebooks_metric_roc_example_22_1.png" />
+</div>
+</div>
+</section>
+<section id="ROC---score-distribution">
+<h2>ROC - score distribution<a class="headerlink" href="#ROC---score-distribution" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>This another representation for the metrics FPR and TPR. <span class="math notranslate nohighlight">\(P(x&lt;s)\)</span> is the probability that a score for a positive example to be less than <span class="math notranslate nohighlight">\(s\)</span>. <span class="math notranslate nohighlight">\(P(-&gt;s)\)</span> is the probability that a score for a negative example to be higher than <span class="math notranslate nohighlight">\(s\)</span>. We assume in this case that the higher the better for the score.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">curve</span><span class="o">=</span><span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">PROBSCORE</span><span class="p">,</span> <span class="n">thresholds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x268410618d0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_metric_roc_example_24_1.png" src="../../_images/notebooks_metric_roc_example_24_1.png" />
+</div>
+</div>
+<p>When curves intersects at score <span class="math notranslate nohighlight">\(s^*\)</span>, error rates for positive and negative examples are equal. If we show the confusion matrix for this particular score <span class="math notranslate nohighlight">\(s^*\)</span>, it gives:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conf</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">confusion</span><span class="p">()</span>
+<span class="n">conf</span><span class="p">[</span><span class="s2">&quot;P(+&lt;s)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;True Positive&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">conf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;True Positive&quot;</span><span class="p">]</span>
+<span class="n">conf</span><span class="p">[</span><span class="s2">&quot;P(-&gt;s)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;True Negative&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">conf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;True Negative&quot;</span><span class="p">]</span>
+<span class="n">conf</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>True Positive</th>
+      <th>False Positive</th>
+      <th>False Negative</th>
+      <th>True Negative</th>
+      <th>threshold</th>
+      <th>P(+&lt;s)</th>
+      <th>P(-&gt;s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>31.0</td>
+      <td>19.0</td>
+      <td>0.910712</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>30.0</td>
+      <td>19.0</td>
+      <td>0.910712</td>
+      <td>0.967742</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>6.0</td>
+      <td>0.0</td>
+      <td>25.0</td>
+      <td>19.0</td>
+      <td>0.828617</td>
+      <td>0.806452</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>11.0</td>
+      <td>0.0</td>
+      <td>20.0</td>
+      <td>19.0</td>
+      <td>0.790909</td>
+      <td>0.645161</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>16.0</td>
+      <td>0.0</td>
+      <td>15.0</td>
+      <td>19.0</td>
+      <td>0.737000</td>
+      <td>0.483871</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>20.0</td>
+      <td>1.0</td>
+      <td>11.0</td>
+      <td>18.0</td>
+      <td>0.627589</td>
+      <td>0.354839</td>
+      <td>0.052632</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>23.0</td>
+      <td>3.0</td>
+      <td>8.0</td>
+      <td>16.0</td>
+      <td>0.607975</td>
+      <td>0.258065</td>
+      <td>0.157895</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>26.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>14.0</td>
+      <td>0.561487</td>
+      <td>0.161290</td>
+      <td>0.263158</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>26.0</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>9.0</td>
+      <td>0.542211</td>
+      <td>0.161290</td>
+      <td>0.526316</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>28.0</td>
+      <td>13.0</td>
+      <td>3.0</td>
+      <td>6.0</td>
+      <td>0.520835</td>
+      <td>0.096774</td>
+      <td>0.684211</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>30.0</td>
+      <td>16.0</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>0.417941</td>
+      <td>0.032258</td>
+      <td>0.842105</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>31.0</td>
+      <td>19.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.375573</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="ROC---recall-/-precision">
+<h2>ROC - recall / precision<a class="headerlink" href="#ROC---recall-/-precision" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>In this representation, we show the score.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">curve</span><span class="o">=</span><span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">RECPREC</span><span class="p">,</span> <span class="n">thresholds</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">curve</span><span class="o">=</span><span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">RECPREC</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x2684151d3c8&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_metric_roc_example_28_1.png" src="../../_images/notebooks_metric_roc_example_28_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../c_metric/roc.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Courbe ROC</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../c_metric/pvalues.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Confidence Interval and p-Value</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Iris-datasets">Iris datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ROC-with-scikit-learn">ROC with scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ROC---TPR-/-FPR">ROC - TPR / FPR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ROC---score-distribution">ROC - score distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ROC---recall-/-precision">ROC - recall / precision</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/notebooks/metric/roc_example.ipynb">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

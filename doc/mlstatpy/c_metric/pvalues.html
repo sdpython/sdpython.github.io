@@ -1,0 +1,984 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Confidence Interval and p-Value &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_metric/pvalues';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="p-values" href="../notebooks/metric/pvalues_examples.html" />
+    <link rel="prev" title="ROC" href="../notebooks/metric/roc_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="roc.html">Courbe ROC</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/roc_example.html">ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Confidence Interval and p-Value</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html">p-values</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Métriques</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Confidence Interval and p-Value</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="confidence-interval-and-p-value">
+<span id="index-0"></span><h1>Confidence Interval and p-Value<a class="headerlink" href="#confidence-interval-and-p-value" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#why-p-value" id="id2">Why p-value?</a></p></li>
+<li><p><a class="reference internal" href="#significant-difference-between-samples-mean" id="id3">Significant difference between samples mean</a></p></li>
+<li><p><a class="reference internal" href="#application-on-binomial-variables" id="id4">Application on binomial variables</a></p></li>
+<li><p><a class="reference internal" href="#estimate-a-p-value-by-using-the-distribution-function" id="id5">Estimate a p-value by using the distribution function</a></p></li>
+<li><p><a class="reference internal" href="#correlated-variables" id="id6">Correlated variables</a></p></li>
+<li><p><a class="reference internal" href="#multiple-comparisons-problem" id="id7">Multiple comparisons problem</a></p></li>
+<li><p><a class="reference internal" href="#algorithm-expectation-maximization" id="id8">Algorithm Expectation-Maximization</a></p></li>
+<li><p><a class="reference internal" href="#notebooks" id="id9">Notebooks</a></p></li>
+<li><p><a class="reference internal" href="#bibliographie" id="id10">Bibliographie</a></p></li>
+</ul>
+</nav>
+<p>This document explains the relationship between p-value and confidence intervals.
+It goes on with the specific case of a binamial law. Assuming we want to determine
+whether or not two binomial laws are significantly different, how many observations
+we need to get the p-value under a given threshold.</p>
+<section id="introduction">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Introduction</a><a class="headerlink" href="#introduction" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>The term <a class="reference external" href="https://fr.wikipedia.org/wiki/Valeur_p">p-value</a> is very popular
+in the world of search engines. I usually prefer confidence interval 95%,
+I think it is easier to understand. Plus, because p-Value are real values,
+we could be tempted to compare them and it is usually wrong. On the other hand,
+it is more difficult to compare confidence intervals, especially if they are
+related to complete different variables. Their nature prevents you from doing that.
+Howerver p-Values and confidence interval are similar: they tell you whether
+or not a metric difference is significant.</p>
+<p>Usually, it starts from a set of identically distributed random variables
+<span class="math notranslate nohighlight">\((X_i)_{1 \infegal i \infegal N}\)</span>. We then estimate the average
+<span class="math notranslate nohighlight">\(\widehat{\theta}_N = \frac{1}{N} \sum_{i=1}^{N} X_i\)</span> and we ask
+the question is <span class="math notranslate nohighlight">\(\widehat{\theta}_N\)</span> null? In others terms, we
+want to know if the average is significantly different from zero. If
+the random variable <span class="math notranslate nohighlight">\(X\)</span> follows a random law which has a standard
+deviation, we can use the <a class="reference external" href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>
+which tells us:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\sqrt{N} \widehat{\theta}_N \underset{N \rightarrow \infty}{\longrightarrow}   \loinormale{0}{\sigma}
+\end{eqnarray*}</div><p>Not all of them have a standard deviation. For example, if <span class="math notranslate nohighlight">\(X\)</span> follows a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy_distribution">Cauchy law</a>,
+<span class="math notranslate nohighlight">\(\esp{X^2} \sim \int \frac{x^2}{1+x^2}dx\)</span> which does not exist.
+This remark also concerns every distribution known as heavy tail distribution.</p>
+<p>If <span class="math notranslate nohighlight">\(Y \sim \loinormale{0}{\sigma}\)</span>, then we have
+<span class="math notranslate nohighlight">\(\pr{\abs{Y} \infegal 1.96} = 0.95\)</span>. That is why we can say:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\widehat{\theta}_N \text{ is not null with 95\% confidence if }
+\sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma} &gt; 1.96
+\end{eqnarray*}</div><p>And the confidence intervalle at 95% would be:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\cro{ %\widehat{\theta}_N
+            - \frac{1.96 \sigma}{\sqrt{N}},
+            %\widehat{\theta}_N +
+            \frac{1.96 \sigma}{\sqrt{N}}}
+\end{eqnarray*}</div><p>When <span class="math notranslate nohighlight">\(\esp{ \widehat{\theta}_N } = \theta_0 \neq 0\)</span>, it becomes:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\sqrt{N} \cro{ \widehat{\theta}_N - \theta_0}
+\underset{N \rightarrow \infty}{\longrightarrow}
+\loinormale{0}{\sigma}
+\end{eqnarray*}</div><p>We usually want to check if the mean is equal to a specific value
+using a statistical test:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+H0: &amp;&amp; \widehat{\theta}_N = \theta_0 \\
+H1: &amp;&amp; \widehat{\theta}_N \neq  \theta_0
+\end{eqnarray*}</div><p>We validate <span class="math notranslate nohighlight">\(H0\)</span> if:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\widehat{\theta}_N \in \cro{ \theta_0 - \frac{1.96 \sigma}{\sqrt{N}},
+\theta_0 + \frac{1.96 \sigma}{\sqrt{N}}}
+\end{eqnarray*}</div></section>
+<section id="why-p-value">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Why p-value?</a><a class="headerlink" href="#why-p-value" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>With confidence intervals, you first choose a confidence level and then you
+get an interval. You then check if your value is inside or outside your interval.
+Inside, the gain is not significant, outside, it is.</p>
+<p>With a p-value, we consider the problem the other way, given
+<span class="math notranslate nohighlight">\(\widehat{\theta}_N\)</span>, what is the probability that the
+difference <span class="math notranslate nohighlight">\(\abs{\widehat{\theta}_N - \theta_0}\)</span> is significant?
+Let’s consider <span class="math notranslate nohighlight">\(Y\)</span> following a normal law <span class="math notranslate nohighlight">\(\loinormale{0}{1}\)</span>.
+We are looking for:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\pr{ \abs{Y} &gt; \sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma} } = \alpha
+\end{eqnarray*}</div><p><span class="math notranslate nohighlight">\(\alpha\)</span> is the p-value.</p>
+<div class="math notranslate nohighlight" id="equation-p-value-expression">
+\begin{eqnarray*}
+\alpha &amp;=&amp; 1-\int_{-\beta_N}^{\beta_N} \frac{1}{\sqrt{2\pi}}
+e^{\frac{-x^2}{2}} dx =
+2 \int_{\beta_N}^{\infty} \frac{1}{\sqrt{2\pi}} e^{\frac{-x^2}{2}} dx \\
+\text{where } \beta_N &amp;=&amp; \sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma}
+\end{eqnarray*}</div><p>At this point, we should not forget that we use a theorem which tells us that
+<span class="math notranslate nohighlight">\(\sqrt{N} \frac{|\widehat{\theta}_N|}{\sigma} \sim \loinormale{0}{1}\)</span>
+when <span class="math notranslate nohighlight">\(N \rightarrow \infty\)</span>, which means everything we said is true
+when <span class="math notranslate nohighlight">\(N\)</span> is great enough.</p>
+</section>
+<section id="significant-difference-between-samples-mean">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Significant difference between samples mean</a><a class="headerlink" href="#significant-difference-between-samples-mean" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Usually, we do not want to test if an average is null but if the difference
+between two averages is null. We consider two random samples having the same
+size, each of them described by <span class="math notranslate nohighlight">\((X_i)\)</span> and <span class="math notranslate nohighlight">\((Y_i)\)</span>.
+All variables are independant. <span class="math notranslate nohighlight">\((X_i)\)</span> are distributed according the
+same law, we assume the same for <span class="math notranslate nohighlight">\((Y_i)\)</span>. We expect the following
+difference to be null.</p>
+<div class="math notranslate nohighlight" id="equation-pvalues-exp2">
+\begin{eqnarray*}
+\widehat{\eta}_N &amp;=&amp; \frac{1}{N} \sum_{i=1}^{N} X_i -
+\frac{1}{N} \sum_{i=1}^{N} Y_i
+= \frac{1}{N} \cro{ \sum_{i=1}^{N} X_i -  Y_i }
+\end{eqnarray*}</div><p>Considering expression <a class="reference internal" href="#equation-pvalues-exp2">(2)</a>, we can applying the central
+limit theorem on variable <span class="math notranslate nohighlight">\(Z=X-Y\)</span>, we get (<span class="math notranslate nohighlight">\(\eta_0=0\)</span>):</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\sqrt{N} \widehat{\eta}_N \underset{N \rightarrow \infty}{\longrightarrow}
+\loinormale{\eta_0}{\sqrt{ \frac{\var{Z} }{N  } }}
+\end{eqnarray*}</div><p>If both samples do not have the same number of observations,
+this expression becomes:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\sqrt{N} \widehat{\eta}_N \underset{ \begin{subarray}{c} N_1
+\rightarrow \infty \\
+N_2 \rightarrow \infty \\
+\frac{N_1}{N_2} \rightarrow x \end{subarray}}{\longrightarrow}
+\loinormale{\eta_0}{\sqrt{ \frac{\var{X}}{N_1}+\frac{\var{Y}}{N_2} }}
+\end{eqnarray*}</div></section>
+<section id="application-on-binomial-variables">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Application on binomial variables</a><a class="headerlink" href="#application-on-binomial-variables" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>A binomial variable <span class="math notranslate nohighlight">\(X \sim \loibinomialea{p}\)</span> is defined by:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\pr{X=0} &amp;=&amp; 1-p \\
+\pr{X=1} &amp;=&amp; p
+\end{eqnarray*}</div><p>Let’s consider two series of observations <span class="math notranslate nohighlight">\((X_i) \sim \loibinomialea{p}\)</span>
+and <span class="math notranslate nohighlight">\((Y_i) \sim \loibinomialea{q}\)</span>. We assume <span class="math notranslate nohighlight">\(p \neq q\)</span> and we want
+to determine how many observations we need to get a p-value below 5%.
+We know that <span class="math notranslate nohighlight">\(\variance{X_i}=p(1-p)\)</span> and <span class="math notranslate nohighlight">\(\variance{Y_i}=q(1-q)\)</span>.
+Next table shows the values. First column contains values for <span class="math notranslate nohighlight">\(p\)</span>,
+first row contains values for <span class="math notranslate nohighlight">\(q-p\)</span>. We also assume we have the same number
+<span class="math notranslate nohighlight">\(N\)</span> of random observations for each variable. The statistical
+test cen be defined like following:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+H0: &amp;&amp; p = q = p_0 \\
+H1: &amp;&amp; p \neq q
+\end{eqnarray*}</div><p>If H0 is true, then:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+\sqrt{N} \widehat{\theta}_N \underset{N \rightarrow \infty}{\longrightarrow}   \loinormale{0}{\sqrt{p_0(1-p_0)}
+\sqrt{ \frac{1}{N_1}+\frac{1}{N_2} }}
+\end{eqnarray}</div><div class="math notranslate nohighlight">
+\begin{tabular}{r|r|r|r|r|r|r|r|r|r|r|r|r}
+$p/d$&amp;\textbf{-0.200}&amp;\textbf{-0.100}&amp;\textbf{-0.020}&amp;\textbf{-0.010}&amp;\textbf{-0.002}&amp;\textbf{-0.001}&amp;\textbf{0.001}&amp;\textbf{0.002}&amp;\textbf{0.010}&amp;\textbf{0.020}&amp;\textbf{0.100}&amp;\textbf{0.200}\\\hline
+\textbf{0.05}&amp;&amp;&amp;913&amp;3650&amp;91235&amp;364939&amp;364939&amp;91235&amp;3650&amp;913&amp;37&amp;10\\\hline
+\textbf{0.10}&amp;&amp;70&amp;1729&amp;6915&amp;172866&amp;691463&amp;691463&amp;172866&amp;6915&amp;1729&amp;70&amp;18\\\hline
+\textbf{0.15}&amp;&amp;98&amp;2449&amp;9796&amp;244893&amp;979572&amp;979572&amp;244893&amp;9796&amp;2449&amp;98&amp;25\\\hline
+\textbf{0.20}&amp;31&amp;123&amp;3074&amp;12293&amp;307317&amp;1229267&amp;1229267&amp;307317&amp;12293&amp;3074&amp;123&amp;31\\\hline
+\textbf{0.25}&amp;37&amp;145&amp;3602&amp;14406&amp;360137&amp;1440548&amp;1440548&amp;360137&amp;14406&amp;3602&amp;145&amp;37\\\hline
+\textbf{0.30}&amp;41&amp;162&amp;4034&amp;16135&amp;403354&amp;1613413&amp;1613413&amp;403354&amp;16135&amp;4034&amp;162&amp;41\\\hline
+\textbf{0.35}&amp;44&amp;175&amp;4370&amp;17479&amp;436966&amp;1747864&amp;1747864&amp;436966&amp;17479&amp;4370&amp;175&amp;44\\\hline
+\textbf{0.40}&amp;47&amp;185&amp;4610&amp;18440&amp;460976&amp;1843901&amp;1843901&amp;460976&amp;18440&amp;4610&amp;185&amp;47\\\hline
+\textbf{0.45}&amp;48&amp;191&amp;4754&amp;19016&amp;475381&amp;1901523&amp;1901523&amp;475381&amp;19016&amp;4754&amp;191&amp;48\\\hline
+\textbf{0.50}&amp;49&amp;193&amp;4802&amp;19208&amp;480183&amp;1920730&amp;1920730&amp;480183&amp;19208&amp;4802&amp;193&amp;49\\\hline
+\textbf{0.55}&amp;48&amp;191&amp;4754&amp;19016&amp;475381&amp;1901523&amp;1901523&amp;475381&amp;19016&amp;4754&amp;191&amp;48\\\hline
+\textbf{0.60}&amp;47&amp;185&amp;4610&amp;18440&amp;460976&amp;1843901&amp;1843901&amp;460976&amp;18440&amp;4610&amp;185&amp;47\\\hline
+\textbf{0.65}&amp;44&amp;175&amp;4370&amp;17479&amp;436966&amp;1747864&amp;1747864&amp;436966&amp;17479&amp;4370&amp;175&amp;44\\\hline
+\textbf{0.70}&amp;41&amp;162&amp;4034&amp;16135&amp;403354&amp;1613413&amp;1613413&amp;403354&amp;16135&amp;4034&amp;162&amp;41\\\hline
+\textbf{0.75}&amp;37&amp;145&amp;3602&amp;14406&amp;360137&amp;1440548&amp;1440548&amp;360137&amp;14406&amp;3602&amp;145&amp;37\\\hline
+\textbf{0.80}&amp;31&amp;123&amp;3074&amp;12293&amp;307317&amp;1229267&amp;1229267&amp;307317&amp;12293&amp;3074&amp;123&amp;31\\\hline
+\textbf{0.85}&amp;25&amp;98&amp;2449&amp;9796&amp;244893&amp;979572&amp;979572&amp;244893&amp;9796&amp;2449&amp;98&amp;\\\hline
+\textbf{0.90}&amp;18&amp;70&amp;1729&amp;6915&amp;172866&amp;691463&amp;691463&amp;172866&amp;6915&amp;1729&amp;70&amp;\\\hline
+\textbf{0.95}&amp;10&amp;37&amp;913&amp;3650&amp;91235&amp;364939&amp;364939&amp;91235&amp;3650&amp;913&amp;&amp;\\\hline
+\end{tabular}</div><p>Given a binomial law with parameter <span class="math notranslate nohighlight">\(p\)</span> and a difference
+<span class="math notranslate nohighlight">\(d\)</span>, this table gives the number of
+observations needed on both sides to get a significant difference
+assuming <span class="math notranslate nohighlight">\(p\)</span> is the expected pourcentage</p>
+</section>
+<section id="estimate-a-p-value-by-using-the-distribution-function">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Estimate a p-value by using the distribution function</a><a class="headerlink" href="#estimate-a-p-value-by-using-the-distribution-function" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Expression <a class="reference internal" href="#equation-p-value-expression">(1)</a> gives a way to estimate the p-value.
+Computing the integral is not always possible but there is a way to do it
+using <a class="reference external" href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a>.
+Let’s assume <span class="math notranslate nohighlight">\(X \sim \loinormale{0}{1}\)</span>. We denote <span class="math notranslate nohighlight">\(f_X\)</span> as the
+density function of <span class="math notranslate nohighlight">\(X\)</span>. We also consider an interval
+<span class="math notranslate nohighlight">\(I=\cro{-a,a}\)</span>. Then we have <span class="math notranslate nohighlight">\(f(a)=f(-a)\)</span> and:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\pr{X \in I} = \pr{ \abs{X} \infegal a } = \pr{ f(X) \supegal f(a)}
+\end{eqnarray*}</div><p>This is true because <span class="math notranslate nohighlight">\(f\)</span> is decreasing for <span class="math notranslate nohighlight">\(x&gt;0\)</span>.
+The p-value <span class="math notranslate nohighlight">\(\alpha\)</span> for a estimator <span class="math notranslate nohighlight">\(\beta\)</span> using Monte Carlo method is:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+\frac{1}{N}\sum_{i=1}^{N} \indicatrice{ f(X_i) &lt; f(\beta)} \longrightarrow \alpha
+\end{eqnarray}</div><p>Assuming every <span class="math notranslate nohighlight">\((X_i)_i\)</span> follows a normal law <span class="math notranslate nohighlight">\(\loinormale{0}{1}\)</span>.</p>
+</section>
+<section id="correlated-variables">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Correlated variables</a><a class="headerlink" href="#correlated-variables" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Let’s assume we now have a vector a correlated variables <span class="math notranslate nohighlight">\(X=(X_1,...X_d)\)</span>
+drawn following a law <span class="math notranslate nohighlight">\(\loinormale{\theta_0}{\Sigma}\)</span>.</p>
+<p>The central limit theorem is still valid:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\sqrt{N} \widehat{\theta}_N \underset{N \rightarrow \infty}{\longrightarrow}   \loinormale{\theta_0}{\Sigma}
+\end{eqnarray*}</div><p>We know estimators for the average and the covariance matrix defined as follows:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\widehat{\theta_N} &amp;=&amp; \frac{1}{n} \sum_{i=1}^{N} X_i \\
+\widehat{\Sigma_N} &amp;=&amp; \frac{1}{n} \sum_{i=1}^{N} (X_i - \widehat{\theta_N})(X_i - \widehat{\theta_N})'
+\end{eqnarray*}</div><p>We usually want to check if:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+H0: &amp;&amp; \widehat{\theta}_N = \theta_0 \\
+H1: &amp;&amp; \widehat{\theta}_N \neq  \theta_0
+\end{eqnarray*}</div><p>If <span class="math notranslate nohighlight">\(\Lambda\)</span> is diagonal matrix of <span class="math notranslate nohighlight">\(\Sigma\)</span> (diagonal matrix with eigen values).
+All eigen values are real and positive, we then define:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\Sigma &amp;=&amp; P \Lambda P' \text { and } \Sigma^{\frac{1}{2}} =  P \Lambda^{\frac{1}{2}} P'
+\end{eqnarray*}</div><p>We consider <span class="math notranslate nohighlight">\(Z_i = (X_i - \widehat{\theta_N}) \Sigma^{-\frac{1}{2}}\)</span>.
+We then have <span class="math notranslate nohighlight">\(\esp{Z_i} = 0\)</span> and <span class="math notranslate nohighlight">\(\var{Z_i} = I_2\)</span> where
+<span class="math notranslate nohighlight">\(I_2\)</span> is the identity matrix. We could now consider each
+dimension of <span class="math notranslate nohighlight">\(Z_i\)</span> independently as illustrated in next figure:
+it shows the difference on an example if we consider the correlation of
+two variables correlated such as
+<span class="math notranslate nohighlight">\(\Sigma=\pa{\begin{array}{cc} 0.1 &amp; 0.05 \\ 0.05 &amp;  0.2 \end{array}}\)</span>.</p>
+<img alt="../_images/pvaluescor.png" src="../_images/pvaluescor.png" />
+<p>We assume we observe two <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernouilli</a>
+variables correlated. Red points represents the area
+for which we would accept hypothesis <em>H0</em> in case both variables are independant.
+Blue area represents the same but with the correlation.
+But that would not be the best way to do it. The confidence interval for a couple
+of indenpendant gaussian <span class="math notranslate nohighlight">\((N_1,N_2)\)</span> variables is an ellipse.
+Two independent normal variables <span class="math notranslate nohighlight">\(N_1^2+N_2^2\)</span> with a null mean
+and standard deviation equal to one follows a <span class="math notranslate nohighlight">\(\chi_2\)</span> law. Based on that,
+we can deduce a boundary for the confidence zone at 95%.
+Next figure shows this zone for a non-correlated couple and a correlated couple
+(<span class="math notranslate nohighlight">\(\Sigma=\pa{\begin{array}{cc} 0.1 &amp; 0.05 \\ 0.05 &amp;  0.2 \end{array}}\)</span>).</p>
+<img alt="../_images/pvaluescor2.png" src="../_images/pvaluescor2.png" />
+<p>We assume we observe two Bernouilli variables correlated. Red points represents the area
+for which we would accept hypothesis <em>H0</em> in case both variables are independant.
+Blue area represents the same but with the correlation.</p>
+</section>
+<section id="multiple-comparisons-problem">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Multiple comparisons problem</a><a class="headerlink" href="#multiple-comparisons-problem" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>The problem of <a class="reference external" href="https://en.wikipedia.org/wiki/Multiple_comparisons_problem">Multiple comparisons</a>
+happens when dealing with many metrics measyring a change.
+That’s allways the case when two version of the sam websire are compared
+in a test <a class="reference external" href="https://fr.wikipedia.org/wiki/Test_A/B">A/B</a>.
+The metrics are correlated but it is unlikely that all metrics
+differences will be significant or not.
+The <a class="reference external" href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Holm-Bonferroni method</a>
+proposes a way to define an hypthesis on the top of the existing ones.</p>
+</section>
+<section id="algorithm-expectation-maximization">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Algorithm Expectation-Maximization</a><a class="headerlink" href="#algorithm-expectation-maximization" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>We here assume there are two populations mixed defined by random variable <span class="math notranslate nohighlight">\(C\)</span>.
+Let’s <span class="math notranslate nohighlight">\(X\)</span> be a mixture of two binomial laws of parameters <span class="math notranslate nohighlight">\(p\)</span>
+and <span class="math notranslate nohighlight">\(q\)</span>. It is for example the case for a series draws coming from two different coins.</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\pr{X} &amp;=&amp;  \pr{ X | C = a} \pr{C=a} + \pr{X | X =b} \pr{C = b}
+\end{eqnarray*}</div><p>The likelihood of a random sample <span class="math notranslate nohighlight">\((X_1,...X_n)\)</span>,
+the class we do not observe are <span class="math notranslate nohighlight">\((C_1,...C_n)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+L(\theta) = \prod_i \cro{ p^{X_i}(1-p)^{(1-X_i)} \pi }^{1-C_i} \cro{q^{X_i}(1-q)^{(1-X_i)}  (1-\pi)  }^{C_i}
+\end{eqnarray*}</div><p>The parameters are <span class="math notranslate nohighlight">\(\theta=(\pi,p,q)\)</span>. We use an algorithm
+<a class="reference external" href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation-Maximization (EM)</a>
+to determine the parameters.
+We define at iteration <span class="math notranslate nohighlight">\(t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+w_i &amp;=&amp; \espf{C_i | X_i, \theta_t }{X_i}  \\
+    &amp;=&amp; \frac{ p_t^{X_i} (1-p_t)^{1-X_i} \pi_t }
+               { p_t^{X_i}(1-p_t)^{1-X_i} \pi_t + q_t^{X_i} (1-q_t)^{1-X_i} (1-\pi_t) }
+\end{eqnarray*}</div><p>We then update the parameters:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\widehat{\pi}   &amp;=&amp;  \frac{1}{n} \sum_{i = 1}^n w_i \\
+\widehat{p}     &amp;=&amp;  \frac{  \sum_{i = 1}^n w_i X_i }{  \sum_{i = 1}^n w_i} \\
+\widehat{q}     &amp;=&amp;  \frac{  \sum_{i = 1}^n (1-w_i) X_i }{  \sum_{i = 1}^n (1-w_i)}
+\end{eqnarray*}</div><p>See also <a class="reference external" href="https://statisticalrecipes.blogspot.fr/2012/04/applying-em-algorithm-binomial-mixtures.html">Applying the EM Algorithm: Binomial Mixtures</a>.</p>
+</section>
+<section id="notebooks">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>The following notebook produces the figures displayed in this document.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html">p-values</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html#p-value-table">p-value table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html#p-values-in-2D">p-values in 2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html#p-value-ratio">p-value ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html#p-values-and-EM">p-values and EM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html#p-value-and-heavy-tail">p-value and heavy tail</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="bibliographie">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.stat.columbia.edu/~gelman/research/published/pvalues3.pdf">p-Value and Statistical Practice</a></p></li>
+<li><p><a class="reference external" href="https://rsos.royalsocietypublishing.org/content/royopensci/1/3/140216.full.pdf">An investigation of the false discovery rate and the misinterpretation of p-values</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Holm-Bonferroni method</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../notebooks/metric/roc_example.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">ROC</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/metric/pvalues_examples.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">p-values</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-p-value">Why p-value?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#significant-difference-between-samples-mean">Significant difference between samples mean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-on-binomial-variables">Application on binomial variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-a-p-value-by-using-the-distribution-function">Estimate a p-value by using the distribution function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlated-variables">Correlated variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-comparisons-problem">Multiple comparisons problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm-expectation-maximization">Algorithm Expectation-Maximization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebooks">Notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographie">Bibliographie</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_metric/pvalues.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

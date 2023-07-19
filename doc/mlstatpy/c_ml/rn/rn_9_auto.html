@@ -1,0 +1,1133 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Analyse en composantes principales (ACP) et Auto Encoders &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/rn/rn_9_auto';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Bibliographie" href="rn_biblio.html" />
+    <link rel="prev" title="Prolongements" href="rn_8_prol.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="rn.html">Réseaux de neurones</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rn_1_def.html">Définition des réseaux de neurones multi-couches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_2_reg.html">La régression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_3_clas.html">La classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_4_densite.html">Démonstration du théorème de la densité des réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_5_newton.html">Descente de gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_6_apprentissage.html">Apprentissage d’un réseau de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_7_clas2.html">Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_8_prol.html">Prolongements</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Analyse en composantes principales (ACP) et Auto Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_biblio.html">Bibliographie</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kppv.html">Classification à l’aide des plus proches voisins</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../missing_values_mf.html">Liens entre factorisation de matrices, ACP, k-means</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Non linéaire</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="rn.html" class="nav-link">Réseaux de neurones</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Analyse en composantes principales (ACP) et Auto Encoders</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="analyse-en-composantes-principales-acp-et-auto-encoders">
+<span id="nn-acp"></span><h1>Analyse en composantes principales (ACP) et Auto Encoders<a class="headerlink" href="#analyse-en-composantes-principales-acp-et-auto-encoders" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#probleme-de-l-analyse-en-composantes-principales" id="id2">Problème de l’analyse en composantes principales</a></p></li>
+<li><p><a class="reference internal" href="#resolution-d-une-acp-avec-un-reseau-de-neurones-diabolo" id="id3">Résolution d’une ACP avec un réseau de neurones diabolo</a></p></li>
+<li><p><a class="reference internal" href="#calcul-de-valeurs-propres-et-de-vecteurs-propres" id="id4">Calcul de valeurs propres et de vecteurs propres</a></p></li>
+<li><p><a class="reference internal" href="#analyse-en-composantes-principales-acp" id="id5">Analyse en Composantes Principales (ACP)</a></p></li>
+</ul>
+</nav>
+<p id="index-0">Cet algorithme est proposé dans <a class="reference internal" href="rn_biblio.html#song1997" id="id1"><span>[Song1997]</span></a>.
+Autrefois réseau diabolo, le terme <a class="reference external" href="https://en.wikipedia.org/wiki/Autoencoder">auto-encoder</a>
+est plus utilisé depuis l’avénement du deep learning. Il s’agit de compresser avec perte
+un ensemble de points. L”<a class="reference external" href="https://fr.wikipedia.org/wiki/Analyse_en_composantes_principales">ACP</a>
+est une forme de compression linéaire puisqu’on cherche
+à préserver l’information en projetant un nuage de points de façon à maximiser
+l’inertie du nuage. Les auto-encoders fonctionnent sur le même principe
+avec des modèles non linéaires.</p>
+<p>subsection{Principe}</p>
+<p>L’algorithme implémentant l’analyse en composantes principales
+est basé sur un réseau linéaire dit <em>« diabolo »</em>, ce réseau
+possède une couche d’entrées à <span class="math notranslate nohighlight">\(N\)</span> entrées, une couche cachée et une couche
+de sortie à <span class="math notranslate nohighlight">\(N\)</span> sorties. L’objectif est
+d’apprendre la fonction identité sur l’espace <span class="math notranslate nohighlight">\(\R^N\)</span>.
+Ce ne sont plus les sorties qui nous intéressent mais la couche
+cachée intermédiaire qui effectue une compression ou projection
+des vecteurs d’entrées puisque les entrées et les
+sorties du réseau auront pour but d’être identiques.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Figure0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="figure-rn-acp-fig">Figure F1 : Principe de la compression par un réseau diabolo</p>
+<div class="math notranslate nohighlight">
+\begin{picture}(241,100)(0,-10)
+
+\put(1,1)   {\framebox(40,22){\footnotesize \begin{tabular}{c}vecteur \\ $X \in \R^N$ \end{tabular}}}
+\put(85,-9)  {\framebox(45,32){\footnotesize \begin{tabular}{c}vecteur \\ $Y \in \R^M$ \\ et $M &lt; N$ \end{tabular}}}
+\put(200,1) {\framebox(40,22){\footnotesize \begin{tabular}{c}vecteur \\ $Z \approx X$ \end{tabular}}}
+
+\put(20,40) {\framebox(90,45){\footnotesize
+                                \begin{minipage}{30mm} première couche du réseau diabolo~:
+                                \textbf{projection (ou compression)}
+                                \end{minipage}}}
+
+\put(120,40) {\framebox(90,45){\footnotesize
+                                \begin{minipage}{30mm} seconde couche du réseau diabolo~:
+                                \textbf{reconstitution (ou décompression)}
+                                \end{minipage}}}
+\put(30,23) {\vector(1,1){17}}
+\put(130,23) {\vector(1,1){17}}
+
+\put(90,39) {\vector(1,-1){17}}
+\put(190,39) {\vector(1,-1){17}}
+
+\end{picture}</div></div>
+<p>La figure suivante illustre un exemple de compression de vecteur de <span class="math notranslate nohighlight">\(\R^3\)</span>
+dans <span class="math notranslate nohighlight">\(\R^2\)</span>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Figure1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="figure-rn-acp-exemple">Figure F2 : Réseau diabolo : réduction d’une dimension</p>
+<div class="math notranslate nohighlight">
+\begin{picture}(130,75)(0,0)
+
+\put(20,10) {\circle{20}}
+\put(20,40) {\circle{20}}
+\put(20,70) {\circle{20}}
+
+\put(18,8) {\makebox(5,5){\footnotesize $x_1$}}
+\put(18,38) {\makebox(5,5){\footnotesize $x_2$}}
+\put(18,68) {\makebox(5,5){\footnotesize $x_3$}}
+
+\put(65,25) {\circle{20}}
+\put(65,55) {\circle{20}}
+
+\put(63,23) {\makebox(5,5){\footnotesize $z_{1,1}$}}
+\put(63,53) {\makebox(5,5){\footnotesize $z_{1,2}$}}
+
+\put(110,10) {\circle{20}}
+\put(110,40) {\circle{20}}
+\put(110,70) {\circle{20}}
+
+\put(108,8) {\makebox(5,5){\footnotesize $z_{2,1}$}}
+\put(108,38) {\makebox(5,5){\footnotesize $z_{2,2}$}}
+\put(108,68) {\makebox(5,5){\footnotesize $z_{2,3}$}}
+
+\drawline(30,10)(55,25)
+\drawline(30,40)(55,55)
+\drawline(30,10)(55,55)
+
+\drawline(30,70)(55,25)
+\drawline(30,70)(55,55)
+\drawline(30,40)(55,25)
+
+\drawline(75,25)(100,10)
+\drawline(75,25)(100,40)
+\drawline(75,25)(100,70)
+
+\drawline(75,55)(100,10)
+\drawline(75,55)(100,40)
+\drawline(75,55)(100,70)
+
+\end{picture}</div><p>Ce réseau possède 3 entrées et 3 sorties
+Minimiser l’erreur <span class="math notranslate nohighlight">\(\sum_{k=1}^N E\left(  X_{k},X_{k}\right)\)</span>
+revient à compresser un vecteur de dimension 3 en un vecteur de dimension 2.
+Les coefficients de la
+première couche du réseau de neurones permettent de compresser les données.
+Les coefficients de la seconde couche permettent de les décompresser.</p>
+</div>
+<p>La compression et décompression ne sont pas inverses
+l’une de l’autre, à moins que l’erreur <a class="reference internal" href="#equation-rn-equation-acp-error">(1)</a> soit nulle.
+La décompression s’effectue donc avec des pertes d’information.
+L’enjeu de l’ACP est de trouver un bon compromis entre le nombre
+de coefficients et la perte d’information tôlérée.
+Dans le cas de l’ACP, la compression est <em>« linéaire »</em>, c’est une projection.</p>
+<section id="probleme-de-l-analyse-en-composantes-principales">
+<span id="par-acp-un"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Problème de l’analyse en composantes principales</a><a class="headerlink" href="#probleme-de-l-analyse-en-composantes-principales" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’analyse en composantes principales ou ACP est définie de la manière suivante :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Problème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="problem-acp">Problème P1 : analyse en composantes principales (ACP)</p>
+<p>Soit <span class="math notranslate nohighlight">\(\pa{X_i}_{1 \infegal i \infegal N}\)</span> avec <span class="math notranslate nohighlight">\(\forall i \in \ensemble{1}{N},
+\; X_i \in \R^p\)</span>.
+Soit <span class="math notranslate nohighlight">\(W \in M_{p,d}\pa{\R}\)</span>, <span class="math notranslate nohighlight">\(W = \vecteur{C_1}{C_d}\)</span>
+où les vecteurs <span class="math notranslate nohighlight">\(\pa{C_i}\)</span>
+sont les colonnes de <span class="math notranslate nohighlight">\(W\)</span> et <span class="math notranslate nohighlight">\(d &lt; p\)</span>.
+On suppose également que les <span class="math notranslate nohighlight">\(\pa{C_i}\)</span> forment une base othonormée.
+Par conséquent :</p>
+<div class="math notranslate nohighlight">
+\[W'W = I_d\]</div>
+<p><span class="math notranslate nohighlight">\(\pa{W'X_i}_{1 \infegal i \infegal N}\)</span> est l’ensemble des
+vecteurs <span class="math notranslate nohighlight">\(\pa{X_i}\)</span> projetés sur le sous-espace vectoriel
+engendré par les vecteurs <span class="math notranslate nohighlight">\(\pa{C_i}\)</span>.
+Réaliser une analyse en composantes principales, c’est trouver le
+meilleur plan de projection pour les vecteurs
+<span class="math notranslate nohighlight">\(\pa{X_i}\)</span>, celui qui maximise l’inertie de ce nuage de points,
+c’est donc trouver <span class="math notranslate nohighlight">\(W^*\)</span> tel que :</p>
+<div class="math notranslate nohighlight" id="equation-rn-equation-acp-error">
+\begin{eqnarray*}
+W^* &amp;=&amp; \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} }
+                                    { \arg \max } \; E\pa{W}
+    =  \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
+                    \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 }
+\end{eqnarray*}</div><p>Le terme <span class="math notranslate nohighlight">\(E\pa{W}\)</span> est l’inertie du nuage de points <span class="math notranslate nohighlight">\(\pa{X_i}\)</span>
+projeté sur le sous-espace vectoriel défini par les
+vecteurs colonnes de la matrice <span class="math notranslate nohighlight">\(W\)</span>.</p>
+</div>
+</section>
+<section id="resolution-d-une-acp-avec-un-reseau-de-neurones-diabolo">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Résolution d’une ACP avec un réseau de neurones diabolo</a><a class="headerlink" href="#resolution-d-une-acp-avec-un-reseau-de-neurones-diabolo" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un théorème est nécessaire avant de construire le réseau de
+neurones menant à la résolution du problème de l”<a class="reference internal" href="#problem-acp"><span class="std std-ref">ACP</span></a>
+afin de passer d’une optimisation sous contrainte à une optimisation sans contrainte.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theorem-acp-resolution">Théorème T1 : résolution de l’ACP</p>
+<p>Les notations utilisées sont celles du problème de l”<a class="reference internal" href="#problem-acp"><span class="std std-ref">ACP</span></a>.
+Dans ce cas :</p>
+<div class="math notranslate nohighlight" id="equation-rn-acp-contrainte">
+\begin{eqnarray*}
+S =
+\underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
+                    \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 } &amp;=&amp;
+\underset{ W \in M_{p,d}\pa{\R} } { \arg \min } \;  \cro { \sum_{i=1}^{N} \norm{WW'X_i - X_i}^2 }
+\end{eqnarray*}</div><p>De plus <span class="math notranslate nohighlight">\(S\)</span> est l’espace vectoriel engendré par les <span class="math notranslate nohighlight">\(d\)</span>
+vecteurs propres de la matrice
+<span class="math notranslate nohighlight">\(XX' = \sum_{i=1}^{N} X_i X_i'\)</span> associées aux
+<span class="math notranslate nohighlight">\(d\)</span> valeurs propres de plus grand module.</p>
+</div>
+<p><strong>Démonstration</strong></p>
+<p><em>Partie 1</em></p>
+<p>L’objectif de cette partie est de chercher la valeur de :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; E\pa{W}\end{split}\]</div>
+<p>Soit <span class="math notranslate nohighlight">\(X=\vecteur{X_1}{X_N} \in \pa{\R^p}^N\)</span>, alors :</p>
+<div class="math notranslate nohighlight">
+\[E\pa{W} = \sum_{i=1}^{N} \norm{W'X_i}^2 = \trace{X'WW'X} = \trace{XX'WW'}\]</div>
+<p>La matrice <span class="math notranslate nohighlight">\(XX'\)</span> est symétrique, elle est donc diagonalisable
+et il existe une matrice <span class="math notranslate nohighlight">\(P \in M_p\pa{\R}:math:\)</span> telle qu :</p>
+<div class="math notranslate nohighlight" id="equation-acp-equation-memo-1">
+<span class="eqno">(3)<a class="headerlink" href="#equation-acp-equation-memo-1" title="Lien permanent vers cette équation">#</a></span>\[\begin{split}\begin{array}{l}
+P'XX'P = D_X \text{ avec } D_X \text{ diagonale} \\
+P'P = I_p
+\end{array}\end{split}\]</div>
+<p>Soit <span class="math notranslate nohighlight">\(P = \vecteur{P_1}{P_p}\)</span> les vecteurs propres de la matrice
+<span class="math notranslate nohighlight">\(XX'\)</span> associés aux valeurs propres
+<span class="math notranslate nohighlight">\(\vecteur{\lambda_1}{\lambda_p}\)</span> telles que
+<span class="math notranslate nohighlight">\(\abs{\lambda_1} \supegal ... \supegal \abs{\lambda_p}\)</span>.
+Pour mémoire, <span class="math notranslate nohighlight">\(W = \vecteur{C_1}{C_d}\)</span>, et on a :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{l}
+\forall i \in \ensemble{1}{p}, \; XX'P_i = \lambda_i P_i \\
+\forall i \in \ensemble{1}{d}, \; C_i = P_i \Longrightarrow XX'WW' = D_{X,d} = \pa{
+                                                    \begin{array}{ccc}
+                                                    \lambda_1 &amp; 0 &amp; 0 \\
+                                                    0  &amp; \ldots &amp; 0 \\
+                                                    0 &amp; 0 &amp; \lambda_d
+                                                    \end{array}
+                                                    }
+\end{array}\end{split}\]</div>
+<p>D’où :</p>
+<div class="math notranslate nohighlight">
+\[E\pa{W} = \trace{ XX'WW' } = \trace{P D_X P' WW'} = \trace{ D_X P'WW'P }\]</div>
+<p>Donc :</p>
+<div class="math notranslate nohighlight" id="equation-acp-demo-partie-a">
+\begin{eqnarray*}
+\underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; E\pa{W} =
+        \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\;
+            \trace{ D_X P'WW'P }
+= \underset{ \begin{subarray}{c} Y \in M_{p,d}\pa{\R} \\ Y'Y = I_d \end{subarray} } { \max }\; \trace{ D_X YY'
+            }
+= \sum_{i=1}{d} \lambda_i
+\end{eqnarray*}</div><p><em>Partie 2</em></p>
+<p>Soit <span class="math notranslate nohighlight">\(Y \in \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\; \trace{X'WW'X}\)</span>,
+<span class="math notranslate nohighlight">\(Y = \vecteur{Y_1}{Y_d} = \pa{y_i^k}_{ \begin{subarray}{c} 1 \infegal i \infegal d \\ 1 \infegal k \infegal p \end{subarray} }\)</span>.</p>
+<p>Chaque vecteur <span class="math notranslate nohighlight">\(Y_i\)</span> est écrit dans la base
+<span class="math notranslate nohighlight">\(\vecteur{P_1}{P_p}\)</span> définie en <a class="reference internal" href="#equation-acp-equation-memo-1">(3)</a> :</p>
+<div class="math notranslate nohighlight">
+\[\forall i \in \ensemble{1}{d}, \; Y_i = \sum_{k=1}^{p} y_i^k P_p\]</div>
+<p>Comme <span class="math notranslate nohighlight">\(Y'Y = I_d\)</span>, les vecteurs <span class="math notranslate nohighlight">\(\vecteur{Y_1}{Y_d}\)</span>
+sont orthogonaux deux à deux et normés, ils vérifient donc :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left\{
+\begin{array}{rl}
+\forall i \in \ensemble{1}{d},          &amp; \sum_{k=1}^{p} \pa{y_i^k}^2 = 1 \\
+\forall \pa{i,j} \in \ensemble{1}{d}^2, &amp; \sum_{k=1}^{p} y_i^k y_j^k = 0
+\end{array}
+\right.\end{split}\]</div>
+<p>De plus :</p>
+<div class="math notranslate nohighlight">
+\[XX'YY' = XX' \pa{ \sum_{i=1}^{d} Y_i Y_i'} =   \sum_{i=1}^{d} XX' Y_i Y_i'\]</div>
+<p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\forall i \in \ensemble{1}{d}, \; XX' Y_i Y'_i
+            &amp;=&amp; XX' \pa{ \sum_{k=1}^{p} y_i^k P_k }\pa{ \sum_{k=1}^{p} y_i^k P_k }' \\
+            &amp;=&amp; \pa{ \sum_{k=1}^{p} \lambda_k y_i^k P_k }\pa{ \sum_{k=1}^{p} y_i^k P_k }'
+\end{eqnarray*}</div><p>D’où :</p>
+<div class="math notranslate nohighlight">
+\[\forall i \in \ensemble{1}{d}, \; \trace{ XX' Y_i Y'_i} = \sum_{k=1}^{p} \lambda_k \pa{y_i^k}^2\]</div>
+<p>Et :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\trace{ XX' YY'} &amp;=&amp; \sum_{i=1}^{d} \sum_{k=1}^{p} \lambda_k \pa{y_i^k}^2 \\
+\trace{ XX' YY'} &amp;=&amp; \sum_{k=1}^{p} \lambda_k \pa {\sum_{i=1}^{d} \pa{y_i^k}^2} =
+                \sum_{k=1}^{p} \; \lambda_k
+\end{eqnarray*}</div><p>Ceci permet d’affirmer que :</p>
+<div class="math notranslate nohighlight" id="equation-acp-demo-partie-b">
+\begin{eqnarray*}
+Y \in \underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \max }\;
+            \trace{X'WW'X}  \Longrightarrow
+vect \vecteur{Y_1}{Y_d} = vect \vecteur{P_1}{P_d}
+\end{eqnarray*}</div><p>Les équations <a class="reference internal" href="#equation-acp-demo-partie-a">(4)</a> et <a class="reference internal" href="#equation-acp-demo-partie-b">(5)</a> démontrent la seconde partie du
+théorème.</p>
+<p><em>Partie 3</em></p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\sum_{i=1}^n \left\|  WW^{\prime}X_{i}-X_{i}\right\|^{2} &amp;=&amp;
+\sum_{i=1}^n \left\|
+    \left(  WW^{\prime} -I_{N}\right)  X_{i}\right\|  ^{2} \\
+&amp;=&amp; tr\left(  X^{\prime}\left(  WW^{\prime }-I_{p}\right)  ^{2}X\right)  \\
+&amp;=&amp; tr\left(  XX^{\prime}\left(  \left( WW^{\prime}\right) ^{2}-2WW^{\prime}+I_{p}\right)  \right) \\
+&amp;=&amp; tr\left(  XX^{\prime}\left(  WW^{\prime}WW^{\prime}-2WW^{\prime}+I_{p}\right)  \right) \\
+&amp;=&amp; tr\left(  XX^{\prime}\left(  -WW^{\prime} +I_{p}\right)  \right) \\
+&amp;=&amp; -tr\left(  XX^{\prime}WW^{\prime}\right)  +tr\left(XX^{\prime}\right)
+\end{eqnarray*}</div><p>D’où :</p>
+<div class="math notranslate nohighlight" id="equation-acp-demo-partie-c">
+\begin{eqnarray*}
+\underset{ \begin{subarray} \, W \in M_{p,d} \pa{\R} \\
+                        W'W=I_d \end{subarray}} { \; \max \; } \;  \pa {  \sum_{i=1}^{N} \norm{ W'X_i}^2 }  =
+\underset{ \begin{subarray} \, W \in M_{p,d} \pa{\R} \\
+                        W'W=I_d \end{subarray}} { \; \min \; } \;  \pa {  \sum_{i=1}^{N} \norm{ WW'X_i - X_i}^2 }
+\end{eqnarray*}</div><p><em>Partie 4</em></p>
+<p><span class="math notranslate nohighlight">\(XX'\)</span> est une matrice symétrique, elle est donc diagonalisable :</p>
+<div class="math notranslate nohighlight">
+\[\exists P\in GL_N \pa{\R}  \text{ telle que } P'XX'P=D_p \text{ où } D_p \text{ est diagonale}\]</div>
+<p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+    \sum_{i=1}^{N} \norm{  WW' X_i - X_i }^2
+&amp;=&amp; \trace{ XX' \pa{ WW'-I_p }^{2} } \\
+&amp;=&amp; \trace{ PP' XX' PP' \pa{ WW'-I_p }^{2} } \\
+&amp;=&amp; \trace{ P D_p P' \pa{ WW'-I_p }^{2} } \\
+&amp;=&amp; \trace{ D_p \pa{ P'WW'P-I_p }^{2} } \\
+&amp;=&amp; \trace{ D_p \pa{ YY'-I_p }^{2} } \text{ avec } Y = P'W
+\end{eqnarray*}</div><p>D’où :</p>
+<div class="math notranslate nohighlight" id="equation-acp-demo-partie-d">
+\begin{eqnarray*}
+\underset{Y}{\arg\min}\acc{ tr\left(  D_{p}\left( YY^{\prime}-I_{p}\right)  ^{2}\right)}  = \left\{  Y\in
+M_{Nd}\left( \R\right) \left|
+    YY^{\prime}=I_{d}\right.  \right\}
+\end{eqnarray*}</div><p>Finalement, l’équation <a class="reference internal" href="#equation-acp-demo-partie-d">(7)</a> permet de démontrer la
+première partie du théorème, à savoir <a class="reference internal" href="#equation-rn-acp-contrainte">(2)</a> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+S =
+\underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
+                    \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 } &amp;=&amp;
+\underset{ W \in M_{p,d}\pa{\R} } { \arg \min } \;  \cro { \sum_{i=1}^{N} \norm{WW'X_i - X_i}^2 }
+\end{eqnarray*}</div></section>
+<section id="calcul-de-valeurs-propres-et-de-vecteurs-propres">
+<span id="par-acp-deux"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Calcul de valeurs propres et de vecteurs propres</a><a class="headerlink" href="#calcul-de-valeurs-propres-et-de-vecteurs-propres" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le calcul des valeurs propres et des vecteurs propres d’une
+matrice fait intervenir un réseau diabolo composé d’une
+seule couche cachée et d’une couche de sortie avec des fonctions
+de transfert linéaires. On note sous forme de matrice
+<span class="math notranslate nohighlight">\(\left( W\right)\)</span> les coefficients de la seconde couche
+du réseau dont les biais sont nuls. On note <span class="math notranslate nohighlight">\(d\)</span> le nombre de
+neurones sur la couche cachée, et <span class="math notranslate nohighlight">\(p\)</span> le nombre d’entrées.</p>
+<div class="math notranslate nohighlight">
+\[\forall i\in\left\{  1,...,d\right\}  ,\,y_{1,i}=\sum_{j=1}^p w_{ji}x_{j}\]</div>
+<p>Soit <span class="math notranslate nohighlight">\(X\in\R^{p}\)</span> les entrées,
+<span class="math notranslate nohighlight">\(Y=\left(  y_{1,1},...,y_{1,d}\right)  \in\R^{d}\)</span>,
+on obtient que : <span class="math notranslate nohighlight">\(Y=W'X\)</span>.</p>
+<p>Les poids de la seconde couche sont définis comme suit :</p>
+<div class="math notranslate nohighlight">
+\[\forall\left( i,j\right)  \in\left\{  1,...,p\right\}  \times\left\{ 1,...,d\right\} \,w_{2,j,i}=w_{1,i,j}\]</div>
+<p>Par conséquent, le vecteur des sorties <span class="math notranslate nohighlight">\(Z\in\R^{p}\)</span>
+du réseau ainsi construit est <span class="math notranslate nohighlight">\(Z=WW'X\)</span>.
+On veut minimiser l’erreur pour <span class="math notranslate nohighlight">\(\left(  X_{i}\right)  _{1\leqslant i\leqslant N}\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[E=\sum_{i=1}^N\left\|  WW'X_{i}-X_{i}\right\|  ^{2}\]</div>
+<p>Il suffit d’apprendre le réseau de neurones pour obtenir :</p>
+<div class="math notranslate nohighlight">
+\[W_{d}^{\ast}=\underset{W\in M_{pd}\left(  \R\right)  }
+{\arg\max }\,\sum_{i=1}^N\left\| WW'X_{i}-X_{i}\right\|
+^{2}\]</div>
+<p>D’après ce qui précède, l’espace engendré par les vecteurs
+colonnes de <span class="math notranslate nohighlight">\(W\)</span> est l’espace engendré par les <span class="math notranslate nohighlight">\(k\)</span>
+premiers vecteurs propres de la matrice
+<span class="math notranslate nohighlight">\(XX^{\prime}=\left(  X_{1},...,X_{P}\right)  \left( X_{1},...,X_{P}\right)  ^{\prime}\)</span>
+associés aux <span class="math notranslate nohighlight">\(k\)</span> premières valeurs propres classées par ordre décroissant de module.</p>
+<p>On en déduit que <span class="math notranslate nohighlight">\(W_{1}^{\ast}\)</span> est le vecteur propre de la matrice
+<span class="math notranslate nohighlight">\(M\)</span> associée à la valeur propre de plus grand module.
+<span class="math notranslate nohighlight">\(W_{2}^{\ast}\)</span> est l’espace engendré par les deux premiers vecteurs.
+Grâce à une <a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_de_Gram-Schmidt">orthonormalisation de Schmidt</a>.
+On en déduit à partir de <span class="math notranslate nohighlight">\(W_{1}^{\ast}\)</span> et <span class="math notranslate nohighlight">\(W_{2}^{\ast}\)</span>,
+les deux premiers vecteurs propres. Par récurrence,
+on trouve l’ensemble des vecteurs propres de la matrice <span class="math notranslate nohighlight">\(XX^{\prime}\)</span>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Définition0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="orthonormalisation-schmidt">Définition D1 : orthonormalisation de Schmidt</p>
+<p>L’orthonormalisation de Shmidt :</p>
+<p>Soit <span class="math notranslate nohighlight">\(\left(  e_{i}\right)  _{1\leqslant i\leqslant N}\)</span>
+une base de <span class="math notranslate nohighlight">\(\R^{p}\)</span></p>
+<p>On définit la famille <span class="math notranslate nohighlight">\(\left(  \varepsilon_{i}\right)  _{1\leqslant i\leqslant p}\)</span>
+par :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\varepsilon_{1} &amp;=&amp; \dfrac{e_{1}}{\left\| e_{1}\right\|}\\
+\forall i \in \intervalle{1}{p}, \; \varepsilon_{i} &amp;=&amp; \dfrac{e_{i}-\overset{i-1}{\underset{j=1}
+{\sum}}&lt;e_{i},\varepsilon_{j}&gt;\varepsilon_{j}}{\left\|
+            e_{i}-\overset {i-1}{\underset{j=1}{\sum}}&lt;e_{i},\varepsilon_{j}&gt;\varepsilon_{j}\right\| }
+\end{eqnarray*}</div></div>
+<p>On vérifie que le dénominateur n’est jamais nul.
+<span class="math notranslate nohighlight">\(e_{i}-\overset{i-1}{\underset{j=1}{\sum}}&lt;e_{i},\varepsilon_{j}&gt;\varepsilon_{j}\neq 0\)</span>
+car <span class="math notranslate nohighlight">\(\forall k\in\left\{ 1,...,N\right\}  ,\; vect\left( e_{1},...,e_{k}\right)
+=vect\left(  \varepsilon_{1} ,...,\varepsilon_{k}\right)\)</span></p>
+<div class="admonition-mathdef admonition" id="indexmathe-Propriété0">
+<p class="admonition-title">Propriété P1 : base orthonormée</p>
+<p>La famille <span class="math notranslate nohighlight">\(\left(  \varepsilon_{i}\right)  _{1\leqslant i\leqslant p}\)</span>
+est une base orthonormée de <span class="math notranslate nohighlight">\(\R^{p}\)</span>.</p>
+</div>
+<p>L’algorithme qui permet de déterminer les vecteurs propres de la matrice <span class="math notranslate nohighlight">\(XX'\)</span>
+définie par le théorème de l”<a class="reference internal" href="#theorem-acp-resolution"><span class="std std-ref">ACP</span></a> est le suivant :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="algorithm-vecteur-propre">Algorithme A1 : vecteurs propres</p>
+<p>Les notations utilisées sont celles du théorème de l”<a class="reference internal" href="#theorem-acp-resolution"><span class="std std-ref">ACP</span></a>.
+On note <span class="math notranslate nohighlight">\(V^*_d\)</span> la matrice des <span class="math notranslate nohighlight">\(d\)</span>
+vecteurs propres de la matrice <span class="math notranslate nohighlight">\(XX'\)</span> associés aux
+<span class="math notranslate nohighlight">\(d\)</span> valeurs propres de plus grands module.</p>
+<div class="line-block">
+<div class="line">for <span class="math notranslate nohighlight">\(d, p\)</span></div>
+<div class="line-block">
+<div class="line">Un réseau diabolo est construit avec les poids <span class="math notranslate nohighlight">\(W_d \in M_{p,d}\pa{\R}\)</span> puis appris.</div>
+<div class="line">Le résultat de cet apprentissage sont les poids <span class="math notranslate nohighlight">\(W^*_d\)</span>.</div>
+<div class="line">if <span class="math notranslate nohighlight">\(d &gt; 1\)</span></div>
+<div class="line-block">
+<div class="line">L’orthonormalisation de Schmit permet de déduire <span class="math notranslate nohighlight">\(V^*_d\)</span> de <span class="math notranslate nohighlight">\(V^*_{d-1}\)</span> et <span class="math notranslate nohighlight">\(W^*_d\)</span>.</div>
+</div>
+<div class="line">else</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(V^*_d = W^*_d\)</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="analyse-en-composantes-principales-acp">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Analyse en Composantes Principales (ACP)</a><a class="headerlink" href="#analyse-en-composantes-principales-acp" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’analyse en composantes principales permet d’analyser
+une liste d’individus décrits par des variables.
+Comme exemple, il suffit de prendre les informations
+extraites du recensement de la population française
+qui permet de décrire chaque habitant par des
+variables telles que la catégorie socio-professionnelle,
+la salaire ou le niveau d’étude.
+Soit <span class="math notranslate nohighlight">\(\left(  X_{1},...,X_{N}\right)\)</span> un ensemble de
+<span class="math notranslate nohighlight">\(N\)</span> individus décrits par <span class="math notranslate nohighlight">\(p\)</span> variables :</p>
+<div class="math notranslate nohighlight">
+\[\forall i\in\left\{  1,...,N\right\},\;X_{i}\in\R^{p}\]</div>
+<p>L’ACP consiste à projeter ce nuage de point sur un plan
+qui conserve le maximum d’information. Par conséquent, il
+s’agit de résoudre le problème :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}W^{\ast}=\underset{ \begin{subarray} \, W\in M_{p,d}\left(  \R\right)  \\
+W^{\prime }W=I_{d} \end{subarray}}{\arg\min}%
+\left(\underset{i=1}{\overset{N}{\sum}}\left\| W'X_{i}\right\|  ^{2}\right)  \text{ avec }d&lt;N\end{split}\]</div>
+<p>Ce problème a été résolu dans les paragraphes <a class="reference internal" href="#par-acp-un"><span class="std std-ref">Problème de l’analyse en composantes principales</span></a>
+et <a class="reference internal" href="#par-acp-deux"><span class="std std-ref">Calcul de valeurs propres et de vecteurs propres</span></a>, il suffit d’appliquer
+l’algorithme <a class="reference internal" href="#algorithm-vecteur-propre"><span class="std std-ref">vecteurs propres</span></a>.</p>
+<p>Soit <span class="math notranslate nohighlight">\(\left(  X_{i}\right)  _{1\leqslant i\leqslant N}\)</span> avec
+<span class="math notranslate nohighlight">\(\forall i\in\left\{  1,...,N\right\} ,\,X_{i}\in\R^{p}\)</span>.
+Soit <span class="math notranslate nohighlight">\(\pa{P_1,\dots,P_p}\)</span> l’ensemble des vecteurs propres
+normés de la matrice <span class="math notranslate nohighlight">\(XX'\)</span> associés aux valeurs propres
+<span class="math notranslate nohighlight">\(\pa{\lambda_1,\dots,\lambda_p}\)</span> classées par ordre décroissant de modules.
+On définit <span class="math notranslate nohighlight">\(\forall d \in \intervalle{1}{p}, \; W_d = \pa{P_1,\dots,P_d} \in M_{p,d}\)</span>.
+On définit alors l’inertie <span class="math notranslate nohighlight">\(I_d\)</span> du nuage de points projeté sur
+l’espace vectoriel défini par <span class="math notranslate nohighlight">\(P_d\)</span>.
+On suppose que le nuage de points est centré, alors :</p>
+<div class="math notranslate nohighlight">
+\[\forall d \in \intervalle{1}{p}, \; I_d = \sum_{k=1}^{N}
+\pa{P_d' X_k}^2 = tr \pa{X' P_d P_d' X} = tr \pa{XX' P_d P_d'} = \lambda_d\]</div>
+<p>Comme <span class="math notranslate nohighlight">\(\pa{P_1,\dots,P_p}\)</span> est une base orthonormée de <span class="math notranslate nohighlight">\(\R^p\)</span>,
+on en déduit que :</p>
+<div class="math notranslate nohighlight">
+\[I = \sum_{k=1}^{P} X_k'X_k = \sum_{d=1}^{N} I_d = \sum_{d=1}^{p} \lambda_d\]</div>
+<p>De manière empirique, on observe fréquemment que la courbe
+<span class="math notranslate nohighlight">\(\pa{d,I_d}_{1 \infegal d \infegal p}\)</span> montre un point
+d’inflexion (voir figure ci-dessous). Dans cet exemple, le point
+d’inflexion correspond à <span class="math notranslate nohighlight">\(d=4\)</span>. En
+analyse des données, on considère empiriquement que seuls les
+quatres premières dimensions contiennent de l’information.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Figure2">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="figure-point-inflexion">Figure F3 : Courbe d’inertie pour l’ACP</p>
+<img alt="../../_images/acp_inertie.png" src="../../_images/acp_inertie.png" />
+<p>Courbe d’inertie : point d’inflexion pour <span class="math notranslate nohighlight">\(d=4\)</span>,
+l’expérience montre que généralement, seules les
+projections sur un ou plusieurs des quatre premiers vecteurs propres
+reflètera l’information contenue par le nuage de points.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="rn_8_prol.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Prolongements</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rn_biblio.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Bibliographie</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probleme-de-l-analyse-en-composantes-principales">Problème de l’analyse en composantes principales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-d-une-acp-avec-un-reseau-de-neurones-diabolo">Résolution d’une ACP avec un réseau de neurones diabolo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calcul-de-valeurs-propres-et-de-vecteurs-propres">Calcul de valeurs propres et de vecteurs propres</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyse-en-composantes-principales-acp">Analyse en Composantes Principales (ACP)</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/c_ml/rn/rn_9_auto.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

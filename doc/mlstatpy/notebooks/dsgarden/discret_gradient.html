@@ -1,0 +1,2682 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Le gradient et le discret &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/dsgarden/discret_gradient';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Quantization" href="../../c_garden/quantization.html" />
+    <link rel="prev" title="Optimisation avec données aléatoires" href="../../c_garden/strategie_avec_alea.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Le petit coin des data scientists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="classification_multiple.html">Classification multiple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlation_non_lineaire.html">Corrélations non linéaires</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Le gradient et le discret</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantile_regression_example.html">Régression quantile illustrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lineaire.html">Régression linéaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../image/index.html">Images</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../image/segment_detection.html">Détection de segments dans une image</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metric/index.html">Métriques</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../metric/pvalues_examples.html">p-values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metric/roc_example.html">ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml/index.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml/logreg_voronoi.html">Voronoï et régression logistique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/piecewise_linear_regression.html">Régression linéaire par morceaux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/regression_no_inversion.html">Régression sans inversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/reseau_neurones.html">Réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/survival.html">Analyse de survie en pratique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../nlp/index.html">NLP - Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_profiling.html">Completion profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_simple.html">Complétion Simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie.html">Complétion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie_long.html">Completion Trie and metrics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../c_garden/index.html" class="nav-link">Pérégrinations</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Le gradient et le discret</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Le-gradient-et-le-discret">
+<h1>Le gradient et le discret<a class="headerlink" href="#Le-gradient-et-le-discret" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Les méthodes d’optimisation à base de gradient s’appuie sur une fonction d’erreur dérivable qu’on devrait appliquer de préférence sur des variables aléatoires réelles. Ce notebook explore quelques idées.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jyquickhelper</span> <span class="kn">import</span> <span class="n">add_notebook_menu</span>
+
+<span class="n">add_notebook_menu</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="my_id_menu_nb">run previous cell, wait for 2 seconds</div>
+<script>
+function repeat_indent_string(n){
+    var a = "" ;
+    for ( ; n > 0 ; --n)
+        a += "    ";
+    return a;
+}
+// look up into all sections and builds an automated menu //
+var update_menu_string = function(begin, lfirst, llast, sformat, send, keep_item, begin_format, end_format) {
+    var anchors = document.getElementsByClassName("section");
+    if (anchors.length == 0) {
+        anchors = document.getElementsByClassName("text_cell_render rendered_html");
+    }
+    var i,t;
+    var text_menu = begin;
+    var text_memo = "<pre>\nlength:" + anchors.length + "\n";
+    var ind = "";
+    var memo_level = 1;
+    var href;
+    var tags = [];
+    var main_item = 0;
+    var format_open = 0;
+    for (i = 0; i <= llast; i++)
+        tags.push("h" + i);
+
+    for (i = 0; i < anchors.length; i++) {
+        text_memo += "**" + anchors[i].id + "--\n";
+
+        var child = null;
+        for(t = 0; t < tags.length; t++) {
+            var r = anchors[i].getElementsByTagName(tags[t]);
+            if (r.length > 0) {
+child = r[0];
+break;
+            }
+        }
+        if (child == null) {
+            text_memo += "null\n";
+            continue;
+        }
+        if (anchors[i].hasAttribute("id")) {
+            // when converted in RST
+            href = anchors[i].id;
+            text_memo += "#1-" + href;
+            // passer à child suivant (le chercher)
+        }
+        else if (child.hasAttribute("id")) {
+            // in a notebook
+            href = child.id;
+            text_memo += "#2-" + href;
+        }
+        else {
+            text_memo += "#3-" + "*" + "\n";
+            continue;
+        }
+        var title = child.textContent;
+        var level = parseInt(child.tagName.substring(1,2));
+
+        text_memo += "--" + level + "?" + lfirst + "--" + title + "\n";
+
+        if ((level < lfirst) || (level > llast)) {
+            continue ;
+        }
+        if (title.endsWith('¶')) {
+            title = title.substring(0,title.length-1).replace("<", "&lt;")
+         .replace(">", "&gt;").replace("&", "&amp;");
+        }
+        if (title.length == 0) {
+            continue;
+        }
+
+        while (level < memo_level) {
+            text_menu += end_format + "</ul>\n";
+            format_open -= 1;
+            memo_level -= 1;
+        }
+        if (level == lfirst) {
+            main_item += 1;
+        }
+        if (keep_item != -1 && main_item != keep_item + 1) {
+            // alert(main_item + " - " + level + " - " + keep_item);
+            continue;
+        }
+        while (level > memo_level) {
+            text_menu += "<ul>\n";
+            memo_level += 1;
+        }
+        text_menu += repeat_indent_string(level-2);
+        text_menu += begin_format + sformat.replace("__HREF__", href).replace("__TITLE__", title);
+        format_open += 1;
+    }
+    while (1 < memo_level) {
+        text_menu += end_format + "</ul>\n";
+        memo_level -= 1;
+        format_open -= 1;
+    }
+    text_menu += send;
+    //text_menu += "\n" + text_memo;
+
+    while (format_open > 0) {
+        text_menu += end_format;
+        format_open -= 1;
+    }
+    return text_menu;
+};
+var update_menu = function() {
+    var sbegin = "";
+    var sformat = '<a href="#__HREF__">__TITLE__</a>';
+    var send = "";
+    var begin_format = '<li>';
+    var end_format = '</li>';
+    var keep_item = -1;
+    var text_menu = update_menu_string(sbegin, 2, 4, sformat, send, keep_item,
+       begin_format, end_format);
+    var menu = document.getElementById("my_id_menu_nb");
+    menu.innerHTML=text_menu;
+};
+window.setTimeout(update_menu,2000);
+            </script></div>
+</div>
+<section id="Un-petit-problème-simple">
+<h2>Un petit problème simple<a class="headerlink" href="#Un-petit-problème-simple" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On utilise le jeu de données <em>iris</em> disponible dans <a class="reference external" href="http://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html">scikit-learn</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># we only take the first two features.</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+<p>On cale une régression logistique. On ne distingue pas apprentissage et test car ce n’est pas le propos de ce notebook.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;,
+          n_jobs=None, penalty=&#39;l2&#39;, random_state=None, solver=&#39;liblinear&#39;,
+          tol=0.0001, verbose=0, warm_start=False)
+</pre></div></div>
+</div>
+<p>Puis on calcule la matrice de confusion.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+
+<span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">confusion_matrix</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[49,  1,  0],
+       [ 2, 21, 27],
+       [ 1,  4, 45]], dtype=int64)
+</pre></div></div>
+</div>
+</section>
+<section id="Multiplication-des-observations">
+<h2>Multiplication des observations<a class="headerlink" href="#Multiplication-des-observations" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le paramètre <code class="docutils literal notranslate"><span class="pre">multi_class='ovr'</span></code> stipule que le modèle cache en fait l’estimation de 3 régressions logistiques binaire. Essayons de n’en faire qu’une seule en ajouter le label <code class="docutils literal notranslate"><span class="pre">Y</span></code> aux variables. Soit un couple <span class="math notranslate nohighlight">\((X_i \in \mathbb{R^d}, Y_i \in \mathbb{N})\)</span> qui correspond à une observation pour un problème multi-classe. Comme il y a <span class="math notranslate nohighlight">\(C\)</span> classes, on multiplie cette ligne par le nombre de classes <span class="math notranslate nohighlight">\(C\)</span> pour obtenir :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\forall c \in \mathbb{[}1, ..., C\mathbb{]}, \; \left\{ \begin{array}{ll} X_i' = (X_{i,1}, ..., X_{i,d}, Y_{i,1}, ..., Y_{i,C}) \\ Y_i' = \mathbb{1}_{Y_i = c} \\ Y_{i,k} = \mathbb{1}_{c = k}\end{array} \right.\end{split}\]</div>
+<p>Voyons ce que cela donne sur un exemple :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+
+
+<span class="k">def</span> <span class="nf">multiplie</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">classes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">XS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">YS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="n">X2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">X2</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">==</span> <span class="n">i</span>
+        <span class="n">XS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X2</span><span class="p">]))</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Yb</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Yb</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">YS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Yb</span><span class="p">)</span>
+
+    <span class="n">Xext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">XS</span><span class="p">)</span>
+    <span class="n">Yext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">YS</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span>
+
+
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">multiplie</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Y</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y0&quot;</span><span class="p">,</span> <span class="s2">&quot;Y1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&#39;&quot;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>Y0</th>
+      <th>Y1</th>
+      <th>Y2</th>
+      <th>Y'</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Trois colonnes ont été ajoutées côté <span class="math notranslate nohighlight">\(X\)</span>, la ligne a été multipliée 3 fois, la dernière colonne est <span class="math notranslate nohighlight">\(Y\)</span> qui ne vaut 1 que lorsque le 1 est au bon endroit dans une des colonnes ajoutées. Le problème de classification qui été de prédire la bonne classe devient : est-ce la classe à prédire est <span class="math notranslate nohighlight">\(k\)</span> ? On applique cela sur toutes les lignes de la base et cela donne :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span> <span class="o">=</span> <span class="n">multiplie</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span><span class="p">]))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y0&quot;</span><span class="p">,</span> <span class="s2">&quot;Y1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&#39;&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="p">:]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>Y0</th>
+      <th>Y1</th>
+      <th>Y2</th>
+      <th>Y'</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>414</th>
+      <td>6.7</td>
+      <td>3.3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>125</th>
+      <td>5.5</td>
+      <td>2.5</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>394</th>
+      <td>6.7</td>
+      <td>3.1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>411</th>
+      <td>6.0</td>
+      <td>2.2</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>7.6</td>
+      <td>3.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>5.8</td>
+      <td>2.6</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>309</th>
+      <td>5.0</td>
+      <td>3.4</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>6.7</td>
+      <td>3.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>182</th>
+      <td>6.1</td>
+      <td>2.8</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">()</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GradientBoostingClassifier(criterion=&#39;friedman_mse&#39;, init=None,
+              learning_rate=0.1, loss=&#39;deviance&#39;, max_depth=3,
+              max_features=None, max_leaf_nodes=None,
+              min_impurity_decrease=0.0, min_impurity_split=None,
+              min_samples_leaf=1, min_samples_split=2,
+              min_weight_fraction_leaf=0.0, n_estimators=100,
+              n_iter_no_change=None, presort=&#39;auto&#39;, random_state=None,
+              subsample=1.0, tol=0.0001, validation_fraction=0.1,
+              verbose=0, warm_start=False)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xext</span><span class="p">)</span>
+<span class="n">confusion_matrix</span><span class="p">(</span><span class="n">Yext</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[278,  22],
+       [ 25, 125]], dtype=int64)
+</pre></div></div>
+</div>
+</section>
+<section id="Introduire-du-bruit">
+<h2>Introduire du bruit<a class="headerlink" href="#Introduire-du-bruit" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un des problèmes de cette méthode est qu’on ajoute une variable binaire pour un problème résolu à l’aide d’une optimisation à base de gradient. C’est moyen. Pas de problème, changeons un peu la donne.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">classes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">XS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">YS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="c1"># X2 = numpy.random.randn((X.shape[0]* 3)).reshape(X.shape[0], 3) * 0.1</span>
+        <span class="n">X2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.2</span>
+        <span class="n">X2</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">==</span> <span class="n">i</span>
+        <span class="n">XS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X2</span><span class="p">]))</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Yb</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Yb</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">YS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Yb</span><span class="p">)</span>
+
+    <span class="n">Xext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">XS</span><span class="p">)</span>
+    <span class="n">Yext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">YS</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span>
+
+
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">multiplie_bruit</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Y</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y0&quot;</span><span class="p">,</span> <span class="s2">&quot;Y1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&#39;&quot;</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>Y0</th>
+      <th>Y1</th>
+      <th>Y2</th>
+      <th>Y'</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.107461</td>
+      <td>0.166893</td>
+      <td>0.018765</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>0.162464</td>
+      <td>1.187359</td>
+      <td>0.187721</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>0.086876</td>
+      <td>0.178472</td>
+      <td>1.179201</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Le problème est le même qu’avant excepté les variables <span class="math notranslate nohighlight">\(Y_i\)</span> qui sont maintenant réel. Au lieu d’être nul, on prend une valeur <span class="math notranslate nohighlight">\(Y_i &lt; 0.4\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span> <span class="o">=</span> <span class="n">multiplie_bruit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span><span class="p">]))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y0&quot;</span><span class="p">,</span> <span class="s2">&quot;Y1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&#39;&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="p">:]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>Y0</th>
+      <th>Y1</th>
+      <th>Y2</th>
+      <th>Y'</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>295</th>
+      <td>5.5</td>
+      <td>2.6</td>
+      <td>0.197643</td>
+      <td>1.199976</td>
+      <td>0.180766</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>5.2</td>
+      <td>3.4</td>
+      <td>0.178395</td>
+      <td>0.190600</td>
+      <td>1.159765</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>187</th>
+      <td>6.7</td>
+      <td>3.1</td>
+      <td>0.188947</td>
+      <td>1.093288</td>
+      <td>0.139723</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>210</th>
+      <td>6.9</td>
+      <td>3.1</td>
+      <td>0.095428</td>
+      <td>0.182643</td>
+      <td>1.037533</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>5.5</td>
+      <td>3.5</td>
+      <td>1.131419</td>
+      <td>0.077241</td>
+      <td>0.177483</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>315</th>
+      <td>6.4</td>
+      <td>3.2</td>
+      <td>0.099738</td>
+      <td>0.197291</td>
+      <td>1.035431</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>152</th>
+      <td>5.8</td>
+      <td>2.7</td>
+      <td>0.069061</td>
+      <td>0.045325</td>
+      <td>1.061221</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>168</th>
+      <td>6.5</td>
+      <td>2.8</td>
+      <td>0.093164</td>
+      <td>1.177413</td>
+      <td>0.095890</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>348</th>
+      <td>6.9</td>
+      <td>3.1</td>
+      <td>1.094184</td>
+      <td>0.196944</td>
+      <td>0.083975</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>261</th>
+      <td>6.3</td>
+      <td>2.8</td>
+      <td>0.197558</td>
+      <td>0.080273</td>
+      <td>1.009379</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
+
+<span class="n">clfb</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">()</span>
+<span class="n">clfb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+GradientBoostingClassifier(criterion=&#39;friedman_mse&#39;, init=None,
+              learning_rate=0.1, loss=&#39;deviance&#39;, max_depth=3,
+              max_features=None, max_leaf_nodes=None,
+              min_impurity_decrease=0.0, min_impurity_split=None,
+              min_samples_leaf=1, min_samples_split=2,
+              min_weight_fraction_leaf=0.0, n_estimators=100,
+              n_iter_no_change=None, presort=&#39;auto&#39;, random_state=None,
+              subsample=1.0, tol=0.0001, validation_fraction=0.1,
+              verbose=0, warm_start=False)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predb</span> <span class="o">=</span> <span class="n">clfb</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xextb</span><span class="p">)</span>
+<span class="n">confusion_matrix</span><span class="p">(</span><span class="n">Yextb</span><span class="p">,</span> <span class="n">predb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[299,   1],
+       [ 10, 140]], dtype=int64)
+</pre></div></div>
+</div>
+<p>C’est un petit peu mieux.</p>
+</section>
+<section id="Comparaisons-de-plusieurs-modèles">
+<h2>Comparaisons de plusieurs modèles<a class="headerlink" href="#Comparaisons-de-plusieurs-modèles" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On cherche maintenant à comparer le gain en introduisant du bruit pour différents modèles.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">cm</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">comparaison</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">clfb</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">model</span><span class="p">()</span>
+        <span class="n">clfb</span> <span class="o">=</span> <span class="n">model</span><span class="p">()</span>
+
+    <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span> <span class="o">=</span> <span class="n">multiplie</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span><span class="p">)</span>
+
+    <span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span> <span class="o">=</span> <span class="n">multiplie_bruit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+    <span class="n">clfb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+    <span class="n">errb</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clfb</span><span class="p">,</span> <span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">err1</span><span class="o">=</span><span class="n">err</span><span class="p">,</span> <span class="n">err2</span><span class="o">=</span><span class="n">errb</span><span class="p">)</span>
+
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">ExtraTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RandomForestClassifier</span><span class="p">,</span>
+    <span class="n">ExtraTreesClassifier</span><span class="p">,</span>
+    <span class="n">AdaBoostClassifier</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span><span class="p">,</span> <span class="n">RadiusNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">LogisticRegression</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)),</span>
+    <span class="n">GradientBoostingClassifier</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+    <span class="n">DecisionTreeClassifier</span><span class="p">,</span>
+    <span class="n">ExtraTreeClassifier</span><span class="p">,</span>
+    <span class="n">XGBClassifier</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">ExtraTreesClassifier</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
+    <span class="p">(</span><span class="n">MLPClassifier</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activation</span><span class="o">=</span><span class="s2">&quot;logistic&quot;</span><span class="p">)),</span>
+    <span class="n">GaussianNB</span><span class="p">,</span>
+    <span class="n">KNeighborsClassifier</span><span class="p">,</span>
+    <span class="p">(</span>
+        <span class="n">AdaBoostClassifier</span><span class="p">,</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">base_estimator</span><span class="o">=</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">),</span>
+            <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;SAMME&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">comparaison</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>err1</th>
+      <th>err2</th>
+      <th>model</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>AdaBoostClassifier</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.048889</td>
+      <td>0.000000</td>
+      <td>DecisionTreeClassifier</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.048889</td>
+      <td>0.000000</td>
+      <td>ExtraTreeClassifier</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.048889</td>
+      <td>0.000000</td>
+      <td>ExtraTreesClassifier</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>GaussianNB</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.104444</td>
+      <td>0.044444</td>
+      <td>GradientBoostingClassifier</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.104444</td>
+      <td>0.091111</td>
+      <td>KNeighborsClassifier</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>LogisticRegression</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>MLPClassifier</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.053333</td>
+      <td>0.002222</td>
+      <td>RandomForestClassifier</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.333333</td>
+      <td>0.053333</td>
+      <td>XGBClassifier</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p><em>err1</em> correspond à <span class="math notranslate nohighlight">\(Y_0, Y_1, Y_2\)</span> binaire, <em>err2</em> aux mêmes variables mais avec un peu de bruit. L’ajout ne semble pas faire décroître la performance et l’améliore dans certains cas. C’est une piste à suivre. Reste à savoir si les modèles n’apprennent pas le bruit.</p>
+</section>
+<section id="Avec-une-ACP">
+<h2>Avec une ACP<a class="headerlink" href="#Avec-une-ACP" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On peut faire varier le nombre de composantes, j’en ai gardé qu’une. L’ACP est appliquée après avoir ajouté les variables binaires ou binaires bruitées. Le résultat est sans équivoque. Aucun modèle ne parvient à apprendre sans l’ajout de bruit.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+
+
+<span class="k">def</span> <span class="nf">comparaison_ACP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">clfb</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">model</span><span class="p">()</span>
+        <span class="n">clfb</span> <span class="o">=</span> <span class="n">model</span><span class="p">()</span>
+
+    <span class="n">axes</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span>
+    <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span> <span class="o">=</span> <span class="n">multiplie</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+    <span class="n">Xext</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Xext</span><span class="p">)</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span><span class="p">)</span>
+
+    <span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span> <span class="o">=</span> <span class="n">multiplie_bruit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+    <span class="n">Xextb</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Xextb</span><span class="p">)</span>
+    <span class="n">clfb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+    <span class="n">errb</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clfb</span><span class="p">,</span> <span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">modelACP</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">errACP1</span><span class="o">=</span><span class="n">err</span><span class="p">,</span> <span class="n">errACP2</span><span class="o">=</span><span class="n">errb</span><span class="p">)</span>
+
+
+<span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">comparaison_ACP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+<span class="n">dfb</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">),</span> <span class="n">dfb</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;modelACP&quot;</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>err1</th>
+      <th>err2</th>
+      <th>model</th>
+      <th>errACP1</th>
+      <th>errACP2</th>
+      <th>modelACP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>AdaBoostClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>AdaBoostClassifier</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.048889</td>
+      <td>0.000000</td>
+      <td>DecisionTreeClassifier</td>
+      <td>0.333333</td>
+      <td>0.000000</td>
+      <td>DecisionTreeClassifier</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.048889</td>
+      <td>0.000000</td>
+      <td>ExtraTreeClassifier</td>
+      <td>0.333333</td>
+      <td>0.000000</td>
+      <td>ExtraTreeClassifier</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.048889</td>
+      <td>0.000000</td>
+      <td>ExtraTreesClassifier</td>
+      <td>0.333333</td>
+      <td>0.000000</td>
+      <td>ExtraTreesClassifier</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>GaussianNB</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>GaussianNB</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.104444</td>
+      <td>0.044444</td>
+      <td>GradientBoostingClassifier</td>
+      <td>0.333333</td>
+      <td>0.224444</td>
+      <td>GradientBoostingClassifier</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.104444</td>
+      <td>0.091111</td>
+      <td>KNeighborsClassifier</td>
+      <td>0.335556</td>
+      <td>0.340000</td>
+      <td>KNeighborsClassifier</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>LogisticRegression</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>LogisticRegression</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>MLPClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>MLPClassifier</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.053333</td>
+      <td>0.002222</td>
+      <td>RandomForestClassifier</td>
+      <td>0.333333</td>
+      <td>0.024444</td>
+      <td>RandomForestClassifier</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.333333</td>
+      <td>0.053333</td>
+      <td>XGBClassifier</td>
+      <td>0.333333</td>
+      <td>0.315556</td>
+      <td>XGBClassifier</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Base-d'apprentissage-et-de-test">
+<h2>Base d’apprentissage et de test<a class="headerlink" href="#Base-d'apprentissage-et-de-test" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Cette fois-ci, on s’intéresse à la qualité des frontières que les modèles trouvent en vérifiant sur une base de test que l’apprentissage s’est bien passé.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+
+<span class="k">def</span> <span class="nf">comparaison_train_test</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mbruit</span><span class="o">=</span><span class="n">multiplie_bruit</span><span class="p">,</span> <span class="n">acp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">acp</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span>
+
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">clf</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">clfb</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">clf</span> <span class="o">=</span> <span class="n">model</span><span class="p">()</span>
+            <span class="n">clfb</span> <span class="o">=</span> <span class="n">model</span><span class="p">()</span>
+
+        <span class="n">Xext_train</span><span class="p">,</span> <span class="n">Yext_train</span> <span class="o">=</span> <span class="n">multiplie</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+        <span class="n">Xext_test</span><span class="p">,</span> <span class="n">Yext_test</span> <span class="o">=</span> <span class="n">multiplie</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">acp</span><span class="p">:</span>
+            <span class="n">Xext_train_</span> <span class="o">=</span> <span class="n">Xext_train</span>
+            <span class="n">Xext_test_</span> <span class="o">=</span> <span class="n">Xext_test</span>
+            <span class="n">acp_model</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xext_train</span><span class="p">)</span>
+            <span class="n">Xext_train</span> <span class="o">=</span> <span class="n">acp_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xext_train</span><span class="p">)</span>
+            <span class="n">Xext_test</span> <span class="o">=</span> <span class="n">acp_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xext_test</span><span class="p">)</span>
+        <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xext_train</span><span class="p">,</span> <span class="n">Yext_train</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+
+        <span class="n">err_train</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">Xext_train</span><span class="p">,</span> <span class="n">Yext_train</span><span class="p">)</span>
+        <span class="n">err_test</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">Xext_test</span><span class="p">,</span> <span class="n">Yext_test</span><span class="p">)</span>
+
+        <span class="n">Xextb_train</span><span class="p">,</span> <span class="n">Yextb_train</span> <span class="o">=</span> <span class="n">mbruit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+        <span class="n">Xextb_test</span><span class="p">,</span> <span class="n">Yextb_test</span> <span class="o">=</span> <span class="n">mbruit</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">acp</span><span class="p">:</span>
+            <span class="n">acp_model</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xextb_train</span><span class="p">)</span>
+            <span class="n">Xextb_train</span> <span class="o">=</span> <span class="n">acp_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xextb_train</span><span class="p">)</span>
+            <span class="n">Xextb_test</span> <span class="o">=</span> <span class="n">acp_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xextb_test</span><span class="p">)</span>
+            <span class="n">Xext_train</span> <span class="o">=</span> <span class="n">acp_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xext_train_</span><span class="p">)</span>
+            <span class="n">Xext_test</span> <span class="o">=</span> <span class="n">acp_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xext_test_</span><span class="p">)</span>
+        <span class="n">clfb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xextb_train</span><span class="p">,</span> <span class="n">Yextb_train</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+
+        <span class="n">errb_train</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clfb</span><span class="p">,</span> <span class="n">Xextb_train</span><span class="p">,</span> <span class="n">Yextb_train</span><span class="p">)</span>
+        <span class="n">errb_train_clean</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clfb</span><span class="p">,</span> <span class="n">Xext_train</span><span class="p">,</span> <span class="n">Yext_train</span><span class="p">)</span>
+        <span class="n">errb_test</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clfb</span><span class="p">,</span> <span class="n">Xextb_test</span><span class="p">,</span> <span class="n">Yextb_test</span><span class="p">)</span>
+        <span class="n">errb_test_clean</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="n">clfb</span><span class="p">,</span> <span class="n">Xext_test</span><span class="p">,</span> <span class="n">Yext_test</span><span class="p">)</span>
+
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">modelTT</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="n">err_train</span><span class="o">=</span><span class="n">err_train</span><span class="p">,</span>
+                <span class="n">err2_train</span><span class="o">=</span><span class="n">errb_train</span><span class="p">,</span>
+                <span class="n">err_test</span><span class="o">=</span><span class="n">err_test</span><span class="p">,</span>
+                <span class="n">err2_test</span><span class="o">=</span><span class="n">errb_test</span><span class="p">,</span>
+                <span class="n">err2b_test_clean</span><span class="o">=</span><span class="n">errb_test_clean</span><span class="p">,</span>
+                <span class="n">err2b_train_clean</span><span class="o">=</span><span class="n">errb_train_clean</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">dfb</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">dfb</span> <span class="o">=</span> <span class="n">dfb</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;modelTT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;err_train&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;err2_train&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;err2b_train_clean&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;err_test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;err2_test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;err2b_test_clean&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+    <span class="n">dfb</span> <span class="o">=</span> <span class="n">dfb</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;modelTT&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dfb</span>
+
+
+<span class="n">dfb</span> <span class="o">=</span> <span class="n">comparaison_train_test</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="n">dfb</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>modelTT</th>
+      <th>err_train</th>
+      <th>err2_train</th>
+      <th>err2b_train_clean</th>
+      <th>err_test</th>
+      <th>err2_test</th>
+      <th>err2b_test_clean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>AdaBoostClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DecisionTreeClassifier</td>
+      <td>0.026667</td>
+      <td>0.000000</td>
+      <td>0.226667</td>
+      <td>0.206667</td>
+      <td>0.273333</td>
+      <td>0.313333</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ExtraTreeClassifier</td>
+      <td>0.026667</td>
+      <td>0.000000</td>
+      <td>0.253333</td>
+      <td>0.213333</td>
+      <td>0.253333</td>
+      <td>0.273333</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ExtraTreesClassifier</td>
+      <td>0.026667</td>
+      <td>0.000000</td>
+      <td>0.140000</td>
+      <td>0.200000</td>
+      <td>0.213333</td>
+      <td>0.220000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>GaussianNB</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GradientBoostingClassifier</td>
+      <td>0.080000</td>
+      <td>0.013333</td>
+      <td>0.176667</td>
+      <td>0.186667</td>
+      <td>0.246667</td>
+      <td>0.240000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>KNeighborsClassifier</td>
+      <td>0.070000</td>
+      <td>0.076667</td>
+      <td>0.073333</td>
+      <td>0.160000</td>
+      <td>0.160000</td>
+      <td>0.166667</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>LogisticRegression</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>MLPClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RandomForestClassifier</td>
+      <td>0.026667</td>
+      <td>0.000000</td>
+      <td>0.156667</td>
+      <td>0.206667</td>
+      <td>0.266667</td>
+      <td>0.213333</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>XGBClassifier</td>
+      <td>0.106667</td>
+      <td>0.036667</td>
+      <td>0.333333</td>
+      <td>0.193333</td>
+      <td>0.280000</td>
+      <td>0.346667</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Les colonnes <em>err2b_train_clean</em> et <em>err2b_test_clean</em> sont les erreurs obtenues par des modèles appris sur des colonnes bruitées et testées sur des colonnes non bruitées ce qui est le véritable test. On s’aperçoit que les performances sont très dégradées sur la base d’test. Une raison est que le bruit choisi ajouté n’est pas centré. Corrigeons cela.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit_centree</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">classes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">XS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">YS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="c1"># X2 = numpy.random.randn((X.shape[0]* 3)).reshape(X.shape[0], 3) * 0.1</span>
+        <span class="n">X2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.2</span> <span class="o">-</span> <span class="mf">0.1</span>
+        <span class="n">X2</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">==</span> <span class="n">i</span>
+        <span class="n">XS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X2</span><span class="p">]))</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Yb</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Yb</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">YS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Yb</span><span class="p">)</span>
+
+    <span class="n">Xext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">XS</span><span class="p">)</span>
+    <span class="n">Yext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">YS</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span>
+
+
+<span class="n">dfb</span> <span class="o">=</span> <span class="n">comparaison_train_test</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mbruit</span><span class="o">=</span><span class="n">multiplie_bruit_centree</span><span class="p">,</span> <span class="n">acp</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">dfb</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>modelTT</th>
+      <th>err_train</th>
+      <th>err2_train</th>
+      <th>err2b_train_clean</th>
+      <th>err_test</th>
+      <th>err2_test</th>
+      <th>err2b_test_clean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>AdaBoostClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DecisionTreeClassifier</td>
+      <td>0.033333</td>
+      <td>0.000000</td>
+      <td>0.143333</td>
+      <td>0.193333</td>
+      <td>0.273333</td>
+      <td>0.206667</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ExtraTreeClassifier</td>
+      <td>0.033333</td>
+      <td>0.000000</td>
+      <td>0.143333</td>
+      <td>0.226667</td>
+      <td>0.233333</td>
+      <td>0.180000</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ExtraTreesClassifier</td>
+      <td>0.033333</td>
+      <td>0.000000</td>
+      <td>0.123333</td>
+      <td>0.200000</td>
+      <td>0.213333</td>
+      <td>0.193333</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>GaussianNB</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GradientBoostingClassifier</td>
+      <td>0.083333</td>
+      <td>0.013333</td>
+      <td>0.203333</td>
+      <td>0.193333</td>
+      <td>0.226667</td>
+      <td>0.280000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>KNeighborsClassifier</td>
+      <td>0.106667</td>
+      <td>0.106667</td>
+      <td>0.100000</td>
+      <td>0.180000</td>
+      <td>0.180000</td>
+      <td>0.193333</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>LogisticRegression</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>MLPClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RandomForestClassifier</td>
+      <td>0.040000</td>
+      <td>0.000000</td>
+      <td>0.176667</td>
+      <td>0.206667</td>
+      <td>0.240000</td>
+      <td>0.253333</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>XGBClassifier</td>
+      <td>0.080000</td>
+      <td>0.063333</td>
+      <td>0.170000</td>
+      <td>0.186667</td>
+      <td>0.220000</td>
+      <td>0.240000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>C’est mieux mais on en conclut que dans la plupart des cas, la meilleure performance sur la base d’apprentissage avec le bruit ajouté est due au fait que les modèles apprennent par coeur. Sur la base de test, les performances ne sont pas meilleures. Une erreur de 33% signifie que la réponse du classifieur est constante. On multiplie les exemples.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit_centree_duplique</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">classes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">XS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">YS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+            <span class="c1"># X2 = numpy.random.randn((X.shape[0]* 3)).reshape(X.shape[0], 3) * 0.3</span>
+            <span class="n">X2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.8</span> <span class="o">-</span> <span class="mf">0.4</span>
+            <span class="n">X2</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">Yb</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">==</span> <span class="n">i</span>
+            <span class="n">XS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X2</span><span class="p">]))</span>
+            <span class="n">Yb</span> <span class="o">=</span> <span class="n">Yb</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Yb</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">YS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Yb</span><span class="p">)</span>
+
+    <span class="n">Xext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">XS</span><span class="p">)</span>
+    <span class="n">Yext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">YS</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span>
+
+
+<span class="n">dfb</span> <span class="o">=</span> <span class="n">comparaison_train_test</span><span class="p">(</span>
+    <span class="n">models</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mbruit</span><span class="o">=</span><span class="n">multiplie_bruit_centree_duplique</span><span class="p">,</span> <span class="n">acp</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+<span class="n">dfb</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>modelTT</th>
+      <th>err_train</th>
+      <th>err2_train</th>
+      <th>err2b_train_clean</th>
+      <th>err_test</th>
+      <th>err2_test</th>
+      <th>err2b_test_clean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>AdaBoostClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DecisionTreeClassifier</td>
+      <td>0.040000</td>
+      <td>0.000000</td>
+      <td>0.120000</td>
+      <td>0.180000</td>
+      <td>0.209333</td>
+      <td>0.240000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ExtraTreeClassifier</td>
+      <td>0.040000</td>
+      <td>0.000000</td>
+      <td>0.073333</td>
+      <td>0.213333</td>
+      <td>0.232000</td>
+      <td>0.220000</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ExtraTreesClassifier</td>
+      <td>0.040000</td>
+      <td>0.000000</td>
+      <td>0.066667</td>
+      <td>0.213333</td>
+      <td>0.168000</td>
+      <td>0.160000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>GaussianNB</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GradientBoostingClassifier</td>
+      <td>0.086667</td>
+      <td>0.087333</td>
+      <td>0.166667</td>
+      <td>0.173333</td>
+      <td>0.192000</td>
+      <td>0.186667</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>KNeighborsClassifier</td>
+      <td>0.110000</td>
+      <td>0.094667</td>
+      <td>0.106667</td>
+      <td>0.113333</td>
+      <td>0.158667</td>
+      <td>0.153333</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>LogisticRegression</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>MLPClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RandomForestClassifier</td>
+      <td>0.046667</td>
+      <td>0.000667</td>
+      <td>0.090000</td>
+      <td>0.160000</td>
+      <td>0.188000</td>
+      <td>0.226667</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>XGBClassifier</td>
+      <td>0.123333</td>
+      <td>0.108667</td>
+      <td>0.173333</td>
+      <td>0.153333</td>
+      <td>0.204000</td>
+      <td>0.193333</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Cela fonctionne un peu mieux le fait d’ajouter du hasard ne permet pas d’obtenir des gains significatifs à part pour le modèle <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">SVC</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit_centree_duplique_rebalance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">classes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">XS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">YS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="n">X2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.8</span> <span class="o">-</span> <span class="mf">0.4</span>
+        <span class="n">X2</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># * ((i % 2) * 2 - 1)</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">==</span> <span class="n">i</span>
+        <span class="n">XS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X2</span><span class="p">]))</span>
+        <span class="n">Yb</span> <span class="o">=</span> <span class="n">Yb</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Yb</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">YS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Yb</span><span class="p">)</span>
+
+    <span class="n">Xext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">XS</span><span class="p">)</span>
+    <span class="n">Yext</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">YS</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span>
+
+
+<span class="n">dfb</span> <span class="o">=</span> <span class="n">comparaison_train_test</span><span class="p">(</span>
+    <span class="n">models</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mbruit</span><span class="o">=</span><span class="n">multiplie_bruit_centree_duplique_rebalance</span>
+<span class="p">)</span>
+<span class="n">dfb</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>modelTT</th>
+      <th>err_train</th>
+      <th>err2_train</th>
+      <th>err2b_train_clean</th>
+      <th>err_test</th>
+      <th>err2_test</th>
+      <th>err2b_test_clean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>AdaBoostClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DecisionTreeClassifier</td>
+      <td>0.033333</td>
+      <td>0.000000</td>
+      <td>0.143333</td>
+      <td>0.200000</td>
+      <td>0.233333</td>
+      <td>0.193333</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ExtraTreeClassifier</td>
+      <td>0.033333</td>
+      <td>0.000000</td>
+      <td>0.246667</td>
+      <td>0.233333</td>
+      <td>0.320000</td>
+      <td>0.300000</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ExtraTreesClassifier</td>
+      <td>0.033333</td>
+      <td>0.000000</td>
+      <td>0.143333</td>
+      <td>0.206667</td>
+      <td>0.220000</td>
+      <td>0.180000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>GaussianNB</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GradientBoostingClassifier</td>
+      <td>0.090000</td>
+      <td>0.013333</td>
+      <td>0.133333</td>
+      <td>0.220000</td>
+      <td>0.206667</td>
+      <td>0.186667</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>KNeighborsClassifier</td>
+      <td>0.103333</td>
+      <td>0.110000</td>
+      <td>0.123333</td>
+      <td>0.206667</td>
+      <td>0.180000</td>
+      <td>0.186667</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>LogisticRegression</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>MLPClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RandomForestClassifier</td>
+      <td>0.040000</td>
+      <td>0.000000</td>
+      <td>0.146667</td>
+      <td>0.180000</td>
+      <td>0.266667</td>
+      <td>0.173333</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>XGBClassifier</td>
+      <td>0.100000</td>
+      <td>0.033333</td>
+      <td>0.210000</td>
+      <td>0.206667</td>
+      <td>0.240000</td>
+      <td>0.246667</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Petite-explication">
+<h2>Petite explication<a class="headerlink" href="#Petite-explication" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Dans tout le notebook, le score de la régression logistique est nul. Elle ne parvient pas à apprendre tout simplement parce que le problème choisi n’est pas linéaire séparable. S’il l’était, cela voudrait dire que le problème suivant l’est aussi.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+    <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">3</span> <span class="o">==</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="n">M</span><span class="p">,</span> <span class="n">Y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(array([[1., 0., 0., 1., 0., 0.],
+        [1., 0., 0., 0., 1., 0.],
+        [1., 0., 0., 0., 0., 1.],
+        [0., 1., 0., 1., 0., 0.],
+        [0., 1., 0., 0., 1., 0.],
+        [0., 1., 0., 0., 0., 1.],
+        [0., 0., 1., 1., 0., 0.],
+        [0., 0., 1., 0., 1., 0.],
+        [0., 0., 1., 0., 0., 1.]]), array([[1.],
+        [0.],
+        [0.],
+        [0.],
+        [1.],
+        [0.],
+        [0.],
+        [0.],
+        [1.]]))
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;,
+          n_jobs=None, penalty=&#39;l2&#39;, random_state=None, solver=&#39;liblinear&#39;,
+          tol=0.0001, verbose=0, warm_start=False)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0., 0., 0., 0., 0., 0., 0., 0., 0.])
+</pre></div></div>
+</div>
+<p>A revisiter.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../c_garden/strategie_avec_alea.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Optimisation avec données aléatoires</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../c_garden/quantization.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Quantization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Un-petit-problème-simple">Un petit problème simple</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Multiplication-des-observations">Multiplication des observations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Introduire-du-bruit">Introduire du bruit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparaisons-de-plusieurs-modèles">Comparaisons de plusieurs modèles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Avec-une-ACP">Avec une ACP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Base-d'apprentissage-et-de-test">Base d’apprentissage et de test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Petite-explication">Petite explication</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/notebooks/dsgarden/discret_gradient.ipynb">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

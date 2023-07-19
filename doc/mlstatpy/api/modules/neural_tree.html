@@ -1,0 +1,1567 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>mlstatpy.ml.neural_tree &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/modules/neural_tree';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="mlstatpy.ml.roc" href="roc.html" />
+    <link rel="prev" title="mlstatpy.ml.logreg" href="logreg.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../ml.html">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optim.html">Optimisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text.html">Traitement du langage naturel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data.html">Source de données</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graph.html">Graphes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image.html">Image</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Modules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="poulet.html">mlstatpy.garden.poulet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_distance.html">mlstatpy.graph.graph_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kppv.html">mlstatpy.ml.kppv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kppv_laesa.html">mlstatpy.ml.kppv_laesa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logreg.html">mlstatpy.ml.logreg</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">mlstatpy.ml.neural_tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roc.html">mlstatpy.ml.roc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completion.html">mlstatpy.nlp.completion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completion_simple.html">mlstatpy.nlp.completion_simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sgd.html">mlstatpy.optim.sgd</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Modules</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">mlstatpy.ml.neural_tree</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-mlstatpy.ml.neural_tree">
+<span id="mlstatpy-ml-neural-tree"></span><h1>mlstatpy.ml.neural_tree<a class="headerlink" href="#module-mlstatpy.ml.neural_tree" title="Lien permanent vers cette rubrique">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.BaseNeuralTreeNet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.ml.neural_tree.</span></span><span class="sig-name descname"><span class="pre">BaseNeuralTreeNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_schedule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L729"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#BaseNeuralTreeNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Classifier or regressor following <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a> API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>estimator</strong> – instance of <a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNet" title="mlstatpy.ml.neural_tree.NeuralTreeNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeuralTreeNet</span></code></a>.</p></li>
+<li><p><strong>X</strong> – training set</p></li>
+<li><p><strong>y</strong> – training labels</p></li>
+<li><p><strong>optimizer</strong> – optimizer, by default, it is
+<a class="reference internal" href="sgd.html#mlstatpy.optim.sgd.SGDOptimizer" title="mlstatpy.optim.sgd.SGDOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDOptimizer</span></code></a>.</p></li>
+<li><p><strong>max_iter</strong> – number maximum of iterations</p></li>
+<li><p><strong>early_th</strong> – early stopping threshold</p></li>
+<li><p><strong>verbose</strong> – more verbose</p></li>
+<li><p><strong>lr</strong> – to overwrite <em>learning_rate_init</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>lr_schedule</strong> – to overwrite <em>lr_schedule</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>l1</strong> – L1 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>l2</strong> – L2 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>momentum</strong> – used if <em>optimizer</em> is None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.BaseNeuralTreeNet.decision_function">
+<span class="sig-name descname"><span class="pre">decision_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L783"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#BaseNeuralTreeNet.decision_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.decision_function" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the classification probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> – inputs</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>probabilities</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.BaseNeuralTreeNet.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L792"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#BaseNeuralTreeNet.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.fit" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Trains the estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – input features</p></li>
+<li><p><strong>y</strong> – expected classes (binary)</p></li>
+<li><p><strong>sample_weights</strong> – sample weights</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.BaseNeuralTreeNet.onnx_converter">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onnx_converter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L843"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#BaseNeuralTreeNet.onnx_converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.onnx_converter" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Converts this model into ONNX.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.BaseNeuralTreeNet.onnx_shape_calculator">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onnx_shape_calculator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L822"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#BaseNeuralTreeNet.onnx_shape_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.onnx_shape_calculator" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Shape calculator when converting this model into ONNX.
+See <a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.BaseNeuralTreeNet.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(disponible dans Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet" title="mlstatpy.ml.neural_tree.BaseNeuralTreeNet"><span class="pre">BaseNeuralTreeNet</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/../../../../../../opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/sklearn/utils/_metadata_requests.py#L1033"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.set_fit_request" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(disponible dans scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Nouveau dans la version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code>. Otherwise it has no effect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sample_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><em>str</em></a><em>, </em><em>True</em><em>, </em><em>False</em><em>, or </em><em>None</em><em>,                     </em><em>default=sklearn.utils.metadata_routing.UNCHANGED</em>) – Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weights</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The updated object.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.11)">object</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.ml.neural_tree.</span></span><span class="sig-name descname"><span class="pre">NeuralTreeNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L35"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Node ensemble.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dim</strong> – space dimension</p></li>
+<li><p><strong>empty</strong> – empty network, other adds an identity node</p></li>
+</ul>
+</dd>
+</dl>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlstatpy.ml.neural_tree</span> <span class="kn">import</span> <span class="n">NeuralTreeNode</span><span class="p">,</span> <span class="n">NeuralTreeNet</span>
+
+<span class="n">w1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.6</span><span class="p">])</span>
+
+<span class="n">neu</span> <span class="o">=</span> <span class="n">NeuralTreeNode</span><span class="p">(</span><span class="n">w1</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">bias</span><span class="o">=</span><span class="n">w1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">)</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">NeuralTreeNet</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neu</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">ide</span> <span class="o">=</span> <span class="n">NeuralTreeNode</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">]),</span>
+                     <span class="n">bias</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">]),</span>
+                     <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;identity&#39;</span><span class="p">)</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ide</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">runner</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="n">mlstatpy</span><span class="o">/</span><span class="n">mlstatpy</span><span class="o">/</span><span class="n">mlstatpy</span><span class="o">/</span><span class="n">ml</span><span class="o">/</span><span class="n">_neural_tree_node</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">192</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">Conversion</span> <span class="n">of</span> <span class="n">an</span> <span class="n">array</span> <span class="k">with</span> <span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="n">to</span> <span class="n">a</span> <span class="n">scalar</span> <span class="ow">is</span> <span class="n">deprecated</span><span class="p">,</span> <span class="ow">and</span> <span class="n">will</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">future</span><span class="o">.</span> <span class="n">Ensure</span> <span class="n">you</span> <span class="n">extract</span> <span class="n">a</span> <span class="n">single</span> <span class="n">element</span> <span class="kn">from</span> <span class="nn">your</span> <span class="n">array</span> <span class="n">before</span> <span class="n">performing</span> <span class="n">this</span> <span class="n">operation</span><span class="o">.</span> <span class="p">(</span><span class="n">Deprecated</span> <span class="n">NumPy</span> <span class="mf">1.25</span><span class="o">.</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">coef</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bias</span>
+    <span class="p">[[</span><span class="mf">0.837</span> <span class="mf">1.632</span> <span class="mf">0.308</span> <span class="mf">0.308</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.148</span> <span class="mf">0.864</span> <span class="mf">0.475</span> <span class="mf">0.475</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">2.263</span> <span class="mf">0.574</span> <span class="mf">0.724</span> <span class="mf">0.724</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.103</span> <span class="mf">0.352</span> <span class="mf">0.348</span> <span class="mf">0.348</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.457</span> <span class="mf">0.046</span> <span class="mf">0.46</span>  <span class="mf">0.46</span> <span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.244</span> <span class="mf">0.668</span> <span class="mf">0.331</span> <span class="mf">0.331</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.515</span> <span class="mf">0.223</span> <span class="mf">0.641</span> <span class="mf">0.641</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.573</span> <span class="mf">0.241</span> <span class="mf">0.649</span> <span class="mf">0.649</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.01</span>  <span class="mf">0.706</span> <span class="mf">0.286</span> <span class="mf">0.286</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.01</span>  <span class="mf">1.989</span> <span class="mf">0.156</span> <span class="mf">0.156</span><span class="p">]]</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L135"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.append" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Appends a node into the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> – node to add</p></li>
+<li><p><strong>inputs</strong> – index of input nodes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L129"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.clear" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Clear all nodes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.create_from_tree">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_from_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'one'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L219"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.create_from_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.create_from_tree" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Creates a <a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNet" title="mlstatpy.ml.neural_tree.NeuralTreeNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeuralTreeNet</span></code></a> instance from a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html">DecisionTreeClassifier</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> – <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html">DecisionTreeClassifier</a></p></li>
+<li><p><strong>k</strong> – slant of the sigmoïd</p></li>
+<li><p><strong>arch</strong> – architecture, see below</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNet" title="mlstatpy.ml.neural_tree.NeuralTreeNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeuralTreeNet</span></code></a></p>
+</dd>
+</dl>
+<p>The function only works for binary problems.
+Available architecture:</p>
+<ul class="simple">
+<li><p><cite>“one”</cite>: the method adds nodes with one output, there
+is no soecific definition of layers,</p></li>
+<li><p><cite>“compact”</cite>: the adds two nodes, the first computes
+the threshold, the second one computes the leaves
+output, a final node merges all outputs into one</p></li>
+</ul>
+<p>See notebook <a class="reference internal" href="../../notebooks/ml/neural_tree.html"><span class="std std-ref">Un arbre de décision en réseaux de neurones</span></a> for examples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.dlossds">
+<span class="sig-name descname"><span class="pre">dlossds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L674"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.dlossds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.dlossds" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the loss derivative against the inputs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.fill_cache">
+<span class="sig-name descname"><span class="pre">fill_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L619"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.fill_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.fill_cache" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Creates a cache with intermediate results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.gradient_backward">
+<span class="sig-name descname"><span class="pre">gradient_backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graddx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L687"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.gradient_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.gradient_backward" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the gradient in X.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graddx</strong> – existing gradient against the inputs</p></li>
+<li><p><strong>X</strong> – computes the gradient in X</p></li>
+<li><p><strong>inputs</strong> – if False, derivative against the coefficients,
+otherwise against the inputs.</p></li>
+<li><p><strong>cache</strong> – cache intermediate results to avoid more computation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>gradient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L665"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.loss" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the loss due to prediction error. Returns a float.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.shape" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the shape of the coefficients.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.to_dot">
+<span class="sig-name descname"><span class="pre">to_dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L508"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.to_dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.to_dot" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Exports the neural network into <a class="reference external" href="https://fr.wikipedia.org/wiki/DOT_(langage)">dot</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> – input as an example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.training_weights">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">training_weights</span></span><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.training_weights" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the weights.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNet.update_training_weights">
+<span class="sig-name descname"><span class="pre">update_training_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L600"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNet.update_training_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.update_training_weights" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Updates weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – training dataset</p></li>
+<li><p><strong>add</strong> – addition or replace</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetClassifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.ml.neural_tree.</span></span><span class="sig-name descname"><span class="pre">NeuralTreeNetClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_schedule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L947"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNetClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Classifier following <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a> API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>estimator</strong> – instance of <a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNet" title="mlstatpy.ml.neural_tree.NeuralTreeNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeuralTreeNet</span></code></a>.</p></li>
+<li><p><strong>optimizer</strong> – optimizer, by default, it is
+<a class="reference internal" href="sgd.html#mlstatpy.optim.sgd.SGDOptimizer" title="mlstatpy.optim.sgd.SGDOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDOptimizer</span></code></a>.</p></li>
+<li><p><strong>max_iter</strong> – number maximum of iterations</p></li>
+<li><p><strong>early_th</strong> – early stopping threshold</p></li>
+<li><p><strong>verbose</strong> – more verbose</p></li>
+<li><p><strong>lr</strong> – to overwrite <em>learning_rate_init</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>lr_schedule</strong> – to overwrite <em>lr_schedule</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>l1</strong> – L1 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>l2</strong> – L2 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>momentum</strong> – used if <em>optimizer</em> is None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L1001"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNetClassifier.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.predict" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the predicted classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> – inputs</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>classes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L1011"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNetClassifier.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.predict_proba" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the classification probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> – inputs</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>probabilities</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(disponible dans Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier" title="mlstatpy.ml.neural_tree.NeuralTreeNetClassifier"><span class="pre">NeuralTreeNetClassifier</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/../../../../../../opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/sklearn/utils/_metadata_requests.py#L1033"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.set_fit_request" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(disponible dans scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Nouveau dans la version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code>. Otherwise it has no effect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sample_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><em>str</em></a><em>, </em><em>True</em><em>, </em><em>False</em><em>, or </em><em>None</em><em>,                     </em><em>default=sklearn.utils.metadata_routing.UNCHANGED</em>) – Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weights</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The updated object.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.11)">object</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.set_score_request">
+<span class="sig-name descname"><span class="pre">set_score_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(disponible dans Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier" title="mlstatpy.ml.neural_tree.NeuralTreeNetClassifier"><span class="pre">NeuralTreeNetClassifier</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/../../../../../../opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/sklearn/utils/_metadata_requests.py#L1033"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.set_score_request" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(disponible dans scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">score</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Nouveau dans la version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code>. Otherwise it has no effect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sample_weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><em>str</em></a><em>, </em><em>True</em><em>, </em><em>False</em><em>, or </em><em>None</em><em>,                     </em><em>default=sklearn.utils.metadata_routing.UNCHANGED</em>) – Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The updated object.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.11)">object</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetRegressor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.ml.neural_tree.</span></span><span class="sig-name descname"><span class="pre">NeuralTreeNetRegressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_schedule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L1021"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNetRegressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Regressor following <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a> API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>estimator</strong> – instance of <a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNet" title="mlstatpy.ml.neural_tree.NeuralTreeNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeuralTreeNet</span></code></a>.</p></li>
+<li><p><strong>optimizer</strong> – optimizer, by default, it is
+<a class="reference internal" href="sgd.html#mlstatpy.optim.sgd.SGDOptimizer" title="mlstatpy.optim.sgd.SGDOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDOptimizer</span></code></a>.</p></li>
+<li><p><strong>max_iter</strong> – number maximum of iterations</p></li>
+<li><p><strong>early_th</strong> – early stopping threshold</p></li>
+<li><p><strong>verbose</strong> – more verbose</p></li>
+<li><p><strong>lr</strong> – to overwrite <em>learning_rate_init</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>lr_schedule</strong> – to overwrite <em>lr_schedule</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>l1</strong> – L1 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>l2</strong> – L2 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>momentum</strong> – used if <em>optimizer</em> is None</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L1075"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#NeuralTreeNetRegressor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.predict" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the predicted classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> – inputs</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>classes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(disponible dans Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor" title="mlstatpy.ml.neural_tree.NeuralTreeNetRegressor"><span class="pre">NeuralTreeNetRegressor</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/../../../../../../opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/sklearn/utils/_metadata_requests.py#L1033"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.set_fit_request" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(disponible dans scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Nouveau dans la version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code>. Otherwise it has no effect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sample_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><em>str</em></a><em>, </em><em>True</em><em>, </em><em>False</em><em>, or </em><em>None</em><em>,                     </em><em>default=sklearn.utils.metadata_routing.UNCHANGED</em>) – Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weights</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The updated object.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.11)">object</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.set_score_request">
+<span class="sig-name descname"><span class="pre">set_score_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(disponible dans Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor" title="mlstatpy.ml.neural_tree.NeuralTreeNetRegressor"><span class="pre">NeuralTreeNetRegressor</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/../../../../../../opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/sklearn/utils/_metadata_requests.py#L1033"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.set_score_request" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(disponible dans scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">score</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Nouveau dans la version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code>. Otherwise it has no effect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sample_weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><em>str</em></a><em>, </em><em>True</em><em>, </em><em>False</em><em>, or </em><em>None</em><em>,                     </em><em>default=sklearn.utils.metadata_routing.UNCHANGED</em>) – Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The updated object.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.11)">object</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mlstatpy.ml.neural_tree.label_class_to_softmax_output">
+<span class="sig-prename descclassname"><span class="pre">mlstatpy.ml.neural_tree.</span></span><span class="sig-name descname"><span class="pre">label_class_to_softmax_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_label</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/neural_tree.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/neural_tree.html#label_class_to_softmax_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml.neural_tree.label_class_to_softmax_output" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Converts a binary class label into a matrix
+with two columns of probabilities.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlstatpy.ml.neural_tree</span> <span class="kn">import</span> <span class="n">label_class_to_softmax_output</span>
+
+<span class="n">y_label</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">soft_y</span> <span class="o">=</span> <span class="n">label_class_to_softmax_output</span><span class="p">(</span><span class="n">y_label</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">soft_y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[[</span><span class="mf">1.</span> <span class="mf">0.</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.</span> <span class="mf">1.</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.</span> <span class="mf">0.</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.</span> <span class="mf">0.</span><span class="p">]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<span class="target" id="module-mlstatpy.ml._neural_tree_node"></span><dl class="py class">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.ml._neural_tree_node.</span></span><span class="sig-name descname"><span class="pre">NeuralTreeNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sigmoid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L9"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>One node in a neural network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> – weights</p></li>
+<li><p><strong>bias</strong> – bias, if None, draws a random number</p></li>
+<li><p><strong>activation</strong> – activation function</p></li>
+<li><p><strong>nodeid</strong> – node id</p></li>
+<li><p><strong>tag</strong> – unused but to add information on how this node was created</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.bias">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.bias" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the weights.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.dlossds">
+<span class="sig-name descname"><span class="pre">dlossds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L355"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.dlossds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.dlossds" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the loss derivative due to prediction error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.fill_cache">
+<span class="sig-name descname"><span class="pre">fill_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L325"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.fill_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.fill_cache" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Creates a cache with intermediate results.
+<code class="docutils literal notranslate"><span class="pre">lX</span></code> is the results before the activation function,
+<code class="docutils literal notranslate"><span class="pre">aX</span></code> is the results after the activation function, the prediction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_dloss_function">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_activation_dloss_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activation</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L143"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.get_activation_dloss_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_dloss_function" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the derivative of the default loss function based
+on the activation function. It returns a function
+<em>df(x,y)/dw, df(w)/dw</em> where <em>w</em> are the weights.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_function">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_activation_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activation</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L65"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.get_activation_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_function" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the activation function.
+It returns a function <em>y=f(x)</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_gradient_function">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_activation_gradient_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activation</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L89"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.get_activation_gradient_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_gradient_function" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the activation function.
+It returns a function <em>y=f”(x)</em>.
+About the sigmoid:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{l}
+f(x) &amp;=&amp; \frac{1}{1 + e^{-x}} \\
+f'(x) &amp;=&amp; \frac{e^{-x}}{(1 + e^{-x})^2} = f(x)(1-f(x))
+\end{array}\end{split}\]</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_loss_function">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_activation_loss_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activation</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L121"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.get_activation_loss_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_loss_function" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns a default loss function based on the activation
+function. It returns two functions <em>g=loss(x,y)</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.gradient_backward">
+<span class="sig-name descname"><span class="pre">gradient_backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graddx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L362"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.gradient_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.gradient_backward" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the gradients at point <em>X</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graddx</strong> – existing gradient against the inputs</p></li>
+<li><p><strong>X</strong> – computes the gradient in X</p></li>
+<li><p><strong>inputs</strong> – if False, derivative against the coefficients,
+otherwise against the inputs.</p></li>
+<li><p><strong>cache</strong> – cache intermediate results</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>gradient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.input_weights">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_weights</span></span><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.input_weights" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the weights.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L346"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.loss" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the loss. Returns a float.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.ndim">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ndim</span></span><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.ndim" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the input dimension.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.ndim_out">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ndim_out</span></span><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.ndim_out" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the output dimension.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L289"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.predict" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes neuron outputs.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.training_weights">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">training_weights</span></span><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.training_weights" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the weights stored in the neuron.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_node.NeuralTreeNode.update_training_weights">
+<span class="sig-name descname"><span class="pre">update_training_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_node.py#L313"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_node.html#NeuralTreeNode.update_training_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.update_training_weights" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Updates weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – training datasets</p></li>
+<li><p><strong>add</strong> – addition or replace</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-mlstatpy.ml._neural_tree_api"></span><dl class="py class">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.ml._neural_tree_api.</span></span><span class="sig-name descname"><span class="pre">_TrainingAPI</span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L7"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Declaration of function needed to train a model.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.dlossds">
+<span class="sig-name descname"><span class="pre">dlossds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L38"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI.dlossds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.dlossds" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the loss derivative due to prediction error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.fill_cache">
+<span class="sig-name descname"><span class="pre">fill_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L26"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI.fill_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.fill_cache" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Creates a cache with intermediate results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_th</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_schedule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L75"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.fit" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Fits a neuron.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – training set</p></li>
+<li><p><strong>y</strong> – training labels</p></li>
+<li><p><strong>optimizer</strong> – optimizer, by default, it is
+<a class="reference internal" href="sgd.html#mlstatpy.optim.sgd.SGDOptimizer" title="mlstatpy.optim.sgd.SGDOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDOptimizer</span></code></a>.</p></li>
+<li><p><strong>max_iter</strong> – number maximum of iterations</p></li>
+<li><p><strong>early_th</strong> – early stopping threshold</p></li>
+<li><p><strong>verbose</strong> – more verbose</p></li>
+<li><p><strong>lr</strong> – to overwrite <em>learning_rate_init</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>lr_schedule</strong> – to overwrite <em>lr_schedule</em> if
+<em>optimizer</em> is None (unused otherwise)</p></li>
+<li><p><strong>l1</strong> – L1 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>l2</strong> – L2 regularization if <em>optimizer</em> is None
+(unused otherwise)</p></li>
+<li><p><strong>momentum</strong> – used if <em>optimizer</em> is None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.gradient">
+<span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L57"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI.gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.gradient" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the gradient in <em>X</em> knowing the expected value <em>y</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – computes the gradient in X</p></li>
+<li><p><strong>y</strong> – expected values</p></li>
+<li><p><strong>inputs</strong> – if False, derivative against the coefficients,
+otherwise against the inputs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>gradient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.gradient_backward">
+<span class="sig-name descname"><span class="pre">gradient_backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graddx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L44"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI.gradient_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.gradient_backward" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the gradient in X.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graddx</strong> – existing gradient against the outputs</p></li>
+<li><p><strong>X</strong> – computes the gradient in X</p></li>
+<li><p><strong>inputs</strong> – if False, derivative against the coefficients,
+otherwise against the inputs.</p></li>
+<li><p><strong>cache</strong> – cache intermediate results to avoid more computation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>gradient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L32"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.loss" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Computes the loss. Returns a float.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.training_weights">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">training_weights</span></span><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.training_weights" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Returns the weights.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlstatpy.ml._neural_tree_api._TrainingAPI.update_training_weights">
+<span class="sig-name descname"><span class="pre">update_training_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/ml/_neural_tree_api.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/mlstatpy/ml/_neural_tree_api.html#_TrainingAPI.update_training_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.update_training_weights" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Updates weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grad</strong> – vector to add to the weights such as gradient</p></li>
+<li><p><strong>add</strong> – addition or replace</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="logreg.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">mlstatpy.ml.logreg</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="roc.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">mlstatpy.ml.roc</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet"><code class="docutils literal notranslate"><span class="pre">BaseNeuralTreeNet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.decision_function"><code class="docutils literal notranslate"><span class="pre">BaseNeuralTreeNet.decision_function()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.fit"><code class="docutils literal notranslate"><span class="pre">BaseNeuralTreeNet.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.onnx_converter"><code class="docutils literal notranslate"><span class="pre">BaseNeuralTreeNet.onnx_converter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.onnx_shape_calculator"><code class="docutils literal notranslate"><span class="pre">BaseNeuralTreeNet.onnx_shape_calculator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.BaseNeuralTreeNet.set_fit_request"><code class="docutils literal notranslate"><span class="pre">BaseNeuralTreeNet.set_fit_request()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.append"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.append()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.clear"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.clear()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.create_from_tree"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.create_from_tree()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.dlossds"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.dlossds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.fill_cache"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.fill_cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.gradient_backward"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.gradient_backward()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.loss"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.loss()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.shape"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.shape</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.to_dot"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.to_dot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.training_weights"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.training_weights</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNet.update_training_weights"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNet.update_training_weights()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetClassifier</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.predict"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetClassifier.predict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.predict_proba"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetClassifier.predict_proba()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.set_fit_request"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetClassifier.set_fit_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetClassifier.set_score_request"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetClassifier.set_score_request()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetRegressor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.predict"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetRegressor.predict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetRegressor.set_fit_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.NeuralTreeNetRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNetRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml.neural_tree.label_class_to_softmax_output"><code class="docutils literal notranslate"><span class="pre">label_class_to_softmax_output()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.bias"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.bias</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.dlossds"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.dlossds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.fill_cache"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.fill_cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_dloss_function"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.get_activation_dloss_function()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_function"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.get_activation_function()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_gradient_function"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.get_activation_gradient_function()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.get_activation_loss_function"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.get_activation_loss_function()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.gradient_backward"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.gradient_backward()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.input_weights"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.input_weights</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.loss"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.loss()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.ndim"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.ndim</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.ndim_out"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.ndim_out</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.predict"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.predict()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.training_weights"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.training_weights</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_node.NeuralTreeNode.update_training_weights"><code class="docutils literal notranslate"><span class="pre">NeuralTreeNode.update_training_weights()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.dlossds"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.dlossds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.fill_cache"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.fill_cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.fit"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.gradient"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.gradient()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.gradient_backward"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.gradient_backward()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.loss"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.loss()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.training_weights"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.training_weights</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.ml._neural_tree_api._TrainingAPI.update_training_weights"><code class="docutils literal notranslate"><span class="pre">_TrainingAPI.update_training_weights()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/api/modules/neural_tree.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

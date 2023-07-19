@@ -1,0 +1,1529 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Régression linéaire par morceaux &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/piecewise';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Régression linéaire par morceaux" href="../notebooks/ml/piecewise_linear_regression.html" />
+    <link rel="prev" title="Régression quantile illustrée" href="../notebooks/dsgarden/quantile_regression_example.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/regression_lineaire.html">Régression linéaire</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="regression_quantile.html">Régression quantile ou régression L1</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/dsgarden/quantile_regression_example.html">Régression quantile illustrée</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Régression linéaire par morceaux</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/piecewise_linear_regression.html">Régression linéaire par morceaux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/regression_no_inversion.html">Régression sans inversion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l1l2.html">Normalisation des coefficients</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index_reg_lin.html" class="nav-link">Régression linéaire</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Régression linéaire par morceaux</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="regression-lineaire-par-morceaux">
+<span id="l-reglin-piecewise-streaming"></span><h1>Régression linéaire par morceaux<a class="headerlink" href="#regression-lineaire-par-morceaux" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Le paragraphe <a class="reference internal" href="../notebooks/dsgarden/regression_lineaire.html"><span class="std std-ref">Régression linéaire</span></a>
+étudie le lien entre le coefficient <span class="math notranslate nohighlight">\(R^2\)</span>
+et la corrélation pour finalement illustrer
+une façon de réaliser une régression linéaire par
+morceaux. L’algorithme s’appuie sur un arbre
+de régression pour découper en morceaux ce qui
+n’est pas le plus satisfaisant car l’arbre
+cherche à découper en segment en approximant
+la variable à régresser <em>Y</em> par une constante sur chaque
+morceaux et non une droite.
+On peut se poser la question de comment faire
+pour construire un algorithme qui découpe en approximant
+<em>Y</em> par une droite et non une constante. Le plus dur
+n’est pas de le faire mais de le faire efficacement.
+Et pour comprendre là où je veux vous emmener, il faudra
+un peu de mathématiques.</p>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#exploration" id="id5">Exploration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#probleme-et-regression-lineaire-dans-un-espace-a-une-dimension" id="id6">Problème et regréssion linéaire dans un espace à une dimension</a></p></li>
+<li><p><a class="reference internal" href="#implementation-naive-d-une-regression-lineaire-par-morceaux" id="id7">Implémentation naïve d’une régression linéaire par morceaux</a></p></li>
+<li><p><a class="reference internal" href="#aparte-sur-la-continuite-de-la-regression-lineaire-par-morceaux" id="id8">Aparté sur la continuité de la régression linéaire par morceaux</a></p></li>
+<li><p><a class="reference internal" href="#regression-lineaire-et-correlation" id="id9">Régression linéaire et corrélation</a></p></li>
+<li><p><a class="reference internal" href="#idee-de-l-algorithme" id="id10">Idée de l’algorithme</a></p></li>
+<li><p><a class="reference internal" href="#un-peu-plus-en-detail-dans-l-algorithme" id="id11">Un peu plus en détail dans l’algorithme</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#synthese-mathematique" id="id12">Synthèse mathématique</a></p></li>
+<li><p><a class="reference internal" href="#streaming" id="id13">Streaming</a></p>
+<ul>
+<li><p><a class="reference internal" href="#streaming-gram-schmidt" id="id14">Streaming Gram-Schmidt</a></p></li>
+<li><p><a class="reference internal" href="#streaming-linear-regression" id="id15">Streaming Linear Regression</a></p></li>
+<li><p><a class="reference internal" href="#streaming-linear-regression-version-gram-schmidt" id="id16">Streaming Linear Regression version Gram-Schmidt</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#digressions" id="id17">Digressions</a></p></li>
+<li><p><a class="reference internal" href="#notebooks" id="id18">Notebooks</a></p></li>
+<li><p><a class="reference internal" href="#implementations" id="id19">Implémentations</a></p></li>
+<li><p><a class="reference internal" href="#bilbiographie" id="id20">Bilbiographie</a></p></li>
+</ul>
+</nav>
+<p>Une implémentation de ce type de méthode est proposée
+dans la pull request <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/13106">Model trees (M5P and co)</a>
+qui répond à au problème posée dans
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13732">Model trees (M5P)</a>
+et originellement implémentée dans
+<a class="reference external" href="https://github.com/ankonzoid/LearningX/tree/master/advanced_ML/model_tree">Building Model Trees</a>.
+Cette dernière implémentation réestime les modèles comme l’implémentation
+décrite au paragraphe <a class="reference internal" href="#l-decisiontree-reglin-piecewise-naive"><span class="std std-ref">Implémentation naïve d’une régression linéaire par morceaux</span></a>
+mais étendue à tout type de modèle.</p>
+<section id="exploration">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Exploration</a><a class="headerlink" href="#exploration" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="probleme-et-regression-lineaire-dans-un-espace-a-une-dimension">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Problème et regréssion linéaire dans un espace à une dimension</a><a class="headerlink" href="#probleme-et-regression-lineaire-dans-un-espace-a-une-dimension" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Tout d’abord, une petite
+illustration du problème avec la classe <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/notebooks/piecewise_linear_regression.html">PiecewiseRegression</a>
+implémentée selon l’API de <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/piecewise_linear_regression.html">Régression linéaire par morceaux</a></li>
+</ul>
+</div>
+<a class="reference internal image-reference" href="../_images/piecenaive.png"><img alt="../_images/piecenaive.png" src="../_images/piecenaive.png" style="width: 250px;" /></a>
+<p>Cette régression par morceaux est obtenue grâce à un arbre
+de décision. Celui-ci trie le nuage de points <span class="math notranslate nohighlight">\((X_i, Y_i)\)</span>
+par ordre croissant selon les <em>X</em>, soit <span class="math notranslate nohighlight">\(X_i \leqslant X_{i+1}\)</span>.
+L’arbre coupe en deux lorsque la différence des erreurs quadratiques est
+maximale, erreur quadratique obtenue en approximant <em>Y</em> par sa moyenne
+sur l’intervalle considéré. On note l’erreur quadratique :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+C_(i,j) &amp;=&amp; \frac{1}{j - i + 1} \sum_{i \leqslant k \leqslant j} Y_i \\
+D_(i,j) &amp;=&amp; \frac{1}{j - i + 1} \sum_{i \leqslant k \leqslant j} Y^2_i \\
+E_(i,j) &amp;=&amp; \frac{1}{j - i + 1} \sum_{i \leqslant k \leqslant j} ( Y_i - C(i,j))^2 =
+\frac{1}{j - i + 1} \sum_{i \leqslant k \leqslant j} Y_i^2 - C(i,j)^2 = D(i,j) - C(i,j)^2
+\end{array}\end{split}\]</div>
+<p>La dernière ligne applique la formule <span class="math notranslate nohighlight">\(\var{X} = \esp{X^2} - \esp{X}^2\)</span>
+qui est facile à redémontrer.
+L’algorithme de l’arbre de décision coupe un intervalle en
+deux et détermine l’indice <em>k</em> qui minimise la différence :</p>
+<div class="math notranslate nohighlight">
+\[\Delta_k = E(1, n) - (E(1, k) + E(k+1, n))\]</div>
+<p>L’arbre de décision optimise la construction d’une fonction
+en escalier qui représente au mieux le nuage de points,
+les traits verts sur le graphe suivant, alors qu’il faudrait
+choisir une erreur quadratique qui corresponde aux traits
+oranges.</p>
+<a class="reference internal image-reference" href="../_images/piecenaive2.png"><img alt="../_images/piecenaive2.png" src="../_images/piecenaive2.png" style="width: 250px;" /></a>
+<p>Il suffirait donc de remplacer l’erreur <em>E</em> par celle obtenue
+par une régression linéaire. Mais si c’était aussi simple,
+l’implémentation de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.tree.DecisionTreeRegressor</span></code></a>
+la proposerait. Alors pourquoi ?
+La raison principale est que cela coûte trop cher en
+temps de calcul. Pour trouver l’indice <em>k</em>, il faut calculer
+toutes les erreurs <span class="math notranslate nohighlight">\(E(1,k)\)</span> <span class="math notranslate nohighlight">\(E(k+1,n)\)</span>, ce qui
+coûte très cher lorsque cette erreur est celle d’une régression
+linéaire parce qu’il est difficile de simplifier la différence :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\Delta_{k} - \Delta_{k-1} &amp;=&amp;  - (E(1, k) + E(k+1, n)) + (E(1, k-1) + E(k, n)) \\
+&amp;=&amp;  E(1, k-1) - E(1, k) + E(k, n) - E(k+1, n)
+\end{array}\end{split}\]</div>
+<p><strong>Arbre de régression constante</strong></p>
+<p>On s’intéresse au terme <span class="math notranslate nohighlight">\(E(1, k-1) - E(1, k)\)</span> dans le cas
+le nuage de points est représenté par une constante sur chaque segment.
+C’est l’hypothèse faite par l’algorithme classique de construction
+d’un arbre de régression (segments verts sur le premier dessin) :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+C_(1,k-1) - C_(1,k) &amp;=&amp; \frac{1}{k-1} \sum_{1 \leqslant i \leqslant k-1} Y_i
+- \frac{1}{k} \sum_{1 \leqslant i \leqslant k} Y_i \\
+&amp;=&amp; (\frac{1}{k-1} - \frac{1}{k}) \sum_{1 \leqslant i \leqslant k-1} Y_i - \frac{Y_k}{k} \\
+&amp;=&amp; \frac{1}{k(k-1)} \sum_{1 \leqslant i \leqslant k-1} Y_i- \frac{Y_k}{k} \\
+&amp;=&amp; \frac{1}{k} C(1,k-1) - \frac{Y_k}{k}
+\end{array}\end{split}\]</div>
+<p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+E(1, k-1) - E(1, k) &amp;=&amp; \frac{1}{k} D(1,k-1) - \frac{Y_k^2}{k} +
+(C_(1,k-1) - C_(1,k))(C_(1,k-1) + C_(1,k)) \\
+&amp;=&amp; \frac{1}{k} D(1,k-1) - \frac{Y_k^2}{k} + \pa{\frac{1}{k} C(1,k-1) - \frac{Y_k}{k}}
+\pa{\frac{Y_k}{k} - \frac{1}{k} C(1,k-1) + 2 C(1,k-1)}
+\end{array}\end{split}\]</div>
+<p>On voit que cette formule ne fait intervenir que <span class="math notranslate nohighlight">\(C(1,k-1), D(1,k-1), Y_k\)</span>,
+elle est donc très rapide à calculer et c’est pour cela qu’apprendre un arbre
+de décision peut s’apprendre en un temps raisonnable. Cela repose sur la possibilité
+de calculer le critère optimisé par récurrence. On voit également que ces formules
+ne font pas intervenir <em>X</em>, elles sont donc généralisables au cas
+multidimensionnel. Il suffira de trier les couples <span class="math notranslate nohighlight">\((X_i, Y_i)\)</span>
+selon chaque dimension et déterminer le meilleur seuil de coupure
+d’abord sur chacune des dimensions puis de prendre le meilleur
+de ces seuils sur toutes les dimensions. Le problème est résolu.</p>
+<p>Le notebook <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/notebooks/piecewise_linear_regression_criterion.html">Custom Criterion for DecisionTreeRegressor</a>
+implémente une version pas efficace du critère
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html">MSE</a>
+et compare la vitesse d’exécution avec l’implémentation de <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a>.
+Il implémente ensuite le calcul rapide de <em>scikit-learn</em> pour
+montrer qu’on obtient un temps comparable.
+Le résultat est sans équivoque. La version rapide n’implémente pas
+<span class="math notranslate nohighlight">\(\Delta_{k} - \Delta_{k-1}\)</span> mais plutôt les sommes
+<span class="math notranslate nohighlight">\(\sum_1^k w_i Y_i\)</span>, <span class="math notranslate nohighlight">\(\sum_1^k w_i Y_i^2\)</span> dans un sens
+et dans l’autre. En gros,
+le code stocke les séries des numérateurs et des dénominateurs
+pour les diviser au dernier moment.</p>
+<p><strong>Arbre de régression linéaire</strong></p>
+<p>Le cas d’une régression est plus complexe. Prenons d’abord le cas
+où il n’y a qu’un seule dimension,
+il faut d’abord optimiser le problème :</p>
+<div class="math notranslate nohighlight">
+\[E(1, n) = \min_{a,b} = \sum_{k=1}^n (a X_k + b - Y_k)^2\]</div>
+<p>On dérive pour aboutir au système d’équations suivant :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\frac{\partial E(1,n)}{\partial a} &amp;=&amp; 0 = \sum_{k=1}^n X_k(a X_k + b - Y_k) \\
+\frac{\partial E(1,n)}{\partial b} &amp;=&amp; 0 = \sum_{k=1}^n a X_k + b - Y_k
+\end{array}\end{split}\]</div>
+<p>Ce qui aboutit à :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+a(1, n) &amp;=&amp; \frac{\sum_{k=1}^n X_kY_k - \pa{\sum_{k=1}^n X_k}\pa{\sum_{k=1}^n Y_k} }
+{\sum_{k=1}^n X_k^2 -\pa{\sum_{k=1}^n X_k}^2 } \\
+b(1, n) &amp;=&amp; \sum_{k=1}^n Y_k - a \pa{\sum_{k=1}^n X_k}
+\end{array}\end{split}\]</div>
+<p>Pour construire un algorithme rapide pour apprendre un arbre de décision
+avec cette fonction de coût, il faut pouvoir calculer
+<span class="math notranslate nohighlight">\(a(1, k)\)</span> en fonction de <span class="math notranslate nohighlight">\(a(1, k-1), b(1, k-1), X_k, Y_k\)</span>
+ou d’autres quantités intermédiaires qui ne font pas intervenir
+les valeurs <span class="math notranslate nohighlight">\(X_{i&lt;k} &lt; Y_{i&lt;k}\)</span>. D’après ce qui précède,
+cela paraît tout-à-fait possible. Mais dans le
+<a class="reference external" href="https://fr.wikipedia.org/wiki/R%C3%A9gression_lin%C3%A9aire#Estimateur_des_moindres_carr%C3%A9s">cas multidimensionnel</a>,
+il faut déterminer le vecteur <em>A</em> qui minimise <span class="math notranslate nohighlight">\(\sum_{k=1}^n \norme{Y - XA}^2\)</span>
+ce qui donne <span class="math notranslate nohighlight">\(A = (X'X)^{-1} X' Y\)</span>. Si on note <span class="math notranslate nohighlight">\(M_{1..k}\)</span> la matrice
+<em>M</em> tronquée pour ne garder que ses <em>k</em> premières lignes, il faudrait pouvoir
+calculer rapidement :</p>
+<div class="math notranslate nohighlight">
+\[A_{k-1} - A_k = (X_{1..k-1}'X_{1..k-1})^{-1} X'_{1..k-1} Y_{1..k-1} -
+(X_{1..k}'X_{1..k})^{-1} X'_{1..k} Y_{1..k}\]</div>
+<p>La documentation de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.tree.DecisionTreeRegressor</span></code></a>
+ne mentionne que deux critères pour apprendre un arbre de décision
+de régression, <em>MSE</em> pour
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.mean_squared_error()</span></code></a> et <em>MAE</em> pour
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.mean_absolute_error()</span></code></a>. Les autres critères n’ont
+probablement pas été envisagés. L’article <a class="reference internal" href="#acharya2016" id="id1"><span>[Acharya2016]</span></a> étudie la possibilité
+de ne pas calculer la matrice <span class="math notranslate nohighlight">\(A_k\)</span> pour tous les <em>k</em>.
+Le paragraphe <a class="reference internal" href="#l-piecewise-linear-regression"><span class="std std-ref">Streaming Linear Regression</span></a> utilise
+le fait que la matrice <em>A</em> est la solution d’un problème d’optimisation
+quadratique et propose un algorithme de mise à jour de la matrice <em>A</em>
+(cas unidimensionnel). Cet exposé va un peu plus loin
+pour proposer une version qui ne calcule pas de matrices inverses.</p>
+</section>
+<section id="implementation-naive-d-une-regression-lineaire-par-morceaux">
+<span id="l-decisiontree-reglin-piecewise-naive"></span><h3><a class="toc-backref" href="#id7" role="doc-backlink">Implémentation naïve d’une régression linéaire par morceaux</a><a class="headerlink" href="#implementation-naive-d-une-regression-lineaire-par-morceaux" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>On part du cas général qui écrit la solution d’une régression
+linéaire comme étant la matrice <span class="math notranslate nohighlight">\(A = (X'X)^{-1} X' Y\)</span>
+et on adapte l’implémentation de <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a> pour
+optimiser l’erreur quadratique obtenue. Ce n’est pas simple mais
+pas impossible. Il faut entrer dans du code <a class="reference external" href="https://cython.org/">cython</a> et, pour
+éviter de réécrire une fonction qui multiplie et inverse une matrice,
+on peut utiliser la librairie <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>. Je ne vais pas plus loin
+ici car cela serait un peu hors sujet mais ce n’était pas une partie
+de plaisir. Cela donne :
+<a class="reference external" href="https://github.com/sdpython/mlinsights/blob/master/mlinsights/mlmodel/piecewise_tree_regression_criterion_linear.pyx">piecewise_tree_regression_criterion_linear.pyx</a>
+C’est illustré toujours par le notebook
+<a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/notebooks/piecewise_linear_regression_criterion.html">DecisionTreeRegressor optimized for Linear Regression</a>.</p>
+</section>
+<section id="aparte-sur-la-continuite-de-la-regression-lineaire-par-morceaux">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Aparté sur la continuité de la régression linéaire par morceaux</a><a class="headerlink" href="#aparte-sur-la-continuite-de-la-regression-lineaire-par-morceaux" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-0">Approcher la fonction <span class="math notranslate nohighlight">\(y=f(x) + \epsilon\)</span> quand <em>x</em> et <em>y</em>
+sont réels est un problème facile, trop facile… A voir le dessin,
+précédent, il est naturel de vouloir recoller les morceaux lorsqu’on
+passe d’un segment à l’autre. Il s’agit d’une optimisation sous contrainte.
+Il est possible également d’ajouter une contrainte de régularisation
+qui tient compte de cela. On exprime cela comme suit avec une régression
+linéaire à deux morceaux.</p>
+<div class="math notranslate nohighlight">
+\[E = \sum_{X_i \leqslant t} (a_1 X_i + b_1 - y)^2 +
+\sum_{X_i \geqslant t} (a_2 X_i + b_2 - y)^2 +
+\lambda (a_1 t + b_1 - a_2 t - b)^2\]</div>
+<p>Le cas multidimensionnel est loin d’être aussi simple. Avec une
+dimension, chaque zone a deux voisines. En deux dimensions,
+chaque zone peut en avoir plus de deux. La figure suivante
+montre une division de l’espace dans laquelle la zone centrale
+a cinq voisins.</p>
+<a class="reference internal image-reference" href="../_images/voisin.png"><img alt="../_images/voisin.png" src="../_images/voisin.png" style="width: 200px;" /></a>
+<p>Peut-on facilement approcher une fonction <span class="math notranslate nohighlight">\(z = f(x,y) + \epsilon\)</span>
+par un plan en trois dimensions ? A moins que tous les sommets soient
+déjà dans le même plan, c’est impossible. La zone en question n’est
+peut-être même pas convexe. Une régression linéaire par morceaux
+et continue en plusieurs dimensions n’est pas un problème facile.
+Cela n’empêche pas pour autant d’influencer la détermination de chaque
+morceaux avec une contrainte du type de celle évoquée plus haut
+mais pour écrire la contrainte lorsque les zones sont construites
+à partir des feuilles d’un arbre de décision, il faut déterminer
+quelles sont les feuilles voisines.
+Et ça c’est un problème intéressant !</p>
+</section>
+<section id="regression-lineaire-et-correlation">
+<span id="l-reglin-nocoreel-solution"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink">Régression linéaire et corrélation</a><a class="headerlink" href="#regression-lineaire-et-correlation" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>On reprend le calcul multidimensionnel mais on s’intéresse au
+cas où la matrice <span class="math notranslate nohighlight">\(X'X\)</span> est diagonale qui correspond au cas
+où les variables <span class="math notranslate nohighlight">\(X_1, ..., X_C\)</span> ne sont pas corrélées.
+Si <span class="math notranslate nohighlight">\(X'X = diag(\lambda_1, ..., \lambda_C) = diag(\sum_{k=1}^n X^2_{k1}, ..., \sum_{k=1}^n X^2_{kC})\)</span>,
+la matrice <span class="math notranslate nohighlight">\(A\)</span> s’exprime plus simplement <span class="math notranslate nohighlight">\(A = D^{-1} X' Y\)</span>.
+On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\[a_c = \frac{\sum_{k=1}^n X_{kc} Y_k}{\sum_{k=1}^n X^2_{kc}} =
+\frac{\sum_{k=1}^n X_{kc} Y_k}{\lambda_c}\]</div>
+<p>Cette expression donne un indice sur la résolution d’une régression linéaire
+pour laquelle les variables sont corrélées. Il suffit d’appliquer d’abord une
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Analyse_en_composantes_principales">ACP</a>
+(Analyse en Composantes Principales) et de calculer les coefficients
+<span class="math notranslate nohighlight">\(a_c\)</span> associés à des valeurs propres non nulles. On écrit alors
+<span class="math notranslate nohighlight">\(X'X = P'DP\)</span> où la matrice <em>P</em> vérifie <span class="math notranslate nohighlight">\(P'P = I\)</span>.</p>
+</section>
+<section id="idee-de-l-algorithme">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Idée de l’algorithme</a><a class="headerlink" href="#idee-de-l-algorithme" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>On s’intéresser d’abord à la recherche d’un meilleur point de coupure.
+Pour ce faire, les éléments <span class="math notranslate nohighlight">\((X_i, y_i)\)</span> sont triés le plus souvent
+selon l’ordre défini par une dimension. On note <em>E</em> l’erreur de prédiction
+sur cette échantillon <span class="math notranslate nohighlight">\(E = \min_\beta \sum_k (X_k \beta - y_k)^2\)</span>.
+On définit ensuite <span class="math notranslate nohighlight">\(E(i, j) = \min_\beta \sum_{k=i}^j (X_k \beta - y_k)^2\)</span>.
+D’après cette notation, <span class="math notranslate nohighlight">\(E = E(1,n)\)</span>. La construction de l’arbre
+de décision passe par la détermination de <span class="math notranslate nohighlight">\(k^*\)</span> qui vérifie :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+E(1,k^*) + E(k^*+1, n) &amp;=&amp; \min_k E(1,k) + E(k+1, n) \\
+&amp;=&amp; \min_k \pa{ \min_{\beta_1} \sum_{l=1}^k (X_l \beta_1 - y_l)^2 +
+\min_{\beta_2} \sum_{l=k+1}^n (X_l \beta_2 - y_l)^2}
+\end{array}\end{split}\]</div>
+<p>Autrement dit, on cherche le point de coupure qui maximise la différence
+entre la prédiction obtenue avec deux régressions linéaires plutôt qu’une.
+On sait qu’il existe une matrice <em>P</em> qui vérifie :</p>
+<div class="math notranslate nohighlight">
+\[PP' = 1 \text{ et } (XP)'(XP) = P'X'XP = D = Z'Z\]</div>
+<p>Où <span class="math notranslate nohighlight">\(D=diag(d_1, ..., d_C)\)</span> est une matrice
+diagonale. On a posé <span class="math notranslate nohighlight">\(Z = XP\)</span>,
+donc <span class="math notranslate nohighlight">\(d_a = &lt;Z_a, Z_a&gt;\)</span>.
+On peut réécrire le problème
+de régression comme ceci :</p>
+<div class="math notranslate nohighlight">
+\[\beta^* = \arg\min_\beta \sum_i \norm{ y_i - X_i\beta} =
+\arg\min_\beta \norm{Y - X\beta}\]</div>
+<p>Comme <span class="math notranslate nohighlight">\(X = ZP'\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[\norm{Y - X\beta} = \norm{Y - X\beta} = \norm{Y - ZP'\beta} =
+\norm{Y - Z\gamma}\]</div>
+<p>Avec <span class="math notranslate nohighlight">\(\gamma = P'\beta\)</span>. C’est la même régression
+après un changement de repère et on la résoud de la même manière :</p>
+<div class="math notranslate nohighlight">
+\[\gamma^* = (Z'Z)^{-1}Z'Y = D^{-1}Z'Y\]</div>
+<p>La notation <span class="math notranslate nohighlight">\(M_i\)</span> désigne la ligne <em>i</em> et
+<span class="math notranslate nohighlight">\(M_{[k]}\)</span> désigne la colonne.
+On en déduit que le coefficient de la régression
+<span class="math notranslate nohighlight">\(\gamma_k\)</span> est égal à :</p>
+<div class="math notranslate nohighlight">
+\[\gamma_k = \frac{&lt;Z_{[k]},Y&gt;}{&lt;Z_{[k]},Z_{[k]}&gt;} =
+\frac{&lt;(XP')_{[k]},Y&gt;}{&lt;(XP')_{[k]},(XP')_{[k]}&gt;}\]</div>
+<p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\[\norm{Y - X\beta} = \norm{Y - \sum_{k=1}^{C}Z_{[k]}\frac{&lt;Z_{[k]},Y&gt;}{&lt;Z_{[k]},Z_{[k]}&gt;}} =
+\norm{Y - \sum_{k=1}^{C}(XP')_{[k]}\frac{&lt;(XP')_{[k]},Y&gt;}{&lt;(XP')_{[k]},(XP')_{[k]}&gt;}}\]</div>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="algo-decision-tree-mselin">Algorithme A1 : Arbre de décision optimisé pour les régressions linéaires</p>
+<p>On dipose qu’un nuage de points <span class="math notranslate nohighlight">\((X_i, y_i)\)</span> avec
+<span class="math notranslate nohighlight">\(X_i \in \R^d\)</span> et <span class="math notranslate nohighlight">\(y_i \in \R\)</span>. Les points sont
+triés selon une dimension. On note <em>X</em> la matrice composée
+des lignes <span class="math notranslate nohighlight">\(X_1, ..., X_n\)</span> et le vecteur colonne
+<span class="math notranslate nohighlight">\(y=(y_1, ..., y_n)\)</span>.
+Il existe une matrice <span class="math notranslate nohighlight">\(P\)</span> telle que <span class="math notranslate nohighlight">\(P'P = I\)</span>
+et <span class="math notranslate nohighlight">\(X'X = P'DP\)</span> avec <em>D</em> une matrice diagonale.
+On note <span class="math notranslate nohighlight">\(X_{a..b}\)</span> la matrice constituée des lignes
+<em>a</em> à <em>b</em>. On calcule :</p>
+<div class="math notranslate nohighlight">
+\[MSE(X, y, a, b) = \norm{Y - \sum_{k=1}^{C}(X_{a..b}P')_{[k]}
+\frac{&lt;(X_{a..b}P')_{[k]},Y&gt;}{&lt;(X_{a..b}P')_{[k]},(X_{a..b}P')_{[k]}&gt;}}^2\]</div>
+<p>Un noeud de l’arbre est construit en choisissant le point
+de coupure qui minimise :</p>
+<div class="math notranslate nohighlight">
+\[MSE(X, y, 1, t) + MSE(X, y, t+1, n)\]</div>
+</div>
+<p>Par la suite on verra que le fait que la matrice soit diagonale est l’élément
+principal mais la matrice <em>P</em> ne doit pas nécessairement
+vérifier <span class="math notranslate nohighlight">\(P'P=I\)</span>.</p>
+</section>
+<section id="un-peu-plus-en-detail-dans-l-algorithme">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Un peu plus en détail dans l’algorithme</a><a class="headerlink" href="#un-peu-plus-en-detail-dans-l-algorithme" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>J’ai pensé à plein de choses pour aller plus loin car l’idée
+est de quantifier à peu près combien on pert en précision en utilisant
+des vecteurs propres estimés avec l’ensemble des données sur une partie
+seulement. Je me suis demandé si les vecteurs propres d’une matrice
+pouvait être construit à partir d’une fonction continue de la matrice
+symétrique de départ. A peu près vrai mais je ne voyais pas une façon
+de majorer cette continuité. Ensuite, je me suis dit que les vecteurs
+propres de <span class="math notranslate nohighlight">\(X'X\)</span> ne devaient pas être loin de ceux de <span class="math notranslate nohighlight">\(X_\sigma'X_\sigma\)</span>
+où <span class="math notranslate nohighlight">\(\sigma\)</span> est un sous-échantillon aléatoire de l’ensemble
+de départ. Donc comme il faut juste avoir une base de vecteurs
+orthogonaux, je suis passé à l”<a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_de_Gram-Schmidt">orthonormalisation de Gram-Schmidt</a>.
+Il n’a pas non plus ce défaut de permuter les dimensions ce qui rend
+l’observation de la continuité a little bit more complicated comme
+le max dans l”<a class="reference external" href="https://en.wikipedia.org/wiki/Jacobi_eigenvalue_algorithm">algorithme de Jacobi</a>.
+L’idée est se servir cette orthonormalisation pour construire
+la matrice <em>P</em> de l’algortihme.</p>
+<p>La matrice <span class="math notranslate nohighlight">\(P \in \mathcal{M}_{CC}\)</span> est constituée de
+<em>C</em> vecteurs ortonormaux <span class="math notranslate nohighlight">\((P_{[1]}, ..., P_{[C]})\)</span>.
+Avec les notations que
+j’ai utilisées jusqu’à présent :
+<span class="math notranslate nohighlight">\(X_{[k]} = (X_{1k}, ..., X_{nk})\)</span>.
+On note la matrice identité <span class="math notranslate nohighlight">\(I_C=I\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+T_{[1]} &amp;=&amp; \frac{ X_{[1]} }{ \norme{X_{[1]}} } \\
+P_{[1]} &amp;=&amp; \frac{ I_{[1]} }{ \norme{X_{[1]}} } \\
+T_{[2]} &amp;=&amp; \frac{ X_{[2]} - &lt;X_{[2]}, T_{[1]}&gt; T_{[1]} }
+{ \norme{X_{[2]} - &lt;X_{[2]}, T_{[1]}&gt; T_{[1]}} } \\
+P_{[2]} &amp;=&amp; \frac{ I_{[2]} - &lt;X_{[2]}, T_{[1]}&gt; T_{[1]} }
+{ \norme{X_{[2]} - &lt;X_{[2]}, T_{[1]}&gt; T_{[1]}} } \\
+... &amp;&amp; \\
+T_{[k]} &amp;=&amp; \frac{ X_{[k]} - \sum_{i=1}^{k-1} &lt;X_{[k]}, T_{[i]}&gt; T_{[i]} }
+{ \norme{ X_{[2]} - \sum_{i=1}^{k-1} &lt;X_{[k]}, T_{[i]}&gt; T_{[i]} } } \\
+P_{[k]} &amp;=&amp; \frac{ I_{[k]} - \sum_{i=1}^{k-1} &lt;X_{[k]}, T_{[i]}&gt; T_{[i]} }
+{ \norme{ X_{[2]} - \sum_{i=1}^{k-1} &lt;X_{[k]}, T_{[i]}&gt; T_{[i]} } } \\
+\end{array}\end{split}\]</div>
+<p>La matrice <em>T</em> vérifie <span class="math notranslate nohighlight">\(T'T=I\)</span> puisque les vecteurs sont
+construits de façon à être orthonormés. Et on vérifie que
+<span class="math notranslate nohighlight">\(XP = T\)</span> et donc <span class="math notranslate nohighlight">\(PXX'P' = I\)</span>.
+C’est implémenté par la fonction
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.gram_schmidt" title="mlstatpy.ml.matrices.gram_schmidt"><code class="xref py py-func docutils literal notranslate"><span class="pre">gram_schmidt</span></code></a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlstatpy.ml.matrices</span> <span class="kn">import</span> <span class="n">gram_schmidt</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">gram_schmidt</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="n">T</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">P</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">m</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[[</span><span class="mf">1.000e+00</span> <span class="mf">1.155e-17</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.155e-17</span> <span class="mf">1.000e+00</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>Cela débouche sur une autre formulation du calcul
+d’une régression linéaire à partir d’une orthornormalisation
+de Gram-Schmidt qui est implémentée dans la fonction
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.linear_regression" title="mlstatpy.ml.matrices.linear_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">linear_regression</span></code></a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlstatpy.ml.matrices</span> <span class="kn">import</span> <span class="n">linear_regression</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">3.9</span><span class="p">])</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s2">&quot;gram&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="mf">1.008</span> <span class="mf">1.952</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>L’avantage est que cette formulation s’exprime
+uniquement à partir de produits scalaires.
+Voir le notebook svuiant <a class="reference internal" href="../notebooks/ml/regression_no_inversion.html"><span class="std std-ref">Régression sans inversion</span></a>.</p>
+</section>
+</section>
+<section id="synthese-mathematique">
+<span id="l-reglin-acp-svd"></span><h2><a class="toc-backref" href="#id12" role="doc-backlink">Synthèse mathématique</a><a class="headerlink" href="#synthese-mathematique" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="algo-gram-schmidt">Algorithme A2 : Orthonormalisation de Gram-Schmidt</p>
+<p>Soit une matrice <span class="math notranslate nohighlight">\(X \in \mathcal{M}_{nd}\)</span> avec
+<span class="math notranslate nohighlight">\(n \supegal d\)</span>. Il existe deux matrices telles que
+<span class="math notranslate nohighlight">\(X P = T\)</span> ou <span class="math notranslate nohighlight">\(P' X' = T'\)</span>.
+<span class="math notranslate nohighlight">\(P \in \mathcal{M}_{dd}\)</span> et <span class="math notranslate nohighlight">\(T \in \mathcal{M}_{nd}\)</span>.
+La matrice <em>T</em> est triangulaire supérieure
+et vérifie <span class="math notranslate nohighlight">\(T'T = I_d\)</span> (<span class="math notranslate nohighlight">\(I_d\)</span>
+est la matrice identité). L’algorithme se décrit
+comme suit :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+\forall i \in &amp; range(1, d) \\
+&amp; x_i = X_{[i]} - \sum_{j &lt; i} &lt;T_{[j]}, X_{[i]}&gt; T_{[j]} \\
+&amp; p_i = P_{[i]} - \sum_{j &lt; i} &lt;T_{[j]}, X_{[i]}&gt; P_{[j]} \\
+&amp; T_{[i]} = \frac{x_i}{\norme{x_i}} \\
+&amp; P_{[i]} = \frac{p_i}{\norme{p_i}}
+\end{array}\end{split}\]</div>
+</div>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="algo-gram-schmidt-reglin">Théorème T1 : Régression linéaire après Gram-Schmidt</p>
+<p>Soit une matrice <span class="math notranslate nohighlight">\(X \in \mathcal{M}_{nd}\)</span> avec
+<span class="math notranslate nohighlight">\(n \supegal d\)</span>. Et un vecteur <span class="math notranslate nohighlight">\(y \in \R^n\)</span>.
+D’après l”<a class="reference internal" href="#algo-gram-schmidt"><span class="std std-ref">algorithme de Gram-Schmidt</span></a>,
+il existe deux matrices telles que
+<span class="math notranslate nohighlight">\(X P = T\)</span> ou <span class="math notranslate nohighlight">\(P' X' = T'\)</span>.
+<span class="math notranslate nohighlight">\(P \in \mathcal{M}_{dd}\)</span> et <span class="math notranslate nohighlight">\(T \in \mathcal{M}_{nd}\)</span>.
+La matrice <em>T</em> est triangulaire supérieure
+et vérifie <span class="math notranslate nohighlight">\(T'T = I_d\)</span> (<span class="math notranslate nohighlight">\(I_d\)</span>
+est la matrice identité). Alors
+<span class="math notranslate nohighlight">\(\beta = T' y P' = P' X' y P' = (X'X)^{-1}X'y\)</span>.
+<span class="math notranslate nohighlight">\(\beta\)</span> est la solution du problème d’optimisation
+<span class="math notranslate nohighlight">\(\min_\beta \norme{y - X\beta}^2\)</span>.</p>
+</div>
+<p>La démonstration est géométrique et reprend l’idée
+du paragraphe précédent. La solution de la régression
+peut être vu comme la projection du vecteur <em>y</em>
+sur l’espace vectoriel engendré par les vecteurs
+<span class="math notranslate nohighlight">\(X_{[1]}, ..., X_{[d]}\)</span>.
+Par construction, cet espace est le même que celui
+engendré par <span class="math notranslate nohighlight">\(T_{[1]}, ..., T_{[d]}\)</span>. Dans cette base,
+la projection de <em>y</em> a pour coordoonées
+<span class="math notranslate nohighlight">\(&lt;y, T_{[1]}&gt;, ..., &lt;y, T_{[d]}&gt; = T' y\)</span>.
+On en déduit que la projection de <em>y</em> s’exprimer comme :</p>
+<div class="math notranslate nohighlight">
+\[\hat{y} = \sum_{k=1}^d &lt;y, T_{[k]}&gt; T_{[k]}\]</div>
+<p>Il ne reste plus qu’à expremier cette projection
+dans la base initial <em>X</em>. On sait que
+<span class="math notranslate nohighlight">\(T_{[k]} = X P_{[k]}\)</span>. On en déduit que ;</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\hat{y} &amp;=&amp; \sum_{k=1}^d &lt;y, T_{[k]}&gt; X P_{[k]} \\
+&amp;=&amp; \sum_{k=1}^d &lt;y, T_{[k]}&gt; \sum_{l=1}^d X_{[l]} P_{lk} \\
+&amp;=&amp; \sum_{l=1}^d X_{[l]} \sum_{k=1}^d &lt;y, T_{[k]}&gt;  P_{lk} \\
+&amp;=&amp; \sum_{l=1}^d X_{[l]} (T' y P_l) \\
+&amp;=&amp; \sum_{l=1}^d X_{[l]} \beta_l
+\end{array}\end{split}\]</div>
+<p>D’où <span class="math notranslate nohighlight">\(\beta = T' y P'\)</span>.
+L’implémentation suit :</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span>
+<span class="n">Tt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">Pt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Xt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">Tt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Tt</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="n">Tt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-=</span> <span class="n">Tt</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">d</span>
+        <span class="n">Pt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-=</span> <span class="n">Pt</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">d</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Tt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Tt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">**=</span> <span class="mf">0.5</span>
+        <span class="n">Tt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/=</span> <span class="n">d</span>
+        <span class="n">Pt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/=</span> <span class="n">d</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Tt</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X P&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">Pt</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T T&#39;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Tt</span> <span class="o">@</span> <span class="n">Tt</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.19</span><span class="p">,</span> <span class="mf">0.29</span><span class="p">])</span>
+<span class="n">beta1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Xt</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">Xt</span> <span class="o">@</span> <span class="n">y</span>
+<span class="n">beta2</span> <span class="o">=</span> <span class="n">Tt</span> <span class="o">@</span> <span class="n">y</span> <span class="o">@</span> <span class="n">Pt</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;beta1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">beta1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;beta2&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">beta2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">X</span>
+    <span class="p">[[</span><span class="mf">1.</span> <span class="mf">5.</span> <span class="mf">5.</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">2.</span> <span class="mf">6.</span> <span class="mf">6.</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">3.</span> <span class="mf">6.</span> <span class="mf">7.</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">4.</span> <span class="mf">6.</span> <span class="mf">8.</span><span class="p">]]</span>
+    <span class="n">T</span>
+    <span class="p">[[</span> <span class="mf">0.183</span>  <span class="mf">0.736</span>  <span class="mf">0.651</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">0.365</span>  <span class="mf">0.502</span> <span class="o">-</span><span class="mf">0.67</span> <span class="p">]</span>
+     <span class="p">[</span> <span class="mf">0.548</span>  <span class="mf">0.024</span> <span class="o">-</span><span class="mf">0.181</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">0.73</span>  <span class="o">-</span><span class="mf">0.453</span>  <span class="mf">0.308</span><span class="p">]]</span>
+    <span class="n">X</span> <span class="n">P</span>
+    <span class="p">[[</span> <span class="mf">0.183</span>  <span class="mf">0.736</span>  <span class="mf">0.651</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">0.365</span>  <span class="mf">0.502</span> <span class="o">-</span><span class="mf">0.67</span> <span class="p">]</span>
+     <span class="p">[</span> <span class="mf">0.548</span>  <span class="mf">0.024</span> <span class="o">-</span><span class="mf">0.181</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">0.73</span>  <span class="o">-</span><span class="mf">0.453</span>  <span class="mf">0.308</span><span class="p">]]</span>
+    <span class="n">T</span> <span class="n">T</span><span class="s1">&#39;</span>
+    <span class="p">[[</span> <span class="mf">1.000e+00</span>  <span class="mf">4.014e-16</span>  <span class="mf">9.293e-16</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">4.014e-16</span>  <span class="mf">1.000e+00</span> <span class="o">-</span><span class="mf">1.115e-14</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">9.293e-16</span> <span class="o">-</span><span class="mf">1.115e-14</span>  <span class="mf">1.000e+00</span><span class="p">]]</span>
+    <span class="n">beta1</span>
+    <span class="p">[</span> <span class="mf">0.077</span>  <span class="mf">0.037</span> <span class="o">-</span><span class="mf">0.032</span><span class="p">]</span>
+    <span class="n">beta2</span>
+    <span class="p">[</span> <span class="mf">0.077</span>  <span class="mf">0.037</span> <span class="o">-</span><span class="mf">0.032</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>La librairie implémente ces deux algorithmes de manière un peu
+plus efficace dans les fonctions
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.gram_schmidt" title="mlstatpy.ml.matrices.gram_schmidt"><code class="xref py py-func docutils literal notranslate"><span class="pre">gram_schmidt</span></code></a> et
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.linear_regression" title="mlstatpy.ml.matrices.linear_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">linear_regression</span></code></a>.</p>
+</section>
+<section id="streaming">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Streaming</a><a class="headerlink" href="#streaming" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="streaming-gram-schmidt">
+<span id="l-stream-gram-schmidt"></span><h3><a class="toc-backref" href="#id14" role="doc-backlink">Streaming Gram-Schmidt</a><a class="headerlink" href="#streaming-gram-schmidt" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Je ne sais pas vraiment comment le dire en français,
+peut-être <em>régression linéaire mouvante</em>. Même Google ou Bing
+garde le mot <em>streaming</em> dans leur traduction…
+C’est néanmoins l’idée qu’il faut
+réussir à mettre en place d’une façon ou d’une autre car pour
+choisir le bon point de coupure pour un arbre de décision.
+On note <span class="math notranslate nohighlight">\(X_{1..k}\)</span> la matrice composée
+des lignes <span class="math notranslate nohighlight">\(X_1, ..., X_k\)</span> et le vecteur colonne
+<span class="math notranslate nohighlight">\(y_{1..k}=(y_1, ..., y_k)\)</span>.
+L’apprentissage de l’arbre de décision
+faut calculer des régressions pour les problèmes
+<span class="math notranslate nohighlight">\((X_{1..k}, y_{1..k}), (X_{1..k+1}, y_{1..k+1})...\)</span>.
+L’idée que je propose n’est pas parfaite mais elle fonctionne
+pour l’idée de l’algorithme avec <a class="reference internal" href="#algo-decision-tree-mselin"><span class="std std-ref">Gram-Schmidt</span></a>.</p>
+<p>Tout d’abord, il faut imaginer un algorithme
+de Gram-Schmidt version streaming. Pour la matrice
+<span class="math notranslate nohighlight">\(X'_{1..k}\)</span>, celui-ci produit deux matrices
+<span class="math notranslate nohighlight">\(T_{1..k}\)</span> et <span class="math notranslate nohighlight">\(P_{1..k}\)</span> telles que :
+<span class="math notranslate nohighlight">\(X'_{1..k}P_{1..k}=T_{1..k}\)</span>. On note <em>d</em> la dimension
+des observations. Comment faire pour ajouter une observation
+<span class="math notranslate nohighlight">\((X_{k+1}, y_{k+1})\)</span> ? L’idée d’un algorithme au format streaming
+est que le coût de la mise à jour pour l’itération <em>k+1</em>
+ne dépend pas de <em>k</em>.</p>
+<p>On suppose donc que <span class="math notranslate nohighlight">\((T_k, P_k)\)</span> sont les deux matrices
+retournées par l’algorithme de <a class="reference internal" href="#algo-gram-schmidt"><span class="std std-ref">Gram-Schmidt</span></a>.
+On construit la matrice <span class="math notranslate nohighlight">\(V_{k+1} = [ T_k, X_{k+1} P_k ]\)</span> :
+on ajoute une ligne à la matrice <span class="math notranslate nohighlight">\(T_k\)</span>. On applique
+une itération de algorithme de <a class="reference internal" href="#algo-gram-schmidt"><span class="std std-ref">Gram-Schmidt</span></a>
+pour obtenir <span class="math notranslate nohighlight">\((T_{k+1}, P)\)</span>. On en déduit que
+<span class="math notranslate nohighlight">\((T_{k+1}, P_{k+1}) = (T_{k+1}, P_k P)\)</span>. L’expression
+de la régression ne change pas mais il reste à l’expression
+de telle sorte que les expressions ne dépendent pas de <em>k</em>.
+Comme <span class="math notranslate nohighlight">\(T_k = X_{[1..k]} P_k\)</span>, la seule matrice qui nous intéresse
+véritablement est <span class="math notranslate nohighlight">\(P_k\)</span>.</p>
+<p>Maintenant, on considère la matrice <span class="math notranslate nohighlight">\(T_{[1..k]}\)</span> qui vérifie
+<span class="math notranslate nohighlight">\(T_k'T_k = I_d\)</span> et on ajoute une ligne
+<span class="math notranslate nohighlight">\(X_{k+1} P_k\)</span> pour former
+<span class="math notranslate nohighlight">\([ [T_k] [X_{k+1} P_k] ] = [ [X_{[1..k]} P_k] [X_{k+1} P_k] ]\)</span>.
+La fonction <a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.streaming_gram_schmidt_update" title="mlstatpy.ml.matrices.streaming_gram_schmidt_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">streaming_gram_schmidt_update</span></code></a>
+implémente la mise à jour. Le coût de la fonction est en
+<span class="math notranslate nohighlight">\(O(d^2)\)</span>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlstatpy.ml.matrices</span> <span class="kn">import</span> <span class="n">streaming_gram_schmidt_update</span><span class="p">,</span> <span class="n">gram_schmidt</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">Tk</span><span class="p">,</span> <span class="n">Pk</span> <span class="o">=</span> <span class="n">gram_schmidt</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;k=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Pk</span><span class="p">)</span>
+<span class="n">Tk</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">@</span> <span class="n">Pk</span><span class="o">.</span><span class="n">T</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Tk</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Tk</span><span class="p">)</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+    <span class="n">streaming_gram_schmidt_update</span><span class="p">(</span><span class="n">Xt</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">Pk</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;k=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Pk</span><span class="p">)</span>
+    <span class="n">Tk</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span> <span class="o">@</span> <span class="n">Pk</span><span class="o">.</span><span class="n">T</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Tk</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Tk</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">k</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">[[</span> <span class="mf">0.099</span>  <span class="mf">0.</span>     <span class="mf">0.</span>   <span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">0.953</span>  <span class="mf">0.482</span>  <span class="mf">0.</span>   <span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">0.287</span> <span class="o">-</span><span class="mf">3.338</span>  <span class="mf">3.481</span><span class="p">]]</span>
+    <span class="p">[[</span> <span class="mf">1.000e+00</span> <span class="o">-</span><span class="mf">1.310e-15</span> <span class="o">-</span><span class="mf">2.238e-15</span><span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">1.310e-15</span>  <span class="mf">1.000e+00</span>  <span class="mf">1.390e-14</span><span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">2.238e-15</span>  <span class="mf">1.390e-14</span>  <span class="mf">1.000e+00</span><span class="p">]]</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">4</span>
+    <span class="p">[[</span> <span class="mf">0.089</span>  <span class="mf">0.</span>     <span class="mf">0.</span>   <span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">0.308</span>  <span class="mf">0.177</span>  <span class="mf">0.</span>   <span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">0.03</span>  <span class="o">-</span><span class="mf">3.334</span>  <span class="mf">3.348</span><span class="p">]]</span>
+    <span class="p">[[</span> <span class="mf">1.000e+00</span> <span class="o">-</span><span class="mf">3.570e-16</span> <span class="o">-</span><span class="mf">1.808e-15</span><span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">3.570e-16</span>  <span class="mf">1.000e+00</span>  <span class="mf">2.423e-15</span><span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">1.808e-15</span>  <span class="mf">2.423e-15</span>  <span class="mf">1.000e+00</span><span class="p">]]</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">[[</span> <span class="mf">0.088</span>  <span class="mf">0.</span>     <span class="mf">0.</span>   <span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">0.212</span>  <span class="mf">0.128</span>  <span class="mf">0.</span>   <span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">0.016</span> <span class="o">-</span><span class="mf">3.335</span>  <span class="mf">3.342</span><span class="p">]]</span>
+    <span class="p">[[</span> <span class="mf">1.000e+00</span>  <span class="mf">1.756e-17</span> <span class="o">-</span><span class="mf">4.660e-15</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">1.756e-17</span>  <span class="mf">1.000e+00</span>  <span class="mf">9.833e-16</span><span class="p">]</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">4.660e-15</span>  <span class="mf">9.833e-16</span>  <span class="mf">1.000e+00</span><span class="p">]]</span>
+</pre></div>
+</div>
+</section>
+<section id="streaming-linear-regression">
+<span id="l-piecewise-linear-regression"></span><h3><a class="toc-backref" href="#id15" role="doc-backlink">Streaming Linear Regression</a><a class="headerlink" href="#streaming-linear-regression" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Je reprends l’idée introduite dans l’article
+<a class="reference external" href="https://stats.stackexchange.com/questions/6920/efficient-online-linear-regression">Efficient online linear regression</a>.
+On cherche à minimiser <span class="math notranslate nohighlight">\(L(\beta)=\norme{y - X\beta}^2\)</span> et le vecteur
+solution annuler le gradient : <span class="math notranslate nohighlight">\(\nabla(\beta) = -2X'(y - X\beta) = 0\)</span>.
+On note le vecteur <span class="math notranslate nohighlight">\(\beta_k\)</span> qui vérifie
+<span class="math notranslate nohighlight">\(\nabla(\beta_k) = -2X_{1..k}'(y_{1..k} - X_{1..k}\beta_k) = 0\)</span>.
+Qu’en est-il de <span class="math notranslate nohighlight">\(\beta_{k+1}\)</span> ?
+On note <span class="math notranslate nohighlight">\(\beta_{k+1} = \beta_k + d\beta\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\nabla(\beta_{k+1}) &amp;=&amp; -2X_{1..k+1}'(y_{1..k+1} - X_{1..k+1}(\beta_k + d\beta)) \\
+&amp;=&amp; -2 [ X_{1..k}' X_{k+1}' ] ( [ y_{1..k} y_{k+1} ] - [ X_{1..k} X_{k+1} ]'(\beta_k + d\beta)) \\
+&amp;=&amp; -2 X_{1..k}' ( y_{1..k} - X_{1..k} (\beta_k + d\beta))
+-2 X_{k+1}' ( y_{k+1} - X_{k+1} (\beta_k + d\beta)) \\
+&amp;=&amp; 2 X_{1..k}' X_{1..k} d\beta -2 X_{k+1}' ( y_{k+1} - X_{k+1} (\beta_k + d\beta)) \\
+&amp;=&amp; 2 (X_{1..k}' X_{1..k} + X_{k+1}' X_{k+1}) d\beta - 2 X_{k+1}' (y_{k+1} - X_{k+1} \beta_k)
+\end{array}\end{split}\]</div>
+<p>On en déduit la valeur <span class="math notranslate nohighlight">\(d\beta\)</span> qui annule le gradient.
+On peut décliner cette formule en version streaming.
+C’est ce qu’implémente la fonction
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.streaming_linear_regression_update" title="mlstatpy.ml.matrices.streaming_linear_regression_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">streaming_linear_regression_update</span></code></a>.
+Le coût de l’algorithme est en <span class="math notranslate nohighlight">\(O(d^3)\)</span>.
+L’inconvénient de cet algorithme est qu’il requiert des
+matrices inversibles. C’est souvent le cas et la probabilité
+que cela ne le soit pas décroît avec <em>k</em>. C’est un petit
+inconvénient compte tenu de la simplicité de l’implémentation.
+On vérifie que tout fonction bien sur un exemple.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="k">def</span> <span class="nf">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inv</span> <span class="o">@</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">streaming_linear_regression_update</span><span class="p">(</span><span class="n">Xk</span><span class="p">,</span> <span class="n">yk</span><span class="p">,</span> <span class="n">XkXk</span><span class="p">,</span> <span class="n">bk</span><span class="p">):</span>
+    <span class="n">Xk</span> <span class="o">=</span> <span class="n">Xk</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">XkXk</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">xxk</span> <span class="o">=</span> <span class="n">Xk</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Xk</span>
+    <span class="n">XkXk</span> <span class="o">+=</span> <span class="n">xxk</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">Xk</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="p">(</span><span class="n">yk</span> <span class="o">-</span> <span class="n">Xk</span> <span class="o">@</span> <span class="n">bk</span><span class="p">)</span>
+    <span class="n">bk</span><span class="p">[:]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">XkXk</span><span class="p">)</span> <span class="o">@</span> <span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">streaming_linear_regression</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">Xk</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:</span><span class="n">start</span><span class="p">]</span>
+    <span class="n">XkXk</span> <span class="o">=</span> <span class="n">Xk</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Xk</span>
+    <span class="n">bk</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">XkXk</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">Xk</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span><span class="p">[:</span><span class="n">start</span><span class="p">])</span>
+    <span class="k">yield</span> <span class="n">bk</span>
+
+    <span class="n">k</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">streaming_linear_regression_update</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">XkXk</span><span class="p">,</span> <span class="n">bk</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">bk</span>
+        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">streaming_linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)):</span>
+    <span class="n">bk0</span> <span class="o">=</span> <span class="n">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">bk</span><span class="p">,</span> <span class="n">bk0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">iteration</span> <span class="mi">0</span> <span class="p">[</span> <span class="mf">1.</span>     <span class="mf">0.667</span> <span class="o">-</span><span class="mf">0.667</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.</span>     <span class="mf">0.667</span> <span class="o">-</span><span class="mf">0.667</span><span class="p">]</span>
+    <span class="n">iteration</span> <span class="mi">1</span> <span class="p">[</span> <span class="mf">1.03</span>   <span class="mf">0.682</span> <span class="o">-</span><span class="mf">0.697</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.03</span>   <span class="mf">0.682</span> <span class="o">-</span><span class="mf">0.697</span><span class="p">]</span>
+    <span class="n">iteration</span> <span class="mi">2</span> <span class="p">[</span> <span class="mf">1.036</span>  <span class="mf">0.857</span> <span class="o">-</span><span class="mf">0.875</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.036</span>  <span class="mf">0.857</span> <span class="o">-</span><span class="mf">0.875</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="streaming-linear-regression-version-gram-schmidt">
+<span id="l-piecewise-linear-regression-gram-schmidt"></span><h3><a class="toc-backref" href="#id16" role="doc-backlink">Streaming Linear Regression version Gram-Schmidt</a><a class="headerlink" href="#streaming-linear-regression-version-gram-schmidt" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’algorithme reprend le théorème
+<a class="reference internal" href="#algo-gram-schmidt-reglin"><span class="std std-ref">Régression linéaire après Gram-Schmidt</span></a>
+et l’algorithme <a class="reference internal" href="#l-stream-gram-schmidt"><span class="std std-ref">Streaming Gram-Schmidt</span></a>. Tout tient dans cette formule :
+<span class="math notranslate nohighlight">\(\beta_k = P_k' X_{1..k}' y_{1..k} P_k'\)</span> qu’on écrit différemment
+en considérent l’associativité de la multiplication des matrices :
+<span class="math notranslate nohighlight">\(\beta_k = P_k' (X_{1..k}' y_{1..k}) P_k'\)</span>. La matrice centrale
+a pour dimension <em>d</em>. L’exemple suivant implémente cette idée.
+Il s’appuie sur les fonctions <a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.streaming_gram_schmidt_update" title="mlstatpy.ml.matrices.streaming_gram_schmidt_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">streaming_gram_schmidt_update</span></code></a> et
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.gram_schmidt" title="mlstatpy.ml.matrices.gram_schmidt"><code class="xref py py-func docutils literal notranslate"><span class="pre">gram_schmidt</span></code></a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlstatpy.ml.matrices</span> <span class="kn">import</span> <span class="n">gram_schmidt</span><span class="p">,</span> <span class="n">streaming_gram_schmidt_update</span>
+
+
+<span class="k">def</span> <span class="nf">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inv</span> <span class="o">@</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">streaming_linear_regression_gram_schmidt_update</span><span class="p">(</span><span class="n">Xk</span><span class="p">,</span> <span class="n">yk</span><span class="p">,</span> <span class="n">Xkyk</span><span class="p">,</span> <span class="n">Pk</span><span class="p">,</span> <span class="n">bk</span><span class="p">):</span>
+    <span class="n">Xk</span> <span class="o">=</span> <span class="n">Xk</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">streaming_gram_schmidt_update</span><span class="p">(</span><span class="n">Xk</span><span class="p">,</span> <span class="n">Pk</span><span class="p">)</span>
+    <span class="n">Xkyk</span> <span class="o">+=</span> <span class="p">(</span><span class="n">Xk</span> <span class="o">*</span> <span class="n">yk</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Xkyk</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">bk</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">Pk</span> <span class="o">@</span> <span class="n">Xkyk</span> <span class="o">@</span> <span class="n">Pk</span>
+
+
+<span class="k">def</span> <span class="nf">streaming_linear_regression_gram_schmidt</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">Xk</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:</span><span class="n">start</span><span class="p">]</span>
+    <span class="n">xyk</span> <span class="o">=</span> <span class="n">Xk</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span><span class="p">[:</span><span class="n">start</span><span class="p">]</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">Pk</span> <span class="o">=</span> <span class="n">gram_schmidt</span><span class="p">(</span><span class="n">Xk</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bk</span> <span class="o">=</span> <span class="n">Pk</span> <span class="o">@</span> <span class="n">xyk</span> <span class="o">@</span> <span class="n">Pk</span>
+    <span class="k">yield</span> <span class="n">bk</span>
+
+    <span class="n">k</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">streaming_linear_regression_gram_schmidt_update</span><span class="p">(</span>
+            <span class="n">mat</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">xyk</span><span class="p">,</span> <span class="n">Pk</span><span class="p">,</span> <span class="n">bk</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">bk</span>
+        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">streaming_linear_regression_gram_schmidt</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)):</span>
+    <span class="n">bk0</span> <span class="o">=</span> <span class="n">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">bk</span><span class="p">,</span> <span class="n">bk0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">iteration</span> <span class="mi">0</span> <span class="p">[</span> <span class="mf">1.</span>     <span class="mf">0.667</span> <span class="o">-</span><span class="mf">0.667</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.</span>     <span class="mf">0.667</span> <span class="o">-</span><span class="mf">0.667</span><span class="p">]</span>
+    <span class="n">iteration</span> <span class="mi">1</span> <span class="p">[</span> <span class="mf">1.03</span>   <span class="mf">0.682</span> <span class="o">-</span><span class="mf">0.697</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.03</span>   <span class="mf">0.682</span> <span class="o">-</span><span class="mf">0.697</span><span class="p">]</span>
+    <span class="n">iteration</span> <span class="mi">2</span> <span class="p">[</span> <span class="mf">1.036</span>  <span class="mf">0.857</span> <span class="o">-</span><span class="mf">0.875</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.036</span>  <span class="mf">0.857</span> <span class="o">-</span><span class="mf">0.875</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Ces deux fonctions sont implémentées dans le module par
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.streaming_linear_regression_gram_schmidt_update" title="mlstatpy.ml.matrices.streaming_linear_regression_gram_schmidt_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">streaming_linear_regression_gram_schmidt_update</span></code></a>
+et <a class="reference internal" href="../api/ml.html#mlstatpy.ml.matrices.streaming_linear_regression_gram_schmidt" title="mlstatpy.ml.matrices.streaming_linear_regression_gram_schmidt"><code class="xref py py-func docutils literal notranslate"><span class="pre">streaming_linear_regression_gram_schmidt</span></code></a>.
+Le coût de l’algorithme est en <span class="math notranslate nohighlight">\(O(d^3)\)</span> mais n’inclut pas
+d’inversion de matrices.</p>
+</section>
+</section>
+<section id="digressions">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">Digressions</a><a class="headerlink" href="#digressions" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’article <a class="reference external" href="http://jmlr.org/papers/volume20/18-460/18-460.pdf">An Efficient Two Step Algorithm for High DimensionalChange Point Regression Models Without Grid Search</a> propose un cadre
+théorique pour déterminer une frontière dans un nuage de données
+qui délimite un changement de modèle linéaire.
+Le suivant étudie des changements de paramètres
+<a class="reference external" href="http://jmlr.org/papers/volume20/17-352/17-352.pdf">Change Surfaces for Expressive MultidimensionalChangepoints and Counterfactual Prediction</a> d’une façon
+plus générique.</p>
+</section>
+<section id="notebooks">
+<h2><a class="toc-backref" href="#id18" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/regression_no_inversion.html">Régression sans inversion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/regression_no_inversion.html#Streaming-versions">Streaming versions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Voir aussi <a class="reference internal" href="#cai2020" id="id2"><span>[Cai2020]</span></a>, <a class="reference internal" href="#nie2016" id="id3"><span>[Nie2016]</span></a>, <a class="reference internal" href="#preda2010" id="id4"><span>[Preda2010]</span></a>.</p>
+</section>
+<section id="implementations">
+<h2><a class="toc-backref" href="#id19" role="doc-backlink">Implémentations</a><a class="headerlink" href="#implementations" title="Lien permanent vers cette rubrique">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/mlinsights/mlmodel/piecewise_tree_regression.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor">PiecewiseTreeRegressor</a></p></li>
+</ul>
+</section>
+<section id="bilbiographie">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Bilbiographie</a><a class="headerlink" href="#bilbiographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="acharya2016" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Acharya2016</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://arxiv.org/abs/1607.03990">Fast Algorithms for Segmented Regression</a>,
+Jayadev Acharya, Ilias Diakonikolas, Jerry Li, Ludwig Schmidt, <a class="reference external" href="https://icml.cc/2016/index.html">ICML 2016</a></p>
+</div>
+<div class="citation" id="cai2020" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Cai2020</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://www.jmlr.org/papers/volume21/18-567/18-567.pdf">Online Sufficient Dimension Reduction Through Sliced Inverse Regression</a>,
+Zhanrui Cai, Runze Li, Liping Zhu</p>
+</div>
+<div class="citation" id="nie2016" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Nie2016</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://jmlr.org/papers/volume17/15-320/15-320.pdf">Online PCA with Optimal Regret</a>,
+Jiazhong Nie, Wojciech Kotlowski, Manfred K. Warmuth</p>
+</div>
+<div class="citation" id="preda2010" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Preda2010</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://hal.archives-ouvertes.fr/hal-01125940/document">The NIPALS Algorithm for Missing Functional Data</a>,
+Cristian Preda, Gilbert Saporta, Mohamed Hadj Mbarek,
+Revue roumaine de mathématiques pures et appliquées 2010, 55 (4), pp.315-326.</p>
+</div>
+</div>
+<p>Voir aussi <a class="reference external" href="https://cran.r-project.org/web/packages/nipals/vignettes/nipals_algorithm.html">The NIPALS algorithm</a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../notebooks/dsgarden/quantile_regression_example.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Régression quantile illustrée</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/ml/piecewise_linear_regression.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Régression linéaire par morceaux</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration">Exploration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probleme-et-regression-lineaire-dans-un-espace-a-une-dimension">Problème et regréssion linéaire dans un espace à une dimension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-naive-d-une-regression-lineaire-par-morceaux">Implémentation naïve d’une régression linéaire par morceaux</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aparte-sur-la-continuite-de-la-regression-lineaire-par-morceaux">Aparté sur la continuité de la régression linéaire par morceaux</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-lineaire-et-correlation">Régression linéaire et corrélation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#idee-de-l-algorithme">Idée de l’algorithme</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#un-peu-plus-en-detail-dans-l-algorithme">Un peu plus en détail dans l’algorithme</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthese-mathematique">Synthèse mathématique</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-gram-schmidt">Streaming Gram-Schmidt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-linear-regression">Streaming Linear Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-linear-regression-version-gram-schmidt">Streaming Linear Regression version Gram-Schmidt</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#digressions">Digressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebooks">Notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementations">Implémentations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bilbiographie">Bilbiographie</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_ml/piecewise.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

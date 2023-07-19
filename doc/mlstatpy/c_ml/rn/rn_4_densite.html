@@ -1,0 +1,1208 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Démonstration du théorème de la densité des réseaux de neurones &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/rn/rn_4_densite';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Descente de gradient" href="rn_5_newton.html" />
+    <link rel="prev" title="La classification" href="rn_3_clas.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="rn.html">Réseaux de neurones</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rn_1_def.html">Définition des réseaux de neurones multi-couches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_2_reg.html">La régression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_3_clas.html">La classification</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Démonstration du théorème de la densité des réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_5_newton.html">Descente de gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_6_apprentissage.html">Apprentissage d’un réseau de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_7_clas2.html">Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_8_prol.html">Prolongements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_9_auto.html">Analyse en composantes principales (ACP) et Auto Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_biblio.html">Bibliographie</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kppv.html">Classification à l’aide des plus proches voisins</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../missing_values_mf.html">Liens entre factorisation de matrices, ACP, k-means</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Non linéaire</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="rn.html" class="nav-link">Réseaux de neurones</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Démonstration du théorème de la densité des réseaux de neurones</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="demonstration-du-theoreme-de-la-densite-des-reseaux-de-neurones">
+<h1>Démonstration du théorème de la densité des réseaux de neurones<a class="headerlink" href="#demonstration-du-theoreme-de-la-densite-des-reseaux-de-neurones" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#formulation-du-probleme-de-la-regression" id="id6">Formulation du problème de la régression</a></p></li>
+<li><p><a class="reference internal" href="#densite-des-reseaux-de-neurones" id="id7">Densité des réseaux de neurones</a></p></li>
+</ul>
+</nav>
+<section id="formulation-du-probleme-de-la-regression">
+<span id="rn-enonce-probleme-regression"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink">Formulation du problème de la régression</a><a class="headerlink" href="#formulation-du-probleme-de-la-regression" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Soient deux variables aléatoires continues
+<span class="math notranslate nohighlight">\(\pa{X,Y} \in \R^p \times \R^q \sim \loi\)</span> quelconque,
+la résolution du problème de <a class="reference internal" href="rn_2_reg.html#problem-regression"><span class="std std-ref">régression</span></a>
+est l’estimation de la fonction <span class="math notranslate nohighlight">\(\esp(Y|X) = F\pa{X}\)</span>.
+Pour cela, on dispose d’un ensemble de points
+<span class="math notranslate nohighlight">\(A = \acc{ \pa{X_{i},Y_{i}} \sim \loi | 1 \infegal i \infegal N }\)</span>.</p>
+<p>Soit <span class="math notranslate nohighlight">\(f : \R^M \times \R^p \longrightarrow \R^q\)</span> une fonction, on définit
+<span class="math notranslate nohighlight">\(\forall i \in \intervalle{1}{N}, \; \widehat{Y_{i}^{W}} = f \pa{W,X_{i}}\)</span>.
+On appelle aussi <span class="math notranslate nohighlight">\(\widehat{Y_{i}^{W}}\)</span> la valeur prédite pour <span class="math notranslate nohighlight">\(X_{i}\)</span>.
+On pose alors
+<span class="math notranslate nohighlight">\(\epsilon_{i}^{W} = Y_{i} -  \widehat{Y_{i}^{W}} = Y_{i} - f \pa{W,X_{i}}\)</span>.</p>
+<p>Les résidus sont supposés
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Variables_ind%C3%A9pendantes_et_identiquement_distribu%C3%A9es">i.i.d. (identiquement et indépendemment distribués)</a>,
+et suivant une loi normale
+<span class="math notranslate nohighlight">\(\forall i \in \intervalle{1}{N}, \; \epsilon_{i}^{W} \sim \loinormale{\mu_{W}}{\sigma_{W}}\)</span>
+La vraisemblance d’un échantillon
+<span class="math notranslate nohighlight">\(\pa{Z_i}_{1\infegal i \infegal N}\)</span>,
+où les <span class="math notranslate nohighlight">\(Z_i\)</span> sont indépendantes entre elles et suivent la loi de densité
+<span class="math notranslate nohighlight">\(f \pa{z | \theta}\)</span>
+est la densité du vecteur <span class="math notranslate nohighlight">\(\vecteur{Z_1}{Z_N}\)</span> qu’on exprime
+comme suit :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rrcl}
+                &amp;L\pa{\theta, \vecteurno{Z_1}{Z_N}} &amp; =&amp; \prod_{n=1}^{N} f\pa{Z_i | \theta} \\
+\Longrightarrow&amp;
+\ln L\pa{\theta, \vecteurno{Z_1}{Z_N}} &amp;=&amp; \sum_{n=1}^{N} \ln f\pa{Z_i | \theta}
+\end{array}\end{split}\]</div>
+<p>La log-vraisemblance de l’échantillon s’écrit
+<span class="math notranslate nohighlight">\(L_{W} = -\frac{1}{2\sigma_{W}^2} \sum_{i=1}^{N}
+\pa{Y_{i} - \widehat{Y_{i}^W} - \mu_{W} }^2 + N\ln\pa{\sigma_{W}\sqrt{2\pi}}\)</span>.
+Les estimateurs du maximum de vraisemblance
+pour <span class="math notranslate nohighlight">\(\mu_W\)</span> et <span class="math notranslate nohighlight">\(\sigma_W\)</span> sont (voir <a class="reference internal" href="../../c_metric/roc.html#saporta1990" id="id1"><span>[Saporta1990]</span></a>) :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\widehat{\mu_{W}}     &amp;=&amp;     \frac{1}{N} \sum_{i=1}^{N} Y_{i} - \widehat{Y_{i}^W} \\
+\widehat{\sigma_{W}}  &amp;=&amp;     \sqrt{ \frac{ \sum_{i=1}^{N} \pa{Y_{i} -
+                              \widehat{Y_{i}^W} - \mu_{W}}^2}{N}}
+\end{array}\end{split}\]</div>
+<p>L’estimateur de <span class="math notranslate nohighlight">\(\widehat{Y}=f\pa{W,X}\)</span> désirée est de préférence
+sans biais (<span class="math notranslate nohighlight">\(\mu_W = 0\)</span>) et de variance minimum,
+par conséquent, les paramètres <span class="math notranslate nohighlight">\(\overset{*}{W}\)</span>
+qui maximisent la vraisemblance <span class="math notranslate nohighlight">\(L_W\)</span> sont :</p>
+<div class="math notranslate nohighlight" id="equation-rn-eqn-regression-1">
+<span class="eqno">(1)<a class="headerlink" href="#equation-rn-eqn-regression-1" title="Lien permanent vers cette équation">#</a></span>\[\begin{split}\begin{array}{rcl}
+\overset{*}{W}   &amp;=&amp; \underset{W \in \R^M}{\arg \min} \sum_{i=1}^{N}
+                                        \pa {Y_{i} - \widehat{Y_{i}^W}}^2 \\
+                 &amp;=&amp; \underset{W \in \R^M}{\arg \min} \sum_{i=1}^{N}
+                        \pa {Y_{i} - f \pa{W,X_{i}}}^2
+\end{array}\end{split}\]</div>
+<p>Réciproquement, on vérifie que si <span class="math notranslate nohighlight">\(W^*\)</span> vérifie
+l’équation <a class="reference internal" href="#equation-rn-eqn-regression-1">(1)</a> alors l’estimateur défini par
+<span class="math notranslate nohighlight">\(f\)</span> est sans biais
+Il suffit pour s’en convaincre de poser
+<span class="math notranslate nohighlight">\(g = f + \alpha\)</span> avec
+<span class="math notranslate nohighlight">\(\alpha \in \R\)</span> et de vérifier que la valeur optimale pour
+<span class="math notranslate nohighlight">\(\alpha\)</span> est
+<span class="math notranslate nohighlight">\(\alpha = - \frac{1}{N}\, \sum_{i=1}^{N} \, \left. Y_i - f\pa{W,X_i} \right.\)</span>.
+L’estimateur minimise la vraisemblance <span class="math notranslate nohighlight">\(L_W\)</span>.
+Cette formule peut être généralisée en faisant une autre hypothèse
+que celle de la normalité des résidus (l’indépendance étant conservée),
+l’équation <a class="reference internal" href="#equation-rn-eqn-regression-1">(1)</a>
+peut généralisée par <a class="reference internal" href="#equation-rn-eqn-regression-2">(2)</a>.</p>
+<div class="math notranslate nohighlight" id="equation-rn-eqn-regression-2">
+<span class="eqno">(2)<a class="headerlink" href="#equation-rn-eqn-regression-2" title="Lien permanent vers cette équation">#</a></span>\[\begin{split}\begin{array}{rcl}
+\overset{*}{W}     &amp;=&amp; \underset{W \in \R^M}{\arg \min} \sum_{i=1}^{N}
+                                                        e\pa {Y_{i} - \widehat{Y_{i}^W}} \\
+                    &amp;=&amp; \underset{W \in \R^M}{\arg \min} \sum_{i=1}^{N}
+                            e\pa{Y_{i} - f \pa{W,X_{i}}}
+\end{array}\end{split}\]</div>
+<p>Où la fonction <span class="math notranslate nohighlight">\(e : \R^q \in \R\)</span> est appelée fonction d’erreur.</p>
+</section>
+<section id="densite-des-reseaux-de-neurones">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Densité des réseaux de neurones</a><a class="headerlink" href="#densite-des-reseaux-de-neurones" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’utilisation de réseaux de neurones s’est considérablement
+développée depuis que l’algorithme de rétropropagation a
+été trouvé (<a class="reference internal" href="rn_biblio.html#lecun1985" id="id2"><span>[LeCun1985]</span></a>, <a class="reference internal" href="rn_biblio.html#rumelhart1986" id="id3"><span>[Rumelhart1986]</span></a>, <a class="reference internal" href="rn_biblio.html#bishop1995" id="id4"><span>[Bishop1995]</span></a>).
+Ce dernier permet d’estimer la dérivée d’un réseau de neurones en
+un point donné et a ouvert la voie à des méthodes classiques
+de résolution pour des problèmes d’optimisation tels que la régression non linéaire.</p>
+<p>Comme l’ensemble des fonctions polynômiales,
+l’ensemble des fonctions engendrées par des réseaux de neurones
+multi-couches possède des propriétés de <a class="reference internal" href="#theoreme-densite"><span class="std std-ref">densité</span></a>
+et sont infiniment dérivables. Les réseaux de neurones comme
+les polynômes sont utilisés pour modéliser la fonction
+<span class="math notranslate nohighlight">\(f\)</span> de l’équation <a class="reference internal" href="#equation-rn-eqn-regression-2">(2)</a>.
+Ils diffèrent néanmoins sur certains points</p>
+<p>Si une couche ne contient que des fonctions de transfert bornées
+comme la fonction sigmoïde, tout réseau de neurones incluant cette couche
+sera aussi borné. D’un point de vue informatique, il est
+préférable d’effectuer des calculs avec des valeurs du même
+ordre de grandeur. Pour un polynôme, les valeurs des termes de
+degré élevé peuvent être largement supérieurs à leur somme.</p>
+<p>Un autre attrait est la symétrie dans l’architecture d’un réseau
+de neurones, les neurones qui le composent jouent des rôles
+symétriques (corollaire <a class="reference internal" href="#corollaire-famille-libre"><span class="std std-ref">familles libres</span></a>.
+Pour améliorer l’approximation d’une fonction, dans un cas,
+il suffit d’ajouter un neurone au réseau, dans l’autre,
+il faut inclure des polynômes de degré plus élevé que ceux déjà  employés.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-densite">Théorème T1 : densité des réseaux de neurones (Cybenko1989)</p>
+<p><a class="reference internal" href="rn_biblio.html#cybenko1989" id="id5"><span>[Cybenko1989]</span></a>
+Soit <span class="math notranslate nohighlight">\(E_{p}^{q}\)</span> l’espace des réseaux de neurones à
+<span class="math notranslate nohighlight">\(p\)</span> entrées et <span class="math notranslate nohighlight">\(q\)</span> sorties, possédant une couche cachée dont la
+fonction de seuil est une fonction sigmoïde
+<span class="math notranslate nohighlight">\(\left(  x\rightarrow 1-\frac{2}{1+e^{x}}\right)\)</span>,
+une couche de sortie dont la fonction de seuil est linéaire
+Soit <span class="math notranslate nohighlight">\(F_{p}^{q}\)</span> l’ensemble des fonctions continues de
+<span class="math notranslate nohighlight">\(C\subset\R^{p}\longrightarrow\R^{q}\)</span> avec <span class="math notranslate nohighlight">\(C\)</span>
+compact muni de la norme
+<span class="math notranslate nohighlight">\(\left\| f\right\| =\underset{x\in C}{\sup}\left\|  f\left( x\right)  \right\|\)</span>
+Alors <span class="math notranslate nohighlight">\(E_{p}^{q}\)</span> est dense dans <span class="math notranslate nohighlight">\(F_{p}^{q}\)</span>.</p>
+</div>
+<p>La démonstration de ce théorème nécessite deux lemmes.
+Ceux-ci utilisent la définition usuelle du produit scalaire
+sur <span class="math notranslate nohighlight">\(\R^p\)</span> défini par
+<span class="math notranslate nohighlight">\(\pa{x,y} = \pa{\vecteurno{x_1}{x_p},\vecteurno{y_1}{y_p}} \in \R^{2p} \longrightarrow
+\left\langle x,y \right\rangle = \sum_{i=1}^{p} x_i y_i\)</span>.
+et la norme infinie :
+<span class="math notranslate nohighlight">\(x = \vecteur{x_1}{x_p} \in \R^p \longrightarrow \norm{x} =
+\underset{i \in \intervalle{1}{p}}{\max} x_i\)</span>.
+Toutes les normes sont
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Norme_%C3%A9quivalente">équivalentes</a>
+sur <span class="math notranslate nohighlight">\(\R^p\)</span>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Corollaire0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-densite-lemme-a">Corollaire C1 : approximation d’une fonction créneau</p>
+<p>Soit <span class="math notranslate nohighlight">\(C \subset \R^p, \; C= \acc { \vecteur{y_1}{y_p} \in \R^p \, | \forall i\in \intervalle{1}{p},\, 0 \leqslant y_{i}\leqslant 1   }\)</span>,
+alors :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{l}
+\forall \varepsilon &gt; 0, \; \forall \alpha&gt;0, \; \exists n \in \N^*, \;
+            \exists \vecteur{x_1}{x_n}
+            \in\left(  \R^p\right)  ^{n}, \; \exists
+    \vecteur{\gamma_1}{\gamma_n} \in \R^n  \text{ tels que } \forall x\in \R^p, \\ \\
+\begin{array}{ll}
+&amp;   \left| \underset{i=1}{\overset{n}{\sum}}\dfrac{\gamma_i}
+                {1+e^{\left\langle x_{i},x\right\rangle +b_{i}}}-\indicatrice{x\in C
+    }\right| \leqslant1 \\ \\
+\text{ et } &amp;   \underset{y\in Fr\left( C\right)  }{\inf }\left\| x-y\right\| &gt;
+                \alpha\Rightarrow\left| \underset{i=1}{\overset
+    {n}{\sum}}\dfrac{\gamma_i}{1+e^{\left\langle x_{i},x\right\rangle +b_{i}}}
+            -\indicatrice{x\in C}\right| \leqslant\varepsilon
+\end{array}
+\end{array}\end{split}\]</div>
+</div>
+<p><strong>Démonstration du corollaire</strong></p>
+<p><em>Partie 1</em></p>
+<p>Soit <span class="math notranslate nohighlight">\(h\)</span> la fonction définie par :
+<span class="math notranslate nohighlight">\(h\pa{x} = \pa{\dfrac{1}{1+e^{-kx}}}^p\)</span>
+avec <span class="math notranslate nohighlight">\(p&gt;0\)</span> et <span class="math notranslate nohighlight">\(0 &lt; \epsilon &lt; 1\)</span>.
+A <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\epsilon\)</span> fixé, <span class="math notranslate nohighlight">\(0 &lt; \epsilon &lt; 1\)</span>,
+on cherche <span class="math notranslate nohighlight">\(k\)</span> tel que :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{crcl}
+                &amp;   \epsilon                    &amp;=&amp; h\pa{\alpha} = \pa{\dfrac{1}{1+e^{-k\alpha}}}^p \\
+\Longrightarrow &amp;   \epsilon^{-\frac{1}{p}}               &amp;=&amp; 1+e^{-k\alpha} \\
+\Longrightarrow &amp;   \epsilon^{-\frac{1}{p}} -1            &amp;=&amp; e^{-k\alpha} \\
+\Longrightarrow &amp;   \ln \pa{\epsilon^{-\frac{1}{p}} -1}   &amp;=&amp; -k\alpha \\
+\Longrightarrow &amp;   k                           &amp;=&amp; - \dfrac{ \ln\pa{\epsilon^{-\frac{1}{p}} -1}}{\alpha} =
+                                                        k_0\pa{\epsilon,\alpha,p}
+\end{array}\end{split}\]</div>
+<p><em>Partie 2</em></p>
+<p>Soit <span class="math notranslate nohighlight">\(\alpha&gt;0\)</span> et <span class="math notranslate nohighlight">\(1\geqslant\varepsilon&gt;0, \, k&gt;0\)</span>,</p>
+<p>On pose <span class="math notranslate nohighlight">\(f\left(  y_{1},...,y_{p}\right)  =\underset{i=1}{\overset{p}{\prod}}
+\dfrac{1}{1+e^{-ky_{i}}}\underset{i=1}{\overset{p}{\prod}}\dfrac {1}{1+e^{-k\left(  1-y_{i}\right)}}\)</span>
+d’après sa définition, <span class="math notranslate nohighlight">\(0 \infegal f\left(  y_{1},...,y_{p}\right)  \infegal 1\)</span>.</p>
+<p>Pour <span class="math notranslate nohighlight">\(k \supegal k_0 \pa{\epsilon,\alpha,2p}\)</span>
+obtenu dans la partie précédente :</p>
+<div class="math notranslate nohighlight">
+\[\underset{_{i\in\left\{ 1,...,p\right\}}}{\inf}
+\cro { \min\left\{  \left|  y_{i}\right|  ,\left|  1-y_{i}\right|  \right\} } &gt;\alpha
+\Longrightarrow\left\|  f\left(  y_{1},...,y_{p}\right) - \indicatrice{x\in C}\right\|  \infegal\varepsilon\]</div>
+<p><em>Partie 3</em></p>
+<p>Soit <span class="math notranslate nohighlight">\(g\)</span> la fonction définie par :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+g\pa{x}     &amp;=&amp;     \pa{\dfrac{1}{1+e^{-kx}}}\pa{\dfrac{1}{1+e^{-k\pa{1-x}}}}
+            =     \dfrac{1}{1+e^{-kx}+e^{-k\pa{1-x}}+e^{-k}} \\
+            &amp;=&amp;     \dfrac{1}{1+e^{-kx}+e^{-k}e^{kx}+e^{-k}}
+            =     \dfrac{e^{kx}}{e^{kx}\pa{1+e^{-k}}+1+e^{-k}e^{2kx}}
+\end{array}\end{split}\]</div>
+<p>La fonction <span class="math notranslate nohighlight">\(x \longrightarrow e^{kx}\pa{1+e^{-k}}+1+e^{-k}e^{2kx}\)</span>
+est un polynôme en <span class="math notranslate nohighlight">\(e^{kx}\)</span> dont le
+discriminant est positif. Par conséquent la fraction
+rationnelle <span class="math notranslate nohighlight">\(g\pa{x}\)</span> admet une décomposition en éléments
+simples du premier ordre
+et il existe quatre réels <span class="math notranslate nohighlight">\(\eta_1\)</span>, <span class="math notranslate nohighlight">\(\eta_2\)</span>,
+<span class="math notranslate nohighlight">\(\delta_1\)</span>, <span class="math notranslate nohighlight">\(\delta_2\)</span> tels que :</p>
+<div class="math notranslate nohighlight">
+\[g\pa{x} = \dfrac{\eta_1}{1+ e^{kx+\delta_1}} + \dfrac{\eta_2}{1+ e^{kx+\delta_2}}\]</div>
+<p>Par conséquent :</p>
+<div class="math notranslate nohighlight">
+\[f\vecteur{y_1}{y_p} = \prod_{i=1}^{p} g\pa{y_i} =
+                      \prod_{i=1}^{p} \cro { \dfrac{\eta_1^i}{1+ e^{ky_i+\delta_1^i}} + \dfrac{\eta_2^i}{1+
+                      e^{ky_i+\delta_2^i}} }\]</div>
+<p>Il existe <span class="math notranslate nohighlight">\(n \in \N\)</span> tel qu’il soit possible d’écrire <span class="math notranslate nohighlight">\(f\)</span> sous la forme :</p>
+<div class="math notranslate nohighlight">
+\[f\pa{y} = \sum_{i=1}^{n}  \dfrac{\gamma_i}{ 1 + e^{ &lt;x_i,y&gt; + b_i } }\]</div>
+<div class="admonition-mathdef admonition" id="indexmathe-Corollaire1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-densite-lemme-b">Corollaire C2 : approximation d’une fonction indicatrice</p>
+<p>Soit <span class="math notranslate nohighlight">\(C\subset\R^p\)</span> compact, alors :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c}
+\forall\varepsilon&gt;0, \; \forall\alpha&gt;0, \; \exists\left(  x_{1},...,x_{n}\right)
+        \in\left(  \R^{p}\right)^{n}, \; \exists\left(
+b_{1},...,b_{n}\right)  \in\R^n \text{ tels que } \forall x\in\R^{p},\\ \\
+\begin{array}{ll}
+&amp;   \left|  \sum_{i=1}^n \dfrac{\gamma_i}
+            {1+e^{\left\langle x_{i},x\right\rangle +b_{i}}}-\indicatrice{x\in C
+    }\right|  \leqslant1+2\varepsilon^2\\ \\
+\text{ et } &amp;   \underset{y\in Fr\left( C\right)  }{\inf}\left\|  x-y\right\|
+    &gt;\alpha\Rightarrow\left| \sum_{i=1}^n
+                \dfrac{\gamma_i}{1+e^{\left\langle x_{i} ,x\right\rangle +b_{i}}}-
+    \indicatrice{x\in C}\right| \leqslant \varepsilon
+\end{array}
+\end{array}\end{split}\]</div>
+</div>
+<p><strong>Démonstration du corollaire</strong></p>
+<p><em>Partie 1</em></p>
+<p>Soit <span class="math notranslate nohighlight">\(C_1=\left\{  y=\left(  y_{1},...,y_{p}\right)  \in\R^p
+\,\left| \, \forall i\in\left\{  1,...,n\right\}  ,\,0\leqslant y_{i}\leqslant1\right.  \right\}\)</span>
+et <span class="math notranslate nohighlight">\(C_{2}^{j}=\left\{  y=\left(
+y_{1},...,y_{p}\right)  \in\R^p\,\left| \,
+\forall i\neq j,\,0\leqslant y_{i}\leqslant1 \text{ et }1\leqslant y_{j}\leqslant2\right.
+\right\}\)</span></p>
+<p>Le premier lemme suggère que la fonction cherchée pour ce lemme
+dans le cas particulier <span class="math notranslate nohighlight">\(C_1\cup C_2^j\)</span> est :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+f\left(  y_{1},...,y_{p}\right) &amp;=&amp;   \prod_{i=1}^p \dfrac
+                                    {1}{1+e^{-ky_{i}}} \prod_{i=1}^p\dfrac{1}{1+e^{-k\left( 1-y_{i}\right)
+                                    }}+ \\
+                            &amp;&amp;      \quad \left(  \prod_{i \neq j}
+                                    \dfrac
+                                    {1}{1+e^{-ky_{i}}}\right)  \left(  \prod_{i \neq j}
+                                    \dfrac{1}{1+e^{-k\left(  1-y_{i}\right)  }}\right)
+                                    \dfrac{1}{1+e^{k\left( 1-y_{j}\right)  }}\dfrac{1}{1+e^{-k\left(  2-y_{j}\right)
+                                    }}\\
+%
+                            &amp;=&amp;  \left(  \prod_{i \neq j} \dfrac{1}{1+e^{-ky_{i}}}\right)
+                                \left(  \prod_{i \neq j} \dfrac{1}{1+e^{-k\left(  1-y_{i}\right)
+                                }}\right) \\
+                            &amp;&amp;  \quad  \left( \dfrac{1}{1+e^{-ky_{j}}}\dfrac{1}{1+e^{-k\left(  1-y_{j}\right)  }}
+                                 +\dfrac {1}{1+e^{k\left(  1-y_{j}\right)  }}
+                                            \dfrac{1}{1+e^{-k\left(2-y_{j}\right) }}\right)
+                                 \\
+%
+                            &amp;=&amp; \left(  \prod_{i \neq j} \dfrac{1}{1+e^{-ky_{i}}}\right)
+                                 \left(  \prod_{i \neq j} \dfrac{1}{1+e^{-k\left(  1-y_{i}\right)  }}\right) \\
+                            &amp;&amp;  \quad \left[\dfrac{1}{1+e^{-ky_{j}}}\left(  \dfrac{1}{1+e^{-k\left(  1-y_{j}\right)  }
+                                }+1-1\right)  +\left(  1-\dfrac{1}{1+e^{-k\left(  1-y_{j}\right)  }}\right)
+                                \dfrac{1}{1+e^{-k\left(  2-y_{j}\right)  }}\right]
+\end{array}\end{split}\]</div>
+<p>Pour <span class="math notranslate nohighlight">\(k \supegal k_0\pa{\epsilon,\alpha,2p}\)</span>, on a :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+f\left(  y_{1},...,y_{p}\right)  &amp;=&amp; \left(  \prod_{i\neq j}
+\dfrac{1}{1+e^{-ky_{i}}}\right)  \left(  \prod_{i\neq j}
+\dfrac{1}{1+e^{-k\left(  1-y_{i}\right)  }}\right)
+\\
+&amp;&amp; \quad \left(  \dfrac{1}%
+{1+e^{-ky_{j}}}+\dfrac{1}{1+e^{-k\left(  2-y_{j}\right)  }}+
+\underset {\leqslant\varepsilon^{2}}{\underbrace{\dfrac{1}{1+e^{k\left( 1-y_{j}\right)
+}}\dfrac{1}{1+e^{-ky_{j}}}}}-\underset{\leqslant\varepsilon^{2}}%
+{\underbrace{\dfrac{1}{1+e^{-k\left(  1-y_{j}\right)  }}\dfrac{1}%
+{1+e^{-k\left(  2-y_{j}\right)  }}}}\right)
+\end{array}\end{split}\]</div>
+<p>Par conséquent, il est facile de construire la fonction cherchée
+pour tout compact connexe par arc.</p>
+<p><em>Partie 2</em></p>
+<p>Si un compact <span class="math notranslate nohighlight">\(C\)</span> n’est pas connexe par arc,
+on peut le recouvrir par une somme finie de
+compacts connexes par arcs et disjoints
+<span class="math notranslate nohighlight">\(\left(C_{k}\right) _{1\leqslant k\leqslant K}\)</span> de telle sorte que :</p>
+<div class="math notranslate nohighlight">
+\[\forall y\in\underset{k=1}{\overset{K}{\cup}}C_{k},\,\inf\left\{  \left\|
+x-y\right\|  ,\,x\in C\right\}  \leqslant\dfrac{\alpha}{2}\]</div>
+<p><strong>Démontration du théorème de</strong> <a class="reference internal" href="#theoreme-densite"><span class="std std-ref">densité des réseaux de neurones</span></a></p>
+<p><em>Partie 1</em></p>
+<p>On démontre le théorème dans le cas où <span class="math notranslate nohighlight">\(q=1\)</span>.
+Soit <span class="math notranslate nohighlight">\(f\)</span> une fonction continue du compact
+<span class="math notranslate nohighlight">\(C\subset\R^p\rightarrow \R\)</span> et soit <span class="math notranslate nohighlight">\(\varepsilon&gt;0\)</span>.</p>
+<p>On suppose également que <span class="math notranslate nohighlight">\(f\)</span> est positive, dans le cas contraire, on pose
+<span class="math notranslate nohighlight">\(f=\underset{\text{fonction positive}}{\underbrace{f-\inf f}}+\inf f\)</span>.</p>
+<p>Si <span class="math notranslate nohighlight">\(f\)</span> est nulle, alors c’est fini, sinon, on pose <span class="math notranslate nohighlight">\(M=\underset{x\in C}{\sup }f\left(  x\right)\)</span>.
+<span class="math notranslate nohighlight">\(M\)</span> existe car <span class="math notranslate nohighlight">\(f\)</span> est continue et <span class="math notranslate nohighlight">\(C\)</span>
+est compact (de même, <span class="math notranslate nohighlight">\(\inf f\)</span> existe également).</p>
+<p>On pose <span class="math notranslate nohighlight">\(C_{k}=f^{-1}\left(  \left[  k\varepsilon,M\right]  \right)\)</span>.
+<span class="math notranslate nohighlight">\(C_k\)</span> est compact car il est l’image
+réciproque d’un compact par une fonction continue et <span class="math notranslate nohighlight">\(C_k\subset C\)</span> compact.</p>
+<img alt="../../_images/rn_densite_idee.png" src="../../_images/rn_densite_idee.png" />
+<p>Par construction, <span class="math notranslate nohighlight">\(C_{k+1}\subset C_{k}\)</span> et <span class="math notranslate nohighlight">\(C=\underset{k=0}{\overset {\frac{M}{\varepsilon}}
+{\bigcup}}C_{k}=C_{0}\)</span> on définit~:</p>
+<div class="math notranslate nohighlight">
+\[\forall x\in
+C,\; g_{\varepsilon}\left(  x\right)  =
+        \varepsilon\overset{\frac {M}{\varepsilon}}{ \sum_{k=0}}\indicatrice{x\in C_{k}}\]</div>
+<p>D’où~:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+f\left(  x\right)  -g_{\varepsilon}\left(  x\right)  &amp;=&amp;
+                    f\left(  x\right)-\varepsilon\overset{\frac{M}{\varepsilon}}{\sum_{k=0}}
+    \indicatrice{x\in C_{k}} \nonumber
+= f\left(  x\right)  -\varepsilon \overset{\frac{M}{\varepsilon}}
+            {\sum_{k=0}}\indicatrice
+                { f\pa{x} \supegal k \varepsilon } \nonumber \\
+&amp;=&amp; f\left( x\right)  -\varepsilon\left[  \dfrac{f\left(  x\right) }
+                {\varepsilon}\right] \quad \text{ (partie entière)}\nonumber  \\
+&amp; \text{d'où }&amp;  0\leqslant f\left(  x\right)  -g_{\varepsilon}\left(  x\right)  \leqslant \frac{\varepsilon}{4}
+\end{eqnarray}</div><p>Comme <span class="math notranslate nohighlight">\(f\)</span> est continue sur un compact, elle est uniformément continue sur ce compact :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{l}
+\exists\alpha&gt;0 \text{ tel que } \forall\left(  x,y\right)  \in C^{2},
+            \; \left\| x-y\right\|  \leqslant\alpha\Longrightarrow\left|  f\left(
+    x\right) -f\left(  y\right)  \right|  \leqslant \frac{ \varepsilon}{2} \\ \\
+\text{ d'où } \left|  f\left(  x\right)  -f\left(  y\right)  \right| \supegal \varepsilon
+                 \Longrightarrow\left\|  x-y\right\|  &gt;\alpha
+\end{array}\end{split}\]</div>
+<p>Par conséquent :</p>
+<div class="math notranslate nohighlight">
+\[\inf\left\{  \left\|  x-y\right\|  \,\left|  \,x\in Fr\left(  C_{k}\right) ,\,y\in
+                Fr\left(  C_{k+1}\right)  \right.  \right\}
+&gt;\alpha\]</div>
+<p>D’après le second lemme, on peut construire des fonctions <span class="math notranslate nohighlight">\(h_{k}\left( x\right)
+=\sum_{i=1}^n\dfrac{1}{1+e^{\left\langle x_{i}^{k},x\right\rangle +b_{i}^{k}}}\)</span>
+telles que :</p>
+<div class="math notranslate nohighlight">
+\[\left(  \left\|  h_{k}\left(  x\right)  -\indicatrice{x\in C_{k}}\right\|
+    \leqslant1 \right)  \text{ et } \left( \underset{y\in
+Fr\left(  C\right)  }{\inf}\left\|  x-y\right\|  &gt;\dfrac{\alpha}{2}%
+\Rightarrow\left\|  h_{k}\left(  x\right)  -\indicatrice{x\in C_{k}}\right\|  \leqslant\varepsilon^{2}\right)\]</div>
+<p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\left|  f\left(  x\right)  -\varepsilon\overset{\frac{M}{\varepsilon}}
+        {\sum_{k=0}}h_{k}\left(  x\right)  \right|  &amp;\leqslant&amp;
+    \left| f\left(  x\right)  -g_{\varepsilon}\left(  x\right)  \right|
+         +\left|g_{\varepsilon}\left(  x\right)  -\varepsilon
+    \overset{\frac{M}{\varepsilon}}{\sum_{k=0}}h_{k}\left(  x\right)  \right| \\
+&amp;\leqslant&amp; \varepsilon+ \varepsilon^2 \left[  \dfrac{M}{\varepsilon}\right] + 2\varepsilon^2 \\
+&amp;\leqslant&amp; \varepsilon\left(  M+3\right)
+\end{array}\end{split}\]</div>
+<p>Comme <span class="math notranslate nohighlight">\(\varepsilon\overset{\frac{M}{\varepsilon}}{\sum_{k=1}}
+h_{k}\left(  x\right)\)</span> est de la forme désirée, le théorème est démontré dans le cas <span class="math notranslate nohighlight">\(q=1\)</span>.</p>
+<p><em>Partie 2</em></p>
+<p>Dans le cas <span class="math notranslate nohighlight">\(q&gt;1\)</span>, on utilise la méthode précédente pour chacune des projections de <span class="math notranslate nohighlight">\(f\)</span>
+dans un repère orthonormé de <span class="math notranslate nohighlight">\(\R^{q}\)</span>. Il suffit de
+sommer sur chacune des dimensions.</p>
+<p>Ce théorème montre qu’il est judicieux de modéliser la fonction
+<span class="math notranslate nohighlight">\(f\)</span> dans l’équation <a class="reference internal" href="#equation-rn-eqn-regression-2">(2)</a>
+par un réseau de neurones puisqu’il possible de s’approcher d’aussi
+près qu’on veut de la fonction <span class="math notranslate nohighlight">\(\esp\pa{Y | X}\)</span>,
+il suffit d’ajouter des neurones sur la couche cachée du réseau.
+Ce théorème permet de déduire le corollaire suivant :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Corollaire2">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="corollaire-famille-libre">Corollaire C3 : famille libre de fonctions</p>
+<p>Soit <span class="math notranslate nohighlight">\(F_{p}\)</span> l’ensemble des fonctions continues de
+<span class="math notranslate nohighlight">\(C\subset\R^{p}\longrightarrow\R\)</span> avec <span class="math notranslate nohighlight">\(C\)</span>
+compact muni de la norme :
+<span class="math notranslate nohighlight">\(\left\| f\right\| =\underset{x\in C}{\sup}\left\|  f\left( x\right)  \right\|\)</span>
+Alors l’ensemble <span class="math notranslate nohighlight">\(E_{p}\)</span> des fonctions sigmoïdes :</p>
+<div class="math notranslate nohighlight">
+\[E_{p} =  \acc{ x \longrightarrow 1 - \dfrac{2}{1 + e^{&lt;y,x&gt;+b}} | y
+\in \R^p \text{ et } b \in \R}\]</div>
+<p>est une base de <span class="math notranslate nohighlight">\(F_{p}\)</span>.</p>
+</div>
+<p><strong>Démonstration du corollaire</strong></p>
+<p>Le théorème de <a class="reference internal" href="#theoreme-densite"><span class="std std-ref">densité</span></a> montre que la famille
+<span class="math notranslate nohighlight">\(E_{p}\)</span> est une famille génératrice. Il reste à montrer que c’est une
+famille libre. Soient <span class="math notranslate nohighlight">\(\pa{y_i}_{1 \infegal i \infegal N} \in \pa{\R^p}^N\)</span> et
+<span class="math notranslate nohighlight">\(\pa{b_i}_{1 \infegal i \infegal N} \in \R^N\)</span> vérifiant :
+<span class="math notranslate nohighlight">\(i \neq j \Longrightarrow y_i \neq y_j \text{ ou } b_i \neq b_j\)</span>.
+Soit <span class="math notranslate nohighlight">\(\pa{\lambda_i}_{1 \infegal i \infegal N} \in \R^N\)</span>, il faut montrer que :</p>
+<div class="math notranslate nohighlight" id="equation-corollaire-demo-recurrence-base">
+\begin{eqnarray}
+\forall x \in \R^p, \; \sum_{i=1}^{N} \lambda_i \pa{ 1 - \dfrac{2}{1 + e^{&lt;y_i,x&gt;+b_i}  }} = 0
+\Longrightarrow \forall i \, \lambda_i = 0
+\end{eqnarray}</div><p>C’est évidemment vrai pour <span class="math notranslate nohighlight">\(N=1\)</span>.
+La démonstration est basée sur un raisonnement par récurrence,
+on suppose qu’elle est vraie pour <span class="math notranslate nohighlight">\(N-1\)</span>,
+démontrons qu’elle est vraie pour <span class="math notranslate nohighlight">\(N\)</span>.
+On suppose donc <span class="math notranslate nohighlight">\(N \supegal 2\)</span>.
+S’il existe <span class="math notranslate nohighlight">\(i \in \ensemble{1}{N}\)</span> tel que <span class="math notranslate nohighlight">\(y_i = 0\)</span>,
+la fonction <span class="math notranslate nohighlight">\(x \longrightarrow 1 - \dfrac{2}{1 + e^{&lt;y_i,x&gt;+b_i}}\)</span>
+est une constante, par conséquent, dans ce cas le corollaire est
+est vrai pour <span class="math notranslate nohighlight">\(N\)</span>. Dans le cas contraire,
+<span class="math notranslate nohighlight">\(\forall i \in \ensemble{1}{N}, \; y_i \neq 0\)</span>.
+On définit les vecteurs <span class="math notranslate nohighlight">\(X_i = \pa{x_i,1}\)</span> et
+<span class="math notranslate nohighlight">\(Y_i = \pa{y_j, b_j}\)</span>.
+On cherche à résoude le système de <span class="math notranslate nohighlight">\(N\)</span> équations à <span class="math notranslate nohighlight">\(N\)</span> inconnues :</p>
+<div class="math notranslate nohighlight" id="equation-rn-coro-eq-1">
+\begin{eqnarray}
+\left\{
+\begin{array}{ccc}
+\sum_{j=1}^{N} \lambda_j \pa{ 1 - \dfrac{2}{1 + e^{&lt;Y_j,X_1&gt;}}} &amp;=&amp; 0 \\
+\ldots \\
+\sum_{j=1}^{N} \lambda_j \pa{ 1 - \dfrac{2}{1 + e^{&lt;Y_j,X_i&gt;}}} &amp;=&amp; 0 \\
+\ldots \\
+\sum_{j=1}^{N} \lambda_j \pa{ 1 - \dfrac{2}{1 + e^{&lt;Y_j,X_N&gt;}}} &amp;=&amp; 0
+\end{array}
+\right.
+\end{eqnarray}</div><p>On note le vecteur
+<span class="math notranslate nohighlight">\(\Lambda = \pa{\lambda_i}_{ 1 \infegal i \infegal N}\)</span> et <span class="math notranslate nohighlight">\(M\)</span> la matrice :</p>
+<div class="math notranslate nohighlight">
+\[M= \pa{m_{ij}}_{ 1 \infegal i,j \infegal N} = \pa{ 1 - \dfrac{2}{1 + e^{&lt;Y_j,X_i&gt;}} }_{ 1 \infegal i,j \infegal N}\]</div>
+<p>L’équation <a class="reference internal" href="#equation-rn-coro-eq-1">(4)</a> est équivalente à l’équation matricielle :
+<span class="math notranslate nohighlight">\(M\Lambda = 0\)</span>. On effectue une itération du pivot de Gauss.
+<a class="reference internal" href="#equation-rn-coro-eq-1">(4)</a> équivaut à :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+&amp;\Longleftrightarrow&amp; \left\{ \begin{array}{ccllllllll}
+                                \lambda_1  m_{11} &amp;+&amp; \lambda_2 &amp; m_{12} &amp;+&amp; \ldots &amp;+&amp; \lambda_N &amp; m_{1N} &amp; = 0 \\
+                                0                 &amp;+&amp; \lambda_2 &amp; \pa{ m_{22} m_{11} - m_{12} m_{21} }
+                                                                    &amp;+&amp; \ldots &amp;+&amp; \lambda_N &amp; \pa{ m_{2N} m_{11} - m_{1N} m_{21} }
+                                                                     &amp; = 0 \\
+                                \ldots \\
+                                0                 &amp;+&amp; \lambda_2 &amp; \pa{ m_{N2} m_{11} - m_{12} m_{N1} } &amp;+&amp; \ldots
+                                                                    &amp;+&amp; \lambda_N &amp; \pa{ m_{NN} m_{11} - m_{1N} m_{N1} } &amp; = 0
+                                \end{array}
+                                \right.
+\end{array}\end{split}\]</div>
+<p>On note <span class="math notranslate nohighlight">\(\Lambda_* = \pa{\lambda_i}_{ 2 \infegal i \infegal N}\)</span> et
+<span class="math notranslate nohighlight">\(\Delta_*\)</span>, <span class="math notranslate nohighlight">\(M_*\)</span> les matrices :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+M_*         &amp;=&amp;     \pa{m_{ij}}_{ 2 \infegal i,j \infegal N} \\
+\Delta_*    &amp;=&amp;     \pa{ m_{1j} \, m_{i1} }_{ 2 \infegal i,j \infegal N}
+\end{array}\end{split}\]</div>
+<p>Donc <a class="reference internal" href="#equation-rn-coro-eq-1">(4)</a> est équivalent à :</p>
+<div class="math notranslate nohighlight" id="equation-rn-coro-eq-3">
+\begin{eqnarray}
+\begin{array}{ccl}
+                     &amp;\Longleftrightarrow&amp; \left\{ \begin{array}{cccc}
+                                \lambda_1  m_{11}&amp;+&amp; \lambda_2  m_{12} + \ldots + \lambda_N  m_{1N}  &amp;= 0 \\
+                                0                &amp;+&amp;   \pa{ m_{11} M_* -  \Delta_*} \Lambda_* &amp; = 0
+                                \end{array}
+                                \right.
+\end{array}
+\end{eqnarray}</div><p>Il est possible de choisir <span class="math notranslate nohighlight">\(X_1\pa{\alpha} = \pa{\alpha x_1, 1}\)</span>
+de telle sorte qu’il existe une suite <span class="math notranslate nohighlight">\(\pa{s_l}_{ 1 \infegal l \infegal N } \in \acc{-1,1}^{N}\)</span>
+avec <span class="math notranslate nohighlight">\(s_1=1\)</span> et vérifiant :</p>
+<div class="math notranslate nohighlight">
+\[\forall j \in \vecteur{1}{N}, \;
+\underset{\alpha \longrightarrow +\infty} {\lim }  \cro{ 1 - \dfrac{2}{1 + e^{&lt;Y_j, \, X_1\pa{\alpha}   &gt;}} } =
+\underset{\alpha \longrightarrow +\infty} {\lim }  m_{1j}\pa{\alpha} = s_j\]</div>
+<p>On définit :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rll}
+U_* &amp;=&amp; \vecteur{m_{21}}{m_{N1}}' \\
+V_* &amp;=&amp; \vecteur{s_2 \, m_{21}}{s_N \, m_{N1}}' \\
+\text{ et la matrice } L_* &amp;=&amp; \pa{V_*}_ { 2 \infegal i \infegal N } \text{ dont les $N-1$ colonnes sont identiques }
+\end{array}\end{split}\]</div>
+<p>On vérifie que :</p>
+<div class="math notranslate nohighlight">
+\[\underset{\alpha \longrightarrow +\infty} {\lim } \Delta\pa{\alpha} = V_*\]</div>
+<p>On obtient, toujours pour <a class="reference internal" href="#equation-rn-coro-eq-1">(4)</a> :</p>
+<blockquote>
+<div><div class="math notranslate nohighlight" id="equation-rn-coro-eq-2">
+\begin{eqnarray}
+                     &amp;\Longleftrightarrow&amp; \left\{ \begin{array}{cclc}
+                                \lambda_1  m_{11}\pa{\alpha}    &amp;+&amp;
+                                                            \lambda_2  m_{12}\pa{\alpha} + \ldots + \lambda_N  m_{1N}\pa{\alpha}  &amp;= 0 \\
+                                0                &amp;+&amp;   \cro{m_{11}\pa{\alpha} M_* -
+                                                                                    \pa{ L_* + \pa{ \Delta_*\pa{\alpha} - L_* } } }
+                                                                                \Lambda_* &amp; = 0
+                                \end{array}
+                                \right. \\ \nonumber\\
+                     &amp;\Longleftrightarrow&amp; \left\{ \begin{array}{cclc}
+                                \lambda_1  m_{11}\pa{\alpha}    &amp;+&amp;
+                                                            \lambda_2  m_{12}\pa{\alpha} + \ldots + \lambda_N  m_{1N}\pa{\alpha}  &amp;= 0 \\
+                                0                &amp;+&amp;   \pa{m_{11}\pa{\alpha} M_* -    L_* }      \Lambda_*
+                                                     +  \pa{ \Delta_*\pa{\alpha} - L_* }     \Lambda_* &amp;  = 0
+                                \end{array}
+                                \right. \nonumber
+\end{eqnarray}</div></div></blockquote>
+<p>On étudie la limite lorsque <span class="math notranslate nohighlight">\(\alpha \longrightarrow +\infty\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{crcl}
+                    &amp; \pa{ \Delta_*\pa{\alpha} - L_* }   &amp;
+                        \underset{ \alpha \rightarrow +\infty}{ \longrightarrow} &amp; 0                 \\
+\Longrightarrow     &amp; \pa{m_{11}\pa{\alpha} M_* -   L_* }      \Lambda_* &amp;
+                        \underset{ \alpha \rightarrow +\infty}{ \longrightarrow} &amp;  0\\
+\Longrightarrow     &amp; \pa{M_* -  L_* }      \Lambda_* &amp;   = &amp;  0\\
+\Longrightarrow     &amp; M_* \Lambda_* -    \pa{  \sum_{j=2}^{N} \lambda_j   }   V_*   &amp;   = &amp;  0\\
+\end{array}\end{split}\]</div>
+<p>Donc :</p>
+<div class="math notranslate nohighlight" id="equation-rn-coro-eq-5">
+\begin{eqnarray*}
+M_* \Lambda_* -    \pa{  \sum_{j=2}^{N} \lambda_j   }   V_*   &amp;=&amp;  0
+\end{eqnarray*}</div><p>D’après l’hypothèse de récurrence, <a class="reference internal" href="#equation-rn-coro-eq-5">(7)</a> implique que :
+<span class="math notranslate nohighlight">\(\forall i \in \ensemble{2}{N}, \; \lambda_i = 0\)</span>.
+Il reste à montrer que <span class="math notranslate nohighlight">\(\lambda_1\)</span>
+est nécessairement nul ce qui est le cas losque <span class="math notranslate nohighlight">\(\alpha \longrightarrow +\infty\)</span>,
+alors <span class="math notranslate nohighlight">\(\lambda_1  m_{11}\pa{\alpha} \longrightarrow \lambda_1 = 0\)</span>.
+La récurrence est démontrée.</p>
+<p>A chaque fonction sigmoïde du corollaire <a class="reference internal" href="#corollaire-famille-libre"><span class="std std-ref">famille libre</span></a>
+correspond un neurone de la couche cachée. Tous ont des rôles
+symétriques les uns par rapport aux autres ce qui ne serait
+pas le cas si les fonctions de transfert étaient des polynômes.
+C’est une des raisons pour lesquelles les réseaux de neurones
+ont du succès. Le théorème <a class="reference internal" href="#theoreme-densite"><span class="std std-ref">densité</span></a>
+et le corollaire <a class="reference internal" href="#corollaire-famille-libre"><span class="std std-ref">famille libre</span></a>
+sont aussi vraies pour des fonctions du type exponentielle :
+<span class="math notranslate nohighlight">\(\pa{y,b} \in \R^p \times \R \longrightarrow e^{-\pa{&lt;y,x&gt;+b}^2}\)</span>.
+Maintenant qu’il est prouvé que les réseaux de neurones conviennent
+pour modéliser <span class="math notranslate nohighlight">\(f\)</span> dans l’équation <a class="reference internal" href="#equation-rn-eqn-regression-2">(2)</a>,
+il reste à étudier les méthodes qui permettent de trouver
+les paramètres <span class="math notranslate nohighlight">\(W^*\)</span> optimaux de cette fonction.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="rn_3_clas.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">La classification</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rn_5_newton.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Descente de gradient</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation-du-probleme-de-la-regression">Formulation du problème de la régression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#densite-des-reseaux-de-neurones">Densité des réseaux de neurones</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/c_ml/rn/rn_4_densite.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,923 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Descente de gradient &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/rn/rn_5_newton';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Apprentissage d’un réseau de neurones" href="rn_6_apprentissage.html" />
+    <link rel="prev" title="Démonstration du théorème de la densité des réseaux de neurones" href="rn_4_densite.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="rn.html">Réseaux de neurones</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rn_1_def.html">Définition des réseaux de neurones multi-couches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_2_reg.html">La régression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_3_clas.html">La classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_4_densite.html">Démonstration du théorème de la densité des réseaux de neurones</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Descente de gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_6_apprentissage.html">Apprentissage d’un réseau de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_7_clas2.html">Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_8_prol.html">Prolongements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_9_auto.html">Analyse en composantes principales (ACP) et Auto Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_biblio.html">Bibliographie</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kppv.html">Classification à l’aide des plus proches voisins</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../missing_values_mf.html">Liens entre factorisation de matrices, ACP, k-means</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Non linéaire</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="rn.html" class="nav-link">Réseaux de neurones</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Descente de gradient</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="descente-de-gradient">
+<h1>Descente de gradient<a class="headerlink" href="#descente-de-gradient" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#algorithme-et-convergence" id="id4">Algorithme et convergence</a></p></li>
+<li><p><a class="reference internal" href="#calcul-du-gradient-ou-retropropagation" id="id5">Calcul du gradient ou <em>rétropropagation</em></a></p></li>
+</ul>
+</nav>
+<p>Lorsqu’un problème d’optimisation n’est pas soluble de manière déterministe,
+il existe des algorithmes permettant de trouver une solution approchée
+à condition toutefois que la fonction à maximiser ou minimiser soit dérivable,
+ce qui est le cas des réseaux de neurones. Plusieurs variantes seront proposées
+regroupées sous le terme de descente de gradient.
+Quelques lectures :</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://sebastianruder.com/optimizing-gradient-descent/">An overview of gradient descent optimization algorithms</a></p></li>
+<li><p><a class="reference external" href="http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/">Implementing a Neural Network from Scratch in Python – An Introduction</a></p></li>
+</ul>
+<section id="algorithme-et-convergence">
+<span id="optimisation-newton"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Algorithme et convergence</a><a class="headerlink" href="#algorithme-et-convergence" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Soit <span class="math notranslate nohighlight">\(g : \R \dans \R\)</span> une fonction dérivable dont il faut trouver
+<span class="math notranslate nohighlight">\(\overset{*}{x} = \underset{x \in \R}{\arg \min} \; g\pa{x}\)</span>,
+le schéma suivant illustre la méthode de descente de gradient
+dans le cas où <span class="math notranslate nohighlight">\(g \pa{x} = x^2\)</span>.</p>
+<img alt="../../_images/rn_courbe.png" src="../../_images/rn_courbe.png" />
+<p>On note <span class="math notranslate nohighlight">\(x_{t}\)</span> l’abscisse à l’itération <span class="math notranslate nohighlight">\(t\)</span>.
+On note <span class="math notranslate nohighlight">\(\dfrac{\partial g\left(  x_{t}\right)  }{\partial x}\)</span> le
+gradient de <span class="math notranslate nohighlight">\(g\left(  x\right)  =x^{2}\)</span>.
+L’abscisse à l’itération <span class="math notranslate nohighlight">\(t+1\)</span> sera
+<span class="math notranslate nohighlight">\(x_{t+1}=x_{t}-\varepsilon_{t}\left[  \dfrac{\partial g\left(  x_{t}\right)}{\partial x}\right]\)</span>.
+<span class="math notranslate nohighlight">\(\varepsilon_{t}\)</span> est le pas de gradient à l’itération <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>On suppose maintenant que <span class="math notranslate nohighlight">\(g\)</span> est une fonction dérivable
+<span class="math notranslate nohighlight">\(g : \R^q \dans \R\)</span> dont il faut trouver le minimum, le théorème suivant démontre
+la convergence de l’algorithme de descente de gradient à condition
+que certaines hypothèses soient vérifiées. Une généralisation de ce théorème est présentée dans
+<a class="reference internal" href="rn_biblio.html#driancourt1996" id="id1"><span>[Driancourt1996]</span></a>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-convergence">Théorème T1 : convergence de la méthode de Newton</p>
+<p><a class="reference internal" href="rn_biblio.html#bottou1991" id="id2"><span>[Bottou1991]</span></a></p>
+<p>Soit une fonction continue <span class="math notranslate nohighlight">\(g : W \in \R^M \dans \R\)</span>
+de classe <span class="math notranslate nohighlight">\(C^{1}\)</span>.
+On suppose les hypothèses suivantes vérifiées :</p>
+<ul class="simple">
+<li><p><strong>H1</strong> : <span class="math notranslate nohighlight">\(\underset{W\in \R^q}{\arg\min} \;
+g\left(  W\right) =\left\{  W^{\ast}\right\}\)</span>
+est un singleton</p></li>
+<li><p><strong>H2</strong> : <span class="math notranslate nohighlight">\(\forall\varepsilon&gt;0, \; \underset{\left|  W-W^{\ast}\right|
+&gt;\varepsilon}{\inf}\left[  \left(  W-W^{\ast}\right)  ^{\prime}.\nabla
+g\left(  W\right)  \right]  &gt;0\)</span></p></li>
+<li><p><strong>H3</strong> : <span class="math notranslate nohighlight">\(\exists\left(  A,B\right)  \in \R^2\)</span> tels que <span class="math notranslate nohighlight">\(\forall W\in\R^p,\; \left\|
+\nabla g\left( W\right) \right\| ^{2}\leqslant A^{2}+B^{2}\left\|  W-W^{\ast}\right\|  ^{2}\)</span></p></li>
+<li><p><strong>H4</strong> : la suite <span class="math notranslate nohighlight">\(\left(  \varepsilon_{t}\right)_{t\geqslant0}\)</span> vérifie,
+<span class="math notranslate nohighlight">\(\forall t&gt;0, \; \varepsilon_{t}\in \R_{+}^{\ast}\)</span>
+et <span class="math notranslate nohighlight">\(\sum_{t\geqslant 0}\varepsilon_{t}=+\infty\)</span>,
+<span class="math notranslate nohighlight">\(\sum_{t\geqslant 0}\varepsilon_{t}^{2}&lt;+\infty\)</span></p></li>
+</ul>
+<p>Alors la suite <span class="math notranslate nohighlight">\(\left(  W_{t}\right)  _{t\geqslant 0}\)</span> construite de la manière suivante
+<span class="math notranslate nohighlight">\(W_{0} \in \R^M\)</span>, <span class="math notranslate nohighlight">\(\forall t\geqslant0\)</span> :
+<span class="math notranslate nohighlight">\(W_{t+1}=W_{t}-\varepsilon_{t}\,\nabla g\left(  W_{t}\right)\)</span>
+vérifie <span class="math notranslate nohighlight">\(\lim_{ t \dans+\infty}W_{t}=W^{\ast}\)</span>.</p>
+</div>
+<p>L’hypothèse <strong>H1</strong> implique que le minimum de la fonction <span class="math notranslate nohighlight">\(g\)</span>
+est unique et l’hypothèse <strong>H2</strong> implique que le demi-espace défini par
+l’opposé du gradient contienne toujours le minimum de la fonction <span class="math notranslate nohighlight">\(g\)</span>.
+L’hypothèse <strong>H3</strong> est vérifiée pour une fonction sigmoïde, elle l’est donc aussi pour toute somme finie
+de fonctions sigmoïdes que sont les réseaux de neurones à une couche cachée.</p>
+<p><strong>Démonstration du théorème</strong></p>
+<p><em>Partie 1</em></p>
+<p>Soit la suite <span class="math notranslate nohighlight">\(u_{t}=\ln\left(  1+\varepsilon_{t}^{2}x^{2}\right)\)</span>
+avec <span class="math notranslate nohighlight">\(x\in\R\)</span>, comme <span class="math notranslate nohighlight">\(\sum_{t\geqslant 0} \varepsilon_{t}^{2} &lt; +\infty, \;
+u_{t}\thicksim\varepsilon_{t}^{2}x^{2}\)</span>, on a <span class="math notranslate nohighlight">\(\sum_{t\geqslant 0} u_{t} &lt; +\infty\)</span>.</p>
+<p>Par conséquent, si <span class="math notranslate nohighlight">\(v_{t}=e^{u_{t}}\)</span> alors <span class="math notranslate nohighlight">\(\prod_{t=1}^T v_{t}\overset{T \rightarrow \infty}{\longrightarrow}D \in \R\)</span>.</p>
+<p><em>Partie 2</em></p>
+<p>On pose <span class="math notranslate nohighlight">\(h_{t}=\left\|  W_{t}-W^{\ast}\right\|  ^{2}\)</span>.
+Donc :</p>
+<div class="math notranslate nohighlight" id="equation-equation-convergence-un">
+\begin{eqnarray}
+h_{t+1} -h_{t} &amp;=&amp;\left\|  W_{t}-\varepsilon_{t}\,\nabla g\left( W_{t}\right) -W^{\ast }\right\|
+              ^{2}-\left\|W_{t}-W^{\ast}\right\| ^{2}
+\end{eqnarray}</div><p>Par conséquent :</p>
+<div class="math notranslate nohighlight">
+\[h_{t+1}-h_{t}=-2\varepsilon_{t}\underset{&gt;0} {\underbrace{\left(  W_{t}-W^{\ast}\right)
+ ^{\prime}\,\nabla g\left( W_{t}\right)
+}}+\varepsilon_{t}^{2}\,\left\|  \,\nabla C\left( W_{t}\right) \right\|
+^{2}\leqslant\varepsilon_{t}^{2}\,\left\|  \,\nabla g\left( W_{t}\right)
+\right\|  ^{2}\leqslant\varepsilon_{t}^{2}\,\left(  A^{2}  +B^{2}h_{t}\right)\]</div>
+<p>D’où :</p>
+<div class="math notranslate nohighlight">
+\[h_{t+1}-h_{t}\left(  1+\varepsilon_{t}^{2}B^{2}\right) \leqslant\varepsilon_{t}^{2}\,A^{2}\]</div>
+<p>On pose <span class="math notranslate nohighlight">\(\pi_{t}= \prod_{k=1}^t \left(  1+\varepsilon_{k}^{2}B^{2}\right)  ^{-1}\)</span>
+alors en multipliant des deux côtés par <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span>, on obtient :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\pi_{t+1}h_{t+1}-\pi_{t}h_{t} &amp;\leqslant&amp; \varepsilon_{t}^{2}\,A^{2}\pi_{t+1}\\
+\text{d'où }\pi_{q+1}h_{q+1}-\pi_{p}h_{p} &amp;\leqslant&amp;
+                \sum_{t=p}^q \varepsilon_{t}^{2}\,A^{2}\pi_{t+1} \leqslant
+\sum_{t=p}^{q} \varepsilon_{t}^{2} \, A^{2}\Pi  \leqslant \sum_{t=p}^{q} \varepsilon_{t}^{2}\,A^{2}\Pi
+             \underset{t \longrightarrow
+\infty}{\longrightarrow} 0
+\end{array}\end{split}\]</div>
+<p>Comme la série <span class="math notranslate nohighlight">\(\sum_t \pa{\pi_{t+1}h_{t+1}-\pi_{t}h_{t}}\)</span> vérifie le critère de Cauchy, elle est convergente. Par conséquent :</p>
+<div class="math notranslate nohighlight">
+\[\underset{q\rightarrow\infty}{\lim}\pi_{q+1}h_{q+1}=0=\underset{q\rightarrow \infty}{\lim}\Pi h_{q+1}\]</div>
+<p>D’où <span class="math notranslate nohighlight">\(\underset{q\rightarrow\infty}{\lim}h_{q}=0\)</span>.</p>
+<p><em>Partie 3</em></p>
+<p>La série <span class="math notranslate nohighlight">\(\sum_t\pa{h_{t+1}-h_{t}}\)</span> est convergente car <span class="math notranslate nohighlight">\(\Pi h_t \sim \pi_t h_t\)</span>.
+<span class="math notranslate nohighlight">\(\sum_{t\geqslant0}\varepsilon_{t}^{2}\,\left\| \,\nabla g\left( W_{t}\right) \right\|  ^{2}\)</span>
+l’est aussi (d’après <strong>H3</strong>).</p>
+<p>D’après <a class="reference internal" href="#equation-equation-convergence-un">(1)</a>,
+la série <span class="math notranslate nohighlight">\(\sum_{t\geqslant 0}\varepsilon_{t}\left( W_{t}-W^{\ast }\right) ^{\prime} \,
+\nabla g\left( W_{t}\right)\)</span> est donc convergente.
+Or d’après les hypothèses <strong>H2</strong>, <strong>H4</strong>, elle ne peut l’être que si :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+\underset{t\rightarrow\infty}{\lim}W_{t}&amp;=&amp;W^{\ast}
+\end{eqnarray}</div><p>Si ce théorème prouve la convergence
+de la méthode de Newton, il ne précise pas à quelle vitesse cette convergence
+s’effectue et celle-ci peut parfois être très lente. Plusieurs variantes
+ont été développées regroupées sous le terme de méthodes de quasi-Newton dans le but
+d’améliorer la vitesse de convergence.</p>
+<p>Ce théorème peut être étendu dans le cas où la fonction <span class="math notranslate nohighlight">\(g\)</span>
+n’a plus un seul minimum global mais plusieurs minima locaux (<a class="reference internal" href="rn_biblio.html#bottou1991" id="id3"><span>[Bottou1991]</span></a>),
+dans ce cas, la suite <span class="math notranslate nohighlight">\(\pa{W_{t}}\)</span> converge vers un mimimum local.
+Dans le cas des réseaux de neurones, la fonction à optimiser est :</p>
+<div class="math notranslate nohighlight" id="equation-equation-fonction-erreur-g">
+\begin{eqnarray}
+G\pa{W}   &amp;=&amp;   \sum_{i=1}^{N} e\pa {Y_{i}, \widehat{Y_{i}^W}}
+                  =   \sum_{i=1}^{N} e\pa {Y_{i}, f \pa{W,X_{i}}} \nonumber
+\end{eqnarray}</div><p>Dès que les fonctions de transfert ne sont pas linéaires,
+il existe une multitude de minima locaux, ce nombre croissant avec celui des coefficients.</p>
+</section>
+<section id="calcul-du-gradient-ou-retropropagation">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Calcul du gradient ou <em>rétropropagation</em></a><a class="headerlink" href="#calcul-du-gradient-ou-retropropagation" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Afin de minimiser la fonction <span class="math notranslate nohighlight">\(G\)</span> décrite en <a class="reference internal" href="#equation-equation-fonction-erreur-g">(2)</a>,
+l’algorithme de descente du gradient nécessite de calculer le gradient de
+cette fonction <span class="math notranslate nohighlight">\(G\)</span> qui est la somme des gradients <span class="math notranslate nohighlight">\(\partialfrac{e}{W}\)</span>
+pour chaque couple <span class="math notranslate nohighlight">\(\pa{X_i,Y_i}\)</span> :</p>
+<div class="math notranslate nohighlight" id="equation-algo-retro-1">
+\begin{eqnarray}
+\partialfrac{G}{W}\pa{W} &amp;=&amp; \sum_{i=1}^{N} \partialfrac{e\pa {Y_{i}, f \pa{W,X_{i}}}}{W} \nonumber\\
+                         &amp;=&amp; \sum_{i=1}^{N} \sum_{k=1}^{C_C}
+                                \partialfrac{e\pa {Y_{i}, f \pa{W,X_{i}}}}{z_{C,k}}
+                                \partialfrac{z_{C,k}}{W} \nonumber
+\end{eqnarray}</div><p>Les notations utilisées sont celles de la figure du <a class="reference internal" href="rn_1_def.html#figure-peceptron-fig"><span class="std std-ref">perceptron</span></a>.
+Les résultats qui suivent sont pour <span class="math notranslate nohighlight">\(X_i=X\)</span> donné appartenant à la suite
+<span class="math notranslate nohighlight">\(\pa{X_i}\)</span>. On remarque tout d’abord que :</p>
+<div class="math notranslate nohighlight" id="equation-algo-retro-3">
+\begin{eqnarray}
+\partialfrac{e}{w_{c,i,j}} \pa{W,X} &amp;=&amp;  z_{c-1,j} \partialfrac{e}{y_{c,i}} \pa{W,X} \nonumber \\
+\partialfrac{e}{b_{c,i}} \pa{W,X}   &amp;=&amp; \partialfrac{e}{y_{c,i}} \pa{W,X} \nonumber
+\end{eqnarray}</div><p>La rétropropagation du gradient consiste donc à calculer les termes :
+<span class="math notranslate nohighlight">\(\partialfrac{e}{y_{.,.}}\pa{W,X}\)</span>
+puisque le gradient s’en déduit facilement. La dernière couche du réseau de neurones nous permet d’obtenir :</p>
+<div class="math notranslate nohighlight" id="equation-algo-retro-4">
+\begin{eqnarray}
+\partialfrac{e}{y_{C,i}} \pa{W,X} &amp;=&amp; \sum_{k=1}^{C_{C}} \partialfrac{e}{z_{C,k}} \pa{W,X} \partialfrac{z_{C,k}}{y_{C,i}}
+                                        \pa{W,X} \nonumber\\
+                                  &amp;=&amp; \partialfrac{e}{z_{C,i}} \pa{W,X} f'_{c,i}\pa{y_{C,i}} \nonumber
+\end{eqnarray}</div><p>Pour les autres couches <span class="math notranslate nohighlight">\(c\)</span> telles que <span class="math notranslate nohighlight">\(1 \infegal c \infegal C-1\)</span>, on a :</p>
+<div class="math notranslate nohighlight" id="equation-retro-eq-nn-3">
+\begin{eqnarray}
+\partialfrac{e}{y_{c,i}}    &amp;=&amp; \sum_{l=1}^{C_{c+1}}              \partialfrac {e}{y_{c+1,l}}
+                                                            \partialfrac{y_{c+1,l}}{y_{c,i}} \nonumber \\
+                            &amp;=&amp; \sum_{l=1}^{C_{c+1}}              \partialfrac {e}{y_{c+1,l}}
+                                \cro { \sum_{l=1}^{C_{c}}   \partialfrac {y_{c+1,l}}{z_{c,l}}
+                                                                \underset{=0\,si\,l\neq i}{\underbrace{\partialfrac{z_{c,l}}{y_{c,i}}}} } \nonumber \\
+                            &amp;=&amp; \sum_{l=1}^{C_{c+1}}              \partialfrac{e}{y_{c+1,l}}
+                                                                \partialfrac{y_{c+1,l}}{z_{c,i}}
+                                                                \partialfrac{z_{c,i}}{y_{c,i}}
+                                                                \nonumber
+\end{eqnarray}</div><p>Par conséquent :</p>
+<div class="math notranslate nohighlight" id="equation-algo-retro-5">
+\begin{eqnarray}
+\partialfrac{e}{y_{c,i}} &amp;=&amp;    \cro{ \sum_{l=1}^{C_{c+1}} \partialfrac{e}{y_{c+1,l}}w_{c+1,l,i} } \,
+                                f_{c,i}^{\prime} \pa{y_{c,i}}  \nonumber
+\end{eqnarray}</div><p id="index-0">Cette dernière formule permet d’obtenir par récurrence les dérivées
+<span class="math notranslate nohighlight">\(\partialfrac{e}{y_{.,.}}\)</span> de la dernière couche <span class="math notranslate nohighlight">\(C\)</span> à la première et ce,
+quel que soit le nombre de couches. Cette récurrence inverse de la propagation est appelée <em>rétropropagation</em>.
+Cet algorithme se déduit des équations <a class="reference internal" href="#equation-algo-retro-1">(3)</a>, <a class="reference internal" href="#equation-algo-retro-3">(4)</a>, <a class="reference internal" href="#equation-algo-retro-4">(5)</a> et <a class="reference internal" href="#equation-algo-retro-5">(7)</a> :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="algo-retropropagation">Théorème T2 : rétropropagation</p>
+<p>Cet algorithme s’applique à un réseau de neurones vérifiant la définition du <a class="reference internal" href="rn_1_def.html#rn-definition-perpception-1"><span class="std std-ref">perceptron</span></a>.
+Il s’agit de calculer sa dérivée par rapport aux poids. Il se déduit des formules
+<a class="reference internal" href="#equation-algo-retro-1">(3)</a>, <a class="reference internal" href="#equation-algo-retro-3">(4)</a>, <a class="reference internal" href="#equation-algo-retro-4">(5)</a> et <a class="reference internal" href="#equation-algo-retro-5">(7)</a>
+et suppose que l’algorithme de <a class="reference internal" href="rn_1_def.html#algo-propagation"><span class="std std-ref">propagation</span></a> a été préalablement exécuté.
+On note <span class="math notranslate nohighlight">\(y'_{c,i} = \partialfrac{e}{y_{c,i}}\)</span>, <span class="math notranslate nohighlight">\(w'_{c,i,j} = \partialfrac{e}{w_{c,i,j}}\)</span> et
+<span class="math notranslate nohighlight">\(b'_{c,i} = \partialfrac{e}{b_{c,i}}\)</span>.</p>
+<p><em>Initialisation</em></p>
+<div class="line-block">
+<div class="line">for i in <span class="math notranslate nohighlight">\(1..C_C\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(y'_{C,i} \longleftarrow \partialfrac{e}{z_{C,i}} \pa{W,X} f'_{c,i}\pa{y_{C,i}}\)</span></div>
+</div>
+</div>
+<p><em>Récurrence</em></p>
+<div class="line-block">
+<div class="line">for c in <span class="math notranslate nohighlight">\(1..C-1\)</span></div>
+<div class="line-block">
+<div class="line">for i in <span class="math notranslate nohighlight">\(1..C_c\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(y'_{c,i} \longleftarrow 0\)</span></div>
+<div class="line">for j in <span class="math notranslate nohighlight">\(1..C_{c+1}\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(y'_{c,i} \longleftarrow y'_{c,i} + y'_{c+1,j} \; w_{c+1,j,i}\)</span></div>
+</div>
+<div class="line"><span class="math notranslate nohighlight">\(y'_{c,i} \longleftarrow y'_{c,i} \; f'_{c,i}\pa{y'_{c,i}}\)</span></div>
+</div>
+</div>
+</div>
+<p><em>Terminaison</em></p>
+<div class="line-block">
+<div class="line">for c in <span class="math notranslate nohighlight">\(1..C\)</span></div>
+<div class="line-block">
+<div class="line">for i in <span class="math notranslate nohighlight">\(1..C_c\)</span></div>
+<div class="line-block">
+<div class="line">for j in <span class="math notranslate nohighlight">\(1..C_{c-1}\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(w'_{c,i,j} \longleftarrow z_{c-1,j} \; y'_{c,i}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(b'_{c,i,j} \longleftarrow y'_{c,i}\)</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Ces formules sont assez indigestes pour comprendre comment
+la rétropropagation fonctionne. La figure suivante illustre
+comme le gradient se propage d’un neurone au précédente de façon
+récursive. Je la trouve plus simple à exploiter lorsqu’on dévie
+du perceptron classique pour faire des choses hors des clous.
+Je la laisse comme ça sans trop d’explications.</p>
+<img alt="../../_images/neurone2.jpg" src="../../_images/neurone2.jpg" />
+<p>L’idée de la rétropropagation : en supposant connu le gradient de l’erreur
+par rapport à la sortie, comment en déduir le gradient par rapport
+aux coefficients du réseau puis comment le propager à chaque entrée
+de sorte qu’il puisse être transmis aux neurones de la couche inférieure.</p>
+<img alt="../../_images/backp.png" src="../../_images/backp.png" />
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="rn_4_densite.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Démonstration du théorème de la densité des réseaux de neurones</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rn_6_apprentissage.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Apprentissage d’un réseau de neurones</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithme-et-convergence">Algorithme et convergence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calcul-du-gradient-ou-retropropagation">Calcul du gradient ou <em>rétropropagation</em></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/c_ml/rn/rn_5_newton.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

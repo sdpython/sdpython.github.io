@@ -1,0 +1,1260 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mlstatpy.nlp.completion_simple &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mlstatpy/nlp/completion_simple';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Code du module</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">mlstatpy.nlp.completion_simple</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Code source de mlstatpy.nlp.completion_simple</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">.completion</span> <span class="kn">import</span> <span class="n">CompletionTrieNode</span>
+
+
+<div class="viewcode-block" id="CompletionElement"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionElement">[docs]</a><span class="k">class</span> <span class="nc">CompletionElement</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Definition of an element in a completion system,</span>
+<span class="sd">    it contains the following members:</span>
+
+<span class="sd">    * *value*: the completion</span>
+<span class="sd">    * *weight*: a weight or a position, we assume a completion with</span>
+<span class="sd">      a lower weight is shown at a lower position</span>
+<span class="sd">    * *disp*: display string (no impact on the algorithm)</span>
+
+<span class="sd">    * mks0*: value of minimum keystroke</span>
+<span class="sd">    * mks0_*: length of the prefix to obtain *mks0*</span>
+
+<span class="sd">    * *mks1*: value of dynamic minimum keystroke</span>
+<span class="sd">    * *mks1_*: length of the prefix to obtain *mks1*</span>
+
+<span class="sd">    * *mks2*: value of modified dynamic minimum keystroke</span>
+<span class="sd">    * *mks2_*: length of the prefix to obtain *mks2*</span>
+
+<span class="sd">    :param value: value (a character)</span>
+<span class="sd">    :param weight: ordering (the lower, the first)</span>
+<span class="sd">    :param disp: original string, use this to identify the node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weight&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;disp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mks0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mks0_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mks1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mks1_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mks2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mks2_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prefix&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_info&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">disp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;value must be str not &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39; - type=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disp</span> <span class="o">=</span> <span class="n">disp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_info</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="CompletionElement.empty_prefix"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionElement.empty_prefix">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">empty_prefix</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return an instance filled with an empty prefix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">CompletionElement</span><span class="p">,</span> <span class="s2">&quot;static_empty_prefix&quot;</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">CompletionElement</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">CompletionElement</span><span class="o">.</span><span class="n">static_empty_prefix</span> <span class="o">=</span> <span class="n">res</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CompletionElement</span><span class="o">.</span><span class="n">static_empty_prefix</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;CompletionElementInfo(&#39;</span><span class="si">{0}</span><span class="s2">&#39;</span><span class="si">{1}{2}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="s2">&quot;, </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;, disp=&#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;CompletionElement(&#39;</span><span class="si">{0}</span><span class="s2">&#39;</span><span class="si">{1}{2}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="s2">&quot;, </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;, disp=&#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disp</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="CompletionElement.str_mks0"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionElement.str_mks0">[docs]</a>    <span class="k">def</span> <span class="nf">str_mks0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return a string with metric information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;mks0&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;MKS=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mks0</span><span class="si">}</span><span class="s2"> *=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mks0_</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;-&quot;</span></div>
+
+<div class="viewcode-block" id="CompletionElement.str_mks"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionElement.str_mks">[docs]</a>    <span class="k">def</span> <span class="nf">str_mks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return a string with metric information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">str_mks0</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;mks1&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">s0</span> <span class="o">+</span> <span class="s2">&quot; |&#39;=</span><span class="si">{0}</span><span class="s2"> *=</span><span class="si">{1}</span><span class="s2"> |</span><span class="se">\&quot;</span><span class="s2">=</span><span class="si">{2}</span><span class="s2"> *=</span><span class="si">{3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks1_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks2_</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">s0</span></div>
+
+<div class="viewcode-block" id="CompletionElement.str_all_completions"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionElement.str_all_completions">[docs]</a>    <span class="k">def</span> <span class="nf">str_all_completions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxn</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">use_precompute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        builds a string with all completions for all</span>
+<span class="sd">        prefixes along the paths, this is only available</span>
+<span class="sd">        if parameter *completions* was used when calling</span>
+<span class="sd">        method :meth`update_metrics`.</span>
+
+<span class="sd">        :param maxn: maximum number of completions to show</span>
+<span class="sd">        :param use_precompute: use intermediate results built</span>
+<span class="sd">            by @see me precompute_stat</span>
+<span class="sd">        :return: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">str_mks</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;------------------&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="p">:</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)):</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;------------------&quot;</span><span class="p">)</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;i=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">completions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">completions</span><span class="p">):</span>
+                    <span class="n">ar</span> <span class="o">=</span> <span class="s2">&quot;   &quot;</span> <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="k">else</span> <span class="s2">&quot;-&gt; &quot;</span>
+                    <span class="n">add</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{5}{0}</span><span class="s2">:</span><span class="si">{1}</span><span class="s2"> -- </span><span class="si">{2}{4}</span><span class="s2">-- </span><span class="si">{3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">i2</span><span class="p">,</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">str_mks</span><span class="p">(),</span>
+                        <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">)),</span>
+                        <span class="n">ar</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;NO INFO&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CompletionElement.init_metrics"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionElement.init_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">init_metrics</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">completions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;CompletionElement&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the metrics.</span>
+
+<span class="sd">        :param position: position in the completion system when prefix is null,</span>
+<span class="sd">            *position starting from 0*</span>
+<span class="sd">        :param completions: displayed completions, if not None, the method will</span>
+<span class="sd">            store them in member *_completions*</span>
+<span class="sd">        :return: boolean which indicates there was an update</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">completions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_imp</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">class</span> <span class="nc">c</span><span class="p">:</span>
+                <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_completions</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_imp</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_info</span> <span class="o">=</span> <span class="n">c</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span><span class="p">:</span>
+                <span class="n">cut</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)),</span> <span class="nb">len</span><span class="p">(</span><span class="n">completions</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">completions</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">cut</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">completions</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">][:</span><span class="n">cut</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">completions</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log_imp</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">CompletionElement</span><span class="o">.</span><span class="n">empty_prefix</span><span class="p">()</span>
+        <span class="n">position</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">position</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">log_imp</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;mks0&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;k=</span><span class="si">{</span><span class="mi">0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;p=</span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;it=</span><span class="si">{</span><span class="mi">0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="CompletionElement.update_metrics"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionElement.update_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">update_metrics</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">position</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">improved</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">completions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;CompletionElement&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">iteration</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the metrics.</span>
+
+<span class="sd">        :param prefix: prefix</span>
+<span class="sd">        :param position: position in the completion system</span>
+<span class="sd">            when prefix has length k, *position starting from 0*</span>
+<span class="sd">        :param improved: if one metrics is &lt; to the completion length, it means</span>
+<span class="sd">            it can be used to improve others queries</span>
+<span class="sd">        :param delta: delta in the dynamic modified mks</span>
+<span class="sd">        :param completions: displayed completions, if not None, the method will</span>
+<span class="sd">            store them in member *_completions*</span>
+<span class="sd">        :param iteration: for debugging purpose, indicates</span>
+<span class="sd">            when this improvment was detected</span>
+<span class="sd">        :return: boolean which indicates there was an update</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="c1"># no need to look into it</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">completions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_imp</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span><span class="p">:</span>
+                <span class="n">cut</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)),</span> <span class="nb">len</span><span class="p">(</span><span class="n">completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">cut</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">][:</span><span class="n">cut</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log_imp</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">mks</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="n">pos</span>
+        <span class="n">check</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">mks</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="n">mks</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="n">k</span>
+            <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">log_imp</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="mi">1</span><span class="p">,</span>
+                        <span class="s2">&quot;mks0&quot;</span><span class="p">,</span>
+                        <span class="n">mks</span><span class="p">,</span>
+                        <span class="n">prefix</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;k=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;p=</span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;it=</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;last=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">mks</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">if</span> <span class="n">mks</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="n">mks</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="n">k</span>
+            <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">mks</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="n">mks</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="n">k</span>
+            <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="c1"># we use the latest prefix available</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span>
+            <span class="n">dd</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="n">pos</span>
+            <span class="n">mks</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">mks1</span> <span class="o">+</span> <span class="n">dd</span>
+            <span class="k">if</span> <span class="n">mks</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="n">mks</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">log_imp</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="mi">4</span><span class="p">,</span>
+                            <span class="s2">&quot;mks1&quot;</span><span class="p">,</span>
+                            <span class="n">mks</span><span class="p">,</span>
+                            <span class="n">prefix</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;k=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;p=</span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;it=</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;last=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+            <span class="n">mks</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">mks2</span> <span class="o">+</span> <span class="n">dd</span>
+            <span class="k">if</span> <span class="n">mks</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="n">mks</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">log_imp</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="mi">5</span><span class="p">,</span>
+                            <span class="s2">&quot;mks2&quot;</span><span class="p">,</span>
+                            <span class="n">mks</span><span class="p">,</span>
+                            <span class="n">prefix</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;k=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;p=</span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;it=</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;last=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">improved</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">improved</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">mks</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">mks1</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">),</span> <span class="n">pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mks</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="n">mks</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">log_imp</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="mi">2</span><span class="p">,</span>
+                            <span class="s2">&quot;mks1&quot;</span><span class="p">,</span>
+                            <span class="n">mks</span><span class="p">,</span>
+                            <span class="n">prefix</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;k=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;p=</span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;it=</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;last=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+            <span class="n">mks</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">mks2</span> <span class="o">+</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">),</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mks</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="n">mks</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">log_imp</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="mi">3</span><span class="p">,</span>
+                            <span class="s2">&quot;mks2&quot;</span><span class="p">,</span>
+                            <span class="n">mks</span><span class="p">,</span>
+                            <span class="n">prefix</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;k=</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;p=</span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;it=</span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">&quot;last=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">log_imp</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="o">.</span><span class="n">_log_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">check</span></div></div>
+
+
+<div class="viewcode-block" id="CompletionSystem"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem">[docs]</a><span class="k">class</span> <span class="nc">CompletionSystem</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a completion system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">CompletionElement</span><span class="p">]):</span>
+        <span class="k">def</span> <span class="nf">create_element</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">CompletionElement</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">e</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">CompletionElement</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="n">i</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">CompletionElement</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">create_element</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">elements</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns ``elements[i]``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<div class="viewcode-block" id="CompletionSystem.find"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompletionElement</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Not very efficient, finds an item in a the list.</span>
+
+<span class="sd">        :param value: string to find</span>
+<span class="sd">        :param is_sorted: the function will assume the elements are sorted by</span>
+<span class="sd">            alphabetical order</span>
+<span class="sd">        :return: element or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">is_sorted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="s2">&quot;No optimisation for the sorted case.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.items"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompletionElement</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterates on ``(e.value, e)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">e</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.tuples"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.tuples">[docs]</a>    <span class="k">def</span> <span class="nf">tuples</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterates on ``(e.weight, e.value)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">e</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span></div>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Number of elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">CompletionElement</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterates over elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">e</span>
+
+<div class="viewcode-block" id="CompletionSystem.sort_values"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.sort_values">[docs]</a>    <span class="k">def</span> <span class="nf">sort_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        sort the elements by value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.sort_weight"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.sort_weight">[docs]</a>    <span class="k">def</span> <span class="nf">sort_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sorts the elements by value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.compare_with_trie"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.compare_with_trie">[docs]</a>    <span class="k">def</span> <span class="nf">compare_with_trie</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares the results with the other implementation.</span>
+
+<span class="sd">        @param      delta       parameter *delta* in the dynamic modified mks</span>
+<span class="sd">        @return                 None or differences</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">format_diff</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">diff</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;VALUE=</span><span class="si">{0}</span><span class="se">\n</span><span class="s2">SYST=[</span><span class="si">{1}</span><span class="s2">]</span><span class="se">\n</span><span class="s2">TRIE=[</span><span class="si">{2}</span><span class="s2">]</span><span class="se">\n</span><span class="s2">MORE SYSTEM:&quot;</span>
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="si">{3}</span><span class="se">\n</span><span class="s2">######</span><span class="se">\n</span><span class="s2">MORE TRIE:</span><span class="se">\n</span><span class="si">{4}</span><span class="s2">&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">str_mks</span><span class="p">(),</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">str_mks</span><span class="p">(),</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">str_all_completions</span><span class="p">(),</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">str_all_completions</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">diff</span><span class="p">:</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;-------</span><span class="se">\n</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="se">\n</span><span class="s2">-------&quot;</span>
+            <span class="k">return</span> <span class="n">s</span>
+
+        <span class="n">trie</span> <span class="o">=</span> <span class="n">CompletionTrieNode</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tuples</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_metrics</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">trie</span><span class="o">.</span><span class="n">precompute_stat</span><span class="p">()</span>
+        <span class="n">trie</span><span class="o">.</span><span class="n">update_stat_dynamic</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="p">)</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">trie</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">d0</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">mks0</span> <span class="o">-</span> <span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">mks0</span>
+            <span class="n">d1</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">mks1</span> <span class="o">-</span> <span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">mks1</span>
+            <span class="n">d2</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">mks2</span> <span class="o">-</span> <span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">mks2</span>
+            <span class="n">d4</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">-</span> <span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">mks0_</span>
+            <span class="k">if</span> <span class="n">d0</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">d1</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">d2</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">d4</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">diffs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">d4</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">format_diff</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="kc">True</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">diffs</span><span class="p">:</span>
+            <span class="n">diffs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">diffs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.to_dict"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CompletionElement</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">el</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.compute_metrics"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.compute_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">compute_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ffilter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the metric for the completion itself.</span>
+
+<span class="sd">        @param      ffilter     filter function</span>
+<span class="sd">        @param      delta       parameter *delta* in the dynamic modified mks</span>
+<span class="sd">        @param      details     log more details about displayed completions</span>
+<span class="sd">        @return                 number of iterations</span>
+
+<span class="sd">        The function ends by sorting the set of completion by alphabetical order.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_weight</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ffilter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="s2">&quot;ffilter not None is not implemented&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
+            <span class="n">store_completions</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+        <span class="n">improved</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># to = time.perf_counter()</span>
+        <span class="c1"># print(&quot;init_metrics:&quot;, len(self))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
+                <span class="n">store_completions</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">init_metrics</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">store_completions</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">init_metrics</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="ow">and</span> <span class="n">el</span><span class="o">.</span><span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">improved</span><span class="p">:</span>
+                <span class="n">improved</span><span class="p">[</span><span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">el</span>
+        <span class="c1"># t = time.perf_counter()</span>
+        <span class="c1"># print(f&quot;interation 0: #={len(self)} dt={t - to} - log details={details}&quot;)</span>
+
+        <span class="n">updates</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">it</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">updates</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">displayed</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">updates</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_elements</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">)):</span>
+                    <span class="n">prefix</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">displayed</span><span class="p">:</span>
+                        <span class="n">displayed</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
+                            <span class="n">store_completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">el</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">displayed</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
+                            <span class="n">store_completions</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">update_metrics</span><span class="p">(</span>
+                        <span class="n">prefix</span><span class="p">,</span>
+                        <span class="n">displayed</span><span class="p">[</span><span class="n">prefix</span><span class="p">],</span>
+                        <span class="n">improved</span><span class="p">,</span>
+                        <span class="n">delta</span><span class="p">,</span>
+                        <span class="n">completions</span><span class="o">=</span><span class="p">(</span><span class="n">store_completions</span> <span class="k">if</span> <span class="n">details</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="n">iteration</span><span class="o">=</span><span class="n">it</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">r</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">improved</span><span class="p">:</span>
+                            <span class="n">improved</span><span class="p">[</span><span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">el</span>
+                        <span class="n">updates</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># t = time.perf_counter()</span>
+            <span class="c1"># print(f&quot;interation {it}: updates={updates} dt={t - to}&quot;)</span>
+            <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">it</span> <span class="o">-</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.enumerate_test_metric"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.enumerate_test_metric">[docs]</a>    <span class="k">def</span> <span class="nf">enumerate_test_metric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">qset</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">CompletionElement</span><span class="p">,</span> <span class="n">CompletionElement</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluates the completion set on a set of queries,</span>
+<span class="sd">        the function returns a list of @see cl CompletionElement</span>
+<span class="sd">        with the three metrics :math:`M`, :math:`M&#39;`, :math:`M&quot;`</span>
+<span class="sd">        for these particular queries.</span>
+
+<span class="sd">        :param qset: list of tuple(str, float) = (query, weight)</span>
+<span class="sd">        :return: list of tuple of @see cl CompletionElement,</span>
+<span class="sd">            the first one is the query, the second one is the None or</span>
+<span class="sd">            the matching completion</span>
+
+<span class="sd">        The method @see me compute_metric needs to be called first.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qset</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">qset</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">query</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">qset</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">current</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">[</span><span class="n">current</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="n">query</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">current</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="n">CompletionElement</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">inset</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+                <span class="n">le</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inset</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">le</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="ow">and</span> <span class="n">inset</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">query</span><span class="p">[:</span><span class="n">le</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">le</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+                        <span class="n">found</span> <span class="o">=</span> <span class="n">inset</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="n">inset</span><span class="o">.</span><span class="n">mks0</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="n">inset</span><span class="o">.</span><span class="n">mks1</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="n">inset</span><span class="o">.</span><span class="n">mks2</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">found</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="n">inset</span><span class="o">.</span><span class="n">mks1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="o">-</span> <span class="n">le</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="n">le</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="n">inset</span><span class="o">.</span><span class="n">mks2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="o">-</span> <span class="n">le</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="n">le</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">el</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                    <span class="n">el</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                    <span class="n">el</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                    <span class="n">el</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                    <span class="n">el</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                    <span class="n">el</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">mks0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">mks1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">mks2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">mks0_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">mks1_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">mks2_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+            <span class="k">yield</span> <span class="n">el</span><span class="p">,</span> <span class="n">found</span></div>
+
+<div class="viewcode-block" id="CompletionSystem.test_metric"><a class="viewcode-back" href="../../../api/text.html#mlstatpy.nlp.completion_simple.CompletionSystem.test_metric">[docs]</a>    <span class="k">def</span> <span class="nf">test_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qset</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluates the completion set on a set of queries,</span>
+<span class="sd">        the function returns a dictionary with the aggregated metrics and</span>
+<span class="sd">        some statistics about them.</span>
+
+<span class="sd">        @param      qset        list of tuple(str, float) = (query, weight)</span>
+<span class="sd">        @return                 list of @see cl CompletionElement</span>
+
+<span class="sd">        The method @see me compute_metric needs to be called first.</span>
+<span class="sd">        It then calls @see me enumerate_metric.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mks0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mks1</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mks2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sum_weights</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sum_wlen</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">hist</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;mks0&quot;</span><span class="p">,</span> <span class="s2">&quot;mks1&quot;</span><span class="p">,</span> <span class="s2">&quot;mks2&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">}}</span>  <span class="c1"># pylint: disable=C0208</span>
+        <span class="n">wei</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">}</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;hist&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hist</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;histnow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wei</span>
+
+        <span class="k">for</span> <span class="n">el</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">enumerate_test_metric</span><span class="p">(</span><span class="n">qset</span><span class="p">):</span>
+            <span class="n">le</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">weight</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mks0&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">el</span><span class="o">.</span><span class="n">mks0</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mks1&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">el</span><span class="o">.</span><span class="n">mks1</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mks2&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">el</span><span class="o">.</span><span class="n">mks2</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;sum_weights&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;sum_wlen&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">le</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">mks0</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks0&quot;</span><span class="p">]:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks0&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks0</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;mks0&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks0&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;mks0&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">mks1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks1&quot;</span><span class="p">]:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks1&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks1</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;mks1&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks1&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;mks1&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">el</span><span class="o">.</span><span class="n">mks2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks2&quot;</span><span class="p">]:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks2&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks2</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;mks2&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;mks2&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;mks2&quot;</span><span class="p">][</span><span class="n">el</span><span class="o">.</span><span class="n">mks2</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">le</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">][</span><span class="n">le</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">][</span><span class="n">le</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hist</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">][</span><span class="n">le</span><span class="p">]</span> <span class="o">+=</span> <span class="n">w</span>
+                <span class="n">wei</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">][</span><span class="n">le</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">res</span></div></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

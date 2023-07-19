@@ -1,0 +1,820 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Problème d’optimisation &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_nlp/completion_optimisation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Implémentation" href="completion_implementation.html" />
+    <link rel="prev" title="Propriétés mathématiques" href="completion_propriete.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="completion.html">Complétion</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="completion_formalisation.html">Formalisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completion_fausse.html">Fausses idées reçues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completion_metrique.html">Nouvelle métrique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completion_propriete.html">Propriétés mathématiques</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Problème d’optimisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completion_implementation.html">Implémentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completion_digression.html">Digressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/nlp/completion_trie.html">Complétion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/nlp/completion_profiling.html">Completion profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/nlp/completion_trie_long.html">Completion Trie and metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/nlp/completion_simple.html">Complétion Simple</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">NLP</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="completion.html" class="nav-link">Complétion</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Problème d’optimisation</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="probleme-d-optimisation">
+<h1>Problème d’optimisation<a class="headerlink" href="#probleme-d-optimisation" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#enonce-1" id="id1">Enoncé 1</a></p></li>
+<li><p><a class="reference internal" href="#enonce-2" id="id2">Enoncé 2</a></p></li>
+<li><p><a class="reference internal" href="#une-idee" id="id3">Une idée</a></p></li>
+</ul>
+</nav>
+<section id="enonce-1">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Enoncé 1</a><a class="headerlink" href="#enonce-1" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="admonition-mathdef admonition" id="indexmathe-Problème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="optim-nlp-comp">Problème P1 : Optimiser un système de complétion</p>
+<p>On suppose que l’ensemble des complétions <span class="math notranslate nohighlight">\(C=\acc{c_j}\)</span> est connu.
+On souhaite ordonner cet ensemble pour obtenir l’ensemble ordonné
+des complétions <span class="math notranslate nohighlight">\(S=(s_i)\)</span> qu’on considère comme une permutation
+<span class="math notranslate nohighlight">\(\sigma\)</span> de l’ensemble de départ : <span class="math notranslate nohighlight">\(S(\sigma) = (s_i) = (c_{\sigma(j)})\)</span>.
+Ce système de complétion est destiné à un des utilisateurs qui forment des recherches ou requêtes
+<span class="math notranslate nohighlight">\(Q=(q_i, w_i)_{1 \infegal i \infegal N_Q}\)</span>.
+<span class="math notranslate nohighlight">\(q_i\)</span> est la requête, <span class="math notranslate nohighlight">\(w_i\)</span> est la fréquence associée
+à cette requête. On définit l’effort demandé aux utilisateurs
+par ce système de complétion :</p>
+<div class="math notranslate nohighlight">
+\[E(C, Q, \sigma) = \sum_{i=1}^{N_Q} w_i M'(q_i, S(\sigma))\]</div>
+<p>Déterminer le meilleur système de complétion revient à trouver
+la permutation <span class="math notranslate nohighlight">\(\sigma\)</span> qui minimise <span class="math notranslate nohighlight">\(E(C, Q, \sigma)\)</span>.</p>
+</div>
+<p>La métrique <span class="math notranslate nohighlight">\(M'\)</span> peut être remplacée par <span class="math notranslate nohighlight">\(M&quot;\)</span>. La différence
+peut paraître insignifiante mais elle ne l’est pas tant que ça. Le système
+de complétion peut se concevoir comme une <em>compression</em> :
+le système de complétion permet de coder l’ensemble des recherches
+d’un utilisateur <span class="math notranslate nohighlight">\(Q\)</span> avec moins de caractères que celui-ci
+en a besoin pour les taper. On ajoute les caractères <span class="math notranslate nohighlight">\(rightarrow\)</span>
+et <span class="math notranslate nohighlight">\(\downarrow\)</span> aux lettres de l’alphabet et cela permet de
+coder plus rapidement une requêtes. La quantité suivante peut être
+considérée comme le taux de compression :</p>
+<div class="math notranslate nohighlight">
+\[t(C, Q, \sigma) = \frac{ E(C, Q, \sigma) } { \sum_{i=1}^{N_Q} w_i l(q_i) }\]</div>
+<p>L’idée derrière cette métaphore est le fait d’avoir une idée de la borne inférieure
+pour ce taux de compression. On s’inspirer de la
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Complexit%C3%A9_de_Lempel-Ziv">complexité de Lempel-Ziv</a>
+(<a class="reference external" href="http://stackoverflow.com/questions/4946695/calculating-lempel-ziv-lz-complexity-aka-sequence-complexity-of-a-binary-str">calculating Lempel-Ziv (LZ) complexity (aka sequence complexity) of a binary string</a>)
+ou du <a class="reference external" href="https://fr.wikipedia.org/wiki/Codage_de_Huffman">codage de Huffman</a>.
+<span class="math notranslate nohighlight">\(M'\)</span> permet une compression avec perte et <span class="math notranslate nohighlight">\(M&quot;\)</span> sans perte.
+Le calcul de <span class="math notranslate nohighlight">\(M'\)</span> autorise deux <em>jumps</em> de suite :</p>
+<div class="math notranslate nohighlight">
+\[abb (\downarrow \downarrow \downarrow \downarrow \downarrow)\]</div>
+<p>Mais les deux dernières touches <span class="math notranslate nohighlight">\(\downarrow\)</span> peuvent s’appliquer
+au premier préfixe ou aux suggestions montrées par la complétion
+obtenue après trois <span class="math notranslate nohighlight">\(\downarrow\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[abb (\downarrow \downarrow \downarrow) (\downarrow \downarrow)\]</div>
+<p>La métrique <span class="math notranslate nohighlight">\(M&quot;\)</span> interdit ce cas.</p>
+</section>
+<section id="enonce-2">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Enoncé 2</a><a class="headerlink" href="#enonce-2" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="admonition-mathdef admonition" id="indexmathe-Problème1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="optim-nlp-comp2">Problème P2 : Optimiser un système de complétion filtré</p>
+<p>On suppose que l’ensemble des complétions <span class="math notranslate nohighlight">\(C=\acc{c_j}\)</span> est connu.
+On souhaite ordonner cet ensemble pour obtenir l’ensemble ordonné
+des complétions <span class="math notranslate nohighlight">\(S=(s_i)\)</span> qu’on considère comme une permutation
+<span class="math notranslate nohighlight">\(\sigma\)</span> de l’ensemble de départ : <span class="math notranslate nohighlight">\(S(\sigma) = (s_i) = (c_{\sigma(j)})\)</span>.
+On utilise aussi une fonction <span class="math notranslate nohighlight">\(f\)</span> qui filtre les suggestions montrées
+à l’utilisateur, elle ne change pas l’ordre mais peut cacher certaines suggestions
+si elles ne sont pas pertinentes.
+Ce système de complétion est destiné à un des utilisateurs qui forment des recherches ou requêtes
+<span class="math notranslate nohighlight">\(Q=(q_i, w_i)_{1 \infegal i \infegal N_Q}\)</span>.
+<span class="math notranslate nohighlight">\(q_i\)</span> est la requête, <span class="math notranslate nohighlight">\(w_i\)</span> est la fréquence associée
+à cette requête. On définit l’effort demandé aux utilisateurs
+par ce système de complétion :</p>
+<div class="math notranslate nohighlight">
+\[E(C, Q, \sigma, f) = \sum_{i=1}^{N_Q} w_i M'(q_i, S(\sigma), f)\]</div>
+<p>Déterminer le meilleur système de complétion revient à trouver
+la permutation <span class="math notranslate nohighlight">\(\sigma\)</span> qui minimise <span class="math notranslate nohighlight">\(E(C, Q, \sigma, f)\)</span>.</p>
+</div>
+<p>Comme suggéré au paragraphe <a class="reference internal" href="completion_fausse.html#l-nlp-comp-montre"><span class="std std-ref">Il faut montrer toutes les complétions</span></a>, le filtre <span class="math notranslate nohighlight">\(f\)</span>
+peut rejetter une suggestion si elle est montrée à une position
+qui ne permet aucun gain à l’utilisateur, c’est-à-dire que la différence
+des longueurs complétion - préfixe est plus petite que la position où elle est montrée.</p>
+</section>
+<section id="une-idee">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Une idée</a><a class="headerlink" href="#une-idee" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On aimerait bien pouvoir trouver l’ordre optimal par morceau,
+supposer que l’ordre optimal pour l’ensemble des complétions
+correspond à l’ordre des complétions sur un sous-ensemble
+partageant le même préfixe.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Lemme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="lemme-nlp-m-sous-ens">Lemme L1 : M” et sous-ensemble</p>
+<p>On suppose que la complétion <span class="math notranslate nohighlight">\(q\)</span> est préfixe
+pour la requête <span class="math notranslate nohighlight">\(q'\)</span> et
+<span class="math notranslate nohighlight">\(\sigma(q) &lt; \sigma(q')\)</span> ce qui signifie
+que la complétion <span class="math notranslate nohighlight">\(q\)</span> est toujours affichée
+avant la complétion <span class="math notranslate nohighlight">\(q'\)</span> si elles apparaissent ensemble.
+Alors <span class="math notranslate nohighlight">\(M'(q, S) &lt; M'(q', S)\)</span>.
+Plus spécifiquement, si on considère l’ensemble
+<span class="math notranslate nohighlight">\(S'(q) = \acc{ s-q \in S | q \prec s }\)</span>
+(<span class="math notranslate nohighlight">\(s-q\)</span> est la complétion <span class="math notranslate nohighlight">\(s\)</span>
+sans son préfixe <span class="math notranslate nohighlight">\(q\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[M'(q', S) = M'(q'-q, S') + M'(q, S)\]</div>
+</div>
+<p>On sait déjà, par construction que
+<span class="math notranslate nohighlight">\(M'(q', S) \infegal M'(q'-q, S') + M'(q, S)\)</span>.
+Par l’absurde, on suppose que <span class="math notranslate nohighlight">\(M'(q', S) &lt; M'(q'-q, S') + M'(q, S)\)</span>,
+comme la requête <span class="math notranslate nohighlight">\(q-q'\)</span> est toujours affichée avant la requête
+<span class="math notranslate nohighlight">\(q'\)</span>, cela voudrait dire qu’on aurait trouvé une façon plus optimale
+d’écrire la requête <span class="math notranslate nohighlight">\(q-q'\)</span> avec le système <span class="math notranslate nohighlight">\(S\)</span> ce qui
+impossible d’après la définition de la métrique <span class="math notranslate nohighlight">\(M'\)</span>.
+Cette propriété n’aide pas forcmément à trouver un algorithme
+pour optimiser l’ordre des complétions dans la mesure où la
+propriété suppose qu’une complétion soit affiché avant toutes
+celles dont elle est le préfixe. La propriété suivante est évidemment vraie
+pour le cas particulier qu’on vient de mentionner. Si elle est vraie, cela devrait
+permettre de procéder par sous-ensemble pour trouver l’ordre optimal.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="lemme-nlp-m-sous-ens-ordre">Théorème T1 : M”, ordre et sous-ensemble</p>
+<p>Soit <span class="math notranslate nohighlight">\(q\)</span> une requête de l’ensemble de complétion <span class="math notranslate nohighlight">\(S\)</span>
+ordonnées selon <span class="math notranslate nohighlight">\(sigma\)</span>.
+Si cet ordre vérifie :</p>
+<div class="math notranslate nohighlight" id="equation-best-order-lemme-completion">
+<span class="eqno">(1)<a class="headerlink" href="#equation-best-order-lemme-completion" title="Lien permanent vers cette équation">#</a></span>\[\forall k, \; \sigma(q[1..k]) \infegal \sigma(q[1..k+1])\]</div>
+<p>On note l’ensemble <span class="math notranslate nohighlight">\(S'(q[1..k]) = \acc{ q[k+1..len(q)] \in S }\)</span> :</p>
+<p>alors :</p>
+<div class="math notranslate nohighlight">
+\[\forall k, \; M'(q[1..k], S) = M'(q[k+1..l(q)], S'(q[1..k]) + M'(q[1..k], S)\]</div>
+</div>
+<p>Ceci découle de l’application du lemme précédent.
+Ce théorème permet presque de déterminer le meilleur ordre <cite>sigma</cite> parmi ceux qui
+vérifie la contrainte <a class="reference internal" href="#equation-best-order-lemme-completion">(1)</a>, à savoir
+une requête courte est toujours affichée avant celles qui la complètent.
+On procède par récurrence, on suppose connu les ordres <span class="math notranslate nohighlight">\(\sigma(q)\)</span>
+pour l’ensemble des complétions qui commencent par le préfixe <span class="math notranslate nohighlight">\(p = q[1..k]\)</span>,
+<span class="math notranslate nohighlight">\(S'(q[1..k]) = \acc{ q | q[1..k] = p, q \in S }\)</span>. Pour <span class="math notranslate nohighlight">\(i =k-1\)</span>,
+le meilleur ordre : <span class="math notranslate nohighlight">\(\sigma\)</span> revient à fusionner les listes ordonnées
+obtenues pour chaque préfixe de longueur <span class="math notranslate nohighlight">\(k\)</span>.
+Il faut démontrer la possibilité de traiter les complétions par ordre croissant.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="completion_propriete.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Propriétés mathématiques</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="completion_implementation.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Implémentation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enonce-1">Enoncé 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enonce-2">Enoncé 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#une-idee">Une idée</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_nlp/completion_optimisation.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

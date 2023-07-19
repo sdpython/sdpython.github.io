@@ -1,0 +1,1033 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Optimisation avec données aléatoires &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_garden/strategie_avec_alea';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Le gradient et le discret" href="../notebooks/dsgarden/discret_gradient.html" />
+    <link rel="prev" title="File d’attente, un exemple simple" href="../notebooks/dsgarden/file_dattente_ex.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/correlation_non_lineaire.html">Corrélations non linéaires</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="file_dattente.html">File d’attente, un petit exemple</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/dsgarden/file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Optimisation avec données aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/discret_gradient.html">Le gradient et le discret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/classification_multiple.html">Classification multiple</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Pérégrinations</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Optimisation avec données aléatoires</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="optimisation-avec-donnees-aleatoires">
+<span id="l-exemple-optim-alea"></span><h1>Optimisation avec données aléatoires<a class="headerlink" href="#optimisation-avec-donnees-aleatoires" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#un-probleme-simple" id="id3">Un problème simple</a></p></li>
+<li><p><a class="reference internal" href="#modelisation-de-la-demande" id="id4">Modélisation de la demande</a></p></li>
+<li><p><a class="reference internal" href="#variations-saisonnieres-et-prolongations" id="id5">Variations saisonnières et prolongations</a></p></li>
+<li><p><a class="reference internal" href="#bibliographie" id="id6">Bibliographie</a></p></li>
+</ul>
+</nav>
+<section id="un-probleme-simple">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Un problème simple</a><a class="headerlink" href="#un-probleme-simple" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un supermarché pourrait vendre en moyenne 80 poulets par
+semaine s’il pouvait savoir à l’avance combien de poulets
+à acheter pour satisfaire la demainde. En réalité, le magasin
+se réapprovisionne une fois par semaine et lorsque la fin de
+la semaine arrive, tous les poulets invendus sont soldés et
+supposés vendus. Le gérant du supermarché voudrait savoir quel
+est le nombre optimal de poulets à commander chaque semaine.
+On suppose que le prix d’un poulet à l’achat est <span class="math notranslate nohighlight">\(p\)</span>, son prix à
+la vente est <span class="math notranslate nohighlight">\(q&gt;p\)</span>, son prix soldé est <span class="math notranslate nohighlight">\(s\)</span>. Admettons que
+le supermarché achète <span class="math notranslate nohighlight">\(X\)</span> poulets, en vende au mieux <span class="math notranslate nohighlight">\(N\)</span> non
+soldés et <span class="math notranslate nohighlight">\(X-N\)</span> soldés s’il en reste. Pour calculer son bénéfice
+<span class="math notranslate nohighlight">\(B\)</span>, il faut tenir compte de deux cas et du fait que le
+supermarché ne peut pas vendre plus de poulets qu’il n’en a acheté :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+B = X (q-p)  &amp; \text{si } N \supegal X \\
+B = N (q-p) + (X-N) (s-p) = X (s-p) + N (q-s) &amp; \text{si } N &lt; X
+\end{array}\end{split}\]</div>
+<p>On peut réduire ces deux expressions à une seule en utilisant
+la fonction indicatrice :</p>
+<div class="math notranslate nohighlight">
+\[B = f(N,X,p,q,s)= X (q-p) \indicatrice{ N \supegal X } +  \cro{ X (s-p) + N (q-s)} \indicatrice{ N &lt; X }\]</div>
+<p>Si <span class="math notranslate nohighlight">\(N\)</span> était connu avec certitude, il suffirait de
+choisir <span class="math notranslate nohighlight">\(X=N\)</span>, ce serait la réponse optimale mais
+le nombre de poulets <span class="math notranslate nohighlight">\(N\)</span> vendus est inconnu car il
+varie chaque semaine. Pour avoir une idée plus précise, le
+gérant du supermarché a délibérément acheté trop de poulets
+pendant plusieurs semaines. Il s’est aperçu que la variable
+aléatoire <span class="math notranslate nohighlight">\(N\)</span> suit une <a class="reference external" href="https://fr.wikipedia.org/wiki/Loi_de_Poisson">loi de Poisson</a>
+de paramètre <span class="math notranslate nohighlight">\(\lambda = 80\)</span>. On connaît seulement la
+probabilité que  <span class="math notranslate nohighlight">\(N\)</span> soit égale à une valeur fixée.
+La figure suivante montre l’allure de cette distribution.</p>
+<div class="math notranslate nohighlight">
+\[\pr{X=i} = e^{-\lambda} \frac{ \lambda^i}{i!}\]</div>
+<img alt="../_images/poisson.png" src="../_images/poisson.png" />
+<p>Ce graphe répresente la fonction de densité d’une loi de Poisson de paramètre 80.
+On observe que le pic est obtenu pour une valeur
+proche de 80, c’est la valeur la plus probable.
+Ceci signifie que le nombre de poulets achetés le plus probable est 80.</p>
+<p>Comme le nombre de poulets achetés varie d’une semaine à l’autre,
+le bénéfice du supermarché varie aussi d’une semaine à l’autre.
+Ce que le gérant veut optimiser, c’est la somme de ses profits
+sur une année ce qui est équivalent à maximiser la moyenne de
+ses profits chaque semaine. Il faut donc chercher à maximiser
+l’espérence de la variable aléatoire <span class="math notranslate nohighlight">\(B\)</span> à <span class="math notranslate nohighlight">\(p,q,s\)</span> constant
+puis à obtenir la valeur <span class="math notranslate nohighlight">\(X\)</span> ayant mené à ce maximum.</p>
+<div class="math notranslate nohighlight">
+\[\max_X \esp{B} =\max_X \esp{f(N,X,p,q,s)} = \max_X \acc{ \sum_{i=0}^{\infty} f(N,X,p,q,s) \pr{N=i} }\]</div>
+<p>Etant donné la forme de la fonction <span class="math notranslate nohighlight">\(f\)</span>, il n’est pas
+évident de construire une expression exacte de <span class="math notranslate nohighlight">\(X^*\)</span> défini par
+<span class="math notranslate nohighlight">\(\max_X \esp{f(N,X,p,q,s)} = f(N,X^*,p,q,s)\)</span>. Comme <span class="math notranslate nohighlight">\(l=80\)</span>,
+d’après la figure précédente, on cherche <span class="math notranslate nohighlight">\(X^*\)</span> dans l’ensemble
+<span class="math notranslate nohighlight">\(\acc{0,...,2l=180}\)</span>, aller au delà de 180 est inutile
+tant la probabilité est faible. Il suffit de calculer <span class="math notranslate nohighlight">\(f\)</span> pour
+chacune de ces valeurs et de prendre celle qui permet d’obtenir
+le maximum. Ces calculs longs et répétitifs vont être effectués par
+un programme informatique qui sera découpé en fonctions comme ceci :</p>
+<table class="table">
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>fonction</p></th>
+<th class="head"><p>objectif</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.factorielle" title="mlstatpy.garden.poulet.factorielle"><code class="xref py py-func docutils literal notranslate"><span class="pre">factorielle(x)</span></code></a></p></td>
+<td><p>calcule <span class="math notranslate nohighlight">\(x!\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.profit" title="mlstatpy.garden.poulet.profit"><code class="xref py py-func docutils literal notranslate"><span class="pre">profit(N,X,p,q,s)</span></code></a></p></td>
+<td><p>calcule la fonction <span class="math notranslate nohighlight">\(f\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.proba_poisson" title="mlstatpy.garden.poulet.proba_poisson"><code class="xref py py-func docutils literal notranslate"><span class="pre">proba_poisson(l,</span> <span class="pre">i)</span></code></a></p></td>
+<td><p>calcule la probabilité de Poisson connaissant <span class="math notranslate nohighlight">\(\lambda\)</span>
+et <span class="math notranslate nohighlight">\(i\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.esperance" title="mlstatpy.garden.poulet.esperance"><code class="xref py py-func docutils literal notranslate"><span class="pre">esperance(X,p,q,s,l)</span></code></a></p></td>
+<td><p>calcule l’espérance (sa moyenne) de la fonction <span class="math notranslate nohighlight">\(f\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.maximum" title="mlstatpy.garden.poulet.maximum"><code class="xref py py-func docutils literal notranslate"><span class="pre">maximum(p,q,s,l)</span></code></a></p></td>
+<td><p>construit une liste de toutes les valeurs de <span class="math notranslate nohighlight">\(f`\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.find_maximum" title="mlstatpy.garden.poulet.find_maximum"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_maximum</span> <span class="pre">(res)</span></code></a></p></td>
+<td><p>cherche le maximum dans la liste retournée par la
+fonction <a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.maximum" title="mlstatpy.garden.poulet.maximum"><code class="xref py py-func docutils literal notranslate"><span class="pre">maximum</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Le programme obtenu ressemble à <a class="reference internal" href="../api/modules/poulet.html#module-mlstatpy.garden.poulet" title="mlstatpy.garden.poulet"><code class="xref py py-mod docutils literal notranslate"><span class="pre">poulet.py</span></code></a>,
+les dernières lignes servent à tracer la courbe présentée par la figure qui suit.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlstatpy.garden.poulet</span> <span class="kn">import</span> <span class="n">maximum</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">maximum</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="c1"># res est la courbe affichée plus bas</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2.9999999999999942</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">5.9999999999999885</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">8.999999999999975</span><span class="p">)]</span>
+</pre></div>
+</div>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/poissonb.png" src="../_images/poissonb.png" />
+</td>
+<td><img alt="../_images/poissonb2.png" src="../_images/poissonb2.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Cette courbe est celle de l’évolution des profits en fonction du
+nombre de poulets commandés. On suppose que
+le nombre de poulets achetés suit une loi de Poisson de paramètre 80,
+que les poulets sont achetés 2 euros, revendu 5 euros et soldés 1 euros.
+Le maximum de 228 euros est obtenu pour 86 poulets.
+La seconde courbe montre le résultat dans le cas où les poulets
+soldés sont vendus 2 euros
+égal au prix des poulets achetés. Le modèle montre ses limites dans ce
+cas car il suppose que tous les poulets
+soldés seront achetés et que les contraintes de stockage
+sont négligeables.</p>
+</section>
+<section id="modelisation-de-la-demande">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Modélisation de la demande</a><a class="headerlink" href="#modelisation-de-la-demande" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>La représentation de la demande est essentielle, c’est elle qui détermine
+le résultat. Il est possible de l’affiner comme par exemple supposer que
+certaines personnes achètent deux ou trois poulets et que la somme des
+poulets achetés peut être décomposée comme <span class="math notranslate nohighlight">\(N = N_1 + 2N_2 + 3N_3\)</span>
+où <span class="math notranslate nohighlight">\(N_i\)</span> est le nombre de personnes achetant <span class="math notranslate nohighlight">\(i\)</span>
+poulets. Dans ce cas, ce n’est plus <span class="math notranslate nohighlight">\(N\)</span> qui suit une loi de
+Poisson mais <span class="math notranslate nohighlight">\(N_1\)</span>, <span class="math notranslate nohighlight">\(N_2\)</span>, <span class="math notranslate nohighlight">\(N_3\)</span> qui suivent chacune
+des lois de Poisson de paramètres différents dont il faudra estimer
+les paramètres.</p>
+<p>Cette modification implique l’écriture d’une fonction
+<a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.proba_poisson_melange" title="mlstatpy.garden.poulet.proba_poisson_melange"><code class="xref py py-func docutils literal notranslate"><span class="pre">proba_poisson_melange</span></code></a>
+au lieu de <a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.proba_poisson" title="mlstatpy.garden.poulet.proba_poisson"><code class="xref py py-func docutils literal notranslate"><span class="pre">proba_poisson</span></code></a>.
+La demande n’est plus une loi connue mais un mélange de lois connues
+dont la densité n’a pas d’expression connue : il faut la tabuler.
+Pour cela, on utilise deux propriétés sur les lois exponentielles.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-inversion-variable">Théorème T1 : simulation d’une loi quelconque</p>
+<p>Soit <span class="math notranslate nohighlight">\(F=\int f\)</span> une fonction de répartition de densité
+<span class="math notranslate nohighlight">\(f\)</span> vérifiant <span class="math notranslate nohighlight">\(f &gt; 0\)</span>, soit <span class="math notranslate nohighlight">\(U\)</span> une variable
+aléatoire uniformément distribuée sur <span class="math notranslate nohighlight">\(\cro{0,1}\)</span> alors
+<span class="math notranslate nohighlight">\(F^{-1}(U)\)</span> est variable aléatoire de densité <span class="math notranslate nohighlight">\(f\)</span>.</p>
+</div>
+<p>La démonstration est courte.
+Soit <span class="math notranslate nohighlight">\(X\)</span> une variable aléatoire de densité <span class="math notranslate nohighlight">\(f\)</span>,
+par définition, <span class="math notranslate nohighlight">\(\pr{X \infegal x} = F(x)\)</span>. Soit <span class="math notranslate nohighlight">\(U\)</span> une
+variable aléatoire uniformément distribué sur <span class="math notranslate nohighlight">\(\cro{0,1}\)</span>, alors :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\forall u \in \cro{0,1}, \; \pr{U \infegal u} &amp;=&amp; u \\
+\Longleftrightarrow \pr{F^{-1}(U)\infegal F^{-1}(u)} &amp;=&amp; u \\
+\Longleftrightarrow \pr{F^{-1}(U)\infegal F^{-1}(F(t))} &amp;=&amp; F(t) \\
+\Longleftrightarrow \pr{F^{-1}(U)\infegal t} &amp;=&amp; F(t)
+\end{eqnarray*}</div><p>Si la fonction <span class="math notranslate nohighlight">\(F\)</span> n’est pas strictement croissante,
+on pourra prendre <span class="math notranslate nohighlight">\(F^{-1}(t) = \inf\acc{ u \sac F(u) \supegal t}\)</span>.
+Ce théorème sera appliqué à une loi exponentielle de paramètre
+<span class="math notranslate nohighlight">\(\lambda\)</span>. La densité d’une telle loi est
+<span class="math notranslate nohighlight">\(f(x) = \lambda \exp{- \lambda x}\)</span>,
+<span class="math notranslate nohighlight">\(F(x) = \int_0^x f(t)dt = 1 - \exp^{- \lambda x}\)</span>.
+On en déduit que <span class="math notranslate nohighlight">\(F^{-1}(t) = -\frac{ \ln(1-t)}{\lambda}\)</span>,
+par conséquent : <span class="math notranslate nohighlight">\(-\frac{ \ln(1-U)}{\lambda}\)</span> suit une loi
+exponentielle de paramètre <span class="math notranslate nohighlight">\(\lambda\)</span> si <span class="math notranslate nohighlight">\(U\)</span> est
+une loi uniforme sur <span class="math notranslate nohighlight">\(\cro{0,1}\)</span>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-simulation-poisson">Théorème T2 : simulation d’une loi de Poisson</p>
+<p>On définit une suite infinie <span class="math notranslate nohighlight">\((X_i)_i&gt;0\)</span> de loi
+exponentielle de paramètre <span class="math notranslate nohighlight">\(\lambda\)</span>. On définit ensuite
+la série de variables aléatoires <span class="math notranslate nohighlight">\(S_i = \sum_{k=1}^{i} X_k\)</span>
+et enfin <span class="math notranslate nohighlight">\(N(t) = \inf \acc{ i \sac S_i &gt; t}\)</span>.
+Alors la variable aléatoire <span class="math notranslate nohighlight">\(N(t)\)</span> suit une loi
+de Poisson de paramètre <span class="math notranslate nohighlight">\(\lambda t\)</span>.</p>
+</div>
+<p>La loi exponentielle est souvent utilisée pour modéliser le temps
+d’attente d’un événement comme le temps d’attente d’un métro
+une fois sur le quai. On l’utilise aussi pour modéliser la
+durée de vie d’un outil, d’une ampoule par exemple. La loi de
+Poisson peut par exemple modéliser le nombre d’ampoules nécessaire
+pour éclairer une pièce sur une certaine durée.
+Avant de démontrer le théorème, il faut définir d’abord la
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Loi_Gamma">loi Gamma</a>.
+On pose au préalable <span class="math notranslate nohighlight">\(\Gamma(\alpha) = \int_0^{\infty} u^{\alpha-1}e^{-u}du\)</span>.
+Une variable aléatoire de loi Gamma de paramètres <span class="math notranslate nohighlight">\(\pa{\alpha,\lambda}\)</span>
+a pour densité : <span class="math notranslate nohighlight">\(f(x) = \frac{\lambda^{\alpha}} {\Gamma(\alpha)}t^{\alpha-1}e^{-\lambda t}\)</span>.
+La fonction <span class="math notranslate nohighlight">\(\Gamma\)</span> vérifie une propriété utile par la suite :
+<span class="math notranslate nohighlight">\(\forall n \in \N^*, \, \Gamma(n) = (n-1)!\)</span>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème2">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-convolution-poisson">Théorème T3 : somme de loi exponentielle iid</p>
+<p>Soit <span class="math notranslate nohighlight">\(X_1,...,X_n\)</span> <span class="math notranslate nohighlight">\(n\)</span> variables aléatoires indépendantes
+et identiquement distribuées de loi <span class="math notranslate nohighlight">\(Exp(\lambda)\)</span> alors la
+somme <span class="math notranslate nohighlight">\(\sum_{k=1}^n X_k\)</span> suit une loi <span class="math notranslate nohighlight">\(Gamma(n,\lambda)\)</span>.</p>
+</div>
+<p>La démonstration utilise l’unicité de la fonction caractéristique
+<span class="math notranslate nohighlight">\(\esp{e^{iX}}\)</span>. Il suffit de démonstrer que la fonction caractéristique
+de la somme est celle d’une loi Gamma. On suppose que
+<span class="math notranslate nohighlight">\(X_1,...,X_n\)</span> suivent des lois exponentielles de paramètre
+<span class="math notranslate nohighlight">\(\lambda\)</span> et <span class="math notranslate nohighlight">\(Y\)</span> suit une loi <span class="math notranslate nohighlight">\(Gamma(n,\lambda)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\esp{\exp\pa{i\sum_{k=1}^n X_k}} &amp;=&amp; \prod_{k=1}^n \esp{e^{iX_k}} \\
+&amp;=&amp; \cro{  \int_0^{\infty} \lambda e^{ix} e^{-\lambda x} dx}^n = \lambda^n \cro{\int_0^{\infty} e^{(i-\lambda) x} dx}^n  \\
+&amp;=&amp;  \lambda^n \cro{ - \frac{1}{(i-\lambda)} }^n  = \cro{ \frac{ \lambda} { \lambda - i} }^n  \\
+\esp{e^{iY}} &amp;=&amp; \int_0^{\infty}   \frac{\lambda^{n}} {\Gamma(n)}t^{n-1}e^{-\lambda t} e^{it} dt =
+                 \int_0^{\infty}   \frac{\lambda^{n}} {\Gamma(n)}t^{n-1}e^{ (i-\lambda) t} dt \\
+&amp;=&amp; \frac{\lambda^{n}} {\Gamma(n)}  \frac{\Gamma(n)}{(i-\lambda)^{n}}   =  \cro{ \frac{ \lambda} { \lambda - i} }^n
+\end{eqnarray*}</div><p>Ces lignes démontrent le théorème.
+On démontre maintenant <a class="reference internal" href="#theoreme-simulation-poisson"><span class="std std-ref">simulation d’une loi de Poisson</span></a>.
+La démonstration repose sur le fait que
+<span class="math notranslate nohighlight">\(\pr{N(t) \supegal n} \Longleftrightarrow \pr{S_n \infegal t}\)</span>.
+On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\[\pr{N(t) = n} = \pr{N(t) \supegal n} - \pr{N(t) \supegal n+1} = \pr{S_n \infegal t} - \pr{S_{n+1} \infegal t}\]</div>
+<p>Or d’après le théorème <a class="reference internal" href="#theoreme-convolution-poisson"><span class="std std-ref">somme de loi exponentielle iid</span></a>,
+<span class="math notranslate nohighlight">\(S_n\)</span> suit une loi <span class="math notranslate nohighlight">\(Gamma(n,\lambda)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\pr{N(t) = n} &amp;=&amp; \int_0^t  \frac{\lambda^n} {\Gamma(n)}u^{n-1}e^{-\lambda u} du -
+                  \int_0^t  \frac{\lambda^{n+1}} {\Gamma(n+1)}u^{n}e^{-\lambda u} du \\
+              &amp;=&amp; \int_0^t  \cro{ \frac{\lambda^n} {(n-1)!} u^{n-1} e^{-\lambda u} - \frac{\lambda^{n+1}} {n!}u^{n}  e^{-\lambda u} } du \\
+              &amp;=&amp; \cro{ \frac{ \lambda^n}{n!} u^n e^{-\lambda u} }_0^t = e^{-\lambda t} \frac{ (\lambda t)^n}{n!}
+\end{eqnarray*}</div><p>Il suffit d’utiliser ce théorème pour simuler une loi de Poisson de
+paramètre <span class="math notranslate nohighlight">\(\lambda\)</span>, ce que fait la fonction
+<a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.poisson" title="mlstatpy.garden.poulet.poisson"><code class="xref py py-func docutils literal notranslate"><span class="pre">poisson</span></code></a> suivante :</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<span class="k">def</span> <span class="nf">exponentielle</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">l</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">u</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">poisson</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">s</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">exponentielle</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">poisson</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">3</span>
+</pre></div>
+</div>
+<p>On vérifie que cette méthode de simulation permet de retrouver
+les résultats théoriques. Pour cela, on effectue 1000 tirages d’une
+variable suivant une loi de Poisson avec <span class="math notranslate nohighlight">\(\lambda=10\)</span>
+puis on compte le nombre de fois qu’on obtient chaque entier compris
+entre 0 et 40. La figure qui suit permet de comparer les résultats obtenus.</p>
+<img alt="../_images/poishis.png" src="../_images/poishis.png" />
+<p>Comparaison entre une fonction de densité estimée
+empiriquement pour la loi de Poisson de paramètre
+<span class="math notranslate nohighlight">\(\lambda=10\)</span> et sa densité théorique
+<span class="math notranslate nohighlight">\(f(i) = e^{-\lambda} \frac{ \lambda^i}{i!}\)</span>.</p>
+<p>On cherche maintenant à calculer les probabilités
+<span class="math notranslate nohighlight">\(\pr{N = i}\)</span> sachant que <span class="math notranslate nohighlight">\(N = N_1 + 2 N_2 + 3 N_3\)</span>
+et <span class="math notranslate nohighlight">\(N_1 \sim \mathcal{P}(48)\)</span>, <span class="math notranslate nohighlight">\(N_2 \sim \mathcal{P}(10)\)</span>,
+<span class="math notranslate nohighlight">\(N_3 \sim \mathcal{P}(4)\)</span>. L’addition de deux lois de Poisson
+indépendantes est une loi de Poisson. En revanche, si <span class="math notranslate nohighlight">\(N_1\)</span>
+suit une loi de Poisson, <span class="math notranslate nohighlight">\(2N_1\)</span> ne suit pas une loi de Poisson.
+<span class="math notranslate nohighlight">\(2N_1\)</span> est une variable paire, c’est une propriété qui n’est
+jamais vérifiée par une loi de Poisson.
+Il n’existe pas d’expression évidente pour la densité du mélange <span class="math notranslate nohighlight">\(N\)</span>,
+il faut donc simuler cette variable. C’est l’objectif de la fonction
+<a class="reference internal" href="../api/modules/poulet.html#mlstatpy.garden.poulet.poisson_melange" title="mlstatpy.garden.poulet.poisson_melange"><code class="xref py py-func docutils literal notranslate"><span class="pre">poisson_melange</span></code></a>.
+De la même manière, on estime l’histogramme du mélange avec cette fois-ci
+un plus grand nombre de tirages (10000) pour aboutir
+à la figure suivante.</p>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/poishist2.png" src="../_images/poishist2.png" />
+</td>
+<td><img alt="../_images/poishist3.png" src="../_images/poishist3.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Comparaison entre une fonction de densité estimée empiriquement
+pour un mélange de loi Poisson <span class="math notranslate nohighlight">\(N = N_1 + 2 N_2 + 3 N_3\)</span>
+vérifiant <span class="math notranslate nohighlight">\(N_1 \sim \mathcal{P}(48)\)</span>,
+<span class="math notranslate nohighlight">\(N_2 \sim \mathcal{P}(10)\)</span>, <span class="math notranslate nohighlight">\(N_3 \sim \mathcal{P}(4)\)</span>
+avec la densité de la loi de Poisson de paramètre <span class="math notranslate nohighlight">\(\lambda=80=48+2*10+3*4\)</span>.
+Il apparaît que ce sont deux densités différentes, celle du mélange
+étant plus applatie. La seconde image montre ce qu’on obtient lorsque
+le nombre de tirages n’est pas assez important.</p>
+<p>On utilise ces éléments pour modéliser la demande de poulets
+selon ce mélange de lois Poisson. Le premier programme est modifié
+pour aboutir au suivant.</p>
+<img alt="../_images/poulet10.png" src="../_images/poulet10.png" />
+<p>Dans le cas du mélange de lois Poisson,
+le maximum est cette-fois ci obtenu pour 87 poulets et est
+de 225 euros. Ces résultats sont légèrement différents
+de ceux obtenus par une simple loi Poisson (80).</p>
+</section>
+<section id="variations-saisonnieres-et-prolongations">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Variations saisonnières et prolongations</a><a class="headerlink" href="#variations-saisonnieres-et-prolongations" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Les paragraphes précédents supposent que la demande est constante
+et ne dépend pas des saisons. Cette affirmation est peut-être
+vraie en ce concerne les poulets mais ce n’est certainement pas
+le cas des huîtres qui sont traditionnellement consommées en décembre.
+Appliqué à l’exemple des poulets décrits dans cet énoncé, la loi de Poisson
+appliquée à la consommation dépend maintenant de la semaine.</p>
+<p>Tenir compte de la saisonnalité n’est pas forcément un problème de
+modélisation mais plutôt d’estimation. Au lieu d’avoir une seule
+consommation moyenne, il y a en aura maintenant 52. Ceci implique d’avoir
+des données en nombre suffisant pour estimer les paramètres du modèle :
+la précision des résultats dépend de celle de l’estimation. Il est possible
+d’estimer séparément les variations saisonnières et la demande elle-même
+mais la présentation de ces techniques dépassent le cadre de ce livre, il
+est préférable de se reporter à <a class="reference internal" href="#gourieroux1983" id="id1"><span>[Gouriéroux1983]</span></a> ou <a class="reference internal" href="#saporta2006" id="id2"><span>[Saporta2006]</span></a>.</p>
+<p>Les poulets soldés ne sont pas plus mauvais que les poulets
+non soldés bien que la date de péremption soit certainement plus rapprochée
+de la date d’achat. On suppose qu’un gérant concurrent de ce supermarché
+a eu vent de la technique d’optimisation du magasin, il connaît également
+le prix du poulet et son prix soldé. Il a également accès au prix d’achat
+puisqu’il se fournit chez les mêmes agriculteurs. Il lui reste à
+connaître le nombre de poulets commandés et une estimation de la demande
+pour savoir si les poulets de son concurrents se vendent mieux que les siens.
+Il se rend dans le supermarché concurrent tous les jours où les poulets
+sont soldés et les comptent. Il voudrait pouvoir en déduire le nombre de poulets vendus.</p>
+</section>
+<section id="bibliographie">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="gourieroux1983" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Gouriéroux1983</a><span class="fn-bracket">]</span></span>
+<p>Analyse des séries temporelles,
+Christian Gouriéroux, Alain Monfort,
+Editions Economica</p>
+</div>
+<div class="citation" id="saporta2006" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Saporta2006</a><span class="fn-bracket">]</span></span>
+<p>Probabilités, analyse des données et statistique,
+Gilbert Saporta, Editions Technip</p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../notebooks/dsgarden/file_dattente_ex.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">File d’attente, un exemple simple</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/dsgarden/discret_gradient.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Le gradient et le discret</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-probleme-simple">Un problème simple</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelisation-de-la-demande">Modélisation de la demande</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variations-saisonnieres-et-prolongations">Variations saisonnières et prolongations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographie">Bibliographie</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_garden/strategie_avec_alea.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

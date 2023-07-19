@@ -1,0 +1,1539 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>NeuralTreeNet et coût &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/ml/neural_tree_cost';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Régression linéaire" href="../../c_ml/index_reg_lin.html" />
+    <link rel="prev" title="NeuralTreeNet et ONNX" href="neural_tree_onnx.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dsgarden/index.html">Le petit coin des data scientists</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/classification_multiple.html">Classification multiple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/correlation_non_lineaire.html">Corrélations non linéaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/discret_gradient.html">Le gradient et le discret</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/quantile_regression_example.html">Régression quantile illustrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/regression_lineaire.html">Régression linéaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../image/index.html">Images</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../image/segment_detection.html">Détection de segments dans une image</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metric/index.html">Métriques</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../metric/pvalues_examples.html">p-values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metric/roc_example.html">ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="logreg_voronoi.html">Voronoï et régression logistique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">NeuralTreeNet et coût</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="piecewise_linear_regression.html">Régression linéaire par morceaux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_no_inversion.html">Régression sans inversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reseau_neurones.html">Réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="survival.html">Analyse de survie en pratique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../nlp/index.html">NLP - Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_profiling.html">Completion profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_simple.html">Complétion Simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie.html">Complétion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie_long.html">Completion Trie and metrics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../c_ml/index.html" class="nav-link">Non linéaire</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">NeuralTreeNet et coût</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="NeuralTreeNet-et-coût">
+<h1>NeuralTreeNet et coût<a class="headerlink" href="#NeuralTreeNet-et-coût" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>La classe <em>NeuralTreeNet</em> convertit un arbre de décision en réseau de neurones. Si la conversion n’est pas exacte mais elle permet d’obtenir un modèle différentiable et apprenable avec un algorithme d’optimisation à base de gradient. Ce notebook compare le temps d’éxécution entre un arbre et le réseau de neurones.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jyquickhelper</span> <span class="kn">import</span> <span class="n">add_notebook_menu</span>
+
+<span class="n">add_notebook_menu</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="my_id_menu_nb">run previous cell, wait for 2 seconds</div>
+<script>
+function repeat_indent_string(n){
+    var a = "" ;
+    for ( ; n > 0 ; --n)
+        a += "    ";
+    return a;
+}
+// look up into all sections and builds an automated menu //
+var update_menu_string = function(begin, lfirst, llast, sformat, send, keep_item, begin_format, end_format) {
+    var anchors = document.getElementsByClassName("section");
+    if (anchors.length == 0) {
+        anchors = document.getElementsByClassName("text_cell_render rendered_html");
+    }
+    var i,t;
+    var text_menu = begin;
+    var text_memo = "<pre>\nlength:" + anchors.length + "\n";
+    var ind = "";
+    var memo_level = 1;
+    var href;
+    var tags = [];
+    var main_item = 0;
+    var format_open = 0;
+    for (i = 0; i <= llast; i++)
+        tags.push("h" + i);
+
+    for (i = 0; i < anchors.length; i++) {
+        text_memo += "**" + anchors[i].id + "--\n";
+
+        var child = null;
+        for(t = 0; t < tags.length; t++) {
+            var r = anchors[i].getElementsByTagName(tags[t]);
+            if (r.length > 0) {
+child = r[0];
+break;
+            }
+        }
+        if (child == null) {
+            text_memo += "null\n";
+            continue;
+        }
+        if (anchors[i].hasAttribute("id")) {
+            // when converted in RST
+            href = anchors[i].id;
+            text_memo += "#1-" + href;
+            // passer à child suivant (le chercher)
+        }
+        else if (child.hasAttribute("id")) {
+            // in a notebook
+            href = child.id;
+            text_memo += "#2-" + href;
+        }
+        else {
+            text_memo += "#3-" + "*" + "\n";
+            continue;
+        }
+        var title = child.textContent;
+        var level = parseInt(child.tagName.substring(1,2));
+
+        text_memo += "--" + level + "?" + lfirst + "--" + title + "\n";
+
+        if ((level < lfirst) || (level > llast)) {
+            continue ;
+        }
+        if (title.endsWith('¶')) {
+            title = title.substring(0,title.length-1).replace("<", "&lt;")
+         .replace(">", "&gt;").replace("&", "&amp;");
+        }
+        if (title.length == 0) {
+            continue;
+        }
+
+        while (level < memo_level) {
+            text_menu += end_format + "</ul>\n";
+            format_open -= 1;
+            memo_level -= 1;
+        }
+        if (level == lfirst) {
+            main_item += 1;
+        }
+        if (keep_item != -1 && main_item != keep_item + 1) {
+            // alert(main_item + " - " + level + " - " + keep_item);
+            continue;
+        }
+        while (level > memo_level) {
+            text_menu += "<ul>\n";
+            memo_level += 1;
+        }
+        text_menu += repeat_indent_string(level-2);
+        text_menu += begin_format + sformat.replace("__HREF__", href).replace("__TITLE__", title);
+        format_open += 1;
+    }
+    while (1 < memo_level) {
+        text_menu += end_format + "</ul>\n";
+        memo_level -= 1;
+        format_open -= 1;
+    }
+    text_menu += send;
+    //text_menu += "\n" + text_memo;
+
+    while (format_open > 0) {
+        text_menu += end_format;
+        format_open -= 1;
+    }
+    return text_menu;
+};
+var update_menu = function() {
+    var sbegin = "";
+    var sformat = '<a href="#__HREF__">__TITLE__</a>';
+    var send = "";
+    var begin_format = '<li>';
+    var end_format = '</li>';
+    var keep_item = -1;
+    var text_menu = update_menu_string(sbegin, 2, 4, sformat, send, keep_item,
+       begin_format, end_format);
+    var menu = document.getElementById("my_id_menu_nb");
+    menu.innerHTML=text_menu;
+};
+window.setTimeout(update_menu,2000);
+            </script></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> mlprodict
+</pre></div>
+</div>
+</div>
+<section id="Jeux-de-données">
+<h2>Jeux de données<a class="headerlink" href="#Jeux-de-données" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On construit un jeu de données aléatoire.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">middle</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">middle</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">middle</span><span class="p">:]</span>
+<span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:</span><span class="n">middle</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">middle</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Caler-un-arbre-de-décision">
+<h2>Caler un arbre de décision<a class="headerlink" href="#Caler-un-arbre-de-décision" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.6091161526814477, 0.3884519134946681)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
+
+<span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.3884519134946681
+</pre></div></div>
+</div>
+<p>Covnersion de l’arbre en réseau de neurones</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">from</span> <span class="nn">mlstatpy.ml.neural_tree</span> <span class="kn">import</span> <span class="n">NeuralTreeNet</span><span class="p">,</span> <span class="n">NeuralTreeNetRegressor</span>
+
+<span class="n">xe</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xe</span><span class="p">)</span>
+
+<span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralTreeNetRegressor</span><span class="p">(</span><span class="n">NeuralTreeNet</span><span class="o">.</span><span class="n">create_from_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="s2">&quot;compact&quot;</span><span class="p">))</span>
+<span class="n">got</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xe</span><span class="p">)</span>
+<span class="n">me</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">got</span> <span class="o">-</span> <span class="n">expected</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">got</span> <span class="o">-</span> <span class="n">expected</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;average absolute error&quot;</span><span class="p">:</span> <span class="n">me</span><span class="p">,</span> <span class="s2">&quot;max absolute error&quot;</span><span class="p">:</span> <span class="n">mx</span><span class="p">}])</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>average absolute error</th>
+      <td>0.210314</td>
+    </tr>
+    <tr>
+      <th>max absolute error</th>
+      <td>1.679553</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>La conversion est loin d’être parfaite. La raison vient du fait que les fonctions de seuil sont approchées par des fonctions sigmoïdes. Il suffit d’une erreur minime pour que la décision prenne un chemin différent dans l’arbre et soit complètement différente.</p>
+</section>
+<section id="Conversion-au-format-ONNX">
+<h2>Conversion au format ONNX<a class="headerlink" href="#Conversion-au-format-ONNX" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skl2onnx</span> <span class="kn">import</span> <span class="n">to_onnx</span>
+
+<span class="n">onx_tree</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="n">onx_nn</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Le réseau de neurones peut être représenté comme suit.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">onnxview</span> onx_nn
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="M1f0c5529ea564ba2bdf10042b00fd6b1-cont"><div id="M1f0c5529ea564ba2bdf10042b00fd6b1" style="width:;height:;"></div></div>
+<script>
+
+require(['http://www.xavierdupre.fr/js/vizjs/viz.js'], function() { var svgGraph = Viz("digraph{\n  nodesep=0.05;\n  ranksep=0.25;\n  size=7;\n  orientation=portrait;\n\n  X [shape=box color=red label=\"X\nfloat((0, 10))\" fontsize=10];\n\n  variable [shape=box color=green label=\"variable\nfloat((0, 1))\" fontsize=10];\n\n  Ma_MatMulcst [shape=box label=\"Ma_MatMulcst\nfloat32((10, 127))\n[[ 0.  0.  0. ...  0.  0.  0.]\n [ 0.  0.  0. ...  ...\" fontsize=10];\n  Ad_Addcst [shape=box label=\"Ad_Addcst\nfloat32((127,))\n[-0.28751326 -0.3320096   0.24225289 -1.2377734   ...\" fontsize=10];\n  Mu_Mulcst [shape=box label=\"Mu_Mulcst\nfloat32((1,))\n[4.]\" fontsize=10];\n  Ma_MatMulcst1 [shape=box label=\"Ma_MatMulcst1\nfloat32((127, 128))\n[[ 1.  1.  1. ... -1. -1. -1.]\n [ 1.  1.  1. ...  ...\" fontsize=10];\n  Ad_Addcst1 [shape=box label=\"Ad_Addcst1\nfloat32((128,))\n[-6.5 -5.5 -5.5 -4.5 -5.5 -4.5 -4.5 -3.5 -5.5 -4.5...\" fontsize=10];\n  Ma_MatMulcst2 [shape=box label=\"Ma_MatMulcst2\nfloat32((128, 1))\n[[-1.0975432 ]\n [-0.9416567 ]\n [-0.69355935]\n [-0....\" fontsize=10];\n  Ad_Addcst2 [shape=box label=\"Ad_Addcst2\nfloat32((1,))\n[0.]\" fontsize=10];\n\n  Ma_Y02 [shape=box label=\"Ma_Y02\" fontsize=10];\n  Ma_MatMul [shape=box style=\"filled,rounded\" color=orange label=\"MatMul\n(Ma_MatMul)\" fontsize=10];\n  X -> Ma_MatMul;\n  Ma_MatMulcst -> Ma_MatMul;\n  Ma_MatMul -> Ma_Y02;\n\n  Ad_C02 [shape=box label=\"Ad_C02\" fontsize=10];\n  Ad_Add [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Ad_Add)\" fontsize=10];\n  Ma_Y02 -> Ad_Add;\n  Ad_Addcst -> Ad_Add;\n  Ad_Add -> Ad_C02;\n\n  Mu_C01 [shape=box label=\"Mu_C01\" fontsize=10];\n  Mu_Mul [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mu_Mul)\" fontsize=10];\n  Ad_C02 -> Mu_Mul;\n  Mu_Mulcst -> Mu_Mul;\n  Mu_Mul -> Mu_C01;\n\n  Si_Y01 [shape=box label=\"Si_Y01\" fontsize=10];\n  Si_Sigmoid [shape=box style=\"filled,rounded\" color=orange label=\"Sigmoid\n(Si_Sigmoid)\" fontsize=10];\n  Mu_C01 -> Si_Sigmoid;\n  Si_Sigmoid -> Si_Y01;\n\n  Ma_Y01 [shape=box label=\"Ma_Y01\" fontsize=10];\n  Ma_MatMul1 [shape=box style=\"filled,rounded\" color=orange label=\"MatMul\n(Ma_MatMul1)\" fontsize=10];\n  Si_Y01 -> Ma_MatMul1;\n  Ma_MatMulcst1 -> Ma_MatMul1;\n  Ma_MatMul1 -> Ma_Y01;\n\n  Ad_C01 [shape=box label=\"Ad_C01\" fontsize=10];\n  Ad_Add1 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Ad_Add1)\" fontsize=10];\n  Ma_Y01 -> Ad_Add1;\n  Ad_Addcst1 -> Ad_Add1;\n  Ad_Add1 -> Ad_C01;\n\n  Mu_C0 [shape=box label=\"Mu_C0\" fontsize=10];\n  Mu_Mul1 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mu_Mul1)\" fontsize=10];\n  Ad_C01 -> Mu_Mul1;\n  Mu_Mulcst -> Mu_Mul1;\n  Mu_Mul1 -> Mu_C0;\n\n  Si_Y0 [shape=box label=\"Si_Y0\" fontsize=10];\n  Si_Sigmoid1 [shape=box style=\"filled,rounded\" color=orange label=\"Sigmoid\n(Si_Sigmoid1)\" fontsize=10];\n  Mu_C0 -> Si_Sigmoid1;\n  Si_Sigmoid1 -> Si_Y0;\n\n  Ma_Y0 [shape=box label=\"Ma_Y0\" fontsize=10];\n  Ma_MatMul2 [shape=box style=\"filled,rounded\" color=orange label=\"MatMul\n(Ma_MatMul2)\" fontsize=10];\n  Si_Y0 -> Ma_MatMul2;\n  Ma_MatMulcst2 -> Ma_MatMul2;\n  Ma_MatMul2 -> Ma_Y0;\n\n  Ad_C0 [shape=box label=\"Ad_C0\" fontsize=10];\n  Ad_Add2 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Ad_Add2)\" fontsize=10];\n  Ma_Y0 -> Ad_Add2;\n  Ad_Addcst2 -> Ad_Add2;\n  Ad_Add2 -> Ad_C0;\n\n  Id_Identity1 [shape=box style=\"filled,rounded\" color=orange label=\"Identity\n(Id_Identity1)\" fontsize=10];\n  Ad_C0 -> Id_Identity1;\n  Id_Identity1 -> variable;\n}");
+document.getElementById('M1f0c5529ea564ba2bdf10042b00fd6b1').innerHTML = svgGraph; });
+
+</script></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx_nn</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+opset: domain=&#39;&#39; version=15
+input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[None, 10]
+init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(1270,)
+init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(127,)
+init: name=&#39;Mu_Mulcst&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([4.], dtype=float32)
+init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(16256,)
+init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(128,)
+init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(128,)
+init: name=&#39;Ad_Addcst2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
+MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
+  Add(Ma_Y02, Ad_Addcst) -&gt; Ad_C02
+    Mul(Ad_C02, Mu_Mulcst) -&gt; Mu_C01
+      Sigmoid(Mu_C01) -&gt; Si_Y01
+        MatMul(Si_Y01, Ma_MatMulcst1) -&gt; Ma_Y01
+          Add(Ma_Y01, Ad_Addcst1) -&gt; Ad_C01
+            Mul(Ad_C01, Mu_Mulcst) -&gt; Mu_C0
+              Sigmoid(Mu_C0) -&gt; Si_Y0
+                MatMul(Si_Y0, Ma_MatMulcst2) -&gt; Ma_Y0
+                  Add(Ma_Y0, Ad_Addcst2) -&gt; Ad_C0
+                    Identity(Ad_C0) -&gt; variable
+output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
+</pre></div></div>
+</div>
+</section>
+<section id="Temps-de-calcul-des-prédictions">
+<h2>Temps de calcul des prédictions<a class="headerlink" href="#Temps-de-calcul-des-prédictions" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span>
+
+<span class="n">oinf_tree</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onx_tree</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+<span class="n">oinf_nn</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onx_nn</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+
+<span class="o">%</span><span class="k">timeit</span> tree.predict(xe)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.5&#39;
+518 µs ± 41.4 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf_tree.run(None, {&#39;X&#39;: xe})
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+124 µs ± 5.21 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf_nn.run(None, {&#39;X&#39;: xe})
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+3.18 ms ± 569 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div></div>
+</div>
+<p>Le temps de calcul est nettement plus long pour le réseau de neurones. Si l’arbre de décision a une profondeur de <em>d</em>, l’arbre de décision va faire exactement <em>d</em> comparaisons. Le réseau de neurones quant à lui évalue tous les seuils pour chaque prédiction, soit <span class="math notranslate nohighlight">\(2^d\)</span>. Vérifions cela en faisant variable la profondeur.</p>
+</section>
+<section id="Temps-de-calcul-en-fonction-de-la-profondeur">
+<h2>Temps de calcul en fonction de la profondeur<a class="headerlink" href="#Temps-de-calcul-en-fonction-de-la-profondeur" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.ext_test_case</span> <span class="kn">import</span> <span class="n">measure_time</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)):</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xe</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">obs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">exp</span><span class="o">=</span><span class="s2">&quot;skl&quot;</span><span class="p">))</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+
+    <span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralTreeNetRegressor</span><span class="p">(</span><span class="n">NeuralTreeNet</span><span class="o">.</span><span class="n">create_from_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="s2">&quot;compact&quot;</span><span class="p">))</span>
+
+    <span class="n">onx_tree</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+    <span class="n">onx_nn</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+    <span class="n">oinf_tree</span> <span class="o">=</span> <span class="n">OnnxInference</span><span class="p">(</span><span class="n">onx_tree</span><span class="p">,</span> <span class="n">runtime</span><span class="o">=</span><span class="s2">&quot;onnxruntime1&quot;</span><span class="p">)</span>
+    <span class="n">oinf_nn</span> <span class="o">=</span> <span class="n">OnnxInference</span><span class="p">(</span><span class="n">onx_nn</span><span class="p">,</span> <span class="n">runtime</span><span class="o">=</span><span class="s2">&quot;onnxruntime1&quot;</span><span class="p">)</span>
+
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">oinf_tree</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">xe</span><span class="p">}),</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">obs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">exp</span><span class="o">=</span><span class="s2">&quot;onx_tree&quot;</span><span class="p">))</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">oinf_nn</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">xe</span><span class="p">}),</span> <span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">obs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">exp</span><span class="o">=</span><span class="s2">&quot;onx_nn&quot;</span><span class="p">))</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 8/8 [00:07&lt;00:00,  1.04it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>average</th>
+      <th>deviation</th>
+      <th>min_exec</th>
+      <th>max_exec</th>
+      <th>repeat</th>
+      <th>number</th>
+      <th>ttime</th>
+      <th>context_size</th>
+      <th>d</th>
+      <th>exp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.005656</td>
+      <td>0.001292</td>
+      <td>0.004990</td>
+      <td>0.009533</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.113116</td>
+      <td>64</td>
+      <td>2</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000609</td>
+      <td>0.000084</td>
+      <td>0.000538</td>
+      <td>0.000830</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.006088</td>
+      <td>64</td>
+      <td>2</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.002337</td>
+      <td>0.000563</td>
+      <td>0.001737</td>
+      <td>0.003299</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.023374</td>
+      <td>64</td>
+      <td>2</td>
+      <td>onx_nn</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.005607</td>
+      <td>0.000962</td>
+      <td>0.004669</td>
+      <td>0.007374</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.112131</td>
+      <td>64</td>
+      <td>3</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000709</td>
+      <td>0.000240</td>
+      <td>0.000534</td>
+      <td>0.001363</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.007087</td>
+      <td>64</td>
+      <td>3</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.002506</td>
+      <td>0.000448</td>
+      <td>0.002073</td>
+      <td>0.003736</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.025064</td>
+      <td>64</td>
+      <td>3</td>
+      <td>onx_nn</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.006398</td>
+      <td>0.000942</td>
+      <td>0.005576</td>
+      <td>0.009556</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.127961</td>
+      <td>64</td>
+      <td>4</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.000852</td>
+      <td>0.000335</td>
+      <td>0.000633</td>
+      <td>0.001715</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.008519</td>
+      <td>64</td>
+      <td>4</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.004151</td>
+      <td>0.000763</td>
+      <td>0.003408</td>
+      <td>0.005826</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.041507</td>
+      <td>64</td>
+      <td>4</td>
+      <td>onx_nn</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.007266</td>
+      <td>0.000731</td>
+      <td>0.006400</td>
+      <td>0.009247</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.145314</td>
+      <td>64</td>
+      <td>5</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.000963</td>
+      <td>0.000169</td>
+      <td>0.000826</td>
+      <td>0.001327</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.009634</td>
+      <td>64</td>
+      <td>5</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.006113</td>
+      <td>0.000560</td>
+      <td>0.005360</td>
+      <td>0.007255</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.061134</td>
+      <td>64</td>
+      <td>5</td>
+      <td>onx_nn</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0.008881</td>
+      <td>0.001234</td>
+      <td>0.007601</td>
+      <td>0.012340</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.177622</td>
+      <td>64</td>
+      <td>6</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0.001175</td>
+      <td>0.000613</td>
+      <td>0.000815</td>
+      <td>0.002984</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.011754</td>
+      <td>64</td>
+      <td>6</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0.011537</td>
+      <td>0.001079</td>
+      <td>0.010146</td>
+      <td>0.013582</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.115367</td>
+      <td>64</td>
+      <td>6</td>
+      <td>onx_nn</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>0.011134</td>
+      <td>0.000887</td>
+      <td>0.009569</td>
+      <td>0.013273</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.222676</td>
+      <td>64</td>
+      <td>7</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>0.001399</td>
+      <td>0.000131</td>
+      <td>0.001301</td>
+      <td>0.001742</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.013988</td>
+      <td>64</td>
+      <td>7</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0.034831</td>
+      <td>0.004986</td>
+      <td>0.027853</td>
+      <td>0.046760</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.348306</td>
+      <td>64</td>
+      <td>7</td>
+      <td>onx_nn</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0.011263</td>
+      <td>0.001060</td>
+      <td>0.009911</td>
+      <td>0.013893</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.225251</td>
+      <td>64</td>
+      <td>8</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>0.001226</td>
+      <td>0.000148</td>
+      <td>0.001033</td>
+      <td>0.001609</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.012259</td>
+      <td>64</td>
+      <td>8</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0.141722</td>
+      <td>0.051041</td>
+      <td>0.089979</td>
+      <td>0.270129</td>
+      <td>10</td>
+      <td>10</td>
+      <td>1.417218</td>
+      <td>64</td>
+      <td>8</td>
+      <td>onx_nn</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0.016436</td>
+      <td>0.004827</td>
+      <td>0.011379</td>
+      <td>0.028261</td>
+      <td>20</td>
+      <td>20</td>
+      <td>0.328716</td>
+      <td>64</td>
+      <td>9</td>
+      <td>skl</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>0.003879</td>
+      <td>0.001963</td>
+      <td>0.002402</td>
+      <td>0.008579</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.038786</td>
+      <td>64</td>
+      <td>9</td>
+      <td>onx_tree</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0.323764</td>
+      <td>0.063045</td>
+      <td>0.261038</td>
+      <td>0.456420</td>
+      <td>10</td>
+      <td>10</td>
+      <td>3.237635</td>
+      <td>64</td>
+      <td>9</td>
+      <td>onx_nn</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;exp&quot;</span><span class="p">,</span> <span class="s2">&quot;average&quot;</span><span class="p">)</span>
+<span class="n">piv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Temps de calcul en fonction de la profondeur&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_ml_neural_tree_cost_25_0.png" src="../../_images/notebooks_ml_neural_tree_cost_25_0.png" />
+</div>
+</div>
+<p>L’hypothèse est vérifiée.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="neural_tree_onnx.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">NeuralTreeNet et ONNX</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../c_ml/index_reg_lin.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Régression linéaire</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Jeux-de-données">Jeux de données</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Caler-un-arbre-de-décision">Caler un arbre de décision</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Conversion-au-format-ONNX">Conversion au format ONNX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Temps-de-calcul-des-prédictions">Temps de calcul des prédictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Temps-de-calcul-en-fonction-de-la-profondeur">Temps de calcul en fonction de la profondeur</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/notebooks/ml/neural_tree_cost.ipynb">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

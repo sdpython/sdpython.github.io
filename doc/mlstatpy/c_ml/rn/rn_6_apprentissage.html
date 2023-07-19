@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Apprentissage d’un réseau de neurones &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/rn/rn_6_apprentissage';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Classification" href="rn_7_clas2.html" />
+    <link rel="prev" title="Descente de gradient" href="rn_5_newton.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="rn.html">Réseaux de neurones</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rn_1_def.html">Définition des réseaux de neurones multi-couches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_2_reg.html">La régression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_3_clas.html">La classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_4_densite.html">Démonstration du théorème de la densité des réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_5_newton.html">Descente de gradient</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Apprentissage d’un réseau de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_7_clas2.html">Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_8_prol.html">Prolongements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_9_auto.html">Analyse en composantes principales (ACP) et Auto Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn_biblio.html">Bibliographie</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kppv.html">Classification à l’aide des plus proches voisins</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../missing_values_mf.html">Liens entre factorisation de matrices, ACP, k-means</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Non linéaire</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="rn.html" class="nav-link">Réseaux de neurones</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Apprentissage d’un réseau de neurones</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="apprentissage-d-un-reseau-de-neurones">
+<h1>Apprentissage d’un réseau de neurones<a class="headerlink" href="#apprentissage-d-un-reseau-de-neurones" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#apprentissage-avec-gradient-global" id="id8">Apprentissage avec gradient global</a></p>
+<ul>
+<li><p><a class="reference internal" href="#methodes-du-premier-ordre" id="id9">Méthodes du premier ordre</a></p></li>
+<li><p><a class="reference internal" href="#methodes-du-second-ordre" id="id10">Méthodes du second ordre</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#apprentissage-avec-gradient-stochastique" id="id11">Apprentissage avec gradient stochastique</a></p></li>
+</ul>
+</nav>
+<p>Le terme apprentissage est encore inspiré de la biologie et se traduit
+par la minimisation de la fonction <a class="reference internal" href="rn_5_newton.html#equation-equation-fonction-erreur-g">(2)</a> où
+<span class="math notranslate nohighlight">\(f\)</span> est un réseau de neurone défini par un <a class="reference internal" href="rn_1_def.html#rn-definition-perpception-1"><span class="std std-ref">perceptron</span></a>.
+Il existe plusieurs méthodes pour effectuer celle-ci.
+Chacune d’elles vise à minimiser la fonction d’erreur :</p>
+<div class="math notranslate nohighlight">
+\[E\pa{W}   = G \pa{W}  =   \sum_{i=1}^{N} e\pa {Y_{i} - \widehat{Y_{i}^W}}
+                                    =   \sum_{i=1}^{N} e\pa {Y_{i} - f \pa{W,X_{i}}}\]</div>
+<p>Dans tous les cas, les différents apprentissages utilisent la suite
+suivante <span class="math notranslate nohighlight">\(\pa{ \epsilon_{t}}\)</span> vérifiant <a class="reference internal" href="#equation-rn-suite-epsilon-train">(1)</a>
+et proposent une convergence vers un minimum local.</p>
+<div class="math notranslate nohighlight" id="equation-rn-suite-epsilon-train">
+<span class="eqno">(1)<a class="headerlink" href="#equation-rn-suite-epsilon-train" title="Lien permanent vers cette équation">#</a></span>\[\forall t&gt;0,\quad\varepsilon_{t}\in \R_{+}^{\ast} \text{ et }
+\sum_{t\geqslant0}\varepsilon_{t}=+\infty,\quad
+\sum_{t\geqslant0}\varepsilon_{t}^{2}&lt;+\infty\]</div>
+<p>Il est souhaitable d’apprendre plusieurs fois la même fonction en modifiant
+les conditions initiales de ces méthodes de manière à améliorer la robustesse de la solution.</p>
+<section id="apprentissage-avec-gradient-global">
+<span id="rn-apprentissage-global"></span><h2><a class="toc-backref" href="#id8" role="doc-backlink">Apprentissage avec gradient global</a><a class="headerlink" href="#apprentissage-avec-gradient-global" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’algorithme de <a class="reference internal" href="rn_5_newton.html#algo-retropropagation"><span class="std std-ref">rétropropagation</span></a> permet d’obtenir
+la dérivée de l’erreur <span class="math notranslate nohighlight">\(e\)</span> pour un vecteur d’entrée <span class="math notranslate nohighlight">\(X\)</span>. Or l’erreur
+<span class="math notranslate nohighlight">\(E\pa{W}\)</span> à minimiser est la somme des erreurs pour chaque exemple
+<span class="math notranslate nohighlight">\(X_i\)</span>, le gradient global <span class="math notranslate nohighlight">\(\partialfrac{E\pa{W}}{W}\)</span> de cette erreur
+globale est la somme des gradients pour chaque exemple
+(voir équation <a class="reference internal" href="rn_5_newton.html#equation-algo-retro-1">(3)</a>).
+Parmi les méthodes d’optimisation basées sur le gradient global, on distingue deux catégories :</p>
+<ul class="simple">
+<li><p>Les méthodes du premier ordre, elles sont calquées sur la
+<a class="reference external" href="https://fr.wikipedia.org/wiki/M%C3%A9thode_de_Newton">méthode de Newton</a>
+et n’utilisent que le gradient.</p></li>
+<li><p>Les méthodes du second ordre ou méthodes utilisant un
+<a class="reference external" href="https://fr.wikipedia.org/wiki/M%C3%A9thode_du_gradient_conjugu%C3%A9">gradient conjugué</a>
+elles sont plus coûteuses en calcul mais plus performantes
+puisque elles utilisent la dérivée seconde ou une valeur approchée.</p></li>
+</ul>
+<section id="methodes-du-premier-ordre">
+<span id="rn-optim-premier-ordre"></span><h3><a class="toc-backref" href="#id9" role="doc-backlink">Méthodes du premier ordre</a><a class="headerlink" href="#methodes-du-premier-ordre" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Les méthodes du premier ordre sont rarement utilisées.
+Elles sont toutes basées sur le principe
+de la descente de gradient de Newton présentée dans
+la section <a class="reference internal" href="rn_5_newton.html#optimisation-newton"><span class="std std-ref">Algorithme et convergence</span></a> :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="rn-algorithme-apprentissage-1">Algorithme A1 : optimisation du premier ordre</p>
+<p><em>Initialiation</em></p>
+<p>Le premier jeu de coefficients <span class="math notranslate nohighlight">\(W_0\)</span> du réseau
+de neurones est choisi aléatoirement.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+t   &amp;\longleftarrow&amp;    0 \\
+E_0 &amp;\longleftarrow&amp;    \sum_{i=1}^{N} e\pa {Y_{i} - f \pa{W_0,X_{i}}}
+\end{array}\end{split}\]</div>
+<p><em>Calcul du gradient</em></p>
+<p><span class="math notranslate nohighlight">\(g_t \longleftarrow \partialfrac{E_t}{W} \pa {W_t} = \sum_{i=1}^{N}
+e'\pa {Y_{i} - f \pa{W_t,X_{i}}}\)</span></p>
+<p><em>Mise à jour</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+W_{t+1} &amp;\longleftarrow&amp; W_t - \epsilon_t g_t \\
+E_{t+1} &amp;\longleftarrow&amp; \sum_{i=1}^{N} e\pa {Y_i - f \pa{W_{t+1},X_i}} \\
+t       &amp;\longleftarrow&amp; t+1
+\end{array}\end{split}\]</div>
+<p><em>Terminaison</em></p>
+<p>Si <span class="math notranslate nohighlight">\(\frac{E_t}{E_{t-1}} \approx 1\)</span> (ou <span class="math notranslate nohighlight">\(\norm{g_t} \approx 0\)</span>)
+alors l’apprentissage a convergé sinon retour au calcul du gradient.</p>
+</div>
+<p>La condition d’arrêt peut-être plus ou moins stricte selon les besoins du problème.
+Cet algorithme converge vers un minimum local de la fonction d’erreur
+(d’après le théorème de <a class="reference internal" href="rn_5_newton.html#theoreme-convergence"><span class="std std-ref">convergence</span></a>
+mais la vitesse de convergence est inconnue.</p>
+</section>
+<section id="methodes-du-second-ordre">
+<span id="rn-optim-second-ordre"></span><h3><a class="toc-backref" href="#id10" role="doc-backlink">Méthodes du second ordre</a><a class="headerlink" href="#methodes-du-second-ordre" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’algorithme <a class="reference internal" href="#rn-apprentissage-global"><span class="std std-ref">apprentissage global</span></a> fournit le canevas des
+méthodes d’optimisation du second ordre. La mise à jour des coefficients est différente car
+elle prend en compte les dernières valeurs des coefficients ainsi que les
+derniers gradients calculés. Ce passé va être utilisé pour estimer une
+direction de recherche pour le minimum différente de celle du gradient,
+cette direction est appelée gradient conjugué (voir <a class="reference internal" href="rn_biblio.html#more1977" id="id1"><span>[Moré1977]</span></a>).</p>
+<p>Ces techniques sont basées sur une approximation du second degré de la fonction à minimiser.
+On note <span class="math notranslate nohighlight">\(M\)</span> le nombre de coefficients du réseau de neurones (biais compris).
+Soit <span class="math notranslate nohighlight">\(h: \R^{M} \dans \R\)</span> la fonction d’erreur associée au réseau de neurones :
+<span class="math notranslate nohighlight">\(h \pa {W} = \sum_{i} e \pa{Y_i,f \pa{ W,X_i} }\)</span>.
+Au voisinage de <span class="math notranslate nohighlight">\(W_{0}\)</span>, un développement limité donne :</p>
+<div class="math notranslate nohighlight">
+\[h \pa {W}     =   h\pa {W_0}  + \frac{\partial h\left( W_{0}\right)  }{\partial W}\left( W-W_{0}\right) +\left(
+W-W_{0}\right) ^{\prime}\frac{\partial^{2}h\left(  W_{0}\right)  }{\partial W^{2}}\left( W-W_{0}\right) +o\left\|
+W-W_{0}\right\|  ^{2}\]</div>
+<p>Par conséquent, sur un voisinage de <span class="math notranslate nohighlight">\(W_{0}\)</span>, la fonction <span class="math notranslate nohighlight">\(h\left( W\right)\)</span>
+admet un minimum local si <span class="math notranslate nohighlight">\(\frac{\partial^{2}h\left( W_{0}\right) }{\partial W^{2}}\)</span>
+est définie positive strictement.</p>
+<p><em>Rappel :</em> <span class="math notranslate nohighlight">\(\dfrac{\partial^{2}h\left(  W_{0}\right)  }{\partial W^{2}}\)</span>
+est définie positive strictement <span class="math notranslate nohighlight">\(\Longleftrightarrow\forall Z\in\R^{N},\; Z\neq0\Longrightarrow
+Z^{\prime}\dfrac{\partial ^{2}h\left( W_{0}\right)  }{\partial W^{2}}Z&gt;0\)</span>.</p>
+<p>Une matrice symétrique définie strictement positive est inversible,
+et le minimum est atteint pour la valeur :</p>
+<div class="math notranslate nohighlight" id="equation-rn-hessien">
+\begin{eqnarray}
+W_{\min}= W_0 + \frac{1}{2}\left[  \dfrac{\partial^{2}h\left(  W_{0}\right) }
+        {\partial W^{2}}\right]  ^{-1}\left[  \frac{\partial h\left(  W_{0}\right)
+}{\partial W}\right] \nonumber
+\end{eqnarray}</div><p>Néanmoins, pour un réseau de neurones, le calcul de la dérivée seconde est coûteux,
+son inversion également. C’est pourquoi les dernières valeurs des coefficients
+et du gradient sont utilisées afin d’approcher cette dérivée seconde ou directement
+son inverse. Deux méthodes d’approximation sont présentées :</p>
+<ul class="simple">
+<li><p>L’algorithme <a class="reference external" href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">BFGS (Broyden-Fletcher-Goldfarb-Shano)</a>
+(<a class="reference internal" href="rn_biblio.html#broyden1967" id="id2"><span>[Broyden1967]</span></a>, <a class="reference internal" href="rn_biblio.html#fletcher1993" id="id3"><span>[Fletcher1993]</span></a>), voir aussi les versions <a class="reference external" href="https://en.wikipedia.org/wiki/Limited-memory_BFGS">L-BFGS</a>.</p></li>
+<li><p>L’algoritmhe <a class="reference external" href="https://en.wikipedia.org/wiki/Davidon%E2%80%93Fletcher%E2%80%93Powell_formula">DFP  (Davidon-Fletcher-Powell)</a>
+(<a class="reference internal" href="rn_biblio.html#davidon1959" id="id4"><span>[Davidon1959]</span></a>, <a class="reference internal" href="rn_biblio.html#fletcher1963" id="id5"><span>[Fletcher1963]</span></a>).</p></li>
+</ul>
+<p>La figure du <a class="reference internal" href="#figure-gradient-conjugue"><span class="std std-ref">gradient conjugué</span></a> est couramment employée
+pour illustrer l’intérêt des méthodes de gradient conjugué.
+Le problème consiste à trouver le minimum d’une fonction quadratique,
+par exemple, <span class="math notranslate nohighlight">\(G\pa{x,y} = 3x^2 + y^2\)</span>. Tandis que le gradient est orthogonal
+aux lignes de niveaux de la fonction <span class="math notranslate nohighlight">\(G\)</span>, le gradient conjugué se dirige plus
+sûrement vers le minimum global.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Figure0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="figure-gradient-conjugue">Figure F1 : Gradient conjugué</p>
+<img alt="Wikipedia" src="../../_images/Conjugate_gradient_illustration.png" />
+<p>Gradient et gradient conjugué sur une ligne de niveau de la fonction <span class="math notranslate nohighlight">\(G\pa{x,y} = 3x^2 + y^2\)</span>,
+le gradient est orthogonal aux lignes de niveaux de la fonction <span class="math notranslate nohighlight">\(G\)</span>,
+mais cette direction est rarement la bonne à moins que le point
+<span class="math notranslate nohighlight">\(\pa{x,y}\)</span> se situe sur un des axes des ellipses,
+le gradient conjugué agrège les derniers déplacements et propose une direction
+de recherche plus plausible pour le minimum de la fonction.
+Voir <a class="reference external" href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">Conjugate Gradient Method</a>.</p>
+</div>
+<p>Ces méthodes proposent une estimation de la dérivée seconde
+(ou de son inverse) utilisée en <a class="reference internal" href="#equation-rn-hessien">(2)</a>.
+Dans les méthodes du premier ordre, une itération permet de calculer les
+poids <span class="math notranslate nohighlight">\(W_{t+1}\)</span> à partir des poids <span class="math notranslate nohighlight">\(W_t\)</span> et du
+gradient <span class="math notranslate nohighlight">\(G_t\)</span>. Si ce gradient est petit, on peut supposer
+que <span class="math notranslate nohighlight">\(G_{t+1}\)</span> est presque égal au produit de la dérivée seconde par
+<span class="math notranslate nohighlight">\(G_t\)</span>. Cette relation est mise à profit pour construire une estimation
+de la dérivée seconde. Cette matrice notée <span class="math notranslate nohighlight">\(B_t\)</span> dans
+l’algorithme <a class="reference internal" href="#rn-algo-bfgs"><span class="std std-ref">BFGS</span></a>
+est d’abord supposée égale à l’identité puis actualisée à chaque
+itération en tenant de l’information apportée par chaque déplacement.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="rn-algo-bfgs">Algorithme A2 : BFGS</p>
+<p>Le nombre de paramètres de la fonction <span class="math notranslate nohighlight">\(f\)</span> est <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<p><em>Initialisation</em></p>
+<p>Le premier jeu de coefficients <span class="math notranslate nohighlight">\(W_0\)</span> du réseau de neurones est
+choisi aléatoirement.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+t   &amp;\longleftarrow&amp;    0 \\
+E_0 &amp;\longleftarrow&amp;    \sum_{i=1}^{N} e\pa {Y_{i} - f \pa{W_0,X_{i}}} \\
+B_0 &amp;\longleftarrow&amp;    I_M \\
+i   &amp;\longleftarrow&amp;    0
+\end{array}\end{split}\]</div>
+<p><em>Calcul du gradient</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+g_t &amp;\longleftarrow&amp; \partialfrac{E_t}{W} \pa {W_t}= \sum_{i=1}^{N} e'\pa {Y_{i} - f \pa{W_t,X_{i}}} \\
+c_t &amp;\longleftarrow&amp; B_t g_t
+\end{array}\end{split}\]</div>
+<p><em>Mise à jour des coefficients</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+\epsilon^*  &amp;\longleftarrow&amp;    \underset{\epsilon}{\arg \inf} \; \sum_{i=1}^{N}
+         e\pa {Y_i - f \pa{W_t - \epsilon c_t,X_i}}  \\
+W_{t+1}     &amp;\longleftarrow&amp;    W_t - \epsilon^* c_t \\
+E_{t+1}     &amp;\longleftarrow&amp;    \sum_{i=1}^{N} e\pa {Y_i - f \pa{W_{t+1},X_i}} \\
+t           &amp;\longleftarrow&amp;    t+1
+\end{array}\end{split}\]</div>
+<p><em>Mise à jour de la marice :math:`B_t`</em></p>
+<div class="line-block">
+<div class="line">si <span class="math notranslate nohighlight">\(t - i \supegal M\)</span> ou <span class="math notranslate nohighlight">\(g'_{t-1} B_{t-1} g_{t-1} \infegal 0\)</span> ou <span class="math notranslate nohighlight">\(g'_{t-1} B_{t-1} \pa {g_t - g_{t-1}} \infegal 0\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(B_{t} \longleftarrow I_M\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(i \longleftarrow  t\)</span></div>
+</div>
+<div class="line">sinon</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(s_t \longleftarrow    W_t - W_{t-1}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(d_t    \longleftarrow    g_t - g_{t-1}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(B_{t}  \longleftarrow    B_{t-1} +   \pa{1 + \dfrac{ d'_t B_{t-1} d_t}{d'_t s_t}}\dfrac{s_t s'_t} {s'_t d_t}- \dfrac{s_t d'_t B_{t-1} +  B_{t-1} d_t s'_t } { d'_t s_t }\)</span></div>
+</div>
+</div>
+<p><em>Terminaison</em></p>
+<p>Si <span class="math notranslate nohighlight">\(\frac{E_t}{E_{t-1}} \approx 1\)</span> alors l’apprentissage a convergé sinon retour au calcul
+du gradient.</p>
+</div>
+<p>Lorsque la matrice <span class="math notranslate nohighlight">\(B_t\)</span> est égale à l’identité,
+le gradient conjugué est égal au gradient. Au fur et
+à mesure des itérations, cette matrice toujours
+symétrique évolue en améliorant la convergence de l’optimisation.
+Néanmoins, la matrice <span class="math notranslate nohighlight">\(B_t\)</span> doit être « nettoyée »
+(égale à l’identité) fréquemment afin d’éviter qu’elle
+n’agrège un passé trop lointain. Elle est aussi nettoyée lorsque
+le gradient conjugué semble trop s’éloigner du véritable gradient
+et devient plus proche d’une direction perpendiculaire.</p>
+<p>La convergence de cet algorithme dans le cas des réseaux de
+neurones est plus rapide qu’un algorithme du premier ordre,
+une preuve en est donnée dans <a class="reference internal" href="rn_biblio.html#driancourt1996" id="id6"><span>[Driancourt1996]</span></a>.</p>
+<p>En pratique, la recherche de <span class="math notranslate nohighlight">\(\epsilon^*\)</span> est réduite car
+le calcul de l’erreur est souvent coûteux, il peut être effectué
+sur un grand nombre d’exemples. C’est pourquoi on remplace
+l’étape de mise à jour de l’algorithme <a class="reference internal" href="#rn-algo-bfgs"><span class="std std-ref">BFGS</span></a>
+par celle-ci :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme2">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="rn-algo-bfgs-prime">Algorithme A3 : BFGS”</p>
+<p>Le nombre de paramètre de la fonction <span class="math notranslate nohighlight">\(f\)</span> est <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<p><em>Initialisation, calcul du gradient</em></p>
+<p>Voir <a class="reference internal" href="#rn-algo-bfgs"><span class="std std-ref">BFGS</span></a>.</p>
+<p><em>Recherche de :math:`epsilon^*`</em></p>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\epsilon^*  \longleftarrow    \epsilon_0\)</span></div>
+<div class="line">while <span class="math notranslate nohighlight">\(E_{t+1} \supegal E_t\)</span> et <span class="math notranslate nohighlight">\(\epsilon^* \gg 0\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\epsilon^*  \longleftarrow   \frac{\epsilon^*}{2}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(W_{t+1}     \longleftarrow    W_t - \epsilon^* c_t\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(E_{t+1}     \longleftarrow    \sum_{i=1}^{N} e\pa {Y_i - f \pa{W_{t+1},X_i}}\)</span></div>
+<div class="line"><br /></div>
+</div>
+<div class="line">if <span class="math notranslate nohighlight">\(\epsilon_* \approx 0\)</span> et <span class="math notranslate nohighlight">\(B_t \neq I_M\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(B_{t}       \longleftarrow   I_M\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(i           \longleftarrow    t\)</span></div>
+<div class="line">Retour au calcul du gradient.</div>
+</div>
+</div>
+<p><em>Mise à jour des coefficients</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+W_{t+1}     &amp;\longleftarrow&amp;    W_t - \epsilon^* c_t \\
+E_{t+1}     &amp;\longleftarrow&amp;    \sum_{i=1}^{N} e\pa {Y_i - f \pa{W_{t+1},X_i}} \\
+t           &amp;\longleftarrow&amp;    t+1
+\end{array}\end{split}\]</div>
+<p><em>Mise à jour de la matrice :math:`B_t`, temrinaison</em></p>
+<p>Voir <a class="reference internal" href="#rn-algo-bfgs"><span class="std std-ref">BFGS</span></a>.</p>
+</div>
+<p>L’algorithme DFP est aussi un algorithme de gradient conjugué
+qui propose une approximation différente de l’inverse de la dérivée seconde.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme3">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="rn-algo-dfp">Algorithme A4 : DFP</p>
+<p>Le nombre de paramètre de la fonction <span class="math notranslate nohighlight">\(f\)</span> est <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<p><em>Initialisation</em></p>
+<p>Le premier jeu de coefficients <span class="math notranslate nohighlight">\(W_0\)</span>
+du réseau de neurones est choisi aléatoirement.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+t   &amp;\longleftarrow&amp;    0 \\
+E_0 &amp;\longleftarrow&amp;    \sum_{i=1}^{N} e\pa {Y_{i} - f \pa{W_0,X_{i}}} \\
+B_0 &amp;\longleftarrow&amp;    I_M \\
+i   &amp;\longleftarrow&amp;    0
+\end{array}\end{split}\]</div>
+<p><em>Calcul du gradient</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+g_t &amp;\longleftarrow&amp; \partialfrac{E_t}{W} \pa {W_t}= \sum_{i=1}^{N} e'\pa {Y_{i} - f \pa{W_t,X_{i}}} \\
+c_t &amp;\longleftarrow&amp; B_t g_t
+\end{array}\end{split}\]</div>
+<p><em>Mise à jour des coefficients</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+\epsilon^*  &amp;\longleftarrow&amp;    \underset{\epsilon}{\arg \inf} \;
+                             \sum_{i=1}^{N} e\pa {Y_i - f \pa{W_t - \epsilon c_t,X_i}}  \\
+W_{t+1}     &amp;\longleftarrow&amp;    W_t - \epsilon^* c_t \\
+E_{t+1}     &amp;\longleftarrow&amp;    \sum_{i=1}^{N} e\pa {Y_i - f \pa{W_{t+1},X_i}} \\
+t           &amp;\longleftarrow&amp;    t+1
+\end{array}\end{split}\]</div>
+<p><em>Mise à jour de la matrice :math:`B_t`</em></p>
+<div class="line-block">
+<div class="line">si <span class="math notranslate nohighlight">\(t - i \supegal M\)</span> ou <span class="math notranslate nohighlight">\(g'_{t-1} B_{t-1} g_{t-1} \infegal 0\)</span> ou <span class="math notranslate nohighlight">\(g'_{t-1} B_{t-1} \pa {g_t - g_{t-1}} \infegal 0\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(B_{t}       \longleftarrow    I_M\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(i           \longleftarrow    t\)</span></div>
+</div>
+<div class="line">sinon</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(d_t         \longleftarrow    W_t - W_{t-1}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(s_t         \longleftarrow    g_t - g_{t-1}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(B_{t}       \longleftarrow\)</span>    B_{t-1} +     dfrac{d_t d’_t} {d’_t s_t} - dfrac{B_{t-1} s_t s’_t B_{t-1} } { s’_t B_{t-1} s_t }`</div>
+</div>
+</div>
+<p><em>Terminaison</em></p>
+<p>Si <span class="math notranslate nohighlight">\(\frac{E_t}{E_{t-1}} \approx 1\)</span> alors l’apprentissage a convergé sinon retour à
+du calcul du gradient.</p>
+</div>
+<p>Seule l’étape de mise à jour <span class="math notranslate nohighlight">\(B_t\)</span> diffère dans les
+algorithmes <a class="reference internal" href="#rn-algo-bfgs"><span class="std std-ref">BFGS</span></a> et <a class="reference internal" href="#rn-algo-dfp"><span class="std std-ref">DFP</span></a>.
+Comme l’algorithme <a class="reference internal" href="#rn-algo-bfgs"><span class="std std-ref">BFGS</span></a>,
+on peut construire une version <a class="reference internal" href="#rn-algo-dfp"><span class="std std-ref">DFP</span></a>”
+inspirée de l’algorithme <a class="reference internal" href="#rn-algo-bfgs-prime"><span class="std std-ref">BFGS”</span></a>.</p>
+</section>
+</section>
+<section id="apprentissage-avec-gradient-stochastique">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Apprentissage avec gradient stochastique</a><a class="headerlink" href="#apprentissage-avec-gradient-stochastique" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Compte tenu des courbes d’erreurs très <a class="reference internal" href="#figure-courbe-accident"><span class="std std-ref">accidentées</span></a>
+dessinées par les réseaux de neurones, il existe une multitude de minima
+locaux. De ce fait, l’apprentissage global converge rarement vers le
+minimum global de la fonction d’erreur lorsqu’on applique les algorithmes
+basés sur le gradient global. L’apprentissage avec gradient stochastique
+est une solution permettant de mieux explorer ces courbes d’erreurs.
+De plus, les méthodes de gradient conjugué nécessite le stockage d’une
+matrice trop grande parfois pour des fonctions ayant quelques milliers
+de paramètres. C’est pourquoi l’apprentissage avec gradient stochastique
+est souvent préféré à l’apprentissage global pour de grands réseaux de
+neurones alors que les méthodes du second ordre trop coûteuses en
+calcul sont cantonnées à de petits réseaux. En contrepartie, la
+convergence est plus lente. La démonstration de cette convergence nécessite
+l’utilisation de quasi-martingales et est une convergence presque sûre <a class="reference internal" href="rn_biblio.html#bottou1991" id="id7"><span>[Bottou1991]</span></a>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Figure1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="figure-courbe-accident">Figure F2 : Exemple de minimal locaux</p>
+<img alt="../../_images/errminloc.png" src="../../_images/errminloc.png" />
+</div>
+<div class="admonition-mathdef admonition" id="indexmathe-Algprithme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="rn-algorithme-apprentissage-2">Algprithme A1 : apprentissage stochastique</p>
+<p><em>Initialisation</em></p>
+<p>Le premier jeu de coefficients <span class="math notranslate nohighlight">\(W_0\)</span>
+du réseau de neurones est choisi aléatoirement.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lcl}
+t       &amp;\longleftarrow&amp;    0 \\
+E_0 &amp;\longleftarrow&amp;    \sum_{i=1}^{N} e\pa {Y_{i} - f \pa{W_0,X_{i}}}
+\end{array}\end{split}\]</div>
+<p><em>Récurrence</em></p>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(W_{t,0} \longleftarrow    W_0\)</span></div>
+<div class="line">for <span class="math notranslate nohighlight">\(t'\)</span> in <span class="math notranslate nohighlight">\(0..N-1\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(i \longleftarrow\)</span> nombre aléatoire dans <span class="math notranslate nohighlight">\(\ensemble{1}{N}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(g \longleftarrow \partialfrac{E}{W} \pa {W_{t,t'}}=  e'\pa {Y_{i} - f\pa{W_{t,t'},X_{i}}}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(W_{t,t'+1} \longleftarrow    W_{t,t'} - \epsilon_t g\)</span></div>
+</div>
+<div class="line"><span class="math notranslate nohighlight">\(W_{t+1} \longleftarrow W_{t,N}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(E_{t+1} \longleftarrow \sum_{i=1}^{N} e\pa {Y_{i} - f \pa{W_{t+1},X_{i}}}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(t \longleftarrow t+1\)</span></div>
+</div>
+<p><em>Terminaison</em></p>
+<p>Si <span class="math notranslate nohighlight">\(\frac{E_t}{E_{t-1}} \approx 1\)</span>
+alors l’apprentissage a convergé sinon retour au
+calcul du gradient.</p>
+</div>
+<p>En pratique, il est utile de converser le meilleur jeu de
+coefficients : <span class="math notranslate nohighlight">\(W^* = \underset{u \supegal 0}{\arg \min} \; E_{u}\)</span>
+car la suite <span class="math notranslate nohighlight">\(\pa {E_u}_{u \supegal 0}\)</span> n’est pas une suite décroissante.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="rn_5_newton.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Descente de gradient</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rn_7_clas2.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Classification</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apprentissage-avec-gradient-global">Apprentissage avec gradient global</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#methodes-du-premier-ordre">Méthodes du premier ordre</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#methodes-du-second-ordre">Méthodes du second ordre</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apprentissage-avec-gradient-stochastique">Apprentissage avec gradient stochastique</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/c_ml/rn/rn_6_apprentissage.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

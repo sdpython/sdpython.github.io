@@ -1,0 +1,933 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Traitement du langage naturel &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/text';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Source de données" href="data.html" />
+    <link rel="prev" title="Optimisation" href="optim.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="ml.html">Machine Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optim.html">Optimisation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Traitement du langage naturel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Source de données</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graphes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="modules/index.html">Modules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/poulet.html">mlstatpy.garden.poulet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/graph_distance.html">mlstatpy.graph.graph_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/kppv.html">mlstatpy.ml.kppv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/kppv_laesa.html">mlstatpy.ml.kppv_laesa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/logreg.html">mlstatpy.ml.logreg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/neural_tree.html">mlstatpy.ml.neural_tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/roc.html">mlstatpy.ml.roc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/completion.html">mlstatpy.nlp.completion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/completion_simple.html">mlstatpy.nlp.completion_simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/sgd.html">mlstatpy.optim.sgd</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Traitement du langage naturel</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="traitement-du-langage-naturel">
+<h1>Traitement du langage naturel<a class="headerlink" href="#traitement-du-langage-naturel" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#completion" id="id1">Complétion</a></p></li>
+<li><p><a class="reference internal" href="#normalisation" id="id2">Normalisation</a></p></li>
+</ul>
+</nav>
+<section id="completion">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Complétion</a><a class="headerlink" href="#completion" title="Lien permanent vers cette rubrique">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.nlp.completion_simple.</span></span><span class="sig-name descname"><span class="pre">CompletionElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Definition of an element in a completion system,
+it contains the following members:</p>
+<ul class="simple">
+<li><p><em>value</em>: the completion</p></li>
+<li><p><em>weight</em>: a weight or a position, we assume a completion with
+a lower weight is shown at a lower position</p></li>
+<li><p><em>disp</em>: display string (no impact on the algorithm)</p></li>
+<li><p>mks0*: value of minimum keystroke</p></li>
+<li><p>mks0_*: length of the prefix to obtain <em>mks0</em></p></li>
+<li><p><em>mks1</em>: value of dynamic minimum keystroke</p></li>
+<li><p><em>mks1_</em>: length of the prefix to obtain <em>mks1</em></p></li>
+<li><p><em>mks2</em>: value of modified dynamic minimum keystroke</p></li>
+<li><p><em>mks2_</em>: length of the prefix to obtain <em>mks2</em></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – value (a character)</p></li>
+<li><p><strong>weight</strong> – ordering (the lower, the first)</p></li>
+<li><p><strong>disp</strong> – original string, use this to identify the node</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">empty_prefix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L52"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionElement.empty_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>return an instance filled with an empty prefix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">init_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">completions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(disponible dans Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L141"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionElement.init_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initializes the metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> – position in the completion system when prefix is null,
+<em>position starting from 0</em></p></li>
+<li><p><strong>completions</strong> – displayed completions, if not None, the method will
+store them in member <em>_completions</em></p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean which indicates there was an update</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">str_all_completions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_precompute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L104"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionElement.str_all_completions"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>builds a string with all completions for all
+prefixes along the paths, this is only available
+if parameter <em>completions</em> was used when calling
+method :meth`update_metrics`.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxn</strong> – maximum number of completions to show</p></li>
+<li><p><strong>use_precompute</strong> – use intermediate results built
+by &#64;see me precompute_stat</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">str_mks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L92"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionElement.str_mks"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>return a string with metric information</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">str_mks0</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L83"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionElement.str_mks0"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>return a string with metric information</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">update_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">improved</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.11)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">completions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(disponible dans Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L195"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionElement.update_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Updates the metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> – prefix</p></li>
+<li><p><strong>position</strong> – position in the completion system
+when prefix has length k, <em>position starting from 0</em></p></li>
+<li><p><strong>improved</strong> – if one metrics is &lt; to the completion length, it means
+it can be used to improve others queries</p></li>
+<li><p><strong>delta</strong> – delta in the dynamic modified mks</p></li>
+<li><p><strong>completions</strong> – displayed completions, if not None, the method will
+store them in member <em>_completions</em></p></li>
+<li><p><strong>iteration</strong> – for debugging purpose, indicates
+when this improvment was detected</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean which indicates there was an update</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlstatpy.nlp.completion_simple.</span></span><span class="sig-name descname"><span class="pre">CompletionSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(disponible dans Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L351"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Defines a completion system.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">compare_with_trie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L433"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.compare_with_trie"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compares the results with the other implementation.</p>
+<p>&#64;param      delta       parameter <em>delta</em> in the dynamic modified mks
+&#64;return                 None or differences</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">compute_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ffilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.11)"><span class="pre">int</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L481"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.compute_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Computes the metric for the completion itself.</p>
+<p>&#64;param      ffilter     filter function
+&#64;param      delta       parameter <em>delta</em> in the dynamic modified mks
+&#64;param      details     log more details about displayed completions
+&#64;return                 number of iterations</p>
+<p>The function ends by sorting the set of completion by alphabetical order.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">enumerate_test_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(disponible dans Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(disponible dans Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(disponible dans Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(disponible dans Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L549"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.enumerate_test_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Evaluates the completion set on a set of queries,
+the function returns a list of &#64;see cl CompletionElement
+with the three metrics <span class="math notranslate nohighlight">\(M\)</span>, <span class="math notranslate nohighlight">\(M'\)</span>, <span class="math notranslate nohighlight">\(M&quot;\)</span>
+for these particular queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qset</strong> – list of tuple(str, float) = (query, weight)</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of tuple of &#64;see cl CompletionElement,
+the first one is the query, the second one is the None or
+the matching completion</p>
+</dd>
+</dl>
+<p>The method &#64;see me compute_metric needs to be called first.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_sorted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L372"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Not very efficient, finds an item in a the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – string to find</p></li>
+<li><p><strong>is_sorted</strong> – the function will assume the elements are sorted by
+alphabetical order</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>element or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(disponible dans Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(disponible dans Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L390"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Iterates on <code class="docutils literal notranslate"><span class="pre">(e.value,</span> <span class="pre">e)</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">sort_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L417"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.sort_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>sort the elements by value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">sort_weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L425"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.sort_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Sorts the elements by value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">test_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(disponible dans Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(disponible dans Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(disponible dans Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L611"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.test_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Evaluates the completion set on a set of queries,
+the function returns a dictionary with the aggregated metrics and
+some statistics about them.</p>
+<p>&#64;param      qset        list of tuple(str, float) = (query, weight)
+&#64;return                 list of &#64;see cl CompletionElement</p>
+<p>The method &#64;see me compute_metric needs to be called first.
+It then calls &#64;see me enumerate_metric.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(disponible dans Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="modules/completion_simple.html#mlstatpy.nlp.completion_simple.CompletionElement" title="mlstatpy.nlp.completion_simple.CompletionElement"><span class="pre">CompletionElement</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L475"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Returns a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">tuples</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(disponible dans Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(disponible dans Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/completion_simple.py#L397"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/completion_simple.html#CompletionSystem.tuples"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Iterates on <code class="docutils literal notranslate"><span class="pre">(e.weight,</span> <span class="pre">e.value)</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="normalisation">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Normalisation</a><a class="headerlink" href="#normalisation" title="Lien permanent vers cette rubrique">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mlstatpy.data.wikipedia.normalize_wiki_text">
+<span class="sig-prename descclassname"><span class="pre">mlstatpy.data.wikipedia.</span></span><span class="sig-name descname"><span class="pre">normalize_wiki_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/data/wikipedia.py#L99"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/data/wikipedia.html#normalize_wiki_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.data.wikipedia.normalize_wiki_text" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>Normalizes a text such as a wikipedia title.</p>
+<p>:param text        text to normalize
+&#64;return                 normalized text</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mlstatpy.nlp.normalize.remove_diacritics">
+<span class="sig-prename descclassname"><span class="pre">mlstatpy.nlp.normalize.</span></span><span class="sig-name descname"><span class="pre">remove_diacritics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/39e49ea/mlstatpy/nlp/normalize.py#L6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../_modules/mlstatpy/nlp/normalize.html#remove_diacritics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlstatpy.nlp.normalize.remove_diacritics" title="Lien permanent vers cette définition">#</a></dt>
+<dd><p>remove diacritics</p>
+<p>&#64;param      input_str       string to clean
+&#64;return                     cleaned string</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">enguérand</span> <span class="o">--&gt;</span> <span class="n">enguerand</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">Nouveau dans la version 1.0.</span></p>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="optim.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Optimisation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="data.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Source de données</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#completion">Complétion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalisation">Normalisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.data.wikipedia.normalize_wiki_text"><code class="docutils literal notranslate"><span class="pre">normalize_wiki_text()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlstatpy.nlp.normalize.remove_diacritics"><code class="docutils literal notranslate"><span class="pre">remove_diacritics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/text.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

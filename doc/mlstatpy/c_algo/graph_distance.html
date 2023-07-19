@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Distance between two graphs &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_algo/graph_distance';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Détection de segments" href="gest.html" />
+    <link rel="prev" title="Distance d’édition" href="edit_distance.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="edit_distance.html">Distance d’édition</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Distance between two graphs</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gest.html">Détection de segments</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/image/segment_detection.html">Détection de segments dans une image</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Algorithmes</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Distance between two graphs</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="distance-between-two-graphs">
+<span id="l-graph-distance"></span><h1>Distance between two graphs<a class="headerlink" href="#distance-between-two-graphs" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>This page gathers some thoughts about comparing two graphs
+without any cycle. This problem is known as <em>graph similarity</em>
+or <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_matching">graph matching</a>.
+One of the solution is the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Graph_edit_distance">Graph Edit Distance</a>,
+a better solution is described in <a class="reference internal" href="#blondel2004" id="id1"><span>[Blondel2004]</span></a>. You can also read
+<a class="reference external" href="http://www.cs.uoi.gr/~pvassil/downloads/GraphDistance/LauraZager.pdf">Graph similarity</a>.</p>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#definitions" id="id2">Definitions</a></p></li>
+<li><p><a class="reference internal" href="#problem" id="id3">Problem</a></p></li>
+<li><p><a class="reference internal" href="#first-approach" id="id4">First approach</a></p>
+<ul>
+<li><p><a class="reference internal" href="#step-1-edit-distance" id="id5">Step 1: edit distance</a></p></li>
+<li><p><a class="reference internal" href="#step-2-kruskal-kind-bijection-on-paths" id="id6">Step 2: Kruskal kind (bijection on paths)</a></p></li>
+<li><p><a class="reference internal" href="#step-3-matching" id="id7">Step 3: Matching</a></p></li>
+<li><p><a class="reference internal" href="#step-4-kruskal-kind-the-return-bijection-on-edges-and-vertices" id="id8">Step 4: Kruskal kind, the return (bijection on edges and vertices)</a></p></li>
+<li><p><a class="reference internal" href="#step-5-merging-the-two-graphs" id="id9">Step 5: Merging the two graphs</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#distance-between-graphs" id="id10">Distance between graphs</a></p></li>
+<li><p><a class="reference internal" href="#second-approach-faster" id="id11">Second approach: faster</a></p></li>
+<li><p><a class="reference internal" href="#bibliography" id="id12">Bibliography</a></p></li>
+</ul>
+</nav>
+<section id="definitions">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Definitions</a><a class="headerlink" href="#definitions" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>The first approach is implemented in module
+<a class="reference internal" href="../api/modules/graph_distance.html#module-mlstatpy.graph.graph_distance" title="mlstatpy.graph.graph_distance"><code class="xref py py-mod docutils literal notranslate"><span class="pre">graph_distance</span></code></a>.
+Example of use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">graph1</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">),</span> \
+           <span class="p">(</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="s2">&quot;f&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;f&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;g&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">),</span>
+           <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;g&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;g&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">),</span>
+           <span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span><span class="s2">&quot;h&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;aa&quot;</span><span class="p">,</span><span class="s2">&quot;h&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;aa&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">),</span> <span class="p">]</span>
+<span class="n">graph2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">graph1</span><span class="p">)</span> <span class="o">+</span> \
+         <span class="p">[</span> <span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">),</span>
+           <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">),</span>
+           <span class="p">]</span>
+
+<span class="n">graph1</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph1</span><span class="p">)</span>
+<span class="n">graph2</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph2</span><span class="p">)</span>
+
+<span class="n">distance</span><span class="p">,</span> <span class="n">graph</span> <span class="o">=</span> <span class="n">graph1</span><span class="o">.</span><span class="n">distance_matching_graphs_paths</span><span class="p">(</span><span class="n">graph2</span><span class="p">,</span> <span class="n">use_min</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>graph</em> is the merged graph mentioned below.</p>
+</section>
+<section id="problem">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Problem</a><a class="headerlink" href="#problem" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>This <em>graph distance</em> aims at computing a distance between graphs but
+also to align two graphs and to merge them into a single one.
+For example, let’s consider the following graphs:</p>
+<a class="reference internal image-reference" href="../_images/graphmerge1.png"><img alt="../_images/graphmerge1.png" src="../_images/graphmerge1.png" style="height: 400px;" /></a>
+<p>We would like to merge them and to know which vertices were merged,
+which ones were added and deleted.
+The following ideas and algorithm are only applicable on graphs
+without cycles. To simplify, we assume there are only one root and one leave.
+If there are mulitple, we then create a single root we connect to all
+the existing ones. We do the same for the unique leave we create if there are multiple.
+It will have all the existing ones as predecessors.
+We also assume each vertex and each edge holds a label used during
+the matching. It is better to match vertices or edges holding the same label.
+A weight can be introduced to give more important to some elements (vertex, edge).</p>
+</section>
+<section id="first-approach">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">First approach</a><a class="headerlink" href="#first-approach" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="step-1-edit-distance">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Step 1: edit distance</a><a class="headerlink" href="#step-1-edit-distance" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>The main idea consists in using <a class="reference external" href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenstein’s edit distance</a>.
+This algorithm applies on sequences but not on graphs.
+But because both graphs do not contain any cycle, we can extract all
+paths from them. Every path starts with the same vertex - the only root -
+and ends with the same one - the only leave -.
+We also consider each edge or vertex as an element of the sequence.
+Before describing the edit distance, let’s denote <span class="math notranslate nohighlight">\(p_1\)</span> as a path
+from the first graph, <span class="math notranslate nohighlight">\(p_2\)</span> as a path from the second one.
+<span class="math notranslate nohighlight">\(p_k(i)\)</span> is the element <em>i</em> of this sequence. Following Levenstein description,
+we denote <em>d(i,j)</em> as the distance between the two subsequences
+<span class="math notranslate nohighlight">\(p_1(1..i), p_2(1..j)\)</span>. Based on that, we use an edit distance defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}d(i,j) = \min \left \{ \begin{array}{l}
+                            d( i-1,j) + insertion(p_1(i)) \\
+                            d( i,j-1) + insertion(p_2(j)) \\
+                            d( i-1,j-1) + comparison(p_1(i),p_2(j))
+                            \end{array}
+                            \right .\end{split}\]</div>
+<p>First of all, we are not only interested in the distance but also
+in the alignment which would imply to keep which element was
+chosen as a minimum for each <em>d(i,j)</em>. If we denote <span class="math notranslate nohighlight">\(n_k\)</span>
+the length of path <em>k</em>, then <span class="math notranslate nohighlight">\(d(n_1,n_2)\)</span> is the distance we are looking for.</p>
+<p>Second, if two paths do not have the same length,
+it implies some elements could be compared between each others even
+if one is an edge and the other one is a vertex.
+This case is unavoidable if two paths have different lengths.</p>
+<p>Third, the weight we use for the edit distance will be involved
+in a kind of tradeof: do we prefer to boost the structure or
+the label when we merge the graphs. Those weights should depend on the task,
+whether or not it is better to align vertices with the same label
+or to keep the structure. Here are the chosen weights:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>operation</p></th>
+<th class="head"><p>weight</p></th>
+<th class="head"><p>condition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>insertion(c)</em></p></td>
+<td></td>
+<td><p><em>w(c)</em>, weight held by the edge or the vertex</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>comparison(a,b)</em></p></td>
+<td><p>0</p></td>
+<td><p>if vertices <em>a</em> and <em>b</em> share the same label</p></td>
+</tr>
+<tr class="row-even"><td><p><em>comparison(a,b)</em></p></td>
+<td><p>0</p></td>
+<td><p>if edges <em>a</em> and <em>b</em> share the same label and if vertices at both ends share the same label</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>comparison(a,b)</em></p></td>
+<td><p><span class="math notranslate nohighlight">\(w(a)+w(b)\)</span></p></td>
+<td><p>if edges <em>a</em> and <em>b</em> share the same label and if vertices at both ends do not share the same label</p></td>
+</tr>
+<tr class="row-even"><td><p><em>comparison(a,b)</em></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{w(a)+w(b)}{2}\)</span></p></td>
+<td><p>if <em>a</em> and <em>b</em> do not share the same kind</p></td>
+</tr>
+<tr class="row-odd"><td><p><em>comparison(a,b)</em></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{3(w(a)+w(b))}{2}\)</span></p></td>
+<td><p>if <em>a</em> and <em>b</em> share the same kind but not the label</p></td>
+</tr>
+</tbody>
+</table>
+<p>Kind means in this context edge or vertex. In that case, we think that sharing
+the same kind but not the same label is the worst case scenario. Those weights
+avoid having multiples time the same distance between two random paths which will
+be important during the next step. In fact, because the two graphs do not contain cycles,
+they have a finite number of paths. We will need to compute all distances
+between all possible pairs. The more distinct values we have for a distance between two paths, the better it is.</p>
+</section>
+<section id="step-2-kruskal-kind-bijection-on-paths">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Step 2: Kruskal kind (bijection on paths)</a><a class="headerlink" href="#step-2-kruskal-kind-bijection-on-paths" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Among all possible distances we compute between two paths,
+some of them might be irrelevant. If for some reasons,
+there is an edge which connects the root to the leave, computing
+the edit distance between this short path and any other one seems weird.
+That’s why we need to consider a kind of paths association.
+We need to associate a path from a graph to another from the other graph and
+the association needs to be a bijection assuming two close paths will have a low distance.</p>
+<p>After the first step, we ended up with a matrix containing all possible distances.
+We convert this matrix into a graph where each path is a vertex, each distance
+is a weighted edge. We use a kind of Kruskal algorithm to remove heavy
+weighted edges until we get a kind of bijection:</p>
+<ul class="simple">
+<li><p>We sort all edges by weight (reverse order).</p></li>
+<li><p>We remove the first ones until we get an injection on both sides:
+a path from a graph must be associated to only one path.</p></li>
+</ul>
+<p>Basically, some paths from the bigger graph will not be teamed up with another path.</p>
+</section>
+<section id="step-3-matching">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Step 3: Matching</a><a class="headerlink" href="#step-3-matching" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Now that we have a kind of bijection between paths, it also means we have a series
+of alignments between paths: one from the first graph, one from the second
+graph and an alignment between them computed during the step.
+We build two matrices, one for the edges <span class="math notranslate nohighlight">\(M_e\)</span>, one for
+the vertices <span class="math notranslate nohighlight">\(M_v\)</span> defined as follows:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M_e(i,j)\)</span> contains the number of times edge <em>i</em> from graph 1
+is associated to edge <em>j</em> from graph 2 among all paths associated by the previous step.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_v(i,j)\)</span> contains the same for the vertices.</p></li>
+</ul>
+</section>
+<section id="step-4-kruskal-kind-the-return-bijection-on-edges-and-vertices">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Step 4: Kruskal kind, the return (bijection on edges and vertices)</a><a class="headerlink" href="#step-4-kruskal-kind-the-return-bijection-on-edges-and-vertices" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>We now have two matrices which contains pretty much the same information
+as we have in step 2: each element is the number of times an edge or a vertex
+was associated with an edge or a vertex of the other graph.
+We use the same algorithm until we get a kind of bijection between vertices or edges from both matrices.</p>
+</section>
+<section id="step-5-merging-the-two-graphs">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Step 5: Merging the two graphs</a><a class="headerlink" href="#step-5-merging-the-two-graphs" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Once we finalized the previous steps, we know which vertices and edges will be
+associated with vertices and edges from the other graph.
+What’s left is to add the left over to the picture which is shown by next Figure:</p>
+<a class="reference internal image-reference" href="../_images/graphmergeall.png"><img alt="../_images/graphmergeall.png" src="../_images/graphmergeall.png" style="height: 400px;" /></a>
+<p><em>Red and symbol - means deleted from graph~1 and not present in graph 2.
+Green and symbol + means not present in graph 1 and added in graph 2.
+The black pieces remains unchanged.</em></p>
+<p>The main drawback of this algorithm is its speed. It is very time consuming.
+We need to compute distances between all paths which is ok when graphs are small but very long
+when graphs are bigger. Many paths share the same beginning and we could certainly
+avoid wasting time computing edit distances between those paths.</p>
+</section>
+</section>
+<section id="distance-between-graphs">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Distance between graphs</a><a class="headerlink" href="#distance-between-graphs" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>We defined a distance between two sequences based on the sum of operations
+needed to switch from the first sequence to the second one,
+we can follow the same way here. The alignment we were able to build
+between two graphs shows insertions, deletions and comparisons of different
+edges of vertices. By giving a weight of each kind, we can sum them to
+build the distance we are looking for. We use the same weights we
+defined to compute the alignment between two paths from both graphs.
+Let’s defined an aligned graph <em>G = { (a,b) }</em>, <em>G</em> is the set of edges and
+vertices of the final graph, <em>a</em>, <em>b</em> are an edge of a vertex from the first
+graph for <em>a</em> and from the second graph for <em>b</em>. <em>a</em> or <em>b</em> can be null.
+We also defined <span class="math notranslate nohighlight">\(insertion(a) = comparison(\emptyset,a)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}d(G_1,G_2) = \sum_{ \begin{subarray}{c} a \in G_1\cup \emptyset \\ b \in G_2 \cup \emptyset \end{subarray} }
+comparison(a,b) \indicatrice{ (a,b) \in G }\end{split}\]</div>
+<p>It is obvioulsy symmetric. To proove it verifies
+<span class="math notranslate nohighlight">\(d(G_1,G_2) = 0 \Longleftrightarrow G_1 = G_2\)</span>,
+we could proove that every path from <span class="math notranslate nohighlight">\(G_1\)</span> will be associated to itself during the first step.
+It is not necessarily true because two different paths could share the same
+sequence of labels. Let’s consider the following example:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\xymatrix{
+begin \ar[r]\ar[dr] &amp; 1,a \ar[r]  &amp; 2,b \ar[r]\ar[dl]  &amp; end \\
+                    &amp; 3,a \ar[r]  &amp; 4,b \ar[ur]        &amp;
+}\end{split}\]</div>
+<p>This graph contains three paths:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lll}
+path 1 &amp; 1,2 &amp; ab\\
+path 2 &amp; 3,4 &amp; ab \\
+path 3 &amp; 1,2,3,4 &amp; abab
+\end{array}\end{split}\]</div>
+<p>The matrix distance between paths will give (<em>x&gt; 0</em>):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\pa{\begin{array}{ccc}
+0  &amp; \mathbf{0.} &amp; x  \\
+\mathbf{0.}  &amp; 0 &amp; x  \\
+x  &amp; x &amp; \mathbf{0.}
+ \end{array}}\end{split}\]</div>
+<p>The bolded values <span class="math notranslate nohighlight">\(\mathbf{0.}\)</span> represent one possible association between
+paths which could lead to the possible association between vertices:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\pa{\begin{array}{cccc}
+1           &amp; 0          &amp; 1           &amp; 0 \\
+0           &amp; 1          &amp; 0           &amp; 1 \\
+1           &amp; 0          &amp; 1           &amp; 0 \\
+0           &amp; 1          &amp; 0           &amp; 1
+\end{array}}\end{split}\]</div>
+<p>In that particular case, the algorithm will not return a null
+distance mostly because while aligning sequences, we do not pay too much attention
+to the local structure. One edge could be missing from the alignment.
+We could try to correct that by adding some cost when two vertices
+do not have the number of input or output edges instead of considering only the labels.</p>
+</section>
+<section id="second-approach-faster">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Second approach: faster</a><a class="headerlink" href="#second-approach-faster" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>No implemented yet.</p>
+</section>
+<section id="bibliography">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Bibliography</a><a class="headerlink" href="#bibliography" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="blondel2004" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Blondel2004</a><span class="fn-bracket">]</span></span>
+<p>A measure of similarity between graph vertices
+<em>Vincent Blondel, Anahi Gajardo, Maureen Heymans, Pierre Senellart, Paul Van Dooren</em>,
+<a class="reference external" href="https://arxiv.org/abs/cs/0407061">arxiv/0407061</a></p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="edit_distance.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Distance d’édition</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gest.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Détection de segments</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">Definitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem">Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-approach">First approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-edit-distance">Step 1: edit distance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-kruskal-kind-bijection-on-paths">Step 2: Kruskal kind (bijection on paths)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-matching">Step 3: Matching</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-kruskal-kind-the-return-bijection-on-edges-and-vertices">Step 4: Kruskal kind, the return (bijection on edges and vertices)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-merging-the-two-graphs">Step 5: Merging the two graphs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-between-graphs">Distance between graphs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-approach-faster">Second approach: faster</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliography">Bibliography</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_algo/graph_distance.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

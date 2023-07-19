@@ -1,0 +1,1577 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>k-means &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_clus/kmeans';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Mélange de lois normales" href="gauss_mixture.html" />
+    <link rel="prev" title="Clustering" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">k-means</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gauss_mixture.html">Mélange de lois normales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kohonen.html">Carte de Kohonen</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Clustering</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">k-means</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="k-means">
+<span id="l-k-means"></span><h1>k-means<a class="headerlink" href="#k-means" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#principe" id="id23">Principe</a></p>
+<ul>
+<li><p><a class="reference internal" href="#homogeneite-des-dimensions" id="id24">Homogénéité des dimensions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#ameliorations-de-l-initialisation" id="id25">Améliorations de l’initialisation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#l-kmeanspp" id="id26">K-means++</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id27">K-means||</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#estimation-de-probabilites" id="id28">Estimation de probabilités</a></p></li>
+<li><p><a class="reference internal" href="#selection-du-nombre-de-classes" id="id29">Sélection du nombre de classes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#critere-de-qualite" id="id30">Critère de qualité</a></p></li>
+<li><p><a class="reference internal" href="#maxima-de-la-fonction-densite" id="id31">Maxima de la fonction densité</a></p></li>
+<li><p><a class="reference internal" href="#decroissance-du-nombre-de-classes" id="id32">Décroissance du nombre de classes</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#extension-des-nuees-dynamiques" id="id33">Extension des nuées dynamiques</a></p>
+<ul>
+<li><p><a class="reference internal" href="#classes-elliptiques" id="id34">Classes elliptiques</a></p></li>
+<li><p><a class="reference internal" href="#rival-penalized-competitive-learning-rpcl" id="id35">Rival Penalized Competitive Learning (RPCL)</a></p></li>
+<li><p><a class="reference internal" href="#rpcl-based-local-pca" id="id36">RPCL-based local PCA</a></p></li>
+<li><p><a class="reference internal" href="#frequency-sensitive-competitive-learning-fscl" id="id37">Frequency Sensitive Competitive Learning (FSCL)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#k-means-norme-l1" id="id38">k-means norme L1</a></p></li>
+<li><p><a class="reference internal" href="#bibliographie" id="id39">Bibliographie</a></p></li>
+</ul>
+</nav>
+<p><em>Dénomination française : algorithme des centres mobiles.</em></p>
+<section id="principe">
+<span id="index-0"></span><h2><a class="toc-backref" href="#id23" role="doc-backlink">Principe</a><a class="headerlink" href="#principe" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Les centres mobiles ou nuées dynamiques sont un algorithme de classification
+<em>non supervisée</em>. A partir d’un ensemble de points, il détermine pour un
+nombre de classes fixé, une répartition des points qui minimise un
+critère appelé <em>inertie</em> ou variance <em>intra-classe</em>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="kmeans-def-algo">Algorithme A1 : centre mobile, k-means</p>
+<p>On considère un ensemble de points :</p>
+<div class="math notranslate nohighlight">
+\[\left(X_i\right)_{1\leqslant i\leqslant P}\in\left(\R^N\right)^P\]</div>
+<p>A chaque point est associée une classe :
+<span class="math notranslate nohighlight">\(\left(c_i\right)_{1\leqslant i\leqslant P}\in\left\{1,...,C\right\}^P\)</span>.
+On définit les barycentres des classes :
+<span class="math notranslate nohighlight">\(\left( G_i\right)_{1\leqslant i\leqslant C}\in\left(\R^N\right)^C\)</span>.</p>
+<p><em>Initialisation</em></p>
+<p>L’initialisation consiste à choisir pour chaque point une classe aléatoirement dans
+<span class="math notranslate nohighlight">\(\left\{1,...,C\right\}\)</span>. On pose <span class="math notranslate nohighlight">\(t = 0\)</span>.</p>
+<p id="hmm-cm-step-bary"><em>Calcul des barycentres</em></p>
+<div class="line-block">
+<div class="line">for k in <span class="math notranslate nohighlight">\(1..C\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(G_k^t \longleftarrow \sum_{i=1}^P X_i \, \mathbf{1}_{\left\{c_i^t=k\right\}} \sum_{i=1}^P \mathbf{1}_{\left\{c_i^t=k\right\}}\)</span></div>
+</div>
+</div>
+<p><em>Calcul de l’inertie</em></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lll}
+I^t &amp;\longleftarrow&amp; \sum_{i=1}^P \; d^2\left(X_i, G_{c_i^t}^t\right) \\
+t   &amp;\longleftarrow&amp; t+1
+\end{array}\end{split}\]</div>
+<div class="line-block">
+<div class="line">if <span class="math notranslate nohighlight">\(t &gt; 0\)</span> et <span class="math notranslate nohighlight">\(I_t \sim I_{t-1}\)</span></div>
+<div class="line-block">
+<div class="line">arrêt de l’algorithme</div>
+</div>
+</div>
+<p id="hmm-cm-step-attr"><em>Attribution des classes</em></p>
+<div class="line-block">
+<div class="line">for in <span class="math notranslate nohighlight">\(1..P\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(c_i^{t+1} \longleftarrow \underset{k}{\arg\min} \; d\left(  X_{i},G_{k}^{t}\right)\)</span></div>
+<div class="line">où <span class="math notranslate nohighlight">\(d\left(X_i,G_k^t\right)\)</span> est la distance entre <span class="math notranslate nohighlight">\(X_i\)</span> et <span class="math notranslate nohighlight">\(G_k^t\)</span></div>
+</div>
+</div>
+<p>Retour à l’étape du calcul des barycentres jusqu’à convergence de l’inertie <span class="math notranslate nohighlight">\(I^t\)</span>.</p>
+</div>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="theoreme-inertie-1">Théorème T1 : convergence des k-means</p>
+<p>Quelque soit l’initialisation choisie, la suite <span class="math notranslate nohighlight">\(\pa{I_t}_{t\supegal 0}\)</span>
+construite par l’algorithme des <a class="reference internal" href="#kmeans-def-algo"><span class="std std-ref">k-means</span></a>
+converge.</p>
+</div>
+<p>La démonstration du théorème nécessite le lemme suivant.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Lemme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="lemme-inertie-minimum">Lemme L1 : inertie minimum</p>
+<p>Soit <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_P} \in \pa{\R^N}^P\)</span>,
+<span class="math notranslate nohighlight">\(P\)</span> points de <span class="math notranslate nohighlight">\(\R^N\)</span>, le minimum de la quantité
+<span class="math notranslate nohighlight">\(Q\pa{Y \in \R^N}\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+Q\pa{Y} &amp;=&amp; \sum_{i=1}^P \; d^2\pa{X_i,Y}
+\end{eqnarray}</div><p>est atteint pour <span class="math notranslate nohighlight">\(Y=G=\dfrac{1}{P} \sum_{i=1}^{P} X_i\)</span>
+le barycentre des points <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_P}\)</span>.</p>
+</div>
+<p>Soit <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_P} \in \pa{\R^N}^P\)</span>,
+<span class="math notranslate nohighlight">\(P\)</span> points de <span class="math notranslate nohighlight">\(\R^N\)</span>.</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+                    \sum_{i=1}^{P} \overrightarrow{GX_{i}} = \overrightarrow{0}
+&amp;\Longrightarrow&amp;      \sum_{i=1}^{P} d^2\pa{X_i,Y} = \sum_{i=1}^{P} d^2\pa{X_i,G}+ P \, d^2\pa{G,Y} \\
+&amp;\Longrightarrow&amp;     \underset{Y\in\R^N}{\arg\min} \; \sum_{i=1}^{P} d^2\pa{X_i,Y} = \acc{G}
+\end{eqnarray*}</div><p>On peut maintenant démontrer le théorème.
+L’étape d’attribution des classes consiste à attribuer à chaque
+point le barycentre le plus proche. On définit <span class="math notranslate nohighlight">\(J_t\)</span> par :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+J^{t+1} &amp;=&amp; \sum_{i=1}^{P} \; d^2\pa{ X_i, G_{c_i^{t+1}}^t}
+\end{eqnarray}</div><p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+J^{t+1}    &amp;=&amp; \sum_{i, c_i^t \neq c_i^{t+1}} \; d^2\pa{ X_i, G_{c_i^{t+1}}^t} + J^{t+1} \sum_{i, c_i^t = c_i^{t+1}} \; d^2\pa{ X_i, G_{c_i^{t+1}}^t}  \\
+J^{t+1}    &amp;\infegal&amp;  \sum_{i, c_i^t \neq c_i^{t+1}} \; d^2\pa{ X_i, G_{c_i^{t}}^t} + \sum_{i, c_i^t = c_i^{t+1}} \; d^2\pa{ X_i, G_{c_i^{t}}^t} \\
+J^{t+1}    &amp;\infegal&amp;  I^t
+\end{eqnarray}</div><p>Le lemme précédent appliqué à chacune des classes <span class="math notranslate nohighlight">\(\ensemble{1}{C}\)</span>,
+permet d’affirmer que <span class="math notranslate nohighlight">\(I^{t+1} \infegal J^{t+1}\)</span>.
+Par conséquent, la suite <span class="math notranslate nohighlight">\(\pa{I_t}_{t\supegal 0}\)</span> est décroissante et minorée par
+0, elle est donc convergente.</p>
+<p id="index-1">L’algorithme des centres mobiles cherche à attribuer à chaque
+point de l’ensemble une classe parmi les <span class="math notranslate nohighlight">\(C\)</span> disponibles.
+La solution trouvée dépend de l’initialisation et n’est pas forcément
+celle qui minimise l’inertie intra-classe : l’inertie finale est
+un minimum local. Néanmoins, elle assure que la partition est formée
+de classes convexes : soit <span class="math notranslate nohighlight">\(c_1\)</span> et <span class="math notranslate nohighlight">\(c_2\)</span> deux classes différentes,
+on note <span class="math notranslate nohighlight">\(C_1\)</span> et <span class="math notranslate nohighlight">\(C_2\)</span> les enveloppes convexes des points qui
+constituent ces deux classes, alors
+<span class="math notranslate nohighlight">\(\overset{o}{C_1} \cap \overset{o}{C_2} = \emptyset\)</span>.
+La figure suivante présente un exemple d’utilisation de l’algorithme
+des centres mobiles. Des points sont générés aléatoirement
+dans le plan et répartis en quatre groupes.</p>
+<img alt="../_images/cm.png" src="../_images/cm.png" />
+<p>C’est une application des centres mobiles avec une classification en quatre classes
+d’un ensemble aléatoire de points plus dense sur la partie droite du graphe. Les quatre classes
+ainsi formées sont convexes.</p>
+<section id="homogeneite-des-dimensions">
+<span id="hmm-classification-obs-deux"></span><h3><a class="toc-backref" href="#id24" role="doc-backlink">Homogénéité des dimensions</a><a class="headerlink" href="#homogeneite-des-dimensions" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Les coordonnées des points
+<span class="math notranslate nohighlight">\(\left(X_i\right) \in \R^N\)</span> sont généralement non homogènes :
+les ordres de grandeurs de chaque dimension sont différents.
+C’est pourquoi il est conseillé de centrer et normaliser chaque dimension.
+On note : <span class="math notranslate nohighlight">\(\forall i \in \intervalle{1}{P}, \; X_i = \vecteur{X_{i,1}}{X_{i,N}}\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+g_k &amp;=&amp; \pa{EX}_k = \frac{1}{P} \sum_{i=1}^P X_{i,k} \\
+v_{kk} &amp;=&amp; \pa{E\left(X-EX\right)^2}_{kk}=\pa{EX^2}_{kk} - g_k^2
+\end{eqnarray*}</div><p>Les points centrés et normalisés sont :</p>
+<div class="math notranslate nohighlight">
+\[\forall i \in \intervalle{1}{P}, \;
+X_i^{\prime}=\left(\dfrac{x_{i,1}-g_{1}}{\sqrt{v_{11}}},...,\dfrac{x_{i,N}-g_{N}}{\sqrt{v_{NN}}}\right)\]</div>
+<p id="index-2">L’algorithme des centres mobiles est appliqué sur l’ensemble
+<span class="math notranslate nohighlight">\(\left( X_{i}^{\prime}\right)_{1\leqslant i\leqslant P}\)</span>.
+Il est possible ensuite de décorréler les variables ou d’utiliser
+une distance dite de <a class="reference external" href="https://fr.wikipedia.org/wiki/Distance_de_Mahalanobis">Malahanobis</a> définie par
+<span class="math notranslate nohighlight">\(d_M\pa{X, Y} = X \, M \, Y'\)</span> où <span class="math notranslate nohighlight">\(Y'\)</span>
+désigne la transposée de <span class="math notranslate nohighlight">\(Y\)</span> et <span class="math notranslate nohighlight">\(M\)</span>
+est une matrice symétrique définie positive.
+Dans le cas de variables corrélées, la matrice
+<span class="math notranslate nohighlight">\(M = \Sigma^{-1}\)</span> où <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> est la matrice
+de variance-covariance des variables aléatoires <span class="math notranslate nohighlight">\(\pa{X_i}_i\)</span>.</p>
+</section>
+</section>
+<section id="ameliorations-de-l-initialisation">
+<h2><a class="toc-backref" href="#id25" role="doc-backlink">Améliorations de l’initialisation</a><a class="headerlink" href="#ameliorations-de-l-initialisation" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="l-kmeanspp">
+<span id="id1"></span><h3><a class="toc-backref" href="#id26" role="doc-backlink">K-means++</a><a class="headerlink" href="#l-kmeanspp" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-3">L’article <a class="reference internal" href="#arthur2007" id="id2"><span>[Arthur2007]</span></a> montre que l’initialisation aléatoire n’est pas efficace et
+est sensible aux outliers ou points aberrants. L’étape d’initialisation est remplacée
+par la suivante :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="init-kmeanspp">Algorithme A2 : initialisation k-means++</p>
+<p>Cette étape d’initialisation viendra remplacer celle
+définie dans l’algorithme
+<a class="reference internal" href="#kmeans-def-algo"><span class="std std-ref">k-means</span></a>.
+On considère un ensemble de points :</p>
+<div class="math notranslate nohighlight">
+\[X=\left(X_i\right)_{1\leqslant i\leqslant P}\in\left(\R^N\right)^P\]</div>
+<p>A chaque point est associée une classe :
+<span class="math notranslate nohighlight">\(\left(c_i\right)_{1\leqslant i\leqslant P}\in\left\{1,...,C\right\}^P\)</span>.</p>
+<p>Pour <span class="math notranslate nohighlight">\(k\)</span> centres, on choisit <span class="math notranslate nohighlight">\(C_1\)</span>
+au hasard dans l’ensemble <span class="math notranslate nohighlight">\(X\)</span>.
+Pour les suivants :</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(k \leftarrow 2\)</span></p></li>
+<li><p>On choisit aléatoirement <span class="math notranslate nohighlight">\(G_k \in X\)</span> avec la probabilité
+<span class="math notranslate nohighlight">\(P(x) = \frac{D_{k-1}(x)^2}{\sum_{x\in X}D_{k-1}(x)^2}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k \leftarrow k+1\)</span></p></li>
+<li><p>On revient à l’étape 2 jusqu’à ce que <span class="math notranslate nohighlight">\(k=C\)</span>.</p></li>
+</ol>
+<p>La fonction <span class="math notranslate nohighlight">\(D_k\)</span> est définie par la distance du point <span class="math notranslate nohighlight">\(x\)</span>
+au centre <span class="math notranslate nohighlight">\(G_l\)</span> choisi parmi les <span class="math notranslate nohighlight">\(k\)</span> premiers centres.
+<span class="math notranslate nohighlight">\(D_k(x) = \min_{1 \infegal l \infegal k} d(x - G_l)\)</span>.</p>
+<p>La suite de l’algorithme <em>k-means++</em> reprend les mêmes étapes que
+<a class="reference internal" href="#kmeans-def-algo"><span class="std std-ref">k-means</span></a>.</p>
+</div>
+<p>Cette initilisation éloigne le prochain centre le plus possibles des
+centres déjà choisis. L’article montre que :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème1">
+<p class="admonition-title">Théorème T2 : Borne supérieure de l’erreur produite par k-means++</p>
+<p>On définit l’inertie par
+<span class="math notranslate nohighlight">\(J_(X) = \sum_{i=1}^{P} \; \min_G d^2(X_i, G)\)</span>.
+Si <span class="math notranslate nohighlight">\(J_{OPT}\)</span> définit l’inertie optimale alors
+<span class="math notranslate nohighlight">\(\esp{J(X)} \infegal 8 (\ln C + 2) J_{OPT}(X)\)</span>.</p>
+</div>
+<p>La démonstration est disponible dans l’article <a class="reference internal" href="#arthur2007" id="id3"><span>[Arthur2007]</span></a>.</p>
+</section>
+<section id="id4">
+<h3><a class="toc-backref" href="#id27" role="doc-backlink">K-means||</a><a class="headerlink" href="#id4" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’article <a class="reference internal" href="#bahmani2012" id="id5"><span>[Bahmani2012]</span></a> propose une autre initialisation
+que <a class="reference internal" href="#l-kmeanspp"><span class="std std-ref">K-means++</span></a> mais plus rapide et parallélisable.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme2">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="init-kmeansppll">Algorithme A3 : initialisation k-means||</p>
+<p>Cette étape d’initialisation viendra remplacer celle
+définie dans l’algorithme
+<a class="reference internal" href="#kmeans-def-algo"><span class="std std-ref">k-means</span></a>.
+On considère un ensemble de points :</p>
+<div class="math notranslate nohighlight">
+\[X=\left(X_i\right)_{1\leqslant i\leqslant P}\in\left(\R^N\right)^P\]</div>
+<p>A chaque point est associée une classe :
+<span class="math notranslate nohighlight">\(\left(c_i\right)_{1\leqslant i\leqslant P}\in\left\{1,...,C\right\}^P\)</span>.</p>
+<p>Pour <span class="math notranslate nohighlight">\(k\)</span> centres, on choisit <span class="math notranslate nohighlight">\(G = \{G_1\}\)</span>
+au hasard dans l’ensemble <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<div class="line-block">
+<div class="line">on répète <span class="math notranslate nohighlight">\(O(\ln D(G, X))\)</span> fois :</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(G' \leftarrow\)</span> échantillon aléatoire issue de <span class="math notranslate nohighlight">\(X\)</span> de probabilité <span class="math notranslate nohighlight">\(p(x) = l \frac{D(G,x)^2}{\sum_x D(G,x)^2}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(G \leftarrow G \cup G'\)</span></div>
+</div>
+</div>
+<p>La fonction <span class="math notranslate nohighlight">\(D(G,x)\)</span> est définie par la distance du point <span class="math notranslate nohighlight">\(x\)</span>
+au plus proche centre <span class="math notranslate nohighlight">\(g \in G\)</span> :
+<span class="math notranslate nohighlight">\(D(g,x) = \min_{g \in G} d(x - g)\)</span>.
+Cette étape ajoute à l’ensemble des centres <span class="math notranslate nohighlight">\(G\)</span>
+un nombre aléatoire de centres à chaque étape.
+L’ensemble <span class="math notranslate nohighlight">\(G\)</span> contiendra plus de <span class="math notranslate nohighlight">\(C\)</span> centres.</p>
+<ol class="arabic simple">
+<li><p>Pour tout <span class="math notranslate nohighlight">\(g \in G\)</span>, on assigne le poids <span class="math notranslate nohighlight">\(w_g = card \acc{ y | d(x, y) &lt; \min_{h \in G} d(x, h)}\)</span></p></li>
+<li><p>On clusterise l’ensemble des points <span class="math notranslate nohighlight">\(G\)</span> en <span class="math notranslate nohighlight">\(C\)</span> clusters
+(avec un k-means classique par exemple)</p></li>
+</ol>
+</div>
+<p>Au lieu d’ajouter les centres un par un comme dans l’algorithme
+<a class="reference internal" href="#init-kmeanspp"><span class="std std-ref">k-means++</span></a>, plusieurs sont ajoutés à chaque fois,
+plus <span class="math notranslate nohighlight">\(l\)</span> est grand, plus ce nombre est grand. Le tirage d’un échantillon
+aléatoire consiste à inclure chaque point <span class="math notranslate nohighlight">\(x\)</span> avec la probabilité
+<span class="math notranslate nohighlight">\(p(x) = l \frac{D(G,x)^2}{\sum_x D(G,x)^2}\)</span>.</p>
+</section>
+</section>
+<section id="estimation-de-probabilites">
+<span id="hmm-classification-obs-trois"></span><h2><a class="toc-backref" href="#id28" role="doc-backlink">Estimation de probabilités</a><a class="headerlink" href="#estimation-de-probabilites" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>A partir de cette classification en <span class="math notranslate nohighlight">\(C\)</span> classes, on construit un
+vecteur de probabilités pour chaque point <span class="math notranslate nohighlight">\(\pa{X_{i}}_{1 \infegal i \infegal P}\)</span>
+en supposant que la loi de <span class="math notranslate nohighlight">\(X\)</span> sachant sa classe <span class="math notranslate nohighlight">\(c_X\)</span> est une loi
+normale multidimensionnelle. La classe de <span class="math notranslate nohighlight">\(X_i\)</span> est
+notée <span class="math notranslate nohighlight">\(c_i\)</span>. On peut alors écrire :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\forall i \in \intervalle{1}{C}, \; &amp; &amp; \\
+G_i &amp;=&amp; E\pa{X \indicatrice{c_X = i}} = \dfrac{\sum_{k=1}^{P} X_k \indicatrice {c_k = i}} {\sum_{k=1}^{P} \indicatrice {c_k = i}} \\
+V_i &amp;=&amp; E\pa{XX' \indicatrice{c_X = i}} = \dfrac{\sum_{k=1}^{P} X_k X_k' \indicatrice {c_k = i}} {\sum_{k=1}^{P} \indicatrice {c_k = i}} \\
+\pr{c_X = i} &amp;=&amp; \sum_{k=1}^{P} \indicatrice {c_k = i} \\
+f\pa{X | c_X = i} &amp;=&amp; \dfrac{1}{\pa{2\pi}^{\frac{N}{2}} \sqrt{\det \pa{V_i}}} \; e^{ - \frac{1}{2} \pa{X - G_i}' \; V_i^{-1} \; \pa{X - G_i} } \\
+f\pa{X} &amp;=&amp; \sum_{k=1}^{P}  f\pa{X | c_X = i} \pr{c_X = i}
+\end{eqnarray*}</div><p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\[\pr{c_X = i |X } = \dfrac{f\pa{X | c_X = i}\pr{c_X = i}} {f\pa{X} }\]</div>
+<p>La densité des obervations est alors modélisée par une mélange de
+lois normales, chacune centrée au barycentre de chaque classe.
+Ces probabilités peuvent également être apprises par un réseau de neurones
+classifieur où servir d’initialisation à un
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_esp%C3%A9rance-maximisation">algorithme EM</a>.</p>
+</section>
+<section id="selection-du-nombre-de-classes">
+<h2><a class="toc-backref" href="#id29" role="doc-backlink">Sélection du nombre de classes</a><a class="headerlink" href="#selection-du-nombre-de-classes" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="critere-de-qualite">
+<span id="classification-selection-nb-classe-bouldin"></span><h3><a class="toc-backref" href="#id30" role="doc-backlink">Critère de qualité</a><a class="headerlink" href="#critere-de-qualite" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’algorithme des centres mobiles effectue une classification non supervisée
+à condition de connaître au préalable le nombre de classes et
+cette information est rarement disponible. Une alternative consiste à
+estimer la pertinence des classifications obtenues pour différents
+nombres de classes, le nombre de classes optimal est celui
+qui correspond à la classification la plus pertinente.
+Cette pertinence ne peut être estimée de manière unique, elle dépend des
+hypothèses faites sur les éléments à classer, notamment sur la forme
+des classes qui peuvent être convexes ou pas, être modélisées par des
+lois normales multidimensionnelles, à matrice de covariances diagonales, …
+Les deux critères qui suivent sont adaptés à l’algorithme des centres mobiles.
+Le critère de <a class="reference external" href="https://en.wikipedia.org/wiki/Davies%E2%80%93Bouldin_index">Davies-Bouldin</a>
+(voir <a class="reference internal" href="#davies1979" id="id6"><span>[Davies1979]</span></a>)
+est minimum lorsque le nombre de classes est optimal.</p>
+<div class="math notranslate nohighlight" id="index-4">
+\begin{eqnarray}
+DB &amp;=&amp; \dfrac{1}{C} \;     \sum_{i=1}^{C} \; \max_{i \neq j} \; \dfrac{\sigma_i + \sigma_j}{ d\pa{C_i,C_j}}
+\end{eqnarray}</div><p>Avec :</p>
+<table class="table">
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(C\)</span></p></th>
+<th class="head"><p>nombre de classes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_i\)</span></p></td>
+<td><p>écart-type des distances des observations de la classe <span class="math notranslate nohighlight">\(i\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(C_i\)</span></p></td>
+<td><p>centre de la classe <span class="math notranslate nohighlight">\(i\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>Le critère de <a class="reference external" href="https://en.wikipedia.org/wiki/Goodman_and_Kruskal%27s_gamma">Goodman-Kruskal</a>
+(voir <a class="reference internal" href="#goodman1954" id="id7"><span>[Goodman1954]</span></a>) est quant à lui maximum lorsque le nombre de classes est optimal.
+Il est toutefois plus coûteux à calculer.</p>
+<div class="math notranslate nohighlight" id="index-5">
+\begin{eqnarray}
+GK &amp;=&amp; \dfrac{S^+ - S^-} { S^+ + S^-}
+\end{eqnarray}</div><p>Avec :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+S^+ &amp;=&amp; \acc{ \pa{q,r,s,t} \sac d\pa{q,r} &lt; d\pa{s,t} } \\
+S^- &amp;=&amp; \acc{ \pa{q,r,s,t} \sac d\pa{q,r} &lt; d\pa{s,t} }
+\end{eqnarray*}</div><p>Où <span class="math notranslate nohighlight">\(\pa{q,r}\)</span> sont dans la même classe et <span class="math notranslate nohighlight">\(\pa{s,t}\)</span> sont dans des classes différentes.</p>
+<table class="table">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/class_4.png" src="../_images/class_4.png" />
+</td>
+<td><img alt="../_images/class_4_db.png" src="../_images/class_4_db.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Classification en quatre classes : nombre de classes sélectionnées par le critère
+de Davies-Bouldin dont les valeurs sont illustrées par le graphe apposé à droite.</p>
+</section>
+<section id="maxima-de-la-fonction-densite">
+<h3><a class="toc-backref" href="#id31" role="doc-backlink">Maxima de la fonction densité</a><a class="headerlink" href="#maxima-de-la-fonction-densite" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’article <a class="reference internal" href="#herbin2001" id="id8"><span>[Herbin2001]</span></a> propose une méthode différente pour estimer
+le nombre de classes, il s’agit tout d’abord d’estimer la fonction
+densité du nuage de points qui est une fonction de
+<span class="math notranslate nohighlight">\(\R^n \longrightarrow \R\)</span>. Cette estimation est effectuée au moyen
+d’une méthode non paramètrique telle que les estimateurs à noyau
+(voir <a class="reference internal" href="#silverman1986" id="id9"><span>[Silverman1986]</span></a>)
+Soit <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_N}\)</span> un nuage de points inclus dans une image,
+on cherche à estimer la densité <span class="math notranslate nohighlight">\(f_H\pa{x}\)</span> au pixel <span class="math notranslate nohighlight">\(x\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[\hat{f}_H\pa{x} = \dfrac{1}{N} \; \sum_{i=1}^{N} \; \dfrac{1}{\det H} \; K\pa{ H^{-1} \pa{x - X_i}}\]</div>
+<p>Où :</p>
+<div class="math notranslate nohighlight">
+\[K\pa{x} = \dfrac{1}{ \pa{2 \pi}^{ \frac{d}{2}} } \; e^{ - \frac{ \norme{x}^2 } {2} }\]</div>
+<p><span class="math notranslate nohighlight">\(H\)</span> est un paramètre estimée avec la règle de Silverman.
+L’exemple utilisé dans cet article est un problème de segmentation
+d’image qui ne peut pas être résolu par la méthode des nuées
+dynamiques puisque la forme des classes n’est pas convexe,
+ainsi que le montre la figure suivante. La fonction de densité
+<span class="math notranslate nohighlight">\(f\)</span> est seuillée de manière à obtenir une fonction
+<span class="math notranslate nohighlight">\(g : \R^n \longrightarrow \acc{0,1}\)</span> définie par :</p>
+<div class="math notranslate nohighlight">
+\[g \pa{x} = \indicatrice{f\pa{x} \supegal s}\]</div>
+<p id="index-6">L’ensemble <span class="math notranslate nohighlight">\(g^{-1}\pa{\acc{1}} \subset \R^n\)</span>
+est composée de <span class="math notranslate nohighlight">\(N\)</span> composantes connexes notées
+<span class="math notranslate nohighlight">\(\vecteur{C_1}{C_N}\)</span>, la classe d’un point <span class="math notranslate nohighlight">\(x\)</span>
+est alors l’indice de la composante connexe à la
+laquelle il appartient ou la plus proche le cas échéant.</p>
+<table class="table">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/herbin1.png" src="../_images/herbin1.png" />
+</td>
+<td><img alt="../_images/herbin2.png" src="../_images/herbin2.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Exemple de classification non supervisée appliquée à un problème
+de segmentation d’image, la première figure montre la densité obtenue,
+la seconde figure illustre la classification obtenue, figure extraite de <a class="reference internal" href="#herbin2001" id="id10"><span>[Herbin2001]</span></a>.
+Cette méthode paraît néanmoins difficilement applicable lorsque la
+dimension de l’espace vectoriel atteint de grande valeur. L’exemple de l’image
+est pratique, elle est déjà découpée en région représentées par les pixels,
+l’ensemble <span class="math notranslate nohighlight">\(g^{-1}\pa{\acc{1}}\)</span> correspond à
+l’ensemble des pixels <span class="math notranslate nohighlight">\(x\)</span> pour lesquels <span class="math notranslate nohighlight">\(f\pa{x} \supegal s\)</span>.</p>
+</section>
+<section id="decroissance-du-nombre-de-classes">
+<h3><a class="toc-backref" href="#id32" role="doc-backlink">Décroissance du nombre de classes</a><a class="headerlink" href="#decroissance-du-nombre-de-classes" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’article <a class="reference internal" href="#kothari1999" id="id11"><span>[Kothari1999]</span></a> propose une méthode permettant de
+faire décroître le nombre de classes afin de choisir le nombre
+approprié. L’algorithme des centres mobiles
+proposent de faire décroître l’inertie notée <span class="math notranslate nohighlight">\(I\)</span>
+définie pour un ensemble de points noté <span class="math notranslate nohighlight">\(X = \vecteur{x_1}{x_N}\)</span>
+et <span class="math notranslate nohighlight">\(K\)</span> classes. La classe d’un élément <span class="math notranslate nohighlight">\(x\)</span>
+est notée <span class="math notranslate nohighlight">\(C\pa{x}\)</span>. Les centres des classes sont notés
+<span class="math notranslate nohighlight">\(Y = \vecteur{y_1}{y_K}\)</span>.
+L’inertie de ce nuage de points est définie par :</p>
+<div class="math notranslate nohighlight">
+\[I  =  \sum_{x \in X} \; \norme{ x - y_{C\pa{x} }}^2\]</div>
+<p>On définit tout d’abord une distance
+<span class="math notranslate nohighlight">\(\alpha \in \R^+\)</span>, puis l’ensemble
+<span class="math notranslate nohighlight">\(V\pa{y,\alpha} = \acc{ z \in Y \sac d\pa{y,z} \infegal \alpha }\)</span>,
+<span class="math notranslate nohighlight">\(V\pa{y,\alpha}\)</span> est donc l’ensemble des voisins des
+centres dont la distance avec <span class="math notranslate nohighlight">\(y\)</span> est inférieur à <span class="math notranslate nohighlight">\(\alpha\)</span>.
+L’article <a class="reference internal" href="#kothari1999" id="id12"><span>[Kothari1999]</span></a> propose de minimiser le coût <span class="math notranslate nohighlight">\(J\pa{\alpha}\)</span>
+suivant :</p>
+<div class="math notranslate nohighlight">
+\[J\pa{\alpha} = \sum_{x \in X} \; \norme{ x - y_{C\pa{x} }}^2 + \sum_{x \in X} \;
+\sum_{y \in V\pa{y_{C\pa{x}}, \alpha} } \; \lambda\pa{y} \, \norme{ y -  y_{C\pa{x}}}^2\]</div>
+<p>Lorsque <span class="math notranslate nohighlight">\(\alpha\)</span> est nul, ce facteur est égal à l’inertie :
+<span class="math notranslate nohighlight">\(I = J\pa{0}\)</span> et ce terme est minimal lorsqu’il y a autant de
+classes que d’éléments dans <span class="math notranslate nohighlight">\(X\)</span>. Lorsque <span class="math notranslate nohighlight">\(\alpha\)</span>
+tend vers l’infini, <span class="math notranslate nohighlight">\(J\pa{\alpha} \rightarrow J\pa{\infty}\)</span> où :</p>
+<div class="math notranslate nohighlight">
+\[J\pa{\infty} = \sum_{x \in X} \; \norme{ x - y_{C\pa{x} }}^2 + \sum_{x \in X} \; \sum_{y \in Y} \;
+\lambda\pa{y} \, \norme{ y -  y_{C\pa{x}}} ^2\]</div>
+<p>Ici encore, il est possible de montrer que ce terme
+<span class="math notranslate nohighlight">\(J\pa{\infty}\)</span> est minimal lorsqu’il n’existe plus qu’une
+seule classe. Le principe de cette méthode consiste à faire varier
+le paramètre <span class="math notranslate nohighlight">\(\alpha\)</span>, plus le paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> augmente,
+plus le nombre de classes devra être réduit. Néanmoins, il existe
+des intervalles pour lequel ce nombre de classes est stable,
+le véritable nombre de classes de l’ensemble <span class="math notranslate nohighlight">\(X\)</span>
+sera considéré comme celui correspondant au plus grand intervalle
+stable.</p>
+<table class="table">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><img alt="../_images/koth1.png" src="../_images/koth1.png" />
+</td>
+<td><img alt="../_images/koth2.png" src="../_images/koth2.png" />
+</td>
+</tr>
+<tr class="row-even"><td><p><em>(a)</em></p></td>
+<td><p><em>(b)</em></p></td>
+</tr>
+</tbody>
+</table>
+<p>Evolutation du nombre de classes en fonction du paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> lors de la
+minimisation du critère <span class="math notranslate nohighlight">\(J\pa{\alpha}\)</span>, figure extraite de <a class="reference internal" href="#kothari1999" id="id13"><span>[Kothari1999]</span></a>.
+La première image représente le nuage de points illustrant quatre classes sans recouvrement.
+La seconde image montre que quatre classes est l’état le plus longtemps stable
+lorsque <span class="math notranslate nohighlight">\(\alpha\)</span> croît.</p>
+<p id="index-7">Le coût <span class="math notranslate nohighlight">\(J\pa{\alpha}\)</span> est une somme de coût dont
+l’importance de l’un par rapport à l’autre est contrôle
+par les paramètres <span class="math notranslate nohighlight">\(\lambda\pa{y}\)</span>. Le problème de
+minimisation de <span class="math notranslate nohighlight">\(J\pa{\alpha}\)</span> est résolu par l’algorithme qui suit.
+Il s’appuie sur la méthode des multiplicateurs de Lagrange.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme3">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="classification-kothari-1999">Algorithme A4 : sélection du nombre de classes</p>
+<p>(voir  <a class="reference internal" href="#kothari1999" id="id14"><span>[Kothari1999]</span></a>)
+Les notations sont celles utilisés dans les paragraphes précédents. On suppose que le
+paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> évolue dans l’intervalle <span class="math notranslate nohighlight">\(\cro{\alpha_1, \alpha_2}\)</span>
+à intervalle régulier <span class="math notranslate nohighlight">\(\alpha_t\)</span>.
+Le nombre initial de classes est noté <span class="math notranslate nohighlight">\(K\)</span> et il est supposé surestimer le véritable
+nombre de classes. Soit <span class="math notranslate nohighlight">\(\eta \in \left]0,1\right[\)</span>,
+ce paramètre doit être choisi de telle sorte que dans
+l’algorithme qui suit, l’évolution des centres <span class="math notranslate nohighlight">\(y_k\)</span>
+soit autant assurée par le premier de la fonction de coût que par le second.</p>
+<p><em>initialisation</em></p>
+<div class="math notranslate nohighlight">
+\[\alpha \longleftarrow \alpha_1\]</div>
+<p>On tire aléatoirement les centres des <span class="math notranslate nohighlight">\(K\)</span> classes <span class="math notranslate nohighlight">\(\vecteur{y_1}{y_K}\)</span>.</p>
+<p><em>préparation</em></p>
+<p>On définit les deux suites entières <span class="math notranslate nohighlight">\(\vecteur{c^1_1}{c^1_K}\)</span>, <span class="math notranslate nohighlight">\(\vecteur{c^2_1}{c^2_K}\)</span>,
+et les deux suites de vecteur <span class="math notranslate nohighlight">\(\vecteur{z^1_1}{z^1_K}\)</span>,
+<span class="math notranslate nohighlight">\(\vecteur{z^2_1}{z^2_K}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rlll}
+\forall k, &amp;  c^1_k &amp;=&amp; 0 \\
+\forall k, &amp;  c^2_k &amp;=&amp; 0 \\
+\forall k, &amp;  z^1_k &amp;=&amp; 0 \\
+\forall k, &amp;  z^2_k &amp;=&amp; 0
+\end{array}\end{split}\]</div>
+<p><em>calcul des mises à jour</em></p>
+<div class="line-block">
+<div class="line">for i in <span class="math notranslate nohighlight">\(1..N\)</span></div>
+<div class="line-block">
+<div class="line">Mise à jour d’après le premier terme de la fonction de coût <span class="math notranslate nohighlight">\(J\pa{\alpha}\)</span>.</div>
+<div class="line"><span class="math notranslate nohighlight">\(w \longleftarrow \underset{1 \infegal l \infegal K}{\arg \min} \; \norme{x_i - y_l}^2\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(z^1_w \longleftarrow z^1_w + \eta \pa{ x_i - y_w}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(c^1_w \longleftarrow c^1_w + 1\)</span></div>
+<div class="line"><br /></div>
+<div class="line">Mise à jour d’après le second terme de la fonction de coût <span class="math notranslate nohighlight">\(J\pa{\alpha}\)</span></div>
+<div class="line"><br /></div>
+<div class="line">for v in <span class="math notranslate nohighlight">\(1..k\)</span></div>
+<div class="line-block">
+<div class="line">if <span class="math notranslate nohighlight">\(\norme{y_v - y_w} &lt; \alpha\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(z^2_v \longleftarrow z^2_v - \pa{ y_v - y_w}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(c^2_v \longleftarrow c^2_v + 1\)</span></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="line">for v in <span class="math notranslate nohighlight">\(1..k\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\lambda_v \longleftarrow \frac{ c^2_v \norme{z^1_v} } { c^1_v \norme{z^2_v} }\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(y_v \longleftarrow y_v + z^1_v + \lambda_v z^2_v\)</span></div>
+</div>
+</div>
+</div>
+<p><em>convergence</em></p>
+<p>Tant que l’étape précédente n’a pas convergé vers une version stable des centres,
+<span class="math notranslate nohighlight">\(y_k\)</span>, retour à l’étape précédente. Sinon, tous les couples de classes <span class="math notranslate nohighlight">\(\pa{i,j}\)</span>
+vérifiant <span class="math notranslate nohighlight">\(\norme{y_i - y_j} &gt; \alpha\)</span> sont fusionnés :
+<span class="math notranslate nohighlight">\(\alpha \longleftarrow \alpha + \alpha_t\)</span>.
+Si <span class="math notranslate nohighlight">\(\alpha \infegal \alpha2\)</span>, retour à l’étape de préparation.</p>
+<p><em>terminaison</em></p>
+<p>Le nombre de classes est celui ayant prévalu pour le plus grand nombre de valeur de <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+</div>
+</section>
+</section>
+<section id="extension-des-nuees-dynamiques">
+<h2><a class="toc-backref" href="#id33" role="doc-backlink">Extension des nuées dynamiques</a><a class="headerlink" href="#extension-des-nuees-dynamiques" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="classes-elliptiques">
+<span id="classification-nuees-dynamique-extension"></span><h3><a class="toc-backref" href="#id34" role="doc-backlink">Classes elliptiques</a><a class="headerlink" href="#classes-elliptiques" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-8">La version de l’algorithme des nuées dynamique proposée dans l’article
+<a class="reference internal" href="#cheung2003" id="id15"><span>[Cheung2003]</span></a> suppose que les classes ne sont plus de forme circulaire
+mais suivent une loi normale quelconque. La loi de l’échantillon
+constituant le nuage de points est de la forme :</p>
+<div class="math notranslate nohighlight">
+\[f\pa{x} =  \sum_{i=1}^{N} \; p_i \; \dfrac{1}{\pa{2 \pi}^{\frac{d}{2}}\sqrt{\det \Sigma_i}} \; exp \pa{-\frac{1}{2}  \pa{x-\mu_i}' \Sigma_i^{-1} \pa{x-\mu_i} }\]</div>
+<p>Avec <span class="math notranslate nohighlight">\(sum_{i=1}^{N} \; p_i = 1\)</span>. On définit :</p>
+<div class="math notranslate nohighlight">
+\[G\pa{x, \mu, \Sigma} = \dfrac{1}{\pa{2 \pi}^{\frac{d}{2}}\sqrt{\det \Sigma}} \; exp \pa{-\frac{1}{2}  \pa{x-\mu}' \Sigma^{-1} \pa{x-\mu} }\]</div>
+<p>L’algorithme qui suit a pour objectif de minimiser la quantité pour un échantillon <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_K}\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[I = \sum_{i=1}^{N}\sum_{k=1}^{K} \indicatrice{ i = \underset{1 \infegal j \infegal N}{\arg \max}
+G\pa{X_k, \mu_j,\Sigma_j} } \; \ln \cro{ p_i G\pa{ X_k, \mu_i, \Sigma_i } }\]</div>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme4">
+<p class="admonition-title">Algorithme A5 : nuées dynamiques généralisées</p>
+<p>Les notations sont celles utilisées dans ce paragraphe. Soient <span class="math notranslate nohighlight">\(\eta\)</span>,
+<span class="math notranslate nohighlight">\(\eta_s\)</span> deux réels tels que <span class="math notranslate nohighlight">\(\eta &gt; \eta_s\)</span>.
+La règle préconisée par l’article <a class="reference internal" href="#cheung2003" id="id16"><span>[Cheung2003]</span></a> est <span class="math notranslate nohighlight">\(\eta_s \sim \frac{\eta}{10}\)</span>.</p>
+<p><em>initialisation</em></p>
+<p><span class="math notranslate nohighlight">\(t \longleftarrow 0\)</span>.
+Les paramètres <span class="math notranslate nohighlight">\(\acc{p_i^0, \mu_i^0, \Sigma_i^0 \sac 1 \infegal i \infegal N}\)</span> sont initialisés
+grâce à un algorithme des <a class="reference internal" href="#kmeans-def-algo"><span class="std std-ref">k-means</span></a> ou <a class="reference internal" href="#label-kmeans-fscl"><span class="std std-ref">FSCL</span></a>.
+<span class="math notranslate nohighlight">\(\forall i, \; p_i^0 = \frac{1}{N}\)</span> et <span class="math notranslate nohighlight">\(\beta_i^0 = 0\)</span>.</p>
+<p><em>récurrence</em></p>
+<p>Soit <span class="math notranslate nohighlight">\(X_k\)</span> choisi aléatoirement dans <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_K}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[i = \underset{1 \infegal i \infegal N}{\arg \min} \; G\pa{X_k, \mu_i^t, \Sigma_i^t}\]</div>
+<div class="line-block">
+<div class="line">for i in <span class="math notranslate nohighlight">\(1..N\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\mu_i^{t+1} = \mu_i^t + \eta \, \pa{\Sigma_i^t}^{-1} \, \pa{ X_k - \mu_i^t}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(\beta_i^{t+1} = \beta_i^t + \eta \, \pa{1 - \alpha_i^t}\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(\Sigma^{t+1}_i = \pa{1 - \eta_s} \, \Sigma_i^t + \eta_s \, \pa{ X_k - \mu_i^t} \pa{ X_k - \mu_i^t}'\)</span></div>
+<div class="line"><br /></div>
+</div>
+<div class="line">for i in <span class="math notranslate nohighlight">\(1..N\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(p^{t+1}_i = \frac{ e^{ \beta_i^{t+1} } } { \sum_{j=1}^{N} e^{ \beta_j^{t+1} } }\)</span></div>
+<div class="line"><br /></div>
+</div>
+<div class="line"><span class="math notranslate nohighlight">\(t \longleftarrow t + 1\)</span></div>
+</div>
+<p><em>terminaison</em></p>
+<p>Tant que <span class="math notranslate nohighlight">\(\underset{1 \infegal i \infegal N}{\arg \min} \; G\pa{X_k, \mu_i^t, \Sigma_i^t}\)</span>
+change pour au moins un des points <span class="math notranslate nohighlight">\(X_k\)</span>.</p>
+</div>
+<p>Lors de la mise à jour de <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span>,
+l’algorithme précédent propose la mise à jour de <span class="math notranslate nohighlight">\(\Sigma_i\)</span>
+alors que le calcul de <span class="math notranslate nohighlight">\(G\pa{., \mu_i, \Sigma_i}\)</span>
+implique <span class="math notranslate nohighlight">\(\Sigma_i^{-1}\)</span>,
+par conséquent, il est préférable de mettre à jour directement la matrice
+<span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[\pa{\Sigma^{t+1}_i}^{-1} = \frac{ \pa{\Sigma_i^t}^{-1} } {1 - \eta_s}
+\cro{I - \frac{ \eta_s  \pa{ X_k - \mu_i^t} \pa{ X_k - \mu_i^t}' \pa{\Sigma_i^t}^{-1} }
+{1 - \eta_s + \eta_s \pa{ X_k - \mu_i^t}' \, \pa{\Sigma_i^t}^{-1}\pa{ X_k - \mu_i^t} } }\]</div>
+</section>
+<section id="rival-penalized-competitive-learning-rpcl">
+<span id="class-rpcl"></span><h3><a class="toc-backref" href="#id35" role="doc-backlink">Rival Penalized Competitive Learning (RPCL)</a><a class="headerlink" href="#rival-penalized-competitive-learning-rpcl" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-9">L’algorithme suivant développé dans <a class="reference internal" href="#xu1993" id="id17"><span>[Xu1993]</span></a>, est une variante de celui des centres mobiles.
+Il entreprend à la fois la classification et la sélection du nombre optimal de classes à condition
+qu’il soit inférieur à une valeur maximale à déterminer au départ de l’algorithme.
+Un mécanisme permet d’éloigner les centres des classes peu pertinentes
+de sorte qu’aucun point ne leur sera affecté.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme5">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="classif-algo-rpcl">Algorithme A6 : RPCL</p>
+<p>Soient <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_N}\)</span>, <span class="math notranslate nohighlight">\(N\)</span> vecteurs à classer en au
+plus <span class="math notranslate nohighlight">\(T\)</span> classes de centres <span class="math notranslate nohighlight">\(\vecteur{C_1}{C_T}\)</span>.
+Soient deux réels <span class="math notranslate nohighlight">\(\alpha_r\)</span> et <span class="math notranslate nohighlight">\(\alpha_c\)</span>
+tels que <span class="math notranslate nohighlight">\(0 &lt; \alpha_r \ll \alpha_c &lt; 1\)</span>.</p>
+<p><em>initialisation</em></p>
+<p>Tirer aléatoirement les centres <span class="math notranslate nohighlight">\(\vecteur{C_1}{C_T}\)</span>.</p>
+<div class="line-block">
+<div class="line">for j in <span class="math notranslate nohighlight">\(1..C\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(n_j^0 \longleftarrow 1\)</span></div>
+</div>
+</div>
+<p><em>calcul de poids</em></p>
+<p>Choisir aléatoirement un point <span class="math notranslate nohighlight">\(X_i\)</span>.</p>
+<div class="line-block">
+<div class="line">for j in <span class="math notranslate nohighlight">\(1..C\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\gamma_j = \dfrac{n_j}{ \sum_{k=1}^{C} n_k}\)</span></div>
+<div class="line"><br /></div>
+</div>
+<div class="line">for j in <span class="math notranslate nohighlight">\(1..C\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(u_j =\)</span></div>
+<div class="line-block">
+<div class="line">1 si <span class="math notranslate nohighlight">\(j \in \underset{k}{\arg \min} \; \cro {\gamma_k \; d\pa{X_i,C_k} }\)</span></div>
+<div class="line">-1 si <span class="math notranslate nohighlight">\(j \in \underset{j \neq k}{\arg \min} \; \cro {\gamma_k \; d\pa{X_i,C_k} }\)</span></div>
+<div class="line">0 sinon</div>
+</div>
+</div>
+</div>
+<p><em>mise à jour</em></p>
+<div class="line-block">
+<div class="line">for j in <span class="math notranslate nohighlight">\(1..C\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(C_j^{t+1} \longleftarrow  C_j^t +  \left \{ \begin{array}{ll} \alpha_c \pa{X_i - C_j} &amp; \text{si } u_j = 1 \\ - \alpha_r \pa{X_i - C_j} &amp; \text{si } u_j = -1 \\ 0 &amp; \text{sinon} \end{array} \right.\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(n_j^t +  \left \{ \begin{array}{ll} 1 &amp; \text{si } u_j = 1 \\ 0 &amp; \text{sinon} \end{array} \right.\)</span></div>
+<div class="line"><br /></div>
+</div>
+<div class="line"><span class="math notranslate nohighlight">\(t \longleftarrow t+1\)</span></div>
+</div>
+<p><em>terminaison</em></p>
+<p>S’il existe un indice <span class="math notranslate nohighlight">\(j\)</span> pour lequel <span class="math notranslate nohighlight">\(C^{t+1}_j \neq C^t_j\)</span>
+alors retourner à  l’étape de calcul de poids ou que les centres des classes jugées inutiles
+ont été repoussés vers l’infini.</p>
+</div>
+<p>Pour chaque point, le centre de la classe la plus proche en est rapproché
+tandis que le centre de la seconde classe la plus proche en est éloigné
+mais d’une façon moins importante (condition <span class="math notranslate nohighlight">\(\alpha_r \ll \alpha_c\)</span>).
+Après convergence, les centres des classes inutiles ou non pertinentes
+seront repoussés vers l’infini. Par conséquent, aucun point n’y sera rattaché.</p>
+<p>L’algorithme doit être lancé plusieurs fois. L’algorithme RPCL peut terminer
+sur un résultat comme celui de la figure suivante où un centre reste coincé
+entre plusieurs autres. Ce problème est moins important
+lorsque la dimension de l’espace est plus grande.</p>
+<img alt="../_images/class6.png" src="../_images/class6.png" />
+<p>Application de l’algorithme <a class="reference internal" href="#classif-algo-rpcl"><span class="std std-ref">RPCL</span></a> : la classe 0 est incrusté entre les quatre autres
+et son centre ne peut se « faufiler » vers l’infini.</p>
+</section>
+<section id="rpcl-based-local-pca">
+<span id="classification-rpcl-local-pca"></span><h3><a class="toc-backref" href="#id36" role="doc-backlink">RPCL-based local PCA</a><a class="headerlink" href="#rpcl-based-local-pca" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-10">L’article <a class="reference internal" href="#liu2003" id="id18"><span>[Liu2003]</span></a> propose une extension de l’algorithme <a class="reference internal" href="#classif-algo-rpcl"><span class="std std-ref">RPCL</span></a>
+et suppose que les classes ne sont plus de forme circulaire mais
+suivent une loi normale quelconque. Cette méthode est utilisée pour
+la détection de ligne considérées ici comme des lois normales dégénérées
+en deux dimensions, la matrice de covariance définit une ellipse dont le
+grand axe est très supérieur au petit axe, ce que montre la figure suivante.
+Cette méthode est aussi présentée comme un possible algorithme de squelettisation.</p>
+<img alt="../_images/liu3.png" src="../_images/liu3.png" />
+<p>Figure extraite de <a class="reference internal" href="#liu2003" id="id19"><span>[Liu2003]</span></a>, l’algorithme est utilisé pour la détection de lignes
+considérées ici comme des lois normales dont la matrice de covariance définit une ellipse
+dégénérée dont le petit axe est très inférieur au grand axe. Les traits fin grisés correspondent aux
+classes isolées par l’algorithme RPCL-based local PCA.</p>
+<p>On modélise le nuage de points par une mélange de lois normales :</p>
+<div class="math notranslate nohighlight">
+\[f\pa{x} =  \sum_{i=1}^{N} \; p_i \; \dfrac{1}{\pa{2 \pi}^{\frac{d}{2}}\sqrt{\det \Sigma_i}} \;
+exp \pa{-\frac{1}{2}  \pa{x-\mu_i}' \Sigma_i^{-1} \pa{x-\mu_i} }\]</div>
+<p>Avec <span class="math notranslate nohighlight">\(\sum_{i=1}^{N} \; p_i = 1\)</span>.</p>
+<p>On suppose que le nombre de classes initiales <span class="math notranslate nohighlight">\(N\)</span> surestime le
+véritable nombre de classes. L’article <a class="reference internal" href="#liu2003" id="id20"><span>[Liu2003]</span></a> s’intéresse
+au cas particulier où les matrices de covariances vérifient
+<span class="math notranslate nohighlight">\(\Sigma_i = \zeta_i \, I + \sigma_i \, \phi_i \phi_i'\)</span>
+avec <span class="math notranslate nohighlight">\(\zeta_i &gt; 0, \; \sigma_i &gt; 0, \; \phi_i' \phi_i = 1\)</span>.</p>
+<p>On définit également :</p>
+<div class="math notranslate nohighlight">
+\[G\pa{x, \mu, \Sigma} = \dfrac{1}{\pa{2 \pi}^{\frac{d}{2}}\sqrt{\det \Sigma}} \;
+exp \pa{-\frac{1}{2}  \pa{x-\mu}' \Sigma^{-1} \pa{x-\mu} }\]</div>
+<p>L’algorithme utilisé est similaire à l’algortihme <a class="reference internal" href="#classif-algo-rpcl"><span class="std std-ref">RPCL</span></a>.
+La distance <span class="math notranslate nohighlight">\(d\)</span> utilisée lors de l’étape de calcul des poids
+afin de trouver la classe la plus probable pour un point
+donné <span class="math notranslate nohighlight">\(X_k\)</span> est remplacée par l’expression :</p>
+<div class="math notranslate nohighlight">
+\[d\pa{X_k, classe \, i} = - \ln { p_i^t \, G\pa{X_k, \, \mu_i^t, \, \Sigma^t_i } }\]</div>
+<p>L’étape de mise à jour des coefficients est remplacée par :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}x^{t+1} \longleftarrow  x^t +  \left \{ \begin{array}{ll}
+\alpha_c \nabla x^t &amp; \text{si } u_j = 1 \\
+- \alpha_r \nabla x^t &amp; \text{si } u_j = -1 \\
+0 &amp; \text{sinon}
+\end{array} \right.\end{split}\]</div>
+<p>Où <span class="math notranslate nohighlight">\(x^t\)</span> joue le rôle d’un paramètre et est remplacé
+successivement par <span class="math notranslate nohighlight">\(p_i^t\)</span>, <span class="math notranslate nohighlight">\(\mu_i^t\)</span>, <span class="math notranslate nohighlight">\(\zeta_i^t\)</span>, <span class="math notranslate nohighlight">\(\sigma^t_i\)</span>, <span class="math notranslate nohighlight">\(\phi^t_i\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lll}
+\nabla p_i^t &amp;=&amp; - \frac{1}{p_i^t} \\
+\nabla \mu_i^t &amp;=&amp; - \pa{ X_k - \mu_i^t} \\
+\nabla \zeta_i^t  &amp;=&amp; \frac{1}{2} \; tr\cro{ \pa{\Sigma_i^t}^{-1} \,
+\pa{ I - \pa{ X_k - \mu_i^t} \pa{ X_k - \mu_i^t}' \pa{\Sigma_i^t}^{-1} } } \\
+\nabla \sigma_i^t &amp;=&amp;    \frac{1}{2} \; \pa{\phi_i^t}' \pa{\Sigma_i^t}^{-1}
+\pa{ I - \pa{ X_k - \mu_i^t} \pa{ X_k - \mu_i^t}' \pa{\Sigma_i^t}^{-1} } \phi_i^t \\
+\nabla \phi_i^t     &amp;=&amp;    \sigma_i^t \pa{\Sigma_i^t}^{-1}
+\pa{ I - \pa{ X_k - \mu_i^t} \pa{ X_k - \mu_i^t}' \pa{\Sigma_i^t}^{-1} } \phi_i^t \\
+\end{array}\end{split}\]</div>
+</section>
+<section id="frequency-sensitive-competitive-learning-fscl">
+<span id="label-kmeans-fscl"></span><h3><a class="toc-backref" href="#id37" role="doc-backlink">Frequency Sensitive Competitive Learning (FSCL)</a><a class="headerlink" href="#frequency-sensitive-competitive-learning-fscl" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-11">L’algorithme Frequency Sensitive Competitive Learning est présenté dans
+<a class="reference internal" href="#balakrishnan1996" id="id21"><span>[Balakrishnan1996]</span></a>. Par rapport à l’algorithme des centres mobiles classique,
+lors de l’estimation des centres des classes, l’algorithme évite la formation de classes sous-représentées.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme6">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="classification-fscl">Algorithme A7 : FSCL</p>
+<p>Soit un nuage de points <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_N}\)</span>,
+soit <span class="math notranslate nohighlight">\(C\)</span> vecteurs <span class="math notranslate nohighlight">\(\vecteur{\omega_1}{\omega_C}\)</span>
+initialisés de manière aléatoires.
+Soit <span class="math notranslate nohighlight">\(F : \pa{u,t} \in \R^2 \longrightarrow \R^+\)</span>
+croissante par rapport à <span class="math notranslate nohighlight">\(u\)</span>.
+Soit une suite de réels <span class="math notranslate nohighlight">\(\vecteur{u_1}{u_C}\)</span>,
+soit une suite <span class="math notranslate nohighlight">\(\epsilon\pa{t} \in \cro{0,1}\)</span> décroissante où <span class="math notranslate nohighlight">\(t\)</span>
+représente le nombre d’itérations.
+Au début <span class="math notranslate nohighlight">\(t \leftarrow 0\)</span>.</p>
+<p><em>meilleur candidat</em></p>
+<p>Pour un vecteur <span class="math notranslate nohighlight">\(X_k\)</span> choisi aléatoirement dans
+l’ensemble <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_N}\)</span>, on détermine :</p>
+<div class="math notranslate nohighlight">
+\[i^* \in \arg \min \acc{ D_i = F\pa{u_i,t} \, d\pa{X_k, \omega_i} }\]</div>
+<p><em>mise à jour</em></p>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\omega_{i^*} \pa{t+1}  \longleftarrow \omega_{i^*} \pa{t} + \epsilon\pa{t} \pa { X_k - \omega_{i^*} \pa{t} }\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(t \longleftarrow t+1\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(u_{i^*} \longleftarrow u_{i^*} + 1\)</span></div>
+</div>
+<p>Retour à l’étape précédente jusqu’à ce que les nombres
+<span class="math notranslate nohighlight">\(\frac{u_i}{\sum_{i}u_i}\)</span> convergent.</p>
+</div>
+<p>Exemple de fonctions pour <span class="math notranslate nohighlight">\(F\)</span>, <span class="math notranslate nohighlight">\(\epsilon\)</span> (voir <a class="reference internal" href="#balakrishnan1996" id="id22"><span>[Balakrishnan1996]</span></a>) :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+F\pa{u,t} &amp;=&amp; u \, \beta e^{-t/T} \text{ avec } \beta = 0,06 \text{ et } 1/T = 0,00005 \\
+\epsilon\pa{t} &amp;=&amp; \beta \, e^{ - \gamma t } \text{ avec } \gamma = 0,05
+\end{eqnarray*}</div><p>Cet algorithme ressemble à celui des cartes topographiques de Kohonen
+sans toutefois utiliser un maillage entre les neurones
+(ici les vecteurs <span class="math notranslate nohighlight">\(\omega_i\)</span>). Contrairement à l’algorithme RPCL,
+les neurones ne sont pas repoussés s’ils ne sont pas choisis mais la fonction
+croissante <span class="math notranslate nohighlight">\(F\pa{u,t}\)</span> par rapport à <span class="math notranslate nohighlight">\(u\)</span> assure que plus un neurone
+est sélectionné, moins il a de chance de l’être,
+bien que cet avantage disparaisse au fur et à mesure des itérations.</p>
+</section>
+</section>
+<section id="k-means-norme-l1">
+<h2><a class="toc-backref" href="#id38" role="doc-backlink">k-means norme L1</a><a class="headerlink" href="#k-means-norme-l1" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’algorithme dans sa version la plus courante optimise l’inertie définie
+par <span class="math notranslate nohighlight">\(\sum_{i=1}^P \; d^2\left(X_i, G_{c_i^t}^t\right)\)</span>, qui est
+en quelque sorte une inertie <em>L2</em>. Que devriendrait l’algorithme
+si la norme choisie était une norme <em>L1</em>, il faudrait alors choisir
+à chaque itération <em>t</em> des <em>points</em> qui minimise la quantité :
+<span class="math notranslate nohighlight">\(\sum_{i=1}^P \; d_1\left(X_i, G_{c_i^t}^t\right)\)</span> où
+<span class="math notranslate nohighlight">\(d_1\)</span> est la norme <em>L1</em> entre deux points <em>X,Y</em> :
+<span class="math notranslate nohighlight">\(d_1(X, Y) = \sum_i |X_i - Y_i|\)</span>. Avant de continuer,
+on rappelle un théorème :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-propriété0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="mediane-l1">propriété P1 : Médiane et valeur absolue</p>
+<p>Soit <span class="math notranslate nohighlight">\(A=(x_1, ..., x_n)\)</span> un ensembl de <em>n</em> réels quelconque.
+On note <span class="math notranslate nohighlight">\(m=med(x_1, ..., x_n)\)</span> la médiane
+de l’ensemble de points <em>A</em>. Alors la médiane <em>m</em>
+minimise la quantité <span class="math notranslate nohighlight">\(\sum_{i=1}^n |m-x_i|\)</span>.</p>
+</div>
+<p>C’est cette propriété qui est utilisée pour définir ce qu’est
+la <a class="reference internal" href="../c_ml/regression_quantile.html#l-reg-quantile"><span class="std std-ref">régression quantile</span></a> et sa démonstration
+est présentée à la page <a class="reference internal" href="../c_ml/regression_quantile.html#l-reg-quantile-demo"><span class="std std-ref">Médiane et valeur absolue</span></a>. Il ne reste
+plus qu’à se servir de ce résultat pour mettre à jour l’algorithme
+<a class="reference internal" href="#kmeans-def-algo"><span class="std std-ref">centre mobile, k-means</span></a>. L’étape qui
+consiste à affecter un point à un cluster représenté par un point
+ne pose pas de problème si on utilise cette nouvelle norme. Il ne reste
+plus qu’à déterminer le point qui représente un cluster sachant
+les points qui le constituent. Autrement dit, il faut déterminer
+le point qui minimiser la pseudo-inertie définie comme suit
+pour un ensemble de points <span class="math notranslate nohighlight">\((X_1, ..., X_n)\)</span> appartenant à un
+espace vectoriel de dimension <em>k</em>.</p>
+<div class="math notranslate nohighlight">
+\[I(G,X_1,...,X_n) = \norm{G - X_i}_1 = \sum_{i=1}^n \sum_{k=1}^d \abs{G_k - X_{ik}}\]</div>
+<p>On cherche le point <em>G</em> qui minimise la quantité <span class="math notranslate nohighlight">\(I(G,X_1,...,X_n)\)</span>.
+Comme <span class="math notranslate nohighlight">\(\sum_{i=1}^n \sum_{k=1}^d \abs{G_k - X_{ik}} = \sum_{k=1}^d \sum_{i=1}^n  \abs{G_k - X_{ik}}\)</span>,
+on en déduit qu’on peut chercher la coordonnée <span class="math notranslate nohighlight">\(G_k\)</span> indépendemment
+les unes des autres. On en déduit
+que le barycentre de norme L1 d’un ensemble de points dans un
+espace vectoriel de dimension <em>d</em> a pour coordonnées les <em>d</em>
+médianes extraites sur chacune des dimensions.
+L’algorithme est implémenté dans le module <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/index.html">mlinsights</a>
+en s’inspirant du code <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">KMeans</a>.</p>
+</section>
+<section id="bibliographie">
+<h2><a class="toc-backref" href="#id39" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="arthur2007" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Arthur2007<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
+<p>k-means++: the advantages of careful seeding (2007),
+<em>Arthur, D.; Vassilvitskii, S.</em>,
+Proceedings of the eighteenth annual ACM-SIAM symposium on Discrete algorithms.
+Society for Industrial and Applied Mathematics Philadelphia, PA, USA. pp. 1027–1035.
+<a class="reference external" href="http://ilpubs.stanford.edu:8090/778/1/2006-13.pdf">2006-13.pdf</a>.</p>
+</div>
+<div class="citation" id="balakrishnan1996" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Balakrishnan1996<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id21">1</a>,<a role="doc-backlink" href="#id22">2</a>)</span>
+<p>Comparative performance of the FSCL neural net and K-means algorithm for market segmentation (1996),
+P. V. Sundar Balakrishnan, Martha Cooper, Varghese S. Jacob, Phillip A. Lewis,
+<em>European Journal of Operation Research</em>, volume 93, pages 346-357</p>
+</div>
+<div class="citation" id="bahmani2012" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">Bahmani2012</a><span class="fn-bracket">]</span></span>
+<p>Scalable K-Means++ (2012),
+<em>Bahman Bahmani, Benjamin Moseley, Andrea Vattani, Ravi Kumar, Sergei Vassilvitskii</em>,
+Proceedings of the VLDB Endowment (PVLDB), Vol. 5, No. 7, pp. 622-633 (2012)
+<a class="reference external" href="http://theory.stanford.edu/~sergei/papers/vldb12-kmpar.pdf">vldb12-kmpar.pdf</a>,
+<a class="reference external" href="https://arxiv.org/abs/1203.6402">arXiv.1203.6402</a></p>
+</div>
+<div class="citation" id="cheung2003" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Cheung2003<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id15">1</a>,<a role="doc-backlink" href="#id16">2</a>)</span>
+<p><span class="math notranslate nohighlight">\(k^*\)</span>-Means: A new generalized k-means clustering algorithm (2003),
+Yiu-Ming Cheung,
+<em>Pattern Recognition Letters</em>, volume 24, 2883-2893</p>
+</div>
+<div class="citation" id="davies1979" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">Davies1979</a><span class="fn-bracket">]</span></span>
+<p>A cluster Separation Measure (1979),
+D. L. Davies, D. W. Bouldin,
+<em>IEEE Trans. Pattern Analysis and Machine Intelligence (PAMI)</em>, volume 1(2)</p>
+</div>
+<div class="citation" id="goodman1954" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">Goodman1954</a><span class="fn-bracket">]</span></span>
+<p>Measures of associations for cross-validations (1954),
+L. Goodman, W. Kruskal,
+<em>J. Am. Stat. Assoc.</em>, volume 49, pages 732-764</p>
+</div>
+<div class="citation" id="herbin2001" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Herbin2001<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id8">1</a>,<a role="doc-backlink" href="#id10">2</a>)</span>
+<p>Estimation of the number of clusters and influence zones (2001),
+M. Herbin, N. Bonnet, P. Vautrot,
+<em>Pattern Recognition Letters</em>, volume 22, pages 1557-1568</p>
+</div>
+<div class="citation" id="kothari1999" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Kothari1999<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id11">1</a>,<a role="doc-backlink" href="#id12">2</a>,<a role="doc-backlink" href="#id13">3</a>,<a role="doc-backlink" href="#id14">4</a>)</span>
+<p>On finding the number of clusters (1999),
+Ravi Kothari, Dax Pitts,
+<em>Pattern Recognition Letters</em>, volume 20, pages 405-416</p>
+</div>
+<div class="citation" id="liu2003" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Liu2003<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id18">1</a>,<a role="doc-backlink" href="#id19">2</a>,<a role="doc-backlink" href="#id20">3</a>)</span>
+<p>Strip line detection and thinning by RPCL-based local PCA (2003),
+Zhi-Yong Liu, Kai-Chun Chiu, Lei Xu,
+<em>Pattern Recognition Letters</em> volume 24, pages 2335-2344</p>
+</div>
+<div class="citation" id="silverman1986" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">Silverman1986</a><span class="fn-bracket">]</span></span>
+<p>Density Estimation for Statistics and Data Analysis (1986),
+B. W. Silverman,
+<em>Monographs on Statistics and Applied Probability, Chapman and Hall, London</em>, volume 26</p>
+</div>
+<div class="citation" id="xu1993" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">Xu1993</a><span class="fn-bracket">]</span></span>
+<p>Rival penalized competitive learning for clustering analysis, rbf net and curve detection (1993),
+L. Xu, A. Krzyzak, E. Oja,
+<em>IEEE Trans. Neural Networks</em>, volume (4), pages 636-649</p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Clustering</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gauss_mixture.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Mélange de lois normales</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principe">Principe</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneite-des-dimensions">Homogénéité des dimensions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ameliorations-de-l-initialisation">Améliorations de l’initialisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#l-kmeanspp">K-means++</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">K-means||</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation-de-probabilites">Estimation de probabilités</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selection-du-nombre-de-classes">Sélection du nombre de classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#critere-de-qualite">Critère de qualité</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maxima-de-la-fonction-densite">Maxima de la fonction densité</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decroissance-du-nombre-de-classes">Décroissance du nombre de classes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-des-nuees-dynamiques">Extension des nuées dynamiques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classes-elliptiques">Classes elliptiques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rival-penalized-competitive-learning-rpcl">Rival Penalized Competitive Learning (RPCL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rpcl-based-local-pca">RPCL-based local PCA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frequency-sensitive-competitive-learning-fscl">Frequency Sensitive Competitive Learning (FSCL)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-norme-l1">k-means norme L1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographie">Bibliographie</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_clus/kmeans.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

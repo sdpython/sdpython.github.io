@@ -1,0 +1,768 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quantization &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_garden/quantization';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Classification multiple" href="../notebooks/dsgarden/classification_multiple.html" />
+    <link rel="prev" title="Le gradient et le discret" href="../notebooks/dsgarden/discret_gradient.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/correlation_non_lineaire.html">Corrélations non linéaires</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="file_dattente.html">File d’attente, un petit exemple</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/dsgarden/file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="strategie_avec_alea.html">Optimisation avec données aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/discret_gradient.html">Le gradient et le discret</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/classification_multiple.html">Classification multiple</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Pérégrinations</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Quantization</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="quantization">
+<span id="l-quantization"></span><h1>Quantization<a class="headerlink" href="#quantization" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#un-probleme-simple" id="id1">Un problème simple</a></p></li>
+<li><p><a class="reference internal" href="#discretisation-sur-un-octet" id="id2">Discrétisation sur un octet</a></p></li>
+<li><p><a class="reference internal" href="#discretisation-sur-une-float-8" id="id3">Discrétisation sur une float 8</a></p></li>
+<li><p><a class="reference internal" href="#optimisation" id="id4">Optimisation</a></p></li>
+</ul>
+</nav>
+<section id="un-probleme-simple">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Un problème simple</a><a class="headerlink" href="#un-probleme-simple" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Les réseaux de neurones (deep learning) sont de plus en plus gros
+et nécessitent de plus en plus de puissance de calcul. La
+<strong>quantization</strong> est une façon de contourner en réduisant
+la mémoire nécessaire pour stocker les coefficients et le
+temps de calcul avec les dernières cartes graphiques.
+La quantization est équivalent à une discrétisation.
+Voir aussi :
+<a class="reference external" href="https://arxiv.org/pdf/2103.13630.pdf">A Survey of Quantization Methods for Efficient
+Neural Network Inference</a>.</p>
+<p>Les produits matriciels sont fréquents dans les réseaux de neurones où
+on multiple les entrées <em>X</em> d’une couche de neurones avec les coefficients
+<em>A</em> : <span class="math notranslate nohighlight">\(X B\)</span>. Lors de l’apprentissage, la matrice B est apprise soit en float 32 bit
+soit en float 16 bit puis elle est discrétisée sur 8 bit, soit 256 valeurs.
+Si on note <em>q(B)</em> la forme <em>discrétisée</em> de <em>B</em>, le plus simple de minimiser
+<span class="math notranslate nohighlight">\(\norm{B - q(B)}^2\)</span>. On pourrait également se pencher sur la minimisation
+de <span class="math notranslate nohighlight">\(X (B - q(B))^2\)</span> mais la matrice <em>X</em> vient des données.
+Il faudrait soit prendre des hypothèses de distribution sur X
+ou optimiser sur un jeu de données <span class="math notranslate nohighlight">\((X_i)_i\)</span>.</p>
+<p>On considère le cas simple qui consiste à minimiser
+<span class="math notranslate nohighlight">\(\norm{B - q(B)}^2\)</span>.</p>
+</section>
+<section id="discretisation-sur-un-octet">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Discrétisation sur un octet</a><a class="headerlink" href="#discretisation-sur-un-octet" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On discrétise sur 256 valeurs espacées de façon régulière sur un intervalle.
+Mais les coefficients ne sont pas tous situés dans un même intervalle.
+On doit alors trouver les meilleurs paramètres <span class="math notranslate nohighlight">\(z\)</span> et <span class="math notranslate nohighlight">\(\lambda\)</span>
+qui définissent la quantization au travers de deux fonctions. On note
+<span class="math notranslate nohighlight">\(c_{0}^{255}(x)=\max(0, \min(255, x))\)</span> la fonction qui <em>x</em>
+dans l’intervalle <em>[0, 255]</em>, 0 à gauche, 255 à droite.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+q_1(z, \lambda, x) &amp;=&amp; c_{0}^{255}\pa{\intf_{i8}{\frac{x}{\lambda}} + z} \text{ quantization}\\
+q_2(z, \lambda, i) &amp;=&amp; \lambda(i - z) \text{ déquantization} \\
+q(z, \lambda, x) &amp;=&amp; q_2(z, \lambda, q_1(z, \lambda, x)) \\
+&amp;=&amp; \lambda\pa{c_{0}^{255}\pa{\intf_{i8}{\frac{x}{\lambda}} + z} - z} \\
+&amp;=&amp; \lambda\intf_{i8,z}{\frac{x}{\lambda}}
+\end{array}\end{split}\]</div>
+<p>La fonction <span class="math notranslate nohighlight">\(\intf_{i8,z}{x}\)</span> est la partie entière asociée à la fonction
+<span class="math notranslate nohighlight">\(c_{0}^{255}(i)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\norm{B - q(z,\lambda,B)}^2 = \sum_{ij} \pa{b_{ij} - \lambda\intf_{i8,z}{\frac{x}{\lambda}}}^2\]</div>
+<p>Le problème est la fonction <span class="math notranslate nohighlight">\(\intf_{i8,z}{.}\)</span> qui n’est pas dérivable.
+C’est un problème d’optimisation discrète. Le paramètre <span class="math notranslate nohighlight">\(\lambda\)</span>
+est appelé <em>scale</em> ou <em>échelle</em>. Il peut y en avoir un ou plusieurs
+mais dans ce cas, on considère les différentes parties de <em>B</em>
+qui sont quantizées avec les mêmes paramètres <span class="math notranslate nohighlight">\(\lambda\)</span> et <em>z</em></p>
+<p>Cette quantization est appelée <em>quantization linéaire</em>. Elle est privilégiée
+car elle est très rapide et la transformation inverse (ou déquantization)
+l’est tout autant.</p>
+</section>
+<section id="discretisation-sur-une-float-8">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Discrétisation sur une float 8</a><a class="headerlink" href="#discretisation-sur-une-float-8" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un float 8 est un réel codé sur 8 bits. Il y a plusieurs variantes.
+Nous allons considérer la version <em>E4M3FN</em>, <span class="math notranslate nohighlight">\(S.1111.111_2\)</span> :</p>
+<ul class="simple">
+<li><p>1 bit pour le signe</p></li>
+<li><p>4 bits pour l’exposant</p></li>
+<li><p>3 bits pour la mantisse</p></li>
+</ul>
+<p>Et la valeur réelle est :</p>
+<ul class="simple">
+<li><p>si l’exposant est nul,
+<span class="math notranslate nohighlight">\((-1)^S 2^{\sum_{i=3}^6 b_i 2^{i-3}- 7}\left(1+\sum_{i=0}^2 b_i 2^{i-3}\right)\)</span></p></li>
+<li><p>sinon <span class="math notranslate nohighlight">\((-1)^S 2^{-6} \sum_{i=0}^2 b_i 2^{i-3}\)</span></p></li>
+<li><p>le réel vaut NaN s’il suit le format : <span class="math notranslate nohighlight">\(S.1111.111_2\)</span> (255 ou 127),</p></li>
+<li><p>le réel vaut zéro s’il suit le format : <span class="math notranslate nohighlight">\(S.0000.000_2\)</span> (0 ou 128)</p></li>
+</ul>
+<p>Les valeurs ne sont plus uniformément espacées mais il y en a toujours entre 252 et 255
+selon les formats de float 8 et on cherche toujours à trouver les meilleurs
+paramètres <span class="math notranslate nohighlight">\(\lambda\)</span> et <em>z</em>. La formule est quasiment la même. On n’arrondit
+plus à l’entier inférieur (ou le plus proche) mais au float 8
+inférieur (ou le plus proche).</p>
+<div class="math notranslate nohighlight">
+\[\norm{B - q(z,\lambda,B)}^2 = \sum_{ij} \pa{b_{ij} - \lambda\intf_{f8,z}{\frac{x}{\lambda}} }^2\]</div>
+</section>
+<section id="optimisation">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Optimisation</a><a class="headerlink" href="#optimisation" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’idée est de traiter la discrétisation sur un ensemble fini de valeurs,
+quel qu’il soit, des entiers ou des réels codés sur 8 bits. On note Cette
+ensemble <span class="math notranslate nohighlight">\((d_1, ..., d_n)\)</span>. On réécrit le problème d’optimisation :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\norm{B - q(z,\lambda,B)}^2 &amp;=&amp; \sum_{ij} \pa{b_{ij} - \lambda\intf_{f8,z}{\frac{x}{\lambda}} }^2 \\
+&amp;=&amp; \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda\intf_{f8}{\frac{x}{\lambda}} }^2
+\indicatrice{\intf_{f8}{\frac{x}{\lambda}} = d_k}
+\end{array}\end{split}\]</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../notebooks/dsgarden/discret_gradient.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Le gradient et le discret</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/dsgarden/classification_multiple.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Classification multiple</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-probleme-simple">Un problème simple</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretisation-sur-un-octet">Discrétisation sur un octet</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretisation-sur-une-float-8">Discrétisation sur une float 8</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimisation">Optimisation</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_garden/quantization.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

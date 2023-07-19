@@ -1,0 +1,1221 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Courbe ROC &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_metric/roc';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="ROC" href="../notebooks/metric/roc_example.html" />
+    <link rel="prev" title="Métriques" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Courbe ROC</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/roc_example.html">ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pvalues.html">Confidence Interval and p-Value</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/pvalues_examples.html">p-values</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Métriques</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Courbe ROC</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="courbe-roc">
+<span id="l-roc-theoritically"></span><h1>Courbe ROC<a class="headerlink" href="#courbe-roc" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#definitions" id="id4">Définitions</a></p></li>
+<li><p><a class="reference internal" href="#aire-sous-la-courbe" id="id5">Aire sous la courbe</a></p>
+<ul>
+<li><p><a class="reference internal" href="#expression" id="id6">Expression</a></p></li>
+<li><p><a class="reference internal" href="#intervalles-de-confiance" id="id7">Intervalles de confiance</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#intervalles-de-confiance-sur-la-courbe" id="id8">Intervalles de confiance sur la courbe</a></p>
+<ul>
+<li><p><a class="reference internal" href="#construction-de-la-courbe-roc" id="id9">Construction de la courbe ROC</a></p></li>
+<li><p><a class="reference internal" href="#methode-boostrap" id="id10">Méthode boostrap</a></p></li>
+<li><p><a class="reference internal" href="#aire-sous-la-courbe-et-intervalles-de-confiance" id="id11">Aire sous la courbe et intervalles de confiance</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#distribution-des-scores-mauvais-et-bons" id="id12">Distribution des scores mauvais et bons</a></p></li>
+<li><p><a class="reference internal" href="#variantes" id="id13">Variantes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#taux-de-lecture-ou-de-reconnaissance" id="id14">Taux de lecture ou de reconnaissance</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#classification-multi-classe" id="id15">Classification multi-classe</a></p></li>
+<li><p><a class="reference internal" href="#exemple" id="id16">Exemple</a></p></li>
+</ul>
+</nav>
+<p id="index-0">Ce document introduit la <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">courbe ROC</a>
+(Receiving Operator Characteristic) qui est communément utilisée pour mesurer
+la performance d’un classifieur. Il introduit aussi des termes comme précision,
+rappel, <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve">AUC</a>,
+qui sont présents dans la plupart des articles qui traitent de machine learning.
+Le module <a class="reference internal" href="../api/modules/roc.html#module-mlstatpy.ml.roc" title="mlstatpy.ml.roc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">roc</span></code></a> implémente les calculs ci-dessous
+qu’on peut tester avec le notebook suivant :</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/metric/roc_example.html">ROC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/roc_example.html#Iris-datasets">Iris datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/roc_example.html#ROC-with-scikit-learn">ROC with scikit-learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/roc_example.html#ROC---TPR-/-FPR">ROC - TPR / FPR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/roc_example.html#ROC---score-distribution">ROC - score distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/metric/roc_example.html#ROC---recall-/-precision">ROC - recall / precision</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="definitions">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Définitions</a><a class="headerlink" href="#definitions" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Supposons que nous avons un classifieur qui classe des observations en un ensemble de
+classes. De plus, il donne cette réponse accompagnée d’un score de pertinence.
+Deux cas sont possibles : soit la réponse est bonne (1), soit la réponse est fausse (0).
+Pour chaque observation, on associe un couple <span class="math notranslate nohighlight">\((r,x)\)</span> où <span class="math notranslate nohighlight">\(r\)</span> est égal à 0 ou 1.
+<span class="math notranslate nohighlight">\(x\)</span> est le score de pertinence. On cherche à déterminer à partir de quel
+seuil de pertinence, la réponse du classifieuur est fiable.
+En faisant varier <span class="math notranslate nohighlight">\(x\)</span>, on obtient une courbe
+(source : <a class="reference external" href="http://en.wikipedia.org/wiki/File:Roccurves.png">wikipedia</a>) :</p>
+<a class="reference internal image-reference" href="../_images/Roccurves.png"><img alt="../_images/Roccurves.png" src="../_images/Roccurves.png" style="width: 300px;" /></a>
+<p>Cette courbe sert également à comparer différents classifieurs.
+Plus une courbe a des valeurs élevées, plus l’aire sous la courbe
+est grande, moins le classifieur fait d’erreur.</p>
+<p>D’une manière simplifiée, le classifieur retourne une réponse qui est soit
+mauvaise (-) soit bonne (+). On peut l’évaluer car pour construire
+un classifier on dispose toujours d’une base contenant les réponses attendues.
+En fonction du score <span class="math notranslate nohighlight">\(x\)</span> et d’un seuil <span class="math notranslate nohighlight">\(s\)</span>, on définit quatre cas :</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>cas</p></th>
+<th class="head"><p>réponse prédite est bonne (+)</p></th>
+<th class="head"><p>réponse prédite est mauvaise (-)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(x \supegal s\)</span></p></td>
+<td><p>TP: vrai (true) positif</p></td>
+<td><p>FP: faux positif</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(x &lt; s\)</span></p></td>
+<td><p>TN: vrai (true) négatif</p></td>
+<td><p>FN: faux négatif</p></td>
+</tr>
+</tbody>
+</table>
+<p>Ces résultats sont souvent présentés selon une matrice confusion :</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>réponse attendue</p></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>TN</p></td>
+<td><p>FP</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>FN</p></td>
+<td><p>TP</p></td>
+</tr>
+</tbody>
+</table>
+<p id="index-1">A partir de ces définitions, on définit :</p>
+<ul class="simple">
+<li><p>la <a class="reference external" href="https://en.wikipedia.org/wiki/Information_retrieval#Precision">précision</a> :
+<span class="math notranslate nohighlight">\(\frac{ TP }{ TP + FP }\)</span></p></li>
+<li><p>le <a class="reference external" href="https://en.wikipedia.org/wiki/Information_retrieval#Recall">rappel ou recall</a> :
+<span class="math notranslate nohighlight">\(\frac{ TP }{ TP + TN }\)</span></p></li>
+</ul>
+<p>En choisissant un seuil relatif au score de pertinence <span class="math notranslate nohighlight">\(x\)</span>,
+au-dessus, on valide la réponse du classifieur, en-dessous,
+on ne la valide pas. On peut toujours calculer la précision et le
+rappel pour toutes les réponses dont le score est au-dessus d’un seuil <span class="math notranslate nohighlight">\(s\)</span>.
+La courbe ROC s’obtient en faisant varier <span class="math notranslate nohighlight">\(s\)</span>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Définition0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="def-roc-2">Définition D1 : Courbe ROC</p>
+<p>On suppose que <span class="math notranslate nohighlight">\(Y\)</span> est la variable aléatoire des scores
+des expériences qui ont réussi.
+<span class="math notranslate nohighlight">\(X\)</span> est celle des scores des expériences qui ont échoué.
+On suppose également que tous les scores sont indépendants.
+On note <span class="math notranslate nohighlight">\(F_Y\)</span> et <span class="math notranslate nohighlight">\(F_X\)</span> les fonctions de répartition de ces variables.
+<span class="math notranslate nohighlight">\(F_Y(s)=\pr{Y \infegal s}\)</span> et <span class="math notranslate nohighlight">\(F_X(s)=\pr{X \infegal s}\)</span>.
+On définit en fonction d’un seuil <span class="math notranslate nohighlight">\(s \in \R\)</span> :</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R(s) = 1 - F_Y(s) = \pr{Y &gt; s}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(E(s) = 1 - F_X(s) = \pr{X &gt; s}\)</span></p></li>
+</ul>
+<p>La courbe ROC est le graphe <span class="math notranslate nohighlight">\(\pa{E(s),R(s)}\)</span> lorsque <span class="math notranslate nohighlight">\(s\)</span> varie dans <span class="math notranslate nohighlight">\(\R\)</span>.</p>
+</div>
+<p><span class="math notranslate nohighlight">\(TP(s)\)</span> désigne les true positifs au-dessus du seuil <span class="math notranslate nohighlight">\(s\)</span>,
+avec les notations <em>TP</em>, <em>FP</em>, <em>FN</em>, <em>TN</em>, cela revient à :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+E(s) &amp;=&amp; 1 - \frac{ TP(s) } { TP(s) + TN(s) } \\
+R(s) &amp;=&amp; 1 - \frac{ FN(s) } { FP(s) + FN(s) }
+\end{eqnarray*}</div><p>On remarque que <span class="math notranslate nohighlight">\(\forall s, \; TP(s) + TN(s)\)</span> est constant.
+De même pour <span class="math notranslate nohighlight">\(FP(s) + FN(s)\)</span>.</p>
+<a class="reference internal image-reference" href="../_images/rocwi.png"><img alt="../_images/rocwi.png" src="../_images/rocwi.png" style="width: 500px;" /></a>
+<p>On remarque que les fonctions <span class="math notranslate nohighlight">\(s \longrightarrow E(s)\)</span>
+et <span class="math notranslate nohighlight">\(s \longrightarrow R(s)\)</span>
+sont décroissantes toutes deux. Elles sont donc inversibles.
+Dans le cas où la variable aléatoire <span class="math notranslate nohighlight">\(\theta\)</span> est indépendante de
+la variable <span class="math notranslate nohighlight">\(X\)</span>, la courbe ROC est une droite reliant les points
+<span class="math notranslate nohighlight">\((0,0)\)</span> et <span class="math notranslate nohighlight">\((1-p,p)\)</span> où <span class="math notranslate nohighlight">\(p = \pr{\theta=1}\)</span>.
+Ceci signifie que la connaissance du score <span class="math notranslate nohighlight">\(X\)</span>
+n’apporte pas d’information quant à la réussite de l’expérience.</p>
+<p>Il peut paraître complexe de distinguer la réponse et le score du classifieur.
+C’est pourtant nécessaire dans le cas où le classifieur retourne un entier
+qui désigne une classe parmi <span class="math notranslate nohighlight">\(n\)</span>. Un cas positif est lorsque la
+classe prédite est égale à la classe attendue, il est négatif dans le
+cas contraire. La courbe peut être adaptée pour d’autres problèmes
+tels que le ranking (voir <a class="reference internal" href="#agarwal2005" id="id2"><span>[Agarwal2005]</span></a>).</p>
+<p>Une autre façon de l’exprimer car je ne retiens jamais la définition
+des FP, TP, FN, TN… Pour quelqu’un qui doit réfléchir trois secondes
+à chaque fois qu’on me demande où est la gauche, ce n’est jamais
+évident.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+N_+ &amp;=&amp; \sum_{i=1}^n \indicatrice{y_i == 1}\\
+TPR(s) &amp;=&amp; \frac{1}{N_+}\sum_{i=1}^n \indicatrice{score(X_i) \geqslant s}\indicatrice{y_i == 1}\\
+FPR(s) &amp;=&amp; \frac{1}{1 - N_+}\sum_{i=1}^n \indicatrice{score(X_i) \geqslant s}\indicatrice{y_i \neq 1}
+\end{array}\end{split}\]</div>
+<p><em>x = FPR(s), y = TPR(s)</em>. (FPR = False Positive Rate, TPR = True Positive Rate)</p>
+<a class="reference internal image-reference" href="../_images/rocwi2.png"><img alt="../_images/rocwi2.png" src="../_images/rocwi2.png" style="width: 300px;" /></a>
+</section>
+<section id="aire-sous-la-courbe">
+<span id="index-2"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Aire sous la courbe</a><a class="headerlink" href="#aire-sous-la-courbe" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="expression">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Expression</a><a class="headerlink" href="#expression" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’aire sous la courbe (AUC) correspond à l’intégrale de la fonction ROC.
+Elle se calcule à partir du théorème suivant :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<p class="admonition-title">Théorème T1 : Aire sous la courbe (AUC)</p>
+<p>On utilise les notations de la définition de la <a class="reference internal" href="#def-roc-2"><span class="std std-ref">Courbe ROC</span></a>.
+L’aire sous la courbe ROC est égale à <span class="math notranslate nohighlight">\(\pr{ Y &gt; X}\)</span>.</p>
+</div>
+<p><strong>Rappel</strong></p>
+<p>Soit <span class="math notranslate nohighlight">\(X\)</span> une variable aléatoire de densité <span class="math notranslate nohighlight">\(f\)</span> et
+de fonction de répartition <span class="math notranslate nohighlight">\(F\)</span>. Si <span class="math notranslate nohighlight">\(U = F(X)\)</span>, alors :</p>
+<div class="math notranslate nohighlight">
+\[\pr{ U \infegal t} = \pr{ F(X) \infegal t} =
+\pr{ X \infegal F^{-1}(t)} = F \pa{ F^{-1}(t) } = t\]</div>
+<p>La variable <span class="math notranslate nohighlight">\(U\)</span> est de loi uniforme sur <span class="math notranslate nohighlight">\(\cro{0,1}\)</span>.
+De plus, soit <span class="math notranslate nohighlight">\(g\)</span> une fonction intégrable quelconque, on pose <span class="math notranslate nohighlight">\(u = F(x)\)</span> et :</p>
+<div class="math notranslate nohighlight">
+\[\int_{\R} g(x) \, f(x) \,dx = \int_{\cro{0,1}} g(F^{-1}(u)) \, du\]</div>
+<p><strong>Démonstration</strong></p>
+<p>On note <span class="math notranslate nohighlight">\(f_X\)</span> la densité de la variable <span class="math notranslate nohighlight">\(X\)</span> et <span class="math notranslate nohighlight">\(f_Y\)</span>
+celle de la variable <span class="math notranslate nohighlight">\(Y\)</span>. On peut alors définir la probabilité
+<span class="math notranslate nohighlight">\(\pr{ Y &gt; X}\)</span> par une intégrale :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+P \pa{Y&gt;X} &amp;=&amp; \int_x \int_y f_X(x) \; f_Y(y) \; \indicatrice{y &gt; x} dx dy
+\end{eqnarray*}</div><p>On note <span class="math notranslate nohighlight">\(F_X\)</span> la fonction de répartition de
+<span class="math notranslate nohighlight">\(X\)</span> soit <span class="math notranslate nohighlight">\(F_X(x) = \int_{-\infty}^x f_X(u)du\)</span>.
+On pose comme changement de variable : <span class="math notranslate nohighlight">\(u = F_X(x)\)</span>.
+On en déduit que <span class="math notranslate nohighlight">\(du = f_X(x) dx\)</span>. La variable aléatoire <span class="math notranslate nohighlight">\(U = F_X(X)\)</span>
+est uniforme et comprise dans <span class="math notranslate nohighlight">\(\cro{0,1}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+P \pa{Y&gt;X} &amp;=&amp; \int_x f_X(x) dx \int_y  \; f_Y(y) \; \indicatrice{y &gt; x} dy  \\
+&amp;=&amp; \int_u du \int_y  \; f_Y(y) \; \indicatrice{y &gt; F_X^{-1}(u)} dy   \\
+&amp;=&amp; \int_u du \; \pr{Y &gt; F_X^{-1}(u)} \nonumber
+\end{eqnarray*}</div><p>Or si <span class="math notranslate nohighlight">\(u = F_X(s) = E(s)\)</span>, alors <span class="math notranslate nohighlight">\(F_X^{-1}(u) = s\)</span>
+et <span class="math notranslate nohighlight">\(\pr{Y &gt; F_X^{-1}(u)} = R'(s)\)</span>. Par conséquent :</p>
+<div class="math notranslate nohighlight">
+\[P \pa{Y&gt;X} = \int_u du \; \pr{Y &gt; F_X^{-1}(u)} = \int_u du \; R'(F_X^{-1}(u))\]</div>
+<p id="index-3">Cette dernière expression est l’aire recherchée.
+Ce théorème nous permet de définir un estimateur pour l’aire sous
+la courbe ROC à l’aide des <a class="reference external" href="https://en.wikipedia.org/wiki/U-statistic">U-statistiques</a>
+de <a class="reference external" href="https://fr.wikipedia.org/wiki/Test_de_Wilcoxon-Mann-Whitney">Mann-Whitney</a>
+(voir <a class="reference internal" href="#saporta1990" id="id3"><span>[Saporta1990]</span></a>).</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Corollaire0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="corollaire-roc-2">Corollaire C1 : Estimateur de l’aire sous la courbe ROC</p>
+<p>On dispose des scores <span class="math notranslate nohighlight">\(\vecteur{Y_1}{Y_n}\)</span> des expériences qui ont réussi
+et <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_m}\)</span> les scores des expériences qui ont échoué.
+On suppose également que tous les scores sont indépendants.
+Les scores <span class="math notranslate nohighlight">\((Y_i)\)</span> sont identiquement distribués,
+il en est de même pour les scores <span class="math notranslate nohighlight">\((X_i)\)</span>.
+Un estimateur de l’aire <span class="math notranslate nohighlight">\(A\)</span> sous la courbe ROC” est :</p>
+<div class="math notranslate nohighlight" id="equation-estimateur-roc">
+<span class="eqno">(1)<a class="headerlink" href="#equation-estimateur-roc" title="Lien permanent vers cette équation">#</a></span>\[\hat{A} = \frac{1}{nm} \; \sum_{i=1}^{m}\sum_{j=1}^{n}
+\pa{\indicatrice{ Y_j &gt; X_i} + \frac{1}{2} \indicatrice{ Y_j = X_i}}\]</div>
+</div>
+<p><strong>Démonstration</strong></p>
+<p>La démonstration est évidente :</p>
+<div class="math notranslate nohighlight">
+\[\esp\pa{\hat{A}} = \frac{1}{nm} \; \sum_{i=1}^{m}\sum_{j=1}^{n}
+\pa{\pr{ Y_j &gt; X_i} + \frac{1}{2} \pr{X_i=Y_j}} =
+\pr{ Y &gt; X} + \frac{1}{2}\pr{ Y = X}\]</div>
+<p>Dans le cas où <span class="math notranslate nohighlight">\(X\)</span> ou <span class="math notranslate nohighlight">\(Y\)</span> sont continues, <span class="math notranslate nohighlight">\(\pr{X=Y} = 0\)</span>.</p>
+</section>
+<section id="intervalles-de-confiance">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Intervalles de confiance</a><a class="headerlink" href="#intervalles-de-confiance" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Il est possible de déterminer un intervalle de confiance pour cet estimateur.
+Le théorème central limite nous permet de dire que cet estimateur tend vers
+une loi normale lorsque <span class="math notranslate nohighlight">\(n\)</span> et <span class="math notranslate nohighlight">\(m\)</span> tendent vers l’infini.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Corollaire1">
+<p class="admonition-title">Corollaire C2 : Variance de l’estimateur AUC</p>
+<p>On note <span class="math notranslate nohighlight">\(P_X = \pr{ X &lt; \min\acc{Y_i,Y_j }}\)</span> et <span class="math notranslate nohighlight">\(P_Y = \pr { \max\acc{X_i,X_j} &lt; Y}\)</span>.
+<span class="math notranslate nohighlight">\(X_i\)</span> et <span class="math notranslate nohighlight">\(X_j\)</span> sont de même loi que <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(Y_i\)</span>, <span class="math notranslate nohighlight">\(Y_j\)</span> sont de même loi que <span class="math notranslate nohighlight">\(Y\)</span>.
+La variance de l’estimateur <span class="math notranslate nohighlight">\(\hat{A}\)</span> définie par <a class="reference internal" href="#equation-estimateur-roc">(1)</a> est :</p>
+<div class="math notranslate nohighlight">
+\[\var{\hat{A}} = \frac{ \hat{A} (1-\hat{A})}{nm} \; \cro{
+1 + (n-1) \frac { P_Y  - \hat{A}^2 } { \hat{A} (1-\hat{A}) } +
+(m-1) \frac { P_X - \hat{A}^2 } { \hat{A} (1-\hat{A}) } }\]</div>
+</div>
+<p><strong>Démonstration</strong></p>
+<p>Cette démonstration n’est vraie que dans le cas continu.
+Par conséquent, <span class="math notranslate nohighlight">\(\pr{X=Y} = 0\)</span>. On calcule tout d’abord <span class="math notranslate nohighlight">\(\esp{\hat{A}^2}\)</span>
+et on utilise le fait que <span class="math notranslate nohighlight">\(\var{\hat{A}} = \esp\pa{\hat{A}^2} - \hat{A}^2\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\hat{A}^2 = \frac{1}{n^2 m^2}  \cro{ \sum_{i=1}^{m}\sum_{j=1}^{n} \indicatrice{ X_i &lt; Y_j} } ^2
+= \frac{1}{n^2 m^2} \sum_{i=1}^{m}\sum_{j=1}^{n}\sum_{k=1}^{m}\sum_{l=1}^{n}
+\indicatrice{ X_i &lt; Y_j}  \indicatrice{ X_k &lt; Y_l}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+\hat{A}^2 &amp;=&amp; \frac{1}{n^2 m^2} \sum_{i=1}^{m}\sum_{j=1}^{n} \indicatrice{ X_i &lt; Y_j} \\
+&amp;&amp; + \frac{1}{n^2 m^2}  \sum_{i=1}^{m}\sum_{j=1}^{n}\sum_{k \neq i} \indicatrice{ X_i &lt; Y_j}  \indicatrice{ X_k &lt; Y_j} \\
+&amp;&amp; + \frac{1}{n^2  m^2} \sum_{i=1}^{m}\sum_{j=1}^{n}\sum_{l \neq j} \indicatrice{ X_i &lt; Y_j}  \indicatrice{ X_i &lt; Y_l}  \\
+&amp;&amp; +\frac{1}{n^2  m^2} \sum_{i=1}^{m}\sum_{j=1}^{n}\sum_{k \neq i}\sum_{l \neq j} \indicatrice{ X_i &lt; Y_j}  \indicatrice{ X_k &lt; Y_l}
+\end{array}\end{split}\]</div>
+<p>On en déduit que :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\esp{\hat{A}^2} &amp;=&amp;    \frac{\hat{A}}{nm} + \frac{n-1 }{nm} \; \pr{ \max\acc{X_i,X_k} &lt; Y_j}  + \nonumber \\ &amp;&amp;
+\frac{m-1 }{nm} \;  \pr{ X_i &lt; \min\acc{Y_j,Y_l}} +  \frac{nm-n-m-1 }{n m} \;  \hat{A}^2 \\
+\var{\hat{A}^2} &amp;=&amp;    \frac{1}{nm} \cro{ \hat{A} + (n-1) P_Y + (m-1) P_X - (n+m+1) \hat{A}^2 } \nonumber \\
+&amp;=&amp;    \frac{1}{nm} \cro{ \hat{A} + (n-1) \pa{P_Y - \hat{A}^2}+ (m-1) \pa{P_X - \hat{A}^2} + \hat{A}^2 }
+\end{eqnarray*}</div><p>On retrouve l’expression cherchée.</p>
+</section>
+</section>
+<section id="intervalles-de-confiance-sur-la-courbe">
+<span id="roc-confiance-inter"></span><h2><a class="toc-backref" href="#id8" role="doc-backlink">Intervalles de confiance sur la courbe</a><a class="headerlink" href="#intervalles-de-confiance-sur-la-courbe" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Les systèmes de reconnaissance sont souvent ajustés de telle manière
+que le taux d’erreur soit constant, par exemple 1%. C’est la proportion de documents
+reconnus qui détermine la performance de ce système. L’objectif ce paragraphe
+est de déterminer un intervalle de confiance du taux de reconnaissance
+pour un taux d’erreur fixé.</p>
+<section id="construction-de-la-courbe-roc">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Construction de la courbe ROC</a><a class="headerlink" href="#construction-de-la-courbe-roc" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Ce premier paragraphe détaille la manière dont
+est construite une courbe ROC (voir <a class="reference internal" href="#def-roc-2"><span class="std std-ref">Courbe ROC</span></a>).</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="algo-courb-roc">Algorithme A1 : Calcul de la courbe ROC</p>
+<p>On suppose qu’on dispose d’un ensemble de points <span class="math notranslate nohighlight">\(\pa{X_i,\theta_i}
+\in \R \times \acc{0,1}\)</span> pour <span class="math notranslate nohighlight">\(i \in \ensemble{1}{n}\)</span>.
+<cite>X_i</cite> est le score obtenu pour l’expérience <span class="math notranslate nohighlight">\(i\)</span>,
+<cite>theta_i</cite> vaut 1 si elle a réussi et 0 si elle a échoué.
+On suppose également que cette liste est triée par ordre croissant :
+<cite>forall i, ; X_i infegal X_{i+1}</cite>.
+On souhaite également tracer <span class="math notranslate nohighlight">\(k\)</span> points sur la courbe, on détermine pour cela <span class="math notranslate nohighlight">\(k\)</span> seuils
+<cite>ensemble{s_1}{s_k}</cite> définis par : <span class="math notranslate nohighlight">\(\forall j, s_k = X_{\frac{j \, k}{n}}\)</span>.</p>
+<p>On construit ensuite les points <span class="math notranslate nohighlight">\(\pa{R_j,E_j}\)</span> définis par :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+R_j &amp;=&amp; \frac{1}{n}\,  \sum_{i=1}^{n} \theta_i \indicatrice{X_i \supegal s_j} \text{ et }
+E_j = \frac{1}{n}  \, \sum_{i=1}^{n} \pa{1-\theta_i} \; \indicatrice{X_i \supegal s_j}
+\end{eqnarray*}</div><p>La courbe ROC est composée de l’ensemble <span class="math notranslate nohighlight">\(R_{OC} = \acc{ \pa{E_j,R_j} | 1 \infegal j \infegal k}\)</span>.</p>
+</div>
+<p>Les deux suites <span class="math notranslate nohighlight">\((R_j)_j\)</span> et <span class="math notranslate nohighlight">\((E_j)_j\)</span> sont toutes les deux décroissantes
+d’après leur définition. La courbe peut être rendue continue par interpolation.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Définition1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="algo-courb-taux-lin">Définition D2 : taux de classification à erreur fixe</p>
+<p>On cherche un taux de reconnaissance pour un taux d’erreur donné.
+On dispose pour cela d’une courbe ROC obtenue par
+l’algorithme de la <a class="reference internal" href="#algo-courb-roc"><span class="std std-ref">courbe ROC</span></a> et définie par les points
+<span class="math notranslate nohighlight">\(R_{OC} = \acc{ \pa{e_j,r_j} | 1 \infegal j \infegal k}\)</span>.
+On suppose ici que <span class="math notranslate nohighlight">\(\pa{e_1,r_1} = \pa{1,1}\)</span> et <span class="math notranslate nohighlight">\(\pa{e_k,r_k} = \pa{0,}\)</span>.
+Si ce n’est pas le cas, on
+ajoute ces valeurs à l’ensemble <span class="math notranslate nohighlight">\(R_{OC}\)</span>.</p>
+<p>Pour un taux d’erreur donné <span class="math notranslate nohighlight">\(e^*\)</span>, on cherche <span class="math notranslate nohighlight">\(j^*\)</span> tel que :</p>
+<div class="math notranslate nohighlight">
+\[e_{j^*+1} \infegal e^* \infegal e_{j^*}\]</div>
+<p>Le taux de reconnaissance <span class="math notranslate nohighlight">\(\rho\)</span> cherché est donné par :</p>
+<div class="math notranslate nohighlight">
+\[\rho =  \frac{e^* - x_{j^*}} { x_{j^*+1} - x_{j^*} } \; \cro{ r_{j^*+1} - r_{j^*} } + r_{j^*}\]</div>
+</div>
+<p>Il ne reste plus qu’à détailler la méthode <em>bootstrap</em>.</p>
+</section>
+<section id="methode-boostrap">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Méthode boostrap</a><a class="headerlink" href="#methode-boostrap" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-4">Une seule courbe ROC ne permet d’obtenir qu’un seul taux. On cherche ici à
+construire plusieurs courbes ROC à partir de la même expérience de façon à
+obtenir plusieurs taux de reconnaissance pour le même taux d’erreur.
+De cette manière, il sera possible de déterminer un intervalle de confiance.
+On s’inspire pour cela des méthodes de <a class="reference external" href="https://fr.wikipedia.org/wiki/Bootstrap_(statistiques)">bootstrap</a>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="roc-boostrap-algo">Algorithme A2 : Courbe ROC, méthode boostrap</p>
+<p>On dispose toujours du nuage de points
+<span class="math notranslate nohighlight">\(E = \pa{X_i,\theta_i} \in \R \times \acc{0,1}\)</span> avec <span class="math notranslate nohighlight">\(i \in \ensemble{1}{n}\)</span>.
+On choisit <span class="math notranslate nohighlight">\(C \in \N\)</span> le nombre de courbes ROC qu’on désire tracer.
+Pour chaque courbe <span class="math notranslate nohighlight">\(c \in \ensemble{1}{C}\)</span> :</p>
+<ul class="simple">
+<li><p>On construit un nouvel ensemble <span class="math notranslate nohighlight">\(\pa{X'_i,\theta'_i}_{1 \infegal i \infegal n}\)</span>
+construit par un tirage aléatoire dans l’ensemble <span class="math notranslate nohighlight">\(E\)</span> avec remise.</p></li>
+<li><p>L’algorithme de la <a class="reference internal" href="#algo-courb-roc"><span class="std std-ref">courbe ROC</span></a> permet de constuire la courbe <span class="math notranslate nohighlight">\(R_{OC}^k\)</span>.</p></li>
+<li><p>L’algorithme de <a class="reference internal" href="#algo-courb-taux-lin"><span class="std std-ref">taux de classification à erreur fixe</span></a> permet ensuite de déterminer
+un taux de reconnaissance <span class="math notranslate nohighlight">\(\rho_k\)</span> pour le taux d’erreur <span class="math notranslate nohighlight">\(e^*\)</span>.</p></li>
+</ul>
+<p>La liste <span class="math notranslate nohighlight">\(\vecteur{\rho_1}{\rho_C}\)</span> est triée par ordre croissant.
+Les quantiles sont ensuite utilisés pour
+déterminer l’intervalle de confiance <span class="math notranslate nohighlight">\(\cro{\rho_1,\rho_2}\)</span>
+du taux de reconnaissance  pour le taux d’erreur <span class="math notranslate nohighlight">\(e^*\)</span> de telle sorte que :</p>
+<div class="math notranslate nohighlight">
+\[\pr{ \rho \in \cro{ \rho_1, \rho_2 } } = 1 - \alpha\]</div>
+<p>On prend généralement <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>.</p>
+</div>
+<p>Cet algorithme aboutit aux résultats suivants :</p>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="../_images/roc_1.png"><img alt="../_images/roc_1.png" src="../_images/roc_1.png" style="width: 300px;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/roc_3.png"><img alt="../_images/roc_3.png" src="../_images/roc_3.png" style="width: 300px;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/roc_100.png"><img alt="../_images/roc_100.png" src="../_images/roc_100.png" style="width: 300px;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>La première image est celle d’une courbe ROC (l’axe des abscisses est inversé),
+la seconde représente toutes celles obtenues par la
+méthode bootstrap pour trois courbes. La troisième image superpose cent courbes.
+Moins il y a de points pour estimer une partie de la courbe,
+plus les courbes sont espacées. Ces courbes ont été construites avec 12000 points.
+Le taux de lecture pour 1% d’erreur est égal à 68,09%.
+L’intervalle de confiance à 95% est
+[66,10%; 70,16%] (construit avec 500 courbes).
+Moyenne (68,25) et médiane (68,12) sont sensiblement égales au taux calculé sur la première courbe
+construite sans tirage aléatoire. L’écart-type est <span class="math notranslate nohighlight">\(1,10\)</span>, cela donne un intervalle de confiance
+équivalent au précédent si on considère que la moyenne des taux suit asymptotiquement une loi normale.
+Cette expérience a été reproduite plusieurs fois
+et ces bornes sont assez stables contrairement (<cite>pm 0,05 %</cite>) aux extremas
+(<cite>pm 1%</cite>).</p>
+</section>
+<section id="aire-sous-la-courbe-et-intervalles-de-confiance">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Aire sous la courbe et intervalles de confiance</a><a class="headerlink" href="#aire-sous-la-courbe-et-intervalles-de-confiance" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>La méthode bootstrap peut elle aussi être appliquée pour
+calculer un intervalle de confiance pour l’aire sous la courbe (AUC).</p>
+<a class="reference internal image-reference" href="../_images/roc_p100.png"><img alt="../_images/roc_p100.png" src="../_images/roc_p100.png" style="width: 300px;" /></a>
+<p>Courbe ROC (l’axe des abscisse est inversé) obtenue pour 100 tirages aléatoires.
+L’aire sous la courbe est égale à 0.80 et l’intervalle de confiance à 95%
+mesurée par la méthode bootsrap
+est : <span class="math notranslate nohighlight">\(\cro{0.79 , \; 0.80}\)</span>.
+Les extremas sont presque identiques à ces chiffres.</p>
+</section>
+</section>
+<section id="distribution-des-scores-mauvais-et-bons">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Distribution des scores mauvais et bons</a><a class="headerlink" href="#distribution-des-scores-mauvais-et-bons" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On appelle un mauvais score un score associé à un mauvais résultat,
+de même, un bon score est le score d’un bon résultat. Si le score est une probabilité,
+on s’attend à trouver les bons scores regroupés autour de la valeur 1. Si
+le score est un mauvais score, il devrait être plus proche de zéro. La figure  qui suit
+montre des distributions obtenues pour deux problèmes différents.
+Dans les deux cas, le but recherché est la détermination d’un seuil séparant
+le score d’un bon résultat de celui d’un mauvais résultat. Lorsque ceci n’est pas
+possible, le score ne peut correspondre à un quelconque critère confiance.</p>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="../_images/score_dist_1.png"><img alt="../_images/score_dist_1.png" src="../_images/score_dist_1.png" style="width: 400px;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/score_dist_2.png"><img alt="../_images/score_dist_2.png" src="../_images/score_dist_2.png" style="width: 400px;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>La première courbe montre deux distributions
+qui se chevauchent même si les bons scores semblent plus concentrés autour des grandes valeurs.
+Le seconde courbe montre un problème mieux séparable. L’existence d’un seuil
+entre un bon et un mauvais score est plus plausible.</p>
+</section>
+<section id="variantes">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Variantes</a><a class="headerlink" href="#variantes" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="taux-de-lecture-ou-de-reconnaissance">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Taux de lecture ou de reconnaissance</a><a class="headerlink" href="#taux-de-lecture-ou-de-reconnaissance" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Il n’existe pas une grande différence lorsque le taux d’erreur
+est faible. Le taux de lecture est simplement la proportion de
+documents pour lesquels le score est aussi d’un seuil <span class="math notranslate nohighlight">\(s\)</span>
+que la réponse du classifieur soit bonne ou mauvaise. Par exemple,
+pour un taux de <em>substitution</em> de 1%, si on a 70% en taux de lecture,
+cela signifie que sur 100 documents, le système va en accepter 70 et
+parmi ces 70, 1% seront mal traités. Le taux de substitution est un
+taux d’erreur rapporté à un taux de lecture donné. L’inconvénient du taux de
+lecture rapporté au taux de substitution est que la méthode développée au
+paragraphe <a class="reference internal" href="#roc-confiance-inter"><span class="std std-ref">Intervalles de confiance sur la courbe</span></a> ne s’applique plus aussi bien car
+pour un taux de substitution donné, il peut exister plusieurs taux
+de lecture.</p>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="../_images/lecture_5_curve.png"><img alt="../_images/lecture_5_curve.png" src="../_images/lecture_5_curve.png" style="width: 400px;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/lecture_intervalle.png"><img alt="../_images/lecture_intervalle.png" src="../_images/lecture_intervalle.png" style="width: 400px;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p>La première image montre 5 courbes taux de lecture / taux de substitutions.
+Les courbes ne sont pas monotones et montre qu’il existe parfois plusieurs taux de
+lecture pour un même taux de substitution. Comme le calcul des intervalles de confiance
+fait intervenir une interpolation linéaire, lorsque les courbes sont trop cahotiques,
+le calcul retourne des valeurs fausses.</p>
+<p>On peut démontrer que la courbe taux de lecture / taux de substitution
+n’est pas une courbe ni monotone ni inversible. Pour cela on dispose d’une
+suite de couple <span class="math notranslate nohighlight">\(\pa{X_i, \theta_i}\)</span> croissante selon les
+<span class="math notranslate nohighlight">\(X_i\)</span>. <span class="math notranslate nohighlight">\(\theta_i\)</span> vaut 1 si l’expérience a réussi, 0 sinon.
+Pour un seuil donné <span class="math notranslate nohighlight">\(s\)</span>, on note <span class="math notranslate nohighlight">\(E'(s)\)</span> le taux de substitution et
+<span class="math notranslate nohighlight">\(R'(s)\)</span> le taux de lecture, on obtient :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+R'(s) &amp;=&amp; \frac{1}{n} \sum_{i=1}^{n} \indicatrice{X_i \supegal s} \\
+E'(s) &amp;=&amp; \frac{1}{n \, R'(s)} \sum_{i=1}^{n} \pa{1 - \theta_i} \, \indicatrice{X_i \supegal s}
+\end{eqnarray*}</div><p>On écrit différemment ces expressions en supposant que <span class="math notranslate nohighlight">\(X_{i(s_1)-1} &lt; s_1 \infegal X_{i(s_1)} :math:\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+R'(s_1) &amp;=&amp; \frac{n-i(s_1)}{n} \\
+E'(s_1) &amp;=&amp; \frac{1}{n - i(s_1)} \sum_{i=i(s_1)}^{n} \pa{1 - \theta_i}
+\end{eqnarray*}</div><p>On suppose maintenant que <span class="math notranslate nohighlight">\(X_{i(s_2)-1} &lt; s_2 \infegal X_{i(s_2)} :math:\)</span>
+et <span class="math notranslate nohighlight">\(i(s_1) +1 = i(s_2)\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+R'(s_2) &amp;=&amp; \frac{n-i(s_2)}{n} &lt; R'(s_1) \\
+E'(s_2) &amp;=&amp; \frac{1}{n - i(s_2)} \sum_{i=i(s_2)}^{n} \pa{1 - \theta_i} =
+                        \frac{1}{n - i(s_2)} \frac{n - i(s_1)}{n - i(s_1)}
+                        \pa{ - \pa{1 - \theta_{i(s_1)}} + \sum_{i=i(s_1)}^{n} \pa{1 - \theta_i} } \\
+                &amp;=&amp; - \frac{ \pa{1 - \theta_{i(s_1)}} } { n - i(s_2) } +
+                                \frac{  \sum_{i=i(s_1)}^{n} \pa{1 - \theta_i} } { n - i(s_1)} \frac{ n - i(s_1) } {n - i(s_2) }
+                        = - \frac{ \pa{1 - \theta_{i(s_1)}} } { n - i(s_2) } + E'(s_1) \frac{ n - i(s_1) } {n - i(s_2) }
+\end{eqnarray*}</div><p>Si on suppose que <span class="math notranslate nohighlight">\(\theta_{i(s_1)}=1\)</span>,
+autrement dit, l’expérience <span class="math notranslate nohighlight">\(s_1\)</span> a réussi, on en déduit que :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+E'(s_2) &amp;=&amp; E'(s_1) \frac{ n - i(s_1) } {n - i(s_2) } = E'(s_1) \frac{ n - i(s_2) + 1 } {n - i(s_2) } &gt; E'(s_1)
+\end{eqnarray*}</div><p>En revanche si <span class="math notranslate nohighlight">\(\theta_i = 0\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+E'(s_2) &amp;=&amp;  E'(s_1) \pa{ 1 +  \frac{ 1 } {n - i(s_2) } } - \frac{1}{n - i(s_2)} =
+                            E'(s_1) + \frac{ E(s_1) -1}{n - i(s_2) } &lt; E'(s_1)
+\end{eqnarray*}</div><p>Il n’existe donc pas toujours une fonction <span class="math notranslate nohighlight">\(f\)</span> reliant <span class="math notranslate nohighlight">\(R'(s)\)</span> à <span class="math notranslate nohighlight">\(E'(s)\)</span>
+à moins de construire cette courbe de telle sorte qu’elle soit monotone en
+ne choisissant qu’une sous-suite <span class="math notranslate nohighlight">\(\pa{E'(X_i), R'(X_i)}_i\)</span> qui vérifie cette hypothèse.</p>
+</section>
+</section>
+<section id="classification-multi-classe">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Classification multi-classe</a><a class="headerlink" href="#classification-multi-classe" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Une courbe ROC se construit avec deux informations : une réponse binaire
+et un score. Que signifie cette réponse binaire ? Elle peut être :</p>
+<ol class="arabic simple">
+<li><p>Le fait que le prédicteur ait bien prédit une classe en particulier.
+Le score associé est celui que le prédicteur donne pour cette classe.</p></li>
+<li><p>Le fait que le prédicteur ait bien prédit,
+c’est-à-dire que la réponse binaire signifie que la classe prédite
+est la classe attendue, le score associé est celui de la classe prédite,
+c’est-à-dire le score maximum obtenu pour l’une des classes.</p></li>
+</ol>
+<p>Plus formellement, le prédicteur retourne un vecteur <span class="math notranslate nohighlight">\(S_i\)</span> qui contient
+les probabilités d’appartenance à toutes les classes aussi appelées
+plus généralement score de confiance ou juste score.
+<span class="math notranslate nohighlight">\(S_i(c)\)</span> est la probabilité de prédire la classe <span class="math notranslate nohighlight">\(c\)</span>.
+La classe attendue est notée <span class="math notranslate nohighlight">\(y_i\)</span>, c’est celle que le prédicteur doit prédire.
+Dans le premier cas, on construit le couple <span class="math notranslate nohighlight">\((b_i, s_i)\)</span> de telle sorte que :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{l} b_i = 1 \; si \; y_i = c \; sinon \; 0 \\ s_i = S_i(c) \end{array}\end{split}\]</div>
+<p>Dans le second cas :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{l} b_i = 1 \; si \; \max S_i = S_i(y_i) \; sinon \; 0 \\ s_i = \max S_i \end{array}\end{split}\]</div>
+<p>Le premier cas correspond par exemple à des problèmes de
+<a class="reference external" href="https://en.wikipedia.org/wiki/Predictive_analytics#Fraud_detection">détection de fraude</a>.
+Le second cas correspond à taux de classification global. La courbe ROC
+pour ce cas est en règle général moins bonne que la plupart des
+courbes ROC obtenues pour chacune des classes prise séparément
+(voir <a class="reference external" href="http://www.xavierdupre.fr/app/papierstat/helpsphinx/notebooks/wines_color.html">Régression logistique</a>).</p>
+</section>
+<section id="exemple">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Exemple</a><a class="headerlink" href="#exemple" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Voir <a class="reference external" href="http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/antiseches/ml_basic/plot_regression.html#sphx-glr-antiseches-ml-basic-plot-roc-py">ROC</a>.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="agarwal2005" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Agarwal2005</a><span class="fn-bracket">]</span></span>
+<p>Generalization Bounds for the Area Under the ROC Curve (2005),
+Shivani Agarwal, Thore Graepel, Ralf Herbich, Sariel Har-Peled, Dan Roth
+<em>Journal of Machine Learning Research, volume 6, pages 393-425</em></p>
+</div>
+<div class="citation" id="saporta1990" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Saporta1990</a><span class="fn-bracket">]</span></span>
+<p>Probabilités, analyse des données et statistique (1990),
+Gilbert Saporta, <em>Editions Technip</em></p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Métriques</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/metric/roc_example.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">ROC</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">Définitions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aire-sous-la-courbe">Aire sous la courbe</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expression">Expression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intervalles-de-confiance">Intervalles de confiance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intervalles-de-confiance-sur-la-courbe">Intervalles de confiance sur la courbe</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construction-de-la-courbe-roc">Construction de la courbe ROC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#methode-boostrap">Méthode boostrap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aire-sous-la-courbe-et-intervalles-de-confiance">Aire sous la courbe et intervalles de confiance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-des-scores-mauvais-et-bons">Distribution des scores mauvais et bons</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variantes">Variantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#taux-de-lecture-ou-de-reconnaissance">Taux de lecture ou de reconnaissance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-multi-classe">Classification multi-classe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exemple">Exemple</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_metric/roc.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

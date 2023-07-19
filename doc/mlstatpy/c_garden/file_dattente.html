@@ -1,0 +1,1096 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>File d’attente, un petit exemple &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_garden/file_dattente';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="File d’attente, un exemple simple" href="../notebooks/dsgarden/file_dattente_ex.html" />
+    <link rel="prev" title="Corrélations non linéaires" href="../notebooks/dsgarden/correlation_non_lineaire.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/correlation_non_lineaire.html">Corrélations non linéaires</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">File d’attente, un petit exemple</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/dsgarden/file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="strategie_avec_alea.html">Optimisation avec données aléatoires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/discret_gradient.html">Le gradient et le discret</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quantization.html">Quantization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/classification_multiple.html">Classification multiple</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Pérégrinations</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">File d’attente, un petit exemple</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="file-d-attente-un-petit-exemple">
+<h1>File d’attente, un petit exemple<a class="headerlink" href="#file-d-attente-un-petit-exemple" title="Lien permanent vers cette rubrique">#</a></h1>
+<p><em>Psychokinèse, les ampoules grillent à distance</em></p>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#petite-histoire" id="id2">Petite histoire</a></p></li>
+<li><p><a class="reference internal" href="#un-peu-de-theorie" id="id3">Un peu de théorie</a></p>
+<ul>
+<li><p><a class="reference internal" href="#file-d-attente-cas-m-m-1" id="id4">File d’attente, cas M/M/1</a></p></li>
+<li><p><a class="reference internal" href="#file-d-attente-cas-m-m-s" id="id5">File d’attente, cas M/M/S</a></p></li>
+<li><p><a class="reference internal" href="#retour-aux-ampoules" id="id6">Retour aux ampoules</a></p></li>
+<li><p><a class="reference internal" href="#application-numerique" id="id7">Application numérique</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#programme-informatique" id="id8">Programme informatique</a></p></li>
+<li><p><a class="reference internal" href="#bibliographie" id="id9">Bibliographie</a></p></li>
+</ul>
+</nav>
+<section id="petite-histoire">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Petite histoire</a><a class="headerlink" href="#petite-histoire" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Cet énoncé s’inspire du livre
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Devenez_sorciers,_devenez_savants">Devenez sorciers, devenez savants</a>
+de Georges Charpak et Henri Broch dont est tiré l’extrait suivant.</p>
+<blockquote>
+<div><p>Le présentateur se tourne vers la caméra principale, et d’un air
+très sérieux et enjôleur, regarde le téléspectateur droit dans les
+yeux en déclarant : <em>Allez-y ! Allumez cinq ou six lampes à côté de vous.</em>
+Puis il se tourne vers le médium et demande :
+<em>Vous pensez réellement pouvoir le faire ?</em>
+Après quelques moments d’hésitation, le mage se prononce :
+<em>J’espère avoir suffisamment de concentration ce soir, mais je ne suis pas
+dans les conditions vraiment idéales ; pour produire ce genre de phénomène
+à distance, d’habitude, je me retire pendant plusieurs jours
+dans une solitude totale et une profonde obscurité, après un jeûne strict.</em></p>
+</div></blockquote>
+<p>Si jamais il échoue, le public le mettra au compte des
+circonstances et non pas de ces compétences. Et, pourtant,
+le médium n’échoue pas. Des ampoules grillent chez les téléspectateurs
+qui regardent cette émission. Ils font part au standard téléphonique
+de la chaîne qui diffuse en direct cet extraordinaire moment de culture.
+Le médium a donc bien réussi - comme il le prétendait -, en concentrant sa
+puissance spirituelle sur la matière, à griller des ampoules électriques à distance.</p>
+<p>Supposons que cette émission soit suivie par environ un million de
+téléspectateurs et qu’elle dure une heure ou plus. Cela signifie
+qu’environ cinq à six millions d’ampoules ont été allumées pendant
+une heure ou plus. Supposons que ce nombre soit de deux millions.</p>
+<p>La durée de vie moyenne d’une ampoule à incandescence est de
+mille heures. Ce qui signifie que, pendant la durée de l’émission,
+il y aura environ deux milles lampes grillées.</p>
+</section>
+<section id="un-peu-de-theorie">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Un peu de théorie</a><a class="headerlink" href="#un-peu-de-theorie" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Ce problème ressemble à un problème de files d’attente. Ce dernier
+consiste à déterminer un nombre adéquat de guichets en fonction de
+la vitesse de remplissage d’une file d’attente afin de limiter le
+temps d’attente. On désigne souvent cette problématique par un sigle
+du type <span class="math notranslate nohighlight">\(M/M/S\)</span>. Le premier <span class="math notranslate nohighlight">\(M\)</span> signifie qu’on suppose que la
+probabilité que <span class="math notranslate nohighlight">\(n\)</span> personnes arrivent pendant une durée <span class="math notranslate nohighlight">\(t\)</span>
+suit une loi de Poisson de paramètre <span class="math notranslate nohighlight">\(\lambda t\)</span>.
+Le second <span class="math notranslate nohighlight">\(M\)</span> signifie qu’on suppose que le temps de
+traitement d’une personne par un guichetier suit une loi exponentielle de
+paramètre <span class="math notranslate nohighlight">\(\mu\)</span>. <span class="math notranslate nohighlight">\(S\)</span> désigne le nombre de guichets. Pour de
+tels problèmes, on cherche à déterminer la probabilité que le
+système (file d’attente + guichets) contienne <span class="math notranslate nohighlight">\(n\)</span> personnes.
+De cette probabilité, on peut déduire par exemple le temps d’attente
+moyen pour une personne qui entre dans la file d’attente. On
+suppose que le système est stationnaire, les probabilités ne dépendent
+pas du temps.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Définition0">
+<p class="admonition-title">Définition D1 : loi de Poisson et loi exponentielle</p>
+<p>Si une variable <span class="math notranslate nohighlight">\(X\)</span> suit une loi de Poisson de
+paramète <span class="math notranslate nohighlight">\(\lambda t\)</span>, elle a pour densité :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+\pr{X = n} &amp;=&amp;  \frac{(\lambda t)^n}{n!} \; e^{-\lambda t}
+\end{eqnarray}</div><p>Si une variable <span class="math notranslate nohighlight">\(X\)</span> suit une loi exponentielle de paramètre <span class="math notranslate nohighlight">\(\mu\)</span>, elle a pour densité :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+f(t) &amp;=&amp; \mu  \; e^{- \mu t} \text{ et } \pr {X \infegal t} =
+            \int_0^t \mu  \; e^{- \mu x} dx = 1 - e^{-\mu t}
+\end{eqnarray}</div></div>
+<section id="file-d-attente-cas-m-m-1">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">File d’attente, cas M/M/1</a><a class="headerlink" href="#file-d-attente-cas-m-m-1" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-0">On s’intéresse d’abord à un système <span class="math notranslate nohighlight">\(M/M/1\)</span>. Il n’y a donc qu’un
+seul guichet. <span class="math notranslate nohighlight">\(\lambda\)</span> est le nombre moyen d’arrivée par unité
+de temps tandis que <span class="math notranslate nohighlight">\(\mu\)</span> est le nombre moyen de clients
+traités par unité de temps. On suppose également que <span class="math notranslate nohighlight">\(\lambda &lt; \mu\)</span>.
+Dans le cas contraire, la file d’attente devient infinie. On désigne par
+<span class="math notranslate nohighlight">\(p_n(t)\)</span> la probabilité que la file d’attente contiennent
+<span class="math notranslate nohighlight">\(n\)</span> personne. Que vaut cette probabilité à l’instant <span class="math notranslate nohighlight">\(t + dt\)</span> ?</p>
+<p>On considère que pendant la durée <span class="math notranslate nohighlight">\(t + dt\)</span>, au plus une personne
+peut s’ajouter à la file d’attente et au plus une personne peut
+être traitée par un guichetier. Les autres cas sont négligeables.
+On désigne par <span class="math notranslate nohighlight">\(B(x,t,dt)\)</span> le fait qu’une personne quitte
+un guichet pendant les instants <span class="math notranslate nohighlight">\(t\)</span> et <span class="math notranslate nohighlight">\(t+dt\)</span> sachant
+qu’elle est arrivée au guichet à l’instant <span class="math notranslate nohighlight">\(x\)</span>. On cherche à
+déterminer la probabilité <span class="math notranslate nohighlight">\(\pr{B(x,t,dt)}\)</span>. On peut dire aussi
+que <span class="math notranslate nohighlight">\(\pr{B(x,t,dt}\)</span> est la probabilité que le temps de traitement
+d’une personne est inférieur à <span class="math notranslate nohighlight">\(t+dt-x\)</span> sachant qu’il est
+supérieur à <span class="math notranslate nohighlight">\(t-x\)</span>. Si <span class="math notranslate nohighlight">\(D\)</span> est une variable de durée
+suivant une loi exponentielle, alors :</p>
+<div class="math notranslate nohighlight" id="equation-mu-dt-eq">
+\begin{eqnarray*}
+\pr{B(x,t,dt)} &amp;=&amp; \pr{ D \infegal t+dt-x \sac D &gt; t-x } \\
+                            &amp;=&amp; \frac{ \pr{  t+dt-x \supegal D &gt; t-x } } { \pr{ D &gt; t-x }} \\
+                            &amp;=&amp; \frac{ \int_{t-x}^{t+dt-x} \mu e^{-\mu u} du } { \int_{t-x}^{\infty} \mu e^{-\mu u} du }
+                            = \frac{ e^{- \mu (t-x) } - e^{- \mu (t-x+dt) } } { e^{-\mu (t-x) }} \\
+                            &amp;=&amp; 1 - e^{- \mu dt}   \\
+\pr{B(x,t,dt)}    &amp;=&amp; - \mu dt + o(dt)
+\end{eqnarray*}</div><p>Cette probabilité ne dépend ni de <span class="math notranslate nohighlight">\(x\)</span>, ni de <span class="math notranslate nohighlight">\(t\)</span>.
+En ce qui concerne les arrivées, la probabilité qu’une personne arrive
+pendant les instants <span class="math notranslate nohighlight">\(t\)</span> et <span class="math notranslate nohighlight">\(t+dt\)</span> ne dépend pas du
+passé et suit une loi de Poisson de paramètre <span class="math notranslate nohighlight">\(\lambda\)</span>.
+Cette constation et l’équation <a class="reference internal" href="#equation-mu-dt-eq">(1)</a> nous permettent d’écrire que :</p>
+<div class="math notranslate nohighlight" id="equation-amp-dt-2">
+\begin{eqnarray}
+\pr{ \text{une personne arrive pendant } dt } &amp;=&amp; \lambda dt \; e^{-\lambda dt} \sim \lambda dt + o(dt) \\
+\pr{ \text{une personne part pendant } dt } &amp;=&amp; 1 - e^{-\mu dt} \sim \mu dt + o (dt)
+\end{eqnarray}</div><p>De plus, pendant la durée <span class="math notranslate nohighlight">\(dt\)</span>, quatre cas sont possibles :</p>
+<ul class="simple">
+<li><p>Une personne peut arriver sans qu’aucune ne parte d’un guichet.</p></li>
+<li><p>Une personne peut partir d’un guichet sans qu’aucune autre n’arrive.</p></li>
+<li><p>Une personne peut arriver et une autre partir d’un guichet.</p></li>
+<li><p>Aucune personne n’arrive et aucune ne part d’un guichet.</p></li>
+</ul>
+<p>Ces quatre cas permettent d’écrire la relation suivante :</p>
+<div class="math notranslate nohighlight" id="equation-amp-dt-3">
+\begin{eqnarray*}
+p_n(t+dt) &amp;=&amp;  p_{n-1}(t) \; \lambda dt + p_{n+1}(t) \; \mu dt + \\
+                        &amp;&amp; p_n(t) \pa{  \mu dt \lambda dt} +
+                        p_n(t) \pa { 1 - \mu dt} \pa{ 1 - \lambda dt}
+\end{eqnarray*}</div><p>On néglige les termes du second degré en <span class="math notranslate nohighlight">\((dt)^2\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+p_n(t+dt) &amp;=&amp; p_{n-1}(t) \; \lambda dt + p_{n+1}(t) \; \mu dt +
+                            p_n(t) \pa { 1 - \mu dt - \lambda dt } \\
+\Longleftrightarrow \frac{ p_n(t+dt) - p_n (t)} {dt} &amp;=&amp; \lambda  p_{n-1}(t) + \mu p_{n+1}(t)   -
+                            \pa { \mu  + \lambda  }  p_n(t)
+\end{eqnarray*}</div><p>Cette relation n’est vraie que lorsque <span class="math notranslate nohighlight">\(n &gt; 0\)</span>, lorsque
+<span class="math notranslate nohighlight">\(n = 0\)</span>, aucune personne déjà présente ne peut
+être traitée par un guichetier, on a donc :</p>
+<div class="math notranslate nohighlight">
+\[\frac{ p_0(t+dt) - p_0 (t)} {dt} = \mu p_{1}(t)  - \lambda   p_0(t)\]</div>
+<p>Comme le système est stationnaire, toutes les dérivées sont
+nulles. Les probabilités ne dépendent pas du temps. Ceci donne les
+relations suivantes :</p>
+<div class="math notranslate nohighlight" id="equation-systeme-mm1">
+\begin{eqnarray*}
+&amp;&amp;     \left \{ \begin{array}{lll}
+        \lambda  p_{n-1} + \mu p_{n+1}   - \pa { \mu  + \lambda  }  p_n &amp;=&amp; 0 \\
+        \mu p_1  -   \lambda    p_0 &amp;=&amp; 0
+        \end{array}\right. \\
+\Longleftrightarrow &amp;&amp;     \left \{ \begin{array}{lll}
+         \mu p_{n+1} &amp;=&amp;      \pa { \mu  + \lambda  }  p_n - \lambda \; p_{n-1} \\
+        \mu p_1  &amp;=&amp;      \lambda    p_0
+        \end{array}\right.
+\end{eqnarray*}</div><p>On vérifie par récurrence que :</p>
+<div class="math notranslate nohighlight">
+\[p_n = \pa{\frac{\lambda}{\mu}}^n p_0\]</div>
+<p>Il reste à déterminer <span class="math notranslate nohighlight">\(p_0\)</span>. Or, comme
+<span class="math notranslate nohighlight">\(\sum_0^{\infty} p_n = 1 = p_0 \; \sum_0^{\infty} \pa{\frac{\lambda}{\mu}}^n\)</span>,
+on obtient que
+<cite>frac{p_0}{ 1 - frac{lambda}{mu}} = 1 Longleftrightarrow p_0 = 1 - frac{lambda}{mu}</cite>.</p>
+<p><em>Exemple :</em></p>
+<p>On suppose qu’un médecin traite en moyenne quatre patients par heure
+tandis qu’il accepte trois rendez-vous par heure. Donc
+<span class="math notranslate nohighlight">\(\lambda = 3\)</span> et <span class="math notranslate nohighlight">\(\mu = 4\)</span>. Le nombre moyen
+<span class="math notranslate nohighlight">\(\overline{n}\)</span> de patients dans sa salle d’attente
+est donné par :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\overline{n} &amp;=&amp;  \sum_0^{\infty} n p_n =
+                 \pa{1 - \frac{\lambda}{\mu} }  \sum_0^{\infty} n \pa{\frac{\lambda}{\mu}}^n
+                =  \frac{ \frac{\lambda}{\mu} } { 1 - \frac{\lambda}{\mu} }= \frac{\lambda}{\mu - \lambda }
+\end{eqnarray*}</div><p>Il y a donc en moyenne trois personnes dans la salle d’attente de ce
+médecin. Comme le temps moyen de traitement de chacun est
+<span class="math notranslate nohighlight">\(\frac{1}{\mu}\)</span>, le temps moyen d’attente d’un patient
+arrivant dans la salle d’attente est
+<span class="math notranslate nohighlight">\(\frac{\lambda \mu}{\mu - \lambda }\)</span>. Ce temps est égal à
+trois quarts d’heure pour cet exemple.</p>
+</section>
+<section id="file-d-attente-cas-m-m-s">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">File d’attente, cas M/M/S</a><a class="headerlink" href="#file-d-attente-cas-m-m-s" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-1">Le système contient dorénavant <span class="math notranslate nohighlight">\(S\)</span> guichets, on suppose que la vitesse
+<span class="math notranslate nohighlight">\(\mu\)</span> de traitement des clients est commune à tous les
+guichets. On cherche tout d’abord la probabilité qu’une
+personne s’en aille parmi les <span class="math notranslate nohighlight">\(k\)</span> qui occupent un guichet. On désigne par
+<span class="math notranslate nohighlight">\(\vecteur{D_1}{D_k}\)</span> <span class="math notranslate nohighlight">\(k\)</span> variables indépendantes suivant une loi
+exponentielle de paramètre <span class="math notranslate nohighlight">\(\mu\)</span>, pendant un temps <span class="math notranslate nohighlight">\(dt\)</span>,
+la probabilité qu’une personne parmi <span class="math notranslate nohighlight">\(k\)</span> quitte un guichet est :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\pr{ \min \ensemble{D_1}{D_k} \infegal dt } &amp;=&amp; 1 - \pr {\min \ensemble{D_1}{D_k} &gt; dt} \\
+&amp;=&amp; 1 - \cro{\prod_{n=1}^{k} \pr {D_n &gt; dt}} \\
+&amp;=&amp; 1 - \cro{\prod_{n=1}^{k} 1 - \pr {D_n \infegal dt}} \\
+&amp;=&amp; 1 - \cro{\prod_{n=1}^{k}  e^{-\mu dt}} \\
+&amp;=&amp; 1 - e^{- k\mu dt} \sim k \mu dt + o(dt)
+\end{eqnarray*}</div><p>Pour déterminer les probabilités <span class="math notranslate nohighlight">\(\pa{p_n}_n\)</span>, on applique le
+même raisonnement que pour un système <span class="math notranslate nohighlight">\(M/M/1\)</span> en distinguant
+les cas <span class="math notranslate nohighlight">\(n \infegal S\)</span> et <span class="math notranslate nohighlight">\(n &gt; S\)</span>. On adapte la récurrence
+donnée par le système d’équations <a class="reference internal" href="#equation-systeme-mm1">(4)</a> au cas <span class="math notranslate nohighlight">\(M/M/S\)</span> :</p>
+<div class="math notranslate nohighlight" id="equation-system-mms">
+\begin{eqnarray*}
+&amp;&amp;     \left \{ \begin{array}{lll}
+        \mu p_1  -   \lambda    p_0 &amp;=&amp; 0  \\
+        \lambda  p_{n-1} + \pa{n+1} \mu p_{n+1}   - \pa {n \mu  + \lambda  }  p_n &amp;=&amp; 0 \text{ si } 1 \infegal n &lt; S \\
+        \lambda  p_{n-1} + S \mu p_{n+1}   - \pa { S \mu  + \lambda  }  p_n &amp;=&amp; 0 \text{ si } n \supegal S
+        \end{array}\right.
+\end{eqnarray*}</div><p>On suppose que <span class="math notranslate nohighlight">\(\frac{\lambda}{S \mu} &lt; 1\)</span> afin que la file d’attente
+ne devienne infinie. Comme pour un système <span class="math notranslate nohighlight">\(M/M/1\)</span>, ces formules de
+récurrences et le fait que <span class="math notranslate nohighlight">\(\sum_0^{\infty} p_n = 1\)</span>
+permet de déduire que :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\left\{ \begin{array}{lll}
+p_0 &amp;=&amp;  \dfrac{1}{ \frac{  \pa{\frac{\lambda}{\mu}}^S   }  { S! \pa { 1 - \frac{\lambda}{S \mu}} }
+                                        + \sum_{k=1}^{S-1} \frac{  \pa{ \frac{\lambda}{\mu}}^n }{ n!}
+                                } \\ \\
+p_n &amp;=&amp; \dfrac{1}{n!} \; \pa{\dfrac{\lambda}{\mu}}^n  p_0 \quad \text{ si } n &lt; S \\ \\
+p_n &amp;=&amp; \dfrac{1}{S^{n-S} S!} \; \pa{\dfrac{\lambda}{\mu}}^n  p_0 \quad \text{ si } n \supegal S
+                \end{array} \right.
+\end{eqnarray*}</div><p>Ces calculs sont utilisés pour optimiser le nombre de guichets.
+Chaque guichetier a un coût qui doit être comparé avec le coût associé au
+temps d’attente des clients. Ces résultats sont extraits du livre <a class="reference internal" href="#faure2000" id="id1"><span>[Faure2000]</span></a>.</p>
+<blockquote>
+<div><p>La théorie des files d’attente remonte aux premiers travaux de K. Erlang (1917),
+sur le calcul du nombre d’organes de chaque type à installer dans un central téléphonique
+automatique. Développée aussi par Engset (1918), cette théorie s’est amplifiée
+sous l’impulsion de nombreux chercheurs (E. Borel, D. Kendall, A. Kolmogorov,
+Khintchine, LC. Palm, F. Pollaczek, L. Feller, …). Les informaticiens l’utilisent
+notamment pour l’évaluation de performances, à titre prévisionnel, des systèmes
+ou des réseaux informatiques.</p>
+</div></blockquote>
+</section>
+<section id="retour-aux-ampoules">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Retour aux ampoules</a><a class="headerlink" href="#retour-aux-ampoules" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>La durée de traitement d’un client fait penser à la durée de vie
+d’une ampoule. Les lampes font office de guichets tandis que le rôle des
+clients est joué par des lumières. Toutefois, ce n’est pas le temps
+d’attente moyen ni la longueur moyenne de la file d’attente qui nous
+intéresse mais, en quelque sorte, le nombre de clients qui sont traités
+pendant une durée <span class="math notranslate nohighlight">\(T\)</span>. En fait, plus exactement, c’est le nombre
+de guichets qui auront traités au moins un client pendant une durée
+<span class="math notranslate nohighlight">\(T\)</span> qui nous intéresse. Il correspond exactement au nombre d’ampoules
+qui vont griller pendant cette même période <span class="math notranslate nohighlight">\(T\)</span>. Il reste à définir
+ce qu’est une file d’attente d’ampoules et surtout son paramètre <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<p>Lorsqu’une ampoule grille, elle est a priori changée dans les plus brefs
+délais, comme si la file d’attente des ampoules était infinie. Ceci
+signifie que <span class="math notranslate nohighlight">\(\lambda &gt;&gt; \mu\)</span>, configuration qui sort du champ
+d’application des files d’attente <span class="math notranslate nohighlight">\(M/M/S\)</span>. Le paramètre
+<span class="math notranslate nohighlight">\(\lambda\)</span> n’a a priori aucun rôle à jouer. On peut néanmoins
+s’inspirer de la méthode développée dans les paragraphes précédants pour
+aborder le problème des ampoules.</p>
+<p>On suppose que la durée de vie d’une ampoule suit toujours une loi exponentielle
+de paramètre <span class="math notranslate nohighlight">\(\mu\)</span> et qu’il y en a exactement <span class="math notranslate nohighlight">\(S\)</span>
+qui brillent en même temps. On note <span class="math notranslate nohighlight">\(p_n(t)\)</span> la probabilité que
+<span class="math notranslate nohighlight">\(n\)</span> ampoules aient grillées à l’instant <span class="math notranslate nohighlight">\(t\)</span>.
+Si <span class="math notranslate nohighlight">\(N(t)\)</span> est le nombre d’ampoules grillées à l’instant <span class="math notranslate nohighlight">\(t\)</span> :
+<span class="math notranslate nohighlight">\(p_n(t) = \pr{ N(t) = n}\)</span>. Cette fonction n’est plus stationnaire
+et décroît avec le temps à partir d’un certain moment. Plus on avance dans le
+temps, plus le nombre d’ampoules grillées augmente. Par conséquent, la
+probabilité qu’il y ait <span class="math notranslate nohighlight">\(n\)</span> ampoules grillées augmente tout d’abord puis,
+à partir d’un moment <span class="math notranslate nohighlight">\(t\)</span>, elle diminue.}. On utilise un raisonnement
+similaire à celui qui a permis d’écrire les équations
+<a class="reference internal" href="#equation-amp-dt-2">(2)</a>, <a class="reference internal" href="#equation-amp-dt-3">(3)</a> pour obtenir :</p>
+<div class="math notranslate nohighlight" id="equation-ampoule-diff-1">
+\begin{eqnarray*}
+p_n(t +dt) &amp;=&amp; \pa{1 - S \mu dt} p_n(t) + S \mu p_{n-1}(t) dt \\
+\Longleftrightarrow \frac{p_n(t +dt) - p_{n-1}(t)}{dt} &amp;=&amp; - S \mu p_n(t) + S \mu p_{n-1}(t) \\
+\Longleftrightarrow p_n'(t) &amp;=&amp; - S \mu p_n(t) + S \mu p_{n-1}(t)
+\end{eqnarray*}</div><p>On connaît la fonction <span class="math notranslate nohighlight">\(p_0(t)\)</span> puisqu’elle correspond à
+la probabilité qu’aucune des <span class="math notranslate nohighlight">\(S\)</span> ampoules n’ait grillé
+depuis l’instant~0 jusqu’à l’instant <span class="math notranslate nohighlight">\(t\)</span>, par conséquent :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+p_0(t) &amp;=&amp; \pr{ \text{ durée de vie des } S \text{ ampoules soient toutes supérieures à } t } \\
+\Longrightarrow p_0(t) &amp;=&amp; \cro{ \int_t^{\infty} \mu e^{- \mu u} du } ^S \\
+\Longrightarrow p_0(t) &amp;=&amp; e^{-S\mu t}
+\end{eqnarray*}</div><p>L’équation <a class="reference internal" href="#equation-ampoule-diff-1">(6)</a> permet de définir une suite d’équations
+différentielles du premier degré :</p>
+<div class="math notranslate nohighlight" id="equation-ampoule-diff-2">
+\begin{eqnarray*}
+p_0(t)     &amp;=&amp; e^{-S\mu t} \\
+p_1'(t)    &amp;=&amp;    - S \mu p_1(t) + S \mu e^{-S\mu t} \\
+p_2'(t)    &amp;=&amp;    - S \mu p_2(t) + p_1(t) \\
+... &amp;&amp; \\
+p_n'(t)     &amp;=&amp; - S \mu p_n(t) + S \mu p_{n-1}(t)
+\end{eqnarray*}</div><p>On peut donc calculer par récurrence la suite de fonction
+<span class="math notranslate nohighlight">\(\pa{p_n(t)}_n\)</span>. La solution de l’équation différentielle
+homogène est <span class="math notranslate nohighlight">\(e^{-S\mu t}\)</span>. On utilise la méthode de la
+variation de la constante en posant <span class="math notranslate nohighlight">\(p_n(t) = C_n(t) e^{-S \mu t}\)</span>.
+On aboutit à l’équation :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+p_n'(t)   &amp;=&amp; - S \mu p_n(t) + S \mu p_{n-1}(t) = - S \mu p_n(t) + C_n'(t) e^{- S \mu t} \\
+\Longrightarrow        C_n'(t) e^{- S \mu t} &amp;=&amp; S \mu p_{n-1}(t) \\
+\Longrightarrow        C_n'(t)  &amp;=&amp; S \mu p_{n-1}(t) e^{ S \mu t}
+\end{eqnarray*}</div><p>Pour <span class="math notranslate nohighlight">\(n = 1\)</span>, on obtient
+<span class="math notranslate nohighlight">\(C_1'(t) = S \mu \Longrightarrow C_1'(t) = S \mu t + A_1\)</span>.
+Par conséquent, <span class="math notranslate nohighlight">\(p_1(t) = \pa{S \mu t + A_1} e^{- S \mu t}\)</span>.
+On sait que <span class="math notranslate nohighlight">\(\forall t, \; \sum_0^{\infty} p_n(t) = 1\)</span> mais cela
+ne permet pas de déterminer la constante <span class="math notranslate nohighlight">\(A_1\)</span>. Néanmoins, en
+faisant tendre <span class="math notranslate nohighlight">\(t \longrightarrow 0\)</span>, nécessairement <span class="math notranslate nohighlight">\(p_1(t) \longrightarrow 0\)</span>.
+Par conséquent : <span class="math notranslate nohighlight">\(A_1 = 0\)</span> et <span class="math notranslate nohighlight">\(p_1(t) = S \mu t \; e^{- S \mu t}\)</span>. On pose maintenant <span class="math notranslate nohighlight">\(p_2(t) = C_2(t) e^{- S \mu t}\)</span>.
+La résolution de l’équation différentielle <a class="reference internal" href="#equation-ampoule-diff-2">(7)</a> pour <span class="math notranslate nohighlight">\(n=2\)</span>
+aboutit à :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+C_2'(t) &amp;=&amp; S \mu p_{1}(t) e^{ S \mu t} = \pa{S \mu t}^2 \\
+\Longrightarrow C_2(t) &amp;=&amp; \frac{1}{2} S^2 \mu^2 t^2 + A_2 \\
+\Longrightarrow p_2(t) &amp;=&amp; \pa{ \frac{1}{2} S^2 \mu^2 t^2 + A_2} e^{- S \mu t}
+\end{eqnarray*}</div><p>De même, en faisant tendre <span class="math notranslate nohighlight">\(t \longrightarrow 0\)</span>, on démontre que
+<span class="math notranslate nohighlight">\(A_2 = 0\)</span>. En poursuivant ce raisonnement, par récurrence,
+on démontre que :</p>
+<div class="math notranslate nohighlight" id="equation-result-poisson-final">
+<span class="eqno">(8)<a class="headerlink" href="#equation-result-poisson-final" title="Lien permanent vers cette équation">#</a></span>\[p_n(t) = \frac{\pa{S \mu t}^n }{n!} \; e^{- S \mu t}\]</div>
+<p><span class="math notranslate nohighlight">\(p_n(t) = \pr{ N(t) = n}\)</span> et d’après l’équation
+<a class="reference internal" href="#equation-result-poisson-final">(8)</a>, la variable aléatoire <span class="math notranslate nohighlight">\(N(t)\)</span>
+suit une loi de Poisson de paramètre <span class="math notranslate nohighlight">\(S \mu t\)</span>. <span class="math notranslate nohighlight">\(N\)</span>
+est aussi appelé <a class="reference external" href="https://fr.wikipedia.org/wiki/Processus_de_Poisson">processus de Poisson</a>.
+L’espérance de <span class="math notranslate nohighlight">\(N\)</span> est égale à <span class="math notranslate nohighlight">\(\esp{N(t)} = S \mu t\)</span>.
+Pendant une durée <span class="math notranslate nohighlight">\(T\)</span>, le nombre moyen d’ampoules grillées est :</p>
+<div class="math notranslate nohighlight">
+\[\esp{N (t) - N (t-T)} = \esp{N (T)} - \esp{N (t-T)} = S \mu T\]</div>
+<p>Ce nombre est indépendant du temps <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</section>
+<section id="application-numerique">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Application numérique</a><a class="headerlink" href="#application-numerique" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Pour des ampoules d’une durée de 1000 heures, le paramètre
+<span class="math notranslate nohighlight">\(\mu = \frac{1}{1000}\)</span>, <span class="math notranslate nohighlight">\(T = 1\)</span>. S’il y a deux millions
+d’ampoules, le nombre moyen d’ampoules grillées par heure est
+<span class="math notranslate nohighlight">\(S \mu T = 2000\)</span>. On retrouve le résultat énoncé.</p>
+</section>
+</section>
+<section id="programme-informatique">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Programme informatique</a><a class="headerlink" href="#programme-informatique" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>La durée de vie de chaque ampoule suit une loi exponentielle de paramètre
+<span class="math notranslate nohighlight">\(\mu\)</span>. Il faut donc simuler une telle variable dont la fonction
+de répartition est <span class="math notranslate nohighlight">\(F_{\mu}(x) = 1 - e^{ \mu x}\)</span>.
+On utilise pour cela une propriété qui découle de la fonction
+de répartition. On note <span class="math notranslate nohighlight">\(F_{\mu}^{-1}(x) = - \; \frac{\ln(1-x)}{\mu}\)</span>.
+Cette fonction vérifie <span class="math notranslate nohighlight">\(F_{\mu}^{-1}\pa{F_{\mu}(x)} = 1\)</span>.
+Or si <span class="math notranslate nohighlight">\(U\)</span> est une variable aléatoire uniforme sur
+<span class="math notranslate nohighlight">\(\cro{0,1}\)</span>, alors la variable <span class="math notranslate nohighlight">\(V = F_{\mu}^{-1}(U)\)</span>
+suit la loi exponentielle avec <span class="math notranslate nohighlight">\(\mu\)</span> pour paramètre.
+Effectivement, <span class="math notranslate nohighlight">\(\pr{ V \infegal t} = \pr{ F_{\mu}^{-1}(U) \infegal t} = \pr{U \infegal F_{\mu}(t)} = F_{\mu}(x)\)</span>.
+La fonction de répartition de la variable <span class="math notranslate nohighlight">\(V\)</span> est <span class="math notranslate nohighlight">\(F_{\mu}\)</span>,
+<span class="math notranslate nohighlight">\(V\)</span> est donc une loi exponentielle de paramètre <span class="math notranslate nohighlight">\(\mu\)</span>.
+La première fonction simule une variable exponentielle de paramètre <span class="math notranslate nohighlight">\(\mu\)</span> :</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+
+<span class="k">def</span> <span class="nf">generate_expo</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">mu</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">generate_expo</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">0.028528982496713904</span>
+</pre></div>
+</div>
+<p>Le module <a class="reference external" href="https://docs.python.org/3/library/random.html#module-random" title="(disponible dans Python v3.11)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">random</span></code></a> propose aussi une fonction
+qui simule automatiquement une variable exponentielle.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+
+<span class="k">def</span> <span class="nf">generate_expo</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">expovariate</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">generate_expo</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">1.1319761142339642</span>
+</pre></div>
+</div>
+<p>Pour réaliser cette simulation, on suppose qu’on a un tableau de
+<span class="math notranslate nohighlight">\(S\)</span> ampoules. Chaque case de ce tableau contient la durée de
+vie restante d’une ampoule, simulée selon une loi exponentielle.
+Au départ, toutes les durées de vie sont nulles. On considère qu’à
+chaque itération, une heure passe. Lors de chaque itération, pour chaque
+ampoule, on vérifie sa durée de vie restante. Si celle-ci est nulle, on
+la remplace par une autre dont on choisit aléatoirement la durée de vie
+(arrondie à l’entier le plus proche). Si la durée de vie n’est pas
+nulle, on la diminue d’une heure. A chaque itération, on compte le nombre
+d’ampoules grillées pour en faire la moyenne au bout de <span class="math notranslate nohighlight">\(n\)</span> itérations.
+Pour effectuer cette simulation, les valeurs choisies sont :</p>
+<div class="math notranslate nohighlight">
+\[S = 10000, \mu = \frac{1}{100}, n = 500\]</div>
+<p>Le programme suivant réalise cette simulation.
+On calcule la moyenne du nombre d’ampoules grillées par heure sur les
+500 itérations excepté la première pour laquelle toutes les ampoules sont grillées
+- configuration aberrante ou tout du moins très peu probable -.
+La valeur obtenue est proche de <span class="math notranslate nohighlight">\(S \mu = 100\)</span>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+</ul>
+</div>
+</section>
+<section id="bibliographie">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="faure2000" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Faure2000</a><span class="fn-bracket">]</span></span>
+<p>Précis de recherche opérationnelle, 5ième édition,
+<em>Robert Faure, Bernard Lemaire, Christophe Picouleau</em>,
+Dunod</p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../notebooks/dsgarden/correlation_non_lineaire.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Corrélations non linéaires</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/dsgarden/file_dattente_ex.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">File d’attente, un exemple simple</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#petite-histoire">Petite histoire</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-peu-de-theorie">Un peu de théorie</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-d-attente-cas-m-m-1">File d’attente, cas M/M/1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-d-attente-cas-m-m-s">File d’attente, cas M/M/S</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retour-aux-ampoules">Retour aux ampoules</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-numerique">Application numérique</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#programme-informatique">Programme informatique</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographie">Bibliographie</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_garden/file_dattente.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

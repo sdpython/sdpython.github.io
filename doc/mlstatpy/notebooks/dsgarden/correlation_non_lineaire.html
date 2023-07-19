@@ -1,0 +1,3329 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Corrélations non linéaires &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/dsgarden/correlation_non_lineaire';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="File d’attente, un petit exemple" href="../../c_garden/file_dattente.html" />
+    <link rel="prev" title="Répartir en base d’apprentissage et de test" href="split_train_test.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Le petit coin des data scientists</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="classification_multiple.html">Classification multiple</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Corrélations non linéaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discret_gradient.html">Le gradient et le discret</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantile_regression_example.html">Régression quantile illustrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_lineaire.html">Régression linéaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../image/index.html">Images</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../image/segment_detection.html">Détection de segments dans une image</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metric/index.html">Métriques</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../metric/pvalues_examples.html">p-values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metric/roc_example.html">ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml/index.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml/logreg_voronoi.html">Voronoï et régression logistique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/piecewise_linear_regression.html">Régression linéaire par morceaux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/regression_no_inversion.html">Régression sans inversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/reseau_neurones.html">Réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/survival.html">Analyse de survie en pratique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../nlp/index.html">NLP - Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_profiling.html">Completion profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_simple.html">Complétion Simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie.html">Complétion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie_long.html">Completion Trie and metrics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../c_garden/index.html" class="nav-link">Pérégrinations</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Corrélations non linéaires</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Corrélations-non-linéaires">
+<h1>Corrélations non linéaires<a class="headerlink" href="#Corrélations-non-linéaires" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Les corrélations indiquent si deux variables sont linéairement équivalentes. Comment étendre cette notion à des variables liées mais pas de façon linéaire.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jyquickhelper</span> <span class="kn">import</span> <span class="n">add_notebook_menu</span>
+
+<span class="n">add_notebook_menu</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="my_id_menu_nb">run previous cell, wait for 2 seconds</div>
+<script>
+function repeat_indent_string(n){
+    var a = "" ;
+    for ( ; n > 0 ; --n)
+        a += "    ";
+    return a;
+}
+// look up into all sections and builds an automated menu //
+var update_menu_string = function(begin, lfirst, llast, sformat, send, keep_item, begin_format, end_format) {
+    var anchors = document.getElementsByClassName("section");
+    if (anchors.length == 0) {
+        anchors = document.getElementsByClassName("text_cell_render rendered_html");
+    }
+    var i,t;
+    var text_menu = begin;
+    var text_memo = "<pre>\nlength:" + anchors.length + "\n";
+    var ind = "";
+    var memo_level = 1;
+    var href;
+    var tags = [];
+    var main_item = 0;
+    var format_open = 0;
+    for (i = 0; i <= llast; i++)
+        tags.push("h" + i);
+
+    for (i = 0; i < anchors.length; i++) {
+        text_memo += "**" + anchors[i].id + "--\n";
+
+        var child = null;
+        for(t = 0; t < tags.length; t++) {
+            var r = anchors[i].getElementsByTagName(tags[t]);
+            if (r.length > 0) {
+child = r[0];
+break;
+            }
+        }
+        if (child == null) {
+            text_memo += "null\n";
+            continue;
+        }
+        if (anchors[i].hasAttribute("id")) {
+            // when converted in RST
+            href = anchors[i].id;
+            text_memo += "#1-" + href;
+            // passer à child suivant (le chercher)
+        }
+        else if (child.hasAttribute("id")) {
+            // in a notebook
+            href = child.id;
+            text_memo += "#2-" + href;
+        }
+        else {
+            text_memo += "#3-" + "*" + "\n";
+            continue;
+        }
+        var title = child.textContent;
+        var level = parseInt(child.tagName.substring(1,2));
+
+        text_memo += "--" + level + "?" + lfirst + "--" + title + "\n";
+
+        if ((level < lfirst) || (level > llast)) {
+            continue ;
+        }
+        if (title.endsWith('¶')) {
+            title = title.substring(0,title.length-1).replace("<", "&lt;")
+         .replace(">", "&gt;").replace("&", "&amp;");
+        }
+        if (title.length == 0) {
+            continue;
+        }
+
+        while (level < memo_level) {
+            text_menu += end_format + "</ul>\n";
+            format_open -= 1;
+            memo_level -= 1;
+        }
+        if (level == lfirst) {
+            main_item += 1;
+        }
+        if (keep_item != -1 && main_item != keep_item + 1) {
+            // alert(main_item + " - " + level + " - " + keep_item);
+            continue;
+        }
+        while (level > memo_level) {
+            text_menu += "<ul>\n";
+            memo_level += 1;
+        }
+        text_menu += repeat_indent_string(level-2);
+        text_menu += begin_format + sformat.replace("__HREF__", href).replace("__TITLE__", title);
+        format_open += 1;
+    }
+    while (1 < memo_level) {
+        text_menu += end_format + "</ul>\n";
+        memo_level -= 1;
+        format_open -= 1;
+    }
+    text_menu += send;
+    //text_menu += "\n" + text_memo;
+
+    while (format_open > 0) {
+        text_menu += end_format;
+        format_open -= 1;
+    }
+    return text_menu;
+};
+var update_menu = function() {
+    var sbegin = "";
+    var sformat = '<a href="#__HREF__">__TITLE__</a>';
+    var send = "";
+    var begin_format = '<li>';
+    var end_format = '</li>';
+    var keep_item = -1;
+    var text_menu = update_menu_string(sbegin, 2, 4, sformat, send, keep_item,
+       begin_format, end_format);
+    var menu = document.getElementById("my_id_menu_nb");
+    menu.innerHTML=text_menu;
+};
+window.setTimeout(update_menu,2000);
+            </script></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<section id="Un-exemple">
+<h2>Un exemple<a class="headerlink" href="#Un-exemple" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_5_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_5_0.png" />
+</div>
+</div>
+<p>Et les corrélations :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>1.000000</td>
+      <td>-0.117570</td>
+      <td>0.871754</td>
+      <td>0.817941</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>-0.117570</td>
+      <td>1.000000</td>
+      <td>-0.428440</td>
+      <td>-0.366126</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.871754</td>
+      <td>-0.428440</td>
+      <td>1.000000</td>
+      <td>0.962865</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.817941</td>
+      <td>-0.366126</td>
+      <td>0.962865</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Un-peu-de-théorie">
+<h2>Un peu de théorie<a class="headerlink" href="#Un-peu-de-théorie" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le coefficient de <a class="reference external" href="https://fr.wikipedia.org/wiki/Corr%C3%A9lation_(statistiques)">corrélation</a> de Pearson est calculé comme suit :</p>
+<div class="math notranslate nohighlight">
+\[cor(X_i, X_j) = \frac{cov(X_i, Y_i)}{\sigma(X_i)\sigma(X_j)}\]</div>
+<p>Lorsque les variables sont centrées <span class="math notranslate nohighlight">\(\mathbb{E}X_i=\mathbb{E}X_j=0\)</span>, cette formule devient :</p>
+<div class="math notranslate nohighlight">
+\[cor(X_i, X_j) = \frac{\mathbb{E}(X_i X_j)}{\sqrt{\mathbb{E}X_i^2 \mathbb{E}X_j^2}}\]</div>
+<p>Lorsque les variables sont réduites <span class="math notranslate nohighlight">\(\mathbb{E}X_i^2=\mathbb{E}X_j^2=1\)</span>, cette formule devient <span class="math notranslate nohighlight">\(cor(X_i, X_j) = \mathbb{E}(X_i X_j)\)</span>. Admettons maintenant que l’on cherche à trouver le coefficient <span class="math notranslate nohighlight">\(\alpha_{ij}\)</span> qui minimise la variance du bruit <span class="math notranslate nohighlight">\(\epsilon_{ij}\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[X_j = \alpha_{ij}X_i + \epsilon_{ij}\]</div>
+<p>Le coefficient <span class="math notranslate nohighlight">\(\alpha_{ij}\)</span> est le résultat d’une régression linéaire qui minimise <span class="math notranslate nohighlight">\(\mathbb{E}(X_j - \alpha_{ij}X_i)^2\)</span>. Si les variables <span class="math notranslate nohighlight">\(X_i\)</span>, <span class="math notranslate nohighlight">\(X_j\)</span> sont centrées et réduites : <span class="math notranslate nohighlight">\(\alpha_{ij}^* = \mathbb{E}(X_i X_j) = cor(X_i, X_j)\)</span>. On étend cette définition dans le cas d’une fonction paramétrable <span class="math notranslate nohighlight">\(f\)</span> : <span class="math notranslate nohighlight">\(f(\omega, X) \rightarrow \mathbb{R}\)</span> et d’une régression non linéaire. On suppose que les paramètres <span class="math notranslate nohighlight">\(\omega^*\)</span> minimisent la quantité
+<span class="math notranslate nohighlight">\(\min_\omega (X_j - f(\omega, X_i))^2\)</span>. On écrit alors <span class="math notranslate nohighlight">\(X_j = \alpha_{ij} \frac{f(\omega^*, X_i)}{\alpha_{ij}} + \epsilon_{ij}\)</span> et on choisit <span class="math notranslate nohighlight">\(\alpha_{ij}\)</span> de telle sorte que <span class="math notranslate nohighlight">\(\mathbb{E}\left(\frac{f(\omega^*, X_i)^2}{\alpha_{ij}^2}\right) = 1\)</span>. On définit la corrélation non linéaire au sens de <span class="math notranslate nohighlight">\(f\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[cor^f(X_i, X_j) = \sqrt{ \mathbb{E} (f(\omega, X_i)^2 )}\]</div>
+<p>On vérifie que ce coefficient est compris entre [0, 1]. Il est positif de manière évidente. Il est également inférieur à 1, si cela n’était pas le cas, nous pourrions construire une fonction <span class="math notranslate nohighlight">\(f(\omega^*, X)+c\)</span> qui est une meilleur solution pour le programme de minimisation. Ce nombre ressemble à une corrélation à ceci près qu’elle ne peut être négative.</p>
+</section>
+<section id="Vérifications">
+<h2>Vérifications<a class="headerlink" href="#Vérifications" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Tout d’abord le cas linéaire :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">scale</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="k">def</span> <span class="nf">correlation_etendue</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">cor</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">scale</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">mod</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">xj</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">mod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">cor</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="k">return</span> <span class="n">cor</span>
+
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_etendue</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">cor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>1.000000</td>
+      <td>0.117570</td>
+      <td>0.871754</td>
+      <td>0.817941</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>0.117570</td>
+      <td>1.000000</td>
+      <td>0.428440</td>
+      <td>0.366126</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.871754</td>
+      <td>0.428440</td>
+      <td>1.000000</td>
+      <td>0.962865</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.817941</td>
+      <td>0.366126</td>
+      <td>0.962865</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>On affiche à nouveau les corrélations qui sont identiques au signe près.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>1.000000</td>
+      <td>-0.117570</td>
+      <td>0.871754</td>
+      <td>0.817941</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>-0.117570</td>
+      <td>1.000000</td>
+      <td>-0.428440</td>
+      <td>-0.366126</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.871754</td>
+      <td>-0.428440</td>
+      <td>1.000000</td>
+      <td>0.962865</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.817941</td>
+      <td>-0.366126</td>
+      <td>0.962865</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Et le cas non linéaire :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
+
+<span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_etendue</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+<span class="n">cor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>1.000000</td>
+      <td>0.544441</td>
+      <td>0.915847</td>
+      <td>0.879583</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>0.418274</td>
+      <td>1.000000</td>
+      <td>0.591839</td>
+      <td>0.539524</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.937056</td>
+      <td>0.789727</td>
+      <td>1.000000</td>
+      <td>0.978332</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.846161</td>
+      <td>0.761652</td>
+      <td>0.980005</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+
+<span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_etendue</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">RandomForestRegressor</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">cor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>0.998300</td>
+      <td>0.557325</td>
+      <td>0.924134</td>
+      <td>0.871019</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>0.413502</td>
+      <td>0.992939</td>
+      <td>0.593398</td>
+      <td>0.544801</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.922292</td>
+      <td>0.786128</td>
+      <td>0.999064</td>
+      <td>0.975211</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.846106</td>
+      <td>0.756621</td>
+      <td>0.981181</td>
+      <td>0.999269</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Overfitting">
+<h2>Overfitting<a class="headerlink" href="#Overfitting" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Ces chiffres sont beaucoup trop optimistes. Les modèles de machine learning peuvent tout à fait faire de l’overfitting. Il faut améliorer la fonction en divisant en apprentissage et test plusieurs fois. Il faut également tenir compte de l’erreur de prédiction. On rappelle que :</p>
+<div class="math notranslate nohighlight">
+\[X_j = \alpha_{ij} \frac{f(\omega^*, X_i)}{\alpha_{ij}} + \epsilon_{ij} = cor^f(X_i, X_j) \frac{f(\omega^*, X_i)}{\sqrt{ \mathbb{E} (f(\omega, X_i)^2 )}} + \epsilon_{ij}\]</div>
+<p>Or <span class="math notranslate nohighlight">\(\mathbb{E}(X_j^2)=1\)</span> et on suppose que les bruits ne sont pas corrélées linéairement aux <span class="math notranslate nohighlight">\(f(\omega^*, X_i)\)</span>. On en déduit que <span class="math notranslate nohighlight">\(cor^f(X_i, X_j) = \sqrt{ 1 - \mathbb{E}\epsilon_{ij}^2}\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="k">def</span> <span class="nf">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">cor</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">scale</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">xj</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">mem</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">draws</span><span class="p">):</span>
+                <span class="n">xi_train</span><span class="p">,</span> <span class="n">xi_test</span><span class="p">,</span> <span class="n">xj_train</span><span class="p">,</span> <span class="n">xj_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+                    <span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span>
+                <span class="p">)</span>
+                <span class="n">mod</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+                <span class="n">mod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xi_train</span><span class="p">,</span> <span class="n">xj_train</span><span class="p">)</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xi_test</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">xj_test</span><span class="p">)</span>
+                <span class="n">mem</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">cor</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mem</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">mem</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cor</span>
+
+
+<span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">draws</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">cor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>1.000000</td>
+      <td>0.067090</td>
+      <td>0.878802</td>
+      <td>0.817301</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>0.156402</td>
+      <td>1.000000</td>
+      <td>0.355925</td>
+      <td>0.347753</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.878156</td>
+      <td>0.421116</td>
+      <td>1.000000</td>
+      <td>0.963497</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.808738</td>
+      <td>0.378046</td>
+      <td>0.961512</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+<span class="n">cor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>0.999140</td>
+      <td>0.000000</td>
+      <td>0.840661</td>
+      <td>0.792892</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>0.000000</td>
+      <td>0.995369</td>
+      <td>0.268502</td>
+      <td>0.202563</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.864010</td>
+      <td>0.492400</td>
+      <td>0.999257</td>
+      <td>0.955225</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.715695</td>
+      <td>0.539786</td>
+      <td>0.968522</td>
+      <td>0.999316</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">RandomForestRegressor</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">cor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1</th>
+      <td>0.998919</td>
+      <td>0.048290</td>
+      <td>0.872549</td>
+      <td>0.794800</td>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <td>0.064102</td>
+      <td>0.996025</td>
+      <td>0.209190</td>
+      <td>0.201094</td>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <td>0.875400</td>
+      <td>0.481419</td>
+      <td>0.998478</td>
+      <td>0.958236</td>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <td>0.733457</td>
+      <td>0.656183</td>
+      <td>0.967662</td>
+      <td>0.999501</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Les résultats sont assez fluctuants lorsque les données sont mal corrélées. On remarque également que la matrice n’est plus nécessairement symmétrique.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="k">def</span> <span class="nf">pairplot_cross_val</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;figsize&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;figsize&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;figsize&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">scale</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">cor</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">xj</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">mem</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">xi_train</span><span class="p">,</span> <span class="n">xi_test</span><span class="p">,</span> <span class="n">xj_train</span><span class="p">,</span> <span class="n">xj_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+                <span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span>
+            <span class="p">)</span>
+            <span class="n">mod</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">mod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xi_train</span><span class="p">,</span> <span class="n">xj_train</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xi_test</span><span class="p">)</span>
+            <span class="n">mod</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">mod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xi_test</span><span class="p">,</span> <span class="n">xj_test</span><span class="p">)</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xi_train</span><span class="p">)</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xj_test</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xj_train</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">mi</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">xj_test</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">xj_train</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">v2</span><span class="p">))</span>
+            <span class="n">ma</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">xj_test</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">xj_train</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">v2</span><span class="p">))</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">mi</span><span class="p">,</span> <span class="n">ma</span><span class="p">],</span> <span class="p">[</span><span class="n">mi</span><span class="p">,</span> <span class="n">ma</span><span class="p">],</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pairplot_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_22_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_22_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">pairplot_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_23_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_23_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">pairplot_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">RandomForestRegressor</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_24_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_24_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pairplot_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">KNeighborsRegressor</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_25_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_25_0.png" />
+</div>
+</div>
+</section>
+<section id="Corrélations-de-variables-catégorielles">
+<h2>Corrélations de variables catégorielles<a class="headerlink" href="#Corrélations-de-variables-catégorielles" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>C’est le problème épineux si on se restreint au linéaire. Cela n’a pas trop de sens d’affecter une valeur à chaque catégorie et la corrélation de deux variables binaires (des modalités) est toujours étrange car il n’y a que deux valeurs possibles.</p>
+<div class="math notranslate nohighlight">
+\[cov(X,Y) = \mathbb{E}\left[(X - \mathbb{E}X)(Y - \mathbb{E}Y)\right] = \mathbb{E}(XY) - \mathbb{E}X\mathbb{E}Y = \mathbb{P}(X=1 \, et \, Y=1) - \mathbb{E}X\mathbb{E}Y\]</div>
+<p>Dans le cas de variables binaires générées de modalités de la même variables catégorielles, le premier terme est toujours nul puisque les modalités sont exclusives et la corrélation est toujours négative.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">ex</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ex</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ex</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[0., 1.],
+       [1., 0.],
+       [1., 0.],
+       [0., 1.],
+       [0., 1.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">numpy</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[ 1., -1.],
+       [-1.,  1.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">ex</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ex</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ex</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">numpy</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[ 1.        , -0.45760432, -0.47790696],
+       [-0.45760432,  1.        , -0.56235159],
+       [-0.47790696, -0.56235159,  1.        ]])
+</pre></div></div>
+</div>
+<p>Supposons maintenant que nous avons deux variables catégorielles très proches :</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X_1\)</span> est une couleur rouge, bleu, gris.</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_2\)</span> est une nuance rose, orange, cyan, magenta, blanc noir.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rouge&quot;</span><span class="p">,</span> <span class="s2">&quot;bleu&quot;</span><span class="p">,</span> <span class="s2">&quot;gris&quot;</span><span class="p">]</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rose&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;magenta&quot;</span><span class="p">,</span> <span class="s2">&quot;blanc&quot;</span><span class="p">,</span> <span class="s2">&quot;noir&quot;</span><span class="p">]</span>
+<span class="n">ind</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)]</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="p">[</span><span class="n">c1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="p">[</span><span class="n">c2</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">X1</span><span class="o">=</span><span class="n">x1</span><span class="p">,</span> <span class="n">X2</span><span class="o">=</span><span class="n">x2</span><span class="p">))</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>rouge</td>
+      <td>rose</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>gris</td>
+      <td>noir</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>bleu</td>
+      <td>magenta</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>bleu</td>
+      <td>magenta</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>bleu</td>
+      <td>magenta</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>On peut évidemment transformer en entier.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dummies</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">dummies</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1_bleu</th>
+      <th>X1_gris</th>
+      <th>X1_rouge</th>
+      <th>X2_blanc</th>
+      <th>X2_cyan</th>
+      <th>X2_magenta</th>
+      <th>X2_noir</th>
+      <th>X2_orange</th>
+      <th>X2_rose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dummies</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1_bleu</th>
+      <th>X1_gris</th>
+      <th>X1_rouge</th>
+      <th>X2_blanc</th>
+      <th>X2_cyan</th>
+      <th>X2_magenta</th>
+      <th>X2_noir</th>
+      <th>X2_orange</th>
+      <th>X2_rose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1_bleu</th>
+      <td>1.000000</td>
+      <td>-0.548514</td>
+      <td>-0.511019</td>
+      <td>-0.399795</td>
+      <td>0.545824</td>
+      <td>0.683520</td>
+      <td>-0.295268</td>
+      <td>-0.309086</td>
+      <td>-0.348970</td>
+    </tr>
+    <tr>
+      <th>X1_gris</th>
+      <td>-0.548514</td>
+      <td>1.000000</td>
+      <td>-0.438420</td>
+      <td>0.728869</td>
+      <td>-0.299392</td>
+      <td>-0.374920</td>
+      <td>0.538305</td>
+      <td>-0.265175</td>
+      <td>-0.299392</td>
+    </tr>
+    <tr>
+      <th>X1_rouge</th>
+      <td>-0.511019</td>
+      <td>-0.438420</td>
+      <td>1.000000</td>
+      <td>-0.319551</td>
+      <td>-0.278927</td>
+      <td>-0.349292</td>
+      <td>-0.236004</td>
+      <td>0.604842</td>
+      <td>0.682890</td>
+    </tr>
+    <tr>
+      <th>X2_blanc</th>
+      <td>-0.399795</td>
+      <td>0.728869</td>
+      <td>-0.319551</td>
+      <td>1.000000</td>
+      <td>-0.218218</td>
+      <td>-0.273268</td>
+      <td>-0.184637</td>
+      <td>-0.193278</td>
+      <td>-0.218218</td>
+    </tr>
+    <tr>
+      <th>X2_cyan</th>
+      <td>0.545824</td>
+      <td>-0.299392</td>
+      <td>-0.278927</td>
+      <td>-0.218218</td>
+      <td>1.000000</td>
+      <td>-0.238528</td>
+      <td>-0.161165</td>
+      <td>-0.168707</td>
+      <td>-0.190476</td>
+    </tr>
+    <tr>
+      <th>X2_magenta</th>
+      <td>0.683520</td>
+      <td>-0.374920</td>
+      <td>-0.349292</td>
+      <td>-0.273268</td>
+      <td>-0.238528</td>
+      <td>1.000000</td>
+      <td>-0.201822</td>
+      <td>-0.211266</td>
+      <td>-0.238528</td>
+    </tr>
+    <tr>
+      <th>X2_noir</th>
+      <td>-0.295268</td>
+      <td>0.538305</td>
+      <td>-0.236004</td>
+      <td>-0.184637</td>
+      <td>-0.161165</td>
+      <td>-0.201822</td>
+      <td>1.000000</td>
+      <td>-0.142745</td>
+      <td>-0.161165</td>
+    </tr>
+    <tr>
+      <th>X2_orange</th>
+      <td>-0.309086</td>
+      <td>-0.265175</td>
+      <td>0.604842</td>
+      <td>-0.193278</td>
+      <td>-0.168707</td>
+      <td>-0.211266</td>
+      <td>-0.142745</td>
+      <td>1.000000</td>
+      <td>-0.168707</td>
+    </tr>
+    <tr>
+      <th>X2_rose</th>
+      <td>-0.348970</td>
+      <td>-0.299392</td>
+      <td>0.682890</td>
+      <td>-0.218218</td>
+      <td>-0.190476</td>
+      <td>-0.238528</td>
+      <td>-0.161165</td>
+      <td>-0.168707</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Ca ne dit pas grand-chose.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+
+<span class="n">enc</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;X1e&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;X2e&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;X2&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X1e</th>
+      <th>X2e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>rouge</td>
+      <td>rose</td>
+      <td>2</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>gris</td>
+      <td>noir</td>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>bleu</td>
+      <td>magenta</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>bleu</td>
+      <td>magenta</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>bleu</td>
+      <td>magenta</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\xavie\AppData\Local\Temp\ipykernel_148816\1134722465.py:1: FutureWarning: The default value of numeric_only in DataFrame.corr is deprecated. In a future version, it will default to False. Select only valid columns or specify the value of numeric_only to silence this warning.
+  df.corr()
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1e</th>
+      <th>X2e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1e</th>
+      <td>1.000000</td>
+      <td>0.661507</td>
+    </tr>
+    <tr>
+      <th>X2e</th>
+      <td>0.661507</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Ca ne veut toujours pas dire grand-chose. Et si on change la première colonne en permutant les lables :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;X1e&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;X1e&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X1e</th>
+      <th>X2e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>rouge</td>
+      <td>rose</td>
+      <td>0</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>gris</td>
+      <td>noir</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>bleu</td>
+      <td>magenta</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>bleu</td>
+      <td>magenta</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>bleu</td>
+      <td>magenta</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\xavie\AppData\Local\Temp\ipykernel_148816\1134722465.py:1: FutureWarning: The default value of numeric_only in DataFrame.corr is deprecated. In a future version, it will default to False. Select only valid columns or specify the value of numeric_only to silence this warning.
+  df.corr()
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1e</th>
+      <th>X2e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1e</th>
+      <td>1.000000</td>
+      <td>-0.767644</td>
+    </tr>
+    <tr>
+      <th>X2e</th>
+      <td>-0.767644</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>La corrélation linéaire sur des variables catégorielles n’a pas de sens. Essayons avec un arbre de décision. C’est le modèle adéquat pour ce type de valeur discrètes :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;X1e&quot;</span><span class="p">,</span> <span class="s2">&quot;X2e&quot;</span><span class="p">]],</span> <span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+<span class="n">cor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1e</th>
+      <th>X2e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1e</th>
+      <td>1.0</td>
+      <td>0.829865</td>
+    </tr>
+    <tr>
+      <th>X2e</th>
+      <td>1.0</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Et si on permute le premier label :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;X1e&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;X1e&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;X1e&quot;</span><span class="p">,</span> <span class="s2">&quot;X2e&quot;</span><span class="p">]],</span> <span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1e</th>
+      <th>X2e</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>X1e</th>
+      <td>1.0</td>
+      <td>0.829759</td>
+    </tr>
+    <tr>
+      <th>X2e</th>
+      <td>1.0</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Même résultat qui s’interprète de la sorte :</p>
+<ul class="simple">
+<li><p>La variable <em>X1e</em> se déduit de <em>X2e</em> (car <em>cor(X2e, X1e) = 1</em>).</p></li>
+<li><p>La variable <em>X2e</em> et fortement lié à <em>X2e</em>.</p></li>
+</ul>
+<p>La valeur numérique choisie pour représente la variable catégorielle n’a pas d’impact sur les résultats.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">pairplot_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;X1e&quot;</span><span class="p">,</span> <span class="s2">&quot;X2e&quot;</span><span class="p">]],</span> <span class="n">model</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_46_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_46_0.png" />
+</div>
+</div>
+<p>Et sur un jeu de données plus complet.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_diabetes</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>bmi</th>
+      <th>bp</th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>s3</th>
+      <th>s4</th>
+      <th>s5</th>
+      <th>s6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.038076</td>
+      <td>0.050680</td>
+      <td>0.061696</td>
+      <td>0.021872</td>
+      <td>-0.044223</td>
+      <td>-0.034821</td>
+      <td>-0.043401</td>
+      <td>-0.002592</td>
+      <td>0.019907</td>
+      <td>-0.017646</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.001882</td>
+      <td>-0.044642</td>
+      <td>-0.051474</td>
+      <td>-0.026328</td>
+      <td>-0.008449</td>
+      <td>-0.019163</td>
+      <td>0.074412</td>
+      <td>-0.039493</td>
+      <td>-0.068332</td>
+      <td>-0.092204</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.085299</td>
+      <td>0.050680</td>
+      <td>0.044451</td>
+      <td>-0.005670</td>
+      <td>-0.045599</td>
+      <td>-0.034194</td>
+      <td>-0.032356</td>
+      <td>-0.002592</td>
+      <td>0.002861</td>
+      <td>-0.025930</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-0.089063</td>
+      <td>-0.044642</td>
+      <td>-0.011595</td>
+      <td>-0.036656</td>
+      <td>0.012191</td>
+      <td>0.024991</td>
+      <td>-0.036038</td>
+      <td>0.034309</td>
+      <td>0.022688</td>
+      <td>-0.009362</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.005383</td>
+      <td>-0.044642</td>
+      <td>-0.036385</td>
+      <td>0.021872</td>
+      <td>0.003935</td>
+      <td>0.015596</td>
+      <td>0.008142</td>
+      <td>-0.002592</td>
+      <td>-0.031988</td>
+      <td>-0.046641</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>bmi</th>
+      <th>bp</th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>s3</th>
+      <th>s4</th>
+      <th>s5</th>
+      <th>s6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>age</th>
+      <td>1.000000</td>
+      <td>0.173737</td>
+      <td>0.185085</td>
+      <td>0.335428</td>
+      <td>0.260061</td>
+      <td>0.219243</td>
+      <td>-0.075181</td>
+      <td>0.203841</td>
+      <td>0.270774</td>
+      <td>0.301731</td>
+    </tr>
+    <tr>
+      <th>sex</th>
+      <td>0.173737</td>
+      <td>1.000000</td>
+      <td>0.088161</td>
+      <td>0.241010</td>
+      <td>0.035277</td>
+      <td>0.142637</td>
+      <td>-0.379090</td>
+      <td>0.332115</td>
+      <td>0.149916</td>
+      <td>0.208133</td>
+    </tr>
+    <tr>
+      <th>bmi</th>
+      <td>0.185085</td>
+      <td>0.088161</td>
+      <td>1.000000</td>
+      <td>0.395411</td>
+      <td>0.249777</td>
+      <td>0.261170</td>
+      <td>-0.366811</td>
+      <td>0.413807</td>
+      <td>0.446157</td>
+      <td>0.388680</td>
+    </tr>
+    <tr>
+      <th>bp</th>
+      <td>0.335428</td>
+      <td>0.241010</td>
+      <td>0.395411</td>
+      <td>1.000000</td>
+      <td>0.242464</td>
+      <td>0.185548</td>
+      <td>-0.178762</td>
+      <td>0.257650</td>
+      <td>0.393480</td>
+      <td>0.390430</td>
+    </tr>
+    <tr>
+      <th>s1</th>
+      <td>0.260061</td>
+      <td>0.035277</td>
+      <td>0.249777</td>
+      <td>0.242464</td>
+      <td>1.000000</td>
+      <td>0.896663</td>
+      <td>0.051519</td>
+      <td>0.542207</td>
+      <td>0.515503</td>
+      <td>0.325717</td>
+    </tr>
+    <tr>
+      <th>s2</th>
+      <td>0.219243</td>
+      <td>0.142637</td>
+      <td>0.261170</td>
+      <td>0.185548</td>
+      <td>0.896663</td>
+      <td>1.000000</td>
+      <td>-0.196455</td>
+      <td>0.659817</td>
+      <td>0.318357</td>
+      <td>0.290600</td>
+    </tr>
+    <tr>
+      <th>s3</th>
+      <td>-0.075181</td>
+      <td>-0.379090</td>
+      <td>-0.366811</td>
+      <td>-0.178762</td>
+      <td>0.051519</td>
+      <td>-0.196455</td>
+      <td>1.000000</td>
+      <td>-0.738493</td>
+      <td>-0.398577</td>
+      <td>-0.273697</td>
+    </tr>
+    <tr>
+      <th>s4</th>
+      <td>0.203841</td>
+      <td>0.332115</td>
+      <td>0.413807</td>
+      <td>0.257650</td>
+      <td>0.542207</td>
+      <td>0.659817</td>
+      <td>-0.738493</td>
+      <td>1.000000</td>
+      <td>0.617859</td>
+      <td>0.417212</td>
+    </tr>
+    <tr>
+      <th>s5</th>
+      <td>0.270774</td>
+      <td>0.149916</td>
+      <td>0.446157</td>
+      <td>0.393480</td>
+      <td>0.515503</td>
+      <td>0.318357</td>
+      <td>-0.398577</td>
+      <td>0.617859</td>
+      <td>1.000000</td>
+      <td>0.464669</td>
+    </tr>
+    <tr>
+      <th>s6</th>
+      <td>0.301731</td>
+      <td>0.208133</td>
+      <td>0.388680</td>
+      <td>0.390430</td>
+      <td>0.325717</td>
+      <td>0.290600</td>
+      <td>-0.273697</td>
+      <td>0.417212</td>
+      <td>0.464669</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>On dessine les 5 premières variables. On voit que la variable CHAS est binaire.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">6</span><span class="p">]]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_51_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_51_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>bmi</th>
+      <th>bp</th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>s3</th>
+      <th>s4</th>
+      <th>s5</th>
+      <th>s6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>age</th>
+      <td>0.999796</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>sex</th>
+      <td>0.027919</td>
+      <td>1.000000</td>
+      <td>0.157867</td>
+      <td>0.166623</td>
+      <td>0.191943</td>
+      <td>0.237330</td>
+      <td>0.324815</td>
+      <td>0.339291</td>
+      <td>0.067600</td>
+      <td>0.174746</td>
+    </tr>
+    <tr>
+      <th>bmi</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.998443</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>bp</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.067004</td>
+      <td>0.999742</td>
+      <td>0.034283</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.093270</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>s1</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.999590</td>
+      <td>0.818878</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.015104</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>s2</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.799865</td>
+      <td>0.999630</td>
+      <td>0.000000</td>
+      <td>0.050950</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>s3</th>
+      <td>0.000000</td>
+      <td>0.022461</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.999374</td>
+      <td>0.715070</td>
+      <td>0.059192</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>s4</th>
+      <td>0.123848</td>
+      <td>0.045933</td>
+      <td>0.280093</td>
+      <td>0.000000</td>
+      <td>0.425411</td>
+      <td>0.593638</td>
+      <td>0.718139</td>
+      <td>0.999282</td>
+      <td>0.542289</td>
+      <td>0.215026</td>
+    </tr>
+    <tr>
+      <th>s5</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.055251</td>
+      <td>0.999593</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>s6</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.074782</td>
+      <td>0.026652</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.115111</td>
+      <td>0.999659</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pairplot_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">6</span><span class="p">]],</span> <span class="n">model</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_53_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_53_0.png" />
+</div>
+</div>
+<p>On regarde en pariculier les variables TAX, RAD, PTRATIO.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;s1&quot;</span><span class="p">,</span> <span class="s2">&quot;s2&quot;</span><span class="p">,</span> <span class="s2">&quot;bmi&quot;</span><span class="p">]]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_55_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_55_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;s1&quot;</span><span class="p">,</span> <span class="s2">&quot;s2&quot;</span><span class="p">,</span> <span class="s2">&quot;bmi&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>bmi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>s1</th>
+      <td>1.000000</td>
+      <td>0.896663</td>
+      <td>0.249777</td>
+    </tr>
+    <tr>
+      <th>s2</th>
+      <td>0.896663</td>
+      <td>1.000000</td>
+      <td>0.261170</td>
+    </tr>
+    <tr>
+      <th>bmi</th>
+      <td>0.249777</td>
+      <td>0.261170</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pairplot_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;s1&quot;</span><span class="p">,</span> <span class="s2">&quot;s2&quot;</span><span class="p">,</span> <span class="s2">&quot;bmi&quot;</span><span class="p">]],</span> <span class="n">model</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_57_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_57_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;s1&quot;</span><span class="p">,</span> <span class="s2">&quot;s2&quot;</span><span class="p">,</span> <span class="s2">&quot;bmi&quot;</span><span class="p">]],</span> <span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>bmi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>s1</th>
+      <td>0.999247</td>
+      <td>0.806962</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>s2</th>
+      <td>0.788846</td>
+      <td>0.997368</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>bmi</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.999158</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Les variables sont toutes trois liées de façon non linéaire.</p>
+</section>
+<section id="Maximal-information-coefficient">
+<h2>Maximal information coefficient<a class="headerlink" href="#Maximal-information-coefficient" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Cette approche est plutôt pragmatique mais peut se révéler coûteuse en terme de calculs. Elle permet aussi de comprendre qu’un coefficient de corrélation dépend des hypothèses qu’on choisi pour les données. On peut toujours construire un coefficient de corrélation qui soit égal à 1 mais il correspond à toujours à un phénomène qu’on souhaite étudier. La corrélation linéaire recherche des relations linéaires. On peut chercher une relation polynomiale. Les arbres de décision recherche une
+corrélation construite à partir de fonction en escalier. Plus la relation a de degré de liberté, plus le coefficient a de chance de tendre vers 1, moins il a de chance d’être aussi élevé sur de nouvelles données.</p>
+<p>Cela permet néanmoins de mieux comprendre les avantages et les inconvénients de métriques du type <a class="reference external" href="https://en.wikipedia.org/wiki/Maximal_information_coefficient">MIC</a> ou <em>Maximal information coefficient</em>. Plus de détails sont disponibles dans cet article : <a class="reference external" href="https://arxiv.org/abs/1301.7745v1">Equitability, mutual information, and the maximal information coefficient</a>. Le module <a class="reference external" href="http://minepy.readthedocs.io/en/latest/python.html">minepy</a> implémente cette métrique ainsi que d’autres qui
+poursuivent le même objectif. L’information mutuelle est définie comme ceci pour deux variables discrètes :</p>
+<div class="math notranslate nohighlight">
+\[MI(X,Y) = \sum_{x\in\mathcal{X}}\sum_{y\in\mathcal{Y}}p(x,y)\ln_2\frac{p(x,y)}{p(x)p(y)}\]</div>
+<p>La fonction <span class="math notranslate nohighlight">\(p(x,y)\)</span> définit la distribution conjointe des deux variables, <span class="math notranslate nohighlight">\(p(x)\)</span>, <span class="math notranslate nohighlight">\(p(y)\)</span> les deux probabilités marginales. Il existe une extension pour les variables continues :</p>
+<div class="math notranslate nohighlight">
+\[MIC(X,Y) = \int_{x\in\mathcal{X}}\in_{y\in\mathcal{Y}}p(x,y)\ln_2\frac{p(x,y)}{p(x)p(y)}dxdy\]</div>
+<p>Une façon de calculer une approximation du coefficient <span class="math notranslate nohighlight">\(MIC(x,y)\)</span> est de discrétiser les deux variables <span class="math notranslate nohighlight">\(X\)</span> et <span class="math notranslate nohighlight">\(Y\)</span> ce qu’on fait en appliquant un algorithme similaire à celui utilisé pour construire un arbre de décision à ceci près que qu’il n’y a qu’une seule variable et que la variable à prédire est elle-même.</p>
+<p>L’information mutuelle est inspiré de la distance de <a class="reference external" href="https://fr.wikipedia.org/wiki/Divergence_de_Kullback-Leibler">Kullback-Leiber</a> qui est une distance entre deux probabilités qui sont ici la disribution du couple <span class="math notranslate nohighlight">\((X,Y)\)</span> et la distribution que ce couple aurait si les deux variables étaient indépendantes, c’est à dire le produit de leur distribution.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="n">rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">mysubplot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">numRows</span><span class="p">,</span> <span class="n">numCols</span><span class="p">,</span> <span class="n">plotNum</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># début ajout</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">))</span>
+    <span class="n">cor</span> <span class="o">=</span> <span class="n">correlation_cross_val</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">DecisionTreeRegressor</span><span class="p">)</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cor</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">numRows</span><span class="p">,</span> <span class="n">numCols</span><span class="p">,</span> <span class="n">plotNum</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="n">ylim</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Pearson r=</span><span class="si">%.1f</span><span class="se">\n</span><span class="s2">DT=</span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">dt</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_yaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="k">return</span> <span class="n">ax</span>
+
+
+<span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)]])</span>
+
+
+<span class="k">def</span> <span class="nf">mvnormal</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">cors</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cors</span><span class="p">):</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="n">cor</span><span class="p">],</span> <span class="p">[</span><span class="n">cor</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">mysubplot</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">rotnormal</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cov</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+        <span class="n">xy_r</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">mysubplot</span><span class="p">(</span><span class="n">xy_r</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xy_r</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">others</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="n">mysubplot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">lim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">mysubplot</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">))</span>
+
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">lim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">mysubplot</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">))</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">mysubplot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])[</span><span class="n">rs</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">mysubplot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="n">rs</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">mysubplot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+
+    <span class="n">xy1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">xy2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">xy3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">xy4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">xy1</span><span class="p">,</span> <span class="n">xy2</span><span class="p">,</span> <span class="n">xy3</span><span class="p">,</span> <span class="n">xy4</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">mysubplot</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">mvnormal</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
+<span class="n">rotnormal</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">others</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
+<span class="c1"># plt.tight_layout()</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_dsgarden_correlation_non_lineaire_62_0.png" src="../../_images/notebooks_dsgarden_correlation_non_lineaire_62_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="split_train_test.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Répartir en base d’apprentissage et de test</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../c_garden/file_dattente.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">File d’attente, un petit exemple</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Un-exemple">Un exemple</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Un-peu-de-théorie">Un peu de théorie</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Vérifications">Vérifications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Overfitting">Overfitting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Corrélations-de-variables-catégorielles">Corrélations de variables catégorielles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Maximal-information-coefficient">Maximal information coefficient</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/notebooks/dsgarden/correlation_non_lineaire.ipynb">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

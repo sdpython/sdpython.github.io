@@ -1,0 +1,1060 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Liens entre factorisation de matrices, ACP, k-means &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/missing_values_mf';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Factorisation et matrice et ACP" href="../notebooks/ml/mf_acp.html" />
+    <link rel="prev" title="Classification à l’aide des plus proches voisins" href="kppv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="rn/rn.html">Réseaux de neurones</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_1_def.html">Définition des réseaux de neurones multi-couches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_2_reg.html">La régression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_3_clas.html">La classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_4_densite.html">Démonstration du théorème de la densité des réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_5_newton.html">Descente de gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_6_apprentissage.html">Apprentissage d’un réseau de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_7_clas2.html">Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_8_prol.html">Prolongements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_9_auto.html">Analyse en composantes principales (ACP) et Auto Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rn/rn_biblio.html">Bibliographie</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kppv.html">Classification à l’aide des plus proches voisins</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Liens entre factorisation de matrices, ACP, k-means</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Non linéaire</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Liens entre factorisation de matrices, ACP, k-means</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="liens-entre-factorisation-de-matrices-acp-k-means">
+<h1>Liens entre factorisation de matrices, ACP, k-means<a class="headerlink" href="#liens-entre-factorisation-de-matrices-acp-k-means" title="Lien permanent vers cette rubrique">#</a></h1>
+<p id="index-0">La <a class="reference external" href="https://en.wikipedia.org/wiki/Non-negative_matrix_factorization">factorisation de matrice non négative</a>.
+Cette méthode est utilisée dans le cadre de la recommandation de produits
+à des utilisateurs.
+Lire également <a class="reference internal" href="#acara2011" id="id1"><span>[Acara2011]</span></a>, <a class="reference internal" href="#gupta2010" id="id2"><span>[Gupta2010]</span></a>.</p>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#factorisation-de-matrices-et-rang" id="id8">Factorisation de matrices et rang</a></p></li>
+<li><p><a class="reference internal" href="#quelques-cas-simples" id="id9">Quelques cas simples</a></p></li>
+<li><p><a class="reference internal" href="#intuition-geometrique" id="id10">Intuition géométrique</a></p></li>
+<li><p><a class="reference internal" href="#k-means" id="id11">k-means</a></p></li>
+<li><p><a class="reference internal" href="#quelques-resultats" id="id12">Quelques résultats</a></p></li>
+<li><p><a class="reference internal" href="#prolongements" id="id13">Prolongements</a></p>
+<ul>
+<li><p><a class="reference internal" href="#factorisation-non-negative" id="id14">Factorisation non-négative</a></p></li>
+<li><p><a class="reference internal" href="#prediction" id="id15">Prédiction</a></p></li>
+<li><p><a class="reference internal" href="#norme" id="id16">Norme</a></p></li>
+<li><p><a class="reference internal" href="#sparsite" id="id17">Sparsité</a></p></li>
+<li><p><a class="reference internal" href="#valeurs-manquantes" id="id18">Valeurs manquantes</a></p></li>
+<li><p><a class="reference internal" href="#interpretation" id="id19">Interprétation</a></p></li>
+<li><p><a class="reference internal" href="#ntf" id="id20">NTF</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#bibliographie" id="id21">Bibliographie</a></p></li>
+</ul>
+</nav>
+<section id="factorisation-de-matrices-et-rang">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Factorisation de matrices et rang</a><a class="headerlink" href="#factorisation-de-matrices-et-rang" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>La <a class="reference external" href="https://en.wikipedia.org/wiki/Non-negative_matrix_factorization">factorisation d’une matrice</a>
+est un problème d’optimisation qui consiste à trouver pour une matrice
+<span class="math notranslate nohighlight">\(M \in \mathcal{M}_{pq}\)</span> à coefficients positifs ou nuls :</p>
+<div class="math notranslate nohighlight">
+\[M = WH\]</div>
+<p>Où <span class="math notranslate nohighlight">\(W\)</span> et <span class="math notranslate nohighlight">\(H\)</span> sont de rang <span class="math notranslate nohighlight">\(k\)</span> et de dimension
+<span class="math notranslate nohighlight">\(W \in \mathcal{M}_{pk}\)</span> et <span class="math notranslate nohighlight">\(H \in \mathcal{M}_{kq}\)</span>.
+<em>On s’intéresse ici au cas où les coefficients ne sont pas nécessairement positifs.</em>
+Si <span class="math notranslate nohighlight">\(k &lt; rang(M)\)</span>, le produit <span class="math notranslate nohighlight">\(WH\)</span> ne peut être égal à <span class="math notranslate nohighlight">\(M\)</span>.
+Dans ce cas, on cherchera les matrices qui minimise :</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Problème0">
+<p class="admonition-title">Problème P1 : Factorisation de matrices positifs</p>
+<p>Soit <span class="math notranslate nohighlight">\(M \in \mathcal{M}_{pq}\)</span>, on cherche les matrices à coefficients positifs
+<span class="math notranslate nohighlight">\(W \in \mathcal{M}_{pk}\)</span> et <span class="math notranslate nohighlight">\(H \in \mathcal{M}_{kq}\)</span> qui sont solution
+du problème d’optimisation :</p>
+<div class="math notranslate nohighlight">
+\[\min_{W,H}\acc{\norme{M-WH}^2} = \min_{W,H} \sum_{ij} (m_{ij} - \sum_k w_{ik} h_{kj})^2\]</div>
+</div>
+</section>
+<section id="quelques-cas-simples">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Quelques cas simples</a><a class="headerlink" href="#quelques-cas-simples" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le notebook <a class="reference internal" href="../notebooks/ml/valeurs_manquantes_mf.html"><span class="std std-ref">Valeurs manquantes et factorisation de matrices</span></a> montre la décroissante de l’erreur
+en fonction du rang et l’impact de la corrélation sur cette même erreur.
+Le dernier paragraphe montre qu’il n’existe pas de solution unique à un problème donné.
+L’exemple suivant s’intéresse à une matrice 3x3.
+Les trois points forment un triangle dans un plan.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">identity</span><span class="p">,</span> <span class="n">array</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+<span class="n">wh</span> <span class="o">=</span> <span class="n">W</span> <span class="o">@</span> <span class="n">H</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">M</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">M</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">wh</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">wh</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">wh</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="../_downloads/66261d6b654ae1d96f884a712848c85b/missing_values_mf-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/6792215b573864eb6d67c303fda13cda/missing_values_mf-1.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/69649febc724c20f9dfd7e349fcb8a4b/missing_values_mf-1.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/82b6a03568798d0fc8349fa859bb9dc1/missing_values_mf-1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="../_images/missing_values_mf-1.png" class="plot-directive" src="../_images/missing_values_mf-1.png" />
+</figure>
+<p>On peut voir la matrice <span class="math notranslate nohighlight">\(M\)</span> comme un ensemble de <span class="math notranslate nohighlight">\(n=3\)</span> points dans un espace vectoriel.
+La matrice <span class="math notranslate nohighlight">\(W\)</span> est un ensemble de <span class="math notranslate nohighlight">\(k &lt; n\)</span> points dans le même espace.
+La matrice <span class="math notranslate nohighlight">\(WH\)</span>, de rang <span class="math notranslate nohighlight">\(k\)</span> est une approximation de cet ensemble
+dans le même espace, c’est aussi <span class="math notranslate nohighlight">\(n\)</span> combinaisons linéaires de <span class="math notranslate nohighlight">\(k\)</span>
+points de façon à former <span class="math notranslate nohighlight">\(n\)</span> points les plus proches proches de
+<span class="math notranslate nohighlight">\(n\)</span> points de la matrice <span class="math notranslate nohighlight">\(M\)</span>.</p>
+</section>
+<section id="intuition-geometrique">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Intuition géométrique</a><a class="headerlink" href="#intuition-geometrique" title="Lien permanent vers cette rubrique">#</a></h2>
+<p id="index-1">L’exemple précédente suggère une interprétation géométrique d’une factorisation
+de matrice. Sans valeur manquante, ce problème est équivalent à une
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Analyse_en_composantes_principales">Analyse en Composantes Principales (ACP)</a>
+(voir aussi <a class="reference internal" href="#boutsidis2008" id="id3"><span>[Boutsidis2008]</span></a> (décomposition en valeurs singulières comme algorithme d’initialisation).
+Nous allons le montrer grâce à quelques lemmes et théorèmes.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Lemme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="lemme-mf-0">Lemme L1 : Rang k</p>
+<p>On note <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span>,
+<span class="math notranslate nohighlight">\(W^k=(w^k_{il})\)</span>, <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> avec
+<span class="math notranslate nohighlight">\(1 \infegal i \infegal p\)</span>, <span class="math notranslate nohighlight">\(1 \infegal j \infegal q\)</span>,
+et <span class="math notranslate nohighlight">\(1 \infegal l \infegal k\)</span> avec <span class="math notranslate nohighlight">\(k &lt; \min(p,q)\)</span>.
+On suppose que les matrices
+sont solution du problème d’optimisation
+<span class="math notranslate nohighlight">\(\min_{W,H} \norm{ M - WH }^2\)</span>.
+On suppose que <span class="math notranslate nohighlight">\(rang(M) \supegal k\)</span>.
+Alors les les matrices <span class="math notranslate nohighlight">\(W^k\)</span> et <span class="math notranslate nohighlight">\(H^k\)</span>
+sont de rang <span class="math notranslate nohighlight">\(k\)</span>.</p>
+</div>
+<p>On procède par récurrence. Ce lemme est nécessairement vrai pour
+<span class="math notranslate nohighlight">\(k=1\)</span> car la matrice <span class="math notranslate nohighlight">\(M\)</span> n’est pas nulle.
+De manière évidente,
+<span class="math notranslate nohighlight">\(\norm{ M - W^{k-1}H^{k-1} }^2 \supegal \norm{ M - W^kH^k }^2\)</span>.
+Comme <span class="math notranslate nohighlight">\(rang(M) \supegal k\)</span>, il existe un vecteur colonne <span class="math notranslate nohighlight">\(V\)</span> de la matrice
+<span class="math notranslate nohighlight">\(M\)</span> qui ne fait pas partie de l’espace vectoriel engendré par les
+<span class="math notranslate nohighlight">\(k-1\)</span> vecteurs de la matrice <span class="math notranslate nohighlight">\(W^{k-1}\)</span>. On construit la matrice
+<span class="math notranslate nohighlight">\(Y^k= [W^{k-1}, V]\)</span>. Par construction, <span class="math notranslate nohighlight">\(rang(Y) = k\)</span>. De même,
+on construit <span class="math notranslate nohighlight">\(G^k\)</span> à partir de <span class="math notranslate nohighlight">\(H^{k-1}\)</span> en remplaçant la dernière colonne et
+en ajoutant une ligne :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G^k=\cro{\begin{array}{cc} H^{k-1}[1..p-1] &amp; 0 \\ 0 &amp; 1 \end{array}}\end{split}\]</div>
+<p>Par construction, le dernier vecteur est de la matrice produit est identique
+à celui de la matrice <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\norme{M - Y^{k-1}G^{k-1}}^2 = \norme{M - W^{k-1}H^{k-1}}^2 - \sum_i (m_{iq} - w^{k-1}_{ik} h^{k-1}_{kq})^2\]</div>
+<p>Nous avons fabriqué une matrice de rang <em>k</em> qui fait décroître l’erreur
+du problème d’optimisation.
+On procède par l’absurde pour dire que si
+<span class="math notranslate nohighlight">\(rang(W) = k-1\)</span>, on peut construire une matrice de rang <em>k</em>
+qui fait décroître l’erreur ce qui est impossible. Le lemme est donc vrai.</p>
+<p>Ce lemme fait également apparaître la construction de <em>q</em> points
+dans un espace vectoriel engendré par les <em>k</em> vecteurs colonnes
+de la matrice <span class="math notranslate nohighlight">\(W_k\)</span>. Il est donc possible de choisir
+n’importe quel base <span class="math notranslate nohighlight">\(W'_{k}\)</span> de cet espace et d’exprimer
+les <em>q</em> points de <span class="math notranslate nohighlight">\(W_kH_k\)</span> avec cette nouvelle base.
+Cela signifie qu’on peut écrire la matrice <span class="math notranslate nohighlight">\(W_k\)</span> dans une base
+<span class="math notranslate nohighlight">\(B_k\)</span> comme <span class="math notranslate nohighlight">\(W_k = B_k C_k\)</span> et <span class="math notranslate nohighlight">\(W_k H_k = B_k C_k C_k^{-1} G_k\)</span>.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Lemme1">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="lemme-mf-1">Lemme L2 : Projection</p>
+<p>On note <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span>,
+<span class="math notranslate nohighlight">\(W^k=(w^k_{il})\)</span>, <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> avec
+<span class="math notranslate nohighlight">\(1 \infegal i \infegal p\)</span>, <span class="math notranslate nohighlight">\(1 \infegal j \infegal q\)</span>,
+et <span class="math notranslate nohighlight">\(1 \infegal l \infegal k\)</span> avec <span class="math notranslate nohighlight">\(k &lt; \min(p,q)\)</span>.
+On suppose que les matrices
+sont solution du problème d’optimisation
+<span class="math notranslate nohighlight">\(\min_{W,H} \norm{ M - WH }^2\)</span>.
+On considère que la matrice <span class="math notranslate nohighlight">\(M\)</span> est un ensemble de <span class="math notranslate nohighlight">\(q\)</span>
+points dans dans un espace vectoriel de dimension <span class="math notranslate nohighlight">\(p\)</span>.
+La matrice <span class="math notranslate nohighlight">\(WH\)</span> représente des projections de ces points
+dans l’espace vectoriel engendré par les <span class="math notranslate nohighlight">\(k\)</span> vecteurs colonnes
+de la matrice <span class="math notranslate nohighlight">\(W\)</span>.</p>
+</div>
+<p>La figure suivante illustre ce lemme.
+<span class="math notranslate nohighlight">\(\norm{ M - WH }^2\)</span> s’écrit comme la somme des distances entre
+<em>q</em> points :</p>
+<div class="math notranslate nohighlight">
+\[\norm{ M - WH }^2 = \sum_{j=1}^q \norme{M[j] - W_kH_k[j]}^2\]</div>
+<a class="reference internal image-reference" href="../_images/plan.jpg"><img alt="../_images/plan.jpg" src="../_images/plan.jpg" style="width: 400px;" /></a>
+<p>Or on sait que si <span class="math notranslate nohighlight">\(W_k\)</span> est fixé, les <em>q</em> points de la matrice
+<span class="math notranslate nohighlight">\(W_kH_k\)</span> évolue sur un hyperplan de dimension <span class="math notranslate nohighlight">\(k\)</span>.
+Le point de ce plan le plus du vecteur <span class="math notranslate nohighlight">\(M[j]\)</span> est sa projection
+sur ce plan.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="th-mf-1">Théorème T1 : La factorisation de matrice est équivalente à une analyse en composantes principales</p>
+<p>On note <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span>,
+<span class="math notranslate nohighlight">\(W^k=(w^k_{il})\)</span>, <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> avec
+<span class="math notranslate nohighlight">\(1 \infegal i \infegal p\)</span>, <span class="math notranslate nohighlight">\(1 \infegal j \infegal q\)</span>,
+et <span class="math notranslate nohighlight">\(1 \infegal l \infegal k\)</span> avec <span class="math notranslate nohighlight">\(k &lt; \min(p,q)\)</span>.
+On suppose que les matrices
+sont solution du problème d’optimisation
+<span class="math notranslate nohighlight">\(\min_{W,H} \norm{ M - WH }^2\)</span>.
+On considère que la matrice <span class="math notranslate nohighlight">\(M\)</span> est un ensemble de <span class="math notranslate nohighlight">\(q\)</span>
+points dans dans un espace vectoriel de dimension <span class="math notranslate nohighlight">\(p\)</span>.
+On suppose <span class="math notranslate nohighlight">\(p &lt; q\)</span>.
+La matrice <span class="math notranslate nohighlight">\(W_k\)</span> définit un hyperplan identique à celui défini
+par les <span class="math notranslate nohighlight">\(k\)</span> vecteurs propres associés aux <span class="math notranslate nohighlight">\(k\)</span>
+plus grande valeurs propres de la matrice
+<span class="math notranslate nohighlight">\(MM'\)</span> où <span class="math notranslate nohighlight">\(M'\)</span> est la transposée de <span class="math notranslate nohighlight">\(M\)</span>.</p>
+</div>
+<p>Une analyse en composante principale consiste à trouver
+l’hyperplan qui maximise l’inertie de la projection d’un nuage
+sur ce plan.
+Le théorème <a class="reference internal" href="rn/rn_9_auto.html#theorem-acp-resolution"><span class="std std-ref">résolution de l’ACP</span></a>
+a montré que :</p>
+<div class="math notranslate nohighlight" id="equation-rn-acp-contrainte-rep">
+\begin{eqnarray*}
+S =
+\underset{ \begin{subarray}{c} W \in M_{p,d}\pa{\R} \\ W'W = I_d \end{subarray} } { \arg \max } \;
+                    \cro { \sum_{i=1}^{N} \norm{W'X_i}^2 } &amp;=&amp;
+\underset{ W \in M_{p,d}\pa{\R} } { \arg \min } \;  \cro { \sum_{i=1}^{N} \norm{WW'X_i - X_i}^2 }
+\end{eqnarray*}</div><p>Dans notre cas, chaque ligne de la matrice <span class="math notranslate nohighlight">\(M\)</span> est un vecteur <span class="math notranslate nohighlight">\(X_i\)</span>.
+La matrice <span class="math notranslate nohighlight">\(W_k\)</span> est identique à celle cherchée lors du problème de factorisation
+de matrices. Les colonnes de la matrice <span class="math notranslate nohighlight">\(H_k\)</span> sont égales à <span class="math notranslate nohighlight">\(W'X_i\)</span>.
+Il reste à montrer que le minimum trouvé dans les deux problèmes est le même.
+La démonstration du théorème montre également que <span class="math notranslate nohighlight">\(W'W = I_d\)</span>
+et dans ce cas précis, <span class="math notranslate nohighlight">\(WW'X_i\)</span> représente les coordonnées de la projection
+du point <span class="math notranslate nohighlight">\(X_i\)</span> sur le plan défini par les vecteurs <span class="math notranslate nohighlight">\(W\)</span>.
+C’est aussi ce que montre <a class="reference internal" href="#lemme-mf-1"><span class="std std-ref">second lemmme</span></a>.
+S’il s’agit du même plan, cela signifie que les deux formulations, ACP et factorisation
+de matrices, aboutissent au même minimum. Comme l’algorithme de l’ACP détermine le meilleur
+plan projecteur, nécessairement, il correspond à celui trouvé par la factorisation de matrice.</p>
+</section>
+<section id="k-means">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">k-means</a><a class="headerlink" href="#k-means" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On peut construire deux matrices <span class="math notranslate nohighlight">\(W\)</span> et <span class="math notranslate nohighlight">\(H\)</span> à partir des résultats d’un
+<a class="reference internal" href="../c_clus/kmeans.html#l-k-means"><span class="std std-ref">k-means</span></a>. Celui-ci détermine <span class="math notranslate nohighlight">\(k\)</span> centres auxquels on effecte les points
+du nuage de départ. Dans ce cas-ci, la matrice <span class="math notranslate nohighlight">\(W\)</span> est constituée des coordonnées
+de ces centres. On note <span class="math notranslate nohighlight">\(C_l\)</span> le cluster <span class="math notranslate nohighlight">\(l\)</span>,
+la matrice <span class="math notranslate nohighlight">\(H^k=(h^k_{lj})\)</span> est définie comme suit :</p>
+<div class="math notranslate nohighlight">
+\[h^k_{lj} = \indicatrice{X_j \in C_l}\]</div>
+<p>Les coefficients sont soit 0 ou 1.
+On peut alors essayer de forcer la factorisation de matrice vers une matrice
+<span class="math notranslate nohighlight">\(H\)</span> avec pas de un 1 sur chaque colonne et des zéros partout ailleurs.
+Le résultat sera assez proche d’un clustering.</p>
+</section>
+<section id="quelques-resultats">
+<span id="l-mf-acp-notebook"></span><h2><a class="toc-backref" href="#id12" role="doc-backlink">Quelques résultats</a><a class="headerlink" href="#quelques-resultats" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le notebook suivant illustre le lien entre ACP et
+factorisation de matrices en deux dimensions.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/mf_acp.html">Factorisation et matrice et ACP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/mf_acp.html#Factorisation-de-matrices">Factorisation de matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/mf_acp.html#ACP-:-analyse-en-composantes-principales">ACP : analyse en composantes principales</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/valeurs_manquantes_mf.html#Matrice-à-coefficients-aléatoires">Matrice à coefficients aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/valeurs_manquantes_mf.html#Matrice-avec-des-vecteurs-colonnes-corrélés">Matrice avec des vecteurs colonnes corrélés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/valeurs_manquantes_mf.html#Matrice-identité">Matrice identité</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/valeurs_manquantes_mf.html#Matrice-identité-et-représentation-spatiale">Matrice identité et représentation spatiale</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="prolongements">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Prolongements</a><a class="headerlink" href="#prolongements" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Tous les résultats montrés ici ne sont valables que si la norme <span class="math notranslate nohighlight">\(L_2\)</span>
+est utilisée. Cela permet de mieux comprendre
+les références proposées dans la documentation de
+<a class="reference external" href="http://scikit-learn.org/stable/modules/decomposition.html#nmf">Non-negative matrix factorization (NMF or NNMF)</a>.
+Si l’ACP et la factorisation de matrices sont équivalentes, les algorithmes pour
+trouver le minimum diffèrent et sont plus ou moins appropriés dans
+certaines configurations.
+Lire <a class="reference internal" href="#gilles2014" id="id4"><span>[Gilles2014]</span></a>.</p>
+<section id="factorisation-non-negative">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Factorisation non-négative</a><a class="headerlink" href="#factorisation-non-negative" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Le problème le plus souvent évoqué est celui de la factorisation
+non-négative : <a class="reference external" href="https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-m-explo-nmf.pdf">NMF</a>.
+Ce problème est une optimisation avec contrainte : les coefficients doivent
+tous être positifs ou nuls. Il n’est bien sûr plus équivalent
+à une ACP. En revanche, la factorisation de matrice est un problème
+équivalent à celui résolu par la
+<a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_en_valeurs_singuli%C3%A8res">Décomposition en Valeur Singulière (SVD)</a>
+qui cherche à décomposer une matrice <span class="math notranslate nohighlight">\(M=U\Sigma V^*\)</span>. La matrice <span class="math notranslate nohighlight">\(\Sigma\)</span>
+est une matrice diagonale et la matrice initiale <em>M</em>
+n’est pas nécessairement carrée contrairement au cas d’une ACP
+mais SVD et ACP sont très similaires.</p>
+</section>
+<section id="prediction">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Prédiction</a><a class="headerlink" href="#prediction" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Prédire revient à supposer que la matrice <span class="math notranslate nohighlight">\(M\)</span> est composée de vecteurs
+lignes <span class="math notranslate nohighlight">\(X_1, ..., X_q\)</span>. La matrice <span class="math notranslate nohighlight">\(H\)</span> reste inchangée et la prédiction
+revient à déterminer les coordonnées de la projection d’un nouveau point <span class="math notranslate nohighlight">\(X_{q+1}\)</span>
+dans le plan défini par les vecteurs de la matrice <span class="math notranslate nohighlight">\(H\)</span>.
+Pour de nouvelles observations <span class="math notranslate nohighlight">\(M_2=X_{q+1}\)</span>,
+la fonction <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF.transform">transform</a>
+de la classe <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="(disponible dans scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.decomposition.NMF</span></code></a> réestime une matrice
+<span class="math notranslate nohighlight">\(W_2\)</span> qui projette les vecteurs lignes de <span class="math notranslate nohighlight">\(M_2\)</span> sur
+les vecteurs de <em>H</em> en conservant des coefficients de projection positifs.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Problème1">
+<p class="admonition-title">Problème P2 : Prédiction</p>
+<p>Soit <span class="math notranslate nohighlight">\(M \in \mathcal{M}_{pq}\)</span> et <span class="math notranslate nohighlight">\(H \in \mathcal{M}_{kq}\)</span>,
+on cherche les matrices à coefficients positifs
+<span class="math notranslate nohighlight">\(W \in \mathcal{M}_{pk}\)</span> qui sont solution
+du problème d’optimisation :</p>
+<div class="math notranslate nohighlight">
+\[\min_{W}\acc{\norme{M-WH}^2} = \min_{W,H} \sum_{ij} (m_{ij} - \sum_k w_{ik} h_{kj})^2\]</div>
+</div>
+<p>Les recommandations s’obtiennent en multipliant <span class="math notranslate nohighlight">\(W_2\)</span> par <span class="math notranslate nohighlight">\(X_{q+1}\)</span>.
+Ce produit peut être approchée en relâchant la contrainte des poids
+positifs pour la matrice <em>W</em>. C’est la piste proposée par le
+modèle <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/mlinsights/mlmodel/anmf_predictor.html">ApproximateNMFPredictor</a> qui utilise une transformation
+<em>SVD</em> pour projeter sur l’espace vectoriel formé par les vecteurs
+de <em>H</em>.</p>
+</section>
+<section id="norme">
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">Norme</a><a class="headerlink" href="#norme" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’ACP avec une norme <span class="math notranslate nohighlight">\(L_1\)</span> revient à trouver le plan qui minimise la somme
+des distances à la projection et non la somme des distances au carrés. Cela réduit
+l’impact des points aberrants mais le problème n’est plus équivalent à la factorisation
+de matrices avec une norme <span class="math notranslate nohighlight">\(L_1\)</span>.</p>
+</section>
+<section id="sparsite">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Sparsité</a><a class="headerlink" href="#sparsite" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Une ACP suppose que le calcul de valeurs propres d’une matrice
+et c’est fastidieux lorsque la dimension du problème est très grande.
+On lui préfère alors un algorithme tel que
+<a class="reference external" href="http://scikit-learn.org/stable/modules/decomposition.html#sparsepca">Sparse PCA</a>.
+La factorisation de matrice est plus efficace qu’une ACP sur les problèmes
+sparses et de grande dimension. Lire
+<a class="reference external" href="http://www.jmlr.org/papers/volume5/hoyer04a/hoyer04a.pdf">Non-negative Matrix Factorization with Sparseness Constraints</a>.</p>
+</section>
+<section id="valeurs-manquantes">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Valeurs manquantes</a><a class="headerlink" href="#valeurs-manquantes" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-2">Contourner le problème des valeurs manquantes veut souvent dire,
+soit supprimer les enregistrements contenant des valeurs manquantes,
+soit choisir un modèle capable de faire avec ou soit trouver un moyen de les
+remplacer. On peut gérer plus facilement le problème des valeurs manquantes
+avec une factorisation de matrices. On peut également se server de la méthode
+pour calculer une ACP avec des valeurs manquantes.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-m-app-idm.pdf">Imputation de données manquantes</a></p></li>
+<li><p><a class="reference external" href="http://pbil.univ-lyon1.fr/members/dray/files/articles/dray2015a.pdf">Principal component analysis with missing values: a comparative survey of methods</a></p></li>
+</ul>
+</section>
+<section id="interpretation">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Interprétation</a><a class="headerlink" href="#interpretation" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>La factorisation de matrice peut être utilisée comme outil
+de segmentation et d’interprétation pour des images, des vidéos.
+Lire <a class="reference external" href="http://perso.telecom-paristech.fr/~essid/teach/NMF_tutorial_ICME-2014.pdf">A tutorial on Non-Negative Matrix Factorisation with Applications to Audiovisual Content Analysis</a>.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hal.archives-ouvertes.fr/hal-00990252/document">Gesture recognition using a NMF-based representation of motion-traces extracted from depth silhouettes</a></p></li>
+</ul>
+</section>
+<section id="ntf">
+<h3><a class="toc-backref" href="#id20" role="doc-backlink">NTF</a><a class="headerlink" href="#ntf" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Le problème de <a class="reference external" href="https://en.wikipedia.org/wiki/Non-negative_matrix_factorization">Non-Negative Matrix Factorisation (NMF)</a>
+est un cas particulier de
+<a class="reference external" href="http://www.cs.huji.ac.il/~shashua/papers/NTF-icml.pdf">Non-Negative Tensor Factorisation (NTF)</a>.
+Lire aussi
+<a class="reference external" href="https://www.cs.cmu.edu/~pmuthuku/mlsp_page/lectures/Parafac.pdf">PARAFAC. Tutorial and applications</a>.</p>
+</section>
+</section>
+<section id="bibliographie">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="acara2011" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Acara2011</a><span class="fn-bracket">]</span></span>
+<p>Scalable tensorfactorizations for incomplete data,
+<em>Evrim Acara Daniel, M.Dunlavyc, Tamara G.Koldab. Morten Mørupd</em>,
+Chemometrics and Intelligent Laboratory Systems,
+Volume 106, Issue 1, 15 March 2011, Pages 41-56,
+or ArXiv <a class="reference external" href="https://arxiv.org/pdf/1005.2197.pdf">1005.2197</a></p>
+</div>
+<div class="citation" id="boutsidis2008" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Boutsidis2008</a><span class="fn-bracket">]</span></span>
+<p>SVD-based initialization: A head start for nonnegative matrix factorization.
+<em>Christos Boutsidis and Efstratios Gallopoulos</em>
+Pattern Recognition, 41(4): 1350-1362, 2008.</p>
+</div>
+<div class="citation" id="gilles2014" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Gilles2014</a><span class="fn-bracket">]</span></span>
+<p>The Why and How of Nonnegative Matrix Factorization,
+<em>Nicolas Gillis</em>,
+ArXiv <a class="reference external" href="https://arxiv.org/abs/1401.5226">1401.5226</a></p>
+</div>
+<div class="citation" id="gupta2010" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Gupta2010</a><span class="fn-bracket">]</span></span>
+<p>Additive Non-negative Matrix Factorization for Missing Data,
+<em>Mithun Das Gupta</em>,
+ArXiv <a class="reference external" href="https://arxiv.org/abs/1007.0380">1007.0380</a></p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="kppv.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Classification à l’aide des plus proches voisins</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/ml/mf_acp.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Factorisation et matrice et ACP</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#factorisation-de-matrices-et-rang">Factorisation de matrices et rang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quelques-cas-simples">Quelques cas simples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intuition-geometrique">Intuition géométrique</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means">k-means</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quelques-resultats">Quelques résultats</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prolongements">Prolongements</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#factorisation-non-negative">Factorisation non-négative</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">Prédiction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#norme">Norme</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sparsite">Sparsité</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valeurs-manquantes">Valeurs manquantes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interprétation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ntf">NTF</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographie">Bibliographie</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_ml/missing_values_mf.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

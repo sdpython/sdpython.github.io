@@ -1,0 +1,982 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Régression logistique, diagramme de Voronoï, k-Means &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_ml/lr_voronoi';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Voronoï et régression logistique" href="../notebooks/ml/logreg_voronoi.html" />
+    <link rel="prev" title="Régression logistique" href="index_reg_log.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Régression logistique, diagramme de Voronoï, k-Means</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/logreg_voronoi.html">Voronoï et régression logistique</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lr_trees.html">Régression logistique par morceaux, arbres de décision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/reseau_neurones.html">Réseaux de neurones</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="survival_analysis.html">Analyse de survie</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/ml/survival.html">Analyse de survie en pratique</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index_reg_log.html" class="nav-link">Régression logistique</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Régression logistique, diagramme de Voronoï, k-Means</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="regression-logistique-diagramme-de-voronoi-k-means">
+<span id="l-lrvor-connection"></span><h1>Régression logistique, diagramme de Voronoï, k-Means<a class="headerlink" href="#regression-logistique-diagramme-de-voronoi-k-means" title="Lien permanent vers cette rubrique">#</a></h1>
+<p id="index-0">Ce qui suit explore les liens entre une régression logistique,
+les diagrammes de Voronoï pour construire un classifieur
+qui allie la régression logistique et les clustering type
+<a class="reference internal" href="../c_clus/kmeans.html#l-k-means"><span class="std std-ref">k-means</span></a>. Le point de départ est une conjecture :
+les régions créées par une régression logistique sont convexes.</p>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#diagramme-de-voronoi" id="id2">Diagramme de Voronoï</a></p></li>
+<li><p><a class="reference internal" href="#regression-logistique-et-classification" id="id3">Régression logistique et classification</a></p></li>
+<li><p><a class="reference internal" href="#diagramme-de-voronoi-et-partition-convexe" id="id4">Diagramme de Voronoï et partition convexe</a></p></li>
+<li><p><a class="reference internal" href="#regression-logistique-et-partition-convexe" id="id5">Régression logistique et partition convexe</a></p></li>
+<li><p><a class="reference internal" href="#voronoi-et-regression-logistique" id="id6">Voronoï et régression logistique</a></p></li>
+<li><p><a class="reference internal" href="#notebooks" id="id7">Notebooks</a></p></li>
+</ul>
+</nav>
+<section id="diagramme-de-voronoi">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Diagramme de Voronoï</a><a class="headerlink" href="#diagramme-de-voronoi" title="Lien permanent vers cette rubrique">#</a></h2>
+<p id="index-1">Un <a class="reference external" href="https://fr.wikipedia.org/wiki/Diagramme_de_Vorono%C3%AF">diagramme de Voronoï</a>
+est le diagramme issu des intersections des médiatrices entre <span class="math notranslate nohighlight">\(n\)</span> points.</p>
+<a class="reference internal image-reference" href="../_images/Coloured_Voronoi_2D.png"><img alt="../_images/Coloured_Voronoi_2D.png" src="../_images/Coloured_Voronoi_2D.png" style="width: 200px;" /></a>
+<p>On définit un ensemble de points <span class="math notranslate nohighlight">\((X_1, ..., X_n)\)</span>.
+La zone d’influence de chaque point est défini par
+<span class="math notranslate nohighlight">\(V(X_i) = \{ x | d(x, X_i) \leqslant d(x, X_j) \forall j\}\)</span>.
+Si <em>d</em> est la distance euclidienne, la frontière entre deux
+points <span class="math notranslate nohighlight">\(X_i, X_j\)</span> est un segment sur la droite d’équation
+<span class="math notranslate nohighlight">\(d(x, X_i) = d(x, X_j)\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+&amp;\norme{x-X_i}^2 - \norme{x-X_j}^2 = 0 \\
+\Longrightarrow &amp; \norme{x}^2 - 2 \scal{x}{X_i} + \norme{X_i}^2 - (\norme{x}^2 - 2 \scal{x}{X_j} + \norme{X_j}^2) = 0 \\
+\Longrightarrow &amp; 2 \scal{x}{X_j - X_i} + \norme{X_i}^2 - \norme{X_j}^2 = 0 \\
+\Longrightarrow &amp; 2 \scal{x}{X_j - X_i} + \frac{1}{2} \scal{X_i + X_j}{X_i - X_j} = 0 \\
+\Longrightarrow &amp; \scal{x - \frac{X_i + X_j}{2}}{X_i - X_j} = 0
+\end{array}\end{split}\]</div>
+<p>Ce système constitue <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> droites ou hyperplans si
+l’espace vectoriel est en dimension plus que deux.
+Le diagramme de Voronoï est formé par des segments de chacune
+de ces droites. On peut retourner le problème. On suppose
+qu’il existe <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> hyperplans,
+existe-t-il <em>n</em> points de telle sorte que les hyperplans
+initiaux sont les frontières du diagramme de Voronoï formé
+par ces <em>n</em> points ? Les paragraphes qui suivent expliquent
+explorent cette hypothèse.</p>
+</section>
+<section id="regression-logistique-et-classification">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Régression logistique et classification</a><a class="headerlink" href="#regression-logistique-et-classification" title="Lien permanent vers cette rubrique">#</a></h2>
+<p><a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a> a rendu populaire le jeu de données
+<a class="reference external" href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_iris_logistic.html#sphx-glr-auto-examples-linear-model-plot-iris-logistic-py">Iris</a>
+qui consiste à classer des fleurs en trois classes
+en fonction des dimensions de leurs pétales.</p>
+<img alt="../_images/iris.png" src="../_images/iris.png" />
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="n">clr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">clr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;coef_&quot;</span><span class="p">,</span> <span class="n">clr</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;intercept_&quot;</span><span class="p">,</span> <span class="n">clr</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">coef_</span> <span class="p">[[</span><span class="o">-</span><span class="mf">2.709</span>  <span class="mf">2.324</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">0.613</span> <span class="o">-</span><span class="mf">1.571</span><span class="p">]</span>
+     <span class="p">[</span> <span class="mf">2.096</span> <span class="o">-</span><span class="mf">0.753</span><span class="p">]]</span>
+    <span class="n">intercept_</span> <span class="p">[</span> <span class="mf">7.913</span>  <span class="mf">1.845</span> <span class="o">-</span><span class="mf">9.758</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>La fonction de prédiction est assez simple :
+<span class="math notranslate nohighlight">\(f(x) = Ax + B\)</span>. La classe d’appartenance
+du point <em>x</em> est déterminé par <span class="math notranslate nohighlight">\(\max_i f(x)_i\)</span>.
+La frontière entre deux classes <em>i, j</em> est définie
+par les deux conditions :
+<span class="math notranslate nohighlight">\(\max_k f(x)_k = f(x)_i = f(x)_j\)</span>.
+On retrouve bien <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> hyperplans.
+On définit la matrice <em>A</em> comme une matrice
+ligne <span class="math notranslate nohighlight">\((L_1, ..., L_n)\)</span> où <em>n</em> est le nombre
+de classes. L’équation de l’hyperplan entre deux classes devient :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+&amp; L_i X + B_i = L_j X + B_j \\
+\Longleftrightarrow &amp; \scal{L_i - L_j}{X} + B_i - B_j = 0 \\
+\Longleftrightarrow &amp; \scal{L_i - L_j}{X} + B_i - B_j = 0 \\
+\Longleftrightarrow &amp; \scal{L_i - L_j}{X - \frac{L_i + L_j}{2}} + \scal{L_i - L_j}{\frac{L_i + L_j}{2}} + B_i - B_j = 0 \\
+\Longleftrightarrow &amp; \scal{L_i - L_j}{X - \frac{L_i + L_j}{2}} + \frac{1}{2}\norme{L_i}^2 - \frac{1}{2}\norme{L_j}^2 + B_i - B_j = 0 \\
+\Longleftrightarrow &amp; \scal{L_i - L_j}{X - \frac{L_i + L_j}{2}} + \frac{1}{2}\norme{L_i}^2 + B_i - (\frac{1}{2}\norme{L_j}^2 + B_j) = 0
+\end{array}\end{split}\]</div>
+<p>Il y a peu de chance que cela fonctionne comme cela.
+Avant de continuer, assurons-nous que les régions associées
+aux classes sont convexes. C’est une condition nécessaire mais
+pas suffisante pour avoir un diagramme de Voronoï.</p>
+<p>Soit <span class="math notranslate nohighlight">\(X_1\)</span> et <span class="math notranslate nohighlight">\(X_2\)</span> appartenant à la classe <em>i</em>.
+On sait que <span class="math notranslate nohighlight">\(\forall k, L_i X_1 + B_i \geqslant L_k X_1 + B_k\)</span>
+et <span class="math notranslate nohighlight">\(\forall k, L_i X_2 + B_i \geqslant L_k X_2 + B_k\)</span>.
+On considère un point <span class="math notranslate nohighlight">\(X\)</span> sur le segment <span class="math notranslate nohighlight">\([X_1, X_2]\)</span>, donc il existe
+<span class="math notranslate nohighlight">\(\alpha, \beta \geqslant 0\)</span> tel que <span class="math notranslate nohighlight">\(X = \alpha X_1 + \beta X_2\)</span> et
+<span class="math notranslate nohighlight">\(\alpha + \beta = 1\)</span>. On vérifie que :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+&amp; L_i X + B_i = L_i (\alpha X_1 + \beta X_2) + B_i = \alpha(L_i X_1 + B_i) + \beta(L_i X_2 + B_i) \\
+\geqslant &amp; \alpha(L_k X_1 + B_k) + \beta(L_k X_2 + B_k) = L_k (\alpha X_1 + \beta X_2) + B_k \forall k
+\end{array}\end{split}\]</div>
+<p>Donc le point <em>X</em> appartient bien à classe <em>i</em> et celle-ci est convexe.
+La régression logistique forme une partition convexe de l’espace
+des features.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Théorème0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="th-thlogregpartconv">Théorème T1 : convexité des classes formées par une régression logistique</p>
+<p>On définit l’application <span class="math notranslate nohighlight">\(\mathbb{R}^d \rightarrow \mathbb{N}\)</span>
+qui associe la plus grande coordonnée
+<span class="math notranslate nohighlight">\(f(X) = \arg \max_k (AX + B)_k\)</span>.
+<em>A</em> est une matrice <span class="math notranslate nohighlight">\(\mathcal{M}_{dc}\)</span>,
+<em>B</em> est un vecteur de <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>,
+<em>c</em> est le nombre de parties.
+L’application <em>f</em> définit une partition convexe
+de l’espace vectoriel <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p>
+</div>
+<p>Revenons au cas de Voronoï. La classe prédite dépend de
+<span class="math notranslate nohighlight">\(\max_k (Ax + B)_k\)</span>. On veut trouver <em>n</em> points
+<span class="math notranslate nohighlight">\((P_1, ..., P_n)\)</span> tels que chaque couple <span class="math notranslate nohighlight">\((P_i, P_j)\)</span>
+soit équidistant de la frontière qui sépare leurs classes.
+Il faut également les projections des deux points sur
+la frontière se confondent et donc que les vecteurs
+<span class="math notranslate nohighlight">\(P_i - P_j\)</span> et <span class="math notranslate nohighlight">\(L_i - L_j\)</span> sont colinéaires.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+&amp;\left\{\begin{array}{l}\scal{L_i - L_j}{P_i} + B_i - B_j = - \pa{ \scal{L_i - L_j}{P_j} + B_i - B_j } \\
+P_i-  P_j - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \frac{L_i-L_j}{\norm{L_i-L_j}}=0 \end{array} \right.
+\\
+\Longleftrightarrow &amp; \left\{\begin{array}{l}\scal{L_i - L_j}{P_i + P_j} + 2 (B_i - B_j) = 0 \\
+P_i-  P_j - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \frac{L_i-L_j}{\norm{L_i-L_j}}=0 \end{array} \right.
+\end{array}\end{split}\]</div>
+<p>La seconde équation en cache en fait plusieurs puisqu’elle est valable
+sur plusieurs dimensions mais elles sont redondantes.
+Il suffit de choisir un vecteur <span class="math notranslate nohighlight">\(u_{ij}\)</span> non perpendiculaire
+à <span class="math notranslate nohighlight">\(L_i - L_j\)</span> de sorte que
+qu’il n’est pas perpendiculaire au vecteur <span class="math notranslate nohighlight">\(L_i - L_j\)</span> et de
+considérer la projection de cette équation sur ce vecteur.
+C’est pourquoi on réduit le système au suivant qui est
+équivalent au précédent si le vecteur <span class="math notranslate nohighlight">\(u_{ij}\)</span> est bien choisi.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+\Longrightarrow &amp; \left\{\begin{array}{l}\scal{L_i - L_j}{P_i + P_j} + 2 (B_i - B_j) = 0 \\
+\scal{P_i-  P_j}{u_{ij}} - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \scal{\frac{L_i-L_j}{\norm{L_i-L_j}}}{u_{ij}}=0
+\end{array} \right.
+\end{array}\end{split}\]</div>
+</section>
+<section id="diagramme-de-voronoi-et-partition-convexe">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Diagramme de Voronoï et partition convexe</a><a class="headerlink" href="#diagramme-de-voronoi-et-partition-convexe" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Faisons un peu de géométrie avant de résoudre ce problème car celui-ci
+a dans la plupart des cas plus d’équations que d’inconnues.
+Chaque frontière entre deux classes est la médiatrice d’un segment
+<span class="math notranslate nohighlight">\([P_i, P_j]\)</span>. Le dessin suivant trace un diagramme de Voronoï à
+trois points. L’intersection est le centre des médiatrices du triangle
+formé par les points de Voronoï. Pour les trouver, on trace un cercle,
+n’importe lequel, puis une droite perpendiculaire à l’une des médiatrice.
+On obtient deux points. Le troisième est obtenu en traçant une seconde
+perpendiculaire et par construsction, la troisième droite est perpendiculaire
+à la troisième médiatrice. Et on nomme les angles.</p>
+<a class="reference internal image-reference" href="../_images/vor2.png"><img alt="../_images/vor2.png" src="../_images/vor2.png" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../_images/vor4.png"><img alt="../_images/vor4.png" src="../_images/vor4.png" style="width: 300px;" /></a>
+<p>Les triangles formés par les côtés jaunes sont isocèles. On en déduit que
+<span class="math notranslate nohighlight">\(a + b + c = 2\pi = 2(x + y + z)\)</span>. On en déduit aussi que :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
+x + y &amp;=&amp; a \\
+y + z &amp;=&amp; c \\
+x + z &amp;=&amp; b
+\end{array}\end{split}\]</div>
+<p>On en conclut que <span class="math notranslate nohighlight">\(a + b + c = 2\pi = 2(x + y + z) = 2(x + c)\)</span> et
+<span class="math notranslate nohighlight">\(x = \pi - c\)</span>. Il existe une infinité de triplets de 3 points
+qui aboutissent à ce diagramme de Voronoï. Il suffit de changer
+la taille du cercle. On montre aussi qu’en dimension 2 et 3 classes,
+il existe toujours une solution au problème posé.
+Maintenant, si on considère la configuration suivante avec des points
+disposés de telle sorte que le diagramme de Voronoï est un maillage
+hexagonal. <span class="math notranslate nohighlight">\(a=b=c=\frac{2\pi}{3}\)</span> et <span class="math notranslate nohighlight">\(x=y=z=\frac{\pi}{3}\)</span>.
+Il n’existe qu’un ensemble de points qui peut produire ce maillage
+comme diagramme de Voronoï. Mais si on ajoute une petite zone
+(dans le cercle vert ci-dessous), il est impossible que ce diagramme
+soit un diagramme de Voronoï bien que cela soit une partition convexe.</p>
+<a class="reference internal image-reference" href="../_images/hexa.png"><img alt="../_images/hexa.png" src="../_images/hexa.png" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../_images/hexa2.png"><img alt="../_images/hexa2.png" src="../_images/hexa2.png" style="width: 200px;" /></a>
+<p>On revient à la détermination du diagramme de Voronoï associé à
+une régression logistique. On a montré qu’il n’existe pas tout le temps
+pour n’importe quelle partition convexe. Mais cela ne veut pas dire que
+tel est le cas pour une régression logistique.</p>
+</section>
+<section id="regression-logistique-et-partition-convexe">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Régression logistique et partition convexe</a><a class="headerlink" href="#regression-logistique-et-partition-convexe" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On a montré que la régression logistique réalise une
+partition convexe de l’espace vectoriel des variables.
+On note <em>L(n)</em> l’ensemble des partitions à <em>n</em> classes.
+Le diagramme de Voronoï correspondent également à un
+sous-ensemble <em>V(n)</em>. <span class="math notranslate nohighlight">\(L(n) = V(n)\)</span>, that is the
+question.</p>
+<p>On peut se poser la question de savoir si <em>L(n)</em> un sous-ensemble
+ou tout l’ensemble auquel cas la réponse à la question précédente
+est triviale.
+Considérons d’abord deux parties voisines d’une partition convexe formée
+par une fonction telle que celle décrite par le théorème sur la
+<a class="reference internal" href="#th-thlogregpartconv"><span class="std std-ref">convexité des classes formées par une régression logistique</span></a>.</p>
+<img alt="../_images/partabc.png" src="../_images/partabc.png" />
+<p>L’image qui précède montre une partition qui n’est pas convexe.
+La partie <em>A</em> l’est mais pas la partie <em>B</em>. En fait, il est facile
+de montrer que la seule frontière admissible entre deux parties convexe
+est un hyperplan. Si la partition contient <em>n</em> partie,
+il y a au pire <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> frontières,
+ce qui correspond également au nombre d’hyperplans définis
+par la fonction de prédiction associée à la régression logistique.</p>
+<a class="reference internal image-reference" href="../_images/zoneangle.png"><img alt="../_images/zoneangle.png" src="../_images/zoneangle.png" style="width: 300px;" /></a>
+<p>L’image qui précède présente une classification en trois
+zones (droites noires). On a choisi une droite bleue au hasard.
+En prenant son symétrique par rapport à une des droites noires (<em>D</em>),
+on a deux droites <span class="math notranslate nohighlight">\(D_1\)</span>, <span class="math notranslate nohighlight">\(D_2\)</span>. L’ensemble des points
+<span class="math notranslate nohighlight">\(\acc{x | d(x, D_1) = d(x, D_2)}\)</span> correspond à la droite noire.
+Il doit être de même pour les trois droites bleues, autrement
+dit, l’intersection des droites est le centre du cercle inscrit
+dans le triangle bleu ce qui n’est visiblement pas le cas sur l’image.
+Il paraît vraisemblable de dire que les régressions logisitiques ne permettent
+pas de former toutes les partitions convexes. On pourrait le montrer mais
+cela ne permettrait pas de répondre à la question initiale
+<span class="math notranslate nohighlight">\(L(n) = V(n)\)</span> ?</p>
+</section>
+<section id="voronoi-et-regression-logistique">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Voronoï et régression logistique</a><a class="headerlink" href="#voronoi-et-regression-logistique" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On sait que <span class="math notranslate nohighlight">\(L(2)=V(2)\)</span> quelque soit la dimension,
+que <span class="math notranslate nohighlight">\(L(3)=V(3)\)</span> en dimension 2. La matrice <em>L</em>
+définit une régression logistique. Le diagramme de Voronoï qui
+lui correspond est solution du système d’équations qui suit :</p>
+<div class="math notranslate nohighlight" id="equation-eq-lrvor-system">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-lrvor-system" title="Lien permanent vers cette équation">#</a></span>\[\begin{split}\begin{array}{rcl}
+&amp; \Longrightarrow &amp; \left\{\begin{array}{l}\scal{\frac{L_i-L_j}{\norm{L_i-L_j}}}{P_i + P_j} + 2 \frac{B_i - B_j}{\norm{L_i-L_j}} = 0 \\
+\scal{P_i-  P_j}{u_{ij}} - \scal{P_i - P_j}{\frac{L_i-L_j}{\norm{L_i-L_j}}} \scal{\frac{L_i-L_j}{\norm{L_i-L_j}}}{u_{ij}}=0
+\end{array} \right.
+\end{array}\end{split}\]</div>
+<p>Avec <span class="math notranslate nohighlight">\(u_{ij}\)</span> choisi de telle sorte que les
+vecteur <span class="math notranslate nohighlight">\(L_i-L_j\)</span> et <span class="math notranslate nohighlight">\(u_{ij}\)</span> ne soit pas
+coliénaires. Ce système inclut des équations
+entre classes ou régions qui ne sont pas voisines.
+Il y a potentiellement <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span>
+équations pour <em>n</em> inconnues. Il n’est pas évident de dire
+si ce système à une solution. Voyons plutôt l’ensemble des droites
+formées par un diagramme de Voronoï. Un point appartient à un segment
+s’il est à égale distance de deux points.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
+&amp;\forall i&lt;j, \, d(X, P_i) = d(X, P_j) \\
+\Longleftrightarrow &amp; \forall i&lt;j, \, \norm{X-P_i}^2 = \norm{X-P_j}^2 \\
+\Longleftrightarrow &amp; \forall i&lt;j, \, \scal{(X-P_i)+(X-P_j)}{(X-P_i)-(X-P_j)} \\
+\Longleftrightarrow &amp; \forall i&lt;j, \, \scal{X-\frac{P_i+P_j}{2}}{P_j-P_i}=0 \\
+\Longleftrightarrow &amp; \forall i&lt;j, \, \scal{X}{P_j-P_i} + \frac{\norm{P_i}^2}{2} - \frac{\norm{P_j}^2}{2}=0
+\end{array}\end{split}\]</div>
+<p>Pour une partition convexe formée à partir de droite,
+comme c’est le cas d’une régression linéaire, un point
+appartient à un segment s’il est à égale distance de deux
+droites. L’ensemble de ces points correspond à deux droites,
+les deux bissectrices.</p>
+<a class="reference internal image-reference" href="../_images/biss.png"><img alt="../_images/biss.png" src="../_images/biss.png" style="width: 150px;" /></a>
+<p>Seule l’une de ces droites est la bonne.
+L’équation d’une droite est donnée par
+<span class="math notranslate nohighlight">\(\scal{X}{L_i} +B_i=0\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\scal{X}{\frac{L_i}{\norm{L_i}}} + \frac{B_i}{\norm{L_i}} = \scal{X}{\frac{L_j}{\norm{L_j}}} + \frac{B_j}{\norm{L_j}} \text{ ou }
+\scal{X}{\frac{L_i}{\norm{L_i}}} + \frac{B_i}{\norm{L_i}} = - \scal{X}{\frac{L_j}{\norm{L_j}}} - \frac{B_j}{\norm{L_j}}\]</div>
+<p>On choisit l’une de ces droites.</p>
+<div class="math notranslate nohighlight">
+\[\forall i&lt;j, \, \scal{X}{\frac{L_j}{\norm{L_j}} -\frac{L_i}{\norm{L_i}}} + \frac{B_j}{\norm{L_j}} - \frac{B_i}{\norm{L_i}} = 0\]</div>
+<p>On peut voir que si tous les points sont situés
+sur la boule unité, à savoir <span class="math notranslate nohighlight">\(\norm{P_i}=1\)</span>,
+la régression logistique s’écrit simplement avec
+<span class="math notranslate nohighlight">\(L_i=P_i\)</span> et <span class="math notranslate nohighlight">\(B_i=-\frac{1}{2}\)</span>.
+On revient au système d’équations linéaires
+<a class="reference internal" href="#equation-eq-lrvor-system">(1)</a> et on en cherche une solution
+approchée un peu à la façon
+<a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html">RANSAC</a>
+avec une régression linéaire et la norme <em>L1</em>.
+Il n’existe pas toujours de diagramme de Voronoï équivalent
+à la partition convexe réalisée par une regréssion logistique.
+Il est facile de trouver un contre-exemple en essayant de résoudre
+le système précédent. C’est ce que fait la fonction
+<a class="reference internal" href="../api/ml.html#mlstatpy.ml.voronoi.voronoi_estimation_from_lr" title="mlstatpy.ml.voronoi.voronoi_estimation_from_lr"><code class="xref py py-func docutils literal notranslate"><span class="pre">voronoi_estimation_from_lr</span></code></a>.
+La fonction essaye avec quelques approximations et heuristiques
+de déterminer les points du diagramme de Voronoï. Si elle réussit
+du premier coup, c’est qu’il y avait équivalence ce qui arrive peu souvent.
+Il faudrait refaire les calculs à la main et non de façon approchée pour
+valider un contre exemple. Une prochaine fois peut-être.
+Ce qu’il faut retenir est que la régression logistique
+réalise une partition convexe de l’espace des variables.</p>
+</section>
+<section id="notebooks">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
+<p id="index-2">Le notebook qui suit reprend les différents
+éléments théoriques présentés ci-dessus. Il
+continue l’étude d’une régression logistique
+et donne une intuition de ce qui marche ou pas
+avec un tel modèle. Notamment, le modèle est plus
+performant si les classes sont réparties sur la boule
+unité de l’espace des features.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/ml/logreg_voronoi.html">Voronoï et régression logistique</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index_reg_log.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Régression logistique</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../notebooks/ml/logreg_voronoi.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Voronoï et régression logistique</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagramme-de-voronoi">Diagramme de Voronoï</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-logistique-et-classification">Régression logistique et classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagramme-de-voronoi-et-partition-convexe">Diagramme de Voronoï et partition convexe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-logistique-et-partition-convexe">Régression logistique et partition convexe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#voronoi-et-regression-logistique">Voronoï et régression logistique</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebooks">Notebooks</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_ml/lr_voronoi.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

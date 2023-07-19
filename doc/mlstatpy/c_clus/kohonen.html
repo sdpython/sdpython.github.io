@@ -1,0 +1,844 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Carte de Kohonen &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'c_clus/kohonen';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Non linéaire" href="../c_ml/index.html" />
+    <link rel="prev" title="Mélange de lois normales" href="gauss_mixture.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="kmeans.html">k-means</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gauss_mixture.html">Mélange de lois normales</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Carte de Kohonen</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Clustering</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Carte de Kohonen</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="carte-de-kohonen">
+<span id="classification-carte-kohonen"></span><h1>Carte de Kohonen<a class="headerlink" href="#carte-de-kohonen" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#principe" id="id8">Principe</a></p></li>
+<li><p><a class="reference internal" href="#carte-de-kohonen-et-classification" id="id9">Carte de Kohonen et classification</a></p></li>
+<li><p><a class="reference internal" href="#autres-utilisation-des-cartes-de-kohenen" id="id10">Autres utilisation des cartes de Kohenen</a></p></li>
+<li><p><a class="reference internal" href="#bibliographie" id="id11">Bibliographie</a></p></li>
+</ul>
+</nav>
+<section id="principe">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Principe</a><a class="headerlink" href="#principe" title="Lien permanent vers cette rubrique">#</a></h2>
+<p id="index-0">Les cartes de Kohonen ou Self Organizing Map (SOM) est le terme anglais
+pour les <a class="reference external" href="https://fr.wikipedia.org/wiki/Carte_auto_adaptative">cartes de Kohonen</a>.
+(voir <a class="reference internal" href="#kohonen1997" id="id1"><span>[Kohonen1997]</span></a>) sont assimilées à des méthodes neuronales.
+Ces cartes sont constituées d’un ensemble de neurones
+<span class="math notranslate nohighlight">\(\vecteur{\mu_1}{\mu_N}\)</span> lesquels sont reliés par une forme récurrente de
+voisinage. Les neurones sont initialement répartis selon ce système
+de voisinage. Le réseau évolue ensuite puisque chaque point de l’espace
+parmi l’ensemble <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_K}\)</span> attire le neurone le plus proche
+vers lui, ce neurone attirant à son tour ses voisins. Cette procédure
+est réitérée jusqu’à convergence du réseau en faisant décroître
+l’attirance des neurones vers les points du nuage.</p>
+<img alt="../_images/kohov.png" src="../_images/kohov.png" />
+<p>Trois types de voisinages couramment utilisés pour les cartes de Kohonen, voisinages
+linéaire, rectangulaire, triangulaire.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Algorithme0">
+<div class="docutils container">
+</div>
+<p class="admonition-title" id="classification-som-algo">Algorithme A1 : cartes de Kohonen (SOM)</p>
+<p>Soient <span class="math notranslate nohighlight">\(\vecteur{\mu_1^t}{\mu_N^t} \in \pa{\R^n}^N\)</span>
+des neurones de l’espace vectoriel <span class="math notranslate nohighlight">\(\R^n\)</span>. On
+désigne par <span class="math notranslate nohighlight">\(V\pa{\mu_j}\)</span> l’ensemble des neurones
+voisins de <span class="math notranslate nohighlight">\(\mu_j\)</span> pour cette carte de Kohonen.
+Par définition, on a <span class="math notranslate nohighlight">\(\mu_j \in V\pa{\mu_j}\)</span>.
+Soit <span class="math notranslate nohighlight">\(\vecteur{X_1}{X_K} \in \pa{\R^n}^K\)</span> un nuage de points.
+On utilise une suite de réels positifs
+<span class="math notranslate nohighlight">\(\pa{\alpha_t}\)</span> vérifiant
+<span class="math notranslate nohighlight">\(\sum_{t \supegal 0} \alpha_t^2 &lt; \infty\)</span> et
+<span class="math notranslate nohighlight">\(\sum_{t \supegal 0} \alpha_t = \infty\)</span>.</p>
+<p><em>initialisation</em></p>
+<p>Les neurones <span class="math notranslate nohighlight">\(\vecteur{\mu_1^0}{\mu_N^0}\)</span>
+sont répartis dans l’espace <span class="math notranslate nohighlight">\(\R^n\)</span>
+de manière régulière selon la forme de leur voisinage.
+<span class="math notranslate nohighlight">\(t \longleftarrow 0\)</span>.</p>
+<p><em>neurone le plus proche</em></p>
+<p>On choisi aléatoirement un points du nuage
+<span class="math notranslate nohighlight">\(X_i\)</span> puis on définit le neurone
+<span class="math notranslate nohighlight">\(\mu_{k^*}^t\)</span> de telle sorte que :
+<span class="math notranslate nohighlight">\(\norme{ \mu_{k^*}^t - X_i} = \underset{1 \infegal j \infegal N}{\min } \; \norme{ \mu_j^t - X_i }\)</span>.</p>
+<p><em>mise à jour</em></p>
+<div class="line-block">
+<div class="line">foreach <span class="math notranslate nohighlight">\(\mu^t_j\)</span> in <span class="math notranslate nohighlight">\(V\pa{\mu_{k^*}^t}\)</span></div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\mu^{t+1}_j \longleftarrow \mu^t_j + \alpha_t \, \pa{X_i - \mu^{t+1}_j}\)</span></div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(t \longleftarrow t + 1\)</span></p>
+<p>Tant que l’algorithme n’a pas convergé, retour à l’étape du neurone
+le plus proche.</p>
+</div>
+<p>L’étape de mise à jour peut être modifiée de manière à
+améliorer la vitesse de convergence (voir <a class="reference internal" href="#lo1991" id="id2"><span>[Lo1991]</span></a>) :</p>
+<div class="math notranslate nohighlight">
+\[\mu^{t+1}_j \longleftarrow \mu^t_j + \alpha_t \, h\pa{\mu^{t}_j, \mu_{k^*}^t} \, \mu_k\pa{X_i - \mu^{t+1}_j}\]</div>
+<p>Où <span class="math notranslate nohighlight">\(h\)</span> est une fonction à valeur dans l’intervalle
+<span class="math notranslate nohighlight">\(\cro{0,1}\)</span> qui vaut 1 lorsque <span class="math notranslate nohighlight">\(\mu^t_j = \mu_{k^*}^t\)</span>
+et qui décroît lorsque la distance entre ces deux neurones augmente.
+Une fonction typique est : <span class="math notranslate nohighlight">\(h\pa{x,y} = h_0 \, \exp\pa{ - \frac{\norme{x-y}^2} {2\,  \sigma_t^2} }\)</span>.</p>
+<p>Les cartes de Kohonen sont utilisées en analyse des données afin de projeter
+un nuage de points dans un espace à deux dimensions d’une manière non
+linéaire en utilisant un voisinage rectangulaire. Elles permettent également
+d’effectuer une classification non supervisée en regroupant les neurones
+là où les points sont concentrés. Les arêtes reliant les neurones ou
+sommets de la cartes de Kohonen sont soit rétrécies pour signifier
+que deux neurones sont voisins, soit distendues pour indiquer une séparation entre classes.</p>
+</section>
+<section id="carte-de-kohonen-et-classification">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Carte de Kohonen et classification</a><a class="headerlink" href="#carte-de-kohonen-et-classification" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’article <a class="reference internal" href="#wu2004" id="id3"><span>[Wu2004]</span></a> aborde le problème d’une classification à
+partir du résultat obtenu depuis une <a class="reference internal" href="#classification-som-algo"><span class="std std-ref">carte de Kohonen</span></a>.
+Plutôt que de classer les points, ce sont les neurones qui seront
+classés en <span class="math notranslate nohighlight">\(C\)</span> classes. Après avoir appliqué
+l”<a class="reference internal" href="#classification-som-algo"><span class="std std-ref">algorithme de Kohonen</span></a>,
+la méthode proposée dans <a class="reference internal" href="#wu2004" id="id4"><span>[Wu2004]</span></a> consiste à classer de manière
+non supervisée les <span class="math notranslate nohighlight">\(A\)</span> neurones obtenus <span class="math notranslate nohighlight">\(\vecteur{\mu_1}{\mu_A}\)</span>.
+Toutefois, ceux-ci ne sont pas tous pris en compte afin d’éviter
+les points aberrants. On suppose que <span class="math notranslate nohighlight">\(\alpha_{il} = 1\)</span> si le
+neurone <span class="math notranslate nohighlight">\(l\)</span> est le plus proche du point
+<span class="math notranslate nohighlight">\(X_i\)</span>, 0 dans le cas contraire. Puis on construit les quantités suivantes :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\nu_k &amp;=&amp; \sum_{i=1}^{N} \; \alpha_{ik} \\
+T_k &amp;=&amp; \frac{1}{\nu_k} \; \sum_{i=1}^{N} \; \alpha_{ik} X_i \\
+\theta(T_k)  &amp;=&amp; \sqrt{ \frac{1}{\nu_k} \;  \sum_{i=1}^{N} \; \alpha_{ik} \norme{ X_i - T_k}^2 }
+\end{eqnarray*}</div><p>De plus :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+\overline{\theta} &amp;=&amp; \frac{1}{A} \; \sum_{k=1}^{A} \theta(T_k) \\
+\sigma(\theta) &amp;=&amp; \sqrt{ \frac{1}{A} \; \sum_{k=1}^{A} \pa{ \theta(T_k) - \overline{\theta} }^2 }
+\end{eqnarray*}</div><p>Si <span class="math notranslate nohighlight">\(\nu_k = 0\)</span> ou <span class="math notranslate nohighlight">\(\norme{ \mu_k - T_k} &gt; \overline{\theta} + \sigma(\theta)\)</span>,
+le neurone <span class="math notranslate nohighlight">\(\mu_k\)</span> n’est pas prise en compte lors de la classification non
+supervisée. Une fois celle-ci terminée, chaque élément <span class="math notranslate nohighlight">\(X_i\)</span>
+est classé selon la classe du neurone le plus proche.</p>
+<p>L’article <a class="reference internal" href="#wu2004" id="id5"><span>[Wu2004]</span></a> propose également un critère permettant de
+déterminer le nombre de classes idéale. On note,
+<span class="math notranslate nohighlight">\(a_{ik} = 1\)</span> si <span class="math notranslate nohighlight">\(X_i\)</span> appartient à la classe <span class="math notranslate nohighlight">\(k\)</span>,
+dans le cas contraire, <span class="math notranslate nohighlight">\(a_{ik} = 0\)</span>. On définit <span class="math notranslate nohighlight">\(n_k\)</span>
+le nombre d’éléments de la classe <span class="math notranslate nohighlight">\(k\)</span>, le vecteur moyenne <span class="math notranslate nohighlight">\(M_k\)</span>
+associé à la classe <span class="math notranslate nohighlight">\(k\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+n_k &amp;=&amp; \sum_{i=1}^{N} \; a_{ik} \\
+M_k &amp;=&amp; \frac{1}{n_k} \;  \sum_{i=1}^{N} \; a_{ik} X_i \\
+\sigma^2(M_k) &amp;=&amp; \frac{1}{n_k} \;  \sum_{i=1}^{N} \; a_{ik} \norme{ X_i - M_k}^2
+\end{eqnarray*}</div><p>On note au préalable <span class="math notranslate nohighlight">\(\sigma = \sqrt{ \frac{1}{C} \sum_{k=1}^{C} \; \sigma^2(M_k) }\)</span>.
+L’article définit ensuite la densité interne pour <span class="math notranslate nohighlight">\(C\)</span> classes :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+D_{int} (C) &amp;=&amp; \frac{1}{C} \;  \sum_{k=1}^{C} \; \sum_{i=1}^{N} \; \sum_{j=1}^{N} \;
+a_{ik} a_{jk} \indicatrice{ \norme{ X_i - X_j} \infegal \sigma }
+\end{eqnarray*}</div><p>On définit la distance <span class="math notranslate nohighlight">\(d^*_{kl}\)</span> pour <span class="math notranslate nohighlight">\(\pa{k,l} \in \ensemble{1}{C}^2\)</span>,
+cette distance est égale à la distance minimale pour un couple de points,
+le premier appartenant à la classe <span class="math notranslate nohighlight">\(i\)</span>, le second à la classe <span class="math notranslate nohighlight">\(j\)</span> :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+d^*_{kl} &amp;=&amp; \min \acc{ \norme{ X_i - X_j} \sac a_{ik} a_{jl} = 1 } = \norme{ X_{i^*}^{kl} - X_{j^*}^{kl} }
+\end{eqnarray*}</div><p>La densité externe est alors définie en fonction du nombre de classes <span class="math notranslate nohighlight">\(C\)</span> par :</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray*}
+D_{ext} (C) =  \sum_{k=1}^{C} \; \sum_{l=1}^{C} \; \cro{  \frac{ d_{kl} } { \sigma\pa{k} \sigma\pa{l} } \;
+\sum_{i=1}^{N} \; \indicatrice{ a_{ik} + a_{il} &gt; 0 } \indicatrice{ \norme{ X_i - \frac{X_{i^*}^{kl} + X_{j^*}^{kl}}{2} }
+\infegal  \frac{\sigma\pa{k} +\sigma\pa{l}}{2} } }
+\end{eqnarray*}</div><p>L’article définit ensuite la séparabilité en fonction du nombre de classes <span class="math notranslate nohighlight">\(C\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[Sep(C) = \frac{1}{D_{ext}(C)} \; \sum_{k=1}^{C} \; \sum_{l=1}^{C} \; d^*_{kl}\]</div>
+<p>Enfin, le critère <em>Composing Density Between and With clusters</em>
+noté <span class="math notranslate nohighlight">\(CDBw(C)\)</span> est défini par :</p>
+<div class="math notranslate nohighlight">
+\[CDBw(C) = D_{int} (C) * Sep(C)\]</div>
+<p>Ce critère est maximal pour un nombre de classes optimal.
+Outre les résultats de l’article <a class="reference internal" href="#wu2004" id="id6"><span>[Wu2004]</span></a> sommairement résumés ici,
+ce dernier revient sur l’histoire des cartes de Kohonen,
+depuis leur création <a class="reference internal" href="#kohonen1982" id="id7"><span>[Kohonen1982]</span></a> jusqu’aux derniers développements récents.</p>
+</section>
+<section id="autres-utilisation-des-cartes-de-kohenen">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Autres utilisation des cartes de Kohenen</a><a class="headerlink" href="#autres-utilisation-des-cartes-de-kohenen" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On peut les utiliser pour déterminer le plus court
+chemin passant par tous les noeuds d’un graphe,
+c’est à dire appliquer
+<a class="reference external" href="http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/specials/tsp_kohonen.html">Kohonen au problème du voyageur de commerce</a>.</p>
+</section>
+<section id="bibliographie">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="kohonen1982" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">Kohonen1982</a><span class="fn-bracket">]</span></span>
+<p>Self-organized formation of topologically correct feature maps (1982),
+T. Kohonen,
+<em>Biol. Cybern.</em>, volume (43), pages 59-69</p>
+</div>
+<div class="citation" id="kohonen1997" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Kohonen1997</a><span class="fn-bracket">]</span></span>
+<p>Self-Organizing Map (1997)
+T. Kohonen,
+<em>Springer</em></p>
+</div>
+<div class="citation" id="lo1991" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Lo1991</a><span class="fn-bracket">]</span></span>
+<p>On the rate of convergence in topology preserving neural networks (1991),
+Z. Lo, B. Bavarian,
+<em>Biological Cybernetics</em>, volume 63, pages 55-63</p>
+</div>
+<div class="citation" id="wu2004" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Wu2004<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id5">3</a>,<a role="doc-backlink" href="#id6">4</a>)</span>
+<p>Clustering of the self-organizing map using a clustering validity index based on inter-cluster and intra-cluster density (2004),
+Sitao Wu, Tommy W. S. Chow,
+<em>Pattern Recognition</em>, volume (37), pages 175-188</p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="gauss_mixture.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Mélange de lois normales</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../c_ml/index.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Non linéaire</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principe">Principe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carte-de-kohonen-et-classification">Carte de Kohonen et classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autres-utilisation-des-cartes-de-kohenen">Autres utilisation des cartes de Kohenen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographie">Bibliographie</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/c_clus/kohonen.rst">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

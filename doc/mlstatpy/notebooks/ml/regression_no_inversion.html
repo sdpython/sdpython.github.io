@@ -1,0 +1,1510 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Régression sans inversion &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/ml/regression_no_inversion';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Normalisation des coefficients" href="../../c_ml/l1l2.html" />
+    <link rel="prev" title="Régression linéaire par morceaux" href="piecewise_linear_regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Navigation de la section">
+  <p class="bd-links__title" role="heading" aria-level="1">Navigation de la section</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dsgarden/index.html">Le petit coin des data scientists</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/classification_multiple.html">Classification multiple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/correlation_non_lineaire.html">Corrélations non linéaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/discret_gradient.html">Le gradient et le discret</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/file_dattente_ex.html">File d’attente, un exemple simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/quantile_regression_example.html">Régression quantile illustrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/regression_lineaire.html">Régression linéaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dsgarden/split_train_test.html">Répartir en base d’apprentissage et de test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../image/index.html">Images</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../image/segment_detection.html">Détection de segments dans une image</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metric/index.html">Métriques</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../metric/pvalues_examples.html">p-values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metric/roc_example.html">ROC</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="logreg_voronoi.html">Voronoï et régression logistique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mf_acp.html">Factorisation et matrice et ACP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neural_tree.html">Un arbre de décision en réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neural_tree_cost.html">NeuralTreeNet et coût</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neural_tree_onnx.html">NeuralTreeNet et ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="piecewise_linear_regression.html">Régression linéaire par morceaux</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Régression sans inversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reseau_neurones.html">Réseaux de neurones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="survival.html">Analyse de survie en pratique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valeurs_manquantes_mf.html">Valeurs manquantes et factorisation de matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../nlp/index.html">NLP - Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_profiling.html">Completion profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_simple.html">Complétion Simple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie.html">Complétion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/completion_trie_long.html">Completion Trie and metrics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../c_ml/index_reg_lin.html" class="nav-link">Régression linéaire</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../c_ml/piecewise.html" class="nav-link">Régression linéaire par morceaux</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Régression sans inversion</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="Régression-sans-inversion">
+<h1>Régression sans inversion<a class="headerlink" href="#Régression-sans-inversion" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Ce notebook mesure le temps de calcul dans deux algorithmes pour résoudre une régression linéaire, le premier inverse un matrice, le second le fait sans inverser une matrice, le troisième reprend l’idée du second mais utilise une décomposition <a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_QR">QR</a> puis inverse la matrice <em>R</em>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">eps</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">eps</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+((1000, 7), (1000,), (1000, 1))
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlstatpy.ml.matrices</span> <span class="kn">import</span> <span class="n">linear_regression</span><span class="p">,</span> <span class="n">gram_schmidt</span>
+
+<span class="n">beta1</span> <span class="o">=</span> <span class="n">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">beta2</span> <span class="o">=</span> <span class="n">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s2">&quot;gram&quot;</span><span class="p">)</span>
+<span class="n">beta1</span><span class="p">,</span> <span class="n">beta2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(array([0.97915374, 1.00078055, 1.00537618, 1.01021414, 1.0003261 ,
+        0.9944518 , 0.98742625]),
+ array([0.97915374, 1.00078055, 1.00537618, 1.01021414, 1.0003261 ,
+        0.9944518 , 0.98742625]))
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> linear_regression(X, y, algo=None)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+38.4 µs ± 2.07 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> linear_regression(X, y, algo=&quot;gram&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+310 µs ± 13.6 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> linear_regression(X, y, algo=&quot;qr&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+139 µs ± 8.29 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span>
+<span class="o">%</span><span class="k">timeit</span> gram_schmidt(Xt)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+210 µs ± 5.91 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div></div>
+</div>
+<p>Un exemple avec <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">scikit-learn</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">clr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="o">%</span><span class="k">timeit</span> clr.fit(X, y)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+443 µs ± 48.3 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div></div>
+</div>
+<p>Qui utilise la fonction <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.lstsq.html?highlight=lstsq">lstsq</a>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">lstsq</span>
+
+<span class="o">%</span><span class="k">timeit</span> lstsq(X, y, rcond=None)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+75.5 µs ± 2.57 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div></div>
+</div>
+<p>Il serait sans doute possible d’optimiser les calculs en réduisant le nombre de copie et de transposées. La version utilisant une décomposition <a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_QR">QR</a> est assez rapide. Le code est là <a class="reference external" href="https://github.com/sdpython/mlstatpy/blob/master/src/mlstatpy/ml/matrices.py">matrices.py</a>. Pour dépasser <a class="reference external" href="https://www.numpy.org/">numpy</a>, il faut passer au C++. <em>scikit-learn</em> ajoute des étapes intermédiaires pour vérifier les données ce qui explique la
+longueur. On résume le tout par un graphique.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnx_array_api.ext_test_case</span> <span class="kn">import</span> <span class="n">measure_time</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stmts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;lr_matrix&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;linear_regression(X, y, algo=None)&quot;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;lr_gram&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;linear_regression(X, y, algo=&#39;gram&#39;)&quot;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;lr_qr&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;linear_regression(X, y, algo=&#39;qr&#39;)&quot;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;gram&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;gram_schmidt(Xt)&quot;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;sklearn&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;clr.fit(X, y)&quot;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;lstsq&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;lstsq(X, y)&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">memo</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
+<span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">eps</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">linear_regression</span><span class="o">=</span><span class="n">linear_regression</span><span class="p">,</span>
+        <span class="n">Xt</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+        <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+        <span class="n">gram_schmidt</span><span class="o">=</span><span class="n">gram_schmidt</span><span class="p">,</span>
+        <span class="n">clr</span><span class="o">=</span><span class="n">clr</span><span class="p">,</span>
+        <span class="n">lstsq</span><span class="o">=</span><span class="k">lambda</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">lstsq</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">stmts</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span>
+            <span class="n">stmt</span><span class="p">[</span><span class="s2">&quot;fct&quot;</span><span class="p">],</span> <span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">div_by_number</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span>
+        <span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;dim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="n">memo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">memo</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+100 10
+1000 10
+10000 10
+100 20
+1000 20
+10000 20
+100 50
+1000 50
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>average</th>
+      <th>context_size</th>
+      <th>deviation</th>
+      <th>dim</th>
+      <th>fct</th>
+      <th>max_exec</th>
+      <th>min_exec</th>
+      <th>name</th>
+      <th>number</th>
+      <th>repeat</th>
+      <th>size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000039</td>
+      <td>368</td>
+      <td>0.000019</td>
+      <td>10</td>
+      <td>linear_regression(X, y, algo=None)</td>
+      <td>0.000091</td>
+      <td>0.000018</td>
+      <td>lr_matrix</td>
+      <td>20</td>
+      <td>20</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000365</td>
+      <td>368</td>
+      <td>0.000045</td>
+      <td>10</td>
+      <td>linear_regression(X, y, algo='gram')</td>
+      <td>0.000485</td>
+      <td>0.000312</td>
+      <td>lr_gram</td>
+      <td>20</td>
+      <td>20</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.000114</td>
+      <td>368</td>
+      <td>0.000031</td>
+      <td>10</td>
+      <td>linear_regression(X, y, algo='qr')</td>
+      <td>0.000223</td>
+      <td>0.000093</td>
+      <td>lr_qr</td>
+      <td>20</td>
+      <td>20</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.000229</td>
+      <td>368</td>
+      <td>0.000020</td>
+      <td>10</td>
+      <td>gram_schmidt(Xt)</td>
+      <td>0.000256</td>
+      <td>0.000197</td>
+      <td>gram</td>
+      <td>20</td>
+      <td>20</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000403</td>
+      <td>368</td>
+      <td>0.000031</td>
+      <td>10</td>
+      <td>clr.fit(X, y)</td>
+      <td>0.000464</td>
+      <td>0.000346</td>
+      <td>sklearn</td>
+      <td>20</td>
+      <td>20</td>
+      <td>100</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;dim&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span>
+<span class="n">piv</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>gram</th>
+      <th>lr_gram</th>
+      <th>lr_matrix</th>
+      <th>lr_qr</th>
+      <th>lstsq</th>
+      <th>sklearn</th>
+    </tr>
+    <tr>
+      <th>size</th>
+      <th>dim</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3" valign="top">100</th>
+      <th>10</th>
+      <td>0.000229</td>
+      <td>0.000365</td>
+      <td>0.000039</td>
+      <td>0.000114</td>
+      <td>0.000081</td>
+      <td>0.000403</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0.000442</td>
+      <td>0.000772</td>
+      <td>0.000057</td>
+      <td>0.000142</td>
+      <td>0.000143</td>
+      <td>0.000433</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>0.001384</td>
+      <td>0.002303</td>
+      <td>0.000115</td>
+      <td>0.000298</td>
+      <td>0.000619</td>
+      <td>0.000935</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">1000</th>
+      <th>10</th>
+      <td>0.000335</td>
+      <td>0.000498</td>
+      <td>0.000052</td>
+      <td>0.000168</td>
+      <td>0.000140</td>
+      <td>0.000633</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0.000867</td>
+      <td>0.001197</td>
+      <td>0.000093</td>
+      <td>0.000335</td>
+      <td>0.000246</td>
+      <td>0.000641</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>0.003242</td>
+      <td>0.004482</td>
+      <td>0.000263</td>
+      <td>0.001220</td>
+      <td>0.000945</td>
+      <td>0.001545</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">10000</th>
+      <th>10</th>
+      <td>0.001434</td>
+      <td>0.001309</td>
+      <td>0.000234</td>
+      <td>0.002760</td>
+      <td>0.000551</td>
+      <td>0.001828</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0.010212</td>
+      <td>0.010944</td>
+      <td>0.000293</td>
+      <td>0.005926</td>
+      <td>0.002128</td>
+      <td>0.005581</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">piv</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">piv</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Régression Linéaire, size &lt; 10000&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Régression Linéaire, size &gt;= 10000&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_ml_regression_no_inversion_16_0.png" src="../../_images/notebooks_ml_regression_no_inversion_16_0.png" />
+</div>
+</div>
+<section id="Streaming-versions">
+<h2>Streaming versions<a class="headerlink" href="#Streaming-versions" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’idée est différente ici puisqu’il s’agit de calculer toutes les régressions linéaires intermédiaires. Les algorithmes sont décrits par l’exposé <a class="reference external" href="find://l-reglin-piecewise-streaming">Régression linéaire par morceaux</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlstatpy.ml.matrices</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">streaming_linear_regression</span><span class="p">,</span>
+    <span class="n">streaming_linear_regression_gram_schmidt</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">all_linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">yield</span> <span class="n">linear_regression</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">i</span><span class="p">])</span>
+
+
+<span class="n">stmts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;lr_matrix&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;list(all_linear_regression(X, y))&quot;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;lr_st_mat&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;list(streaming_linear_regression(X, y))&quot;</span><span class="p">),</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;lr_st_gram&quot;</span><span class="p">,</span> <span class="n">fct</span><span class="o">=</span><span class="s2">&quot;list(streaming_linear_regression_gram_schmidt(X, y))&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">memo</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">10</span><span class="p">,):</span>
+    <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">500</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">eps</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">all_linear_regression</span><span class="o">=</span><span class="n">all_linear_regression</span><span class="p">,</span>
+            <span class="n">streaming_linear_regression</span><span class="o">=</span><span class="n">streaming_linear_regression</span><span class="p">,</span>
+            <span class="n">streaming_linear_regression_gram_schmidt</span><span class="o">=</span><span class="n">streaming_linear_regression_gram_schmidt</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">stmts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;gram&quot;</span> <span class="ow">in</span> <span class="n">stmt</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span>
+                <span class="n">nn</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nn</span> <span class="o">=</span> <span class="mi">5</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span>
+                <span class="n">stmt</span><span class="p">[</span><span class="s2">&quot;fct&quot;</span><span class="p">],</span> <span class="n">number</span><span class="o">=</span><span class="n">nn</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">nn</span><span class="p">,</span> <span class="n">div_by_number</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span>
+            <span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;dim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim</span>
+            <span class="n">memo</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">memo</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+100 10
+600 10
+1100 10
+1600 10
+2100 10
+2600 10
+3100 10
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>average</th>
+      <th>context_size</th>
+      <th>deviation</th>
+      <th>dim</th>
+      <th>fct</th>
+      <th>max_exec</th>
+      <th>min_exec</th>
+      <th>name</th>
+      <th>number</th>
+      <th>repeat</th>
+      <th>size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.002589</td>
+      <td>368</td>
+      <td>0.001263</td>
+      <td>10</td>
+      <td>list(all_linear_regression(X, y))</td>
+      <td>0.005070</td>
+      <td>0.001753</td>
+      <td>lr_matrix</td>
+      <td>5</td>
+      <td>5</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.002621</td>
+      <td>368</td>
+      <td>0.000038</td>
+      <td>10</td>
+      <td>list(streaming_linear_regression(X, y))</td>
+      <td>0.002688</td>
+      <td>0.002572</td>
+      <td>lr_st_mat</td>
+      <td>5</td>
+      <td>5</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.031022</td>
+      <td>368</td>
+      <td>0.000000</td>
+      <td>10</td>
+      <td>list(streaming_linear_regression_gram_schmidt(...</td>
+      <td>0.031022</td>
+      <td>0.031022</td>
+      <td>lr_st_gram</td>
+      <td>1</td>
+      <td>1</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.018594</td>
+      <td>368</td>
+      <td>0.000749</td>
+      <td>10</td>
+      <td>list(all_linear_regression(X, y))</td>
+      <td>0.019532</td>
+      <td>0.017664</td>
+      <td>lr_matrix</td>
+      <td>5</td>
+      <td>5</td>
+      <td>600</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.022098</td>
+      <td>368</td>
+      <td>0.001805</td>
+      <td>10</td>
+      <td>list(streaming_linear_regression(X, y))</td>
+      <td>0.024896</td>
+      <td>0.020070</td>
+      <td>lr_st_mat</td>
+      <td>5</td>
+      <td>5</td>
+      <td>600</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span>
+<span class="n">piv</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>name</th>
+      <th>lr_matrix</th>
+      <th>lr_st_gram</th>
+      <th>lr_st_mat</th>
+    </tr>
+    <tr>
+      <th>size</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>100</th>
+      <td>0.002589</td>
+      <td>0.031022</td>
+      <td>0.002621</td>
+    </tr>
+    <tr>
+      <th>600</th>
+      <td>0.018594</td>
+      <td>0.204768</td>
+      <td>0.022098</td>
+    </tr>
+    <tr>
+      <th>1100</th>
+      <td>0.040404</td>
+      <td>NaN</td>
+      <td>0.034072</td>
+    </tr>
+    <tr>
+      <th>1600</th>
+      <td>0.062186</td>
+      <td>NaN</td>
+      <td>0.052658</td>
+    </tr>
+    <tr>
+      <th>2100</th>
+      <td>0.097438</td>
+      <td>NaN</td>
+      <td>0.060824</td>
+    </tr>
+    <tr>
+      <th>2600</th>
+      <td>0.128451</td>
+      <td>NaN</td>
+      <td>0.079594</td>
+    </tr>
+    <tr>
+      <th>3100</th>
+      <td>0.161074</td>
+      <td>NaN</td>
+      <td>0.090113</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">piv</span><span class="p">[[</span><span class="s2">&quot;lr_matrix&quot;</span><span class="p">,</span> <span class="s2">&quot;lr_st_mat&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">piv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Régression Linéaire streaming (all)</span><span class="se">\n</span><span class="s2">10 features&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Régression Linéaire no Gram-Schmidt</span><span class="se">\n</span><span class="s2">10 features&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/notebooks_ml_regression_no_inversion_20_0.png" src="../../_images/notebooks_ml_regression_no_inversion_20_0.png" />
+</div>
+</div>
+<p>La version streaming devient plus intéressante à partir de 1000 observations, le coût en linéaire en <em>N</em> contrairement à la version classique qui est en <span class="math notranslate nohighlight">\(N^2\)</span>. La version Gram-Schmidt devrait être réécrite en C++ pour proposer des temps comparables.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="piecewise_linear_regression.html"
+       title="page précédente">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">précédent</p>
+        <p class="prev-next-title">Régression linéaire par morceaux</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../c_ml/l1l2.html"
+       title="page suivante">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">suivant</p>
+        <p class="prev-next-title">Normalisation des coefficients</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Sur cette page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Streaming-versions">Streaming versions</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/notebooks/ml/regression_no_inversion.ipynb">
+      <i class="fa-solid fa-file-lines"></i> Montrer le code source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
