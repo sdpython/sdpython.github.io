@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'c_garden/quantization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
-    <link rel="next" title="Classification multiple" href="../notebooks/dsgarden/classification_multiple.html" />
+    <link rel="next" title="Quantization" href="../notebooks/dsgarden/quantization_f8.html" />
     <link rel="prev" title="Le gradient et le discret" href="../notebooks/dsgarden/discret_gradient.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="fr"/>
@@ -489,7 +489,10 @@ document.write(`
 </li>
 <li class="toctree-l1"><a class="reference internal" href="strategie_avec_alea.html">Optimisation avec données aléatoires</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/discret_gradient.html">Le gradient et le discret</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quantization</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Quantization</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/dsgarden/quantization_f8.html">Quantization</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/classification_multiple.html">Classification multiple</a></li>
 </ul>
 </div>
@@ -557,6 +560,7 @@ document.write(`
 <li><p><a class="reference internal" href="#discretisation-sur-une-float-8" id="id3">Discrétisation sur une float 8</a></p></li>
 <li><p><a class="reference internal" href="#optimisation" id="id4">Optimisation</a></p></li>
 <li><p><a class="reference internal" href="#resolution" id="id5">Résolution</a></p></li>
+<li><p><a class="reference internal" href="#notebooks" id="id6">Notebooks</a></p></li>
 </ul>
 </nav>
 <section id="un-probleme-simple">
@@ -665,17 +669,48 @@ ensemble <img class="math" src="../_images/math/2ddb0707b3d63b4d93bdf92385e7621e
 et la fonction devient dérivable. L’idée est de regarder l’évolution des valeurs trouvées
 pour <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/> et <em>z</em> en faisant tendre <em>h</em> vers 0.
 On commence par le plus simple, le cas float 8 pour lequel on impose <img class="math" src="../_images/math/464430d64e32e0a29160753f3d5d93d60e52f3ee.svg" alt="z=0"/>.</p>
-<div class="math">
-<p><img src="../_images/math/0a09d5355035df319aabad219b3d4bf034f73232.svg" alt="f(B,\lambda,h) = \frac{1}{h} \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda d_k - z }^2
+<div class="math" id="equation-eq-qua-1">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-eq-qua-1" title="Lien permanent vers cette équation">#</a></span><img src="../_images/math/0a09d5355035df319aabad219b3d4bf034f73232.svg" alt="f(B,\lambda,h) = \frac{1}{h} \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda d_k - z }^2
 K\pa{\frac{b_{ij} - \lambda d_k - z}{h}}"/></p>
 </div><p>Si on suppose que les coefficients de <em>B</em> suivent une certaine loi de probabilité,
 ce calcul devient une somme d’espérence.</p>
 <div class="math">
-<p><img src="../_images/math/9c2f0f8ecd9c62f80c37b459e07bcb86847b4b1a.svg" alt="f(X,\lambda,h) = \frac{1}{h} \sum_{k=1}^{n} \esp{X - \lambda d_k - z }^2
+<p><img src="../_images/math/19b5390af6f1ccabf2332d025328dee01bdf223b.svg" alt="f(X,\lambda,h) = \frac{1}{h} \sum_{k=1}^{n} \esp\pa{X - \lambda d_k - z }^2
 K\pa{\frac{X - \lambda d_k - z}{h}}"/></p>
 </div></section>
 <section id="resolution">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Résolution</a><a class="headerlink" href="#resolution" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>If <img class="math" src="../_images/math/0bc32f41ce1058be84dd4b96df6c971c8b40125e.svg" alt="K(u)=\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}u^2}"/> then
+<img class="math" src="../_images/math/5dcfc912f237adf4084f0c32062aca6585941c9e.svg" alt="K'(u) = -u \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}u^2} = -u K(x)"/>.
+Let’s denote <img class="math" src="../_images/math/975b8f2cecae95b1fe067e704bc5112b1d4b87fb.svg" alt="g(b,x) = (b-xd)^2 K\pa{\frac{b-xd}{h}}"/>. Then:</p>
+<div class="math">
+<p><img src="../_images/math/d6e0707eff1caa568b7d72e70ca5b809ea059fcc.svg" alt="\begin{array}{rcl}
+g(b,x) &amp;=&amp; \frac{1}{h} (b-xd)^2 K\pa{\frac{b-xd}{h}} \\
+\frac{\partial g}{\partial x}(b,x) &amp;=&amp;
+\frac{1}{h}\cro{ -2d(b-xd)K\pa{\frac{b-xd}{h}} -\frac{d}{h} (b-xd)^2 K'\pa{\frac{b-xd}{h}} } \\
+&amp;=&amp; -\frac{d(b-xd)}{h}\cro{2 K\pa{\frac{b-xd}{h}} + \frac{b-xd}{h} K'\pa{\frac{b-xd}{h}} }
+\end{array}"/></p>
+</div><p>Applied to <a class="reference internal" href="#equation-eq-qua-1">(1)</a>:</p>
+<div class="math">
+<p><img src="../_images/math/b810032976f925877b85afb1fd9078bd5dd15a82.svg" alt="\begin{array}{rcl}
+f(B,\lambda,h) &amp;=&amp; \frac{1}{h} \sum_{k=1}^{n} \sum_{ij} \pa{b_{ij} - \lambda d_k}^2
+K\pa{\frac{b_{ij} - \lambda d_k}{h}} \\
+&amp;=&amp; \sum_{k=1}^{n} \sum_{ij} g(b_{ij}, \lambda)
+\end{array}"/></p>
+</div><p>Then:</p>
+<div class="math">
+<p><img src="../_images/math/b5110a8308b4736d7fcea0a5d188bddf4822b12d.svg" alt="\begin{array}{rcl}
+\frac{\partial f}{\partial \lambda} &amp;=&amp; \sum_{k=1}^{n} \sum_{ij}
+\frac{\partial g}{\partial \lambda}(b_{ij}, \lambda)
+\end{array}"/></p>
+</div></section>
+<section id="notebooks">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/quantization_f8.html">Quantization</a></li>
+</ul>
+</div>
 </section>
 </section>
 
@@ -700,11 +735,11 @@ K\pa{\frac{X - \lambda d_k - z}{h}}"/></p>
       </div>
     </a>
     <a class="right-next"
-       href="../notebooks/dsgarden/classification_multiple.html"
+       href="../notebooks/dsgarden/quantization_f8.html"
        title="page suivante">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">suivant</p>
-        <p class="prev-next-title">Classification multiple</p>
+        <p class="prev-next-title">Quantization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -731,6 +766,7 @@ K\pa{\frac{X - \lambda d_k - z}{h}}"/></p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretisation-sur-une-float-8">Discrétisation sur une float 8</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimisation">Optimisation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution">Résolution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebooks">Notebooks</a></li>
 </ul>
   </nav></div>
 
