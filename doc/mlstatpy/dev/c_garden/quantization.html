@@ -555,25 +555,25 @@ document.write(`
 <span id="l-quantization"></span><h1>Quantization<a class="headerlink" href="#quantization" title="Lien permanent vers cette rubrique">#</a></h1>
 <nav class="contents local" id="sommaire">
 <ul class="simple">
-<li><p><a class="reference internal" href="#un-probleme-simple" id="id1">Un problème simple</a></p></li>
-<li><p><a class="reference internal" href="#discretisation-sur-un-octet" id="id2">Discrétisation sur un octet</a></p></li>
-<li><p><a class="reference internal" href="#discretisation-sur-une-float-8" id="id3">Discrétisation sur une float 8</a></p></li>
-<li><p><a class="reference internal" href="#optimisation" id="id4">Optimisation</a></p></li>
-<li><p><a class="reference internal" href="#resolution" id="id5">Résolution</a></p></li>
-<li><p><a class="reference internal" href="#notebooks" id="id6">Notebooks</a></p></li>
+<li><p><a class="reference internal" href="#un-probleme-simple" id="id2">Un problème simple</a></p></li>
+<li><p><a class="reference internal" href="#discretisation-sur-un-octet" id="id3">Discrétisation sur un octet</a></p></li>
+<li><p><a class="reference internal" href="#discretisation-sur-une-float-8" id="id4">Discrétisation sur une float 8</a></p></li>
+<li><p><a class="reference internal" href="#optimisation" id="id5">Optimisation</a></p></li>
+<li><p><a class="reference internal" href="#resolution" id="id6">Résolution</a></p></li>
+<li><p><a class="reference internal" href="#notebooks" id="id7">Notebooks</a></p></li>
+<li><p><a class="reference internal" href="#bibliographie" id="id8">Bibliographie</a></p></li>
 </ul>
 </nav>
 <section id="un-probleme-simple">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Un problème simple</a><a class="headerlink" href="#un-probleme-simple" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Un problème simple</a><a class="headerlink" href="#un-probleme-simple" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Les réseaux de neurones (deep learning) sont de plus en plus gros
 et nécessitent de plus en plus de puissance de calcul. La
 <strong>quantization</strong> est une façon de contourner en réduisant
 la mémoire nécessaire pour stocker les coefficients et le
 temps de calcul avec les dernières cartes graphiques.
 La quantization est équivalent à une discrétisation.
-Voir aussi :
-<a class="reference external" href="https://arxiv.org/pdf/2103.13630.pdf">A Survey of Quantization Methods for Efficient
-Neural Network Inference</a>.</p>
+Voir aussi <a class="reference internal" href="#gholami2021" id="id1"><span>[Gholami2021]</span></a> et quelques bout de codes
+<a class="reference external" href="https://github.com/apache/mxnet/blob/master/python/mxnet/contrib/quantization.py">quantization.py</a>.</p>
 <p>Les produits matriciels sont fréquents dans les réseaux de neurones où
 on multiple les entrées <em>X</em> d’une couche de neurones avec les coefficients
 <em>A</em> : <img class="math" src="../_images/math/f7d5f3fc0ac76b7575be288ada01918d33391286.svg" alt="X B"/>. Lors de l’apprentissage, la matrice B est apprise soit en float 32 bit
@@ -587,7 +587,7 @@ ou optimiser sur un jeu de données <img class="math" src="../_images/math/6cba7
 <img class="math" src="../_images/math/12ff89be6b16e901ca54b25f11a0912eeb9765eb.svg" alt="\norm{B - q(B)}^2"/>.</p>
 </section>
 <section id="discretisation-sur-un-octet">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Discrétisation sur un octet</a><a class="headerlink" href="#discretisation-sur-un-octet" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Discrétisation sur un octet</a><a class="headerlink" href="#discretisation-sur-un-octet" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On discrétise sur 256 valeurs espacées de façon régulière sur un intervalle.
 Mais les coefficients ne sont pas tous situés dans un même intervalle.
 On doit alors trouver les meilleurs paramètres <img class="math" src="../_images/math/087a0408283a772ee60faa3753a3c453801e7b4b.svg" alt="z"/> et <img class="math" src="../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/>
@@ -616,7 +616,7 @@ car elle est très rapide et la transformation inverse (ou déquantization)
 l’est tout autant.</p>
 </section>
 <section id="discretisation-sur-une-float-8">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Discrétisation sur une float 8</a><a class="headerlink" href="#discretisation-sur-une-float-8" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Discrétisation sur une float 8</a><a class="headerlink" href="#discretisation-sur-une-float-8" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>Un float 8 est un réel codé sur 8 bits. Il y a plusieurs variantes.
 Nous allons considérer la version <em>E4M3FN</em>, <img class="math" src="../_images/math/50c5c41cd44b506f95499aa9d6c2115dd4dba89a.svg" alt="S.1111.111_2"/> :</p>
 <ul class="simple">
@@ -641,7 +641,7 @@ inférieur (ou le plus proche).</p>
 <p><img src="../_images/math/fb38ced33539b9f18a5822e8508116a0d5db3c4c.svg" alt="\norm{B - q(z,\lambda,B)}^2 = \sum_{ij} \pa{b_{ij} - \lambda\intf{\frac{x}{\lambda}}_{f8,z} }^2"/></p>
 </div></section>
 <section id="optimisation">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Optimisation</a><a class="headerlink" href="#optimisation" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Optimisation</a><a class="headerlink" href="#optimisation" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>L’idée est de traiter la discrétisation sur un ensemble fini de valeurs,
 quel qu’il soit, des entiers ou des réels codés sur 8 bits. On note cet
 ensemble <img class="math" src="../_images/math/2ddb0707b3d63b4d93bdf92385e7621e79dbcb32.svg" alt="(d_1, ..., d_n)"/>. On réécrit le problème d’optimisation :</p>
@@ -679,7 +679,7 @@ ce calcul devient une somme d’espérence.</p>
 K\pa{\frac{X - \lambda d_k - z}{h}}"/></p>
 </div></section>
 <section id="resolution">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Résolution</a><a class="headerlink" href="#resolution" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Résolution</a><a class="headerlink" href="#resolution" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>If <img class="math" src="../_images/math/0bc32f41ce1058be84dd4b96df6c971c8b40125e.svg" alt="K(u)=\frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}u^2}"/> then
 <img class="math" src="../_images/math/5dcfc912f237adf4084f0c32062aca6585941c9e.svg" alt="K'(u) = -u \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}u^2} = -u K(x)"/>.
 Let’s denote <img class="math" src="../_images/math/975b8f2cecae95b1fe067e704bc5112b1d4b87fb.svg" alt="g(b,x) = (b-xd)^2 K\pa{\frac{b-xd}{h}}"/>. Then:</p>
@@ -705,11 +705,23 @@ K\pa{\frac{b_{ij} - \lambda d_k}{h}} \\
 \end{array}"/></p>
 </div></section>
 <section id="notebooks">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Notebooks</a><a class="headerlink" href="#notebooks" title="Lien permanent vers cette rubrique">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/dsgarden/quantization_f8.html">Quantization</a></li>
 </ul>
+</div>
+</section>
+<section id="bibliographie">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Bibliographie</a><a class="headerlink" href="#bibliographie" title="Lien permanent vers cette rubrique">#</a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="gholami2021" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Gholami2021</a><span class="fn-bracket">]</span></span>
+<p>Amir Gholami, Sehoon Kim, Zhen Dong, Zhewei Yao, Michael W. Mahoney, Kurt Keutzer,
+University of California, Berkeley
+<a class="reference external" href="https://arxiv.org/pdf/2103.13630.pdf">A Survey of Quantization Methods for Efficient
+Neural Network Inference</a></p>
+</div>
 </div>
 </section>
 </section>
@@ -767,6 +779,7 @@ K\pa{\frac{b_{ij} - \lambda d_k}{h}} \\
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimisation">Optimisation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution">Résolution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebooks">Notebooks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bibliographie">Bibliographie</a></li>
 </ul>
   </nav></div>
 
