@@ -1,0 +1,809 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+        <title>pandas_streaming.df.dataframe_helpers - pandas-streaming 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">pandas-streaming 0.5.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pandas-streaming 0.5.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Gallery of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/first_step.html">First steps with pandas_streaming</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rdata.html">pandas_streaming.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rdf.html">pandas_streaming.df</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rexc.html">pandas_streaming.exc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/rio.html">Inputs / Outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../i_ex.html">Examples</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for pandas_streaming.df.dataframe_helpers</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Index</span><span class="p">,</span> <span class="n">Series</span>
+
+
+<span class="k">def</span> <span class="nf">numpy_types</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the list of :epkg:`numpy` available types.</span>
+
+<span class="sd">    :return: list of types</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">bool_</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">int_</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">intc</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">intp</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">uint32</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">uint64</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">float_</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">complex_</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">complex64</span><span class="p">,</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span>
+    <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">hash_str</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">hash_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hashes a string.</span>
+
+<span class="sd">    @param      c               value to hash</span>
+<span class="sd">    @param      hash_length     hash_length</span>
+<span class="sd">    @return                     string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">c</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;numpy.nan expected, not </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">hash_length</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">r</span><span class="p">[:</span><span class="n">hash_length</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">r</span>
+
+
+<span class="k">def</span> <span class="nf">hash_int</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">hash_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hashes an integer into an integer.</span>
+
+<span class="sd">    @param      c               value to hash</span>
+<span class="sd">    @param      hash_length     hash_length</span>
+<span class="sd">    @return                     int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">c</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;numpy.nan expected, not </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">hash_length</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:</span><span class="n">hash_length</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">8</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">hash_float</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">hash_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hashes a float into a float.</span>
+
+<span class="sd">    @param      c               value to hash</span>
+<span class="sd">    @param      hash_length     hash_length</span>
+<span class="sd">    @return                     int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">c</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">hash_length</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:</span><span class="n">hash_length</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">53</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="dataframe_hash_columns"><a class="viewcode-back" href="../../../api/rdf.html#pandas_streaming.df.dataframe_helpers.dataframe_hash_columns">[docs]</a><span class="k">def</span> <span class="nf">dataframe_hash_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hash_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hashes a set of columns in a dataframe.</span>
+<span class="sd">    Keeps the same type. Skips missing values.</span>
+
+<span class="sd">    @param      df          dataframe</span>
+<span class="sd">    @param      cols        columns to hash or None for alls.</span>
+<span class="sd">    @param      hash_length for strings only, length of the hash</span>
+<span class="sd">    @param      inplace     modifies inplace</span>
+<span class="sd">    @return                 new dataframe</span>
+
+<span class="sd">    This might be useful to anonimized data before</span>
+<span class="sd">    making it public.</span>
+
+<span class="sd">    .. exref::</span>
+<span class="sd">        :title: Hashes a set of columns in a dataframe</span>
+<span class="sd">        :tag: dataframe</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import pandas</span>
+<span class="sd">            from pandas_streaming.df import dataframe_hash_columns</span>
+<span class="sd">            df = pandas.DataFrame([dict(a=1, b=&quot;e&quot;, c=5.6, ind=&quot;a1&quot;, ai=1),</span>
+<span class="sd">                                   dict(b=&quot;f&quot;, c=5.7, ind=&quot;a2&quot;, ai=2),</span>
+<span class="sd">                                   dict(a=4, b=&quot;g&quot;, ind=&quot;a3&quot;, ai=3),</span>
+<span class="sd">                                   dict(a=8, b=&quot;h&quot;, c=5.9, ai=4),</span>
+<span class="sd">                                   dict(a=16, b=&quot;i&quot;, c=6.2, ind=&quot;a5&quot;, ai=5)])</span>
+<span class="sd">            print(df)</span>
+<span class="sd">            print(&#39;--------------&#39;)</span>
+<span class="sd">            df2 = dataframe_hash_columns(df)</span>
+<span class="sd">            print(df2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">inplace</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">hash_intl</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+        <span class="s2">&quot;hash int&quot;</span>
+        <span class="k">return</span> <span class="n">hash_int</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">hash_length</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">hash_strl</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+        <span class="s2">&quot;hash string&quot;</span>
+        <span class="k">return</span> <span class="n">hash_str</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">hash_length</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">hash_floatl</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+        <span class="s2">&quot;hash float&quot;</span>
+        <span class="k">return</span> <span class="n">hash_float</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">hash_length</span><span class="p">)</span>
+
+    <span class="n">coltype</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">n</span><span class="p">:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>  <span class="c1"># pylint: disable=R1721</span>
+    <span class="p">}</span>  <span class="c1"># pylint: disable=R1721</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">coltype</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">hash_intl</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">hash_intl</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">hash_floatl</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="nb">object</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">hash_strl</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="sa">f</span><span class="s2">&quot;Conversion of type </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> in column &#39;</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&#39; is not implemented&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="dataframe_unfold"><a class="viewcode-back" href="../../../api/rdf.html#pandas_streaming.df.dataframe_helpers.dataframe_unfold">[docs]</a><span class="k">def</span> <span class="nf">dataframe_unfold</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">new_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    One column may contain concatenated values.</span>
+<span class="sd">    This function splits these values and multiplies the</span>
+<span class="sd">    rows for each split value.</span>
+
+<span class="sd">    @param      df      dataframe</span>
+<span class="sd">    @param      col     column with the concatenated values (strings)</span>
+<span class="sd">    @param      new_col new column name, if None, use default value.</span>
+<span class="sd">    @param      sep     separator</span>
+<span class="sd">    @return             a new dataframe</span>
+
+<span class="sd">    .. exref::</span>
+<span class="sd">        :title: Unfolds a column of a dataframe.</span>
+<span class="sd">        :tag: dataframe</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import pandas</span>
+<span class="sd">            import numpy</span>
+<span class="sd">            from pandas_streaming.df import dataframe_unfold</span>
+
+<span class="sd">            df = pandas.DataFrame([dict(a=1, b=&quot;e,f&quot;),</span>
+<span class="sd">                                   dict(a=2, b=&quot;g&quot;),</span>
+<span class="sd">                                   dict(a=3)])</span>
+<span class="sd">            print(df)</span>
+<span class="sd">            df2 = dataframe_unfold(df, &quot;b&quot;)</span>
+<span class="sd">            print(&#39;----------&#39;)</span>
+<span class="sd">            print(df2)</span>
+
+<span class="sd">            # To fold:</span>
+<span class="sd">            folded = df2.groupby(&#39;a&#39;).apply(</span>
+<span class="sd">                lambda row: &#39;,&#39;.join(row[&#39;b_unfold&#39;].dropna())</span>
+<span class="sd">                        if len(row[&#39;b_unfold&#39;].dropna()) &gt; 0 else numpy.nan)</span>
+<span class="sd">            print(&#39;----------&#39;)</span>
+<span class="sd">            print(folded)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">new_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="n">col</span> <span class="o">+</span> <span class="s2">&quot;_unfold&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="n">new_col</span>
+    <span class="n">temp_col</span> <span class="o">=</span> <span class="s2">&quot;__index__&quot;</span>
+    <span class="k">while</span> <span class="n">temp_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">temp_col</span> <span class="o">+=</span> <span class="s2">&quot;_&quot;</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">spl</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">vs</span> <span class="ow">in</span> <span class="n">spl</span><span class="p">:</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="n">col_name</span><span class="p">:</span> <span class="n">vs</span><span class="p">,</span> <span class="n">temp_col</span><span class="p">:</span> <span class="n">i</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="n">col_name</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="n">temp_col</span><span class="p">:</span> <span class="n">i</span><span class="p">})</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">temp_col</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">dfj</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">dfj</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="p">,</span> <span class="n">temp_col</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">temp_col</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="dataframe_shuffle"><a class="viewcode-back" href="../../../api/rdf.html#pandas_streaming.df.dataframe_helpers.dataframe_shuffle">[docs]</a><span class="k">def</span> <span class="nf">dataframe_shuffle</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shuffles a dataframe.</span>
+
+<span class="sd">    :param df: :epkg:`pandas:DataFrame`</span>
+<span class="sd">    :param random_state: seed</span>
+<span class="sd">    :return: new :epkg:`pandas:DataFrame`</span>
+
+<span class="sd">    .. exref::</span>
+<span class="sd">        :title: Shuffles the rows of a dataframe</span>
+<span class="sd">        :tag: dataframe</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import pandas</span>
+<span class="sd">            from pandas_streaming.df import dataframe_shuffle</span>
+
+<span class="sd">            df = pandas.DataFrame([dict(a=1, b=&quot;e&quot;, c=5.6, ind=&quot;a1&quot;),</span>
+<span class="sd">                                   dict(a=2, b=&quot;f&quot;, c=5.7, ind=&quot;a2&quot;),</span>
+<span class="sd">                                   dict(a=4, b=&quot;g&quot;, c=5.8, ind=&quot;a3&quot;),</span>
+<span class="sd">                                   dict(a=8, b=&quot;h&quot;, c=5.9, ind=&quot;a4&quot;),</span>
+<span class="sd">                                   dict(a=16, b=&quot;i&quot;, c=6.2, ind=&quot;a5&quot;)])</span>
+<span class="sd">            print(df)</span>
+<span class="sd">            print(&#39;----------&#39;)</span>
+
+<span class="sd">            shuffled = dataframe_shuffle(df, random_state=0)</span>
+<span class="sd">            print(shuffled)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="n">permutation</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">permutation</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">permutation</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span>
+    <span class="n">ori_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">scols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ori_cols</span><span class="p">)</span>
+
+    <span class="n">no_index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">keep_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">no_index</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">scols</span><span class="p">]</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">no_index</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">permutation</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">shuffled</span> <span class="o">=</span> <span class="n">no_index</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">shuffled</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">keep_cols</span><span class="p">)[</span><span class="n">ori_cols</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+<span class="k">def</span> <span class="nf">pandas_fillna</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">hasna</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replaces the :epkg:`nan` values for something not :epkg:`nan`.</span>
+<span class="sd">    Mostly used by @see fn pandas_groupby_nan.</span>
+
+<span class="sd">    :param df: dataframe</span>
+<span class="sd">    :param by: list of columns for which we need to replace nan</span>
+<span class="sd">    :param hasna: None or list of columns for which we need to replace NaN</span>
+<span class="sd">    :param suffix: use a prefix for the NaN value</span>
+<span class="sd">    :return: list of values chosen for each column, new dataframe (new copy)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span> <span class="k">if</span> <span class="n">suffix</span> <span class="k">else</span> <span class="s2">&quot;²nan&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">rep</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">by</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">hasna</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hasna</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+            <span class="n">se</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">cst</span> <span class="o">=</span> <span class="n">suffix</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+                <span class="n">cst</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;_&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                    <span class="s2">&quot;Unable to determine a constant for type=&#39;</span><span class="si">{0}</span><span class="s2">&#39; dtype=&#39;</span><span class="si">{1}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">val</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">cst</span>
+            <span class="k">while</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">se</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">+=</span> <span class="n">suffix</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">rep</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">mi</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dr</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+            <span class="n">ma</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">ma</span> <span class="o">+</span> <span class="n">mi</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">ma</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">+=</span> <span class="n">ma</span> <span class="o">+</span> <span class="mf">1.0</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="n">ma</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                    <span class="s2">&quot;Unable to find a different value for column &#39;</span><span class="si">{}</span><span class="s2">&#39; v=&#39;</span><span class="si">{}</span><span class="s2">: &quot;</span>
+                    <span class="s2">&quot;min=</span><span class="si">{}</span><span class="s2"> max=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">mi</span><span class="p">,</span> <span class="n">ma</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">rep</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="k">return</span> <span class="n">rep</span><span class="p">,</span> <span class="n">df</span>
+
+
+<div class="viewcode-block" id="pandas_groupby_nan"><a class="viewcode-back" href="../../../api/rdf.html#pandas_streaming.df.dataframe_helpers.pandas_groupby_nan">[docs]</a><span class="k">def</span> <span class="nf">pandas_groupby_nan</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nanback</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Does a *groupby* including keeping missing values (:epkg:`nan`).</span>
+
+<span class="sd">    :param df: dataframe</span>
+<span class="sd">    :param by: column or list of columns</span>
+<span class="sd">    :param axis: only 0 is allowed</span>
+<span class="sd">    :param as_index: should be False</span>
+<span class="sd">    :param suffix: None or a string</span>
+<span class="sd">    :param nanback: put :epkg:`nan` back in the index,</span>
+<span class="sd">        otherwise it leaves a replacement for :epkg:`nan`.</span>
+<span class="sd">        (does not work when grouping by multiple columns)</span>
+<span class="sd">    :param kwargs: other parameters sent to</span>
+<span class="sd">        `groupby &lt;http://pandas.pydata.org/pandas-docs/stable/</span>
+<span class="sd">        generated/pandas.DataFrame.groupby.html&gt;`_</span>
+<span class="sd">    :return: groupby results</span>
+
+<span class="sd">    See :epkg:`groupby and missing values`.</span>
+<span class="sd">    If no :epkg:`nan` is detected, the function falls back in regular</span>
+<span class="sd">    :epkg:`pandas:DataFrame:groupby` which has the following</span>
+<span class="sd">    behavior.</span>
+
+<span class="sd">    .. exref::</span>
+<span class="sd">        :title: Group a dataframe by one column including nan values</span>
+<span class="sd">        :tag: dataframe</span>
+
+<span class="sd">        The regular :epkg:`pandas:dataframe:GroupBy` of a</span>
+<span class="sd">        :epkg:`pandas:DataFrame` removes every :epkg:`nan`</span>
+<span class="sd">        values from the index.</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            from pandas import DataFrame</span>
+
+<span class="sd">            data = [dict(a=2, ind=&quot;a&quot;, n=1),</span>
+<span class="sd">                    dict(a=2, ind=&quot;a&quot;),</span>
+<span class="sd">                    dict(a=3, ind=&quot;b&quot;),</span>
+<span class="sd">                    dict(a=30)]</span>
+<span class="sd">            df = DataFrame(data)</span>
+<span class="sd">            print(df)</span>
+<span class="sd">            gr = df.groupby([&quot;ind&quot;]).sum()</span>
+<span class="sd">            print(gr)</span>
+
+<span class="sd">        Function @see fn pandas_groupby_nan modifies keeps them.</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            from pandas import DataFrame</span>
+<span class="sd">            from pandas_streaming.df import pandas_groupby_nan</span>
+
+<span class="sd">            data = [dict(a=2, ind=&quot;a&quot;, n=1),</span>
+<span class="sd">                    dict(a=2, ind=&quot;a&quot;),</span>
+<span class="sd">                    dict(a=3, ind=&quot;b&quot;),</span>
+<span class="sd">                    dict(a=30)]</span>
+<span class="sd">            df = DataFrame(data)</span>
+<span class="sd">            gr2 = pandas_groupby_nan(df, [&quot;ind&quot;]).sum()</span>
+<span class="sd">            print(gr2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nanback</span> <span class="ow">and</span> <span class="n">suffix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="n">as_index</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="c1"># old version of pandas</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">suffix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">res</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">Series</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">res</span>
+    <span class="k">if</span> <span class="n">axis</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;axis should be 0&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">as_index</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;as_index must be False&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;by should be of list not tuple&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">by</span> <span class="o">=</span> <span class="p">[</span><span class="n">by</span><span class="p">]</span>
+    <span class="n">hasna</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">by</span><span class="p">:</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">h</span><span class="p">:</span>
+            <span class="n">hasna</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hasna</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">rep</span><span class="p">,</span> <span class="n">df_copy</span> <span class="o">=</span> <span class="n">pandas_fillna</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">hasna</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">df_copy</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="n">as_index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">by</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">nanback</span><span class="p">:</span>
+                <span class="n">dummy</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">}])</span>
+                <span class="n">do</span> <span class="o">=</span> <span class="n">dummy</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">typ</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">c</span><span class="p">:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>  <span class="c1"># pylint: disable=R1721</span>
+                <span class="p">}</span>  <span class="c1"># pylint: disable=R1721</span>
+                <span class="k">if</span> <span class="n">typ</span><span class="p">[</span><span class="n">by</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">!=</span> <span class="n">do</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="sa">f</span><span class="s2">&quot;[pandas_groupby_nan] NaN value: </span><span class="si">{</span><span class="n">rep</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">return</span> <span class="n">res</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">by</span><span class="p">:</span>
+                <span class="n">fnan</span> <span class="o">=</span> <span class="n">rep</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">fnan</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">fnan</span><span class="p">]</span>
+                    <span class="k">del</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">fnan</span><span class="p">]</span>
+                <span class="n">new_val</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">nan</span> <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">fnan</span> <span class="k">else</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">result_index</span>
+                <span class="p">)</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_group_index</span> <span class="o">=</span> <span class="n">Index</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">obj</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">fnan</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="p">,</span> <span class="s2">&quot;grouping&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grouper</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                        <span class="n">arr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+                        <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grouper</span> <span class="o">=</span> <span class="n">arr</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="nb">hasattr</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;_cache&quot;</span><span class="p">)</span>
+                            <span class="ow">and</span> <span class="s2">&quot;result_index&quot;</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_cache</span>
+                        <span class="p">):</span>
+                            <span class="k">del</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s2">&quot;result_index&quot;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                            <span class="s2">&quot;Not implemented for type: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grouper</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">grouper</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">_get_grouper</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">grouper</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                        <span class="n">arr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+                        <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grouping_vector</span> <span class="o">=</span> <span class="n">arr</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="nb">hasattr</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;_cache&quot;</span><span class="p">)</span>
+                            <span class="ow">and</span> <span class="s2">&quot;result_index&quot;</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_cache</span>
+                        <span class="p">):</span>
+                            <span class="n">index</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s2">&quot;result_index&quot;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rep</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rep</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                                <span class="n">new_index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                                    <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_index</span><span class="p">)</span>
+                                <span class="p">):</span>  <span class="c1"># pylint: disable=C0200</span>
+                                    <span class="k">if</span> <span class="n">new_index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+                                        <span class="n">new_index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span>
+                                <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span>
+                                    <span class="s2">&quot;result_index&quot;</span>
+                                <span class="p">]</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">new_index</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                                    <span class="s2">&quot;NaN values not implemented for multiindex.&quot;</span>
+                                <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                            <span class="s2">&quot;Not implemented for type: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grouper</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s2">&quot;result_index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupings</span><span class="p">[</span>
+                    <span class="mi">0</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">_group_index</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">nanback</span><span class="p">:</span>
+                <span class="n">dummy</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">([{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">}])</span>
+                <span class="n">do</span> <span class="o">=</span> <span class="n">dummy</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">typ</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">c</span><span class="p">:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>  <span class="c1"># pylint: disable=R1721</span>
+                <span class="p">}</span>  <span class="c1"># pylint: disable=R1721</span>
+                <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">by</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">typ</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="o">!=</span> <span class="n">do</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                            <span class="sa">f</span><span class="s2">&quot;[pandas_groupby_nan] NaN values: </span><span class="si">{</span><span class="n">rep</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">break</span>
+                <span class="k">return</span> <span class="n">res</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;Not yet implemented. Replacing pseudo nan values by real nan &quot;</span>
+                <span class="s2">&quot;values is not as easy as it looks. Use nanback=False&quot;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># keys = list(res.grouper.groups.keys())</span>
+            <span class="c1"># didit = False</span>
+            <span class="c1"># mapping = {}</span>
+            <span class="c1"># for key in keys:</span>
+            <span class="c1">#     new_key = list(key)</span>
+            <span class="c1">#     mod = False</span>
+            <span class="c1">#     for k, b in enumerate(by):</span>
+            <span class="c1">#         if b not in rep:</span>
+            <span class="c1">#             continue</span>
+            <span class="c1">#         fnan = rep[b]</span>
+            <span class="c1">#         if key[k] == fnan:</span>
+            <span class="c1">#             new_key[k] = numpy.nan</span>
+            <span class="c1">#             mod = True</span>
+            <span class="c1">#             didit = True</span>
+            <span class="c1">#             mapping[fnan] = numpy.nan</span>
+            <span class="c1">#     if mod:</span>
+            <span class="c1">#         new_key = tuple(new_key)</span>
+            <span class="c1">#         mapping[key] = new_key</span>
+            <span class="c1">#         res.grouper.groups[new_key] = res.grouper.groups[key]</span>
+            <span class="c1">#         del res.grouper.groups[key]</span>
+            <span class="c1"># if didit:</span>
+            <span class="c1">#     # this code deos not work</span>
+            <span class="c1">#     vnan = numpy.nan</span>
+            <span class="c1">#     new_index = list(mapping.get(v, v)</span>
+            <span class="c1">#                      for v in res.grouper.result_index)</span>
+            <span class="c1">#     names = res.grouper.result_index.names</span>
+            <span class="c1">#     # index = MultiIndex.from_tuples(tuples=new_index, names=names)</span>
+            <span class="c1">#     # res.grouper.result_index = index  # does not work cannot set</span>
+            <span class="c1">#     # values for [result_index]</span>
+            <span class="c1">#     for k in range(len(res.grouper.groupings)):</span>
+            <span class="c1">#         grou = res.grouper.groupings[k]</span>
+            <span class="c1">#         new_val = list(mapping.get(v, v) for v in grou)</span>
+            <span class="c1">#         grou._group_index = Index(new_val)</span>
+            <span class="c1">#         b = names[k]</span>
+            <span class="c1">#         if b in rep:</span>
+            <span class="c1">#             vv = rep[b]</span>
+            <span class="c1">#             grou.obj[b].replace(vv, vnan, inplace=True)</span>
+            <span class="c1">#         if isinstance(grou.grouper, numpy.ndarray):</span>
+            <span class="c1">#             grou.grouper = numpy.array(new_val)</span>
+            <span class="c1">#         else:</span>
+            <span class="c1">#             raise NotImplementedError(</span>
+            <span class="c1">#                 &quot;Not implemented for type: {0}&quot;.format(</span>
+            <span class="c1">#                       type(grou.grouper)))</span>
+            <span class="c1">#     del res.grouper._cache</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/scripts/furo.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
