@@ -1,9 +1,13 @@
 import matplotlib.pyplot as plt
-from pyquickhelper.pycode.profiling import profile
-from pyquickhelper.texthelper import compare_module_version
+from onnx_array_api.profiling import profile
+
+def subf(x):
+    return sum(x)
 
 def fctm():
-    return compare_module_version('0.20.4', '0.22.dev0')
+    x1 = subf([1, 2, 3])
+    x2 = subf([1, 2, 3, 4])
+    return x1 + x2
 
 pr, df = profile(lambda: [fctm() for i in range(0, 1000)], as_df=True)
 ax = df[['namefct', 'cum_tall']].head(n=15).set_index(
