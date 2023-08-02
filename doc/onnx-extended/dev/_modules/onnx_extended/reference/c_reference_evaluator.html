@@ -4,11 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.1 and Furo 2023.07.26 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
         <title>onnx_extended.reference.c_reference_evaluator - onnx-extended 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -203,6 +203,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cpu.html">validation.cpu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cuda.html">validation.cuda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/command_lines.html">command lines</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../tech/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -260,12 +261,54 @@
         </div>
         <article role="main">
           <h1>Source code for onnx_extended.reference.c_reference_evaluator</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">ModelProto</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
 <span class="kn">from</span> <span class="nn">onnx.defs</span> <span class="kn">import</span> <span class="n">get_schema</span>
+<span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <span class="n">make_graph</span><span class="p">,</span> <span class="n">make_model</span><span class="p">,</span> <span class="n">make_node</span><span class="p">,</span> <span class="n">make_tensor_value_info</span>
+<span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">from_array</span>
 <span class="kn">from</span> <span class="nn">onnx.reference</span> <span class="kn">import</span> <span class="n">ReferenceEvaluator</span>
+<span class="kn">from</span> <span class="nn">onnx.reference.custom_element_types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bfloat16</span><span class="p">,</span>
+    <span class="n">float8e4m3fn</span><span class="p">,</span>
+    <span class="n">float8e4m3fnuz</span><span class="p">,</span>
+    <span class="n">float8e5m2</span><span class="p">,</span>
+    <span class="n">float8e5m2fnuz</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">onnx.reference.op_run</span> <span class="kn">import</span> <span class="n">OpRun</span>
+
+
+<div class="viewcode-block" id="from_array_extended"><a class="viewcode-back" href="../../../api/reference.html#onnx_extended.reference.from_array_extended">[docs]</a><span class="k">def</span> <span class="nf">from_array_extended</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an array into a TensorProto including float 8 types.</span>
+
+<span class="sd">    :param tensor: numpy array</span>
+<span class="sd">    :param name: name</span>
+<span class="sd">    :return: TensorProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">float8e4m3fn</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e4m3fn&quot;</span><span class="p">:</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FN</span>
+        <span class="n">dt_to</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">elif</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">float8e4m3fnuz</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e4m3fnuz&quot;</span><span class="p">:</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FNUZ</span>
+        <span class="n">dt_to</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">elif</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">float8e5m2</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e5m2&quot;</span><span class="p">:</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2</span>
+        <span class="n">dt_to</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">elif</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">float8e5m2fnuz</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e5m2fnuz&quot;</span><span class="p">:</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2FNUZ</span>
+        <span class="n">dt_to</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">elif</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">bfloat16</span> <span class="ow">and</span> <span class="n">dt</span><span class="o">.</span><span class="n">descr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bfloat16&quot;</span><span class="p">:</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BFLOAT16</span>
+        <span class="n">dt_to</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">from_array</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">from_array</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dt_to</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">to</span>
+    <span class="k">return</span> <span class="n">t</span></div>
 
 
 <div class="viewcode-block" id="CReferenceEvaluator"><a class="viewcode-back" href="../../../api/reference.html#onnx_extended.reference.CReferenceEvaluator">[docs]</a><span class="k">class</span> <span class="nc">CReferenceEvaluator</span><span class="p">(</span><span class="n">ReferenceEvaluator</span><span class="p">):</span>
@@ -278,8 +321,93 @@
 <span class="sd">    ::</span>
 
 <span class="sd">        from onnx.reference import ReferenceEvaluator</span>
-<span class="sd">        from from onnx.reference.c_ops import Conv</span>
+<span class="sd">        from onnx_extended.reference.c_ops import Conv</span>
 <span class="sd">        ref = ReferenceEvaluator(..., new_ops=[Conv])</span>
+
+<span class="sd">    See :class:`onnx.reference.ReferenceEvaluator` for a detailed documentation.</span>
+
+<span class="sd">    **Additions**</span>
+
+<span class="sd">    Parameter **save_intermediate** can be set to a folder to save intermediate</span>
+<span class="sd">    results in this folder. It follows the same design as the backend test.</span>
+<span class="sd">    Let&#39;s consider a model with the following nodes:</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        &lt;</span>
+<span class="sd">            ir_version: 8,</span>
+<span class="sd">            opset_import: [ &quot;&quot; : 18]</span>
+<span class="sd">        &gt;</span>
+<span class="sd">        agraph (float[N, 128] X, float[128,10] W, float[10] B) =&gt; (float[N] C)</span>
+<span class="sd">        {</span>
+<span class="sd">            T = MatMul(X, W)</span>
+<span class="sd">            S = Add(T, B)</span>
+<span class="sd">            C = Softmax(S)</span>
+<span class="sd">        }</span>
+
+<span class="sd">    It will produce the following files after it is run with</span>
+<span class="sd">    `CReferenceEvaluator(..., save_intermediate=&quot;modelrun&quot;)`.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        modelrun</span>
+<span class="sd">            +-- test_node_0_MatMul</span>
+<span class="sd">            |       +-- model.onnx</span>
+<span class="sd">            |       +-- test_data_set_0</span>
+<span class="sd">            |               + input_0.pb</span>
+<span class="sd">            |               + input_1.pb</span>
+<span class="sd">            |               + output_0.pb</span>
+<span class="sd">            +-- test_node_1_Add</span>
+<span class="sd">            |       +-- model.onnx</span>
+<span class="sd">            |       +-- test_data_set_0</span>
+<span class="sd">            |               + input_0.pb</span>
+<span class="sd">            |               + input_1.pb</span>
+<span class="sd">            |               + output_0.pb</span>
+<span class="sd">            +-- test_node_2_Softmax</span>
+<span class="sd">                    +-- model.onnx</span>
+<span class="sd">                    +-- test_data_set_0</span>
+<span class="sd">                            + input_0.pb</span>
+<span class="sd">                            + output_0.pb</span>
+
+<span class="sd">    These files can then be run with a different runtime to look for discrepancies.</span>
+<span class="sd">    Following example executes node by node with onnxruntime.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        from onnx.backend.test.loader import load_model_tests</span>
+<span class="sd">        from onnx.reference.c_reference_backend import (</span>
+<span class="sd">            ReferenceEvaluatorBackend,</span>
+<span class="sd">            create_reference_backend,</span>
+<span class="sd">        )</span>
+<span class="sd">        from onnxruntime import InferenceSession</span>
+
+<span class="sd">        root = &quot;folder which folder modelrun&quot;</span>
+<span class="sd">        examples = load_model_tests(root, &quot;modelrun&quot;)</span>
+
+<span class="sd">        class Wrapper(InferenceSession):</span>
+
+<span class="sd">            def __init__(self, model, *args, providers=None, **kwargs):</span>
+<span class="sd">                super().__init__(</span>
+<span class="sd">                    model.SerializeToString(),</span>
+<span class="sd">                    *args,</span>
+<span class="sd">                    providers=providers or [&quot;CPUExecutionProvider&quot;],</span>
+<span class="sd">                    **kwargs,</span>
+<span class="sd">                )</span>
+
+<span class="sd">            def run(self, *args, **kwargs):</span>
+<span class="sd">                return InferenceSession.run(self, *args, **kwargs)</span>
+
+<span class="sd">            @property</span>
+<span class="sd">            def input_names(self):</span>
+<span class="sd">                return [i.name for i in self.get_inputs()]</span>
+
+<span class="sd">            @property</span>
+<span class="sd">            def output_names(self):</span>
+<span class="sd">                return [o.name for o in self.get_outputs()]</span>
+
+<span class="sd">        new_cls = ReferenceEvaluatorBackend[NewRef]</span>
+<span class="sd">        backend = create_reference_backend(new_cls, path_to_test=root)</span>
+<span class="sd">        beckend.run()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">default_ops</span><span class="p">():</span>
@@ -306,7 +434,11 @@
         <span class="p">]</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">filter_ops</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">new_ops</span><span class="p">,</span> <span class="n">opsets</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">filter_ops</span><span class="p">(</span>
+        <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">],</span>
+        <span class="n">new_ops</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">OpRun</span><span class="p">],</span>
+        <span class="n">opsets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">OpRun</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">opsets</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="p">(</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)):</span>
             <span class="n">opsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">opset_import</span><span class="p">}</span>
         <span class="n">best</span> <span class="o">=</span> <span class="p">{}</span>
@@ -349,6 +481,7 @@
         <span class="n">functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ReferenceEvaluator</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">new_ops</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">OpRun</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">save_intermediate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">new_ops</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -366,7 +499,172 @@
             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
             <span class="n">new_ops</span><span class="o">=</span><span class="n">new_ops</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_intermediate</span> <span class="o">=</span> <span class="n">save_intermediate</span>
+        <span class="k">if</span> <span class="n">save_intermediate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_saved_results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="CReferenceEvaluator.run"><a class="viewcode-back" href="../../../api/reference.html#onnx_extended.reference.CReferenceEvaluator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">output_names</span><span class="p">,</span>
+        <span class="n">feed_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes the onnx model.</span>
+
+<span class="sd">        :param output_names: requested outputs by names,</span>
+<span class="sd">            None for all</span>
+<span class="sd">        :param feed_inputs: dictionary `{ input name: input value }`</span>
+<span class="sd">        :param attributes: attributes value if the instance runs a FunctionProto</span>
+<span class="sd">        :return: list of requested outputs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">output_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">output_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_names</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attributes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected proto type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># step 1: inputs and initializers</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rt_inits_</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">feed_inputs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rt_inits_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot; +C </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">feed_inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot; +I </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="c1"># step 2: execute nodes</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rt_nodes_</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">) -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">]</span>
+            <span class="n">linked_attributes</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">has_linked_attribute</span> <span class="ow">and</span> <span class="n">attributes</span><span class="p">:</span>
+                <span class="n">linked_attributes</span><span class="p">[</span><span class="s2">&quot;linked_attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributes</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">need_context</span><span class="p">():</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">results</span><span class="p">,</span> <span class="o">**</span><span class="n">linked_attributes</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">linked_attributes</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unexected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2"> for output </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_intermediate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">hidden_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrieve_hidden_inputs</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">onnx_node</span><span class="p">)</span>
+                <span class="n">set_inputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+                <span class="n">hidden</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">hidden_names</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">set_inputs</span>
+                <span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_save_intermerdiate_results</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">hidden</span><span class="p">)</span>
+
+        <span class="c1"># return the results</span>
+        <span class="n">list_results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">output_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unable to find output name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;in </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2">, proto is</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">list_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">list_results</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_retrieve_input_names</span><span class="p">(</span><span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">inputs</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">:</span>
+                    <span class="n">inputs</span> <span class="o">|=</span> <span class="n">CReferenceEvaluator</span><span class="o">.</span><span class="n">_retrieve_input_names</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inputs</span>
+
+    <span class="k">def</span> <span class="nf">_retrieve_hidden_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">:</span>
+                <span class="n">names</span> <span class="o">|=</span> <span class="n">CReferenceEvaluator</span><span class="o">.</span><span class="n">_retrieve_input_names</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">names</span>
+
+    <span class="k">def</span> <span class="nf">_save_intermerdiate_results</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+        <span class="n">hidden</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves intermediate results into a folder with</span>
+<span class="sd">        the same organization as the backend tests.</span>
+
+<span class="sd">        :param index: index of the node in the graph</span>
+<span class="sd">        :param node: node proto</span>
+<span class="sd">        :param inputs: inputs of the node</span>
+<span class="sd">        :param outputs: outputs of the node, supposedly the expected outputs</span>
+<span class="sd">        :param hidden: hidden variables if the node has a subgraph</span>
+<span class="sd">        :return: test folder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+
+        <span class="n">input_protos</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">from_array_extended</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">inp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">output_protos</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">from_array_extended</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">out</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">constants</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">hidden</span><span class="p">:</span>
+            <span class="n">constants</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">from_array_extended</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">hidden</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">make_model</span><span class="p">(</span>
+            <span class="n">make_graph</span><span class="p">(</span>
+                <span class="p">[</span><span class="o">*</span><span class="n">constants</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">onnx_node</span><span class="p">],</span>
+                <span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">[</span>
+                    <span class="n">make_tensor_value_info</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span> <span class="n">get_shape</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_protos</span>
+                <span class="p">],</span>
+                <span class="p">[</span>
+                    <span class="n">make_tensor_value_info</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">data_type</span><span class="p">,</span> <span class="n">get_shape</span><span class="p">(</span><span class="n">o</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">output_protos</span>
+                <span class="p">],</span>
+            <span class="p">),</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">opset_import</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">model_bytes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">model_bytes</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_saved_results</span><span class="p">:</span>
+            <span class="n">sub</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;test_node_</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_intermediate</span><span class="p">,</span> <span class="n">sub</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_saved_results</span><span class="p">[</span><span class="n">model_bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">model_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;model.onnx&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">model_file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model_bytes</span><span class="p">)</span>
+        <span class="n">path</span><span class="p">,</span> <span class="n">n_example</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_saved_results</span><span class="p">[</span><span class="n">model_bytes</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_saved_results</span><span class="p">[</span><span class="n">model_bytes</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">n_example</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">sub_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;test_data_set_</span><span class="si">{</span><span class="n">n_example</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sub_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">sub_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_protos</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sub_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;input_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.pb&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">output_protos</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sub_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;output_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.pb&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">path</span></div>
 </pre></div>
         </article>
       </div>
