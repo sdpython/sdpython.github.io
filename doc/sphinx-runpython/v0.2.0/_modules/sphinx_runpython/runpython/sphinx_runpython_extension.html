@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.1 and Furo 2023.07.26 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
         <title>sphinx_runpython.runpython.sphinx_runpython_extension - sphinx-runpython 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=e5fbc548" />
@@ -235,15 +235,14 @@
 <span class="kn">from</span> <span class="nn">..collapse.sphinx_collapse_extension</span> <span class="kn">import</span> <span class="n">collapse_node</span>
 
 
-<div class="viewcode-block" id="remove_extra_spaces_and_pep8"><a class="viewcode-back" href="../../../api/runpython.html#sphinx_runpython.runpython.sphinx_runpython_extension.remove_extra_spaces_and_pep8">[docs]</a><span class="k">def</span> <span class="nf">remove_extra_spaces_and_pep8</span><span class="p">(</span>
-    <span class="n">filename</span><span class="p">,</span> <span class="n">apply_pep8</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">aggressive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_string</span><span class="o">=</span><span class="kc">None</span>
-<span class="p">):</span>
+<div class="viewcode-block" id="remove_extra_spaces_and_black"><a class="viewcode-back" href="../../../api/runpython.html#sphinx_runpython.runpython.sphinx_runpython_extension.remove_extra_spaces_and_black">[docs]</a><span class="k">def</span> <span class="nf">remove_extra_spaces_and_black</span><span class="p">(</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">apply_black</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_string</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes extra spaces in a filename, replaces the file in place.</span>
 
 <span class="sd">    :param filename: file name or string (but it assumes it is python).</span>
-<span class="sd">    :param apply_pep8: if True, calls :epkg:`autopep8` on the file</span>
-<span class="sd">    :param aggressive: more aggressive</span>
+<span class="sd">    :param apply_black: if True, calls :epkg:`black` on the file</span>
 <span class="sd">    :param is_string: force *filename* to be a string</span>
 <span class="sd">    :return: number of removed extra spaces</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -329,13 +328,11 @@
 
     <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">,)</span> <span class="ow">and</span> <span class="n">apply_pep8</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">,)</span> <span class="ow">and</span> <span class="n">apply_black</span><span class="p">:</span>
         <span class="c1"># delayed import to speed up import of pycode</span>
-        <span class="kn">import</span> <span class="nn">autopep8</span>
+        <span class="kn">from</span> <span class="nn">black</span> <span class="kn">import</span> <span class="n">format_str</span><span class="p">,</span> <span class="n">FileMode</span>
 
-        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;-a&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">aggressive</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
-        <span class="n">options</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--ignore=E402,E731&quot;</span><span class="p">])</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">autopep8</span><span class="o">.</span><span class="n">fix_code</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines2</span><span class="p">),</span> <span class="n">options</span><span class="o">=</span><span class="n">autopep8</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">options</span><span class="p">))</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">format_str</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines2</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="n">FileMode</span><span class="p">())</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
@@ -414,7 +411,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
-            <span class="sa">f</span><span class="s2">&quot;Issue when applying autopep8 with filename: &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Issue when applying black with filename: &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">diff</span></div>
 
@@ -738,9 +735,8 @@
 <span class="sd">    * ``:indent:&lt;int&gt;`` to indent the output</span>
 <span class="sd">    * ``:language:``: changes ``::`` into ``.. code-block:: language``</span>
 <span class="sd">    * ``:linenos:`` to show line numbers</span>
-<span class="sd">    * ``:nopep8:`` if present, leaves the code as it is and does</span>
-<span class="sd">      not apply pep8 by default,</span>
-<span class="sd">      see :func:`remove_extra_spaces_and_pep8`.</span>
+<span class="sd">    * ``:noblack:`` if present, leaves the code as it is and does</span>
+<span class="sd">      not apply black by default,</span>
 <span class="sd">    * ``:numpy_precision: &lt;precision&gt;``, run ``numpy.set_printoptions(precision=...)``,</span>
 <span class="sd">      precision is 3 by default</span>
 <span class="sd">    * ``:process:`` run the script in an another process</span>
@@ -831,7 +827,7 @@
         <span class="s2">&quot;setsysvar&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
         <span class="s2">&quot;process&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
         <span class="s2">&quot;exception&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
-        <span class="s2">&quot;nopep8&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
+        <span class="s2">&quot;noblack&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
         <span class="s2">&quot;warningout&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
         <span class="s2">&quot;toggle&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
         <span class="s2">&quot;current&quot;</span><span class="p">:</span> <span class="n">directives</span><span class="o">.</span><span class="n">unchanged</span><span class="p">,</span>
@@ -891,7 +887,8 @@
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;process&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">bool_set_</span><span class="p">,</span>
             <span class="s2">&quot;exception&quot;</span><span class="p">:</span> <span class="s2">&quot;exception&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;exception&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">bool_set_</span><span class="p">,</span>
-            <span class="s2">&quot;nopep8&quot;</span><span class="p">:</span> <span class="s2">&quot;nopep8&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;nopep8&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">bool_set_</span><span class="p">,</span>
+            <span class="s2">&quot;noblack&quot;</span><span class="p">:</span> <span class="s2">&quot;noblack&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;noblack&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">bool_set_</span><span class="p">,</span>
             <span class="s2">&quot;warningout&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;warningout&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
             <span class="s2">&quot;toggle&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;toggle&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
             <span class="s2">&quot;current&quot;</span><span class="p">:</span> <span class="s2">&quot;current&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span>
@@ -965,9 +962,9 @@
 
         <span class="n">script</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
         <span class="n">script_disp</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;nopep8&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;noblack&quot;</span><span class="p">]:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">script_disp</span> <span class="o">=</span> <span class="n">remove_extra_spaces_and_pep8</span><span class="p">(</span><span class="n">script_disp</span><span class="p">,</span> <span class="n">is_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">script_disp</span> <span class="o">=</span> <span class="n">remove_extra_spaces_and_black</span><span class="p">(</span><span class="n">script_disp</span><span class="p">,</span> <span class="n">is_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;runpython&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">docname</span><span class="p">:</span>
@@ -978,7 +975,7 @@
                         <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  File &quot;</span><span class="si">{</span><span class="n">docname</span><span class="si">}</span><span class="s1">.py&quot;, line </span><span class="si">{</span><span class="mi">1</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
                     <span class="p">)</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Pep8 (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">) issue with </span><span class="si">{</span><span class="n">docname</span><span class="si">!r}</span><span class="se">\n</span><span class="s2">---SCRIPT---</span><span class="se">\n</span><span class="si">{</span><span class="n">script</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Black (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">) issue with </span><span class="si">{</span><span class="n">docname</span><span class="si">!r}</span><span class="se">\n</span><span class="s2">---SCRIPT---</span><span class="se">\n</span><span class="si">{</span><span class="n">script</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
         <span class="c1"># if an exception is raised, the documentation should report a warning</span>

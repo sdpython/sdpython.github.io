@@ -1,0 +1,1625 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mlstatpy.graph.graph_distance &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mlstatpy/graph/graph_distance';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Code du module</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">mlstatpy.graph.graph_distance</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Code source de mlstatpy.graph.graph_distance</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<span class="k">class</span> <span class="nc">_Vertex</span><span class="p">:</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;nb&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb</span> <span class="o">=</span> <span class="n">nb</span>  <span class="c1"># kind of id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>  <span class="c1"># label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+
+
+<div class="viewcode-block" id="Vertex"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.Vertex">[docs]</a><span class="k">class</span> <span class="nc">Vertex</span><span class="p">(</span><span class="n">_Vertex</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a vertex of a graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        constructor</span>
+<span class="sd">        @param      nb      (int) index of the vertex</span>
+<span class="sd">        @param      label   (str) label</span>
+<span class="sd">        @para       weight  (float)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_Vertex</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predE</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">succE</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Label</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Vertex(</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Label</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+<div class="viewcode-block" id="Vertex.is_vertex"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.Vertex.is_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">is_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Vertex.is_edge"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.Vertex.is_edge">[docs]</a>    <span class="k">def</span> <span class="nf">is_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span></div>
+
+
+<span class="k">class</span> <span class="nc">_Edge</span><span class="p">:</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;from_&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span> <span class="o">=</span> <span class="n">from_</span><span class="p">,</span> <span class="n">to</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb</span> <span class="o">=</span> <span class="n">from_</span><span class="p">,</span> <span class="n">to</span>  <span class="c1"># pylint: disable=E1101</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+
+
+<div class="viewcode-block" id="Edge"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.Edge">[docs]</a><span class="k">class</span> <span class="nc">Edge</span><span class="p">(</span><span class="n">_Edge</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines an edge of a graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        @param  from_       (int)</span>
+<span class="sd">        @param  to          (int)</span>
+<span class="sd">        @param  label       (str)</span>
+<span class="sd">        @param  weight      (float)</span>
+
+<span class="sd">        ``&#39;00&#39;`` means the beginning of a graph, ``&#39;11&#39;`` the end.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_Edge</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_</span> <span class="o">==</span> <span class="s2">&quot;00&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span> <span class="o">==</span> <span class="s2">&quot;00&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;should not happen&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_</span> <span class="o">==</span> <span class="s2">&quot;11&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">to</span> <span class="o">==</span> <span class="s2">&quot;11&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;should not happen&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Label</span><span class="si">}</span><span class="s2">]&quot;</span>  <span class="c1"># pylint: disable=E1101</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Edge(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>  <span class="c1"># pylint: disable=E1101</span>
+            <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Label</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+        <span class="p">)</span>  <span class="c1"># pylint: disable=E1101</span>
+
+<div class="viewcode-block" id="Edge.is_vertex"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.Edge.is_vertex">[docs]</a>    <span class="k">def</span> <span class="nf">is_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Edge.is_edge"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.Edge.is_edge">[docs]</a>    <span class="k">def</span> <span class="nf">is_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span></div>
+
+
+<div class="viewcode-block" id="GraphDistance"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.GraphDistance">[docs]</a><span class="k">class</span> <span class="nc">GraphDistance</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Defines a graph to compute a distance between two graphs.</span>
+
+<span class="sd">    .. exref::</span>
+<span class="sd">        :title: Compute a distance between two graphs.</span>
+
+<span class="sd">        See :ref:`l-graph_distance`.</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import copy</span>
+<span class="sd">            from mlstatpy.graph import GraphDistance</span>
+
+<span class="sd">            # We define two graphs as list of edges.</span>
+<span class="sd">            graph1 = [(&quot;a&quot;, &quot;b&quot;), (&quot;b&quot;, &quot;c&quot;), (&quot;b&quot;, &quot;X&quot;), (&quot;X&quot;, &quot;c&quot;),</span>
+<span class="sd">                      (&quot;c&quot;, &quot;d&quot;), (&quot;d&quot;, &quot;e&quot;), (&quot;0&quot;, &quot;b&quot;)]</span>
+<span class="sd">            graph2 = [(&quot;a&quot;, &quot;b&quot;), (&quot;b&quot;, &quot;c&quot;), (&quot;b&quot;, &quot;X&quot;), (&quot;X&quot;, &quot;c&quot;),</span>
+<span class="sd">                      (&quot;c&quot;, &quot;t&quot;), (&quot;t&quot;, &quot;d&quot;), (&quot;d&quot;, &quot;e&quot;), (&quot;d&quot;, &quot;g&quot;)]</span>
+
+<span class="sd">            # We convert them into objects GraphDistance.</span>
+<span class="sd">            graph1 = GraphDistance(graph1)</span>
+<span class="sd">            graph2 = GraphDistance(graph2)</span>
+
+<span class="sd">            distance, graph = graph1.distance_matching_graphs_paths(</span>
+<span class="sd">                graph2, use_min=False)</span>
+
+<span class="sd">            print(&quot;distance&quot;, distance)</span>
+<span class="sd">            print(&quot;common paths:&quot;, graph)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># graph is a dictionary</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_list_of_vertices</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[</span><span class="n">edge</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">]</span>
+        <span class="n">unique</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">unique</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">unique</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">vertices</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">vertices</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">edge_list</span><span class="p">,</span>
+        <span class="n">vertex_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">add_loop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">weight_vertex</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">weight_edge</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        constructor</span>
+
+<span class="sd">        @param      edge_list       list of edges</span>
+<span class="sd">        @param      add_loop        automatically add a loop on</span>
+<span class="sd">                                    each vertex (an edge from a vertex to itself)</span>
+<span class="sd">        @param      weight_vertex   weight for every vertex</span>
+<span class="sd">        @param      weight_edge     weight for every edge</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">vertex_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vertex_label</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge_list</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span><span class="n">edge_list</span><span class="p">,</span> <span class="n">add_loop</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span> <span class="o">=</span> <span class="s2">&quot;00&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span> <span class="o">=</span> <span class="s2">&quot;11&quot;</span>
+            <span class="n">vid</span> <span class="o">=</span> <span class="n">GraphDistance</span><span class="o">.</span><span class="n">get_list_of_vertices</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">vid</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">Vertex</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">vertex_label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)),</span> <span class="n">weight_vertex</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">:</span>
+                <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">e</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">ls</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="n">e</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ls</span><span class="p">),</span> <span class="n">weight_edge</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_private__init__</span><span class="p">(</span><span class="n">add_loop</span><span class="p">,</span> <span class="n">weight_vertex</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns a vertex or an edge if no vertex with the given index was found</span>
+<span class="sd">        @param      index   id (index) to look for</span>
+<span class="sd">        @return             Vertex or Edge</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;unable to get element &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>  <span class="c1"># pragma: no cover</span>
+
+<div class="viewcode-block" id="GraphDistance.load_from_file"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.GraphDistance.load_from_file">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">add_loop</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        loads a graph from a file</span>
+<span class="sd">        @param      filename        file name</span>
+<span class="sd">        @param      add_loop         @see me __init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>  <span class="c1"># pylint: disable=R1732,W1514</span>
+        <span class="n">regV</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&quot;?([a-z0-9_]+)</span><span class="se">\\</span><span class="s1">&quot;? *[[]label=</span><span class="se">\\</span><span class="s1">&quot;(.*)</span><span class="se">\\</span><span class="s1">&quot;[]]&#39;</span><span class="p">)</span>
+        <span class="n">regE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&quot;?([a-z0-9_]+)</span><span class="se">\\</span><span class="s1">&quot;? *-&gt; *</span><span class="se">\\</span><span class="s1">&quot;?&#39;</span>
+            <span class="o">+</span> <span class="s1">&#39;([a-z0-9_]+)</span><span class="se">\\</span><span class="s1">&quot;? *[[]label=</span><span class="se">\\</span><span class="s1">&quot;(.*)</span><span class="se">\\</span><span class="s1">&quot;[]]&#39;</span>
+        <span class="p">)</span>
+        <span class="n">edge_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vertex_label</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2"> ;&quot;</span><span class="p">)</span>
+            <span class="n">ed</span> <span class="o">=</span> <span class="n">regE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">ve</span> <span class="o">=</span> <span class="n">regV</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ed</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+                <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="k">elif</span> <span class="n">ve</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">ve</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+                <span class="n">vertex_label</span><span class="p">[</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertex_label</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to parse file </span><span class="si">{</span><span class="n">filename</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">return</span> <span class="n">GraphDistance</span><span class="p">(</span><span class="n">edge_list</span><span class="p">,</span> <span class="n">vertex_label</span><span class="p">,</span> <span class="n">add_loop</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_private__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">add_loop</span><span class="p">,</span> <span class="n">weight_vertex</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">add_loop</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect_root_and_leave</span><span class="p">(</span><span class="n">weight_vertex</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_predecessor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_successor</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">connect_root_and_leave</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_vertex</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">):</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_order_vertices</span><span class="p">()</span>
+        <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">order</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">vert</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+            <span class="n">vert</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">vert</span><span class="p">[</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">]</span> <span class="o">=</span> <span class="n">Vertex</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">,</span> <span class="n">weight_vertex</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">weight_edge</span>
+                <span class="p">)</span>
+
+        <span class="n">leaves</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vert</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">leaves</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">]</span> <span class="o">=</span> <span class="n">Vertex</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">,</span> <span class="n">weight_vertex</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">]</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_order_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">order</span><span class="p">[</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">order</span><span class="p">[</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">modif</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">modif</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">modif</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+                <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">k</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">order</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">order</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">order</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">modif</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">order</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">li</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;GraphDistance(</span><span class="se">\n</span><span class="s2">    [</span><span class="si">{</span><span class="n">edges</span><span class="si">}</span><span class="s2">],</span><span class="se">\n</span><span class="s2">    </span><span class="se">{{</span><span class="si">{</span><span class="n">vertices</span><span class="si">}</span><span class="se">}}</span><span class="s2">)&quot;</span>
+
+<div class="viewcode-block" id="GraphDistance.compute_predecessor"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.GraphDistance.compute_predecessor">[docs]</a>    <span class="k">def</span> <span class="nf">compute_predecessor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pred</span><span class="p">:</span>
+                <span class="n">pred</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">pred</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pred</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">predE</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">n</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">compute_successor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">succ</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">succ</span><span class="p">:</span>
+                <span class="n">succ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">succ</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">succ</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">succE</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+<div class="viewcode-block" id="GraphDistance.get_matching_functions"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.GraphDistance.get_matching_functions">[docs]</a>    <span class="k">def</span> <span class="nf">get_matching_functions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns default matching functions between two vertices and two edges.</span>
+
+<span class="sd">        :param function_mach_vertices: if not None, this function</span>
+<span class="sd">            is returned, othewise, it returns a new fonction. See below.</span>
+<span class="sd">        :param function_match_edges: if not None, this function is returned,</span>
+<span class="sd">            othewise, it returns a new fonction. See below.</span>
+<span class="sd">        :param cost: if True, the returned function should</span>
+<span class="sd">            return a float, otherwise a boolean</span>
+<span class="sd">        :return: a pair of functions</span>
+
+<span class="sd">        Example for * if cost is False:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            lambda v1,v2,g1,g2,w1,w2 : v1.label == v2.label</span>
+
+<span class="sd">        Example for *function_mach_vertices* if cost is True:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            def tempF1 (v1,v2,g1,g2,w1,w2) :</span>
+<span class="sd">                if v1 is not None and not v1.is_vertex():</span>
+<span class="sd">                    raise TypeError(&quot;should be a vertex&quot;)</span>
+<span class="sd">                if v2 is not None and not v2.is_vertex():</span>
+<span class="sd">                    raise TypeError(&quot;should be a vertex&quot;)</span>
+<span class="sd">                if v1 is None and v2 is None : return 0</span>
+<span class="sd">                elif v1 is None or v2 is None :</span>
+<span class="sd">                    return v2.weight*w2 if v1 is None else v1.weight*w1</span>
+<span class="sd">                else :</span>
+<span class="sd">                    return 0 if v1.label == v2.label else (</span>
+<span class="sd">                        0.5*(v1.weight*w1 + v2.weight*w2))</span>
+
+<span class="sd">        Example for *function_match_edges* if cost is False:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            lambda e1,e2,g1,g2,w1,w2 : e1.label == e2.label and</span>
+<span class="sd">                        (e1.from_ != e1.to or e2.from_ != e2.to) and</span>
+<span class="sd">                        (e1.from_ != self.labelBegin or e1.to != self.labelBegin) and</span>
+<span class="sd">                        (e1.from_ != self.labelEnd or e1.to != self.labelEnd)</span>
+
+<span class="sd">        Example if cost is True:</span>
+
+<span class="sd">        ::</span>
+
+<span class="sd">            def tempF2 (e1,e2,g1,g2,w1,w2) :</span>
+<span class="sd">                if e1 is not None and not e1.is_edge():</span>
+<span class="sd">                    raise TypeError(&quot;should be an edge&quot;)</span>
+<span class="sd">                if e2 is not None and not e2.is_edge():</span>
+<span class="sd">                    raise TypeError(&quot;should be an edge&quot;)</span>
+<span class="sd">                if e1 is None and e2 is None: return 0</span>
+<span class="sd">                elif e1 is None or e2 is None:</span>
+<span class="sd">                    return e2.weight*w2 if e1 is None else e1.weight*w1</span>
+<span class="sd">                elif e1.label != e2.label: return 0.5*(e1.weight*w1 + e2.weight*w2)</span>
+<span class="sd">                else :</span>
+<span class="sd">                    lab1 = g1.vertices [e1.from_].label == g2.vertices [e2.from_].label</span>
+<span class="sd">                    lab2 = g1.vertices [e1.to].label == g2.vertices [e2.to].label</span>
+<span class="sd">                    if lab1 and lab2: return 0</span>
+<span class="sd">                    else: return e1.weight*w1 + e2.weight*w2</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cost</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">function_mach_vertices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                <span class="k">def</span> <span class="nf">tempF1_vertex</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">v2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="mf">0.0</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">v2</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">():</span>
+                            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;v2 should be a vertex&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">return</span> <span class="n">v2</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w2</span>
+                    <span class="k">elif</span> <span class="n">v2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">v1</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">():</span>
+                            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;v1 should be a vertex&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">v1</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">():</span>
+                            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;v1 should be a vertex&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">return</span> <span class="n">v1</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">v1</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">():</span>
+                            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;v1 should be a vertex&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">v2</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">():</span>
+                            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;v2 should be a vertex&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">return</span> <span class="p">(</span>
+                            <span class="mi">0</span>
+                            <span class="k">if</span> <span class="n">v1</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">v2</span><span class="o">.</span><span class="n">label</span>
+                            <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">v1</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">v2</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w2</span><span class="p">)</span>
+                        <span class="p">)</span>
+
+                <span class="n">function_mach_vertices</span> <span class="o">=</span> <span class="n">tempF1_vertex</span>
+
+            <span class="k">if</span> <span class="n">function_match_edges</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                <span class="k">def</span> <span class="nf">tempF2_edge</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">e1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">e1</span><span class="o">.</span><span class="n">is_edge</span><span class="p">():</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;should be an edge&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">e2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">e2</span><span class="o">.</span><span class="n">is_edge</span><span class="p">():</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;should be an edge&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">e1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">e2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="mi">0</span>
+                    <span class="k">elif</span> <span class="n">e1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">e2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">e2</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w2</span> <span class="k">if</span> <span class="n">e1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">e1</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w1</span>
+                    <span class="k">elif</span> <span class="n">e1</span><span class="o">.</span><span class="n">label</span> <span class="o">!=</span> <span class="n">e2</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">e2</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w2</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">lab1</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">g1</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">e1</span><span class="o">.</span><span class="n">from_</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">g2</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">e2</span><span class="o">.</span><span class="n">from_</span><span class="p">]</span><span class="o">.</span><span class="n">label</span>
+                        <span class="p">)</span>
+                        <span class="n">lab2</span> <span class="o">=</span> <span class="n">g1</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">e1</span><span class="o">.</span><span class="n">to</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">g2</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">e2</span><span class="o">.</span><span class="n">to</span><span class="p">]</span><span class="o">.</span><span class="n">label</span>
+                        <span class="k">if</span> <span class="n">lab1</span> <span class="ow">and</span> <span class="n">lab2</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="mi">0</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="n">e1</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">e2</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w2</span>
+
+                <span class="n">function_match_edges</span> <span class="o">=</span> <span class="n">tempF2_edge</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">function_mach_vertices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">function_mach_vertices</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">:</span> <span class="n">v1</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">v2</span><span class="o">.</span><span class="n">label</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">function_match_edges</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">function_match_edges</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">:</span> <span class="n">e1</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">e2</span><span class="o">.</span><span class="n">label</span>
+                    <span class="ow">and</span> <span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">from_</span> <span class="o">!=</span> <span class="n">e1</span><span class="o">.</span><span class="n">to</span> <span class="ow">or</span> <span class="n">e2</span><span class="o">.</span><span class="n">from_</span> <span class="o">!=</span> <span class="n">e2</span><span class="o">.</span><span class="n">to</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">from_</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span> <span class="ow">or</span> <span class="n">e1</span><span class="o">.</span><span class="n">to</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="p">(</span><span class="n">e1</span><span class="o">.</span><span class="n">from_</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span> <span class="ow">or</span> <span class="n">e1</span><span class="o">.</span><span class="n">to</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span></div>
+
+    <span class="k">def</span> <span class="nf">common_paths</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">graph2</span><span class="p">,</span>
+        <span class="n">function_mach_vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">function_match_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">noClean</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_functions</span><span class="p">(</span>
+            <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span>
+        <span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">GraphDistance</span><span class="p">([])</span>
+        <span class="n">vfirst</span> <span class="o">=</span> <span class="n">Vertex</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
+                <span class="o">+</span> <span class="n">graph2</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span>
+            <span class="p">)</span>
+            <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">]</span> <span class="o">=</span> <span class="n">vfirst</span>
+        <span class="n">vfirst</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">],</span> <span class="n">graph2</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">]</span>
+
+        <span class="n">modif</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">modif</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">modif</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">add</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">succE</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">e1</span> <span class="ow">in</span> <span class="n">v1</span><span class="o">.</span><span class="n">succE</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">v2</span><span class="o">.</span><span class="n">succE</span><span class="p">:</span>
+                            <span class="n">oe1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e1</span><span class="p">]</span>
+                            <span class="n">oe2</span> <span class="o">=</span> <span class="n">graph2</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">e2</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">function_match_edges</span><span class="p">(</span><span class="n">oe1</span><span class="p">,</span> <span class="n">oe2</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">graph2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">):</span>
+                                <span class="n">tv1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">oe1</span><span class="o">.</span><span class="n">to</span><span class="p">]</span>
+                                <span class="n">tv2</span> <span class="o">=</span> <span class="n">graph2</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">oe2</span><span class="o">.</span><span class="n">to</span><span class="p">]</span>
+                                <span class="k">if</span> <span class="n">function_mach_vertices</span><span class="p">(</span>
+                                    <span class="n">tv1</span><span class="p">,</span> <span class="n">tv2</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">graph2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+                                <span class="p">):</span>
+                                    <span class="c1"># we have a match</span>
+                                    <span class="n">ii</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tv1</span><span class="o">.</span><span class="n">nb</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">tv2</span><span class="o">.</span><span class="n">nb</span><span class="si">}</span><span class="s2">&quot;</span>
+                                    <span class="k">if</span> <span class="p">(</span>
+                                        <span class="n">tv1</span><span class="o">.</span><span class="n">nb</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span>
+                                        <span class="ow">and</span> <span class="n">tv2</span><span class="o">.</span><span class="n">nb</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span>
+                                    <span class="p">):</span>
+                                        <span class="n">ii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span>
+                                    <span class="n">lab</span> <span class="o">=</span> <span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tv1</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">tv2</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span>
+                                        <span class="k">if</span> <span class="n">tv1</span><span class="o">.</span><span class="n">label</span> <span class="o">!=</span> <span class="n">tv2</span><span class="o">.</span><span class="n">label</span>
+                                        <span class="k">else</span> <span class="n">tv1</span><span class="o">.</span><span class="n">label</span>
+                                    <span class="p">)</span>
+                                    <span class="n">tv</span> <span class="o">=</span> <span class="n">Vertex</span><span class="p">(</span><span class="n">ii</span><span class="p">,</span> <span class="n">lab</span><span class="p">,</span> <span class="p">(</span><span class="n">tv1</span><span class="o">.</span><span class="n">weight</span> <span class="o">+</span> <span class="n">tv2</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                                    <span class="n">lab</span> <span class="o">=</span> <span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">oe1</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">oe2</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span>
+                                        <span class="k">if</span> <span class="n">oe1</span><span class="o">.</span><span class="n">label</span> <span class="o">!=</span> <span class="n">oe2</span><span class="o">.</span><span class="n">label</span>
+                                        <span class="k">else</span> <span class="n">oe1</span><span class="o">.</span><span class="n">label</span>
+                                    <span class="p">)</span>
+                                    <span class="n">ne</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span>
+                                        <span class="n">v</span><span class="o">.</span><span class="n">nb</span><span class="p">,</span> <span class="n">tv</span><span class="o">.</span><span class="n">nb</span><span class="p">,</span> <span class="n">lab</span><span class="p">,</span> <span class="p">(</span><span class="n">oe1</span><span class="o">.</span><span class="n">weight</span> <span class="o">+</span> <span class="n">oe2</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                                    <span class="p">)</span>
+                                    <span class="n">add</span><span class="p">[</span><span class="n">tv</span><span class="o">.</span><span class="n">nb</span><span class="p">]</span> <span class="o">=</span> <span class="n">tv</span>
+                                    <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">ne</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="n">ne</span><span class="o">.</span><span class="n">to</span><span class="p">]</span> <span class="o">=</span> <span class="n">ne</span>
+                                    <span class="n">ne</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="n">oe1</span><span class="p">,</span> <span class="n">oe2</span>
+                                    <span class="n">tv</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="n">tv1</span><span class="p">,</span> <span class="n">tv2</span>
+                                    <span class="n">v</span><span class="o">.</span><span class="n">succE</span><span class="p">[</span><span class="n">ne</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="n">ne</span><span class="o">.</span><span class="n">to</span><span class="p">]</span> <span class="o">=</span> <span class="n">ne</span>
+                                    <span class="n">modif</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">add</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">noClean</span><span class="p">:</span>
+            <span class="c1"># g.connect_root_and_leave()</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">compute_predecessor</span><span class="p">()</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">clean_dead_ends</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">g</span>
+
+    <span class="k">def</span> <span class="nf">clean_dead_ends</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">edgesToKeep</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">verticesToKeep</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">]</span>
+            <span class="n">verticesToKeep</span><span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">nb</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="n">modif</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">modif</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">modif</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">add</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">verticesToKeep</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">modif</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">verticesToKeep</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">for</span> <span class="n">pred</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">predE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">edgesToKeep</span><span class="p">[</span><span class="n">pred</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">add</span><span class="p">[</span><span class="n">vv</span><span class="o">.</span><span class="n">from_</span><span class="p">]</span> <span class="o">=</span> <span class="n">verticesToKeep</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">add</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">verticesToKeep</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+            <span class="n">remove</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">verticesToKeep</span><span class="p">:</span>
+                    <span class="n">remove</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">remove</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+            <span class="n">remove</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">edgesToKeep</span><span class="p">:</span>
+                    <span class="n">remove</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">remove</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">enumerate_all_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges_and_vertices</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">begin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">begin</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">edges_and_vertices</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="n">begin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">begin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                    <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">labelBegin</span><span class="p">]</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">edges_and_vertices</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="p">[</span><span class="n">last</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">ef</span> <span class="ow">in</span> <span class="n">last</span><span class="o">.</span><span class="n">succE</span><span class="p">:</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">ef</span><span class="p">]</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">to</span> <span class="o">==</span> <span class="n">e</span><span class="o">.</span><span class="n">from_</span><span class="p">:</span>
+                    <span class="c1"># cycle</span>
+                    <span class="k">continue</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">edges_and_vertices</span><span class="p">:</span>
+                    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">labelEnd</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">path</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">enumerate_all_paths</span><span class="p">(</span><span class="n">edges_and_vertices</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">p</span>
+
+<div class="viewcode-block" id="GraphDistance.edit_distance_path"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.GraphDistance.edit_distance_path">[docs]</a>    <span class="k">def</span> <span class="nf">edit_distance_path</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">p1</span><span class="p">,</span>
+        <span class="n">p2</span><span class="p">,</span>
+        <span class="n">g1</span><span class="p">,</span>
+        <span class="n">g2</span><span class="p">,</span>
+        <span class="n">function_mach_vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">function_match_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_min</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tries to align two paths from two graphs.</span>
+
+<span class="sd">        :param p1: path 1 (from g1)</span>
+<span class="sd">        :param p2: path 2 (from g2)</span>
+<span class="sd">        :param g1: graph 1</span>
+<span class="sd">        :param g2: graph 2</span>
+<span class="sd">        :param function_mach_vertices: function which gives a</span>
+<span class="sd">            distance bewteen two vertices, if None, it take the output of</span>
+<span class="sd">            :meth:`get_matching_functions`</span>
+<span class="sd">        :param function_match_edges: function which gives a distance bewteen</span>
+<span class="sd">            two edges, if None, it take the output of</span>
+<span class="sd">            :meth:`get_matching_functions`</span>
+<span class="sd">        :param use_min: the returned is based on a edit distance,</span>
+<span class="sd">            if this parameter is True, the returned value will be:</span>
+
+<span class="sd">            ::</span>
+
+<span class="sd">                if use_min :</span>
+<span class="sd">                    n = min (len(p1), len(p2))</span>
+<span class="sd">                    d = d*1.0 / n if n &gt; 0 else 0</span>
+
+<span class="sd">        :param debug: unused</span>
+<span class="sd">        :param cache: to cache the costs</span>
+<span class="sd">        :return: 2-uple: distance, aligned path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">edge_vertex_match</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Both x and y are None.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">y</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w2</span>
+            <span class="k">elif</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w1</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">y</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">w2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="k">def</span> <span class="nf">cache_cost</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">id</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">)</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cost</span>
+            <span class="k">return</span> <span class="n">cost</span>
+
+        <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_functions</span><span class="p">(</span>
+            <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span><span class="p">,</span> <span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="p">{(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)}</span>
+
+        <span class="k">if</span> <span class="n">use_min</span><span class="p">:</span>
+            <span class="n">w1</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+            <span class="n">w2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">w1</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">w2</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="n">p2l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">p2</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">eorv1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p1</span><span class="p">):</span>
+            <span class="n">ed1</span> <span class="o">=</span> <span class="n">eorv1</span><span class="o">.</span><span class="n">is_edge</span><span class="p">()</span>
+            <span class="n">ve1</span> <span class="o">=</span> <span class="n">eorv1</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">eorv2</span> <span class="ow">in</span> <span class="n">p2l</span><span class="p">:</span>
+                <span class="n">np</span> <span class="o">=</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span>
+                <span class="n">posit</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">((</span><span class="n">i1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">eorv1</span><span class="p">,</span> <span class="n">eorv2</span><span class="p">)),</span>
+                    <span class="p">((</span><span class="n">i1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i2</span><span class="p">),</span> <span class="p">(</span><span class="n">eorv1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+                    <span class="p">((</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">eorv2</span><span class="p">)),</span>
+                <span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">ed1</span> <span class="ow">and</span> <span class="n">eorv2</span><span class="o">.</span><span class="n">is_edge</span><span class="p">():</span>
+                    <span class="n">func</span> <span class="o">=</span> <span class="n">function_match_edges</span>
+                <span class="k">elif</span> <span class="n">ve1</span> <span class="ow">and</span> <span class="n">eorv2</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">():</span>
+                    <span class="n">func</span> <span class="o">=</span> <span class="n">function_mach_vertices</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">func</span> <span class="o">=</span> <span class="n">edge_vertex_match</span>
+
+                <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">co</span> <span class="ow">in</span> <span class="n">posit</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">:</span>
+                        <span class="n">c0</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">p</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">c1</span> <span class="o">=</span> <span class="n">cache_cost</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">co</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">co</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">)</span>
+                        <span class="n">c</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">+</span> <span class="n">c1</span>
+                        <span class="k">if</span> <span class="n">np</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dist</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">np</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                            <span class="n">dist</span><span class="p">[</span><span class="n">np</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="n">c1</span><span class="p">))</span>
+
+        <span class="n">last</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">last</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last</span><span class="p">)</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">last</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">use_min</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">p2</span><span class="p">))</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">path</span></div>
+
+    <span class="k">def</span> <span class="nf">private_count_left_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuesInList</span><span class="p">):</span>
+        <span class="n">countLeft</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">countRight</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">valuesInList</span><span class="p">:</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">countRight</span><span class="p">:</span>
+                <span class="n">countRight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">countRight</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">countRight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">countLeft</span><span class="p">:</span>
+                <span class="n">countLeft</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">countLeft</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">countLeft</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">countLeft</span><span class="p">,</span> <span class="n">countRight</span>
+
+    <span class="k">def</span> <span class="nf">private_kruskal_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">reverse</span><span class="p">):</span>
+        <span class="n">countLeft</span><span class="p">,</span> <span class="n">countRight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_count_left_right</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="n">cleft</span><span class="p">,</span> <span class="n">cright</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">countLeft</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">countRight</span><span class="p">)</span>
+        <span class="n">matrix</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">countRight</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">countLeft</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+        <span class="p">)</span>
+        <span class="k">while</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">countRight</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">countLeft</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">countRight</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">countLeft</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="p">)</span>
+
+        <span class="n">mini</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cleft</span><span class="p">,</span> <span class="n">cright</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">mini</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;impossible: the smallest set should get all &quot;</span>
+                <span class="s2">&quot;its element associated to at least one coming &quot;</span>
+                <span class="s2">&quot;from the other set&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_private_string_path_matching</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">skipEdge</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">skipEdge</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">u</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">is_edge</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span><span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">is_edge</span><span class="p">())</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">su</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">nb</span><span class="p">)</span>
+            <span class="n">sv</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">nb</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">su</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">sv</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GraphDistance.distance_matching_graphs_paths"><a class="viewcode-back" href="../../../api/modules/graph_distance.html#mlstatpy.graph.graph_distance.GraphDistance.distance_matching_graphs_paths">[docs]</a>    <span class="k">def</span> <span class="nf">distance_matching_graphs_paths</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">graph2</span><span class="p">,</span>
+        <span class="n">function_mach_vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">function_match_edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">noClean</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_min</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">weight_vertex</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">weight_edge</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes an alignment between two graphs.</span>
+
+<span class="sd">        :param graph2: the other graph</span>
+<span class="sd">        :param function_mach_vertices: function which gives a distance</span>
+<span class="sd">            between two vertices, if None, it take the output of</span>
+<span class="sd">            :meth:`get_matching_functions`</span>
+<span class="sd">        :param function_match_edges: function which gives a distance</span>
+<span class="sd">            bewteen two edges, if None, it take the output of</span>
+<span class="sd">            :meth:`get_matching_functions`</span>
+<span class="sd">        :param noClean: if True, clean unmatched vertices and edges</span>
+<span class="sd">        :param store: if None, does nothing, if it is a</span>
+<span class="sd">            dictionary, the function will store</span>
+<span class="sd">            here various information about how</span>
+<span class="sd">            the matching was operated</span>
+<span class="sd">        :param use_min: @see me edit_distance_path</span>
+<span class="sd">        :param weight_vertex: a weight for every vertex</span>
+<span class="sd">        :param weight_edge: a weight for every edge</span>
+<span class="sd">        :param verbose: display some progress with :epkg:`tqdm`</span>
+<span class="sd">        :return: 2 tuple (a distance, a graph containing</span>
+<span class="sd">            the aligned paths between the two graphs)</span>
+
+<span class="sd">        See :ref:`l-graph_distance`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_functions</span><span class="p">(</span>
+            <span class="n">function_mach_vertices</span><span class="p">,</span> <span class="n">function_match_edges</span><span class="p">,</span> <span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="n">paths1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">enumerate_all_paths</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">paths2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph2</span><span class="o">.</span><span class="n">enumerate_all_paths</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;nbpath1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths1</span><span class="p">)</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;nbpath2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">paths2</span><span class="p">)</span>
+
+        <span class="n">matrix_distance</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[distance_matching_graphs_paths] builds matrix_distance&quot;</span><span class="p">)</span>
+            <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+            <span class="n">loop1</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">paths1</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loop1</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">paths1</span><span class="p">)</span>
+        <span class="n">loop2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">paths2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;[distance_matching_graphs_paths] len(loop1)=</span><span class="si">%d</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">paths1</span><span class="p">)))</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[distance_matching_graphs_paths] len(loop2)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">loop2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">p1</span> <span class="ow">in</span> <span class="n">loop1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">loop2</span><span class="p">:</span>
+                <span class="n">matrix_distance</span><span class="p">[</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_distance_path</span><span class="p">(</span>
+                    <span class="n">p1</span><span class="p">,</span>
+                    <span class="n">p2</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="p">,</span>
+                    <span class="n">graph2</span><span class="p">,</span>
+                    <span class="n">function_mach_vertices</span><span class="p">,</span>
+                    <span class="n">function_match_edges</span><span class="p">,</span>
+                    <span class="n">use_min</span><span class="o">=</span><span class="n">use_min</span><span class="p">,</span>
+                    <span class="n">cache</span><span class="o">=</span><span class="n">cache</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[distance_matching_graphs_paths] len(cache)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;matrix_distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix_distance</span>
+        <span class="n">reduction</span> <span class="o">=</span> <span class="p">[(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">matrix_distance</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;path_mat1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[distance_matching_graphs_paths] private_kruskal_matrix&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">private_kruskal_matrix</span><span class="p">(</span><span class="n">reduction</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;path_mat2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[distance_matching_graphs_paths] pair_count_vertex&quot;</span><span class="p">)</span>
+        <span class="n">pair_count_edge</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">pair_count_vertex</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">reduction</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">matrix_distance</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+                <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">n1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">n2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">n1</span><span class="o">.</span><span class="n">is_edge</span><span class="p">()</span> <span class="ow">and</span> <span class="n">n2</span><span class="o">.</span><span class="n">is_edge</span><span class="p">():</span>
+                        <span class="n">add</span> <span class="o">=</span> <span class="n">n1</span><span class="o">.</span><span class="n">nb</span><span class="p">,</span> <span class="n">n2</span><span class="o">.</span><span class="n">nb</span>
+                        <span class="n">pair_count_edge</span><span class="p">[</span><span class="n">add</span><span class="p">]</span> <span class="o">=</span> <span class="n">pair_count_edge</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="k">elif</span> <span class="n">n1</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">()</span> <span class="ow">and</span> <span class="n">n2</span><span class="o">.</span><span class="n">is_vertex</span><span class="p">():</span>
+                        <span class="n">add</span> <span class="o">=</span> <span class="n">n1</span><span class="o">.</span><span class="n">nb</span><span class="p">,</span> <span class="n">n2</span><span class="o">.</span><span class="n">nb</span>
+                        <span class="n">pair_count_vertex</span><span class="p">[</span><span class="n">add</span><span class="p">]</span> <span class="o">=</span> <span class="n">pair_count_vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;pair_count_vertex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pair_count_vertex</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;pair_count_edge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pair_count_edge</span>
+
+        <span class="n">reduction_edge</span> <span class="o">=</span> <span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pair_count_edge</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;edge_mat1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">reduction_edge</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">private_kruskal_matrix</span><span class="p">(</span><span class="n">reduction_edge</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;edge_mat2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">reduction_edge</span><span class="p">)</span>
+
+        <span class="n">reduction_vertex</span> <span class="o">=</span> <span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pair_count_vertex</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;vertex_mat1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">reduction_vertex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">private_kruskal_matrix</span><span class="p">(</span><span class="n">reduction_vertex</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="s2">&quot;vertex_mat2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">reduction_vertex</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[distance_matching_graphs_paths] private_count_left_right&quot;</span><span class="p">)</span>
+        <span class="n">count_edge_left</span><span class="p">,</span> <span class="n">count_edge_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_count_left_right</span><span class="p">(</span>
+            <span class="n">reduction_edge</span>
+        <span class="p">)</span>
+        <span class="n">count_vertex_left</span><span class="p">,</span> <span class="n">count_vertex_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_count_left_right</span><span class="p">(</span>
+            <span class="n">reduction_vertex</span>
+        <span class="p">)</span>
+
+        <span class="n">res_graph</span> <span class="o">=</span> <span class="n">GraphDistance</span><span class="p">([])</span>
+        <span class="n">doneVertex</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">done_edge</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[distance_matching_graphs_paths] builds merged graph&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">newv</span> <span class="o">=</span> <span class="n">Vertex</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">nb</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">weight_vertex</span><span class="p">)</span>
+            <span class="n">res_graph</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">newv</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">nb</span> <span class="ow">in</span> <span class="n">count_vertex_right</span><span class="p">:</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">count_vertex_right</span><span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">nb</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">newv</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">graph2</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+                <span class="n">doneVertex</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">newv</span>
+                <span class="k">if</span> <span class="n">newv</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">!=</span> <span class="n">newv</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+                    <span class="n">newv</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">newv</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">newv</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">newv</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph2</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">doneVertex</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">newv</span> <span class="o">=</span> <span class="n">Vertex</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2a.</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">nb</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">weight_vertex</span><span class="p">)</span>
+            <span class="n">res_graph</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">newv</span><span class="o">.</span><span class="n">nb</span><span class="p">]</span> <span class="o">=</span> <span class="n">newv</span>
+            <span class="n">newv</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">newe</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">)</span>
+            <span class="n">res_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">newe</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">nb</span> <span class="ow">in</span> <span class="n">count_edge_right</span><span class="p">:</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">count_edge_right</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">nb</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">newe</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">graph2</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">ind</span><span class="p">])</span>
+                <span class="n">done_edge</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">newe</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">newe</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">graph2</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">done_edge</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">from_</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="n">count_vertex_left</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">from_</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">from_</span> <span class="ow">in</span> <span class="n">count_vertex_left</span>
+                <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;2a.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">from_</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">to</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="n">count_vertex_left</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">to</span> <span class="ow">in</span> <span class="n">count_vertex_left</span>
+                <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;2a.</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">from_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res_graph</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;should not happen &quot;</span> <span class="o">+</span> <span class="n">from_</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">if</span> <span class="n">to</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res_graph</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;should not happen &quot;</span> <span class="o">+</span> <span class="n">to</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">newe</span> <span class="o">=</span> <span class="n">Edge</span><span class="p">(</span><span class="n">from_</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">weight_edge</span><span class="p">)</span>
+            <span class="n">res_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">[</span><span class="n">newe</span><span class="o">.</span><span class="n">nb</span><span class="p">]</span> <span class="o">=</span> <span class="n">newe</span>  <span class="c1"># pylint: disable=E1101</span>
+            <span class="n">newe</span><span class="o">.</span><span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;[distance_matching_graphs_paths] &quot;</span>
+                <span class="s2">&quot;compute_predecessor, compute_successor&quot;</span>
+            <span class="p">)</span>
+        <span class="n">res_graph</span><span class="o">.</span><span class="n">compute_predecessor</span><span class="p">()</span>
+        <span class="n">res_graph</span><span class="o">.</span><span class="n">compute_successor</span><span class="p">()</span>
+
+        <span class="n">allPaths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">res_graph</span><span class="o">.</span><span class="n">enumerate_all_paths</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">sum</span><span class="p">(</span><span class="mi">0</span> <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">_</span><span class="o">.</span><span class="n">pair</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">allPaths</span>
+        <span class="p">]</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">allPaths</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">distance</span><span class="p">,</span> <span class="n">res_graph</span></div>
+
+    <span class="k">def</span> <span class="nf">draw_vertices_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span> <span class="o">+</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">):</span>
+                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="o">.</span><span class="n">from_</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span> <span class="o">+</span> <span class="n">v</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

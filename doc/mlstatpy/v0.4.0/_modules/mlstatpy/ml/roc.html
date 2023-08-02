@@ -1,0 +1,1182 @@
+
+<!DOCTYPE html>
+
+
+<html lang="fr" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mlstatpy.ml.roc &#8212; Documentation mlstatpy 0.4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/translations.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/mlstatpy/ml/roc';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="fr"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Passer au contenu principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/project_ico.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/project_ico.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Recherche" aria-label="Recherche" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Navigation du site">
+    Navigation du site
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_clus/index.html">
+                        Clustering
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index.html">
+                        Non linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_lin.html">
+                        Régression linéaire
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_ml/index_reg_log.html">
+                        Régression logistique
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_nlp/index.html">
+                        NLP
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_metric/index.html">
+                        Métriques
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_algo/index.html">
+                        Algorithmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../c_garden/index.html">
+                        Pérégrinations
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../api/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../i_ex.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../defthe_index.html">
+                        Listes des définitions et théorèmes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../auto_examples/index.html">
+                        Gallery of examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../notebooks/index.html">
+                        Galleries de notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../CHANGELOGS.html">
+                        Change Logs
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../license.html">
+                        License
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="clair/sombre" aria-label="clair/sombre" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Fils d'Ariane">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Fil d'Ariane">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Acceuil">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Code du module</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">mlstatpy.ml.roc</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Code source de mlstatpy.ml.roc</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="ROC"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC">[docs]</a><span class="k">class</span> <span class="nc">ROC</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper to draw a :epkg:`ROC` curve.</span>
+
+<span class="sd">    Initialisation with a dataframe and two or three columns:</span>
+
+<span class="sd">    * column 1: score (y_score)</span>
+<span class="sd">    * column 2: expected answer (boolean) (y_true)</span>
+<span class="sd">    * column 3: weight (optional) (sample_weight)</span>
+
+<span class="sd">    :param y_true: if *df* is None, *y_true*, *y_score*,</span>
+<span class="sd">        *sample_weight* must be filled, *y_true* is whether</span>
+<span class="sd">        or None the answer is true. *y_true* means the prediction is right.</span>
+<span class="sd">    :param y_score: score prediction</span>
+<span class="sd">    :param sample_weight: weights</span>
+<span class="sd">    :param df: dataframe or array or list, it must contains</span>
+<span class="sd">        2 or 3 columns always in the same order</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ROC.CurveType"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.CurveType">[docs]</a>    <span class="k">class</span> <span class="nc">CurveType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Curve types:</span>
+
+<span class="sd">        * *PROBSCORE*: 1 - False Positive / True Positive</span>
+<span class="sd">        * *ERRPREC*: error / recall</span>
+<span class="sd">        * *RECPREC*: precision / recall</span>
+<span class="sd">        * *ROC*: False Positive / True Positive</span>
+<span class="sd">        * *SKROC*: False Positive / True Positive</span>
+<span class="sd">          (`scikit-learn</span>
+<span class="sd">          &lt;http://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html&gt;`_)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">PROBSCORE</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">ERRREC</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">RECPREC</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">ROC</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">SKROC</span> <span class="o">=</span> <span class="mi">6</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_score</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_score</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_true</span>
+            <span class="k">if</span> <span class="n">sample_weight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_weight</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="sa">f</span><span class="s2">&quot;df should be a DataFrame, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the underlying dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        usual</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shows first elements, precision rate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shows first elements, precision rate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overall precision: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">()</span><span class="si">:</span><span class="s2">3.2f</span><span class="si">}</span><span class="s2"> - AUC=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">auc</span><span class="p">()</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--------------&quot;</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)))))</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--------------&quot;</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)))))</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--------------&quot;</span><span class="p">)</span>
+        <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">roc</span><span class="p">))</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--------------&quot;</span><span class="p">)</span>
+        <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ERRREC</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">roc</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ROC.confusion"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.confusion">[docs]</a>    <span class="k">def</span> <span class="nf">confusion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nb</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the confusion matrix for a specific *score*</span>
+<span class="sd">        or all if *score* is None.</span>
+
+<span class="sd">        @param      score       score or None.</span>
+<span class="sd">        @param      nb          number of scores (if *score* is None)</span>
+<span class="sd">        @param      curve       see :class:`CurveType &lt;mlstatpy.ml.roc.ROC.CurveType&gt;`</span>
+<span class="sd">        @param      boostrap    builds the curve after resampling</span>
+<span class="sd">        @return                 One row if score is precised, many roww is score is None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bootstrap</span><span class="p">:</span>
+            <span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_cloud</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sum_weights</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">nb</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">nb</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nb</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">))</span>
+            <span class="n">seuil</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">sum_weights</span> <span class="o">/</span> <span class="n">nb</span>
+
+            <span class="n">cloud</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;lw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">*</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;cw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+            <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;clw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;lw&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;cw&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Column 4 should be &#39;cw&#39;.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;clw&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Column 5 should be &#39;clw&#39;.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+            <span class="n">pos_roc</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">pos_seuil</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">:</span>
+                <span class="n">roc</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                    <span class="mi">0</span><span class="p">,</span>
+                    <span class="n">index</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb</span> <span class="o">+</span> <span class="mi">2</span><span class="p">),</span>
+                    <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+                        <span class="s2">&quot;True Positive&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;False Positive&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;False Negative&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;True Negative&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;threshold&quot;</span><span class="p">,</span>
+                    <span class="p">],</span>
+                <span class="p">)</span>
+                <span class="n">sum_good_weights</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+                <span class="n">sum_bad_weights</span> <span class="o">=</span> <span class="n">sum_weights</span> <span class="o">-</span> <span class="n">sum_good_weights</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_good_weights</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_bad_weights</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="n">pos_roc</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">seuil</span><span class="p">[</span><span class="n">pos_seuil</span><span class="p">]:</span>
+                        <span class="n">tp</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+                        <span class="n">fp</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+                        <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tp</span>
+                        <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fp</span>
+                        <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_good_weights</span> <span class="o">-</span> <span class="n">tp</span>
+                        <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_bad_weights</span> <span class="o">-</span> <span class="n">fp</span>
+                        <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                        <span class="n">pos_roc</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">pos_seuil</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_good_weights</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_bad_weights</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">roc</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="sa">f</span><span class="s2">&quot;Unexpected type &#39;</span><span class="si">{</span><span class="n">curve</span><span class="si">}</span><span class="s2">&#39;, only ROC is allowed.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># if score is not None</span>
+        <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confusion</span><span class="p">(</span><span class="n">nb</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">curve</span><span class="o">=</span><span class="n">curve</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">roc</span> <span class="o">=</span> <span class="n">roc</span><span class="p">[</span><span class="n">roc</span><span class="p">[</span><span class="s2">&quot;threshold&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">score</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="sa">f</span><span class="s2">&quot;The requested confusion is empty for score=</span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">roc</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ROC.precision"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.precision">[docs]</a>    <span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the precision.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">score</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">score</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">weight</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span>
+            <span class="n">weight</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ROC.compute_roc_curve"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.compute_roc_curve">[docs]</a>    <span class="k">def</span> <span class="nf">compute_roc_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes a ROC curve with *nb* points avec nb,</span>
+<span class="sd">        if *nb == -1*, there are as many as points as the data contains,</span>
+<span class="sd">        if *bootstrap == True*, it draws random number to create confidence</span>
+<span class="sd">        interval based on bootstrap method.</span>
+
+<span class="sd">        @param      nb          number of points for the curve</span>
+<span class="sd">        @param      curve       see :class:`CurveType &lt;mlstatpy.ml.roc.ROC.CurveType&gt;`</span>
+<span class="sd">        @param      bootstrap   builds the curve after resampling</span>
+<span class="sd">        @return                 DataFrame (metrics and threshold)</span>
+
+<span class="sd">        If *curve* is *SKROC*, the parameter *nb* is not taken into account.</span>
+<span class="sd">        It should be set to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ERRREC</span><span class="p">:</span>
+            <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span>
+                <span class="n">nb</span><span class="o">=</span><span class="n">nb</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">RECPREC</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="n">bootstrap</span>
+            <span class="p">)</span>
+            <span class="n">roc</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">roc</span><span class="p">[</span><span class="s2">&quot;precision&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">roc</span><span class="p">[[</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="s2">&quot;threshold&quot;</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">PROBSCORE</span><span class="p">:</span>
+            <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span>
+                <span class="n">nb</span><span class="o">=</span><span class="n">nb</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="n">bootstrap</span>
+            <span class="p">)</span>
+            <span class="n">roc</span><span class="p">[</span><span class="s2">&quot;P(-&gt;s)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">roc</span><span class="p">[</span><span class="s2">&quot;False Positive Rate&quot;</span><span class="p">]</span>
+            <span class="n">roc</span><span class="p">[</span><span class="s2">&quot;P(+&lt;s)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">roc</span><span class="p">[</span><span class="s2">&quot;True Positive Rate&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">roc</span><span class="p">[[</span><span class="s2">&quot;P(+&lt;s)&quot;</span><span class="p">,</span> <span class="s2">&quot;P(-&gt;s)&quot;</span><span class="p">,</span> <span class="s2">&quot;threshold&quot;</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bootstrap</span><span class="p">:</span>
+            <span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_cloud</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">SKROC</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nb</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                    <span class="s2">&quot;nb must be &lt;= 0 si curve is SKROC&quot;</span>
+                <span class="p">)</span>
+            <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_curve</span>
+
+            <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span>
+                <span class="n">y_true</span><span class="o">=</span><span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="n">y_score</span><span class="o">=</span><span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="n">sample_weight</span><span class="o">=</span><span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+            <span class="p">)</span>
+            <span class="n">roc</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fpr</span><span class="p">)),</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;False Positive Rate&quot;</span><span class="p">,</span> <span class="s2">&quot;True Positive Rate&quot;</span><span class="p">,</span> <span class="s2">&quot;threshold&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="n">roc_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="n">roc</span><span class="p">[</span><span class="n">roc_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">fpr</span>
+            <span class="n">roc</span><span class="p">[</span><span class="n">roc_cols</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tpr</span>
+            <span class="n">roc</span><span class="p">[</span><span class="n">roc_cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="n">thresholds</span>
+            <span class="k">return</span> <span class="n">roc</span>
+
+        <span class="n">sum_weights</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nb</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">nb</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nb</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">))</span>
+        <span class="n">seuil</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">sum_weights</span> <span class="o">/</span> <span class="n">nb</span>
+
+        <span class="n">cloud</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;lw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">*</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;cw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+        <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;clw&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;lw&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+        <span class="n">sum_weights_ans</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="s2">&quot;lw&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;cw&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Column 4 should be &#39;cw&#39;.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;clw&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Column 5 should be &#39;clw&#39;.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="n">pos_roc</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">pos_seuil</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">:</span>
+            <span class="n">roc</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;False Positive Rate&quot;</span><span class="p">,</span> <span class="s2">&quot;True Positive Rate&quot;</span><span class="p">,</span> <span class="s2">&quot;threshold&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="n">sum_good_weights</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+            <span class="n">sum_bad_weights</span> <span class="o">=</span> <span class="n">sum_weights</span> <span class="o">-</span> <span class="n">sum_good_weights</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">seuil</span><span class="p">[</span><span class="n">pos_seuil</span><span class="p">]:</span>
+                    <span class="n">ds</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+                    <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span> <span class="o">/</span> <span class="n">sum_bad_weights</span>
+                    <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_good_weights</span>
+                    <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="n">pos_roc</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">pos_seuil</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="n">sum_bad_weights</span>
+            <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_good_weights</span>
+            <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">RECPREC</span><span class="p">:</span>
+            <span class="n">roc</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="s2">&quot;threshold&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cloud</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">seuil</span><span class="p">[</span><span class="n">pos_seuil</span><span class="p">]:</span>
+                    <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_weights</span>
+                    <span class="k">if</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">/</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="n">pos_roc</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">pos_seuil</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_weights_ans</span> <span class="o">/</span> <span class="n">sum_weights</span>
+            <span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos_roc</span><span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown curve type &#39;</span><span class="si">{</span><span class="n">curve</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">roc</span></div>
+
+<div class="viewcode-block" id="ROC.random_cloud"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.random_cloud">[docs]</a>    <span class="k">def</span> <span class="nf">random_cloud</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resamples among the data.</span>
+
+<span class="sd">        @return      DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">weights</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ROC.plot"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">nb</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">curve</span><span class="o">=</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">,</span>
+        <span class="n">bootstrap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">thresholds</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots a :epkg:`ROC` curve.</span>
+
+<span class="sd">        @param      nb          number of points</span>
+<span class="sd">        @param      curve       see :class:`CurveType &lt;mlstatpy.ml.roc.ROC.CurveType&gt;`</span>
+<span class="sd">        @param      bootstrap   number of curves for the boostrap (0 for None)</span>
+<span class="sd">        @param      ax          axis</span>
+<span class="sd">        @param      thresholds  use thresholds for the X axis</span>
+<span class="sd">        @param      kwargs      sent to `pandas.plot &lt;http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.html&gt;`_</span>
+<span class="sd">        @return                 ax</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nb_bootstrap</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">bootstrap</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ckwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;color&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ckwargs</span><span class="p">:</span>
+                <span class="n">ckwargs</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span>
+            <span class="k">if</span> <span class="s2">&quot;linewidth&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">ckwargs</span><span class="p">[</span><span class="s2">&quot;linewidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span>
+            <span class="n">ckwargs</span><span class="p">[</span><span class="s2">&quot;legend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">ckwargs</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">ckwargs</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bootstrap</span><span class="p">):</span>
+                <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">curve</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">thresholds</span><span class="p">:</span>
+                    <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">roc</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">_</span> <span class="o">!=</span> <span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
+                    <span class="n">roc</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">ax</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;threshold&quot;</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span>
+                        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                        <span class="n">label</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_nolegend_&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">],</span>
+                        <span class="o">**</span><span class="n">ckwargs</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">_</span> <span class="o">!=</span> <span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
+                    <span class="n">roc</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">ax</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span>
+                        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                        <span class="n">label</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_nolegend_&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">],</span>
+                        <span class="o">**</span><span class="n">ckwargs</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="n">nb_bootstrap</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+            <span class="n">bootstrap</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">bootstrap</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;legend&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;legend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">curve</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">thresholds</span><span class="p">:</span>
+                <span class="n">roc</span> <span class="o">=</span> <span class="n">roc</span><span class="p">[[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">roc</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">_</span> <span class="o">!=</span> <span class="s2">&quot;threshold&quot;</span><span class="p">]]</span>
+
+            <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">roc</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">_</span> <span class="o">!=</span> <span class="s2">&quot;threshold&quot;</span><span class="p">)</span>
+            <span class="n">final</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">thresholds</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="sa">f</span><span class="s2">&quot;label must have </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span><span class="si">}</span><span class="s2"> values&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">roc</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;threshold&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">ax</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;threshold&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;thresholds&quot;</span><span class="p">)</span>
+                <span class="n">final</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+                <span class="n">diag</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;label&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;label must have </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> values&quot;</span><span class="p">)</span>
+                <span class="n">final</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">roc</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">ax</span> <span class="o">=</span> <span class="n">roc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span> <span class="ow">or</span> <span class="n">curve</span> <span class="ow">is</span> <span class="n">ROC</span><span class="o">.</span><span class="n">CurveType</span><span class="o">.</span><span class="n">SKROC</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;k--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">diag</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">diag</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1"># legend</span>
+            <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+            <span class="n">tot</span> <span class="o">=</span> <span class="n">final</span> <span class="o">+</span> <span class="n">nb_bootstrap</span>
+            <span class="n">diag</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">handles</span><span class="p">)</span> <span class="o">-</span> <span class="n">diag</span>
+            <span class="n">handles</span> <span class="o">=</span> <span class="n">handles</span><span class="p">[:</span><span class="o">-</span><span class="n">tot</span><span class="p">]</span> <span class="o">+</span> <span class="n">handles</span><span class="p">[</span><span class="o">-</span><span class="n">final</span><span class="p">:</span><span class="n">diag</span><span class="p">]</span>
+            <span class="n">new_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[:</span><span class="o">-</span><span class="n">tot</span><span class="p">]</span> <span class="o">+</span> <span class="n">labels</span><span class="p">[</span><span class="o">-</span><span class="n">final</span><span class="p">:</span><span class="n">diag</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">new_labels</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="ROC.auc"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.auc">[docs]</a>    <span class="k">def</span> <span class="nf">auc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cloud</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the area under the curve (:epkg:`AUC`).</span>
+
+<span class="sd">        :param cloud: data or None to use ``self.data``, the function</span>
+<span class="sd">            assumes the data is sorted.</span>
+<span class="sd">        :return: AUC</span>
+
+<span class="sd">        The first column is the label, the second one is the score,</span>
+<span class="sd">        the third one is the weight.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cloud</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">good</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">wrong</span> <span class="o">=</span> <span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">auc</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">good</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span> <span class="n">wrong</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="kc">False</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">auc</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">auc</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">auc</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">good</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">wrong</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                <span class="s2">&quot;Label are not right, expect 0 and 1 not </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">set</span><span class="p">(</span><span class="n">cloud</span><span class="p">[</span><span class="n">cloud</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrong</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">good</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">auc</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">auc</span></div>
+
+<div class="viewcode-block" id="ROC.auc_interval"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.auc_interval">[docs]</a>    <span class="k">def</span> <span class="nf">auc_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determines a confidence interval for the :epkg:`AUC` with bootstrap.</span>
+
+<span class="sd">        @param      bootstrap       number of random estimations</span>
+<span class="sd">        @param      alpha           define the confidence interval</span>
+<span class="sd">        @return                     dictionary of values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">bootstrap</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Use auc instead, bootstrap &lt; 2&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bootstrap</span><span class="p">):</span>
+            <span class="n">cloud</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_cloud</span><span class="p">()</span>
+            <span class="n">auc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auc</span><span class="p">(</span><span class="n">cloud</span><span class="p">)</span>
+            <span class="n">rate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auc</span><span class="p">)</span>
+
+        <span class="n">rate</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">i1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">i2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">i1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">-</span> <span class="n">i1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">med</span> <span class="o">=</span> <span class="n">rate</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">moy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rate</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rate</span><span class="p">:</span>
+            <span class="n">var</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">var</span> <span class="o">-</span> <span class="n">moy</span> <span class="o">*</span> <span class="n">moy</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">auc</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span>
+            <span class="n">interval</span><span class="o">=</span><span class="p">(</span><span class="n">rate</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="n">rate</span><span class="p">[</span><span class="n">i2</span><span class="p">]),</span>
+            <span class="nb">min</span><span class="o">=</span><span class="n">rate</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="nb">max</span><span class="o">=</span><span class="n">rate</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">mean</span><span class="o">=</span><span class="n">moy</span><span class="p">,</span>
+            <span class="n">var</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">),</span>
+            <span class="n">mediane</span><span class="o">=</span><span class="n">med</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ROC.roc_intersect"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.roc_intersect">[docs]</a>    <span class="k">def</span> <span class="nf">roc_intersect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roc</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The :epkg:`ROC` curve is defined by a set of points.</span>
+<span class="sd">        This function interpolates those points to determine</span>
+<span class="sd">        *y* for any *x*.</span>
+
+<span class="sd">        @param      roc     ROC curve</span>
+<span class="sd">        @param      x       x</span>
+<span class="sd">        @return             y</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">below</span> <span class="o">=</span> <span class="n">roc</span><span class="p">[</span><span class="n">roc</span><span class="p">[</span><span class="n">roc</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">below</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">roc</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="n">p2</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">roc</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+
+        <span class="k">if</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ROC.roc_intersect_interval"><a class="viewcode-back" href="../../../api/modules/roc.html#mlstatpy.ml.roc.ROC.roc_intersect_interval">[docs]</a>    <span class="k">def</span> <span class="nf">roc_intersect_interval</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">nb</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">CurveType</span><span class="o">.</span><span class="n">ROC</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes a confidence interval for the value returned by</span>
+<span class="sd">        @see me roc_intersect.</span>
+
+<span class="sd">        @param      x           x</span>
+<span class="sd">        @param      nb          number of curves to draw</span>
+<span class="sd">        @param      curve       see :class:`CurveType &lt;mlstatpy.ml.roc.ROC.CurveType&gt;`</span>
+<span class="sd">        @param      bootstrap   number of random estimations</span>
+<span class="sd">        @param      alpha       confidence interval</span>
+<span class="sd">        @return                 dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">rate</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bootstrap</span><span class="p">):</span>
+            <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">curve</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roc_intersect</span><span class="p">(</span><span class="n">roc</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">rate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+        <span class="n">rate</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">roc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_roc_curve</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">curve</span><span class="p">)</span>
+        <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roc_intersect</span><span class="p">(</span><span class="n">roc</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+        <span class="n">i1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">i2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">i1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">-</span> <span class="n">i1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">med</span> <span class="o">=</span> <span class="n">rate</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">moy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">rate</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rate</span><span class="p">:</span>
+            <span class="n">var</span> <span class="o">+=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">var</span> <span class="o">-</span> <span class="n">moy</span> <span class="o">*</span> <span class="n">moy</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span>
+            <span class="n">interval</span><span class="o">=</span><span class="p">(</span><span class="n">rate</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="n">rate</span><span class="p">[</span><span class="n">i2</span><span class="p">]),</span>
+            <span class="nb">min</span><span class="o">=</span><span class="n">rate</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="nb">max</span><span class="o">=</span><span class="n">rate</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">mean</span><span class="o">=</span><span class="n">moy</span><span class="p">,</span>
+            <span class="n">var</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">),</span>
+            <span class="n">mediane</span><span class="o">=</span><span class="n">med</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2016-2023, Xavier Dupré.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Construit avec le <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Thème PyData Sphinx</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
