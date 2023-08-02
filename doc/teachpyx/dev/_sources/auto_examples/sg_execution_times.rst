@@ -6,10 +6,10 @@
 
 Computation times
 =================
-**00:00.501** total execution time for **auto_examples** files:
+**00:02.666** total execution time for **auto_examples** files:
 
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_serialisation_protobuf.py` (``plot_serialisation_protobuf.py``)     | 00:00.501 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_matador.py` (``plot_matador.py``)                                   | 00:02.666 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_float_and_double_rouding.py` (``plot_float_and_double_rouding.py``) | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
@@ -26,6 +26,8 @@ Computation times
 | :ref:`sphx_glr_auto_examples_plot_partie_dame.py` (``plot_partie_dame.py``)                           | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_serialisation_examples.py` (``plot_serialisation_examples.py``)     | 00:00.000 | 0.0 MB |
++-------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_auto_examples_plot_serialisation_protobuf.py` (``plot_serialisation_protobuf.py``)     | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_tarabiscote.py` (``plot_tarabiscote.py``)                           | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+

@@ -81,6 +81,23 @@ Bouts de code à conserver
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Un petit problème de chiffre, le mathador consiste à trouver un montant à partir de 5 nombres e...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_matador_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_matador.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mathador, énigme à 4 opérations</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="protobuf optimise la sérialisation de deux façons. Elle accélère l&#x27;écriture et la lecture des d...">
 
 .. only:: html
@@ -193,6 +210,7 @@ Bouts de code à conserver
    /auto_examples/plot_numpy_tricks
    /auto_examples/plot_lambda_function
    /auto_examples/plot_gil_example
+   /auto_examples/plot_matador
    /auto_examples/plot_serialisation_protobuf
    /auto_examples/plot_float_and_double_rouding
    /auto_examples/plot_partie_dame

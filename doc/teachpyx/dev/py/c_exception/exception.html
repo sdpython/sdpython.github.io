@@ -1,0 +1,1214 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Usage" href="exception_ext.html" /><link rel="prev" title="Exceptions" href="index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.07.26 -->
+        <title>Exceptions - Documentation teachpyx 0.3.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=e5fbc548" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Documentation teachpyx 0.3.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.3.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Le langage Python</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">Exceptions</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_regex/index.html">Expression régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expression régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../i_expy.html">Exemples</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_data/index.html">Matrices et DataFrames</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_data/matrices.html">Calcul matriciel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_data/dataframes.html">Dataframes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_data/i_exda.html">Exemples</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/classique.html">examples.construction_classique</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles inclassables</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Collections d’articles inclassables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Bouts de code à conserver</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Bouts de code à conserver</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../defthe_index.html">Syntaxes, Définitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="exceptions">
+<span id="chap-exception"></span><span id="l-exception"></span><h1>Exceptions<a class="headerlink" href="#exceptions" title="Lien permanent vers cette rubrique">#</a></h1>
+<nav class="contents local" id="sommaire">
+<ul class="simple">
+<li><p><a class="reference internal" href="#principe-des-exceptions" id="id1">Principe des exceptions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#attraper-toutes-les-erreurs" id="id2">Attraper toutes les erreurs</a></p></li>
+<li><p><a class="reference internal" href="#obtenir-le-type-d-erreur-attraper-un-type-d-exception" id="id3">Obtenir le type d’erreur, attraper un type d’exception</a></p></li>
+<li><p><a class="reference internal" href="#lancer-une-exception" id="id4">Lancer une exception</a></p></li>
+<li><p><a class="reference internal" href="#heritage-et-exception" id="id5">Héritage et exception</a></p></li>
+<li><p><a class="reference internal" href="#instructions-try-except-imbriquees" id="id6">Instructions <code class="docutils literal notranslate"><span class="pre">try</span></code>, <code class="docutils literal notranslate"><span class="pre">except</span></code> imbriquées</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#definir-ses-propres-exceptions" id="id7">Définir ses propres exceptions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#deriver-une-classe-d-exception" id="id8">Dériver une classe d’exception</a></p></li>
+<li><p><a class="reference internal" href="#personnalisation-d-une-classe-d-exception" id="id9">Personnalisation d’une classe d’exception</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#exemples-d-utilisation-des-exceptions" id="id10">Exemples d’utilisation des exceptions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#les-iterateurs" id="id11">Les itérateurs</a></p></li>
+<li><p><a class="reference internal" href="#exception-ou-valeur-aberrante" id="id12">Exception ou valeur aberrante</a></p></li>
+<li><p><a class="reference internal" href="#le-piege-des-exceptions" id="id13">Le piège des exceptions</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p id="index-0">Le petit programme suivant déclenche une erreur parce qu’il effectue une
+division par zéro.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
+    <span class="p">[</span><span class="n">runpythonerror</span><span class="p">]</span>
+    
+    <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+        <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">5</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140153976546432</span>
+    <span class="ne">ZeroDivisionError</span><span class="p">:</span> <span class="nb">float</span> <span class="n">division</span> <span class="n">by</span> <span class="n">zero</span>
+</pre></div>
+</div>
+<p>Il déclenche une erreur ou ce qu’on appelle une <em>exception</em>.
+Le mécanisme des exceptions permet au programme de « rattraper » les
+erreurs, de détecter qu’une erreur s’est produite et d’agir en
+conséquence afin que le programme ne s’arrête pas.</p>
+<section id="principe-des-exceptions">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Principe des exceptions</a><a class="headerlink" href="#principe-des-exceptions" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="attraper-toutes-les-erreurs">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Attraper toutes les erreurs</a><a class="headerlink" href="#attraper-toutes-les-erreurs" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Une exception est un objet qui indique que le programme ne peut continuer son exécution.
+Le type de l’exception donne une indication sur le type de l’erreur rencontrée.
+L’exception contient généralement un message plus détaillé.
+Toutes les exceptions hérite des types <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#BaseException" title="(disponible dans Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></a>
+pour les exceptions définies par le langage et <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(disponible dans Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a> pour
+les exceptions définies par l’utilisateur.</p>
+<p>On décide par exemple qu’on veut rattraper toutes les erreurs du
+programme et afficher un message d’erreur. Le programme suivant appelle
+la fonction qui retourne l’inverse d’un nombre.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">0.5</span>
+    <span class="p">[</span><span class="n">runpythonerror</span><span class="p">]</span>
+    
+    <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+        <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">11</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">9</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140153982391744</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="n">inverse</span>
+    <span class="ne">ZeroDivisionError</span><span class="p">:</span> <span class="nb">float</span> <span class="n">division</span> <span class="n">by</span> <span class="n">zero</span>
+</pre></div>
+</div>
+<p id="index-1">Lorsque <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">==</span> <span class="pre">0</span></code>, le programme effectue une division par zéro et
+déclenche une erreur. L’interpréteur Python affiche ce qu’on appelle la
+<em>pile d’appels</em> ou <a class="reference external" href="https://fr.wikipedia.org/wiki/Pile_d%27ex%C3%A9cution">pile d’exécution</a>.
+La pile d’appel permet d’obtenir la liste de toutes les fonctions pour remonter
+jusqu’à celle où l’erreur s’est produite.</p>
+<p>Afin de rattraper l’erreur, on insère le code susceptible de produire
+une erreur entre les mots clés <a class="reference external" href="https://docs.python.org/3/reference/compound_stmts.html#try">try</a>
+et <a class="reference external" href="https://docs.python.org/3/reference/compound_stmts.html#except">except</a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># déclenche une exception</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;le programme a déclenché une erreur&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">0.5</span>
+    <span class="n">le</span> <span class="n">programme</span> <span class="n">a</span> <span class="n">déclenché</span> <span class="n">une</span> <span class="n">erreur</span>
+</pre></div>
+</div>
+<p>Le programme essaye d’exécuter les quatre instructions incluses entre
+les instructions <code class="docutils literal notranslate"><span class="pre">try</span></code> et <code class="docutils literal notranslate"><span class="pre">except</span></code>. Si une erreur se produit, le programme exécute
+alors les lignes qui suivent l’instruction <code class="docutils literal notranslate"><span class="pre">except</span></code>. L’erreur se produit en fait
+à l’intérieur de la fonction mais celle-ci est appelée à l’intérieur
+d’un code « protégé » contre les erreurs. Ceci explique les lignes affichées par le programme.
+Il est aussi possible d’ajouter une clause qui sert de préfixe à une
+liste d’instructions qui ne sera exécutée que si aucune exception n’est
+déclenchée.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  <span class="c1"># pas d&#39;erreur</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># pas d&#39;erreur non plus</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;le programme a déclenché une erreur&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;tout s&#39;est bien passé&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">0.5</span>
+    <span class="mf">1.0</span>
+    <span class="n">tout</span> <span class="n">s</span><span class="s1">&#39;est bien passé</span>
+</pre></div>
+</div>
+<p>Ce dernier programme attrape l’erreur et affiche un message.
+Ce programme ne s’arrête jamais, il ne <em>plante</em> jamais.
+Pour résumer, la syntaxe suivante permet d’attraper toutes les erreurs
+qui se produisent pendant l’exécution d’une partie du programme. Cette
+syntaxe permet en quelque sorte de protéger cette partie du programme
+contre les erreurs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># ... instructions à protéger</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="c1"># ... que faire en cas d&#39;erreur</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># ... que faire lorsque aucune erreur n&#39;est apparue</span>
+</pre></div>
+</div>
+<p>Toute erreur déclenchée alors que le programme exécute les instructions
+qui suivent le mot-clé <code class="docutils literal notranslate"><span class="pre">try</span></code> déclenche immédiatement l’exécution des lignes
+qui suivent le mot-clé <code class="docutils literal notranslate"><span class="pre">except</span></code>. Dans le cas contraire, le programme
+se poursuit avec l’exécution des lignes qui suivent le mot-clé
+<code class="docutils literal notranslate"><span class="pre">else</span></code>. Cette dernière partie est facultative, la clause
+<code class="docutils literal notranslate"><span class="pre">else</span></code> peut ou non être présente. Le bout de code prévoit
+ce qu’il faut faire dans n’importe quel cas.</p>
+<p>Lorsqu’une section de code est protégée contre les exceptions,
+son exécution s’arrête à la première erreur d’exécution.
+Le reste du code n’est pas exécuté.
+Par exemple, dès la première erreur qui correspond au calcul d’une
+puissance non entière d’un nombre négatif, l’exécution du programme
+suivant est dirigée vers l’instruction qui suit le mot-clé <code class="docutils literal notranslate"><span class="pre">except</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span> <span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">((</span><span class="o">-</span><span class="mf">2.1</span><span class="p">)</span> <span class="o">**</span> <span class="mf">3.1</span><span class="p">)</span>  <span class="c1"># première erreur</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>     <span class="c1"># cette ligne produirait une erreur</span>
+                          <span class="c1"># mais le programme n&#39;arrive jamais jusqu&#39;ici</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;le programme a déclenché une erreur&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Cette écriture n’est néanmoins par recommandée car le programme
+intercepte toutes les erreurs quelles qu’elles soient. Il est
+préférable de n’attraper que les exceptions prévues sans risquer
+de masquer celles qui n’étaient pas prévues et qui pourraient
+être la conséquence d’un bug.</p>
+</section>
+<section id="obtenir-le-type-d-erreur-attraper-un-type-d-exception">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Obtenir le type d’erreur, attraper un type d’exception</a><a class="headerlink" href="#obtenir-le-type-d-erreur-attraper-un-type-d-exception" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Parfois, plusieurs types d’erreurs peuvent être déclenchés à l’intérieur
+d’une portion de code protégée. Pour avoir une information sur ce type,
+il est possible de récupérer une variable de type
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html">Exception</a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exception de type &quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+    <span class="c1"># affiche exception de type  exceptions.ZeroDivisionError</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+    <span class="c1"># affiche le message associé à l&#39;exception</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    0.5
+    exception de type  &lt;class &#39;ZeroDivisionError&#39;&gt;
+    message float division by zero
+</pre></div>
+</div>
+<p>Le programme précédent récupère une exception sous
+la forme d’une variable appelée . Cette variable est en fait une
+instance d’une classe d’erreur, <code class="docutils literal notranslate"><span class="pre">__class__</span></code> correspond au nom de cette classe. A
+l’aide de la fonction <code class="docutils literal notranslate"><span class="pre">isinstance</span></code>, il est possible d’exécuter des traitements
+différents selon le type d’erreur.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">((</span><span class="o">-</span><span class="mf">2.1</span><span class="p">)</span> <span class="o">**</span> <span class="mf">3.1</span><span class="p">)</span>  <span class="c1"># première erreur</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># seconde erreur</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="ne">ZeroDivisionError</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;division par zéro&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur insoupçonnée :&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">(</span><span class="o">-</span><span class="mf">9.48606594010979</span><span class="o">-</span><span class="mf">3.0822096637057887</span><span class="n">j</span><span class="p">)</span>
+    <span class="mf">0.5</span>
+    <span class="n">division</span> <span class="n">par</span> <span class="n">zéro</span>
+</pre></div>
+</div>
+<p>L’exemple précédent affiche le message qui suit parce que la première
+erreur intervient lors du calcul de <code class="docutils literal notranslate"><span class="pre">(-2.1)</span> <span class="pre">**</span> <span class="pre">3.1</span></code>.
+Une autre syntaxe plus simple permet d’attraper un type d’exception
+donné en accolant au mot-clé <code class="docutils literal notranslate"><span class="pre">except</span></code> le type de l’exception qu’on désire
+attraper. L’exemple précédent est équivalent au suivant mais
+syntaxiquement différent.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">((</span><span class="o">-</span><span class="mf">2.1</span><span class="p">)</span> <span class="o">**</span> <span class="mf">3.1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;division par zéro&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur insoupçonnée :&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;message &quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">(</span><span class="o">-</span><span class="mf">9.48606594010979</span><span class="o">-</span><span class="mf">3.0822096637057887</span><span class="n">j</span><span class="p">)</span>
+    <span class="mf">0.5</span>
+    <span class="n">division</span> <span class="n">par</span> <span class="n">zéro</span>
+</pre></div>
+</div>
+<p>Cette syntaxe obéit au schéma qui suit.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Syntaxe0">
+<p class="admonition-title">Syntaxe S1 : Attraper une exception</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># ... instructions à protéger</span>
+<span class="k">except</span> <span class="n">type_exception_1</span><span class="p">:</span>
+    <span class="c1"># ... que faire en cas d&#39;erreur de type type_exception_1</span>
+<span class="k">except</span> <span class="p">(</span><span class="n">type_exception_i</span><span class="p">,</span> <span class="n">type_exception_j</span><span class="p">):</span>
+    <span class="c1"># ... que faire en cas d&#39;erreur de type type_exception_i ou type_exception_j</span>
+<span class="k">except</span> <span class="n">type_exception_n</span><span class="p">:</span>
+    <span class="c1"># ... que faire en cas d&#39;erreur de type type_exception_n</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="c1"># ... que faire en cas d&#39;erreur d&#39;un type différent de tous</span>
+    <span class="c1">#     les précédents types</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># ... que faire lorsque une erreur aucune erreur n&#39;est apparue</span>
+</pre></div>
+</div>
+</div>
+<p>Toute erreur déclenchée alors que le programme exécute les instructions qui suivent le mot-clé
+<code class="docutils literal notranslate"><span class="pre">try</span></code> déclenche immédiatement l’exécution des lignes qui suivent un mot-clé <code class="docutils literal notranslate"><span class="pre">except</span></code>.
+Le programme compare le type d’exception aux types <code class="docutils literal notranslate"><span class="pre">type_exception_1</span></code> à <code class="docutils literal notranslate"><span class="pre">type_exception_n</span></code>.
+S’il existe une correspondance alors ce sont les instructions de la clause <code class="docutils literal notranslate"><span class="pre">except</span></code> associée qui
+seront exécutées et uniquement ces instructions. La dernière clause <code class="docutils literal notranslate"><span class="pre">except</span></code> est facultative,
+elle est utile lorsque aucun type de ceux prévus ne correspond à l’exception
+générée. La clause <code class="docutils literal notranslate"><span class="pre">else</span></code> est aussi facultative. Si la dernière clause <code class="docutils literal notranslate"><span class="pre">except</span></code>
+n’est pas spécifiée et que l’exception déclenchée ne correspond à aucune de celle
+listée plus haut, le programme s’arrête sur cette erreur à moins que celle-ci ne soit attrapée plus tard.</p>
+<p>Le langage Python propose une liste
+d”<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#base-classes">exceptions standards</a>.
+Lorsqu’une erreur ne correspond pas à l’une de ces exceptions,
+il est possible de créer une exception propre à un certain type d’erreur.
+Lorsqu’une fonction ou une méthode déclenche une
+exception non standard, généralement, le commentaire qui lui est associé
+l’indique. Quelques types d’exception courantes
+documentée dans la section
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#concrete-exceptions">Concrete exceptions</a>.
+Certaines surviennent car le programme est mal écrit et l’interpréteur
+ne peut le comprendre :</p>
+<ul class="simple" id="index-4">
+<li><p><strong>IndentationError</strong> :
+L’interpréteur ne peut interpréter une partie du programme à cause
+d’un problème d’indentation. Il n’est pas possible
+d’exécuter un programme mal indenté mais cette erreur peut se produire
+lors de l’utilisation de la fonction
+<a class="reference external" href="https://docs.python.org/3/library/functions.html?highlight=compile#compile">compile</a>.</p></li>
+<li><p><strong>SyntaxError</strong> :
+Le programme a un problème de syntaxe comme une parenthèse en trop ou
+ou en moins.</p></li>
+</ul>
+<p>Les deux suivantes surviennent lorsqu’on se trompe dans l’orthographe d’une
+variable, une fonction, un module :</p>
+<ul class="simple" id="index-5">
+<li><p><strong>AttributeError</strong> :
+Une référence à un attribut inexistant ou une affectation a échoué.</p></li>
+<li><p><strong>ImportError</strong> :
+Cette erreur survient lorsqu’on cherche à importer un module qui n’existe pas,
+son nom est mal orthographié ou il n’est pas installé.</p></li>
+<li><p><strong>NameError</strong> :
+On utilise une variable, une fonction, une classe qui n’existe pas.</p></li>
+</ul>
+<p>Les erreurs très fréquentes, erreur d’indices, de types :</p>
+<ul class="simple" id="index-6">
+<li><p><strong>IndexError</strong> :
+On utilise un index erroné pour accéder à un élément d’une liste,
+d’un dictionnaire ou de tout autre tableau.</p></li>
+<li><p><strong>KeyError</strong> :
+Une clé est utilisée pour accéder à un élément d’un dictionnaire
+dont elle ne fait pas partie.</p></li>
+<li><p><strong>TypeError</strong> :
+Erreur de type, une fonction est appliquée sur un objet qu’elle n’est
+pas censée manipuler.</p></li>
+<li><p><strong>ValueError</strong> :
+Cette exception survient lorsqu’une valeur est inappropriée pour une certaine
+opération, par exemple, l’obtention du logarithme d’un nombre négatif.</p></li>
+</ul>
+<p>Les erreurs qui surviennent lorsqu’on travaille avec des fichiers :</p>
+<ul class="simple" id="index-7">
+<li><p><strong>OSError</strong> :
+Une opération concernant les entrées/sorties (Input/Output) a échoué.
+Cette erreur survient par exemple lorsqu’on cherche à
+lire un fichier qui n’existe pas.</p></li>
+<li><p><strong>UnicodeError</strong> :
+Erreur de conversion d’un <a class="reference external" href="https://fr.wikipedia.org/wiki/Codage_des_caract%C3%A8res">encodage</a>
+de texte à un autre. C’est une erreur qui survient régulièrement quand on travaille
+avec des langues qui ont des accents (non anglophones).</p></li>
+</ul>
+</section>
+<section id="lancer-une-exception">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Lancer une exception</a><a class="headerlink" href="#lancer-une-exception" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-8">Lorsqu’une fonction détecte une erreur, il lui est possible de
+déclencher une exception par l’intermédiaire du mot-clé <code class="docutils literal notranslate"><span class="pre">raise</span></code>.
+La fonction <code class="docutils literal notranslate"><span class="pre">inverse</span></code>
+compare <code class="docutils literal notranslate"><span class="pre">x</span></code> à <code class="docutils literal notranslate"><span class="pre">0</span></code> et déclenche l’exception <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> si <code class="docutils literal notranslate"><span class="pre">x</span></code> est nul.
+Cette exception est attrapée plus bas.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># erreur</span>
+<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur de type ValueError&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">erreur</span> <span class="n">de</span> <span class="nb">type</span> <span class="ne">ValueError</span>
+</pre></div>
+</div>
+<p>Il est parfois utile d’associer un message à une exception afin que
+l’utilisateur ne soit pas perdu. Le programme qui suit est identique au
+précédent à ceci près qu’il associe à l’exception <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> qui précise l’erreur
+et mentionne la fonction où elle s’est produite. Le message est ensuite
+intercepté plus bas.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;valeur nulle interdite, fonction inverse&quot;</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># erreur</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur, message :&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">erreur</span><span class="p">,</span> <span class="n">message</span> <span class="p">:</span> <span class="n">valeur</span> <span class="n">nulle</span> <span class="n">interdite</span><span class="p">,</span> <span class="n">fonction</span> <span class="n">inverse</span>
+</pre></div>
+</div>
+<p>Le déclenchement d’une exception suit la syntaxe suivante.</p>
+<div class="admonition-mathdef admonition" id="indexmathe-Syntaxe1">
+<p class="admonition-title">Syntaxe S2 : Lever une exception</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">raise</span> <span class="n">exception_type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Cette instruction lance l’exception <code class="docutils literal notranslate"><span class="pre">exception_type</span></code> associée au message
+<code class="docutils literal notranslate"><span class="pre">message</span></code>. Le message est facultatif, lorsqu’il n’y en a pas, la syntaxe
+se résume à <code class="docutils literal notranslate"><span class="pre">raise</span> <span class="pre">exception_type</span></code>.</p>
+</div>
+<p>Et pour attraper cette exception et le message qui lui est associé, il
+faut utiliser la syntaxe décrite au paragraphe précédent.</p>
+</section>
+<section id="heritage-et-exception">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Héritage et exception</a><a class="headerlink" href="#heritage-et-exception" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-9">L’instruction <code class="docutils literal notranslate"><span class="pre">help(ZeroDivisionError)</span></code> retourne l’aide associée à l’exception <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code>.
+Celle-ci indique que l’exception <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code> est en fait un cas particulier de
+l’exception <code class="docutils literal notranslate"><span class="pre">ArithmeticError</span></code>,
+elle-même un cas particulier de <code class="docutils literal notranslate"><span class="pre">StandardError</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ZeroDivisionError</span><span class="p">(</span><span class="ne">ArithmeticError</span><span class="p">)</span>
+    <span class="o">|</span>  <span class="n">Second</span> <span class="n">argument</span> <span class="n">to</span> <span class="n">a</span> <span class="n">division</span> <span class="ow">or</span> <span class="n">modulo</span> <span class="n">operation</span> <span class="n">was</span> <span class="n">zero</span><span class="o">.</span>
+    <span class="o">|</span>
+    <span class="o">|</span>  <span class="n">Method</span> <span class="n">resolution</span> <span class="n">order</span><span class="p">:</span>
+    <span class="o">|</span>      <span class="ne">ZeroDivisionError</span>
+    <span class="o">|</span>      <span class="ne">ArithmeticError</span>
+    <span class="o">|</span>      <span class="n">StandardError</span>
+    <span class="o">|</span>      <span class="ne">Exception</span>
+</pre></div>
+</div>
+<p>Toutes les exceptions sont des cas particuliers de l’exception de type <code class="docutils literal notranslate"><span class="pre">Exception</span></code>.
+C’est pourquoi l’instruction <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">Exception:</span></code> attrape toutes les exceptions.
+L’instruction <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">ArithmeticError:</span></code> attrape toutes les erreurs de
+type <code class="docutils literal notranslate"><span class="pre">ArithmeticError</span></code>, ce qui inclut les erreurs de type <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code>.
+Autrement dit, toute exception de type <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code>
+est attrapée par les instructions suivantes :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+<span class="k">except</span> <span class="ne">ArithmeticError</span><span class="p">:</span>
+<span class="k">except</span> <span class="n">StandardError</span><span class="p">:</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Plus précisément, chaque exception est une classe qui dérive directement ou indirectement de la
+classe <code class="docutils literal notranslate"><span class="pre">Exception</span></code>. L’instruction <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">ArithmeticError</span> <span class="pre">:</span></code> par exemple attrape
+toutes les exceptions de type <code class="docutils literal notranslate"><span class="pre">ArithmeticError</span></code> et toutes celles
+qui en dérivent comme la classe <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code>.</p>
+</section>
+<section id="instructions-try-except-imbriquees">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Instructions <code class="docutils literal notranslate"><span class="pre">try</span></code>, <code class="docutils literal notranslate"><span class="pre">except</span></code> imbriquées</a><a class="headerlink" href="#instructions-try-except-imbriquees" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Comme pour les boucles, il est possible d’imbriquer les portions
+protégées de code les unes dans les autres. Dans l’exemple qui suit, la
+première erreur est l’appel à une fonction non définie, ce qui déclenche
+l’exception <code class="docutils literal notranslate"><span class="pre">NameError</span></code>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">inverses</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># fonction inexistante --&gt; exception NameError</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># division par zéro --&gt; ZeroDivisionError</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;appel à une fonction non définie&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ZeroDivisionError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">appel</span> <span class="n">à</span> <span class="n">une</span> <span class="n">fonction</span> <span class="n">non</span> <span class="n">définie</span>
+</pre></div>
+</div>
+<p>En revanche, dans le second exemple, les deux lignes
+<code class="docutils literal notranslate"><span class="pre">print(inverse(0))</span></code> et <code class="docutils literal notranslate"><span class="pre">print(inverses(0))</span></code> ont été permutées. La première
+exception déclenchée est la division par zéro. La première clause
+<code class="docutils literal notranslate"><span class="pre">except</span></code> n’interceptera pas cette erreur puisqu’elle n’est pas du type recherché.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># division par zéro --&gt; ZeroDivisionError</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">inverses</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># fonction inexistante --&gt; exception NameError</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;appel à une fonction non définie&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ZeroDivisionError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">erreur</span> <span class="nb">float</span> <span class="n">division</span> <span class="n">by</span> <span class="n">zero</span>
+</pre></div>
+</div>
+<p>Une autre imbrication possible est l’appel à une fonction qui inclut déjà
+une partie de code protégée. L’exemple suivant appelle la fonction
+<code class="docutils literal notranslate"><span class="pre">inverse</span></code> qui intercepte les exceptions de type <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code> pour retourner
+une grande valeur lorsque <code class="docutils literal notranslate"><span class="pre">x=0</span></code>. La seconde exception générée survient
+lors de l’appel à la fonction <code class="docutils literal notranslate"><span class="pre">inverses</span></code> qui déclenche l’exception <code class="docutils literal notranslate"><span class="pre">NameError</span></code>,
+elle aussi interceptée.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur &quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1000000000</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1000000000</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># division par zéro    --&gt; la fonction inverse sait gérer</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">inverses</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># fonction inexistante --&gt; exception NameError</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;appel à une fonction non définie&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">erreur</span>  <span class="nb">float</span> <span class="n">division</span> <span class="n">by</span> <span class="n">zero</span>
+    <span class="o">-</span><span class="mi">1000000000</span>
+    <span class="n">appel</span> <span class="n">à</span> <span class="n">une</span> <span class="n">fonction</span> <span class="n">non</span> <span class="n">définie</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="definir-ses-propres-exceptions">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Définir ses propres exceptions</a><a class="headerlink" href="#definir-ses-propres-exceptions" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="deriver-une-classe-d-exception">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Dériver une classe d’exception</a><a class="headerlink" href="#deriver-une-classe-d-exception" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Pour définir sa propre exception, il faut créer une classe qui dérive d’une
+classe d’exception existante par exemple, la classe <code class="docutils literal notranslate"><span class="pre">Exception</span></code>.
+L’exemple suivant crée une exception <code class="docutils literal notranslate"><span class="pre">AucunChiffre</span></code> qui est lancée par la fonction
+<code class="docutils literal notranslate"><span class="pre">conversion</span></code> lorsque la chaîne de caractères qu’elle doit
+convertir ne contient pas que des chiffres.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AucunChiffre</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    chaîne de caractères contenant aussi autre chose que des chiffres</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">conversion</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    conversion d&#39;une chaîne de caractères en entier</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AucunChiffre</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;123a&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot; = &quot;</span><span class="p">,</span> <span class="n">conversion</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="k">except</span> <span class="n">AucunChiffre</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="c1"># on affiche ici le commentaire associé à la classe d&#39;exception</span>
+    <span class="c1"># et le message associé</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">AucunChiffre</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="s2">&quot; : &quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
+            <span class="n">chaîne</span> <span class="n">de</span> <span class="n">caractères</span> <span class="n">contenant</span> <span class="n">aussi</span> <span class="n">autre</span> <span class="n">chose</span> <span class="n">que</span> <span class="n">des</span> <span class="n">chiffres</span>
+              <span class="p">:</span>  <span class="mi">123</span><span class="n">a</span>
+</pre></div>
+</div>
+<p id="index-10">En redéfinissant l’opérateur <code class="docutils literal notranslate"><span class="pre">__str__</span></code> d’une exception,
+il est possible d’afficher des messages plus explicites avec
+la seule instruction <code class="docutils literal notranslate"><span class="pre">print</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AucunChiffre</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    chaîne de caractères contenant aussi autre chose que des chiffres</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__str__</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="ne">Exception</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="personnalisation-d-une-classe-d-exception">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Personnalisation d’une classe d’exception</a><a class="headerlink" href="#personnalisation-d-une-classe-d-exception" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Il est parfois utile qu’une exception contienne davantage d’informations
+qu’un simple message. L’exemple suivant reprend l’exemple du paragraphe précédent.
+L’exception <code class="docutils literal notranslate"><span class="pre">AucunChiffre</span></code> inclut cette fois-ci un paramètre supplémentaire
+contenant le nom de la fonction où l’erreur a été déclenchée.</p>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">AucunChiffre</span></code> possède dorénavant un constructeur qui doit
+recevoir deux paramètres : une valeur et un nom de fonction. L’exception est levée à
+l’aide de l’instruction <code class="docutils literal notranslate"><span class="pre">raise</span> <span class="pre">AucunChiffre(s,</span> <span class="pre">&quot;conversion&quot;)</span></code> qui regroupe
+dans un T-uple les paramètres à envoyer à l’exception.</p>
+<p>L’opérateur <code class="docutils literal notranslate"><span class="pre">__str__</span></code> a été modifié de façon à ajouter ces deux
+informations dans le message associé à l’exception. Ainsi, l’instruction
+<code class="docutils literal notranslate"><span class="pre">print(exc)</span></code> présente à l’avant dernière ligne de cet
+exemple affiche un message plus complet.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AucunChiffre</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    chaîne de caractères contenant aussi autre chose que des chiffres</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;exception AucunChiffre, depuis la fonction </span><span class="si">{0}</span><span class="s2"> avec le paramètre </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">conversion</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    conversion d&#39;une chaîne de caractères en entier</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AucunChiffre</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;conversion&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;123a&quot;</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">conversion</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot; = &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">AucunChiffre</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fonction : &quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">exception</span> <span class="n">AucunChiffre</span><span class="p">,</span> <span class="n">depuis</span> <span class="n">la</span> <span class="n">fonction</span> <span class="n">conversion</span> <span class="n">avec</span> <span class="n">le</span> <span class="n">paramètre</span> <span class="mi">123</span><span class="n">a</span>
+    <span class="n">fonction</span> <span class="p">:</span>  <span class="n">conversion</span>
+</pre></div>
+</div>
+<p>Etant donné que le programme déclenche une exception dans la section de
+code protégée, les deux derniers affichages sont les seuls exécutés
+correctement. Ils produisent les deux lignes qui suivent. %</p>
+</section>
+</section>
+<section id="exemples-d-utilisation-des-exceptions">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Exemples d’utilisation des exceptions</a><a class="headerlink" href="#exemples-d-utilisation-des-exceptions" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="les-iterateurs">
+<span id="index-11"></span><h3><a class="toc-backref" href="#id11" role="doc-backlink">Les itérateurs</a><a class="headerlink" href="#les-iterateurs" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Les itérateurs sont des outils qui permettent de parcourir des objets qui
+sont des ensembles, comme une liste, un dictionnaire. Ils fonctionnent toujours
+de la même manière. L’exemple déjà présenté au chapitre <a class="reference internal" href="../c_classes/classes.html#chap-iterateur"><span class="std std-ref">Itérateurs</span></a>
+et repris en partie ici définit une classe contenant trois coordonnées,
+ainsi qu’un itérateur permettant de parcourir ces trois coordonnées.
+Arrivée à la troisième itération, l’exception
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#StopIteration">StopIteration</a>
+est déclenchée. Cette exception indique à une boucle <code class="docutils literal notranslate"><span class="pre">for</span></code> de s’arrêter.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">point_espace</span><span class="p">:</span>
+
+    <span class="c1"># ...</span>
+
+    <span class="k">class</span> <span class="nc">class_iter</span><span class="p">:</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ins</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n</span>   <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ins</span> <span class="o">=</span> <span class="n">ins</span>
+        <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ins</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">v</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">StopIteration</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">point_espace</span><span class="o">.</span><span class="n">class_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Cet exemple montre seulement que les exceptions
+n’interviennent pas seulement lors d’erreurs mais font parfois partie
+intégrante d’un algorithme.</p>
+</section>
+<section id="exception-ou-valeur-aberrante">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Exception ou valeur aberrante</a><a class="headerlink" href="#exception-ou-valeur-aberrante" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-12">Sans exception, une solution pour indiquer un cas de mauvaise utilisation
+d’une fonction est de retourner une valeur aberrante.
+Retourner <code class="docutils literal notranslate"><span class="pre">-1</span></code> pour une fonction dont le résultat est nécessairement
+positif est une valeur aberrante. Cette convention permet de signifier à
+celui qui appelle la fonction que son appel n’a pu être traité correctement.
+Dans l’exemple qui suit, la fonction <code class="docutils literal notranslate"><span class="pre">racine_carree</span></code> retourne un couple de
+résultats, <code class="docutils literal notranslate"><span class="pre">True</span></code> ou <code class="docutils literal notranslate"><span class="pre">False</span></code> pour savoir si le calcul est possible,
+suivi du résultat qui n’a un sens que si <code class="docutils literal notranslate"><span class="pre">True</span></code> est retournée en première valeur.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">racine_carree</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mf">0.5</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">racine_carree</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># (False, 0)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">racine_carree</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># (True, 1.0)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Plutôt que de compliquer le programme avec deux résultats ou une valeur aberrante,
+on préfère souvent déclencher une exception, ici, <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.
+La plupart du temps, cette exception n’est pas déclenchée.
+Il est donc superflu de retourner un couple plutôt qu’une seule valeur.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">racine_carree</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;valeur négative&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mf">0.5</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">racine_carree</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># déclenche une exception</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">racine_carree</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
+    <span class="p">[</span><span class="n">runpythonerror</span><span class="p">]</span>
+    
+    <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+        <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">10</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">8</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140153473422784</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">5</span><span class="p">,</span> <span class="ow">in</span> <span class="n">racine_carree</span>
+    <span class="ne">ValueError</span><span class="p">:</span> <span class="n">valeur</span> <span class="n">négative</span>
+</pre></div>
+</div>
+</section>
+<section id="le-piege-des-exceptions">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Le piège des exceptions</a><a class="headerlink" href="#le-piege-des-exceptions" title="Lien permanent vers cette rubrique">#</a></h3>
+<p id="index-13">Ce paragraphe évoque certains problèmes lorsqu’une exception est levée.
+L’exemple utilise les fichiers décrits au chapitre <a class="reference internal" href="../c_module/files.html#chap-fichier"><span class="std std-ref">Fichiers</span></a>.
+Lorsqu’une exception est levée à l’intérieur d’une fonction,
+l’exécution de celle-ci s’interrompt. Si l’exception est attrapée,
+le programme continue sans problème ; les objets momentanément créés seront
+détruits par le <a class="reference external" href="https://docs.python.org/3/library/gc.html">garbage collector</a>.
+Il faut pourtant faire attention dans le cas par exemple où l’exception
+est levée alors qu’un fichier est ouvert : il ne sera pas fermé.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">try</span> <span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">2</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;essai.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">=&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">((</span><span class="nb">float</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">y</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="p">)</span>     <span class="c1"># exception si y == 0</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur avec i = &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">closed</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Les écritures dans le fichier se font en mode ajout <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>,
+le fichier <code class="docutils literal notranslate"><span class="pre">&quot;essai.txt&quot;</span></code> contiendra tout ce qui aura été écrit.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>affichage</p></th>
+<th class="head"><p>fichier</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mi">1</span><span class="o">/-</span><span class="mi">2</span>
+<span class="mi">0</span><span class="o">/-</span><span class="mi">1</span>
+<span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+<span class="n">erreur</span> <span class="n">avec</span> <span class="n">i</span> <span class="o">=</span>  <span class="mi">2</span> <span class="p">,</span> <span class="nb">float</span> <span class="n">division</span> <span class="n">by</span> <span class="n">zero</span> <span class="kc">False</span>
+<span class="mi">2</span><span class="o">/</span><span class="mi">1</span>
+<span class="mi">3</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mi">1</span><span class="o">/-</span><span class="mi">2</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="mi">0</span><span class="o">/-</span><span class="mi">1</span><span class="o">=-</span><span class="mf">0.0</span>
+<span class="mi">1</span><span class="o">/</span><span class="mi">0</span><span class="o">=</span><span class="mi">2</span><span class="o">/</span><span class="mi">1</span><span class="o">=</span><span class="mf">2.0</span>
+<span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="o">=</span><span class="mf">1.5</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p id="index-14">La troisième ligne du fichier est tronquée puisque l’erreur est
+intervenue juste avant l’affichage. On voit aussi
+que <code class="docutils literal notranslate"><span class="pre">f.closed</span></code> est faux. Cela signifie que le fichier n’est pas fermé.
+Pour se prémunir contre les exceptions lorsqu’on écrit un fichier,
+il faut utiliser le mot clé
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0343/">with</a> :</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;essai.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">=&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">y</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># exception si y == 0</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;erreur avec i = &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">closed</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">-</span><span class="mi">1</span><span class="o">/-</span><span class="mi">2</span>
+    <span class="mi">0</span><span class="o">/-</span><span class="mi">1</span>
+    <span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+    <span class="n">erreur</span> <span class="n">avec</span> <span class="n">i</span> <span class="o">=</span>  <span class="mi">2</span> <span class="p">,</span> <span class="nb">float</span> <span class="n">division</span> <span class="n">by</span> <span class="n">zero</span> <span class="kc">True</span>
+    <span class="mi">2</span><span class="o">/</span><span class="mi">1</span>
+    <span class="mi">3</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>Pour en savoir un peu plus :
+<a class="reference external" href="http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/">Les context managers et le mot clé with en Python</a>.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="exception_ext.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Usage</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Exceptions</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Exceptions</a><ul>
+<li><a class="reference internal" href="#principe-des-exceptions">Principe des exceptions</a><ul>
+<li><a class="reference internal" href="#attraper-toutes-les-erreurs">Attraper toutes les erreurs</a></li>
+<li><a class="reference internal" href="#obtenir-le-type-d-erreur-attraper-un-type-d-exception">Obtenir le type d’erreur, attraper un type d’exception</a></li>
+<li><a class="reference internal" href="#lancer-une-exception">Lancer une exception</a></li>
+<li><a class="reference internal" href="#heritage-et-exception">Héritage et exception</a></li>
+<li><a class="reference internal" href="#instructions-try-except-imbriquees">Instructions <code class="docutils literal notranslate"><span class="pre">try</span></code>, <code class="docutils literal notranslate"><span class="pre">except</span></code> imbriquées</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#definir-ses-propres-exceptions">Définir ses propres exceptions</a><ul>
+<li><a class="reference internal" href="#deriver-une-classe-d-exception">Dériver une classe d’exception</a></li>
+<li><a class="reference internal" href="#personnalisation-d-une-classe-d-exception">Personnalisation d’une classe d’exception</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exemples-d-utilisation-des-exceptions">Exemples d’utilisation des exceptions</a><ul>
+<li><a class="reference internal" href="#les-iterateurs">Les itérateurs</a></li>
+<li><a class="reference internal" href="#exception-ou-valeur-aberrante">Exception ou valeur aberrante</a></li>
+<li><a class="reference internal" href="#le-piege-des-exceptions">Le piège des exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=06258ee3"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
