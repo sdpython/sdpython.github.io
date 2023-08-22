@@ -1,6 +1,8 @@
 :orphan:
 
-Example gallery
+.. _l-example-gallery:
+
+Example Gallery
 ===============
 
 A couple of examples to illustrate different implementation
@@ -55,23 +57,6 @@ of dot product (see also :epkg:`sphinx-gallery`).
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The following code measures the performance of the python bindings. The time spent in it is not...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cypy_ort_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_bench_cypy_ort.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Measuring onnxruntime performance</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t...">
 
 .. only:: html
@@ -84,23 +69,6 @@ of dot product (see also :epkg:`sphinx-gallery`).
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a parallelized vector sum and AVX</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="onnx-extended includes an implementation of operator Conv in language C++ must faster than the ...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_conv_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_conv.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Using C implementation of operator Conv</div>
     </div>
 
 
@@ -123,18 +91,35 @@ of dot product (see also :epkg:`sphinx-gallery`).
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This benchmark looks into various combinations allowed by functions cublasLtMatmul.">
+    <div class="sphx-glr-thumbcontainer" tooltip="onnx-extended includes an implementation of operator Conv in language C++ must faster than the ...">
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_gemm_f8_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_conv_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py`
+  :ref:`sphx_glr_auto_examples_plot_conv.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Measuring Gemm performance with different input and output types</div>
+      <div class="sphx-glr-thumbnail-title">Using C implementation of operator Conv</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The following code measures the performance of the python bindings against a cython binding. Th...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cypy_ort_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_bench_cypy_ort.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Measuring onnxruntime performance against a cython binding</div>
     </div>
 
 
@@ -152,6 +137,23 @@ of dot product (see also :epkg:`sphinx-gallery`).
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measuring CPU/GPU performance with a vector sum</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This benchmark looks into various combinations allowed by functions cublasLtMatmul. The tested ...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_gemm_f8_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Measuring Gemm performance with different input and output tests</div>
     </div>
 
 
@@ -233,12 +235,12 @@ of dot product (see also :epkg:`sphinx-gallery`).
 
    /auto_examples/plot_bench_cpu_vector_sum
    /auto_examples/plot_bench_cpu_vector_sum_parallel
-   /auto_examples/plot_bench_cypy_ort
    /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
-   /auto_examples/plot_conv
    /auto_examples/plot_bench_cpu
-   /auto_examples/plot_bench_gemm_f8
+   /auto_examples/plot_conv
+   /auto_examples/plot_bench_cypy_ort
    /auto_examples/plot_bench_gpu_vector_sum_gpu
+   /auto_examples/plot_bench_gemm_f8
    /auto_examples/plot_conv_denorm
    /auto_examples/plot_optim_tree_ensemble
    /auto_examples/plot_profile_gemm_ort

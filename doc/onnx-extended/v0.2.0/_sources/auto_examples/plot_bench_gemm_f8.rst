@@ -18,22 +18,26 @@
 .. _sphx_glr_auto_examples_plot_bench_gemm_f8.py:
 
 
-Measuring Gemm performance with different input and output types
+.. _l-example-gemm-f8:
+
+Measuring Gemm performance with different input and output tests
 ================================================================
 
 This benchmark looks into various combinations allowed by functions
-:epkg:`cublasLtMatmul`.
+:epkg:`cublasLtMatmul`. The tested configurations are available at
+:epkg:`cuda_gemm.cu`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-26
+.. GENERATED FROM PYTHON SOURCE LINES 11-67
 
 .. code-block:: default
 
     import pprint
+    import warnings
     from itertools import product
     from tqdm import tqdm
     import matplotlib.pyplot as plt
     from pandas import DataFrame
-    from onnx_extended.ext_test_case import unit_test_going
+    from onnx_extended.ext_test_case import unit_test_going, get_parsed_args
 
     try:
         from onnx_extended.validation.cuda.cuda_example_py import (
@@ -45,6 +49,43 @@ This benchmark looks into various combinations allowed by functions
     except ImportError:
         # CUDA not available.
         has_cuda = False
+        gemm_benchmark_test = None
+
+    if has_cuda:
+        prop = get_device_prop()
+        if prop["major"] <= 0:
+            # No CUDA.
+            dtests, ddims = "", ""
+        elif prop["major"] < 7:
+            # No float 8.
+            dtests, ddims = "0,1,2,3,4", "16,32,64"
+        elif prop["major"] < 9:  # T100, A100
+            # No float 8.
+            dtests, ddims = "0,1,2,3,4", "16,32,64,128,256,512,1024,2048,4096,8192"
+        else:
+            dtests, ddims = (
+                "0,1,2,3,4,5,6,7,11,14",
+                "16,32,64,128,256,512,1024,2048,4096,8192,16384",
+            )
+    else:
+        dtests, ddims = "", ""
+
+
+    script_args = get_parsed_args(
+        "plot_bench_gemm_f8",
+        description=__doc__,
+        dims=(
+            "16,32" if unit_test_going() else ddims,
+            "square matrix dimensions to try, comma separated values",
+        ),
+        tests=(
+            "0,1,2" if unit_test_going() else dtests,
+            "configuration to check, see cuda_gemm.cu",
+        ),
+        warmup=2 if unit_test_going() else 5,
+        repeat=2 if unit_test_going() else 10,
+        expose="repeat,warmup",
+    )
 
 
 
@@ -53,12 +94,12 @@ This benchmark looks into various combinations allowed by functions
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-29
+.. GENERATED FROM PYTHON SOURCE LINES 68-70
 
 Device
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-38
+.. GENERATED FROM PYTHON SOURCE LINES 70-79
 
 .. code-block:: default
 
@@ -95,70 +136,45 @@ Device
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-41
-
-Configurations
-++++++++++++++
-
-.. GENERATED FROM PYTHON SOURCE LINES 41-58
-
-.. code-block:: default
-
-
-    if prop["major"] <= 0:
-        # No CUDA.
-        tests = []
-        dims = []
-    elif prop["major"] < 7:
-        # No float 8.
-        tests = list(range(5))
-        dims = [16, 32, 64]
-    elif prop["major"] < 9:  # T100, A100
-        # No float 8.
-        tests = list(range(5))
-        dims = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
-    else:
-        tests = list(range(15))  # H100
-        dims = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 59-61
+.. GENERATED FROM PYTHON SOURCE LINES 80-82
 
 Benchmark
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-117
+.. GENERATED FROM PYTHON SOURCE LINES 82-146
 
 .. code-block:: default
 
 
 
     def type2string(dt):
-        dtypes = {0: "F32", 2: "F16", 14: "BF16", 28: "E4M3", 29: "E5M2"}
-        return dtypes[int(dt)]
+        dtests = {0: "F32", 2: "F16", 14: "BF16", 28: "E4M3", 29: "E5M2"}
+        return dtests[int(dt)]
 
+
+    if gemm_benchmark_test is None:
+        # No CUDA.
+        dims = []
+        tests = []
+    else:
+        dims = list(int(i) for i in script_args.dims.split(","))
+        tests = list(int(i) for i in script_args.tests.split(","))
 
     pbar = tqdm(list(product(tests, dims)))
     obs = []
     for test, dim in pbar:
-        pbar.set_description(f"test={test} dim={dim}")
+        pbar.set_description(f"type={test} dim={dim}")
         if test in {8, 9, 10, 12, 13}:
-            # not valid yet
+            warnings.warn(f"unsupported configuration {test}.")
             continue
         if dim < 128:
-            n, N = 20, 100
+            n, N = script_args.warmup * 8, script_args.repeat * 8
         elif dim < 512:
-            n, N = 20, 50
+            n, N = script_args.warmup * 4, script_args.repeat * 4
         elif dim < 8192:
-            n, N = 10, 25
+            n, N = script_args.warmup * 2, script_args.repeat * 2
         else:
-            n, N = 3, 5
+            n, N = script_args.warmup, script_args.repeat
 
         # warmup
         gemm_benchmark_test(test, n, dim)
@@ -201,29 +217,31 @@ Benchmark
 
  .. code-block:: none
 
-      0%|          | 0/15 [00:00<?, ?it/s]    test=0 dim=16:   0%|          | 0/15 [00:00<?, ?it/s]    test=0 dim=16:   7%|6         | 1/15 [00:03<00:54,  3.92s/it]    test=0 dim=32:   7%|6         | 1/15 [00:03<00:54,  3.92s/it]    test=0 dim=64:   7%|6         | 1/15 [00:03<00:54,  3.92s/it]    test=1 dim=16:   7%|6         | 1/15 [00:03<00:54,  3.92s/it]    test=1 dim=32:   7%|6         | 1/15 [00:04<00:54,  3.92s/it]    test=1 dim=32:  33%|###3      | 5/15 [00:04<00:06,  1.64it/s]    test=1 dim=64:  33%|###3      | 5/15 [00:04<00:06,  1.64it/s]    test=2 dim=16:  33%|###3      | 5/15 [00:04<00:06,  1.64it/s]    test=2 dim=32:  33%|###3      | 5/15 [00:04<00:06,  1.64it/s]    test=2 dim=64:  33%|###3      | 5/15 [00:04<00:06,  1.64it/s]    test=2 dim=64:  60%|######    | 9/15 [00:04<00:01,  3.46it/s]    test=3 dim=16:  60%|######    | 9/15 [00:04<00:01,  3.46it/s]    test=3 dim=32:  60%|######    | 9/15 [00:04<00:01,  3.46it/s]    test=3 dim=64:  60%|######    | 9/15 [00:04<00:01,  3.46it/s]    test=3 dim=64:  80%|########  | 12/15 [00:04<00:00,  4.98it/s]    test=4 dim=16:  80%|########  | 12/15 [00:04<00:00,  4.98it/s]    test=4 dim=32:  80%|########  | 12/15 [00:04<00:00,  4.98it/s]    test=4 dim=64:  80%|########  | 12/15 [00:04<00:00,  4.98it/s]    test=4 dim=64: 100%|##########| 15/15 [00:04<00:00,  3.44it/s]
-                                    0                1                2                3                4
-    t-total                  0.000158         0.000187         0.000266         0.000147         0.000141
-    t-clean                  0.000003         0.000002         0.000002         0.000002         0.000002
-    t-gemm_in                 0.00004         0.000052         0.000166         0.000035         0.000029
-    t-setup                   0.00002         0.000029         0.000021         0.000016         0.000029
-    epiloque                      1.0              1.0              1.0              1.0              1.0
-    compute_type                  C68              C68              C68              C77              C77
-    dim                            16               32               64               16               32
-    type_a                        F32              F32              F32              F32              F32
-    t-gemm                   0.000065         0.000086          0.00019         0.000056         0.000062
-    type_b                        F32              F32              F32              F32              F32
-    t-workspace_new          0.000009         0.000008         0.000007         0.000011         0.000008
-    type_d                        F32              F32              F32              F32              F32
-    N                             100              100              100              100              100
-    algo                         11.0              0.0              0.0             11.0              0.0
-    t-workspace_free         0.000012         0.000012          0.00001         0.000011          0.00001
-    t-stream_create               0.0              0.0              0.0              0.0              0.0
-    t-gemm_sync              0.000124         0.000152         0.000239         0.000102         0.000112
-    workspace_size          1048576.0        1048576.0        1048576.0        1048576.0        1048576.0
-    t-stream_destroy         0.000005         0.000007         0.000004         0.000006         0.000005
-    test                            0                0                0                1                1
-    name              F32xF32->F32C68  F32xF32->F32C68  F32xF32->F32C68  F32xF32->F32C77  F32xF32->F32C77
+      0%|          | 0/15 [00:00<?, ?it/s]    type=0 dim=16:   0%|          | 0/15 [00:00<?, ?it/s]    type=0 dim=16:   7%|6         | 1/15 [00:12<02:58, 12.78s/it]    type=0 dim=32:   7%|6         | 1/15 [00:12<02:58, 12.78s/it]    type=0 dim=64:   7%|6         | 1/15 [00:12<02:58, 12.78s/it]    type=0 dim=64:  20%|##        | 3/15 [00:12<00:40,  3.36s/it]    type=1 dim=16:  20%|##        | 3/15 [00:12<00:40,  3.36s/it]    type=1 dim=32:  20%|##        | 3/15 [00:12<00:40,  3.36s/it]    type=1 dim=32:  33%|###3      | 5/15 [00:13<00:16,  1.67s/it]    type=1 dim=64:  33%|###3      | 5/15 [00:13<00:16,  1.67s/it]    type=2 dim=16:  33%|###3      | 5/15 [00:13<00:16,  1.67s/it]    type=2 dim=16:  47%|####6     | 7/15 [00:13<00:08,  1.01s/it]    type=2 dim=32:  47%|####6     | 7/15 [00:13<00:08,  1.01s/it]    type=2 dim=64:  47%|####6     | 7/15 [00:13<00:08,  1.01s/it]    type=2 dim=64:  60%|######    | 9/15 [00:13<00:04,  1.50it/s]    type=3 dim=16:  60%|######    | 9/15 [00:13<00:04,  1.50it/s]    type=3 dim=32:  60%|######    | 9/15 [00:13<00:04,  1.50it/s]    type=3 dim=32:  73%|#######3  | 11/15 [00:14<00:02,  1.82it/s]    type=3 dim=64:  73%|#######3  | 11/15 [00:14<00:02,  1.82it/s]    type=3 dim=64:  80%|########  | 12/15 [00:14<00:01,  1.68it/s]    type=4 dim=16:  80%|########  | 12/15 [00:14<00:01,  1.68it/s]    type=4 dim=32:  80%|########  | 12/15 [00:14<00:01,  1.68it/s]    type=4 dim=32:  93%|#########3| 14/15 [00:15<00:00,  2.49it/s]    type=4 dim=64:  93%|#########3| 14/15 [00:15<00:00,  2.49it/s]    type=4 dim=64: 100%|##########| 15/15 [00:15<00:00,  1.01s/it]
+                                    0  ...                4
+    t-total                  0.000218  ...         0.000503
+    t-clean                  0.000002  ...         0.000004
+    t-gemm_in                0.000026  ...         0.000067
+    t-setup                  0.000015  ...         0.000064
+    epiloque                      1.0  ...              1.0
+    compute_type                  C68  ...              C77
+    dim                            16  ...               32
+    type_a                        F32  ...              F32
+    t-gemm                   0.000044  ...          0.00014
+    type_b                        F32  ...              F32
+    t-workspace_new          0.000007  ...         0.000018
+    type_d                        F32  ...              F32
+    N                              80  ...               80
+    algo                         11.0  ...              0.0
+    t-workspace_free         0.000009  ...         0.000023
+    t-stream_create               0.0  ...              0.0
+    t-gemm_sync              0.000191  ...         0.000438
+    workspace_size          1048576.0  ...        1048576.0
+    t-stream_destroy         0.000004  ...          0.00001
+    test                            0  ...                1
+    name              F32xF32->F32C68  ...  F32xF32->F32C77
+
+    [21 rows x 5 columns]
 
 
 .. raw:: html
@@ -257,35 +275,35 @@ Benchmark
       <tbody>
         <tr>
           <th>t-total</th>
-          <td>0.000158</td>
-          <td>0.000187</td>
-          <td>0.000266</td>
-          <td>0.000147</td>
-          <td>0.000141</td>
+          <td>0.000218</td>
+          <td>0.00026</td>
+          <td>0.000233</td>
+          <td>0.000152</td>
+          <td>0.000503</td>
         </tr>
         <tr>
           <th>t-clean</th>
-          <td>0.000003</td>
           <td>0.000002</td>
           <td>0.000002</td>
-          <td>0.000002</td>
-          <td>0.000002</td>
+          <td>0.000001</td>
+          <td>0.000001</td>
+          <td>0.000004</td>
         </tr>
         <tr>
           <th>t-gemm_in</th>
-          <td>0.00004</td>
-          <td>0.000052</td>
-          <td>0.000166</td>
-          <td>0.000035</td>
+          <td>0.000026</td>
           <td>0.000029</td>
+          <td>0.000017</td>
+          <td>0.000015</td>
+          <td>0.000067</td>
         </tr>
         <tr>
           <th>t-setup</th>
-          <td>0.00002</td>
-          <td>0.000029</td>
-          <td>0.000021</td>
-          <td>0.000016</td>
-          <td>0.000029</td>
+          <td>0.000015</td>
+          <td>0.000023</td>
+          <td>0.000015</td>
+          <td>0.000008</td>
+          <td>0.000064</td>
         </tr>
         <tr>
           <th>epiloque</th>
@@ -321,11 +339,11 @@ Benchmark
         </tr>
         <tr>
           <th>t-gemm</th>
-          <td>0.000065</td>
-          <td>0.000086</td>
-          <td>0.00019</td>
+          <td>0.000044</td>
           <td>0.000056</td>
-          <td>0.000062</td>
+          <td>0.000035</td>
+          <td>0.000026</td>
+          <td>0.00014</td>
         </tr>
         <tr>
           <th>type_b</th>
@@ -337,11 +355,11 @@ Benchmark
         </tr>
         <tr>
           <th>t-workspace_new</th>
-          <td>0.000009</td>
-          <td>0.000008</td>
           <td>0.000007</td>
-          <td>0.000011</td>
           <td>0.000008</td>
+          <td>0.000005</td>
+          <td>0.000004</td>
+          <td>0.000018</td>
         </tr>
         <tr>
           <th>type_d</th>
@@ -353,11 +371,11 @@ Benchmark
         </tr>
         <tr>
           <th>N</th>
-          <td>100</td>
-          <td>100</td>
-          <td>100</td>
-          <td>100</td>
-          <td>100</td>
+          <td>80</td>
+          <td>80</td>
+          <td>80</td>
+          <td>80</td>
+          <td>80</td>
         </tr>
         <tr>
           <th>algo</th>
@@ -369,11 +387,11 @@ Benchmark
         </tr>
         <tr>
           <th>t-workspace_free</th>
-          <td>0.000012</td>
-          <td>0.000012</td>
-          <td>0.00001</td>
-          <td>0.000011</td>
-          <td>0.00001</td>
+          <td>0.000009</td>
+          <td>0.000009</td>
+          <td>0.000005</td>
+          <td>0.000005</td>
+          <td>0.000023</td>
         </tr>
         <tr>
           <th>t-stream_create</th>
@@ -385,11 +403,11 @@ Benchmark
         </tr>
         <tr>
           <th>t-gemm_sync</th>
-          <td>0.000124</td>
-          <td>0.000152</td>
-          <td>0.000239</td>
-          <td>0.000102</td>
-          <td>0.000112</td>
+          <td>0.000191</td>
+          <td>0.000229</td>
+          <td>0.000216</td>
+          <td>0.000137</td>
+          <td>0.000438</td>
         </tr>
         <tr>
           <th>workspace_size</th>
@@ -401,11 +419,11 @@ Benchmark
         </tr>
         <tr>
           <th>t-stream_destroy</th>
-          <td>0.000005</td>
-          <td>0.000007</td>
           <td>0.000004</td>
           <td>0.000006</td>
-          <td>0.000005</td>
+          <td>0.000003</td>
+          <td>0.000002</td>
+          <td>0.00001</td>
         </tr>
         <tr>
           <th>test</th>
@@ -430,12 +448,12 @@ Benchmark
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-120
+.. GENERATED FROM PYTHON SOURCE LINES 147-149
 
 Test definition
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-127
+.. GENERATED FROM PYTHON SOURCE LINES 149-156
 
 .. code-block:: default
 
@@ -464,12 +482,12 @@ Test definition
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-130
+.. GENERATED FROM PYTHON SOURCE LINES 157-159
 
 Total time and only gemm
 ++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-135
+.. GENERATED FROM PYTHON SOURCE LINES 159-164
 
 .. code-block:: default
 
@@ -486,32 +504,34 @@ Total time and only gemm
 
  .. code-block:: none
 
-                      name  test type_a type_b type_d compute_type  dim   t-total  t-gemm_sync
-    0      F32xF32->F32C68     0    F32    F32    F32          C68   16  0.000158     0.000124
-    1      F32xF32->F32C68     0    F32    F32    F32          C68   32  0.000187     0.000152
-    2      F32xF32->F32C68     0    F32    F32    F32          C68   64  0.000266     0.000239
-    3      F32xF32->F32C77     1    F32    F32    F32          C77   16  0.000147     0.000102
-    4      F32xF32->F32C77     1    F32    F32    F32          C77   32  0.000141     0.000112
-    5      F32xF32->F32C77     1    F32    F32    F32          C77   64  0.000206     0.000157
-    6      F32xF32->F32C75     2    F32    F32    F32          C75   16  0.000187     0.000139
-    7      F32xF32->F32C75     2    F32    F32    F32          C75   32  0.000126     0.000103
-    8      F32xF32->F32C75     2    F32    F32    F32          C75   64  0.000105     0.000082
-    9      F16xF16->F16C64     3    F16    F16    F16          C64   16  0.000173     0.000144
-    10     F16xF16->F16C64     3    F16    F16    F16          C64   32  0.000381     0.000341
-    11     F16xF16->F16C64     3    F16    F16    F16          C64   64  0.000558     0.000508
-    12  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68   16  0.000100     0.000078
-    13  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68   32  0.000206     0.000146
-    14  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68   64  0.000118     0.000097
+                      name  test type_a  ... dim   t-total t-gemm_sync
+    0      F32xF32->F32C68     0    F32  ...  16  0.000218    0.000191
+    1      F32xF32->F32C68     0    F32  ...  32  0.000260    0.000229
+    2      F32xF32->F32C68     0    F32  ...  64  0.000233    0.000216
+    3      F32xF32->F32C77     1    F32  ...  16  0.000152    0.000137
+    4      F32xF32->F32C77     1    F32  ...  32  0.000503    0.000438
+    5      F32xF32->F32C77     1    F32  ...  64  0.000501    0.000456
+    6      F32xF32->F32C75     2    F32  ...  16  0.000354    0.000310
+    7      F32xF32->F32C75     2    F32  ...  32  0.000458    0.000413
+    8      F32xF32->F32C75     2    F32  ...  64  0.000493    0.000441
+    9      F16xF16->F16C64     3    F16  ...  16  0.001433    0.001333
+    10     F16xF16->F16C64     3    F16  ...  32  0.003370    0.003329
+    11     F16xF16->F16C64     3    F16  ...  64  0.006252    0.006214
+    12  BF16xBF16->BF16C68     4   BF16  ...  16  0.000249    0.000211
+    13  BF16xBF16->BF16C68     4   BF16  ...  32  0.000385    0.000360
+    14  BF16xBF16->BF16C68     4   BF16  ...  64  0.000434    0.000412
+
+    [15 rows x 9 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-138
+.. GENERATED FROM PYTHON SOURCE LINES 165-167
 
 Smaller sets
 ++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-152
+.. GENERATED FROM PYTHON SOURCE LINES 167-181
 
 .. code-block:: default
 
@@ -541,26 +561,26 @@ Smaller sets
     t-gemm_sync
     name  BF16xBF16->BF16C68  F16xF16->F16C64  F32xF32->F32C77
     dim                                                       
-    16              0.000078         0.000144         0.000102
-    32              0.000146         0.000341         0.000112
-    64              0.000097         0.000508         0.000157
+    16              0.000211         0.001333         0.000137
+    32              0.000360         0.003329         0.000438
+    64              0.000412         0.006214         0.000456
 
     t-total
     name  BF16xBF16->BF16C68  F16xF16->F16C64  F32xF32->F32C77
     dim                                                       
-    16              0.000100         0.000173         0.000147
-    32              0.000206         0.000381         0.000141
-    64              0.000118         0.000558         0.000206
+    16              0.000249         0.001433         0.000152
+    32              0.000385         0.003370         0.000503
+    64              0.000434         0.006252         0.000501
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-155
+.. GENERATED FROM PYTHON SOURCE LINES 182-184
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-173
+.. GENERATED FROM PYTHON SOURCE LINES 184-202
 
 .. code-block:: default
 
@@ -609,7 +629,7 @@ Plots
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  9.635 seconds)
+   **Total running time of the script:** ( 0 minutes  19.661 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_gemm_f8.py:

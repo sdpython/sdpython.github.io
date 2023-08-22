@@ -79,7 +79,7 @@ Cache Performance
 
  .. code-block:: none
 
-      0%|          | 0/256 [00:00<?, ?it/s]     48%|####8     | 123/256 [00:00<00:00, 1220.31it/s]     96%|#########6| 246/256 [00:00<00:00, 655.01it/s]     100%|##########| 256/256 [00:00<00:00, 682.23it/s]
+      0%|          | 0/256 [00:00<?, ?it/s]     53%|#####2    | 135/256 [00:00<00:00, 1344.02it/s]    100%|##########| 256/256 [00:00<00:00, 742.99it/s] 
 
 
 
@@ -106,7 +106,7 @@ Cache size estimator
 
  .. code-block:: none
 
-    L2 cache size estimation is 0.758 Mb.
+    L2 cache size estimation is 1.398 Mb.
 
 
 
@@ -162,7 +162,7 @@ We simulate the computation of a TreeEnsemble
 of 50 features, 100 trees and depth of 10
 (so :math:`2^10` nodes.)
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-111
+.. GENERATED FROM PYTHON SOURCE LINES 81-109
 
 .. code-block:: default
 
@@ -170,7 +170,7 @@ of 50 features, 100 trees and depth of 10
     dfs = []
     cols = []
     drop = []
-    for n in tqdm(range(10)):
+    for n in tqdm(range(2 if unit_test_going() else 5)):
         res = benchmark_cache_tree(
             n_rows=2000,
             n_features=50,
@@ -185,8 +185,6 @@ of 50 features, 100 trees and depth of 10
         dfs.append(df)
         cols.append(df.columns[-1])
         drop.append(df.columns[0])
-        if unit_test_going() and len(dfs) >= 2:
-            break
 
     df = concat(dfs, axis=1).reset_index(drop=True)
     df["i"] = df["i0"]
@@ -204,7 +202,7 @@ of 50 features, 100 trees and depth of 10
 
  .. code-block:: none
 
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|#         | 1/10 [00:00<00:08,  1.12it/s]     20%|##        | 2/10 [00:01<00:07,  1.13it/s]     30%|###       | 3/10 [00:02<00:06,  1.13it/s]     40%|####      | 4/10 [00:03<00:05,  1.13it/s]     50%|#####     | 5/10 [00:04<00:04,  1.13it/s]     60%|######    | 6/10 [00:05<00:03,  1.10it/s]     70%|#######   | 7/10 [00:06<00:02,  1.10it/s]     80%|########  | 8/10 [00:07<00:01,  1.10it/s]     90%|######### | 9/10 [00:08<00:00,  1.10it/s]    100%|##########| 10/10 [00:08<00:00,  1.11it/s]    100%|##########| 10/10 [00:08<00:00,  1.11it/s]
+      0%|          | 0/5 [00:00<?, ?it/s]     20%|##        | 1/5 [00:00<00:03,  1.10it/s]     40%|####      | 2/5 [00:01<00:02,  1.10it/s]     60%|######    | 3/5 [00:02<00:01,  1.10it/s]     80%|########  | 4/5 [00:03<00:00,  1.09it/s]    100%|##########| 5/5 [00:04<00:00,  1.09it/s]    100%|##########| 5/5 [00:04<00:00,  1.09it/s]
 
 
 .. raw:: html
@@ -233,11 +231,6 @@ of 50 features, 100 trees and depth of 10
           <th>time2</th>
           <th>time3</th>
           <th>time4</th>
-          <th>time5</th>
-          <th>time6</th>
-          <th>time7</th>
-          <th>time8</th>
-          <th>time9</th>
           <th>i</th>
           <th>time_avg</th>
           <th>time_med</th>
@@ -246,83 +239,58 @@ of 50 features, 100 trees and depth of 10
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.028197</td>
-          <td>0.028411</td>
-          <td>0.028623</td>
-          <td>0.028179</td>
-          <td>0.028185</td>
-          <td>0.02948</td>
-          <td>0.039553</td>
-          <td>0.02852</td>
-          <td>0.028449</td>
-          <td>0.028191</td>
+          <td>0.028234</td>
+          <td>0.02903</td>
+          <td>0.028248</td>
+          <td>0.028298</td>
+          <td>0.028279</td>
           <td>0</td>
-          <td>0.029579</td>
-          <td>0.02843</td>
+          <td>0.028418</td>
+          <td>0.028279</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.028197</td>
-          <td>0.028411</td>
-          <td>0.028623</td>
-          <td>0.028179</td>
-          <td>0.028185</td>
-          <td>0.02948</td>
-          <td>0.039553</td>
-          <td>0.02852</td>
-          <td>0.028449</td>
-          <td>0.028191</td>
+          <td>0.028234</td>
+          <td>0.02903</td>
+          <td>0.028248</td>
+          <td>0.028298</td>
+          <td>0.028279</td>
           <td>1</td>
-          <td>0.029579</td>
-          <td>0.02843</td>
+          <td>0.028418</td>
+          <td>0.028279</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.028197</td>
-          <td>0.028411</td>
-          <td>0.028623</td>
-          <td>0.028179</td>
-          <td>0.028185</td>
-          <td>0.02948</td>
-          <td>0.039553</td>
-          <td>0.02852</td>
-          <td>0.028449</td>
-          <td>0.028191</td>
+          <td>0.028234</td>
+          <td>0.02903</td>
+          <td>0.028248</td>
+          <td>0.028298</td>
+          <td>0.028279</td>
           <td>2</td>
-          <td>0.029579</td>
-          <td>0.02843</td>
+          <td>0.028418</td>
+          <td>0.028279</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.028197</td>
-          <td>0.028411</td>
-          <td>0.028623</td>
-          <td>0.028179</td>
-          <td>0.028185</td>
-          <td>0.02948</td>
-          <td>0.039553</td>
-          <td>0.02852</td>
-          <td>0.028449</td>
-          <td>0.028191</td>
+          <td>0.028234</td>
+          <td>0.02903</td>
+          <td>0.028248</td>
+          <td>0.028298</td>
+          <td>0.028279</td>
           <td>3</td>
-          <td>0.029579</td>
-          <td>0.02843</td>
+          <td>0.028418</td>
+          <td>0.028279</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.028197</td>
-          <td>0.028411</td>
-          <td>0.028623</td>
-          <td>0.028179</td>
-          <td>0.028185</td>
-          <td>0.02948</td>
-          <td>0.039553</td>
-          <td>0.02852</td>
-          <td>0.028449</td>
-          <td>0.028191</td>
+          <td>0.028234</td>
+          <td>0.02903</td>
+          <td>0.028248</td>
+          <td>0.028298</td>
+          <td>0.028279</td>
           <td>4</td>
-          <td>0.029579</td>
-          <td>0.02843</td>
+          <td>0.028418</td>
+          <td>0.028279</td>
         </tr>
       </tbody>
     </table>
@@ -331,12 +299,12 @@ of 50 features, 100 trees and depth of 10
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-114
+.. GENERATED FROM PYTHON SOURCE LINES 110-112
 
 Estimation
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-122
+.. GENERATED FROM PYTHON SOURCE LINES 112-120
 
 .. code-block:: default
 
@@ -358,25 +326,25 @@ Estimation
 
     Optimal batch size is among:
           i  time_med  time_avg
-    0  1152  0.028156  0.028513
-    1  1088  0.028235  0.028292
-    2  1536  0.028290  0.028353
-    3   832  0.028296  0.028624
-    4  1728  0.028319  0.028561
-    5   128  0.028327  0.028826
-    6  1024  0.028327  0.028499
-    7  1344  0.028330  0.028638
-    8  1280  0.028331  0.028680
-    9  1792  0.028334  0.028374
+    0   512  0.028095  0.029010
+    1   576  0.028106  0.028431
+    2   448  0.028127  0.028298
+    3   384  0.028135  0.028317
+    4  1920  0.028164  0.028825
+    5  1024  0.028187  0.029988
+    6   192  0.028199  0.028890
+    7    64  0.028207  0.028269
+    8  1600  0.028215  0.029085
+    9  1536  0.028217  0.028628
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-124
+.. GENERATED FROM PYTHON SOURCE LINES 121-122
 
 One possible estimation
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-129
+.. GENERATED FROM PYTHON SOURCE LINES 122-127
 
 .. code-block:: default
 
@@ -393,16 +361,16 @@ One possible estimation
 
  .. code-block:: none
 
-    Estimation: 989.3574424716934
+    Estimation: 815.4414959215176
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-131
+.. GENERATED FROM PYTHON SOURCE LINES 128-129
 
 Plots.
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-139
+.. GENERATED FROM PYTHON SOURCE LINES 129-137
 
 .. code-block:: default
 
@@ -429,7 +397,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  10.960 seconds)
+   **Total running time of the script:** ( 0 minutes  6.328 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu.py:
