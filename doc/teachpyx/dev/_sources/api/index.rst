@@ -2,6 +2,7 @@ Code inclus dans cette librairie
 ================================
 
 .. toctree::
+    :caption: Constructions classiques
 
     classique
     tools
@@ -10,3 +11,9 @@ Code inclus dans cette librairie
     :caption: Fonctions implémentées pour les exercices
 
     practice/rues_paris
+
+.. toctree::
+    :caption: FAQ
+
+    numpysex
+    faqs

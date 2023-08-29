@@ -1,0 +1,1501 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Casser le code de Vigenère" href="vigenere.html" /><link rel="prev" title="Parcourir les rues de Paris" href="paris_parcours.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.08.19 -->
+        <title>Algorithmes de streaming, BJKST - Documentation teachpyx 0.3.1</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Documentation teachpyx 0.3.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.3.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_regex/index.html">Expression régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expression régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../py/i_expy.html">Exemples</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_data/index.html">Matrices et DataFrames</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_numpy.html">Calcul matriciel avec numpy (version courte)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_pandas.html">Manipulation de données avec pandas (version courte)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_data/i_exda.html">Exemples</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles inclassables</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Collections d’articles inclassables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Culture et Pratique</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Culture et Pratique</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../pystruct.html">Structures de données (code)</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Structures de données (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../pydata.html">Manipulation de données (code)</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Manipulation de données (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../pycheck.html">Comprendre un programme (code)</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Comprendre un programme (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../np_complet.html">Problèmes NP-complets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../algo101.html">Algorithmes à connaître (code)</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Algorithmes à connaître (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../algocompose.html">Algorithmes composés (code)</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Algorithmes composés (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vigenere.html">Casser le code de Vigenère</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017_2.html#Exercice-1">Exercice 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/classique.html">examples.construction_classique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/tools.html">tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/numpysex.html">examples.numpysex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/faqs.html">faq</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Algorithmes-de-streaming,-BJKST">
+<h1>Algorithmes de streaming, BJKST<a class="headerlink" href="#Algorithmes-de-streaming,-BJKST" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Les streams (flux) de données sont aujourd’hui présents dans de nombreux domaines (réseaux sociaux, e-commerce, logs de connexion Internet, etc.). L’analyse rapide et pertinente de ces flux est motivée par l’immensité des données qui ne peuvent souvent pas être stockés (du moins facilement) et dont le traitement serait trop lourd (penser au calcul de l’âge moyen des 1,86 milliards utilisateurs de Facebook pour s’en convaincre). Ce notebook s’intéresse particulièrement à l’algorithme
+<a class="reference external" href="http://info.prelert.com/blog/hashing-and-approximate-distinct-value-counts">BJKST</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Plus formellement considérons un univers <img class="math" src="../../_images/math/711e809ffdf4007a2202020da1fe86f6ba3f13d1.svg" alt="U"/> de taille <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> (un nombre très grand) qui ne peut être stocké en mémoire et une séquence <img class="math" src="../../_images/math/799a33a5393dc3f70b7f7b425b2674e46ff51ad8.svg" alt="S = (s_1, s_2, \ldots, s_m, \ldots)"/> d’éléments de <img class="math" src="../../_images/math/711e809ffdf4007a2202020da1fe86f6ba3f13d1.svg" alt="U"/>. Un algorithme de streaming <img class="math" src="../../_images/math/bc8d0550bfec213a9edf5e2bc77b0848cba0bb7c.svg" alt="\mathcal{A}"/> prend le stream <img class="math" src="../../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> en entrée et renvoie une fonction <img class="math" src="../../_images/math/0dbd90960acb7ee42b8758445d6dc1d281542360.svg" alt="f(S)"/> (souvent à valeurs réelles).</p>
+<p>Notons que l’algorithme <img class="math" src="../../_images/math/bc8d0550bfec213a9edf5e2bc77b0848cba0bb7c.svg" alt="\mathcal{A}"/> est souvent contraint d’accéder séquentiellement aux éléments de <img class="math" src="../../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> et / ou ne peut les parcourir qu’un nombre fini de fois.</p>
+<p>Un bon algorithme de streaming doit satisfaire plusieurs contraintes:</p>
+<ul class="simple">
+<li><p>Il doit être un bon estimateur de la vraie valeur que prendrait <img class="math" src="../../_images/math/6560edc0392b6f6d1cce6520d0aaee6174f677f6.svg" alt="f^*(U)"/> sur l’univers (plus de détails dans un instant)</p></li>
+<li><p>Il doit pouvoir s’actualiser rapidement (en temps linéaire ou moins) à mesure que le flux <img class="math" src="../../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> évolue</p></li>
+<li><p>Il doit être peu gourmand en mémoire</p></li>
+</ul>
+<p>Etant donné une précision <img class="math" src="../../_images/math/9e0d1ade3faa883f206404a8109ca3ca3f439ee4.svg" alt="\epsilon &gt; 0"/> et une tolérance <img class="math" src="../../_images/math/23a60b136da5f79aadd583c399593fb76683ebdd.svg" alt="\delta &gt; 0"/>, l’algorithme <img class="math" src="../../_images/math/bc8d0550bfec213a9edf5e2bc77b0848cba0bb7c.svg" alt="\mathcal{A}"/> doît satisfaire:</p>
+<p><img class="math" src="../../_images/math/d70d1bf932cbddf9c41584afa5a36a581af5a8d1.svg" alt="\mathbb{P}(\lvert \frac{f^*(U) - f(S)}{f(S)} \rvert \leq \epsilon) \geq 1 - \delta."/></p>
+<p>Quelques exemples fréquents d’algorithmes de streaming:</p>
+<ul class="simple">
+<li><p>Estimation de la valeur moyenne, de la médiane</p></li>
+<li><p>Estimation du nombre d’éléments distincts</p></li>
+<li><p>Estimation de la fréquences des élements</p></li>
+<li><p>Estimation de la densité de probabilité</p></li>
+</ul>
+</section>
+<section id="Estimer-le-nombre-d'éléments-distincts:-l'algorithme-BJKST">
+<h2>Estimer le nombre d’éléments distincts: l’algorithme BJKST<a class="headerlink" href="#Estimer-le-nombre-d'éléments-distincts:-l'algorithme-BJKST" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’algorithme <a class="reference external" href="https://pdfs.semanticscholar.org/e349/7952347101a3535434bc35d378224cf87bcc.pdf">BJKST</a> permet d’estimer le nombre d’éléments distincts d’un stream <img class="math" src="../../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/>. Son fonctionnement est assez simple et repose sur la notion d’universal hashing que nous présentons ci-bas.</p>
+<section id="Universal-hashing">
+<h3>Universal hashing<a class="headerlink" href="#Universal-hashing" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’idée derrière les fonctions de hachage est de faire correspondre des élements d’un ensemble dont la taille est variable (ou bien n’est pas connue) vers un ensemble de taille fixe. Le principe de l’universal hashing est de sélectionner aléatoirement une fonction <img class="math" src="../../_images/math/777afd6041e6d265ef21483c121300e1c7aa565a.svg" alt="h"/> dans une famille de fonctions de hachage <img class="math" src="../../_images/math/3042d596205c0588f73db081689c2d3dcb4af315.svg" alt="\mathcal{H}"/> et de garantir un faible probabilité du nombre de collisions de hachage.</p>
+<p>Formellement si l’on note <img class="math" src="../../_images/math/4ba36a36c3950f24be96d8cce61e710e5a2167dc.svg" alt="[n]"/> l’ensemble <img class="math" src="../../_images/math/4945ed7b907a151c83152a859e9bf376af5a1239.svg" alt="\{1, \ldots, n\}"/>, une famille de fonctions <img class="math" src="../../_images/math/3042d596205c0588f73db081689c2d3dcb4af315.svg" alt="\mathcal{H}"/> est dite universelle si toute fonction <img class="math" src="../../_images/math/a32eea26a2d31dba7ebf2d9a850a3701a0b0f4dd.svg" alt="h: U \mapsto [n]"/> choisie uniformément dans la famille <img class="math" src="../../_images/math/3042d596205c0588f73db081689c2d3dcb4af315.svg" alt="\mathcal{H}"/> vérifie <img class="math" src="../../_images/math/a5c11bfd175eff9da15d2c40e06cd1f4e78deb9c.svg" alt="\mathbb{P}(h(x) = h(y)) \leq \frac{1}{n}"/> pour tout couple <img class="math" src="../../_images/math/1c96dd9777240e536f4dc7df7393d1fa941d6900.svg" alt="x,y \in U"/> distincts.</p>
+<p>Nous considérons ici la famille <img class="math" src="../../_images/math/f2cbb282675117c2b40ef18d2531e1c64d0607f9.svg" alt="\mathcal{H} = \{h_{a,b}\}"/> où <img class="math" src="../../_images/math/b247e71f1d1e3722814876ca578bbaa272d01240.svg" alt="h_{a,b}(x) = ((ax + b) \space{} \mathrm{mod} \space{} p) \space{} \mathrm{mod} \space{} n"/>, <img class="math" src="../../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> est un entier, <img class="math" src="../../_images/math/929bf9ecdf8cc081871b5da71626b060a16c1039.svg" alt="a \in \{1, \ldots, p - 1\}"/>, <img class="math" src="../../_images/math/1dcfd37e44bef6f7f2fdd6b0d919ffd77fdcdad8.svg" alt="b \in \{0, \ldots, p - 1 \}"/> et <img class="math" src="../../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> un nombre premier <img class="math" src="../../_images/math/a1e332d90f1f9753072cfae486c0f3bc9a2db77e.svg" alt="\geq n"/>. On peut sans trop de difficulté se convaincre que <img class="math" src="../../_images/math/338468313fc08907e3e6b60f123b174f7b961bfc.svg" alt="h_{a,b}(x)"/> est uniformément distribué sur <img class="math" src="../../_images/math/4ba36a36c3950f24be96d8cce61e710e5a2167dc.svg" alt="[n]"/> et que cette famille est universelle (voir <a class="reference external" href="https://en.wikipedia.org/wiki/Universal_hashing">Universal
+hashing</a> pour plus de détails).</p>
+</section>
+<section id="Collisions">
+<h3>Collisions<a class="headerlink" href="#Collisions" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Vérifions numériquement le nombre de collisions. Considérons un univers <img class="math" src="../../_images/math/711e809ffdf4007a2202020da1fe86f6ba3f13d1.svg" alt="U"/> large prenons par exemple <img class="math" src="../../_images/math/b328673c55b7ab78dd3c998049a8c662e3d232f0.svg" alt="U = [n]"/> avec <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> grand.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">4</span>
+<span class="n">U</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Choisissons <img class="math" src="../../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> un nombre premier arbitrairement grand et une petite valeur de hashage.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mi">4294967291</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+<p>Choisissons une fonction <img class="math" src="../../_images/math/777afd6041e6d265ef21483c121300e1c7aa565a.svg" alt="h"/> uniformément dans la famille <img class="math" src="../../_images/math/3042d596205c0588f73db081689c2d3dcb4af315.svg" alt="\mathcal{H}"/></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">m</span>
+</pre></div>
+</div>
+</div>
+<p>Tirons des couples <img class="math" src="../../_images/math/53a3bf375aebc4ab1adef90edcb9e0cb765b966c.svg" alt="(x,y)"/> distincts dans <img class="math" src="../../_images/math/711e809ffdf4007a2202020da1fe86f6ba3f13d1.svg" alt="U"/></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">couples</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">couples</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nombre de couples distincts = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Nombre de couples distincts = 500
+</pre></div></div>
+</div>
+<p>Pour chaque couple, calculons les valeurs de hashage et comptons le nombre de collisions.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+<span class="p">)</span> <span class="ow">in</span> <span class="n">couples</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">h</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<p>Le nombre de collisions rapporté au nombre de couples <img class="math" src="../../_images/math/53a3bf375aebc4ab1adef90edcb9e0cb765b966c.svg" alt="(x,y)"/> distincts nous donne une estimation de la probabilité de collision.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_collisions</span> <span class="o">=</span> <span class="n">c</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Probabilité de collision = </span><span class="si">{:.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p_collisions</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Probabilité de collision = 11.40%
+</pre></div></div>
+</div>
+<p>Cette valeur est proche de la valeur théorique <img class="math" src="../../_images/math/09b5d5c369936eeb806722d768f7a9e7c776248b.svg" alt="\frac{1}{m}"/>. Effectuons plusieurs tirages pour confirmer ce résultat.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">collisions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># on reitere 100 fois</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">m</span>
+
+    <span class="n">couples</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">couples</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+    <span class="p">)</span> <span class="ow">in</span> <span class="n">couples</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">h</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">collisions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">))</span>
+<span class="n">p_collision</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">collisions</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Probabilité de collision moyenne = </span><span class="si">{:.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p_collision</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Probabilité de collision moyenne = 9.97%
+</pre></div></div>
+</div>
+<p>Cette probabilité moyenne est proche de la valeur théorique. Réitérons pour d’autres valeurs <img class="math" src="../../_images/math/435b11e0dbea2eaa16cbb0b93b9266e88b4a5b4c.svg" alt="m"/>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">750</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]</span>
+<span class="n">p_collision</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">4294967291</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">:</span>
+    <span class="n">collisions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># on reitere 100 fois</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">m</span>
+
+        <span class="n">couples</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">couples</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">y</span><span class="p">,</span>
+        <span class="p">)</span> <span class="ow">in</span> <span class="n">couples</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">h</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">collisions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">))</span>
+    <span class="n">p_collision</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">collisions</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">p_collision</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$m$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Ratio des collisions en fonction de la taille de hash&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_algo-compose_BJKST_21_0.png" src="../../_images/practice_algo-compose_BJKST_21_0.png" />
+</div>
+</div>
+<p>La probabilité de collision estimée est bien inversement proportionnelle à la valeur de hashage <img class="math" src="../../_images/math/435b11e0dbea2eaa16cbb0b93b9266e88b4a5b4c.svg" alt="m"/>.</p>
+</section>
+<section id="Algorithme-BJKST">
+<h3>Algorithme BJKST<a class="headerlink" href="#Algorithme-BJKST" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Nous considérons un univers <img class="math" src="../../_images/math/711e809ffdf4007a2202020da1fe86f6ba3f13d1.svg" alt="U"/> de taille <img class="math" src="../../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> et comportant <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> élements distincts. Pour un stream <img class="math" src="../../_images/math/ccf7f55b2159d6718964e7bc9ab462cc7fd62015.svg" alt="S = (a_1, a_2, \ldots)"/> de taille <img class="math" src="../../_images/math/cf5e01d32ed5a9d4fa469058746a8d302dc00fb3.svg" alt="s"/> essayons d’estimer <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> à l’aide de l’algorithme <a class="reference external" href="http://info.prelert.com/blog/hashing-and-approximate-distinct-value-counts">BJKST</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">4</span>
+<span class="c1"># nous tirons N entiers de 64bits (type i8) dont n sont distincts</span>
+<span class="n">universe</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;i8&quot;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">universe</span><span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<p>L’idée derrière l’algorithme <a class="reference external" href="http://info.prelert.com/blog/hashing-and-approximate-distinct-value-counts">BJKST</a> est de parcourir les élements du stream et de remplir un ensemble <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> par échantillonage. La probabilité d’échantillonage initiale est <img class="math" src="../../_images/math/d6e53a1a5abc87faf58903eb420a5eabfe30083c.svg" alt="1"/> et lorsque <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> devient trop grand (au delà d’un certain seuil <img class="math" src="../../_images/math/5e4bfb0b30ead634b95845ff189da5d2c92d777f.svg" alt="B_{max}"/>) on enlève des élements et on diminue la probabilité d’échantillonage. A la fin le nombre d’éléments dans <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> et la probabilité
+d’échantillonage finale permettent d’estimer le nombre d’éléments distincts dans <img class="math" src="../../_images/math/711e809ffdf4007a2202020da1fe86f6ba3f13d1.svg" alt="U"/>.</p>
+<p>Pour <img class="math" src="../../_images/math/45187b08145ea2451851bdc8c27c4a66a8182329.svg" alt="\epsilon &gt;0"/> nous prenons <img class="math" src="../../_images/math/ba4393568a7e857ceaf482b396658e73bbc8c9b6.svg" alt="B_{max} = 1/ \epsilon^2"/> :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># definissons un ensemble B</span>
+<span class="n">B</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">B_max</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<p>Choisissons <img class="math" src="../../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> un nombre premier arbitrairement grand:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mi">4294967291</span>
+</pre></div>
+</div>
+</div>
+<p>et tirons aléatoirement deux fonctions <img class="math" src="../../_images/math/91d9157928d453d9487611aad9668152d4283be6.svg" alt="h_{a_1, b_1}"/> et <img class="math" src="../../_images/math/919ea41ba6a0630dc6f530796f054d98bfbd2e74.svg" alt="h_{a_2, b_2}"/> distinctes:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="c1"># deux couples (a_1, b_1) (a_1, b_2) distincts</span>
+<span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">s</span>
+
+
+<span class="k">def</span> <span class="nf">h2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<p>Initialisons un entier <img class="math" src="../../_images/math/166b6078b84a177dff3a50cf6a23450bbfc70c5f.svg" alt="c"/> à zero. Pour chaque <img class="math" src="../../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> dans le stream nous calculons d’abord sa valeur de hachage <img class="math" src="../../_images/math/3794f8c7b52280c6041090c6d8970f57f752ab1a.svg" alt="y = h_{a_1, b_1}(x)"/> :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># Prenons le premier élément du stream (à titre d&#39;exemple)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">h1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x = </span><span class="si">{}</span><span class="s2">, y = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+x = 464, y = 13
+</pre></div></div>
+</div>
+<p>La probabilité d’échantillonage est basée sur le nombre de zéros à droite dans la décomposition binaire de <img class="math" src="../../_images/math/bd7dd5ee003cda2294a46fd47aa8a1ecf28b0418.svg" alt="y"/>. Pour calculer ce nombre diverses méthodes existent (voir <a class="reference external" href="http://graphics.stanford.edu/~seander/bithacks.html#ZerosOnRightModLookup">Count the consecutive zero bits (trailing) on the right with modulus division and lookup</a> pour plus de détails). Pour <img class="math" src="../../_images/math/a7c5f825bf8539ff93630ce2a91b118ce31b0229.svg" alt="s= 2^1"/> et <img class="math" src="../../_images/math/6ddf774d72592d056dd6b1a879beffbf95f9529c.svg" alt="s = 2^{10}"/> la décomposition binaire comporte <img class="math" src="../../_images/math/d6e53a1a5abc87faf58903eb420a5eabfe30083c.svg" alt="1"/> et <img class="math" src="../../_images/math/792c844aebbc4b7b42af431efddb3ac5315f8cc1.svg" alt="10"/> zéros à droite respectivement:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mod_37bit_position</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">32</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">26</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="mi">23</span><span class="p">,</span>
+    <span class="mi">27</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">,</span>
+    <span class="mi">24</span><span class="p">,</span>
+    <span class="mi">30</span><span class="p">,</span>
+    <span class="mi">28</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">25</span><span class="p">,</span>
+    <span class="mi">22</span><span class="p">,</span>
+    <span class="mi">31</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">,</span>
+    <span class="mi">29</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">21</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Un seul zéro à droite</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">1</span>
+<span class="n">zeros</span> <span class="o">=</span> <span class="n">mod_37bit_position</span><span class="p">[(</span><span class="o">-</span><span class="n">s</span> <span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Decomposition binaire de 2**1 = </span><span class="si">{}</span><span class="s2">, nombre de zeros a droite = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="nb">bin</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">zeros</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Dix zéros à droite</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">10</span>
+<span class="n">zeros</span> <span class="o">=</span> <span class="n">mod_37bit_position</span><span class="p">[(</span><span class="o">-</span><span class="n">s</span> <span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Decomposition binaire de 2**10 = </span><span class="si">{}</span><span class="s2">, nombre de zeros a droite = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="nb">bin</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">zeros</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Decomposition binaire de 2**1 = 0b10, nombre de zeros a droite = 1
+Decomposition binaire de 2**10 = 0b10000000000, nombre de zeros a droite = 10
+</pre></div></div>
+</div>
+<p>Notons <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> le nombre de zéros à droite dans la décomposition binaire de <img class="math" src="../../_images/math/bd7dd5ee003cda2294a46fd47aa8a1ecf28b0418.svg" alt="y"/>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">mod_37bit_position</span><span class="p">[(</span><span class="o">-</span><span class="n">y</span> <span class="o">&amp;</span> <span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Decomposition binaire de y = </span><span class="si">{}</span><span class="s2">, nombre de zeros a droite = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">k</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Decomposition binaire de y = 0b1101, nombre de zeros a droite = 0
+</pre></div></div>
+</div>
+<p>Puis nous comparons <img class="math" src="../../_images/math/b8254fe63caeb7566cf59a5d245d591c69cdab60.svg" alt="k \geq c"/>. Si c’est le cas nous calculons une nouvelle valeur de hashage de <img class="math" src="../../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/>, <img class="math" src="../../_images/math/bec84cfe489988e36f31eecc10d25f74780412ed.svg" alt="z = h_{a_2, b_2}(x)"/> et rajoutons le couple <img class="math" src="../../_images/math/e017a80bf3cce6b5175023f07c27849d7926097c.svg" alt="(z, k)"/> à l’ensemble <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">:</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">h2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">B</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>A l’initialisation la condition <img class="math" src="../../_images/math/b8254fe63caeb7566cf59a5d245d591c69cdab60.svg" alt="k \geq c"/> est toujours vérifiée (ce qui correspond à une probabilité d’échantillonage égale à <img class="math" src="../../_images/math/d6e53a1a5abc87faf58903eb420a5eabfe30083c.svg" alt="1"/>) :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{(539, 0)}
+</pre></div></div>
+</div>
+<p>L’ensemble <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> se remplit jusqu’à atteindre la taille <img class="math" src="../../_images/math/5e4bfb0b30ead634b95845ff189da5d2c92d777f.svg" alt="B_{max}"/>. Lorsque cette taille est atteinte on incrémente <img class="math" src="../../_images/math/166b6078b84a177dff3a50cf6a23450bbfc70c5f.svg" alt="c"/> et on enlève à <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> tous les couples <img class="math" src="../../_images/math/e017a80bf3cce6b5175023f07c27849d7926097c.svg" alt="(z, k)"/> où <img class="math" src="../../_images/math/178e4b1f85a02f1a737fc9f355545c9e6adf7765.svg" alt="k &lt; c"/>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">B_max</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># on prend ici une copie de B</span>
+    <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">B</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Parcourons le stream et regardons à quoi ressemble l’ensemble <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">h1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">mod_37bit_position</span><span class="p">[(</span><span class="o">-</span><span class="n">y</span> <span class="o">&amp;</span> <span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">h2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">B</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">B_max</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
+                    <span class="n">B</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Taille de B = </span><span class="si">{}</span><span class="s2">, c = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="n">c</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Taille de B = 96, c = 2
+</pre></div></div>
+</div>
+<p>Une estimateur de la taille de l’univers est alors <img class="math" src="../../_images/math/07b49e9254f3338c73287775151a7bf3af77e553.svg" alt="2^c \mathrm{card}(B)"/> :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estimation de la taille de U = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">c</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Estimation de la taille de U = 384
+</pre></div></div>
+</div>
+<p>Pour s’en convaincre, remarquons qu’en moyenne le cardinal de <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> est égal au nombre de <img class="math" src="../../_images/math/821c42333b9f5768eea78b4df1a948b0a5deb5ea.svg" alt="y_i"/> pour lequel le nombre de zéros à droite dans la décomposition binaire est plus grand que <img class="math" src="../../_images/math/166b6078b84a177dff3a50cf6a23450bbfc70c5f.svg" alt="c"/>. Ceci correspond au nombre de <img class="math" src="../../_images/math/821c42333b9f5768eea78b4df1a948b0a5deb5ea.svg" alt="y_i"/> qui sont divisibles par <img class="math" src="../../_images/math/5f82d32393b1b125dc37737c5bbccbd7552a52f2.svg" alt="2^c"/> :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../../_images/math/b5f8e5602c34b13af79691bc2023995935a6acb5.svg" alt="\mathbb{E}[\mathrm{card}(B)] = \mathbb{E}\big[\sum_{x_i} I(y_i = 0 \space{} \mathrm{mod} \space{} 2^c)\big] = \sum_{x_i} \mathbb{P}\big( y_i = 0 \space{} \mathrm{mod} \space{} 2^c\big)"/></p>
+</div></div>
+<p>C’est ici qu’intervient la notion de famille universelle car cette derniere égalité n’est valide que si le nombre de collision entre <img class="math" src="../../_images/math/bd7dd5ee003cda2294a46fd47aa8a1ecf28b0418.svg" alt="y"/> et <img class="math" src="../../_images/math/087a0408283a772ee60faa3753a3c453801e7b4b.svg" alt="z"/> est faible lors du hachage de <img class="math" src="../../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> par <img class="math" src="../../_images/math/91d9157928d453d9487611aad9668152d4283be6.svg" alt="h_{a_1, b_1}"/> et <img class="math" src="../../_images/math/919ea41ba6a0630dc6f530796f054d98bfbd2e74.svg" alt="h_{a_2, b_2}"/>. En effet, si le nombre de collisions était trop grand la taille de <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> sous-estimerait le nombre d’éléments distincts.</p>
+<p>La probabilité <img class="math" src="../../_images/math/855a065ca612d3ef84248e4e8568e5e30af37888.svg" alt="\mathbb{P}\big( y_i = 0 \space{} \mathrm{mod} \space{} 2^c\big)"/> étant égale à <img class="math" src="../../_images/math/fac9cfc94873fbc704f19bfe5f82a05f095ae3d8.svg" alt="1 / 2^c"/> si <img class="math" src="../../_images/math/821c42333b9f5768eea78b4df1a948b0a5deb5ea.svg" alt="y_i"/> est distribué uniformément (l’écrire pour s’en convaincre) nous obtenons :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../../_images/math/12fbe8df4fa2a7d0716f40a0ae12b1f756f17c6a.svg" alt="\mathbb{E}[\mathrm{card}(B)] = \frac{n}{2^c}."/></p>
+</div></div>
+</section>
+<section id="Résultats-numériques">
+<h3>Résultats numériques<a class="headerlink" href="#Résultats-numériques" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Regroupons le code dans une fonction</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">a1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">s</span>
+
+    <span class="k">def</span> <span class="nf">h2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">a2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">s</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">B_max</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">h1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">mod_37bit_position</span><span class="p">[(</span><span class="o">-</span><span class="n">y</span> <span class="o">&amp;</span> <span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">h2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">B</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">B_max</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
+                        <span class="n">B</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">**</span><span class="n">c</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>En pratique une estimation fiable du nombre d’éléments distincts requiert de générer plusieurs calculs indépendants de l’algorithme et de prendre la médiane. Regardons comment la qualité de l’estimation évolue en fonction de la précision <img class="math" src="../../_images/math/5d07e66e6e9d55b1dd504ca14a3d870dfe30fb29.svg" alt="\epsilon"/> exigée et de la taille <img class="math" src="../../_images/math/cf5e01d32ed5a9d4fa469058746a8d302dc00fb3.svg" alt="s"/> du stream.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epsilons</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]</span>
+<span class="n">estimates</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">eps</span> <span class="ow">in</span> <span class="n">epsilons</span><span class="p">:</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">:</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">universe</span><span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">:]</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">median</span><span class="p">([</span><span class="n">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]))</span>
+    <span class="n">estimates</span><span class="p">[</span><span class="n">eps</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">eps</span> <span class="ow">in</span> <span class="n">estimates</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">estimates</span><span class="p">[</span><span class="n">eps</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$\epsilon$ = </span><span class="si">{:.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eps</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Vraie valeur de $n$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Estimation de $n$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Taille du stream&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7f1d715b2860&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_algo-compose_BJKST_53_1.png" src="../../_images/practice_algo-compose_BJKST_53_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Erreur relative = </span><span class="si">{0:.2f}</span><span class="s2">%, s = </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">estimates</span><span class="p">[</span><span class="n">epsilon</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Erreur relative = 91.80%, s = 100
+Erreur relative = 79.20%, s = 250
+Erreur relative = 61.20%, s = 500
+Erreur relative = 35.20%, s = 1000
+Erreur relative = 5.60%, s = 2500
+Erreur relative = 0.80%, s = 5000
+</pre></div></div>
+</div>
+<p>Nous observons que l’estimation converge vers la vraie valeur <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> à mesure que la taille du stream augmente. Pour une précision <img class="math" src="../../_images/math/f89a6878677be1fa5538978257aa7d3072e3bc4a.svg" alt="\epsilon = 10\%"/> et une taille de stream égale à <img class="math" src="../../_images/math/d8b2f2eaa6ecd8044c85d4c72e658f75d84a48ba.svg" alt="5000"/> l’erreur est de <img class="math" src="../../_images/math/fb9ab3d4b7f049b7f6070d61ee73bf9841a0929b.svg" alt="0,8\%"/>.</p>
+<p>La fiabilité de l’estimation est décroissante avec le niveau de précision exigé, l’algorithme donne une bonne estimation de la vraie valeur (ligne horizontale rouge) pour <img class="math" src="../../_images/math/7f7f3ee85e3da361719a055bbf33ce8d0ac56c21.svg" alt="\epsilon \approx 0.3"/>.</p>
+</section>
+<section id="Temps-de-calcul-en-fonction-de-la-taille-du-stream">
+<h3>Temps de calcul en fonction de la taille du stream<a class="headerlink" href="#Temps-de-calcul-en-fonction-de-la-taille-du-stream" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Regardons à présent comment le temps de calcul évolue en fonction de la taille du stream. Rappelons qu’un bon algorithme de streaming doit évoluer de manière au pire linéaire en fonction de la taille d’espace <img class="math" src="../../_images/math/cf5e01d32ed5a9d4fa469058746a8d302dc00fb3.svg" alt="s"/>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">size_bound</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2500</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">:</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">universe</span><span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">:]</span>
+    <span class="n">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[91]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">times</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Temps de calcul (en ms)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Taille du stream&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[91]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0, &#39;Taille du stream&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_algo-compose_BJKST_59_1.png" src="../../_images/practice_algo-compose_BJKST_59_1.png" />
+</div>
+</div>
+<p>La complexité semble être linéaire ce qui est satisfaisant. Notons qu’aucun effort d’optimisation de performance (à part l’usage d’un set) n’a été fait à ce stade.</p>
+</section>
+</section>
+<section id="Un-peu-plus-sur-la-précision-de-l'estimateur">
+<h2>Un peu plus sur la précision de l’estimateur<a class="headerlink" href="#Un-peu-plus-sur-la-précision-de-l'estimateur" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Lorsque la précision <img class="math" src="../../_images/math/5d07e66e6e9d55b1dd504ca14a3d870dfe30fb29.svg" alt="\epsilon"/> est proche de <img class="math" src="../../_images/math/eb34a065ada77603a4b874172c0d8cc9348b06b8.svg" alt="0"/> l’estimation est moins bonne que pour une précision plus large. Pourquoi ?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">4294967291</span>
+
+<span class="n">mod_37bit_position</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">32</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">26</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="mi">23</span><span class="p">,</span>
+    <span class="mi">27</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">,</span>
+    <span class="mi">24</span><span class="p">,</span>
+    <span class="mi">30</span><span class="p">,</span>
+    <span class="mi">28</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">25</span><span class="p">,</span>
+    <span class="mi">22</span><span class="p">,</span>
+    <span class="mi">31</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">,</span>
+    <span class="mi">29</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">21</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">B_max</span><span class="p">,</span> <span class="n">h1</span><span class="p">,</span> <span class="n">h2</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">h1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">mod_37bit_position</span><span class="p">[(</span><span class="o">-</span><span class="n">y</span> <span class="o">&amp;</span> <span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">h2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">B</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">B_max</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
+                        <span class="n">B</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+                        <span class="n">removed</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">R</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">removed</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="n">c</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="h_1-et-h_2-égales-à-l'identité">
+<h3><img class="math" src="../../_images/math/f333fd71fbeedd939e5fc6e22381f1b46838181e.svg" alt="h_1"/> et <img class="math" src="../../_images/math/96770c864cb0d1159ec2db6fdd7e28b9d644e37e.svg" alt="h_2"/> égales à l’identité<a class="headerlink" href="#h_1-et-h_2-égales-à-l'identité" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Si nous prenons <img class="math" src="../../_images/math/f333fd71fbeedd939e5fc6e22381f1b46838181e.svg" alt="h_1"/> et <img class="math" src="../../_images/math/96770c864cb0d1159ec2db6fdd7e28b9d644e37e.svg" alt="h_2"/> égales à l’identité l’ensemble <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/> se remplit linéairement: pour <img class="math" src="../../_images/math/6cfe08f59e3885fe0856b47b1722ec58b71ec016.svg" alt="c=1"/> on enlève tous les nombres avec <img class="math" src="../../_images/math/abd402347f685b3bdf3eda8fad6eecefc3f04153.svg" alt="k = 0"/> (tous les nombres impairs donc la moitié) puis pour <img class="math" src="../../_images/math/ceacad6e834f265c6574eb0447c527a25a901bf4.svg" alt="c=2"/> on enlève tous les nombres où <img class="math" src="../../_images/math/0d6575ad28a6de45d36ac3459b2420bb86bbaab2.svg" alt="k = 0, 1"/> c’est à dire encore la moitié des nombres rajoutés et ainsi de suite..</p>
+<p>A la fin l’estimation est parfaite (cf graphe en fonction de l’avancement dans le stream)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_max</span> <span class="o">=</span> <span class="mi">200</span>
+
+
+<span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">h2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="n">R</span> <span class="o">=</span> <span class="n">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">B_max</span><span class="p">,</span> <span class="n">h1</span><span class="p">,</span> <span class="n">h2</span><span class="p">)</span>
+<span class="n">estimate</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estimated = </span><span class="si">{}</span><span class="s2">, true = </span><span class="si">{}</span><span class="s2">, c= </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">estimate</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">R</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])))</span>
+<span class="n">changes</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">D</span><span class="p">)]</span>
+
+<span class="n">fix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">R</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;total #removed&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">R</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;len B&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="s2">&quot;c = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
+        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mi">65</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">30</span><span class="p">),</span>
+        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Estimated = 1000, true = 1000, c= 3
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0, 0.5, &#39;size&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_algo-compose_BJKST_66_2.png" src="../../_images/practice_algo-compose_BJKST_66_2.png" />
+</div>
+</div>
+</section>
+<section id="cas-où-la-taille-du-hash-est-petite">
+<h3>cas où la taille du hash est petite<a class="headerlink" href="#cas-où-la-taille-du-hash-est-petite" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Si on prend un hash petit il faut regarder plus de nombres pour remplir et l’incrément de <img class="math" src="../../_images/math/166b6078b84a177dff3a50cf6a23450bbfc70c5f.svg" alt="c"/> se fait « plus tard » dans le stream, d’où la mauvaise estimation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_max</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">B_max</span> <span class="o">//</span> <span class="mi">4</span>
+<span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+
+
+<span class="k">def</span> <span class="nf">h2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">s</span>
+
+
+<span class="n">R</span> <span class="o">=</span> <span class="n">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">B_max</span><span class="p">,</span> <span class="n">h1</span><span class="p">,</span> <span class="n">h2</span><span class="p">)</span>
+<span class="n">estimate</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estimated = </span><span class="si">{}</span><span class="s2">, true = </span><span class="si">{}</span><span class="s2">, c= </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">estimate</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">R</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])))</span>
+<span class="n">changes</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">D</span><span class="p">)]</span>
+<span class="n">fix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">R</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;total #removed&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">R</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;len B&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="s2">&quot;c = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
+        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mi">65</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">30</span><span class="p">),</span>
+        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Estimated = 616, true = 1000, c= 2
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_algo-compose_BJKST_68_1.png" src="../../_images/practice_algo-compose_BJKST_68_1.png" />
+</div>
+</div>
+</section>
+<section id="cas-où-la-taille-de-hash-est-plus-grande">
+<h3>cas où la taille de hash est plus grande<a class="headerlink" href="#cas-où-la-taille-de-hash-est-plus-grande" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Si on prend un une valeur de hash plus grande on se rapproche du cas <img class="math" src="../../_images/math/1e0c0345a7153c5514c269c60e82e6dfd655e272.svg" alt="h_1 = h_2 = id"/> et l’estimation est meilleure :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_max</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">B_max</span>
+<span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+
+
+<span class="k">def</span> <span class="nf">h2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">a2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">s</span>
+
+
+<span class="n">R</span> <span class="o">=</span> <span class="n">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">B_max</span><span class="p">,</span> <span class="n">h1</span><span class="p">,</span> <span class="n">h2</span><span class="p">)</span>
+<span class="n">estimate</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estimated = </span><span class="si">{}</span><span class="s2">, true = </span><span class="si">{}</span><span class="s2">, c= </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">estimate</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">R</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])))</span>
+<span class="n">changes</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">D</span><span class="p">)]</span>
+<span class="n">fix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">R</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;total #removed&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">R</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;len B&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="s2">&quot;c = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span>
+        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mi">65</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">30</span><span class="p">),</span>
+        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Estimated = 984, true = 1000, c= 3
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_algo-compose_BJKST_70_1.png" src="../../_images/practice_algo-compose_BJKST_70_1.png" />
+</div>
+</div>
+</section>
+<section id="la-taille-de-hash-dépend-de-la-précision-\epsilon">
+<h3>la taille de hash dépend de la précision <img class="math" src="../../_images/math/5d07e66e6e9d55b1dd504ca14a3d870dfe30fb29.svg" alt="\epsilon"/><a class="headerlink" href="#la-taille-de-hash-dépend-de-la-précision-\epsilon" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>A mon avis, il faut donc que la taille du hash pour <img class="math" src="../../_images/math/96770c864cb0d1159ec2db6fdd7e28b9d644e37e.svg" alt="h_2"/> dépende de la précision (dans <a class="reference external" href="http://www.cs.dartmouth.edu/~ac/Teach/CS85-Fall09/Notes/lecnotes.pdf">Data Stream Algorithms</a> ils préconisent une taille en <img class="math" src="../../_images/math/9c9c998861894b66a3ed960bd75a2e53025b67a2.svg" alt="\mathrm{log}(n) / \epsilon^2"/>).</p>
+<p>Si on prend cette taille pour <img class="math" src="../../_images/math/96770c864cb0d1159ec2db6fdd7e28b9d644e37e.svg" alt="h_2"/> on voit que l’estimation est meilleure pour une précision petite.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
+    <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># taille de la valeur de hashage dépend de la precision</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">a1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+
+    <span class="c1"># on applique la taille b sur la seconde fonction de hash</span>
+    <span class="k">def</span> <span class="nf">h2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">a2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span> <span class="o">%</span> <span class="n">b</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">B_max</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">epsilon</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">h1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">mod_37bit_position</span><span class="p">[(</span><span class="o">-</span><span class="n">y</span> <span class="o">&amp;</span> <span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="mi">37</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">h2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">B</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">B_max</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">B</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
+                        <span class="n">B</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">z</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">**</span><span class="n">c</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">epsilons</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">])</span>
+<span class="n">medians</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">median</span><span class="p">([</span><span class="n">BJKST</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)])</span> <span class="k">for</span> <span class="n">eps</span> <span class="ow">in</span> <span class="n">epsilons</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[99]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1"># plt.plot(1.0 / epsilons, medians)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epsilons</span><span class="p">,</span> <span class="n">medians</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Mediane en fonction de $1 / \epsilon$,  m = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\epsilon$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Mediane&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_algo-compose_BJKST_74_0.png" src="../../_images/practice_algo-compose_BJKST_74_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="vigenere.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Casser le code de Vigenère</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="paris_parcours.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Parcourir les rues de Paris</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Algorithmes de streaming, BJKST</a><ul>
+<li><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li><a class="reference internal" href="#Estimer-le-nombre-d'éléments-distincts:-l'algorithme-BJKST">Estimer le nombre d’éléments distincts: l’algorithme BJKST</a><ul>
+<li><a class="reference internal" href="#Universal-hashing">Universal hashing</a></li>
+<li><a class="reference internal" href="#Collisions">Collisions</a></li>
+<li><a class="reference internal" href="#Algorithme-BJKST">Algorithme BJKST</a></li>
+<li><a class="reference internal" href="#Résultats-numériques">Résultats numériques</a></li>
+<li><a class="reference internal" href="#Temps-de-calcul-en-fonction-de-la-taille-du-stream">Temps de calcul en fonction de la taille du stream</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Un-peu-plus-sur-la-précision-de-l'estimateur">Un peu plus sur la précision de l’estimateur</a><ul>
+<li><a class="reference internal" href="#h_1-et-h_2-égales-à-l'identité"><img class="math" src="../../_images/math/f333fd71fbeedd939e5fc6e22381f1b46838181e.svg" alt="h_1"/> et <img class="math" src="../../_images/math/96770c864cb0d1159ec2db6fdd7e28b9d644e37e.svg" alt="h_2"/> égales à l’identité</a></li>
+<li><a class="reference internal" href="#cas-où-la-taille-du-hash-est-petite">cas où la taille du hash est petite</a></li>
+<li><a class="reference internal" href="#cas-où-la-taille-de-hash-est-plus-grande">cas où la taille de hash est plus grande</a></li>
+<li><a class="reference internal" href="#la-taille-de-hash-dépend-de-la-précision-\epsilon">la taille de hash dépend de la précision <img class="math" src="../../_images/math/5d07e66e6e9d55b1dd504ca14a3d870dfe30fb29.svg" alt="\epsilon"/></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=bdd90cfe"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

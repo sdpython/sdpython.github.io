@@ -253,7 +253,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../practice/py-base/coloriage_carre.html">Jeux de coloriage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../practice/py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../practice/py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/tri_nlnd.html">1A.algo - Tri plus rapide que prévu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 </ul>
 </li>
@@ -274,6 +274,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/algo-compose/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../practice/exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -326,13 +328,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/classique.html">examples.construction_classique</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/tools.html">tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/numpysex.html">examples.numpysex</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/faqs.html">faq</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../i_ex.html">Tous les exemples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../i_ex.html">Syntaxes et définitions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../i_faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
@@ -374,7 +377,7 @@
 <h1>Manipulation de données avec pandas (version courte)<a class="headerlink" href="#Manipulation-de-données-avec-pandas-(version-courte)" title="Lien permanent vers cette rubrique">#</a></h1>
 <p><a class="reference external" href="https://pandas.pydata.org/">pandas</a> est la librairie incontournable pour manipuler les données. Elle permet de manipuler aussi bien les données sous forme de tables qu’elle peut récupérer ou exporter en différents formats. Elle permet également de créer facilement des graphes.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -388,7 +391,7 @@
 <h3>Création d’un dataframe<a class="headerlink" href="#Création-d'un-dataframe" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>Il existe une grande variété pour créer un DataFrame. Voici les deux principaux. Le premier : une liste de dictionnaires. Chaque clé est le nom de la colonne.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
@@ -399,7 +402,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -441,47 +444,22 @@
 </div></div>
 </div>
 <p>La lecture depuis un fichier :</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> data.csv
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;col1,col2</span>
+<span class="s2">0.5,alpha</span>
+<span class="s2">0.6,beta</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-<span class="n">col1</span><span class="p">,</span> <span class="n">col2</span>
-<span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span>
-<span class="mf">0.6</span><span class="p">,</span> <span class="n">beta</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Writing data.csv
-</pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-
-<span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&#39;/home/xadupre/github/teachpyx/_doc/c_data&#39;
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">read_csv</span>
@@ -492,7 +470,7 @@ Writing data.csv
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -539,7 +517,7 @@ Writing data.csv
 <p>Les index fonctionnent à peu près comme <a class="reference external" href="https://numpy.org/">numpy</a> mais offre plus d’options puisque les colonnes mais aussi les lignes ont un nom.</p>
 <p>Accès par colonne</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
@@ -547,7 +525,7 @@ Writing data.csv
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -589,7 +567,7 @@ Writing data.csv
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span>
@@ -597,7 +575,7 @@ Writing data.csv
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -607,8 +585,26 @@ Writing data.csv
 Name: col1, dtype: float64
 </pre></div></div>
 </div>
+<p>Les colonnes disponibles :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;col1&#39;, &#39;col2&#39;], dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">]]</span>
@@ -616,41 +612,50 @@ Name: col1, dtype: float64
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[15], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> df[[&#34;col1&#34;, &#34;col2&#34;]]
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/core/frame.py:3767</span>, in <span class="ansi-cyan-fg">DataFrame.__getitem__</span><span class="ansi-blue-fg">(self, key)</span>
-<span class="ansi-green-intense-fg ansi-bold">   3765</span>     if is_iterator(key):
-<span class="ansi-green-intense-fg ansi-bold">   3766</span>         key = list(key)
-<span class="ansi-green-fg">-&gt; 3767</span>     indexer = self.columns._get_indexer_strict(key, &#34;columns&#34;)[1]
-<span class="ansi-green-intense-fg ansi-bold">   3769</span> # take() does not accept boolean indexers
-<span class="ansi-green-intense-fg ansi-bold">   3770</span> if getattr(indexer, &#34;dtype&#34;, None) == bool:
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/core/indexes/base.py:5877</span>, in <span class="ansi-cyan-fg">Index._get_indexer_strict</span><span class="ansi-blue-fg">(self, key, axis_name)</span>
-<span class="ansi-green-intense-fg ansi-bold">   5874</span> else:
-<span class="ansi-green-intense-fg ansi-bold">   5875</span>     keyarr, indexer, new_indexer = self._reindex_non_unique(keyarr)
-<span class="ansi-green-fg">-&gt; 5877</span> self._raise_if_missing(keyarr, indexer, axis_name)
-<span class="ansi-green-intense-fg ansi-bold">   5879</span> keyarr = self.take(indexer)
-<span class="ansi-green-intense-fg ansi-bold">   5880</span> if isinstance(key, Index):
-<span class="ansi-green-intense-fg ansi-bold">   5881</span>     # GH 42790 - Preserve name from an Index
-
-File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/core/indexes/base.py:5941</span>, in <span class="ansi-cyan-fg">Index._raise_if_missing</span><span class="ansi-blue-fg">(self, key, indexer, axis_name)</span>
-<span class="ansi-green-intense-fg ansi-bold">   5938</span>     raise KeyError(f&#34;None of [{key}] are in the [{axis_name}]&#34;)
-<span class="ansi-green-intense-fg ansi-bold">   5940</span> not_found = list(ensure_index(key)[missing_mask.nonzero()[0]].unique())
-<span class="ansi-green-fg">-&gt; 5941</span> raise KeyError(f&#34;{not_found} not in index&#34;)
-
-<span class="ansi-red-fg">KeyError</span>: &#34;[&#39;col2&#39;] not in index&#34;
-</pre></div></div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>alpha</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.6</td>
+      <td>beta</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 <p>Accès par ligne (uniquement avec <code class="docutils literal notranslate"><span class="pre">:</span></code>). On se sert principalement de l’opérateur <code class="docutils literal notranslate"><span class="pre">:</span></code> pour les lignes.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
@@ -658,7 +663,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -696,7 +701,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 <p>Accès par positions avec <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html">loc</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;col1&quot;</span><span class="p">]</span>
@@ -704,7 +709,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -714,7 +719,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 <p>Accès par positions entières avec <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.iloc.html">iloc</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
@@ -722,7 +727,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -735,7 +740,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 <h3>La maîtrise des index des lignes<a class="headerlink" href="#La-maîtrise-des-index-des-lignes" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>La création d’un dataframe donne l’impression que les index des lignes sont des entiers mais cela peut être changer</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
@@ -743,7 +748,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -785,7 +790,7 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfi</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;col2&quot;</span><span class="p">)</span>
@@ -794,31 +799,50 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-fg">/tmp/ipykernel_15578/1840535498.py</span> in <span class="ansi-cyan-fg">?</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>dfi <span class="ansi-blue-fg">=</span> df<span class="ansi-blue-fg">.</span>set_index<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;col2&#34;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> dfi
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/core/frame.py</span> in <span class="ansi-cyan-fg">?</span><span class="ansi-blue-fg">(self, keys, drop, append, inplace, verify_integrity)</span>
-<span class="ansi-green-intense-fg ansi-bold">   5855</span>                     <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> found<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   5856</span>                         missing<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>col<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   5857</span>
-<span class="ansi-green-intense-fg ansi-bold">   5858</span>         <span class="ansi-green-fg">if</span> missing<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 5859</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> KeyError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">f&#34;None of {missing} are in the columns&#34;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   5860</span>
-<span class="ansi-green-intense-fg ansi-bold">   5861</span>         <span class="ansi-green-fg">if</span> inplace<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   5862</span>             frame <span class="ansi-blue-fg">=</span> self
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="ansi-red-fg">KeyError</span>: &#34;None of [&#39;col2&#39;] are in the columns&#34;
-</pre></div></div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+    </tr>
+    <tr>
+      <th>col2</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>alpha</th>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>beta</th>
+      <td>0.6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfi</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;col1&quot;</span><span class="p">]</span>
@@ -826,16 +850,12 @@ File <span class="ansi-green-fg">~/.venv/lib/python3.10/site-packages/pandas/cor
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[21], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> dfi.loc[&#34;alpha&#34;, &#34;col1&#34;]
-
-<span class="ansi-red-fg">NameError</span>: name &#39;dfi&#39; is not defined
+0.5
 </pre></div></div>
 </div>
 <p>Il faut se souvenir de cette particularité lors de la fusion de tables.</p>
@@ -843,17 +863,26 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 <section id="La-maîtrise-des-index-des-colonnes">
 <h3>La maîtrise des index des colonnes<a class="headerlink" href="#La-maîtrise-des-index-des-colonnes" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>Les colonnes sont nommées.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;col1&#39;, &#39;col2&#39;], dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
 <p>On peut les renommer.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;valeur&quot;</span><span class="p">,</span> <span class="s2">&quot;nom&quot;</span><span class="p">]</span>
@@ -861,41 +890,145 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>valeur</th>
+      <th>nom</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>alpha</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.6</td>
+      <td>beta</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 <p>L’opérateur <code class="docutils literal notranslate"><span class="pre">:</span></code> peut également servir pour les colonnes.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;valeur&quot;</span><span class="p">:</span><span class="s2">&quot;nom&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>valeur</th>
+      <th>nom</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>alpha</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.6</td>
+      <td>beta</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 </section>
 <section id="Lien-vers-numpy">
 <h3>Lien vers numpy<a class="headerlink" href="#Lien-vers-numpy" title="Lien permanent vers cette rubrique">#</a></h3>
 <p><a class="reference external" href="https://pandas.pydata.org/">pandas</a> utilise <a class="reference external" href="https://numpy.org/">numpy</a> pour stocker les données. Il est possible de récupérer des matrices depuis des DataFrame avec <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.values.html">values</a>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[0.5, &#39;alpha&#39;],
+       [0.6, &#39;beta&#39;]], dtype=object)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;valeur&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[0.5],
+       [0.6]])
+</pre></div></div>
+</div>
 </section>
 <section id="La-maîtrise-du-nan">
 <h3>La maîtrise du nan<a class="headerlink" href="#La-maîtrise-du-nan" title="Lien permanent vers cette rubrique">#</a></h3>
 <p><a class="reference external" href="https://numpy.org/doc/stable/reference/constants.html">nan</a> est une convention pour désigner une valeur manquante.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="s2">&quot;schtroumph&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="s2">&quot;schtroumphette&quot;</span><span class="p">}]</span>
@@ -903,21 +1036,74 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>schtroumph</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaN</td>
+      <td>schtroumphette</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 </section>
 <section id="La-maîtrise-des-types">
 <h3>La maîtrise des types<a class="headerlink" href="#La-maîtrise-des-types" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>Un dataframe est défini par ses dimensions et chaque colonne a un type potentiellement différent.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+valeur    float64
+nom        object
+dtype: object
+</pre></div></div>
+</div>
 <p>On peut changer un type, donc convertir toutes les valeurs d’une colonne vers un autre type.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
@@ -926,8 +1112,19 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0    0.5
+1    0.6
+Name: valeur, dtype: float32
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
@@ -936,12 +1133,23 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0    0
+1    0
+Name: valeur, dtype: int32
+</pre></div></div>
+</div>
 </section>
 <section id="Création-de-colonnes">
 <h3>Création de colonnes<a class="headerlink" href="#Création-de-colonnes" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>On peut facilement créer de nouvelles colonnes.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;sup055&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;valeur&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.55</span>
@@ -949,8 +1157,53 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>valeur</th>
+      <th>nom</th>
+      <th>sup055</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>alpha</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.6</td>
+      <td>beta</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;sup055&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;valeur&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.55</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
@@ -958,8 +1211,53 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>valeur</th>
+      <th>nom</th>
+      <th>sup055</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>alpha</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.6</td>
+      <td>beta</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;sup055+&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;valeur&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;sup055&quot;</span><span class="p">]</span>
@@ -967,12 +1265,60 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>valeur</th>
+      <th>nom</th>
+      <th>sup055</th>
+      <th>sup055+</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>alpha</td>
+      <td>0</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.6</td>
+      <td>beta</td>
+      <td>1</td>
+      <td>1.6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 </section>
 <section id="Modifications-de-valeurs">
 <h3>Modifications de valeurs<a class="headerlink" href="#Modifications-de-valeurs" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>On peut les modifier une à une en utilisant les index. Les notations sont souvent intuitives. Elles ne seront pas toutes détaillées. Ci-dessous un moyen de modifer certaines valeurs selon une condition.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;nom&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;sup055+&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1000</span>
@@ -980,11 +1326,59 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>valeur</th>
+      <th>nom</th>
+      <th>sup055</th>
+      <th>sup055+</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>alpha</td>
+      <td>0</td>
+      <td>1000.5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.6</td>
+      <td>beta</td>
+      <td>1</td>
+      <td>1.6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 </section>
 <section id="Une-erreur-ou-warning-fréquent">
 <h3>Une erreur ou warning fréquent<a class="headerlink" href="#Une-erreur-ou-warning-fréquent" title="Lien permanent vers cette rubrique">#</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="s2">&quot;schtroumph&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="s2">&quot;schtroumphette&quot;</span><span class="p">}]</span>
@@ -993,8 +1387,50 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.5</td>
+      <td>schtroumph</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.5</td>
+      <td>schtroumphette</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">]</span>
@@ -1002,19 +1438,112 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="s2">&quot;col3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.0</span>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1.5</td>
+      <td>schtroumphette</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">df1</span><span class="p">[</span><span class="s2">&quot;col3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.0</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="c1"># un warning ou une exception selon la version de pandas installée</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 <span class="n">df1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_32232/3074685679.py:1: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df1[&#34;col3&#34;] = df1[&#34;col1&#34;] + 1.0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+      <th>col3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1.5</td>
+      <td>schtroumphette</td>
+      <td>2.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 <p><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">value</span> <span class="pre">is</span> <span class="pre">trying</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">set</span> <span class="pre">on</span> <span class="pre">a</span> <span class="pre">copy</span> <span class="pre">of</span> <span class="pre">a</span> <span class="pre">slice</span> <span class="pre">from</span> <span class="pre">a</span> <span class="pre">DataFrame.</span></code> : Par défaut, l’instruction <code class="docutils literal notranslate"><span class="pre">df[df['col1']</span> <span class="pre">&gt;</span> <span class="pre">1.]</span></code> ne crée pas un nouveau DataFrame, elle crée ce qu’on appelle une vue pour éviter de copier les données. Le résultat ne contient que l’index des lignes qui ont été sélectionnées et un lien vers le dataframe original. L’avertissement stipule que <em>pandas</em> ne peut pas modifier le dataframe original mais qu’il doit effectuer une copie.</p>
 <p>La solution pour faire disparaître ce warning est de copier le dataframe.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1041,8 +1570,8 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 <section id="On-récupère-les-données-du-COVID-par-région-et-par-âge-et-premier-graphe">
 <h3>On récupère les données du COVID par région et par âge et premier graphe<a class="headerlink" href="#On-récupère-les-données-du-COVID-par-région-et-par-âge-et-premier-graphe" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>A cette adresse : <a class="reference external" href="https://www.data.gouv.fr/en/datasets/donnees-hospitalieres-relatives-a-lepidemie-de-covid-19/">Données hospitalières relatives à l’épidémie de COVID-19</a></p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># https://www.data.gouv.fr/en/datasets/r/63352e38-d353-4b54-bfd1-f1b3ee1cabd7</span>
@@ -1054,17 +1583,141 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>reg</th>
+      <th>cl_age90</th>
+      <th>jour</th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>219577</th>
+      <td>94</td>
+      <td>59</td>
+      <td>2023-03-31</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>387</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>219578</th>
+      <td>94</td>
+      <td>69</td>
+      <td>2023-03-31</td>
+      <td>16</td>
+      <td>1</td>
+      <td>8.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>536</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>219579</th>
+      <td>94</td>
+      <td>79</td>
+      <td>2023-03-31</td>
+      <td>29</td>
+      <td>1</td>
+      <td>14.0</td>
+      <td>13.0</td>
+      <td>1.0</td>
+      <td>810</td>
+      <td>129</td>
+    </tr>
+    <tr>
+      <th>219580</th>
+      <td>94</td>
+      <td>89</td>
+      <td>2023-03-31</td>
+      <td>35</td>
+      <td>0</td>
+      <td>24.0</td>
+      <td>11.0</td>
+      <td>0.0</td>
+      <td>888</td>
+      <td>199</td>
+    </tr>
+    <tr>
+      <th>219581</th>
+      <td>94</td>
+      <td>90</td>
+      <td>2023-03-31</td>
+      <td>18</td>
+      <td>0</td>
+      <td>6.0</td>
+      <td>12.0</td>
+      <td>0.0</td>
+      <td>388</td>
+      <td>121</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">covid</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+reg           int64
+cl_age90      int64
+jour         object
+hosp          int64
+rea           int64
+HospConv    float64
+SSR_USLD    float64
+autres      float64
+rad           int64
+dc            int64
+dtype: object
+</pre></div></div>
+</div>
 <p>Les dates sont considérées comme des chaînes de caractères. Il est plus simple pour réaliser des opérations de convertir la colonne sous forme de dates.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">to_datetime</span>
@@ -1074,17 +1727,141 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>reg</th>
+      <th>cl_age90</th>
+      <th>jour</th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>219577</th>
+      <td>94</td>
+      <td>59</td>
+      <td>2023-03-31</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>387</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>219578</th>
+      <td>94</td>
+      <td>69</td>
+      <td>2023-03-31</td>
+      <td>16</td>
+      <td>1</td>
+      <td>8.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>536</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>219579</th>
+      <td>94</td>
+      <td>79</td>
+      <td>2023-03-31</td>
+      <td>29</td>
+      <td>1</td>
+      <td>14.0</td>
+      <td>13.0</td>
+      <td>1.0</td>
+      <td>810</td>
+      <td>129</td>
+    </tr>
+    <tr>
+      <th>219580</th>
+      <td>94</td>
+      <td>89</td>
+      <td>2023-03-31</td>
+      <td>35</td>
+      <td>0</td>
+      <td>24.0</td>
+      <td>11.0</td>
+      <td>0.0</td>
+      <td>888</td>
+      <td>199</td>
+    </tr>
+    <tr>
+      <th>219581</th>
+      <td>94</td>
+      <td>90</td>
+      <td>2023-03-31</td>
+      <td>18</td>
+      <td>0</td>
+      <td>6.0</td>
+      <td>12.0</td>
+      <td>0.0</td>
+      <td>388</td>
+      <td>121</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">covid</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+reg                  int64
+cl_age90             int64
+jour        datetime64[ns]
+hosp                 int64
+rea                  int64
+HospConv           float64
+SSR_USLD           float64
+autres             float64
+rad                  int64
+dc                   int64
+dtype: object
+</pre></div></div>
+</div>
 <p>On supprime les colonnes relatives aux régions et à l’âge puis on aggrège par jour.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg_par_jour</span> <span class="o">=</span> <span class="n">covid</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;reg&quot;</span><span class="p">,</span> <span class="s2">&quot;cl_age90&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;jour&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1092,23 +1869,134 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+    <tr>
+      <th>jour</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-03-27</th>
+      <td>26110</td>
+      <td>1452</td>
+      <td>14586.0</td>
+      <td>9311.0</td>
+      <td>761.0</td>
+      <td>1717663</td>
+      <td>271176</td>
+    </tr>
+    <tr>
+      <th>2023-03-28</th>
+      <td>26239</td>
+      <td>1435</td>
+      <td>14707.0</td>
+      <td>9336.0</td>
+      <td>761.0</td>
+      <td>1718630</td>
+      <td>271254</td>
+    </tr>
+    <tr>
+      <th>2023-03-29</th>
+      <td>26255</td>
+      <td>1465</td>
+      <td>14704.0</td>
+      <td>9323.0</td>
+      <td>763.0</td>
+      <td>1719634</td>
+      <td>271322</td>
+    </tr>
+    <tr>
+      <th>2023-03-30</th>
+      <td>26253</td>
+      <td>1460</td>
+      <td>14680.0</td>
+      <td>9344.0</td>
+      <td>769.0</td>
+      <td>1720370</td>
+      <td>271394</td>
+    </tr>
+    <tr>
+      <th>2023-03-31</th>
+      <td>26174</td>
+      <td>1413</td>
+      <td>14658.0</td>
+      <td>9354.0</td>
+      <td>749.0</td>
+      <td>1721380</td>
+      <td>271456</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg_par_jour</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Evolution des hospitalisations par jour&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_pandas_63_0.png" src="../_images/c_data_nb_pandas_63_0.png" />
+</div>
+</div>
 <p>Avec échelle logarithmique.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg_par_jour</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Evolution des hospitalisations par jour&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">logy</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">);</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_pandas_65_0.png" src="../_images/c_data_nb_pandas_65_0.png" />
 </div>
 </div>
 </section>
@@ -1161,16 +2049,25 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 <h2>Réponses<a class="headerlink" href="#Réponses" title="Lien permanent vers cette rubrique">#</a></h2>
 <section id="id1">
 <h3>Q1 : refaire le graphique précédent pour votre classe d’âge<a class="headerlink" href="#id1" title="Lien permanent vers cette rubrique">#</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">covid</span><span class="p">[</span><span class="s2">&quot;cl_age90&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{0, 9, 19, 29, 39, 49, 59, 69, 79, 89, 90}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">covid49</span> <span class="o">=</span> <span class="n">covid</span><span class="p">[</span><span class="n">covid</span><span class="o">.</span><span class="n">cl_age90</span> <span class="o">==</span> <span class="mi">49</span><span class="p">]</span>
@@ -1179,8 +2076,105 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+    <tr>
+      <th>jour</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-03-27</th>
+      <td>372</td>
+      <td>29</td>
+      <td>180.0</td>
+      <td>110.0</td>
+      <td>53.0</td>
+      <td>57846</td>
+      <td>1554</td>
+    </tr>
+    <tr>
+      <th>2023-03-28</th>
+      <td>377</td>
+      <td>29</td>
+      <td>184.0</td>
+      <td>111.0</td>
+      <td>53.0</td>
+      <td>57859</td>
+      <td>1554</td>
+    </tr>
+    <tr>
+      <th>2023-03-29</th>
+      <td>374</td>
+      <td>32</td>
+      <td>177.0</td>
+      <td>109.0</td>
+      <td>56.0</td>
+      <td>57877</td>
+      <td>1554</td>
+    </tr>
+    <tr>
+      <th>2023-03-30</th>
+      <td>375</td>
+      <td>34</td>
+      <td>175.0</td>
+      <td>111.0</td>
+      <td>55.0</td>
+      <td>57889</td>
+      <td>1554</td>
+    </tr>
+    <tr>
+      <th>2023-03-31</th>
+      <td>373</td>
+      <td>33</td>
+      <td>177.0</td>
+      <td>109.0</td>
+      <td>54.0</td>
+      <td>57900</td>
+      <td>1554</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg_par_jour49</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
@@ -1189,19 +2183,131 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_pandas_78_0.png" src="../_images/c_data_nb_pandas_78_0.png" />
+</div>
+</div>
 </section>
 <section id="id2">
 <h3>Q2 : faire de même avec les séries différenciées<a class="headerlink" href="#id2" title="Lien permanent vers cette rubrique">#</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">covid</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>reg</th>
+      <th>cl_age90</th>
+      <th>jour</th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>219577</th>
+      <td>94</td>
+      <td>59</td>
+      <td>2023-03-31</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>387</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>219578</th>
+      <td>94</td>
+      <td>69</td>
+      <td>2023-03-31</td>
+      <td>16</td>
+      <td>1</td>
+      <td>8.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>536</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>219579</th>
+      <td>94</td>
+      <td>79</td>
+      <td>2023-03-31</td>
+      <td>29</td>
+      <td>1</td>
+      <td>14.0</td>
+      <td>13.0</td>
+      <td>1.0</td>
+      <td>810</td>
+      <td>129</td>
+    </tr>
+    <tr>
+      <th>219580</th>
+      <td>94</td>
+      <td>89</td>
+      <td>2023-03-31</td>
+      <td>35</td>
+      <td>0</td>
+      <td>24.0</td>
+      <td>11.0</td>
+      <td>0.0</td>
+      <td>888</td>
+      <td>199</td>
+    </tr>
+    <tr>
+      <th>219581</th>
+      <td>94</td>
+      <td>90</td>
+      <td>2023-03-31</td>
+      <td>18</td>
+      <td>0</td>
+      <td>6.0</td>
+      <td>12.0</td>
+      <td>0.0</td>
+      <td>388</td>
+      <td>121</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">covid</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;reg&quot;</span><span class="p">,</span> <span class="s2">&quot;cl_age90&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;jour&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
@@ -1209,27 +2315,110 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+    <tr>
+      <th>jour</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-03-30</th>
+      <td>-2.0</td>
+      <td>-5.0</td>
+      <td>-24.0</td>
+      <td>21.0</td>
+      <td>6.0</td>
+      <td>736.0</td>
+      <td>72.0</td>
+    </tr>
+    <tr>
+      <th>2023-03-31</th>
+      <td>-79.0</td>
+      <td>-47.0</td>
+      <td>-22.0</td>
+      <td>10.0</td>
+      <td>-20.0</td>
+      <td>1010.0</td>
+      <td>62.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Séries différenciées&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_pandas_82_0.png" src="../_images/c_data_nb_pandas_82_0.png" />
+</div>
+</div>
 </section>
 <section id="id3">
 <h3>Q3 : faire de même avec des séries lissées sur sur 7 jours<a class="headerlink" href="#id3" title="Lien permanent vers cette rubrique">#</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Rolling [window=7,center=False,axis=0,method=single]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roll</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1237,20 +2426,94 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+    <tr>
+      <th>jour</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-03-30</th>
+      <td>45.0</td>
+      <td>-2.000000</td>
+      <td>34.857143</td>
+      <td>4.142857</td>
+      <td>8.000000</td>
+      <td>701.571429</td>
+      <td>52.857143</td>
+    </tr>
+    <tr>
+      <th>2023-03-31</th>
+      <td>12.0</td>
+      <td>-12.142857</td>
+      <td>18.142857</td>
+      <td>3.142857</td>
+      <td>2.857143</td>
+      <td>719.571429</td>
+      <td>57.428571</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">roll</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Séries différenciées lissées&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_pandas_86_0.png" src="../_images/c_data_nb_pandas_86_0.png" />
+</div>
+</div>
 </section>
 <section id="Petit-aparté">
 <h3>Petit aparté<a class="headerlink" href="#Petit-aparté" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>On veut savoir combien de temps les gens restent à l’hôpital avant de sortir, en supposant que le temps de guérison est à peu près identique au temps passé lorsque l’issue est tout autre. Je pensais calculer les corrélations entre la série des décès et celles de réanimations décalées de plusieurs jours en me disant qu’un pic de corrélation pourrait indiquer une sorte de durée moyenne de réanimation.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">agg_par_jour49</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1258,8 +2521,75 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+    <tr>
+      <th>jour</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2023-03-30</th>
+      <td>1.714286</td>
+      <td>0.142857</td>
+      <td>-1.000000</td>
+      <td>0.714286</td>
+      <td>1.857143</td>
+      <td>11.285714</td>
+      <td>0.285714</td>
+    </tr>
+    <tr>
+      <th>2023-03-31</th>
+      <td>1.571429</td>
+      <td>0.285714</td>
+      <td>-0.285714</td>
+      <td>0.000000</td>
+      <td>1.571429</td>
+      <td>10.714286</td>
+      <td>0.285714</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_last</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
@@ -1279,13 +2609,20 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_pandas_89_0.png" src="../_images/c_data_nb_pandas_89_0.png" />
+</div>
+</div>
 <p>Il apparaît que ces corrélations sont très différentes selon qu’on les calcule sur les dernières données et les premières semaines. Cela semblerait indiquer que les données médicales sont très différentes. On pourrait chercher plusieurs jours mais le plus simple serait sans de générer des données artificielles avec un modèle <a class="reference external" href="https://fr.wikipedia.org/wiki/Mod%C3%A8les_compartimentaux_en_%C3%A9pid%C3%A9miologie">SIR</a> et vérifier si ce raisonnement tient la route sur des données propres.</p>
 </section>
 <section id="id4">
 <h3>Q4 : fusion de tables par départements<a class="headerlink" href="#id4" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>On récupère deux jeux de données : * <a class="reference external" href="https://www.data.gouv.fr/en/datasets/donnees-hospitalieres-relatives-a-lepidemie-de-covid-19/">Données hospitalières relatives à l’épidémie de COVID-19</a> * <a class="reference external" href="https://www.data.gouv.fr/fr/datasets/indicateurs-de-suivi-de-lepidemie-de-covid-19/">Indicateurs de suivi de l’épidémie de COVID-19</a></p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hosp</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span>
@@ -1296,8 +2633,113 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dep</th>
+      <th>sexe</th>
+      <th>jour</th>
+      <th>hosp</th>
+      <th>rea</th>
+      <th>HospConv</th>
+      <th>SSR_USLD</th>
+      <th>autres</th>
+      <th>rad</th>
+      <th>dc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>338240</th>
+      <td>976</td>
+      <td>0</td>
+      <td>2023-03-31</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1766</td>
+      <td>163</td>
+    </tr>
+    <tr>
+      <th>338241</th>
+      <td>976</td>
+      <td>1</td>
+      <td>2023-03-31</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>739</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>338242</th>
+      <td>976</td>
+      <td>2</td>
+      <td>2023-03-31</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1002</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>338243</th>
+      <td>978</td>
+      <td>0</td>
+      <td>2023-03-31</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>338244</th>
+      <td>978</td>
+      <td>1</td>
+      <td>2023-03-31</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indic</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span>
@@ -1308,9 +2750,153 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_32232/1911493942.py:1: DtypeWarning: Columns (1) have mixed types. Specify dtype option on import or set low_memory=False.
+  indic = read_csv(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>extract_date</th>
+      <th>departement</th>
+      <th>region</th>
+      <th>libelle_reg</th>
+      <th>libelle_dep</th>
+      <th>tx_incid</th>
+      <th>R</th>
+      <th>taux_occupation_sae</th>
+      <th>tx_pos</th>
+      <th>tx_incid_couleur</th>
+      <th>R_couleur</th>
+      <th>taux_occupation_sae_couleur</th>
+      <th>tx_pos_couleur</th>
+      <th>nb_orange</th>
+      <th>nb_rouge</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>90390</th>
+      <td>2020-08-22</td>
+      <td>84</td>
+      <td>93</td>
+      <td>Provence Alpes CÃ´te d'Azur</td>
+      <td>Vaucluse</td>
+      <td>44.21</td>
+      <td>NaN</td>
+      <td>6.3</td>
+      <td>3.721489</td>
+      <td>orange</td>
+      <td>NaN</td>
+      <td>vert</td>
+      <td>vert</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>90391</th>
+      <td>2020-08-23</td>
+      <td>84</td>
+      <td>93</td>
+      <td>Provence Alpes CÃ´te d'Azur</td>
+      <td>Vaucluse</td>
+      <td>44.21</td>
+      <td>NaN</td>
+      <td>6.7</td>
+      <td>3.719256</td>
+      <td>orange</td>
+      <td>NaN</td>
+      <td>vert</td>
+      <td>vert</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>90392</th>
+      <td>2020-08-28</td>
+      <td>84</td>
+      <td>93</td>
+      <td>Provence Alpes CÃ´te d'Azur</td>
+      <td>Vaucluse</td>
+      <td>60.61</td>
+      <td>1.37</td>
+      <td>9.3</td>
+      <td>4.524887</td>
+      <td>rouge</td>
+      <td>orange</td>
+      <td>vert</td>
+      <td>vert</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>90393</th>
+      <td>2020-08-29</td>
+      <td>84</td>
+      <td>93</td>
+      <td>Provence Alpes CÃ´te d'Azur</td>
+      <td>Vaucluse</td>
+      <td>61.14</td>
+      <td>NaN</td>
+      <td>9.1</td>
+      <td>4.566028</td>
+      <td>rouge</td>
+      <td>NaN</td>
+      <td>vert</td>
+      <td>vert</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>90394</th>
+      <td>2020-08-30</td>
+      <td>84</td>
+      <td>93</td>
+      <td>Provence Alpes CÃ´te d'Azur</td>
+      <td>Vaucluse</td>
+      <td>61.50</td>
+      <td>NaN</td>
+      <td>9.1</td>
+      <td>4.570747</td>
+      <td>rouge</td>
+      <td>NaN</td>
+      <td>vert</td>
+      <td>vert</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
 <p>Le code suivant explique comment trouver la valeur <code class="docutils literal notranslate"><span class="pre">ISO-8859-1</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import chardet</span>
@@ -1334,20 +2920,106 @@ Cell <span class="ansi-green-fg">In[21], line 1</span>
 <p>Tracer une carte n’est jamais simple. Il faut tout d’abord récupérer les coordonnées des départements : <a class="reference external" href="https://www.data.gouv.fr/en/datasets/contours-des-departements-francais-issus-d-openstreetmap/">Contours des départements français issus d’OpenStreetMap</a>. Ensuite… de ces fichiers ont été extraits les barycentres de chaque département français :
 <a class="reference external" href="https://github.com/sdpython/ensae_teaching_cs/blob/master/src/ensae_teaching_cs/data/data_shp/departement_french_2018.csv">departement_french_2018.csv</a>. Ce fichier a été créé avec la fonction implémentée dans le fichier <a class="reference external" href="https://github.com/sdpython/ensae_teaching_cs/blob/master/src/ensae_teaching_cs/data/data_shape_files.py">data_shape_files.py</a>. Ce qui suit est une approximation de carte : on suppose que là où se trouve, les coordonnées longitude et latitude ne sont pas trop éloignées de
 ce qu’elles pourraient être si elles étaient projetées sur une sphère.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dep_pos</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span>
-    <span class="s2">&quot;https://raw.githubusercontent.com/sdpython/ensae_teaching_cs/&quot;</span>
-    <span class="s2">&quot;master/src/ensae_teaching_cs/data/data_shp/departement_french_2018.csv&quot;</span>
+    <span class="s2">&quot;https://raw.githubusercontent.com/sdpython/ensae_teaching_cs/master/src/ensae_teaching_cs/data/data_shp/departement_french_2018.csv&quot;</span>
 <span class="p">)</span>
 <span class="n">dep_pos</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>code_insee</th>
+      <th>nom</th>
+      <th>nuts3</th>
+      <th>wikipedia</th>
+      <th>surf_km2</th>
+      <th>DEPLONG</th>
+      <th>DEPLAT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>97</th>
+      <td>56</td>
+      <td>Morbihan</td>
+      <td>FR524</td>
+      <td>fr:Morbihan</td>
+      <td>6870.0</td>
+      <td>-2.812320</td>
+      <td>47.846846</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>25</td>
+      <td>Doubs</td>
+      <td>FR431</td>
+      <td>fr:Doubs (département)</td>
+      <td>5256.0</td>
+      <td>6.362722</td>
+      <td>47.165964</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>39</td>
+      <td>Jura</td>
+      <td>FR432</td>
+      <td>fr:Jura (département)</td>
+      <td>5049.0</td>
+      <td>5.697361</td>
+      <td>46.729368</td>
+    </tr>
+    <tr>
+      <th>100</th>
+      <td>07</td>
+      <td>Ardèche</td>
+      <td>FR712</td>
+      <td>fr:Ardèche (département)</td>
+      <td>5566.0</td>
+      <td>4.425582</td>
+      <td>44.752771</td>
+    </tr>
+    <tr>
+      <th>101</th>
+      <td>30</td>
+      <td>Gard</td>
+      <td>FR812</td>
+      <td>fr:Gard</td>
+      <td>5875.0</td>
+      <td>4.179861</td>
+      <td>43.993601</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">last_extract_date</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">indic</span><span class="o">.</span><span class="n">extract_date</span><span class="p">))</span>
@@ -1355,8 +3027,17 @@ ce qu’elles pourraient être si elles étaient projetées sur une sphère.</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2022-08-29&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indic_last</span> <span class="o">=</span> <span class="n">indic</span><span class="p">[</span><span class="n">indic</span><span class="o">.</span><span class="n">extract_date</span> <span class="o">==</span> <span class="n">last_extract_date</span><span class="p">]</span>
@@ -1367,8 +3048,144 @@ ce qu’elles pourraient être si elles étaient projetées sur une sphère.</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>code_insee</th>
+      <th>nom</th>
+      <th>DEPLONG</th>
+      <th>DEPLAT</th>
+      <th>taux_occupation_sae</th>
+      <th>R</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>01</td>
+      <td>Ain</td>
+      <td>5.348764</td>
+      <td>46.099799</td>
+      <td>10.9</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>03</td>
+      <td>Allier</td>
+      <td>3.187644</td>
+      <td>46.393637</td>
+      <td>10.9</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>07</td>
+      <td>Ardèche</td>
+      <td>4.425582</td>
+      <td>44.752771</td>
+      <td>10.9</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>15</td>
+      <td>Cantal</td>
+      <td>2.669045</td>
+      <td>45.051247</td>
+      <td>10.9</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>26</td>
+      <td>Drôme</td>
+      <td>5.167364</td>
+      <td>44.685239</td>
+      <td>10.9</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>23</td>
+      <td>Creuse</td>
+      <td>2.018230</td>
+      <td>46.090620</td>
+      <td>18.7</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>24</td>
+      <td>Dordogne</td>
+      <td>0.741203</td>
+      <td>45.104948</td>
+      <td>18.7</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>33</td>
+      <td>Gironde</td>
+      <td>-0.575870</td>
+      <td>44.823614</td>
+      <td>18.7</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>40</td>
+      <td>Landes</td>
+      <td>-0.783793</td>
+      <td>43.965855</td>
+      <td>18.7</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>47</td>
+      <td>Lot-et-Garonne</td>
+      <td>0.460747</td>
+      <td>44.367964</td>
+      <td>18.7</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>67 rows × 6 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1408,13 +3225,65 @@ ce qu’elles pourraient être si elles étaient projetées sur une sphère.</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_pandas_101_0.png" src="../_images/c_data_nb_pandas_101_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metro</span><span class="p">[</span><span class="n">metro</span><span class="o">.</span><span class="n">nom</span> <span class="o">==</span> <span class="s2">&quot;Ardennes&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>code_insee</th>
+      <th>nom</th>
+      <th>DEPLONG</th>
+      <th>DEPLAT</th>
+      <th>taux_occupation_sae</th>
+      <th>R</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>31</th>
+      <td>08</td>
+      <td>Ardennes</td>
+      <td>4.640751</td>
+      <td>49.616226</td>
+      <td>13.5</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
