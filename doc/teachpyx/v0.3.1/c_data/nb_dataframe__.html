@@ -1,0 +1,2267 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.08.19 -->
+        <title>2A.data - DataFrame et Graphes - correction - Documentation teachpyx 0.3.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Documentation teachpyx 0.3.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.3.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_regex/index.html">Expression régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expression régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../py/i_expy.html">Exemples</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="index.html">Matrices et DataFrames</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nb_numpy.html">Calcul matriciel avec numpy (version courte)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nb_pandas.html">Manipulation de données avec pandas (version courte)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="i_exda.html">Exemples</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../articles/index.html">Collections d’articles inclassables</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Collections d’articles inclassables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index.html">Culture et Pratique</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Culture et Pratique</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/pystruct.html">Structures de données (code)</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Structures de données (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/pydata.html">Manipulation de données (code)</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Manipulation de données (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/tri_nlnd.html">1A.algo - Tri plus rapide que prévu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/pycheck.html">Comprendre un programme (code)</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Comprendre un programme (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/np_complet.html">Problèmes NP-complets</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/algo101.html">Algorithmes à connaître (code)</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Algorithmes à connaître (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/algocompose.html">Algorithmes composés (code)</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Algorithmes composés (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/algo-base/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017_2.html#Exercice-1">Exercice 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/classique.html">examples.construction_classique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/tools.html">tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/faqs.html">faq</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../i_ex.html">Tous les exemples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../i_faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="2A.data---DataFrame-et-Graphes---correction">
+<h1>2A.data - DataFrame et Graphes - correction<a class="headerlink" href="#2A.data---DataFrame-et-Graphes---correction" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Opérations standards sur les dataframes (<a class="reference external" href="http://pandas.pydata.org/">pandas</a>) et les matrices (<a class="reference external" href="http://www.numpy.org/">numpy</a>). Graphiques avec <a class="reference external" href="https://matplotlib.org/">matplotlib</a>).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jyquickhelper</span> <span class="kn">import</span> <span class="n">add_notebook_menu</span>
+
+<span class="n">add_notebook_menu</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="my_id_menu_nb">run previous cell, wait for 2 seconds</div>
+<script>
+function repeat_indent_string(n){
+    var a = "" ;
+    for ( ; n > 0 ; --n)
+        a += "    ";
+    return a;
+}
+var update_menu_string = function(begin, lfirst, llast, sformat, send, keep_item, begin_format, end_format) {
+    var anchors = document.getElementsByClassName("section");
+    if (anchors.length == 0) {
+        anchors = document.getElementsByClassName("text_cell_render rendered_html");
+    }
+    var i,t;
+    var text_menu = begin;
+    var text_memo = "<pre>\nlength:" + anchors.length + "\n";
+    var ind = "";
+    var memo_level = 1;
+    var href;
+    var tags = [];
+    var main_item = 0;
+    var format_open = 0;
+    for (i = 0; i <= llast; i++)
+        tags.push("h" + i);
+
+    for (i = 0; i < anchors.length; i++) {
+        text_memo += "**" + anchors[i].id + "--\n";
+
+        var child = null;
+        for(t = 0; t < tags.length; t++) {
+            var r = anchors[i].getElementsByTagName(tags[t]);
+            if (r.length > 0) {
+child = r[0];
+break;
+            }
+        }
+        if (child == null) {
+            text_memo += "null\n";
+            continue;
+        }
+        if (anchors[i].hasAttribute("id")) {
+            // when converted in RST
+            href = anchors[i].id;
+            text_memo += "#1-" + href;
+            // passer à child suivant (le chercher)
+        }
+        else if (child.hasAttribute("id")) {
+            // in a notebook
+            href = child.id;
+            text_memo += "#2-" + href;
+        }
+        else {
+            text_memo += "#3-" + "*" + "\n";
+            continue;
+        }
+        var title = child.textContent;
+        var level = parseInt(child.tagName.substring(1,2));
+
+        text_memo += "--" + level + "?" + lfirst + "--" + title + "\n";
+
+        if ((level < lfirst) || (level > llast)) {
+            continue ;
+        }
+        if (title.endsWith('¶')) {
+            title = title.substring(0,title.length-1).replace("<", "&lt;")
+         .replace(">", "&gt;").replace("&", "&amp;");
+        }
+        if (title.length == 0) {
+            continue;
+        }
+
+        while (level < memo_level) {
+            text_menu += end_format + "</ul>\n";
+            format_open -= 1;
+            memo_level -= 1;
+        }
+        if (level == lfirst) {
+            main_item += 1;
+        }
+        if (keep_item != -1 && main_item != keep_item + 1) {
+            // alert(main_item + " - " + level + " - " + keep_item);
+            continue;
+        }
+        while (level > memo_level) {
+            text_menu += "<ul>\n";
+            memo_level += 1;
+        }
+        text_menu += repeat_indent_string(level-2);
+        text_menu += begin_format + sformat.replace("__HREF__", href).replace("__TITLE__", title);
+        format_open += 1;
+    }
+    while (1 < memo_level) {
+        text_menu += end_format + "</ul>\n";
+        memo_level -= 1;
+        format_open -= 1;
+    }
+    text_menu += send;
+    //text_menu += "\n" + text_memo;
+
+    while (format_open > 0) {
+        text_menu += end_format;
+        format_open -= 1;
+    }
+    return text_menu;
+};
+var update_menu = function() {
+    var sbegin = "";
+    var sformat = '<a href="#__HREF__">__TITLE__</a>';
+    var send = "";
+    var begin_format = '<li>';
+    var end_format = '</li>';
+    var keep_item = -1;
+    var text_menu = update_menu_string(sbegin, 2, 4, sformat, send, keep_item,
+       begin_format, end_format);
+    var menu = document.getElementById("my_id_menu_nb");
+    menu.innerHTML=text_menu;
+};
+window.setTimeout(update_menu,2000);
+            </script></div>
+</div>
+<h3 id="exo1"><p>Exercice 1 : créer un fichier Excel</p>
+</h3><p>On souhaite récupérer les données <a class="reference external" href="http://www.xavierdupre.fr/enseignement/complements/donnees_enquete_2003_television.txt">donnees_enquete_2003_television.txt</a> (source : <a class="reference external" href="http://www.insee.fr/fr/themes/detail.asp?ref_id=fd-hdv03&amp;page=fichiers_detail/HDV03/telechargement.htm">INSEE</a>).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">POIDSLOG</span></code> : Pondération individuelle relative</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POIDSF</span></code> : Variable de pondération individuelle</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cLT1FREQ</span></code> : Nombre d’heures en moyenne passées à regarder la télévision</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cLT2FREQ</span></code> : Unité de temps utilisée pour compter le nombre d’heures passées à regarder la télévision, cette unité est représentée par les quatre valeurs suivantes</p>
+<ul>
+<li><p>0 : non concerné</p></li>
+<li><p>1 : jour</p></li>
+<li><p>2 : semaine</p></li>
+<li><p>3 : mois</p></li>
+</ul>
+</li>
+</ul>
+<p>Ensuite, on veut :</p>
+<ol class="arabic simple">
+<li><p>Supprimer les colonnes vides</p></li>
+<li><p>Obtenir les valeurs distinctes pour la colonne <code class="docutils literal notranslate"><span class="pre">cLT2FREQ</span></code></p></li>
+<li><p>Modifier la matrice pour enlever les lignes pour lesquelles l’unité de temps (cLT2FREQ) n’est pas renseignée ou égale à zéro.</p></li>
+<li><p>Sauver le résultat au format Excel.</p></li>
+</ol>
+<p>Vous aurez peut-être besoin des fonctions suivantes :</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html">numpy.isnan</a></p></li>
+<li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.apply.html">DataFrame.apply</a></p></li>
+<li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.fillna.html">DataFrame.fillna</a> ou <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isnull.html">DataFrame.isnull</a></p></li>
+<li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/generated/pandas.DataFrame.copy.html">DataFrame.copy</a></p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">ensae_teaching_cs.data</span> <span class="kn">import</span> <span class="n">donnees_enquete_2003_television</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">donnees_enquete_2003_television</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>POIDLOG</th>
+      <th>POIDSF</th>
+      <th>cLT1FREQ</th>
+      <th>cLT2FREQ</th>
+      <th>Unnamed: 4</th>
+      <th>Unnamed: 5</th>
+      <th>Unnamed: 6</th>
+      <th>Unnamed: 7</th>
+      <th>Unnamed: 8</th>
+      <th>Unnamed: 9</th>
+      <th>...</th>
+      <th>Unnamed: 22</th>
+      <th>Unnamed: 23</th>
+      <th>Unnamed: 24</th>
+      <th>Unnamed: 25</th>
+      <th>Unnamed: 26</th>
+      <th>Unnamed: 27</th>
+      <th>Unnamed: 28</th>
+      <th>Unnamed: 29</th>
+      <th>Unnamed: 30</th>
+      <th>Unnamed: 31</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.889422</td>
+      <td>4766.865201</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.310209</td>
+      <td>12381.589746</td>
+      <td>30</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.740070</td>
+      <td>14685.431344</td>
+      <td>6</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.775545</td>
+      <td>9516.049939</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.732512</td>
+      <td>3925.907588</td>
+      <td>3</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 32 columns</p>
+</div></div>
+</div>
+<p>On enlève les colonnes vides :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;Unnamed&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>POIDLOG</th>
+      <th>POIDSF</th>
+      <th>cLT1FREQ</th>
+      <th>cLT2FREQ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.889422</td>
+      <td>4766.865201</td>
+      <td>2</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.310209</td>
+      <td>12381.589746</td>
+      <td>30</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.740070</td>
+      <td>14685.431344</td>
+      <td>6</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.775545</td>
+      <td>9516.049939</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.732512</td>
+      <td>3925.907588</td>
+      <td>3</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">notnull</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="o">.</span><span class="n">cLT2FREQ</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>  <span class="c1"># équivalent )  df [ df.cLT2FREQ.notnull() ]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">notnull</span><span class="p">))</span>
+<span class="n">notnull</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+8403 7386
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>POIDLOG</th>
+      <th>POIDSF</th>
+      <th>cLT1FREQ</th>
+      <th>cLT2FREQ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>8397</th>
+      <td>0.502091</td>
+      <td>2690.961176</td>
+      <td>3</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8398</th>
+      <td>0.306852</td>
+      <td>1644.574141</td>
+      <td>6</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8399</th>
+      <td>2.501181</td>
+      <td>13405.104689</td>
+      <td>6</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8400</th>
+      <td>1.382758</td>
+      <td>7410.905653</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>8401</th>
+      <td>0.343340</td>
+      <td>1840.132652</td>
+      <td>3</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">notnull</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;data.xlsx&quot;</span><span class="p">)</span>  <span class="c1"># question 4</span>
+</pre></div>
+</div>
+</div>
+<p>Pour lancer Excel, vous pouvez juste écrire ceci :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">system</span><span class="w"> </span><span class="s2">&quot;data.xlsx&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[]
+</pre></div></div>
+</div>
+<p>Vous devriez voir quelque chose comme ceci :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">Image</span><span class="p">(</span><span class="s2">&quot;td10exc.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_dataframe___12_0.png" src="../_images/c_data_nb_dataframe___12_0.png" />
+</div>
+</div>
+<h3 id="qu"><p>Questions</p>
+</h3><ul class="simple">
+<li><p><strong>Que changerait l’ajout du paramètre ``how=”outer”`` dans ce cas ?</strong></p></li>
+<li><p><strong>On cherche à joindre deux tables A,B qui ont chacune trois clés distinctes : :math:`c_1, c_2, c_3`. Il y a respectivement dans chaque table :math:`A_i` et :math:`B_i` lignes pour la clé :math:`c_i`. Combien la table finale issue de la fusion des deux tables contiendra-t-elle de lignes ?</strong></p></li>
+</ul>
+<p>L’ajout du paramètres <code class="docutils literal notranslate"><span class="pre">how='outer'</span></code> ne changerait rien dans ce cas car les deux tables fusionnées contiennent exactement les mêmes clés.</p>
+<p>Le nombre de lignes obtenus serait <img class="math" src="../_images/math/24dc25c79386ea60518bf9aa644f2bbd9072bd74.svg" alt="\sum_{i=1}^{3} A_i B_i"/>. Il y a trois clés, chaque ligne de la table A doit être associée à toutes les lignes de la table B partageant la même clé.</p>
+<h3 id="exo3"><p>Exercice 2 : lambda fonction</p>
+</h3><p>Ecrire une lambda fonction qui prend deux paramètres et qui est équivalente à la fonction suivante :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delta</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">delta</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">delta</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;select&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">echantillon</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;select&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">echantillon</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+((851, 5), (8403, 5))
+</pre></div></div>
+</div>
+<h3 id="exo2"><p>Exercice 3 : moyennes par groupes</p>
+</h3><p>Toujours avec le même jeu de données (<a class="reference external" href="http://www.xavierdupre.fr/enseignement/complements/marathon.txt">marathon.txt</a>), on veut ajouter une ligne à la fin du tableau croisé dynamique contenant la moyenne en secondes des temps des marathons pour chaque ville.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ensae_teaching_cs.data</span> <span class="kn">import</span> <span class="n">marathon</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">marathon</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;annee&quot;</span><span class="p">,</span> <span class="s2">&quot;temps&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ville</th>
+      <th>annee</th>
+      <th>temps</th>
+      <th>secondes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>PARIS</td>
+      <td>2011</td>
+      <td>02:06:29</td>
+      <td>7589</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>PARIS</td>
+      <td>2010</td>
+      <td>02:06:41</td>
+      <td>7601</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>PARIS</td>
+      <td>2009</td>
+      <td>02:05:47</td>
+      <td>7547</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>PARIS</td>
+      <td>2008</td>
+      <td>02:06:40</td>
+      <td>7600</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>PARIS</td>
+      <td>2007</td>
+      <td>02:07:17</td>
+      <td>7637</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>La solution requiert trois étapes.</p>
+<ol class="arabic simple">
+<li><p>Pour avoir la moyenne par villes, il faut grouper les lignes associées à la même villes.</p></li>
+<li><p>Ensuite, il faut introduire ces moyennes dans la table initiale : on fusionne.</p></li>
+<li><p>On effectue le même pivot que dans l’énoncé.</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># étape 1</span>
+<span class="c1"># par défaut, la méthode groupby utilise la clé de group comme index</span>
+<span class="c1"># pour ne pas le faire, il faut préciser as_index = False</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">gr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ville</th>
+      <th>secondes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AMSTERDAM</td>
+      <td>7883.371429</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>BERLIN</td>
+      <td>7922.315789</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>BOSTON</td>
+      <td>7891.061224</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CHICAGO</td>
+      <td>7815.909091</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>FUKUOKA</td>
+      <td>8075.187500</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># étape 2 - on ajoute une colonne</span>
+<span class="n">tout</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;ville&quot;</span><span class="p">)</span>
+<span class="n">tout</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ville</th>
+      <th>annee</th>
+      <th>temps</th>
+      <th>secondes_x</th>
+      <th>secondes_y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>PARIS</td>
+      <td>2011</td>
+      <td>02:06:29</td>
+      <td>7589</td>
+      <td>7937.028571</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>PARIS</td>
+      <td>2010</td>
+      <td>02:06:41</td>
+      <td>7601</td>
+      <td>7937.028571</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>PARIS</td>
+      <td>2009</td>
+      <td>02:05:47</td>
+      <td>7547</td>
+      <td>7937.028571</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>PARIS</td>
+      <td>2008</td>
+      <td>02:06:40</td>
+      <td>7600</td>
+      <td>7937.028571</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>PARIS</td>
+      <td>2007</td>
+      <td>02:07:17</td>
+      <td>7637</td>
+      <td>7937.028571</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># étape 3</span>
+<span class="n">piv</span> <span class="o">=</span> <span class="n">tout</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="s2">&quot;annee&quot;</span><span class="p">,</span> <span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes_x&quot;</span><span class="p">)</span>
+<span class="n">piv</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>ville</th>
+      <th>AMSTERDAM</th>
+      <th>BERLIN</th>
+      <th>BOSTON</th>
+      <th>CHICAGO</th>
+      <th>FUKUOKA</th>
+      <th>LONDON</th>
+      <th>NEW YORK</th>
+      <th>PARIS</th>
+      <th>STOCKOLM</th>
+    </tr>
+    <tr>
+      <th>annee</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2007</th>
+      <td>7589.0</td>
+      <td>7466.0</td>
+      <td>8053.0</td>
+      <td>7871.0</td>
+      <td>7599.0</td>
+      <td>7661.0</td>
+      <td>7744.0</td>
+      <td>7637.0</td>
+      <td>8456.0</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>7672.0</td>
+      <td>7439.0</td>
+      <td>7665.0</td>
+      <td>7585.0</td>
+      <td>7570.0</td>
+      <td>7515.0</td>
+      <td>7723.0</td>
+      <td>7600.0</td>
+      <td>8163.0</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>7578.0</td>
+      <td>7568.0</td>
+      <td>7722.0</td>
+      <td>7541.0</td>
+      <td>7518.0</td>
+      <td>7510.0</td>
+      <td>7755.0</td>
+      <td>7547.0</td>
+      <td>8134.0</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>7544.0</td>
+      <td>7508.0</td>
+      <td>7552.0</td>
+      <td>7583.0</td>
+      <td>7704.0</td>
+      <td>7519.0</td>
+      <td>7694.0</td>
+      <td>7601.0</td>
+      <td>7968.0</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>NaN</td>
+      <td>7418.0</td>
+      <td>7382.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>7480.0</td>
+      <td>NaN</td>
+      <td>7589.0</td>
+      <td>8047.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>A partir de là, on ne voit pas trop comment s’en sortir. Voici ce que je propose :</p>
+<ol class="arabic simple">
+<li><p>On effectue un pivot sur la petite matrice des moyennes.</p></li>
+<li><p>On ajoute ce second pivot avec le premier (celui de l’énoncé).</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gr</span><span class="p">[</span><span class="s2">&quot;annee&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;moyenne&quot;</span>
+<span class="n">pivmean</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="s2">&quot;annee&quot;</span><span class="p">,</span> <span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">)</span>
+<span class="n">pivmean</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>ville</th>
+      <th>AMSTERDAM</th>
+      <th>BERLIN</th>
+      <th>BOSTON</th>
+      <th>CHICAGO</th>
+      <th>FUKUOKA</th>
+      <th>LONDON</th>
+      <th>NEW YORK</th>
+      <th>PARIS</th>
+      <th>STOCKOLM</th>
+    </tr>
+    <tr>
+      <th>annee</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>moyenne</th>
+      <td>7883.371429</td>
+      <td>7922.315789</td>
+      <td>7891.061224</td>
+      <td>7815.909091</td>
+      <td>8075.1875</td>
+      <td>7695.16129</td>
+      <td>7928.560976</td>
+      <td>7937.028571</td>
+      <td>8133.393939</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="s2">&quot;annee&quot;</span><span class="p">,</span> <span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">)</span>
+<span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">piv</span><span class="p">,</span> <span class="n">pivmean</span><span class="p">])</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>ville</th>
+      <th>AMSTERDAM</th>
+      <th>BERLIN</th>
+      <th>BOSTON</th>
+      <th>CHICAGO</th>
+      <th>FUKUOKA</th>
+      <th>LONDON</th>
+      <th>NEW YORK</th>
+      <th>PARIS</th>
+      <th>STOCKOLM</th>
+    </tr>
+    <tr>
+      <th>annee</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2008</th>
+      <td>7672.000000</td>
+      <td>7439.000000</td>
+      <td>7665.000000</td>
+      <td>7585.000000</td>
+      <td>7570.0000</td>
+      <td>7515.00000</td>
+      <td>7723.000000</td>
+      <td>7600.000000</td>
+      <td>8163.000000</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>7578.000000</td>
+      <td>7568.000000</td>
+      <td>7722.000000</td>
+      <td>7541.000000</td>
+      <td>7518.0000</td>
+      <td>7510.00000</td>
+      <td>7755.000000</td>
+      <td>7547.000000</td>
+      <td>8134.000000</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>7544.000000</td>
+      <td>7508.000000</td>
+      <td>7552.000000</td>
+      <td>7583.000000</td>
+      <td>7704.0000</td>
+      <td>7519.00000</td>
+      <td>7694.000000</td>
+      <td>7601.000000</td>
+      <td>7968.000000</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>NaN</td>
+      <td>7418.000000</td>
+      <td>7382.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>7480.00000</td>
+      <td>NaN</td>
+      <td>7589.000000</td>
+      <td>8047.000000</td>
+    </tr>
+    <tr>
+      <th>moyenne</th>
+      <td>7883.371429</td>
+      <td>7922.315789</td>
+      <td>7891.061224</td>
+      <td>7815.909091</td>
+      <td>8075.1875</td>
+      <td>7695.16129</td>
+      <td>7928.560976</td>
+      <td>7937.028571</td>
+      <td>8133.393939</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>En résumé, cela donne (j’ajoute aussi le nombre de marathons courus) :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span><span class="o">,</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">ensae_teaching_cs.data</span> <span class="kn">import</span> <span class="n">marathon</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">marathon</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;annee&quot;</span><span class="p">,</span> <span class="s2">&quot;temps&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">piv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="s2">&quot;annee&quot;</span><span class="p">,</span> <span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">gr</span><span class="p">[</span><span class="s2">&quot;annee&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;moyenne&quot;</span>
+<span class="n">pivmean</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="s2">&quot;annee&quot;</span><span class="p">,</span> <span class="s2">&quot;ville&quot;</span><span class="p">,</span> <span class="s2">&quot;secondes&quot;</span><span class="p">)</span>
+
+<span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">piv</span><span class="p">,</span> <span class="n">pivmean</span><span class="p">])</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>ville</th>
+      <th>AMSTERDAM</th>
+      <th>BERLIN</th>
+      <th>BOSTON</th>
+      <th>CHICAGO</th>
+      <th>FUKUOKA</th>
+      <th>LONDON</th>
+      <th>NEW YORK</th>
+      <th>PARIS</th>
+      <th>STOCKOLM</th>
+    </tr>
+    <tr>
+      <th>annee</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2008</th>
+      <td>7672.000000</td>
+      <td>7439.000000</td>
+      <td>7665.000000</td>
+      <td>7585.000000</td>
+      <td>7570.0000</td>
+      <td>7515.00000</td>
+      <td>7723.000000</td>
+      <td>7600.000000</td>
+      <td>8163.000000</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>7578.000000</td>
+      <td>7568.000000</td>
+      <td>7722.000000</td>
+      <td>7541.000000</td>
+      <td>7518.0000</td>
+      <td>7510.00000</td>
+      <td>7755.000000</td>
+      <td>7547.000000</td>
+      <td>8134.000000</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>7544.000000</td>
+      <td>7508.000000</td>
+      <td>7552.000000</td>
+      <td>7583.000000</td>
+      <td>7704.0000</td>
+      <td>7519.00000</td>
+      <td>7694.000000</td>
+      <td>7601.000000</td>
+      <td>7968.000000</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>NaN</td>
+      <td>7418.000000</td>
+      <td>7382.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>7480.00000</td>
+      <td>NaN</td>
+      <td>7589.000000</td>
+      <td>8047.000000</td>
+    </tr>
+    <tr>
+      <th>moyenne</th>
+      <td>7883.371429</td>
+      <td>7922.315789</td>
+      <td>7891.061224</td>
+      <td>7815.909091</td>
+      <td>8075.1875</td>
+      <td>7695.16129</td>
+      <td>7928.560976</td>
+      <td>7937.028571</td>
+      <td>8133.393939</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<h3 id="exo4"><p>Exercice 4 : écart entre les mariés</p>
+</h3><ol class="arabic simple">
+<li><p>En ajoutant une colonne et en utilisant l’opération <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/groupby.html">group by</a>, on veut obtenir la distribution du nombre de mariages en fonction de l’écart entre les mariés. Au besoin, on changera le type d’une colone ou deux.</p></li>
+<li><p>On veut tracer un nuage de points avec en abscisse l’âge du mari, en ordonnée, l’âge de la femme. Il faudra peut-être jeter un coup d’oeil sur la documentation de la méthode <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.html">plot</a>.</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">http.client</span>
+
+
+<span class="k">def</span> <span class="nf">download_and_save</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">root_url</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">root_url</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TimeoutError</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">URLError</span><span class="p">,</span> <span class="n">http</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">BadStatusLine</span><span class="p">):</span>
+        <span class="c1"># back up plan</span>
+        <span class="n">root_url</span> <span class="o">=</span> <span class="s2">&quot;http://www.xavierdupre.fr/enseignement/complements/&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">root_url</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">z</span><span class="p">:</span>
+        <span class="n">z</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
+
+<span class="n">filenames</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;etatcivil2012_mar2012_dbase.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;etatcivil2012_nais2012_dbase.zip&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;etatcivil2012_dec2012_dbase.zip&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">root_url</span> <span class="o">=</span> <span class="s2">&quot;http://telechargement.insee.fr/fichiersdetail/etatcivil2012/dbase/&quot;</span>
+
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+    <span class="n">download_and_save</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">root_url</span><span class="p">)</span>
+    <span class="n">unzip</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download of </span><span class="si">{}</span><span class="s2">: DONE!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Download of etatcivil2012_mar2012_dbase.zip: DONE!
+Download of etatcivil2012_nais2012_dbase.zip: DONE!
+Download of etatcivil2012_dec2012_dbase.zip: DONE!
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">dbfread_</span> <span class="kn">import</span> <span class="n">DBF</span>
+
+    <span class="n">use_dbfread</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">use_dbfread</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">if</span> <span class="n">use_dbfread</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;use of dbfread&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">dBase2df</span><span class="p">(</span><span class="n">dbase_filename</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">DBF</span><span class="p">(</span><span class="n">dbase_filename</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;cp437&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">records</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">dBase2df</span><span class="p">(</span><span class="s2">&quot;mar2012.dbf&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;use of zipped version&quot;</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">pyensae.datasource</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pyensae</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="s2">&quot;mar2012.zip&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+use of zipped version
+(246123, 16) Index([&#39;AMAR&#39;, &#39;ANAISF&#39;, &#39;ANAISH&#39;, &#39;DEPDOM&#39;, &#39;DEPMAR&#39;, &#39;DEPNAISF&#39;, &#39;DEPNAISH&#39;,
+       &#39;ETAMATF&#39;, &#39;ETAMATH&#39;, &#39;INDNATF&#39;, &#39;INDNATH&#39;, &#39;JSEMAINE&#39;, &#39;MMAR&#39;,
+       &#39;NBENFCOM&#39;, &#39;TUCOM&#39;, &#39;TUDOM&#39;],
+      dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AMAR</th>
+      <th>ANAISF</th>
+      <th>ANAISH</th>
+      <th>DEPDOM</th>
+      <th>DEPMAR</th>
+      <th>DEPNAISF</th>
+      <th>DEPNAISH</th>
+      <th>ETAMATF</th>
+      <th>ETAMATH</th>
+      <th>INDNATF</th>
+      <th>INDNATH</th>
+      <th>JSEMAINE</th>
+      <th>MMAR</th>
+      <th>NBENFCOM</th>
+      <th>TUCOM</th>
+      <th>TUDOM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2012</td>
+      <td>1984</td>
+      <td>1982</td>
+      <td>99</td>
+      <td>29</td>
+      <td>99</td>
+      <td>75</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2012</td>
+      <td>1969</td>
+      <td>1956</td>
+      <td>99</td>
+      <td>75</td>
+      <td>99</td>
+      <td>69</td>
+      <td>4</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2012</td>
+      <td>1992</td>
+      <td>1982</td>
+      <td>99</td>
+      <td>34</td>
+      <td>99</td>
+      <td>99</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>5</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2012</td>
+      <td>1987</td>
+      <td>1985</td>
+      <td>99</td>
+      <td>13</td>
+      <td>84</td>
+      <td>99</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2012</td>
+      <td>1963</td>
+      <td>1968</td>
+      <td>99</td>
+      <td>26</td>
+      <td>99</td>
+      <td>99</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>6</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ageH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="mi">2014</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;ANAISH&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;ageF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="mi">2014</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;ANAISF&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AMAR</th>
+      <th>ANAISF</th>
+      <th>ANAISH</th>
+      <th>DEPDOM</th>
+      <th>DEPMAR</th>
+      <th>DEPNAISF</th>
+      <th>DEPNAISH</th>
+      <th>ETAMATF</th>
+      <th>ETAMATH</th>
+      <th>INDNATF</th>
+      <th>INDNATH</th>
+      <th>JSEMAINE</th>
+      <th>MMAR</th>
+      <th>NBENFCOM</th>
+      <th>TUCOM</th>
+      <th>TUDOM</th>
+      <th>ageH</th>
+      <th>ageF</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2012</td>
+      <td>1984</td>
+      <td>1982</td>
+      <td>99</td>
+      <td>29</td>
+      <td>99</td>
+      <td>75</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>32</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2012</td>
+      <td>1969</td>
+      <td>1956</td>
+      <td>99</td>
+      <td>75</td>
+      <td>99</td>
+      <td>69</td>
+      <td>4</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>58</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2012</td>
+      <td>1992</td>
+      <td>1982</td>
+      <td>99</td>
+      <td>34</td>
+      <td>99</td>
+      <td>99</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>5</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>32</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2012</td>
+      <td>1987</td>
+      <td>1985</td>
+      <td>99</td>
+      <td>13</td>
+      <td>84</td>
+      <td>99</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>29</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2012</td>
+      <td>1963</td>
+      <td>1968</td>
+      <td>99</td>
+      <td>26</td>
+      <td>99</td>
+      <td>99</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>6</td>
+      <td>1</td>
+      <td>N</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>46</td>
+      <td>51</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;ageH&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;ageF&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x2ee646da358&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_dataframe___35_1.png" src="../_images/c_data_nb_dataframe___35_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;ageH&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;ageF&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;hexbin&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x2ee6591b780&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_dataframe___36_1.png" src="../_images/c_data_nb_dataframe___36_1.png" />
+</div>
+</div>
+<h3 id="exo5"><p>Exercice 5 : graphe de la distribution avec pandas</p>
+</h3><p>Le module <code class="docutils literal notranslate"><span class="pre">pandas</span></code> propose un panel de graphiques standard faciles à obtenir. On souhaite représenter la distribution sous forme d’histogramme. A vous de choisir le meilleure graphique depuis la page <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/visualization.html">Visualization</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ANAISH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;ANAISH&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;ANAISF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;ANAISF&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;differenceHF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ANAISH</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">ANAISF</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;nb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;nb&quot;</span><span class="p">,</span> <span class="s2">&quot;differenceHF&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;differenceHF&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;differenceHF&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x2ee656d7c88&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_dataframe___38_1.png" src="../_images/c_data_nb_dataframe___38_1.png" />
+</div>
+</div>
+<h3 id="exo6"><p>Exercice 6 : distribution des mariages par jour</p>
+</h3><p>On veut obtenir un graphe qui contient l’histogramme de la distribution du nombre de mariages par jour de la semaine et d’ajouter une seconde courbe correspond avec un second axe à la répartition cumulée.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;nb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">dissem</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;JSEMAINE&quot;</span><span class="p">,</span> <span class="s2">&quot;nb&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;JSEMAINE&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">dissem</span><span class="p">[</span><span class="s2">&quot;nb&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">repsem</span> <span class="o">=</span> <span class="n">dissem</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<span class="n">repsem</span><span class="p">[</span><span class="s2">&quot;nb&quot;</span><span class="p">]</span> <span class="o">/=</span> <span class="n">total</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">dissem</span><span class="p">[</span><span class="s2">&quot;nb&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
+<span class="n">repsem</span><span class="p">[</span><span class="s2">&quot;nb&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">secondary_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;distribution des mariages par jour de la semaine&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.text.Text at 0x2ee65958860&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_nb_dataframe___40_1.png" src="../_images/c_data_nb_dataframe___40_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=bdd90cfe"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
