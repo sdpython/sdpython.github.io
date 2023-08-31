@@ -1,6 +1,4 @@
 
-*en construction permanente*
-
 .. |gitlogo| image:: _static/git_logo.png
              :height: 20
 
@@ -24,6 +22,12 @@ pas ou eu programmer. Le contenu est disponible sur
     c_data/index
     c_resume/index
     articles/index
+
+.. toctree::
+    :maxdepth: 1
+    :caption: savoir
+
+    algorithm_culture
 
 .. toctree::
     :maxdepth: 1

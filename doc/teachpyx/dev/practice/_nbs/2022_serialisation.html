@@ -1,0 +1,952 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.08.19 -->
+        <title>Tech - Sérialisation - Documentation teachpyx 0.3.1</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Documentation teachpyx 0.3.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.3.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_regex/index.html">Expressions régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expressions régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_data/index.html">Matrices et DataFrames</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_numpy.html">Calcul matriciel avec numpy (version courte)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_pandas.html">Manipulation de données avec pandas (version courte)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles inclassables</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Collections d’articles inclassables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">savoir</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithm_culture.html">Survol algorithmique</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index.html">Pratiquer</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Pratiquer</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../pystruct.html">Structures de données (code)</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Structures de données (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../pydata.html">Manipulation de données (code)</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Manipulation de données (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../pycheck.html">Comprendre un programme (code)</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Comprendre un programme (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tds101.html">Enoncés Corrections sur le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Enoncés Corrections sur le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/premiers_pas.html">Partie 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/premiers_pas.html#Partie-2">Partie 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/premiers_pas.html#Partie-3">Partie 3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/variable_boucle_tests.html">Variables, boucles, tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/dictionnaire_vigenere.html">Dictionnaires, fonctions, code de Vigenère</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/module_file_regex.html">Modules, fichiers, expressions régulières</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/integrale_rectangle.html">Intégrale et la méthode des rectangles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/j2048.html">2048 - stratégie gagnante</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/texte_langue.html">Deviner la langue d’un texte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/pyramide_bigarree.html">Tracer une pyramide bigarrée</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/classes_carre_magique.html">Classes, méthodes, attributs, opérateurs et carré magique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/classes_heritage.html">Classes, héritage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/premiers_pas_correction.html">Premiers pas en Python (correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/variable_boucle_tests_correction.html">Variables, boucles, tests (correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/dictionnaire_vigenere_correction.html">Dictionnaires, fonctions, code de Vigenère (correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/module_file_regex_correction.html">Modules, fichiers, expressions régulières (correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/integrale_rectangle_correction.html">Intégrale et la méthode des rectangles - correction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/j2048_correction.html">2048 - stratégie gagnante - correction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/texte_langue_correction.html">Deviner la langue d’un texte (correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/pyramide_bigarree_correction.html">Tracer une pyramide bigarrée - correction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/classes_carre_magique_correction.html">Classes, méthodes, attributs, opérateurs et carré magique (correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tds-base/classes_heritage_correction.html">Classes, héritage (correction)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../algo101.html">Algorithmes à connaître (code)</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Algorithmes à connaître (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/matrix_dictionary.html">Produit matriciel avec une matrice creuse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_edit_distance.html">Distance d’édiction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_topk.html">Les k premiers éléments (top k)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../algocompose.html">Algorithmes composés (code)</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Algorithmes composés (code)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../algo-base/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-compose/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017_2.html#Exercice-1">Exercice 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/classique.html">examples.construction_classique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/tools.html">tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/numpysex.html">examples.numpysex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/faqs.html">faq</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Tech---Sérialisation">
+<h1>Tech - Sérialisation<a class="headerlink" href="#Tech---Sérialisation" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>La sérialisation répond à un problème simple : comment échanger des données complexes autres que des tableaux ?</p>
+<p>Si l’énoncé est simple, la solution ne l’est pas toujours. Il est assez facile d’échanger des données qui se présentent sous la forme d’un tableau, d’un texte, d’un nombre mais comment échanger un assemblage de données hétérogènes ? La <strong>sérialisation</strong> désigne un méanisme qui permet de permet de représenter un assemblage de données en un seul tableau de caractères. La <strong>désérialisation</strong> désigne le mécanisme inverse qui consiste à reconstruire les données initiales à partir de ce tableau de
+caractères.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jyquickhelper</span> <span class="kn">import</span> <span class="n">add_notebook_menu</span>
+
+<span class="n">add_notebook_menu</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="my_id_menu_nb">run previous cell, wait for 2 seconds</div>
+<script>
+function repeat_indent_string(n){
+    var a = "" ;
+    for ( ; n > 0 ; --n)
+        a += "    ";
+    return a;
+}
+// look up into all sections and builds an automated menu //
+var update_menu_string = function(begin, lfirst, llast, sformat, send, keep_item, begin_format, end_format) {
+    var anchors = document.getElementsByClassName("section");
+    if (anchors.length == 0) {
+        anchors = document.getElementsByClassName("text_cell_render rendered_html");
+    }
+    var i,t;
+    var text_menu = begin;
+    var text_memo = "<pre>\nlength:" + anchors.length + "\n";
+    var ind = "";
+    var memo_level = 1;
+    var href;
+    var tags = [];
+    var main_item = 0;
+    var format_open = 0;
+    for (i = 0; i <= llast; i++)
+        tags.push("h" + i);
+
+    for (i = 0; i < anchors.length; i++) {
+        text_memo += "**" + anchors[i].id + "--\n";
+
+        var child = null;
+        for(t = 0; t < tags.length; t++) {
+            var r = anchors[i].getElementsByTagName(tags[t]);
+            if (r.length > 0) {
+child = r[0];
+break;
+            }
+        }
+        if (child == null) {
+            text_memo += "null\n";
+            continue;
+        }
+        if (anchors[i].hasAttribute("id")) {
+            // when converted in RST
+            href = anchors[i].id;
+            text_memo += "#1-" + href;
+            // passer à child suivant (le chercher)
+        }
+        else if (child.hasAttribute("id")) {
+            // in a notebook
+            href = child.id;
+            text_memo += "#2-" + href;
+        }
+        else {
+            text_memo += "#3-" + "*" + "\n";
+            continue;
+        }
+        var title = child.textContent;
+        var level = parseInt(child.tagName.substring(1,2));
+
+        text_memo += "--" + level + "?" + lfirst + "--" + title + "\n";
+
+        if ((level < lfirst) || (level > llast)) {
+            continue ;
+        }
+        if (title.endsWith('¶')) {
+            title = title.substring(0,title.length-1).replace("<", "&lt;")
+         .replace(">", "&gt;").replace("&", "&amp;");
+        }
+        if (title.length == 0) {
+            continue;
+        }
+
+        while (level < memo_level) {
+            text_menu += end_format + "</ul>\n";
+            format_open -= 1;
+            memo_level -= 1;
+        }
+        if (level == lfirst) {
+            main_item += 1;
+        }
+        if (keep_item != -1 && main_item != keep_item + 1) {
+            // alert(main_item + " - " + level + " - " + keep_item);
+            continue;
+        }
+        while (level > memo_level) {
+            text_menu += "<ul>\n";
+            memo_level += 1;
+        }
+        text_menu += repeat_indent_string(level-2);
+        text_menu += begin_format + sformat.replace("__HREF__", href).replace("__TITLE__", title);
+        format_open += 1;
+    }
+    while (1 < memo_level) {
+        text_menu += end_format + "</ul>\n";
+        memo_level -= 1;
+        format_open -= 1;
+    }
+    text_menu += send;
+    //text_menu += "\n" + text_memo;
+
+    while (format_open > 0) {
+        text_menu += end_format;
+        format_open -= 1;
+    }
+    return text_menu;
+};
+var update_menu = function() {
+    var sbegin = "";
+    var sformat = '<a href="#__HREF__">__TITLE__</a>';
+    var send = "";
+    var begin_format = '<li>';
+    var end_format = '</li>';
+    var keep_item = -1;
+    var text_menu = update_menu_string(sbegin, 2, 4, sformat, send, keep_item,
+       begin_format, end_format);
+    var menu = document.getElementById("my_id_menu_nb");
+    menu.innerHTML=text_menu;
+};
+window.setTimeout(update_menu,2000);
+            </script></div>
+</div>
+<section id="Notion-de-stream-ou-flux">
+<h2>Notion de stream ou flux<a class="headerlink" href="#Notion-de-stream-ou-flux" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un stream en informatique définit une façon de parcourir une séquence d’octets. Un fichier est un stream : on écrit les octets ou caractères les uns après les autres, chaque nouveau caractère est ajouté à la fin. Lors de la lecture, on procède de même en lisant les caractères du début à la fin. Dans un stream, on ne revient jamais en arrière, on lit toujours le caractère suivant.</p>
+<p>Les streams sont optimisés pour ce type de lecture et d’écriture, ils sont très lents lorsqu’il s’agit d’aller lire ou écrire des caractères de façon non séquentielle.</p>
+<p>Pour faire des calculs mathématiques, il faut pouvoir accéder à tout moment à n’importe quel élément de la matrice. L’utilisation d’un <em>stream</em> est contre-indiquée. En revanche, ils sont très adaptés à la lecture et l’écriture de fichiers. Ils sont également utilisés pour communiquer des données, lorsqu’un ordinateur envoie des données à un autre ordinateur.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+
+<span class="n">st</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;pi=&quot;</span><span class="p">)</span>
+<span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+<span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+pi=3.141592653589793;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">st</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;pi=3.141592653589793;&quot;</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">text</span> <span class="o">:=</span> <span class="n">st</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+p
+i
+=
+3
+.
+1
+4
+1
+5
+9
+2
+6
+5
+3
+5
+8
+9
+7
+9
+3
+;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">f2</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">t</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;petit&quot;</span><span class="p">,</span> <span class="s2">&quot;essai&quot;</span><span class="p">,</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span> <span class="s2">&quot;comparaison&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">300</span>
+<span class="n">f1</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">f2</span><span class="p">(</span><span class="n">data</span><span class="p">)[:</span><span class="mi">100</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;petit;essai;de;comparaison;petit;essai;de;comparaison;petit;essai;de;comparaison;petit;essai;de;comp&#39;,
+ &#39;petit;essai;de;comparaison;petit;essai;de;comparaison;petit;essai;de;comparaison;petit;essai;de;comp&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> f1(data)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+207 µs ± 25.6 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> f2(data)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+365 µs ± 50.1 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<section id="Q1:-quelle-est-la-fonction-la-plus-rapide-?">
+<h3>Q1: quelle est la fonction la plus rapide ?<a class="headerlink" href="#Q1:-quelle-est-la-fonction-la-plus-rapide-?" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Il vaut mieux faire varier la longueur de la liste <code class="docutils literal notranslate"><span class="pre">data</span></code> avant de répondre.</p>
+</section>
+</section>
+<section id="Format-JSON">
+<h2>Format JSON<a class="headerlink" href="#Format-JSON" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le format <a class="reference external" href="https://fr.wikipedia.org/wiki/JavaScript_Object_Notation">JSON</a> est le format le plus répandu sur Internet. C’est un assemblage récursif de listes et de dictionnaires. Chaque conteneur peut contenir des listes, des dictionnaires, des nombres, des chaînes de caractères.</p>
+<p>Il est possible de télécharger tout Wikipédia au format JSON : <a class="reference external" href="https://www.wikidata.org/wiki/Wikidata:Database_download/fr">Wikidata:Téléchargement de la base de données</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;nom&quot;</span><span class="p">:</span> <span class="s2">&quot;magoo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;naissance&quot;</span><span class="p">:</span> <span class="mi">1949</span><span class="p">,</span>
+    <span class="s2">&quot;creator&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Millard Kaufman&quot;</span><span class="p">,</span> <span class="s2">&quot;John Hubley&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;cartoons&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Les Aventures célèbres de Monsieur Magoo&quot;</span><span class="p">,</span> <span class="s2">&quot;durée&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Quoi de neuf Mr. Magoo ?&quot;</span><span class="p">,</span> <span class="s2">&quot;durée&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;nom&#39;: &#39;magoo&#39;,
+ &#39;naissance&#39;: 1949,
+ &#39;creator&#39;: [&#39;Millard Kaufman&#39;, &#39;John Hubley&#39;],
+ &#39;cartoons&#39;: [{&#39;title&#39;: &#39;Les Aventures célèbres de Monsieur Magoo&#39;,
+   &#39;durée&#39;: 5},
+  {&#39;title&#39;: &#39;Quoi de neuf Mr. Magoo ?&#39;, &#39;durée&#39;: 10}]}
+</pre></div></div>
+</div>
+<p>Le langage python propose une librairie standard <a class="reference external" href="https://docs.python.org/3/library/json.html">json</a> pour manipuler les informations. Et comme c’est d’un usage fréquent, il existe d’autres options plus rapides <a class="reference external" href="https://github.com/ultrajson/ultrajson">ujson</a>, <a class="reference external" href="https://github.com/simplejson/simplejson">simplejson</a>, <a class="reference external" href="https://github.com/ICRAR/ijson">ijson</a>, …</p>
+<p>La page <a class="reference external" href="https://dumps.wikimedia.org/wikidatawiki/entities/">Index of /wikidatawiki/entities/</a> contient des fichiers json issues de wikipedia. Le fichier <a class="reference external" href="https://raw.githubusercontent.com/sdpython/ensae_teaching_cs/master/_doc/notebooks/td1a_home/latest-lexemes-sample.json">latest-lexemes-sample.json</a> contient les premières lignes de <code class="docutils literal notranslate"><span class="pre">latest-lexemes.json.bz2</span></code>.</p>
+<section id="Q1.-lire-du-json">
+<h3>Q1. lire du json<a class="headerlink" href="#Q1.-lire-du-json" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Télécharger et lire ce <a class="reference external" href="https://raw.githubusercontent.com/sdpython/ensae_teaching_cs/master/_doc/notebooks/td1a_home/latest-lexemes-sample.json">fichier</a> avec la libraire <a class="reference external" href="https://docs.python.org/3/library/json.html">json</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/sdpython/ensae_teaching_cs/master/_doc/notebooks/td1a_home/latest-lexemes-sample.json&quot;</span>
+<span class="k">with</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="mi">150</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[
+{&#34;type&#34;:&#34;lexeme&#34;,&#34;id&#34;:&#34;L4&#34;,&#34;lemmas&#34;:{&#34;en&#34;:{&#34;language&#34;:&#34;en&#34;,&#34;value&#34;:&#34;windsurf&#34;}},&#34;lexicalCategory&#34;:&#34;Q24905&#34;,&#34;language&#34;:&#34;Q1860&#34;,&#34;claims&#34;:{&#34;P5238&#34;:[{&#34;m...
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Q2:-écrire-du-json">
+<h3>Q2: écrire du json<a class="headerlink" href="#Q2:-écrire-du-json" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Modifier les données et les écrire de nouveau sur disque.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Q3:-gros-json">
+<h3>Q3: gros json<a class="headerlink" href="#Q3:-gros-json" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Le dump de la version anglaise de wikipedia fait plus de 100 Go (en version compressée). Il tient sur disque mais pas en mémoire. Comment faire pour le lire malgré tout ? Quelques lignes pour vous données des idées… Les plus courageux utiliseront la librairie <a class="reference external" href="https://github.com/ICRAR/ijson">ijson</a> ou <a class="reference external" href="https://github.com/ijl/orjson">orjson</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;dummy.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;dummy.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[
+
+{&#34;type&#34;:&#34;lexeme&#34;,&#34;id&#34;:&#34;L4&#34;,&#34;lemmas&#34;:{&#34;en&#34;:{&#34;language&#34;:&#34;en&#34;,&#34;value&#34;:&#34;windsurf&#34;}},&#34;lexicalCategory&#34;:&#34;Q24905&#34;,&#34;language&#34;:&#34;Q1860&#34;,&#34;claims&#34;:{&#34;P5238&#34;:[{&#34;mainsnak&#34;:{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P5238&#34;,&#34;datavalue&#34;:{&#34;value&#34;:{&#34;entity-type&#34;:&#34;lexeme&#34;,&#34;numeric-id&#34;:3324,&#34;id&#34;:&#34;L3324&#34;},&#34;type&#34;:&#34;wikibase-entityid&#34;},&#34;datatype&#34;:&#34;wikibase-lexeme&#34;},&#34;type&#34;:&#34;statement&#34;,&#34;qualifiers&#34;:{&#34;P1545&#34;:[{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P1545&#34;,&#34;hash&#34;:&#34;2a1ced1dca90648ea7e306acbadd74fc81a10722&#34;,&#34;datavalue&#34;:{&#34;value&#34;:&#34;1&#34;,&#34;type&#34;:&#34;string&#34;},&#34;datatype&#34;:&#34;string&#34;}]},&#34;qualifiers-order&#34;:[&#34;P1545&#34;],&#34;id&#34;:&#34;L4$faad30b0-421c-803a-c1fd-b9a99a0eb35d&#34;,&#34;rank&#34;:&#34;normal&#34;},{&#34;mainsnak&#34;:{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P5238&#34;,&#34;datavalue&#34;:{&#34;value&#34;:{&#34;entity-type&#34;:&#34;lexeme&#34;,&#34;numeric-id&#34;:18537,&#34;id&#34;:&#34;L18537&#34;},&#34;type&#34;:&#34;wikibase-entityid&#34;},&#34;datatype&#34;:&#34;wikibase-lexeme&#34;},&#34;type&#34;:&#34;statement&#34;,&#34;qualifiers&#34;:{&#34;P1545&#34;:[{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P1545&#34;,&#34;hash&#34;:&#34;7241753c62a310cf84895620ea82250dcea65835&#34;,&#34;datavalue&#34;:{&#34;value&#34;:&#34;2&#34;,&#34;type&#34;:&#34;string&#34;},&#34;datatype&#34;:&#34;string&#34;}]},&#34;qualifiers-order&#34;:[&#34;P1545&#34;],&#34;id&#34;:&#34;L4$d15285a1-4880-7a9b-bb1f-85403e1a785a&#34;,&#34;rank&#34;:&#34;normal&#34;}],&#34;P5187&#34;:[{&#34;mainsnak&#34;:{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P5187&#34;,&#34;datavalue&#34;:{&#34;value&#34;:{&#34;text&#34;:&#34;windsurf&#34;,&#34;language&#34;:&#34;en&#34;},&#34;type&#34;:&#34;monolingualtext&#34;},&#34;datatype&#34;:&#34;monolingualtext&#34;},&#34;type&#34;:&#34;statement&#34;,&#34;id&#34;:&#34;L4$d4a63d17-43ea-749d-5860-21b90feb83f7&#34;,&#34;rank&#34;:&#34;normal&#34;}]},&#34;forms&#34;:[{&#34;id&#34;:&#34;L4-F1&#34;,&#34;representations&#34;:{&#34;en&#34;:{&#34;language&#34;:&#34;en&#34;,&#34;value&#34;:&#34;windsurfing&#34;}},&#34;grammaticalFeatures&#34;:[&#34;Q10345583&#34;],&#34;claims&#34;:[]},{&#34;id&#34;:&#34;L4-F3&#34;,&#34;representations&#34;:{&#34;en&#34;:{&#34;language&#34;:&#34;en&#34;,&#34;value&#34;:&#34;windsurfs&#34;}},&#34;grammaticalFeatures&#34;:[&#34;Q110786&#34;,&#34;Q3910936&#34;,&#34;Q51929074&#34;],&#34;claims&#34;:[]},{&#34;id&#34;:&#34;L4-F4&#34;,&#34;representations&#34;:{&#34;en&#34;:{&#34;language&#34;:&#34;en&#34;,&#34;value&#34;:&#34;windsurfed&#34;}},&#34;grammaticalFeatures&#34;:[&#34;Q1392475&#34;],&#34;claims&#34;:[]},{&#34;id&#34;:&#34;L4-F5&#34;,&#34;representations&#34;:{&#34;en&#34;:{&#34;language&#34;:&#34;en&#34;,&#34;value&#34;:&#34;windsurfed&#34;}},&#34;grammaticalFeatures&#34;:[&#34;Q1230649&#34;],&#34;claims&#34;:[]},{&#34;id&#34;:&#34;L4-F6&#34;,&#34;representations&#34;:{&#34;en&#34;:{&#34;language&#34;:&#34;en&#34;,&#34;value&#34;:&#34;windsurf&#34;}},&#34;grammaticalFeatures&#34;:[&#34;Q3910936&#34;],&#34;claims&#34;:[]}],&#34;senses&#34;:[{&#34;id&#34;:&#34;L4-S1&#34;,&#34;glosses&#34;:{&#34;fr&#34;:{&#34;language&#34;:&#34;fr&#34;,&#34;value&#34;:&#34;faire de la planche \u00e0 voile&#34;},&#34;ms&#34;:{&#34;language&#34;:&#34;ms&#34;,&#34;value&#34;:&#34;meluncur angin&#34;},&#34;zh&#34;:{&#34;language&#34;:&#34;zh&#34;,&#34;value&#34;:&#34;\u6ed1\u6d6a\u98a8\u5e06&#34;},&#34;zh-hant&#34;:{&#34;language&#34;:&#34;zh-hant&#34;,&#34;value&#34;:&#34;\u6ed1\u6d6a\u98a8\u5e06&#34;},&#34;zh-tw&#34;:{&#34;language&#34;:&#34;zh-tw&#34;,&#34;value&#34;:&#34;\u6ed1\u6d6a\u98a8\u5e06&#34;},&#34;nan&#34;:{&#34;language&#34;:&#34;nan&#34;,&#34;value&#34;:&#34;h\u00e1i-\u00edng hong-ph\u00e2ng&#34;},&#34;th&#34;:{&#34;language&#34;:&#34;th&#34;,&#34;value&#34;:&#34;\u0e40\u0e25\u0e48\u0e19\u0e27\u0e34\u0e19\u0e14\u0e4c\u0e40\u0e0b\u0e34\u0e23\u0e4c\u0e1f&#34;},&#34;tg&#34;:{&#34;language&#34;:&#34;tg&#34;,&#34;value&#34;:&#34;\u0441\u0451\u0440\u0444\u0438\u043d\u0433\u0431\u043e\u0437\u0438\u0438 \u0448\u0430\u043c\u043e\u043b\u04e3&#34;},&#34;fi&#34;:{&#34;language&#34;:&#34;fi&#34;,&#34;value&#34;:&#34;purjelautailla&#34;}},&#34;claims&#34;:{&#34;P5137&#34;:[{&#34;mainsnak&#34;:{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P5137&#34;,&#34;datavalue&#34;:{&#34;value&#34;:{&#34;entity-type&#34;:&#34;item&#34;,&#34;numeric-id&#34;:191051,&#34;id&#34;:&#34;Q191051&#34;},&#34;type&#34;:&#34;wikibase-entityid&#34;},&#34;datatype&#34;:&#34;wikibase-item&#34;},&#34;type&#34;:&#34;statement&#34;,&#34;id&#34;:&#34;L4-S1$13e5f498-4deb-ea41-4d60-02c852b88b4c&#34;,&#34;rank&#34;:&#34;normal&#34;}],&#34;P5972&#34;:[{&#34;mainsnak&#34;:{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P5972&#34;,&#34;datavalue&#34;:{&#34;value&#34;:{&#34;entity-type&#34;:&#34;sense&#34;,&#34;id&#34;:&#34;L144039-S1&#34;},&#34;type&#34;:&#34;wikibase-entityid&#34;},&#34;datatype&#34;:&#34;wikibase-sense&#34;},&#34;type&#34;:&#34;statement&#34;,&#34;id&#34;:&#34;L4-S1$7218013F-B84B-40FA-B57B-BC1BA2239BB8&#34;,&#34;rank&#34;:&#34;normal&#34;}]}}],&#34;pageid&#34;:54387040,&#34;ns&#34;:146,&#34;title&#34;:&#34;Lexeme:L4&#34;,&#34;lastrevid&#34;:1710596079,&#34;modified&#34;:&#34;2022-08-22T19:28:34Z&#34;},
+
+{&#34;type&#34;:&#34;lexeme&#34;,&#34;id&#34;:&#34;L314&#34;,&#34;lemmas&#34;:{&#34;ca&#34;:{&#34;language&#34;:&#34;ca&#34;,&#34;value&#34;:&#34;pi&#34;}},&#34;lexicalCategory&#34;:&#34;Q1084&#34;,&#34;language&#34;:&#34;Q7026&#34;,&#34;claims&#34;:{&#34;P5185&#34;:[{&#34;mainsnak&#34;:{&#34;snaktype&#34;:&#34;value&#34;,&#34;property&#34;:&#34;P5185&#34;,&#34;datavalue&#34;:{&#34;value&#34;:{&#34;entity-type&#34;:&#34;item&#34;,&#34;numeric-id&#34;:1775415,&#34;id&#34;:&#34;Q1775415&#34;},&#34;type&#34;:&#34;wikibase-entityid&#34;},&#34;datatype&#34;:&#34;wikibase-item&#34;},&#34;type&#34;:&#34;statement&#34;,&#34;id&#34;:&#34;L314$45650151-4ed8-025d-2442-e36ef22e6a2a&#34;,&#34;rank&#34;:&#34;normal&#34;}]},&#34;forms&#34;:[{&#34;id&#34;:&#34;L314-F1&#34;,&#34;representations&#34;:{&#34;ca&#34;:{&#34;language&#34;:&#34;ca&#34;,&#34;value&#34;:&#34;pis&#34;}},&#34;grammaticalFeatures&#34;:[&#34;Q146786&#34;],&#34;claims&#34;:[]},{&#34;id&#34;:&#34;L314-F2&#34;,&#34;representations&#34;:{&#34;ca&#34;:{&#34;language&#34;:&#34;ca&#34;,&#34;value&#34;:&#34;pi&#34;}},&#34;grammaticalFeatures&#34;:[&#34;Q110786&#34;],&#34;claims&#34;:[]}],&#34;senses&#34;:{},&#34;pageid&#34;:54387050,&#34;ns&#34;:146,&#34;title&#34;:&#34;Lexeme:L314&#34;,&#34;lastrevid&#34;:684359491,&#34;modified&#34;:&#34;2018-05-24T07:28:21Z&#34;},
+
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="XML">
+<h2>XML<a class="headerlink" href="#XML" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le <a class="reference external" href="https://fr.wikipedia.org/wiki/Extensible_Markup_Language">XML</a> était utilisé avant le format json. Il permet de faire la même chose, sérialiser, mais est plus verbeux. Il a été abandonné car le résultat est plus long qu’avec le format json.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dict2xml</span> <span class="kn">import</span> <span class="n">dict2xml</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dict2xml</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;cartoons&gt;
+  &lt;durée&gt;5&lt;/durée&gt;
+  &lt;title&gt;Les Aventures célèbres de Monsieur Magoo&lt;/title&gt;
+&lt;/cartoons&gt;
+&lt;cartoons&gt;
+  &lt;durée&gt;10&lt;/durée&gt;
+  &lt;title&gt;Quoi de neuf Mr. Magoo ?&lt;/title&gt;
+&lt;/cartoons&gt;
+&lt;creator&gt;Millard Kaufman&lt;/creator&gt;
+&lt;creator&gt;John Hubley&lt;/creator&gt;
+&lt;naissance&gt;1949&lt;/naissance&gt;
+&lt;nom&gt;magoo&lt;/nom&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="pickle">
+<h2>pickle<a class="headerlink" href="#pickle" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le format <a class="reference external" href="https://fr.wikipedia.org/wiki/JavaScript_Object_Notation">JSON</a> a un inconvénient majeur : il impose la conversion des données au format texte, en particulier les nombres. Chaque nombre doit être converti en chaînes de caractères et réciproquement. Pourquoi ne pas garder la représentation binaire des nombres tels qu’ils sont utilisés en mémoire ?</p>
+<p>C’est l’objectif du module <a class="reference external" href="https://docs.python.org/3/library/pickle.html">pickle</a>. Comme il n’y pas de conversion au format texte et qu’il s’agit de recopier la mémoire sur disque en un seule, cette sérialisation s’applique à tout objet python. Elle n’est pas restreinte aux dictionnaires et aux listes.</p>
+<section id="Q1:-comparer-le-temps-de-sérialisation-entre-pickle-et-json">
+<h3>Q1: comparer le temps de sérialisation entre pickle et json<a class="headerlink" href="#Q1:-comparer-le-temps-de-sérialisation-entre-pickle-et-json" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>On pourra utiliser les données json récupérées ci-dessus.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Q2:-comparer-le-temps-de-désérialisation-entre-pickle-et-json">
+<h3>Q2: comparer le temps de désérialisation entre pickle et json<a class="headerlink" href="#Q2:-comparer-le-temps-de-désérialisation-entre-pickle-et-json" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Même exercice en sens inverse.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Peut-on-tout-sérialiser-?">
+<h3>Peut-on tout sérialiser ?<a class="headerlink" href="#Peut-on-tout-sérialiser-?" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>La plupart des objets contenant des données peuvent être sérialisées, les listes, ldes dictionnaires, les matrices (numpy), les dataframes)… Il n’est pas possible de sérialiser les fonctions à moins d’utiliser des librairies comme <a class="reference external" href="https://github.com/cloudpipe/cloudpickle">cloudpickle</a> ou <a class="reference external" href="https://github.com/uqfoundation/dill">dill</a>.</p>
+<p>La sérialisation fonctionne de façon implicite avec toutes les classes python à l’exception de celles définies en C++. Pour celles-ci, il faudra coder explicitement la sérialisation et la désérialisation. Pour cela il faut redéfinir les méthodes <a class="reference external" href="http://www.xavierdupre.fr/app/teachpyx/helpsphinx/notebooks/serialisation_examples.html?highlight=__getstate__#reduire-la-taille">getstate et_setstate</a>.</p>
+<p>Il reste une contrainte majeure à cette sérialisation, elle dépend de la version du langage et de chaque extension. Sérialisation avec python 3.7 et désérialisation avec python 3.10 a peu de chance de fonctionner.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tech - Sérialisation</a><ul>
+<li><a class="reference internal" href="#Notion-de-stream-ou-flux">Notion de stream ou flux</a><ul>
+<li><a class="reference internal" href="#Q1:-quelle-est-la-fonction-la-plus-rapide-?">Q1: quelle est la fonction la plus rapide ?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Format-JSON">Format JSON</a><ul>
+<li><a class="reference internal" href="#Q1.-lire-du-json">Q1. lire du json</a></li>
+<li><a class="reference internal" href="#Q2:-écrire-du-json">Q2: écrire du json</a></li>
+<li><a class="reference internal" href="#Q3:-gros-json">Q3: gros json</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#XML">XML</a></li>
+<li><a class="reference internal" href="#pickle">pickle</a><ul>
+<li><a class="reference internal" href="#Q1:-comparer-le-temps-de-sérialisation-entre-pickle-et-json">Q1: comparer le temps de sérialisation entre pickle et json</a></li>
+<li><a class="reference internal" href="#Q2:-comparer-le-temps-de-désérialisation-entre-pickle-et-json">Q2: comparer le temps de désérialisation entre pickle et json</a></li>
+<li><a class="reference internal" href="#Peut-on-tout-sérialiser-?">Peut-on tout sérialiser ?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=bdd90cfe"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

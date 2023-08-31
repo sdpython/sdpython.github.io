@@ -6,12 +6,12 @@
 
 Computation times
 =================
-**00:03.355** total execution time for **auto_examples** files:
+**00:03.237** total execution time for **auto_examples** files:
 
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_tsp.py` (``plot_tsp.py``)                                           | 00:02.598 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_tsp.py` (``plot_tsp.py``)                                           | 00:03.237 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_einstein_riddle.py` (``plot_einstein_riddle.py``)                   | 00:00.757 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_einstein_riddle.py` (``plot_einstein_riddle.py``)                   | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_float_and_double_rouding.py` (``plot_float_and_double_rouding.py``) | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------+-----------+--------+
