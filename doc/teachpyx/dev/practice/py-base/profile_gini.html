@@ -1,0 +1,1102 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Profiling, application à la convolution" href="profiling_conv.html" /><link rel="prev" title="Exemple de profiling" href="profiling_example.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.08.19 -->
+        <title>Profiling la fonction Gini - Documentation teachpyx 0.3.1</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Documentation teachpyx 0.3.1</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.3.1</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_regex/index.html">Expressions régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expressions régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_data/index.html">Matrices et DataFrames</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_numpy.html">Calcul matriciel avec numpy (version courte)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_pandas.html">Manipulation de données avec pandas (version courte)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles inclassables</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Collections d’articles inclassables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-09-06-ensae.html">2023-09-06 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index_python.html">Exercices sur le langage python</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Exercices sur le langage python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nbheap.html">Heap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recherche_dichotomique.html">Recherche dichotomique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercice_hash.html">Répartition, table de hashage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes_metro.html">Un bref aperçu des classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes_2048.html">2048 et les classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercice_pi.html">Calculs de surface et autres calculs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiling_example.html">Exemple de profiling</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Profiling la fonction Gini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profiling_conv.html">Profiling, application à la convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercice_regex.html">Expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercice_json_xml.html">JSON - XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercice_serialisation_json.html">Sérialisation avec JSON, XML, pickle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/premiers_pas.html">Premiers pas en Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/variable_boucle_tests.html">Variables, boucles, tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/dictionnaire_vigenere.html">Dictionnaires, fonctions, code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/module_file_regex.html">Modules, fichiers, expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/integrale_rectangle.html">Intégrale et la méthode des rectangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/j2048.html">2048 - stratégie gagnante</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/texte_langue.html">Deviner la langue d’un texte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/pyramide_bigarree.html">Tracer une pyramide bigarrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_carre_magique.html">Classes, méthodes, attributs, opérateurs et carré magique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_heritage.html">Classes, héritage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/premiers_pas_correction.html">Premiers pas en Python (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/variable_boucle_tests_correction.html">Variables, boucles, tests (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/dictionnaire_vigenere_correction.html">Dictionnaires, fonctions, code de Vigenère (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/module_file_regex_correction.html">Modules, fichiers, expressions régulières (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/integrale_rectangle_correction.html">Intégrale et la méthode des rectangles - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/j2048_correction.html">2048 - stratégie gagnante - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/texte_langue_correction.html">Deviner la langue d’un texte (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/pyramide_bigarree_correction.html">Tracer une pyramide bigarrée - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_carre_magique_correction.html">Classes, méthodes, attributs, opérateurs et carré magique (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_heritage_correction.html">Classes, héritage (correction)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_algo.html">Algorithmes</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Algorithmes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/matrix_dictionary.html">Produit matriciel avec une matrice creuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_topk.html">Les k premiers éléments (top k)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_suffix.html">Algo - jeux de dictionnaires, plus grand suffixe commun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_editdist.html">Distance entre deux mots de même longueur et tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_edit_distance.html">Distance d’édition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_ordonnancement.html">Algo - Problème d’ordonnancement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_tsp.html">TSP - Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/tsp_aparte.html">Aparté sur le voyageur de commerce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_compose_connexe.html">Graphe et Composantes connexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_random_graph.html">Graphes aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid_simple.html">Modèle épidémiologique (SIRD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_exam.html">Séances minutées</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Séances minutées</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017_2.html#Exercice-1">Exercice 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../i_index.html">En diagonal</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of En diagonal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/classique.html">examples.construction_classique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/tools.html">tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/numpysex.html">examples.numpysex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/faqs.html">faq</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Profiling-la-fonction-Gini">
+<h1>Profiling la fonction Gini<a class="headerlink" href="#Profiling-la-fonction-Gini" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Le <a class="reference external" href="https://fr.wikipedia.org/wiki/Profilage_de_code">profilage de code</a> ou <em>profiling</em> en anglais signifie qu’on mesure le temps passé dans chaque partie d’un programme pour en découvrir les parties les plus coûteuses et les améliorer. On souhaite toujours accélérer un programme trop lent, le profiling permet de savoir sur quelles parties se concentrer.</p>
+<p>Autre lecture : <a class="reference external" href="http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/notebooks/profiling_example.html#profilingexamplerst">Exemple de profiling</a>.</p>
+<section id="Enoncé">
+<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On applique le profiling au code suivant pour découvrir laquelle de ces fonctions est la plus lente. Vous pouvez changer ce code pour un de ceux que vous avez écrits précédemment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_gini_sort</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_gini_init</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">Y</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_gini_cumsum</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)):</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)):</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">couples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">couples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">couples</span>
+
+
+<span class="k">def</span> <span class="nf">_gini_final</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">couples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">g</span> <span class="o">+=</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">y</span>
+
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">g</span> <span class="o">/</span> <span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">gini</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">_gini_sort</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_init</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_cumsum</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_gini_final</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+
+
+<span class="n">gini</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">gini</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.5, 0.9)
+</pre></div></div>
+</div>
+<p>Pour ces deux exemples caractéristiques, on retrouve bien des valeurs attendues.</p>
+<section id="Exercice-1-:-profiler-le-code-précédent">
+<h3>Exercice 1 : profiler le code précédent<a class="headerlink" href="#Exercice-1-:-profiler-le-code-précédent" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Le langage python dispose d’un module qui mesure le temps passé dans chaque fonction <a class="reference external" href="https://docs.python.org/3/library/profile.html">profile</a>. Il faut l’utiliser.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Exercice-2-:-changer-la-fonction-_gini_final-si-possible-en-plus-rapide">
+<h3>Exercice 2 : changer la fonction _gini_final si possible en plus rapide<a class="headerlink" href="#Exercice-2-:-changer-la-fonction-_gini_final-si-possible-en-plus-rapide" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Exercice-3-:-vous-améliorez-la-fonction-_gini_final,-profilez-pour-savoir-de-combien-?">
+<h3>Exercice 3 : vous améliorez la fonction _gini_final, profilez pour savoir de combien ?<a class="headerlink" href="#Exercice-3-:-vous-améliorez-la-fonction-_gini_final,-profilez-pour-savoir-de-combien-?" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Exercice-4-:-utiliser-d'autres-modules-de-profiling">
+<h3>Exercice 4 : utiliser d’autres modules de profiling<a class="headerlink" href="#Exercice-4-:-utiliser-d'autres-modules-de-profiling" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Si c’est possible, comme <a class="reference external" href="https://github.com/joerick/pyinstrument">pyinstrument</a> ou <a class="reference external" href="https://github.com/benfred/py-spy">py-spy</a>. Il y a deux façons de faire du profiling :</p>
+<ul class="simple">
+<li><p><strong>déterministe :</strong> on mesure le temps passé dans chaque fonction, à chaque appel, ce type de profilage n’est souvent possible que pour des langages interprétés,</p></li>
+<li><p><strong>statistique :</strong> tous les centièmes de secondes, on regarde quelle ligne de quelle fonction le programme exécute. On compte ensuite combien de fois la ligne exécutée était dans une fonction pour déterminer le temps passé dans chaque fonction.</p></li>
+</ul>
+<p>Les deux modules proposés sont statistiques, le premier est déterministe. Bien évidemment, le fait de mesurer le temps passé prend du temps également, plus on s’arrête souvant, plus l’exécution est ralentie.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Exercice-5-:-la-fonction-_gini_cumsum-contient-deux-boucles.-Quelle-est-la-plus-rapide-?">
+<h3>Exercice 5 : la fonction _gini_cumsum contient deux boucles. Quelle est la plus rapide ?<a class="headerlink" href="#Exercice-5-:-la-fonction-_gini_cumsum-contient-deux-boucles.-Quelle-est-la-plus-rapide-?" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Réponses">
+<h2>Réponses<a class="headerlink" href="#Réponses" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="id1">
+<h3>Exercice 1 : profiler le code précédent<a class="headerlink" href="#id1" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>On reprend un des exemples de cette page <a class="reference external" href="https://docs.python.org/3/library/profile.html#module-cProfile">The Python Profilers</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cProfile</span><span class="o">,</span> <span class="nn">pstats</span><span class="o">,</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">SortKey</span>
+
+<span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="n">gini</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">sortby</span> <span class="o">=</span> <span class="n">SortKey</span><span class="o">.</span><span class="n">CUMULATIVE</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+         48 function calls in 0.000 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/interactiveshell.py:3472(run_code)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.exec}
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/codeop.py:117(__call__)
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_23329/1877708867.py:1(&lt;module&gt;)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.compile}
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_23329/1359775409.py:31(gini)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:279(helper)
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_23329/1359775409.py:9(_gini_cumsum)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:130(__enter__)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:139(__exit__)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:102(__init__)
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/traitlets/traitlets.py:692(__get__)
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_23329/1359775409.py:19(_gini_final)
+        4    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/compilerop.py:180(extra_flags)
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_23329/1359775409.py:1(_gini_sort)
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_23329/1359775409.py:5(_gini_init)
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/interactiveshell.py:3424(compare)
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/traitlets/traitlets.py:654(get)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_23329/1359775409.py:6(&lt;listcomp&gt;)
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/interactiveshell.py:1229(user_global_ns)
+        1    0.000    0.000    0.000    0.000 {method &#39;disable&#39; of &#39;_lsprof.Profiler&#39; objects}
+
+
+
+</pre></div></div>
+</div>
+<p>Tous les temps sont nuls. Le code est trop rapide. Il faut soit exécuter le code plusieurs fois, soit prendre un tableau plus grand.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cProfile</span><span class="o">,</span> <span class="nn">pstats</span><span class="o">,</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">SortKey</span>
+
+<span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">gini</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+
+<span class="n">pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">sortby</span> <span class="o">=</span> <span class="n">SortKey</span><span class="o">.</span><span class="n">CUMULATIVE</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+         11038 function calls in 3.682 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    0.000    0.000    3.682    1.841 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/interactiveshell.py:3472(run_code)
+        2    0.000    0.000    3.682    1.841 {built-in method builtins.exec}
+        1    0.132    0.132    3.682    3.682 /tmp/ipykernel_23329/4034582288.py:1(&lt;module&gt;)
+     1000    0.024    0.000    3.436    0.003 /tmp/ipykernel_23329/1359775409.py:31(gini)
+     1000    1.909    0.002    1.914    0.002 /tmp/ipykernel_23329/1359775409.py:9(_gini_cumsum)
+     1000    1.058    0.001    1.060    0.001 /tmp/ipykernel_23329/1359775409.py:19(_gini_final)
+     1000    0.007    0.000    0.398    0.000 /tmp/ipykernel_23329/1359775409.py:5(_gini_init)
+     1000    0.392    0.000    0.392    0.000 /tmp/ipykernel_23329/1359775409.py:6(&lt;listcomp&gt;)
+     1000    0.113    0.000    0.113    0.000 /tmp/ipykernel_23329/4034582288.py:8(&lt;listcomp&gt;)
+     1000    0.013    0.000    0.039    0.000 /tmp/ipykernel_23329/1359775409.py:1(_gini_sort)
+     1000    0.026    0.000    0.026    0.000 {built-in method builtins.sorted}
+     3000    0.008    0.000    0.008    0.000 {built-in method builtins.len}
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/codeop.py:117(__call__)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.compile}
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:279(helper)
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:139(__exit__)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:130(__enter__)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.10/contextlib.py:102(__init__)
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/traitlets/traitlets.py:692(__get__)
+        4    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/compilerop.py:180(extra_flags)
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/interactiveshell.py:3424(compare)
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/traitlets/traitlets.py:654(get)
+        2    0.000    0.000    0.000    0.000 /home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/interactiveshell.py:1229(user_global_ns)
+        1    0.000    0.000    0.000    0.000 {method &#39;disable&#39; of &#39;_lsprof.Profiler&#39; objects}
+
+
+
+</pre></div></div>
+</div>
+<p>C’est un peu illisible. On filtre.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">filtre</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;gini&quot;</span> <span class="ow">in</span> <span class="n">t</span><span class="p">,</span> <span class="n">lines</span><span class="p">))</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">filtre</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+     1000    0.024    0.000    3.436    0.003 /tmp/ipykernel_23329/1359775409.py:31(gini)
+     1000    1.909    0.002    1.914    0.002 /tmp/ipykernel_23329/1359775409.py:9(_gini_cumsum)
+     1000    1.058    0.001    1.060    0.001 /tmp/ipykernel_23329/1359775409.py:19(_gini_final)
+     1000    0.007    0.000    0.398    0.000 /tmp/ipykernel_23329/1359775409.py:5(_gini_init)
+     1000    0.013    0.000    0.039    0.000 /tmp/ipykernel_23329/1359775409.py:1(_gini_sort)
+</pre></div></div>
+</div>
+</section>
+<section id="id2">
+<h3>Exercice 2 : changer la fonction _gini_final si possible en plus rapide<a class="headerlink" href="#id2" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_gini_final_faster</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">couples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+
+    <span class="c1"># par construction, tous les dx sont identiques, cela fait des calculs en moins</span>
+    <span class="c1"># le code suivant est plus rapide mais peut encore être optimisé</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sy</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">sy</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">g</span> <span class="o">+=</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">sy</span>
+
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">g</span> <span class="o">/</span> <span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">gini_faster</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">_gini_sort</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_init</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_cumsum</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_gini_final_faster</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+
+
+<span class="p">(</span>
+    <span class="n">gini_faster</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]),</span>
+    <span class="n">gini_faster</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+    <span class="n">gini</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">]),</span>
+    <span class="n">gini</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.9, 0.5, 0.9, 0.5)
+</pre></div></div>
+</div>
+</section>
+<section id="id3">
+<h3>Exercice 3 : vous améliorez la fonction _gini_final, profilez pour savoir de combien ?<a class="headerlink" href="#id3" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>On appelle les deux fonctions pour pouvoir comparer.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cProfile</span><span class="o">,</span> <span class="nn">pstats</span><span class="o">,</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">SortKey</span>
+
+<span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">gini</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+    <span class="n">gini_faster</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+
+<span class="n">pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">sortby</span> <span class="o">=</span> <span class="n">SortKey</span><span class="o">.</span><span class="n">CUMULATIVE</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filtre</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+     2000    3.121    0.002    3.130    0.002 /tmp/ipykernel_23329/1359775409.py:9(_gini_cumsum)
+     1000    0.018    0.000    2.877    0.003 /tmp/ipykernel_23329/1359775409.py:31(gini)
+     1000    0.017    0.000    2.543    0.003 /tmp/ipykernel_23329/1862792531.py:16(gini_faster)
+     1000    0.866    0.001    0.867    0.001 /tmp/ipykernel_23329/1359775409.py:19(_gini_final)
+     2000    0.011    0.000    0.788    0.000 /tmp/ipykernel_23329/1359775409.py:5(_gini_init)
+     1000    0.528    0.001    0.530    0.001 /tmp/ipykernel_23329/1862792531.py:1(_gini_final_faster)
+     2000    0.024    0.000    0.070    0.000 /tmp/ipykernel_23329/1359775409.py:1(_gini_sort)
+</pre></div></div>
+</div>
+<p>La seconde version est plus rapide.</p>
+</section>
+<section id="id4">
+<h3>Exercice 4 : utiliser d’autres modules de profiling<a class="headerlink" href="#id4" title="Lien permanent vers cette rubrique">#</a></h3>
+<p><a class="reference external" href="https://github.com/joerick/pyinstrument">pyinstrument</a> n’est pas peut-être pas installé. Il fonctionne de la même façon.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyinstrument</span> <span class="kn">import</span> <span class="n">Profiler</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+
+<span class="n">profiler</span> <span class="o">=</span> <span class="n">Profiler</span><span class="p">()</span>
+<span class="n">profiler</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">gini</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+    <span class="n">gini_faster</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+
+<span class="n">profiler</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+<span class="n">HTML</span><span class="p">(</span><span class="n">profiler</span><span class="o">.</span><span class="n">output_html</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+            </head>
+            <body>
+                <div id="app"></div>
+
+                <script>var pyinstrumentHTMLRenderer=function(){"use strict";var ct=Object.defineProperty;var dt=(R,y,B)=>y in R?ct(R,y,{enumerable:!0,configurable:!0,writable:!0,value:B}):R[y]=B;var w=(R,y,B)=>(dt(R,typeof y!="symbol"?y+"":y,B),B);const R="";function y(){}function B(t){return t()}function we(){return Object.create(null)}function O(t){t.forEach(B)}function be(t){return typeof t=="function"}function K(t,e){return t!=t?e==e:t!==e||t&&typeof t=="object"||typeof t=="function"}function Ie(t){return Object.keys(t).length===0}function Re(t,...e){if(t==null)return y;const i=t.subscribe(...e);return i.unsubscribe?()=>i.unsubscribe():i}function se(t,e,i){t.$$.on_destroy.push(Re(e,i))}function f(t,e){t.appendChild(e)}function H(t,e,i){t.insertBefore(e,i||null)}function P(t){t.parentNode&&t.parentNode.removeChild(t)}function _(t){return document.createElement(t)}function ke(t){return document.createElementNS("http://www.w3.org/2000/svg",t)}function L(t){return document.createTextNode(t)}function b(){return L(" ")}function ye(){return L("")}function W(t,e,i,n){return t.addEventListener(e,i,n),()=>t.removeEventListener(e,i,n)}function Ce(t){return function(e){return e.preventDefault(),t.call(this,e)}}function Ee(t){return function(e){return e.stopPropagation(),t.call(this,e)}}function d(t,e,i){i==null?t.removeAttribute(e):t.getAttribute(e)!==i&&t.setAttribute(e,i)}function Oe(t){return Array.from(t.childNodes)}function U(t,e){e=""+e,t.wholeText!==e&&(t.data=e)}function T(t,e,i,n){i===null?t.style.removeProperty(e):t.style.setProperty(e,i,n?"important":"")}function X(t,e,i){t.classList[i?"add":"remove"](e)}let V;function Z(t){V=t}function Te(){if(!V)throw new Error("Function called outside component initialization");return V}function qe(t){Te().$$.on_mount.push(t)}function Ue(t){Te().$$.on_destroy.push(t)}const Y=[],Fe=[],j=[],Se=[],Ve=Promise.resolve();let ue=!1;function Ze(){ue||(ue=!0,Ve.then($e))}function ae(t){j.push(t)}const fe=new Set;let x=0;function $e(){const t=V;do{for(;x<Y.length;){const e=Y[x];x++,Z(e),Ye(e.$$)}for(Z(null),Y.length=0,x=0;Fe.length;)Fe.pop()();for(let e=0;e<j.length;e+=1){const i=j[e];fe.has(i)||(fe.add(i),i())}j.length=0}while(Y.length);for(;Se.length;)Se.pop()();ue=!1,fe.clear(),Z(t)}function Ye(t){if(t.fragment!==null){t.update(),O(t.before_update);const e=t.dirty;t.dirty=[-1],t.fragment&&t.fragment.p(t.ctx,e),t.after_update.forEach(ae)}}const ee=new Set;let Q;function ce(){Q={r:0,c:[],p:Q}}function de(){Q.r||O(Q.c),Q=Q.p}function D(t,e){t&&t.i&&(ee.delete(t),t.i(e))}function N(t,e,i,n){if(t&&t.o){if(ee.has(t))return;ee.add(t),Q.c.push(()=>{ee.delete(t),n&&(i&&t.d(1),n())}),t.o(e)}else n&&n()}function Je(t,e){N(t,1,1,()=>{e.delete(t.key)})}function Ke(t,e,i,n,u,a,r,l,s,o,c,m){let g=t.length,p=a.length,v=g;const E={};for(;v--;)E[t[v].key]=v;const F=[],h=new Map,A=new Map;for(v=p;v--;){const k=m(u,a,v),S=i(k);let $=r.get(S);$?n&&$.p(k,e):($=o(S,k),$.c()),h.set(S,F[v]=$),S in E&&A.set(S,Math.abs(v-E[S]))}const M=new Set,G=new Set;function C(k){D(k,1),k.m(l,c),r.set(k.key,k),c=k.first,p--}for(;g&&p;){const k=F[p-1],S=t[g-1],$=k.key,z=S.key;k===S?(c=k.first,g--,p--):h.has(z)?!r.has($)||M.has($)?C(k):G.has(z)?g--:A.get($)>A.get(z)?(G.add($),C(k)):(M.add(z),g--):(s(S,r),g--)}for(;g--;){const k=t[g];h.has(k.key)||s(k,r)}for(;p;)C(F[p-1]);return F}function pe(t){t&&t.c()}function te(t,e,i,n){const{fragment:u,after_update:a}=t.$$;u&&u.m(e,i),n||ae(()=>{const r=t.$$.on_mount.map(B).filter(be);t.$$.on_destroy?t.$$.on_destroy.push(...r):O(r),t.$$.on_mount=[]}),a.forEach(ae)}function ie(t,e){const i=t.$$;i.fragment!==null&&(O(i.on_destroy),i.fragment&&i.fragment.d(e),i.on_destroy=i.fragment=null,i.ctx=[])}function We(t,e){t.$$.dirty[0]===-1&&(Y.push(t),Ze(),t.$$.dirty.fill(0)),t.$$.dirty[e/31|0]|=1<<e%31}function me(t,e,i,n,u,a,r,l=[-1]){const s=V;Z(t);const o=t.$$={fragment:null,ctx:[],props:a,update:y,not_equal:u,bound:we(),on_mount:[],on_destroy:[],on_disconnect:[],before_update:[],after_update:[],context:new Map(e.context||(s?s.$$.context:[])),callbacks:we(),dirty:l,skip_bound:!1,root:e.target||s.$$.root};r&&r(o.root);let c=!1;if(o.ctx=i?i(t,e.props||{},(m,g,...p)=>{const v=p.length?p[0]:g;return o.ctx&&u(o.ctx[m],o.ctx[m]=v)&&(!o.skip_bound&&o.bound[m]&&o.bound[m](v),c&&We(t,m)),g}):[],o.update(),c=!0,O(o.before_update),o.fragment=n?n(o.ctx):!1,e.target){if(e.hydrate){const m=Oe(e.target);o.fragment&&o.fragment.l(m),m.forEach(P)}else o.fragment&&o.fragment.c();e.intro&&D(t.$$.fragment),te(t,e.target,e.anchor,e.customElement),$e()}Z(s)}class he{$destroy(){ie(this,1),this.$destroy=y}$on(e,i){if(!be(i))return y;const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(i),()=>{const u=n.indexOf(i);u!==-1&&n.splice(u,1)}}$set(e){this.$$set&&!Ie(e)&&(this.$$.skip_bound=!0,this.$$set(e),this.$$.skip_bound=!1)}}const q=[];function De(t,e=y){let i;const n=new Set;function u(l){if(K(t,l)&&(t=l,i)){const s=!q.length;for(const o of n)o[1](),q.push(o,t);if(s){for(let o=0;o<q.length;o+=2)q[o][0](q[o+1]);q.length=0}}}function a(l){u(l(t))}function r(l,s=y){const o=[l,s];return n.add(o),n.size===1&&(i=e(u)||y),l(t),()=>{n.delete(o),n.size===0&&(i(),i=null)}}return{set:u,update:a,subscribe:r}}const Me=De({}),ne=De("absolute"),pt="";function je(t){let e,i,n,u,a,r,l,s,o,c,m,g,p,v,E,F,h,A,M,G,C,k,S,$,z,re=t[0].sampleCount+"",ve,Xe,oe,Qe,le,Ae,Ge;return{c(){e=_("div"),i=_("div"),n=_("div"),u=_("div"),u.textContent="pyinstrument",a=b(),r=_("div"),l=_("label"),l.textContent="Absolute time",s=b(),o=_("input"),c=b(),m=_("div"),m.textContent="Recorded:",g=b(),p=_("div"),p.textContent=`${t[2]}`,v=b(),E=_("div"),E.textContent="Duration:",F=b(),h=_("div"),h.textContent=`${t[4]} seconds`,A=b(),M=_("label"),M.textContent="Proportional time",G=b(),C=_("input"),k=b(),S=_("div"),S.textContent="Samples:",$=b(),z=_("div"),ve=L(re),Xe=b(),oe=_("div"),oe.textContent="CPU time:",Qe=b(),le=_("div"),le.textContent=`${t[3]} seconds`,d(u,"class","title svelte-tewt95"),d(l,"class","metric-label svelte-tewt95"),d(l,"for","absolute"),d(o,"type","radio"),o.__value="absolute",o.value=o.__value,d(o,"id","absolute"),d(o,"name","time-format"),o.checked=!0,t[6][0].push(o),d(m,"class","metric-label svelte-tewt95"),d(p,"class","metric-value svelte-tewt95"),d(E,"class","metric-label svelte-tewt95"),d(h,"class","metric-value svelte-tewt95"),d(M,"class","metric-label svelte-tewt95"),d(M,"for","proportion"),d(C,"type","radio"),C.__value="proportion",C.value=C.__value,d(C,"id","proportion"),d(C,"name","time-format"),t[6][0].push(C),d(S,"class","metric-label svelte-tewt95"),d(z,"class","metric-value svelte-tewt95"),d(oe,"class","metric-label svelte-tewt95"),d(le,"class","metric-value svelte-tewt95"),d(r,"class","metrics svelte-tewt95"),d(n,"class","row svelte-tewt95"),d(i,"class","margins"),d(e,"class","header svelte-tewt95")},m(I,J){H(I,e,J),f(e,i),f(i,n),f(n,u),f(n,a),f(n,r),f(r,l),f(r,s),f(r,o),o.checked=o.__value===t[1],f(r,c),f(r,m),f(r,g),f(r,p),f(r,v),f(r,E),f(r,F),f(r,h),f(r,A),f(r,M),f(r,G),f(r,C),C.checked=C.__value===t[1],f(r,k),f(r,S),f(r,$),f(r,z),f(z,ve),f(r,Xe),f(r,oe),f(r,Qe),f(r,le),Ae||(Ge=[W(o,"change",t[5]),W(C,"change",t[7])],Ae=!0)},p(I,[J]){J&2&&(o.checked=o.__value===I[1]),J&2&&(C.checked=C.__value===I[1]),J&1&&re!==(re=I[0].sampleCount+"")&&U(ve,re)},i:y,o:y,d(I){I&&P(e),t[6][0].splice(t[6][0].indexOf(o),1),t[6][0].splice(t[6][0].indexOf(C),1),Ae=!1,O(Ge)}}}function xe(t,e,i){var m;let n;se(t,ne,g=>i(1,n=g));let{session:u}=e;const a=new Date(u.startTime*1e3).toLocaleString(),r=(m=u.cpuTime)==null?void 0:m.toLocaleString(void 0,{maximumSignificantDigits:3}),l=u.duration.toLocaleString(void 0,{maximumSignificantDigits:3}),s=[[]];function o(){n=this.__value,ne.set(n)}function c(){n=this.__value,ne.set(n)}return t.$$set=g=>{"session"in g&&i(0,u=g.session)},[u,n,a,r,l,o,s,c]}class et extends he{constructor(e){super(),me(this,e,xe,je,K,{session:0})}}const mt="";function Pe(t,e,i){const n=t.slice();return n[14]=e[i],n}function Le(t){let e,i,n,u,a,r,l,s,o,c,m,g,p,v,E,F;return{c(){e=_("div"),i=_("div"),n=ke("svg"),u=ke("path"),a=b(),r=_("div"),l=L(t[5]),s=b(),o=_("div"),c=L(t[4]),m=b(),g=_("div"),p=b(),v=_("div"),v.textContent=`${t[9]}`,d(u,"d","M.937-.016L5.793 4.84.937 9.696z"),d(u,"fill",t[7]),d(u,"fill-rule","evenodd"),d(u,"fill-opacity",".582"),d(n,"width","6"),d(n,"height","10"),d(i,"class","frame-triangle svelte-1aphj50"),X(i,"rotate",t[2]),T(i,"visibility",t[0].children.length>0?"visible":"hidden"),d(r,"class","time svelte-1aphj50"),T(r,"color",t[7]),T(r,"font-weight",t[0].proportionOfTotal<.2?500:600),d(o,"class","name svelte-1aphj50"),d(g,"class","spacer"),T(g,"flex","1"),d(v,"class","code-position svelte-1aphj50"),d(e,"class","frame-description svelte-1aphj50"),X(e,"application-code",t[0].isApplicationCode),X(e,"children-visible",t[2]),T(e,"padding-left",`${t[1]*35}px`)},m(h,A){H(h,e,A),f(e,i),f(i,n),f(n,u),f(e,a),f(e,r),f(r,l),f(e,s),f(e,o),f(o,c),f(e,m),f(e,g),f(e,p),f(e,v),E||(F=W(e,"click",Ee(Ce(t[10]))),E=!0)},p(h,A){A&128&&d(u,"fill",h[7]),A&4&&X(i,"rotate",h[2]),A&1&&T(i,"visibility",h[0].children.length>0?"visible":"hidden"),A&32&&U(l,h[5]),A&128&&T(r,"color",h[7]),A&1&&T(r,"font-weight",h[0].proportionOfTotal<.2?500:600),A&16&&U(c,h[4]),A&1&&X(e,"application-code",h[0].isApplicationCode),A&4&&X(e,"children-visible",h[2]),A&2&&T(e,"padding-left",`${h[1]*35}px`)},d(h){h&&P(e),E=!1,F()}}}function Ne(t){let e,i,n,u,a=t[0].group.frames.length+"",r,l,s,o,c,m;return{c(){e=_("div"),i=_("div"),n=_("div"),n.innerHTML='<svg width="6" height="10"><path d="M.937-.016L5.793 4.84.937 9.696z" fill="#FFF" fill-rule="evenodd" fill-opacity=".582"></path></svg>',u=b(),r=L(a),l=L(` frames hidden
+        (`),s=L(t[6]),o=L(")"),d(n,"class","group-triangle svelte-1aphj50"),X(n,"rotate",t[8]),d(i,"class","group-header-button svelte-1aphj50"),d(e,"class","group-header svelte-1aphj50"),T(e,"padding-left",`${t[1]*35}px`)},m(g,p){H(g,e,p),f(e,i),f(i,n),f(i,u),f(i,r),f(i,l),f(i,s),f(i,o),c||(m=W(e,"click",Ee(Ce(t[11]))),c=!0)},p(g,p){p&256&&X(n,"rotate",g[8]),p&1&&a!==(a=g[0].group.frames.length+"")&&U(r,a),p&64&&U(s,g[6]),p&2&&T(e,"padding-left",`${g[1]*35}px`)},d(g){g&&P(e),c=!1,m()}}}function ze(t){let e=[],i=new Map,n,u,a=t[0].children;const r=l=>l[14].identifier;for(let l=0;l<a.length;l+=1){let s=Pe(t,a,l),o=r(s);i.set(o,e[l]=Be(o,s))}return{c(){for(let l=0;l<e.length;l+=1)e[l].c();n=ye()},m(l,s){for(let o=0;o<e.length;o+=1)e[o].m(l,s);H(l,n,s),u=!0},p(l,s){s&11&&(a=l[0].children,ce(),e=Ke(e,s,r,1,l,a,i,n.parentNode,Je,Be,n,Pe),de())},i(l){if(!u){for(let s=0;s<a.length;s+=1)D(e[s]);u=!0}},o(l){for(let s=0;s<e.length;s+=1)N(e[s]);u=!1},d(l){for(let s=0;s<e.length;s+=1)e[s].d(l);l&&P(n)}}}function Be(t,e){let i,n,u;return n=new He({props:{frame:e[14],indent:e[1]+(e[3]?1:0)}}),{key:t,first:null,c(){i=ye(),pe(n.$$.fragment),this.first=i},m(a,r){H(a,i,r),te(n,a,r),u=!0},p(a,r){e=a;const l={};r&1&&(l.frame=e[14]),r&10&&(l.indent=e[1]+(e[3]?1:0)),n.$set(l)},i(a){u||(D(n.$$.fragment,a),u=!0)},o(a){N(n.$$.fragment,a),u=!1},d(a){a&&P(i),ie(n,a)}}}function tt(t){let e,i,n,u,a,r,l=t[3]&&Le(t),s=t[0].group&&t[0].group.rootFrame==t[0]&&t[2]&&Ne(t),o=t[2]&&ze(t);return{c(){e=_("div"),l&&l.c(),i=b(),s&&s.c(),n=b(),o&&o.c(),u=b(),a=_("div"),d(a,"class","visual-guide"),T(a,"left",`${t[1]*35+21}px`),T(a,"backgroundColor",t[7]),d(e,"class","frame svelte-1aphj50")},m(c,m){H(c,e,m),l&&l.m(e,null),f(e,i),s&&s.m(e,null),f(e,n),o&&o.m(e,null),f(e,u),f(e,a),r=!0},p(c,[m]){c[3]?l?l.p(c,m):(l=Le(c),l.c(),l.m(e,i)):l&&(l.d(1),l=null),c[0].group&&c[0].group.rootFrame==c[0]&&c[2]?s?s.p(c,m):(s=Ne(c),s.c(),s.m(e,n)):s&&(s.d(1),s=null),c[2]?o?(o.p(c,m),m&4&&D(o,1)):(o=ze(c),o.c(),D(o,1),o.m(e,u)):o&&(ce(),N(o,1,1,()=>{o=null}),de()),m&2&&T(a,"left",`${c[1]*35+21}px`),m&128&&T(a,"backgroundColor",c[7])},i(c){r||(D(o),r=!0)},o(c){N(o),r=!1},d(c){c&&P(e),l&&l.d(),s&&s.d(),o&&o.d()}}}function it(t,e,i){let n,u,a;se(t,Me,h=>i(12,u=h)),se(t,ne,h=>i(13,a=h));let{frame:r}=e,{indent:l=0}=e,s=!0,o,c;r.className?c=`${r.className}.${r.function}`:c=r.function;const m=`${r.filePathShort}:${r.lineNo.toString().padEnd(4,"\xA0")}`;let g,p=null;if(r.group){const h=r.group.libraries;h.length<4?p=h.join(", "):p=`${h[0]}, ${h[1]}, ${h[2]}...`}let v;r.proportionOfTotal>.6?v="#FF4159":r.proportionOfTotal>.3?v="#F5A623":r.proportionOfTotal>.2?v="#D8CB2A":v="#7ED321";function E(){i(2,s=!s)}function F(){Me.update(h=>{var A;return{...h,[(A=r.groupId)!=null?A:""]:!n}})}return t.$$set=h=>{"frame"in h&&i(0,r=h.frame),"indent"in h&&i(1,l=h.indent)},t.$$.update=()=>{var h,A,M;if(t.$$.dirty&4097&&(r.group?u[(h=r.groupId)!=null?h:""]||((A=r.group)==null?void 0:A.rootFrame)===r||r.children.filter(G=>!G.group).length>1?i(3,o=!0):i(3,o=!1):i(3,o=!0)),t.$$.dirty&8193)if(a==="absolute")i(5,g=r.time.toLocaleString(void 0,{minimumFractionDigits:3,maximumFractionDigits:3}));else if(a==="proportion")i(5,g=`${(r.proportionOfTotal*100).toLocaleString(void 0,{minimumFractionDigits:1,maximumFractionDigits:1})}%`);else throw new Error("unknown timeFormat");t.$$.dirty&4097&&i(8,n=u[(M=r.groupId)!=null?M:""]===!0)},[r,l,s,o,c,g,p,v,n,m,E,F,u,a]}class He extends he{constructor(e){super(),me(this,e,it,tt,K,{frame:0,indent:1})}}const nt="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACPTkDJAAAFPklEQVRYCdWXu4skVRSHb3VXP2bcXUVMBkRMTVww2XQDExEEH4iKiUYGhuJEPgJhUSMzQQSDRVzETNDMTTfUwL/ARUwM1t3pV1WX33eqbnfP9MxOu5kHTt9T93F+v3vOubeqi7QhT1+58vhiVn1G19WiaQ6KIqVQOmyT+h9kuUxp2bAAtQkpij9pbw5G5fu/3br1x8ql4NW0+rVJzaN29nop9VUeCtoerXpMTj53g+AGcINR1YB3RIJMN6dIxd/luLxcZoftzltwAct+SiNGh2jJ84BnSQWJTeBNW2C0ZrvufrZA5y2JmuemWkfCjYq5IsC6q2iE2V0LuDdMaYxKZDxo+yS3JZkEY+5SsAU7P5q1qZNEAxnXGo0NubomQM4dWPnCMAU/fUCnoA7kFjPEPohuqfO6uc++0xKSVHUcHDbNwZpAeFyHyMcg408G16mSnwW3b5OEz3rtCAyJnHUQUSEFmMdki0CMmsNOX/gkpf1RSpf223Q43jC2MMw4tFWsjwHzBngsIOT6CaEf7wGKrTo/agFbH8oWAQdkWTF5htGntSDn2h2YBTal/9603Z2++swZ0+5BZIjdQwfUz5DcGwHVotSfdpYtAg7oUKzaycyo6PjmkA4cRmgBuf5zSj/80kbAuToaYHz9afdgCiCxJF3gpudfZampOyGnEwAwIkEbuROBXEauXZGdYzrEtFTTpx3zHGeewGoFcFxk2Cdlxempy8/oZyXm1KO3R14fIraPXEzpAnXgyVBmRMdjNgdVsqZgxLw9cl4C7m7N+d17pOqIuaj2LKetQzs1Ai3E+reRJip4CSnz2wPYHC9wFL66MYko9k8pwgmAU4hqbxZhO6tNXba321V8Uvruc4ZzGgQxErnFNszqItqC0DdpTtzfeqWJ21DwpRp5WkOdHwFJqM4UMLcdeB2AADPUkigSm00VOZixsOL8WfUB3oWd4ZWcT8CpgLz2XkoPX+IgEIU+q6K6QZqzqxoAr15vupqC8Air0wm7JwUL2AWJByIAuDXQEGZ1aegRASY4Ppq0AOZZIoZYsLh4zDsa4PSfeA+En/tGQMI5ZTe+xClhN+Q5z4b67TfZJeATiAQw4J4KwTzCOfT2nSb3JRALAJTEfKPQcrGBG5GwwCLMRCRAXcgiQY1IYD8ogbzuDd5qF7gL+p4ESM05Z//coWXH1oEE5oQkQPOi3EroDDk/Ai40Cp3SRE2AG+8MWyOk5h1j7ixnEogPD0dVcv/FVwXXLceKs20K5rCaFk06fKmOD424akkTXUFkVwanEtBZfH7hMK5eCEwBl0DNYHvJ0Idd4MHXr7djkGDtWQV3GqlTCRhybzqv1R4zbA/fXabRfhFAHkvflJO77XivuyElbRHG+h3yL6EtAu4iPkoF5q4veRn1ecEUAwYg0pSyQwAoRk3qz4p4DS+wawpxSVHoY9cobBHQtxBBBMBrN/rkvOEC6lF0hF/nKvaS31yE155btLVAFKIidbSDbBMI9HaluzjC4ZKQWHieBIcVPqvbyg/b503Dh91kTcB/LH4Z6wmNI8X2PnyxTkPSUI7JP7MjvE5hTrwDuO+rLvT2uXxnAXNNgL9LLHxdB16jOi24XgOEK68EyMKMb/uYRERol1w+FmRN67XrWonsKDdzRNPmXzPjbEXHxwWttsCcwpXki8cte91afP7zkdQuYch/zSizVv66ffvOwZNPfLus/YNSPMYuLkZIda66yw3NzwHMeCOBXcBNdVH8OBiXLx/7c5qJrFrK/GOYfETH97Sr/jOM38FnvodDGv8f+Rcj1XBLIcDKAQAAAABJRU5ErkJggg==",ht="";function rt(t){let e;return{c(){e=_("div"),e.textContent="No samples recorded.",d(e,"class","error")},m(i,n){H(i,e,n)},p:y,i:y,o:y,d(i){i&&P(e)}}}function ot(t){let e,i;return e=new He({props:{frame:t[0].rootFrame}}),{c(){pe(e.$$.fragment)},m(n,u){te(e,n,u),i=!0},p(n,u){const a={};u&1&&(a.frame=n[0].rootFrame),e.$set(a)},i(n){i||(D(e.$$.fragment,n),i=!0)},o(n){N(e.$$.fragment,n),i=!1},d(n){ie(e,n)}}}function lt(t){let e,i,n,u,a,r,l,s,o;i=new et({props:{session:t[0]}});const c=[ot,rt],m=[];function g(p,v){return p[0].rootFrame?0:1}return l=g(t),s=m[l]=c[l](t),{c(){e=_("div"),pe(i.$$.fragment),n=b(),u=_("div"),a=b(),r=_("div"),s.c(),d(u,"class","spacer"),T(u,"height","20px"),d(r,"class","margins"),d(e,"class","app svelte-rmu4zi")},m(p,v){H(p,e,v),te(i,e,null),f(e,n),f(e,u),f(e,a),f(e,r),m[l].m(r,null),o=!0},p(p,[v]){const E={};v&1&&(E.session=p[0]),i.$set(E);let F=l;l=g(p),l===F?m[l].p(p,v):(ce(),N(m[F],1,1,()=>{m[F]=null}),de(),s=m[l],s?s.p(p,v):(s=m[l]=c[l](p),s.c()),D(s,1),s.m(r,null))},i(p){o||(D(i.$$.fragment,p),D(s),o=!0)},o(p){N(i.$$.fragment,p),N(s),o=!1},d(p){p&&P(e),ie(i),m[l].d()}}}function ge(){document.body.style.minHeight=`${window.scrollY+window.innerHeight}px`}function st(t,e,i){let{session:n}=e;const u=document.createElement("link");u.rel="shortut icon",u.href=nt,document.head.appendChild(u),qe(()=>{window.addEventListener("scroll",ge),ge()}),Ue(()=>{window.removeEventListener("scroll",ge)});const a=n.rootFrame,r=a==null?void 0:a.time.toLocaleString(void 0,{maximumSignificantDigits:3});let l=a==null?void 0:a.function;return l=="<module>"&&(l=n.program),document.title=`${r}s - ${l} - pyinstrument`,t.$$set=s=>{"session"in s&&i(0,n=s.session)},[n]}class ut extends he{constructor(e){super(),me(this,e,st,lt,K,{session:0})}}class at{constructor(e,i){w(this,"id");w(this,"rootFrame");w(this,"frames",[]);this.id=e,this.rootFrame=i}addFrame(e){this.frames.push(e)}get exitFrames(){const e=[];for(const i of this.frames){let n=!1;for(const u of i.children)if(u.group!=this){n=!0;break}n&&e.push(i)}return e}get libraries(){const e=[];for(const i of this.frames){const n=/^[^\\/.]*/.exec(i.filePathShort)[0];e.includes(n)||e.push(n)}return e}}class _e{constructor(e,i=null,n={groups:{}}){w(this,"function");w(this,"filePath");w(this,"filePathShort");w(this,"lineNo");w(this,"time");w(this,"totalTime");w(this,"awaitTime");w(this,"isApplicationCode");w(this,"groupId");w(this,"className");w(this,"parent");w(this,"children");w(this,"group");var u,a;if(this.parent=i,this.function=e.function,this.filePath=e.file_path,this.filePathShort=e.file_path_short,this.lineNo=e.line_no,this.time=e.time,this.totalTime=this.parent?this.parent.totalTime:this.time,this.awaitTime=e.await_time,this.isApplicationCode=e.is_application_code,this.groupId=(u=e.group_id)!=null?u:null,this.className=(a=e.class_name)!=null?a:null,e.group_id){const r=e.group_id;let l=n.groups[r];l||(l=n.groups[r]=new at(r,this)),l.addFrame(this),this.group=n.groups[r]}else this.group=null;this.children=e.children.map(r=>new _e(r,this,n))}get identifier(){return`${this.function}:${this.filePath}:${this.lineNo}`}get proportionOfTotal(){return this.time/this.totalTime}}class ft{constructor(e){w(this,"startTime");w(this,"duration");w(this,"sampleCount");w(this,"program");w(this,"cpuTime");w(this,"rootFrame");this.startTime=e.start_time,this.duration=e.duration,this.sampleCount=e.sample_count,this.program=e.program,this.cpuTime=e.cpu_time,this.rootFrame=e.root_frame?new _e(e.root_frame):null}}return{render(t,e){const i=new ft(e);return new ut({target:t,props:{session:i}})}}}();
+</script>
+                <style>@import"https://fonts.googleapis.com/css?family=Source+Code+Pro:400,600|Source+Sans+Pro:400,600";html,body{background-color:#303538;color:#fff;padding:0;margin:0}.margins{padding:0 30px}.header.svelte-tewt95{background:#292f32}.row.svelte-tewt95{display:flex;align-items:center}.title.svelte-tewt95{font-size:34px;padding-top:20px;padding-bottom:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:10px;flex:1}.metrics.svelte-tewt95{display:grid;grid-template-columns:auto auto auto auto auto auto;font-size:14px;text-transform:uppercase;grid-gap:1px 8px}.metric-label.svelte-tewt95{font-weight:600;color:#a9abad}.metric-value.svelte-tewt95{color:#737779;margin-right:.5em}.frame.svelte-1aphj50.svelte-1aphj50{font-family:Source Code Pro,Roboto Mono,Consolas,Monaco,monospace;font-size:15px;z-index:0;position:relative;user-select:none}.group-header.svelte-1aphj50.svelte-1aphj50{margin-left:35px}.group-header-button.svelte-1aphj50.svelte-1aphj50{display:inline-block;color:#ffffff94;user-select:none;cursor:default;position:relative}.group-header-button.svelte-1aphj50.svelte-1aphj50:before{position:absolute;left:-3px;right:-3px;top:0px;bottom:-1px;content:"";z-index:-1;background-color:#3b4043}.group-header-button.svelte-1aphj50.svelte-1aphj50:hover:before{background-color:#4a4f54}.group-triangle.svelte-1aphj50.svelte-1aphj50,.frame-triangle.svelte-1aphj50.svelte-1aphj50{width:6px;height:10px;padding-left:6px;padding-right:5px;display:inline-block}.group-triangle.rotate.svelte-1aphj50.svelte-1aphj50,.frame-triangle.rotate.svelte-1aphj50.svelte-1aphj50{transform:translate(6px,4px) rotate(90deg)}.frame-description.svelte-1aphj50.svelte-1aphj50{display:flex}.frame-description.svelte-1aphj50.svelte-1aphj50:hover:before{position:absolute;left:-3px;right:-3px;top:-1px;height:22px;content:"";z-index:-1;background-color:#354759;opacity:.5}.frame-triangle.svelte-1aphj50.svelte-1aphj50{opacity:1}.frame-description.children-visible.svelte-1aphj50 .frame-triangle.svelte-1aphj50{opacity:0}.frame-description.children-visible.svelte-1aphj50:hover .frame-triangle.svelte-1aphj50{opacity:1}.name.svelte-1aphj50.svelte-1aphj50,.time.svelte-1aphj50.svelte-1aphj50,.code-position.svelte-1aphj50.svelte-1aphj50{user-select:text;cursor:default}.application-code.svelte-1aphj50 .name.svelte-1aphj50{color:#5db3ff}.time.svelte-1aphj50.svelte-1aphj50{margin-right:.55em;color:#b8e98685}.code-position.svelte-1aphj50.svelte-1aphj50{color:#ffffff80;text-align:right;margin-left:1em}.visual-guide{top:21px;bottom:0;left:0;width:2px;background-color:#fff;position:absolute;opacity:.08}.frame-description:hover~.visual-guide{opacity:.4}.frame-description:hover~.children .visual-guide{opacity:.1}.app.svelte-rmu4zi{font-family:Source Sans Pro,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+</style>
+
+                <script>
+                    const sessionData = {"start_time": 1693495091.897440,"duration": 10.832517,"sample_count": 6284,"program": "/home/xadupre/.venv/lib/python3.10/site-packages/ipykernel_launcher.py --ip=127.0.0.1 --stdin=9043 --control=9041 --hb=9040 --Session.signature_scheme=\"hmac-sha256\" --Session.key=b\"e12ec89c-57d8-46af-a6db-8c990a0a2543\" --shell=9042 --transport=\"tcp\" --iopub=9044 --f=/home/xadupre/.local/share/jupyter/runtime/kernel-v2-9370woLQitsxWvI.json","cpu_time": 10.832751,"root_frame": {"function": "run_ast_nodes","file_path_short": "IPython/core/interactiveshell.py","file_path": "/home/xadupre/.venv/lib/python3.10/site-packages/IPython/core/interactiveshell.py","line_no": 3349,"time": 10.830704,"await_time": 0.000000,"is_application_code": false,"children": [{"function": "<module>","file_path_short": "../../../tmp/ipykernel_23329/2122459359.py","file_path": "/tmp/ipykernel_23329/2122459359.py","line_no": 1,"time": 10.829567,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "gini","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 31,"time": 5.350893,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "_gini_cumsum","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 9,"time": 2.965502,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "[self]","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "","line_no": 0,"time": 2.888140,"await_time": 0.000000,"is_application_code": false,"children": []}]},{"function": "_gini_final","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 19,"time": 1.496493,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "[self]","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "","line_no": 0,"time": 1.495491,"await_time": 0.000000,"is_application_code": false,"children": []}]},{"function": "_gini_init","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 5,"time": 0.705217,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "<listcomp>","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 6,"time": 0.644044,"await_time": 0.000000,"is_application_code": true,"children": []}]},{"function": "[self]","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "","line_no": 0,"time": 0.150010,"await_time": 0.000000,"is_application_code": false,"children": []}]},{"function": "gini_faster","file_path_short": "../../../tmp/ipykernel_23329/1862792531.py","file_path": "/tmp/ipykernel_23329/1862792531.py","line_no": 16,"time": 4.710270,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "_gini_cumsum","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 9,"time": 2.983680,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "[self]","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "","line_no": 0,"time": 2.891722,"await_time": 0.000000,"is_application_code": false,"children": []}]},{"function": "_gini_final_faster","file_path_short": "../../../tmp/ipykernel_23329/1862792531.py","file_path": "/tmp/ipykernel_23329/1862792531.py","line_no": 1,"time": 0.807612,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "[self]","file_path_short": "../../../tmp/ipykernel_23329/1862792531.py","file_path": "","line_no": 0,"time": 0.803833,"await_time": 0.000000,"is_application_code": false,"children": []}]},{"function": "_gini_init","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 5,"time": 0.714972,"await_time": 0.000000,"is_application_code": true,"children": [{"function": "<listcomp>","file_path_short": "../../../tmp/ipykernel_23329/1359775409.py","file_path": "/tmp/ipykernel_23329/1359775409.py","line_no": 6,"time": 0.663392,"await_time": 0.000000,"is_application_code": true,"children": []}]},{"function": "[self]","file_path_short": "../../../tmp/ipykernel_23329/1862792531.py","file_path": "","line_no": 0,"time": 0.157090,"await_time": 0.000000,"is_application_code": false,"children": []}]},{"function": "[self]","file_path_short": "../../../tmp/ipykernel_23329/2122459359.py","file_path": "","line_no": 0,"time": 0.387217,"await_time": 0.000000,"is_application_code": false,"children": []},{"function": "<listcomp>","file_path_short": "../../../tmp/ipykernel_23329/2122459359.py","file_path": "/tmp/ipykernel_23329/2122459359.py","line_no": 8,"time": 0.215180,"await_time": 0.000000,"is_application_code": true,"children": []},{"function": "<listcomp>","file_path_short": "../../../tmp/ipykernel_23329/2122459359.py","file_path": "/tmp/ipykernel_23329/2122459359.py","line_no": 9,"time": 0.166006,"await_time": 0.000000,"is_application_code": true,"children": []}]}],"class_name": "ZMQInteractiveShell"}}
+;
+                    pyinstrumentHTMLRenderer.render(document.getElementById('app'), sessionData);
+                </script>
+            </body>
+            </html></div>
+</div>
+<p>C’est plus facile à lire.</p>
+</section>
+<section id="id5">
+<h3>Exercice 5 : la fonction _gini_cumsum contient deux boucles. Quelle est la plus rapide ?<a class="headerlink" href="#id5" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Pour ce faire, on découpe la fonction en deux.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_gini_cumsum2a</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)):</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">couples</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">couples</span>
+
+
+<span class="k">def</span> <span class="nf">_gini_cumsum2b</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)):</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">couples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">couples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">couples</span>
+
+
+<span class="k">def</span> <span class="nf">_gini_cumsum2</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="n">_gini_cumsum2a</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="n">_gini_cumsum2b</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">couples</span>
+
+
+<span class="k">def</span> <span class="nf">gini2</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">_gini_sort</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_init</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_cumsum2</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_gini_final</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+
+
+<span class="n">gini2</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">gini2</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.5, 0.9)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cProfile</span><span class="o">,</span> <span class="nn">pstats</span><span class="o">,</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">SortKey</span>
+
+<span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">gini2</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+    <span class="n">gini_faster</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+
+<span class="n">pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">sortby</span> <span class="o">=</span> <span class="n">SortKey</span><span class="o">.</span><span class="n">CUMULATIVE</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filtre</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+     1000    0.023    0.000    3.580    0.004 /tmp/ipykernel_23329/239060152.py:21(gini2)
+     1000    0.024    0.000    3.124    0.003 /tmp/ipykernel_23329/1862792531.py:16(gini_faster)
+     1000    0.015    0.000    1.926    0.002 /tmp/ipykernel_23329/239060152.py:15(_gini_cumsum2)
+     1000    1.898    0.002    1.905    0.002 /tmp/ipykernel_23329/1359775409.py:9(_gini_cumsum)
+     2000    0.013    0.000    1.057    0.001 /tmp/ipykernel_23329/1359775409.py:5(_gini_init)
+     1000    1.040    0.001    1.042    0.001 /tmp/ipykernel_23329/1359775409.py:19(_gini_final)
+     1000    1.001    0.001    1.004    0.001 /tmp/ipykernel_23329/239060152.py:1(_gini_cumsum2a)
+     1000    0.905    0.001    0.908    0.001 /tmp/ipykernel_23329/239060152.py:8(_gini_cumsum2b)
+     1000    0.649    0.001    0.651    0.001 /tmp/ipykernel_23329/1862792531.py:1(_gini_final_faster)
+     2000    0.030    0.000    0.076    0.000 /tmp/ipykernel_23329/1359775409.py:1(_gini_sort)
+</pre></div></div>
+</div>
+<p>Elles sont aussi rapides l’une que l’autre. On peut néanmoins en accélérer une puisqu’on divise tous les éléments d’un tableau par une même valeur. On peut la stocker dans une variable plutôt que d’aller la chercher à chaque fois dans le tableau.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_gini_cumsum3b</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="n">total0</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">total1</span> <span class="o">=</span> <span class="n">couples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">couples</span><span class="p">)):</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">total0</span>
+        <span class="n">couples</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">total1</span>
+    <span class="k">return</span> <span class="n">couples</span>
+
+
+<span class="k">def</span> <span class="nf">_gini_cumsum3</span><span class="p">(</span><span class="n">couples</span><span class="p">):</span>
+    <span class="n">_gini_cumsum2a</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="n">_gini_cumsum3b</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">couples</span>
+
+
+<span class="k">def</span> <span class="nf">gini3</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">_gini_sort</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_init</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">couples</span> <span class="o">=</span> <span class="n">_gini_cumsum3</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_gini_final</span><span class="p">(</span><span class="n">couples</span><span class="p">)</span>
+
+
+<span class="n">gini2</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">gini2</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.5, 0.9)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cProfile</span><span class="o">,</span> <span class="nn">pstats</span><span class="o">,</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">SortKey</span>
+
+<span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">gini2</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+    <span class="n">gini3</span><span class="p">([</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+
+<span class="n">pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">sortby</span> <span class="o">=</span> <span class="n">SortKey</span><span class="o">.</span><span class="n">CUMULATIVE</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filtre</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+     1000    0.022    0.000    3.461    0.003 /tmp/ipykernel_23329/239060152.py:21(gini2)
+     1000    0.022    0.000    3.302    0.003 /tmp/ipykernel_23329/1743022160.py:16(gini3)
+     2000    2.059    0.001    2.064    0.001 /tmp/ipykernel_23329/1359775409.py:19(_gini_final)
+     2000    2.004    0.001    2.009    0.001 /tmp/ipykernel_23329/239060152.py:1(_gini_cumsum2a)
+     1000    0.013    0.000    1.921    0.002 /tmp/ipykernel_23329/239060152.py:15(_gini_cumsum2)
+     1000    0.018    0.000    1.739    0.002 /tmp/ipykernel_23329/1743022160.py:10(_gini_cumsum3)
+     1000    0.917    0.001    0.919    0.001 /tmp/ipykernel_23329/239060152.py:8(_gini_cumsum2b)
+     2000    0.012    0.000    0.919    0.000 /tmp/ipykernel_23329/1359775409.py:5(_gini_init)
+     1000    0.699    0.001    0.701    0.001 /tmp/ipykernel_23329/1743022160.py:1(_gini_cumsum3b)
+     2000    0.028    0.000    0.077    0.000 /tmp/ipykernel_23329/1359775409.py:1(_gini_sort)
+</pre></div></div>
+</div>
+<p>C’est mieux même si l’amélioration ne paraît pas nécessairement significative par rapport au temps total, le résultat l’est si on regarde le temps fonction par fonction.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="profiling_conv.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Profiling, application à la convolution</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="profiling_example.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Exemple de profiling</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Profiling la fonction Gini</a><ul>
+<li><a class="reference internal" href="#Enoncé">Enoncé</a><ul>
+<li><a class="reference internal" href="#Exercice-1-:-profiler-le-code-précédent">Exercice 1 : profiler le code précédent</a></li>
+<li><a class="reference internal" href="#Exercice-2-:-changer-la-fonction-_gini_final-si-possible-en-plus-rapide">Exercice 2 : changer la fonction _gini_final si possible en plus rapide</a></li>
+<li><a class="reference internal" href="#Exercice-3-:-vous-améliorez-la-fonction-_gini_final,-profilez-pour-savoir-de-combien-?">Exercice 3 : vous améliorez la fonction _gini_final, profilez pour savoir de combien ?</a></li>
+<li><a class="reference internal" href="#Exercice-4-:-utiliser-d'autres-modules-de-profiling">Exercice 4 : utiliser d’autres modules de profiling</a></li>
+<li><a class="reference internal" href="#Exercice-5-:-la-fonction-_gini_cumsum-contient-deux-boucles.-Quelle-est-la-plus-rapide-?">Exercice 5 : la fonction _gini_cumsum contient deux boucles. Quelle est la plus rapide ?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Réponses">Réponses</a><ul>
+<li><a class="reference internal" href="#id1">Exercice 1 : profiler le code précédent</a></li>
+<li><a class="reference internal" href="#id2">Exercice 2 : changer la fonction _gini_final si possible en plus rapide</a></li>
+<li><a class="reference internal" href="#id3">Exercice 3 : vous améliorez la fonction _gini_final, profilez pour savoir de combien ?</a></li>
+<li><a class="reference internal" href="#id4">Exercice 4 : utiliser d’autres modules de profiling</a></li>
+<li><a class="reference internal" href="#id5">Exercice 5 : la fonction _gini_cumsum contient deux boucles. Quelle est la plus rapide ?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=bdd90cfe"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

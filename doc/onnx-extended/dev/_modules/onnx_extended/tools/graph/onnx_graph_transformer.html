@@ -443,7 +443,7 @@
         <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">)</span>
 
-    <span class="n">cast</span> <span class="o">=</span> <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;zeroi&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Zeropoint&quot;</span><span class="p">])</span>
+    <span class="n">cast</span> <span class="o">=</span> <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;zerof&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Zeropoint&quot;</span><span class="p">])</span>
     <span class="n">att</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="p">()</span>
     <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;to&quot;</span>
     <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span> <span class="o">=</span> <span class="s2">&quot;to&quot;</span>
@@ -463,6 +463,12 @@
             <span class="p">[],</span>
             <span class="p">[</span><span class="s2">&quot;zeroi&quot;</span><span class="p">],</span>
             <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="s2">&quot;zeroi&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">),</span>
+        <span class="n">make_node</span><span class="p">(</span>
+            <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
+            <span class="p">[],</span>
+            <span class="p">[</span><span class="s2">&quot;zerof&quot;</span><span class="p">],</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="s2">&quot;zerof&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
         <span class="p">),</span>
         <span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
@@ -673,8 +679,6 @@
             <span class="n">input_names</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># scaleB</span>
             <span class="n">scale_out</span><span class="p">,</span>  <span class="c1"># scaleR</span>
         <span class="p">]</span>
-        <span class="k">while</span> <span class="n">gemm_inputs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">gemm_inputs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">gemm_outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_gemm&quot;</span><span class="p">)]</span>
             <span class="n">do_reshape</span> <span class="o">=</span> <span class="kc">True</span>
