@@ -229,6 +229,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../articles/index.html">Collections d’articles inclassables</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Collections d’articles inclassables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../articles/2023-09-06-ensae.html">2023-09-06 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
 </ul>
@@ -301,6 +302,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../practice/algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/gentry_integer_encryption.html">Cryptage homomorphic de Craig Gentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/knn_high_dimension.html">Plus proches voisins en grande dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/puzzle_algo_1.html">Puzzles algorithmiques (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/puzzle_algo_2.html">Puzzles algorithmiques (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/gentry_integer_encryption_correction.html">Cryptage homomorphic de Craig Gentry - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/knn_high_dimension_correction.html">2A.algo - Plus proches voisins en grande dimension - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/puzzle_algo_1_correction.html">Puzzles algorithmes (1) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../practice/tds-algo/puzzle_algo_2_correction.html">Puzzles algorithmes (2) - correction</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../practice/index_exam.html">Séances minutées</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Séances minutées</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -971,13 +980,13 @@
 <span class="sd">    :return: list of installed Distribution objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">use_cmd</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;use_cmd should be False.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;use_cmd should be False.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">skip</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">pip._internal.utils.compat</span> <span class="kn">import</span> <span class="n">stdlib_pkgs</span>
 
             <span class="n">skip</span> <span class="o">=</span> <span class="n">stdlib_pkgs</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">pass</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pip._internal.metadata</span> <span class="kn">import</span> <span class="n">get_default_environment</span>
@@ -995,7 +1004,7 @@
             <span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">pip._internal.utils.misc</span> <span class="kn">import</span> <span class="n">get_installed_distributions</span> <span class="k">as</span> <span class="n">getd</span>
 
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
@@ -1094,10 +1103,10 @@
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">packs</span> <span class="o">=</span> <span class="n">get_packages_list</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">end</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">packs</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">packs</span><span class="p">)</span>
         <span class="n">subp</span> <span class="o">=</span> <span class="n">packs</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PQPipError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">raise</span> <span class="n">PQPipError</span><span class="p">(</span>
                 <span class="s2">&quot;No package, start=</span><span class="si">{0}</span><span class="s2">, end=</span><span class="si">{1}</span><span class="s2">, len(subp)=</span><span class="si">{2}</span><span class="s2">, len(packs)=</span><span class="si">{3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subp</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">packs</span><span class="p">)</span>
                 <span class="p">)</span>
@@ -1107,7 +1116,7 @@
             <span class="n">info</span> <span class="o">=</span> <span class="n">get_package_info</span><span class="p">(</span><span class="n">pack</span><span class="p">)</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">subp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PQPipError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">raise</span> <span class="n">PQPipError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Empty list, unexpected, start=</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;end=</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">, len(subp)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subp</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
@@ -1115,9 +1124,7 @@
 
     <span class="n">res</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">search_packages_info</span><span class="p">([</span><span class="n">name</span><span class="p">]))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">PQPipError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
-            <span class="sa">f</span><span class="s2">&quot;Unexpected number of results </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PQPipError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected number of results </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
@@ -1235,7 +1242,7 @@
                 <span class="k">return</span> <span class="n">A1</span>
             <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">A2</span>
-            <span class="k">assert</span> <span class="kc">False</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">assert</span> <span class="kc">False</span>
 
         <span class="nd">@classmethod</span>
         <span class="k">def</span> <span class="nf">__class_getitem__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>

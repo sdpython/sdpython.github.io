@@ -304,6 +304,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/gentry_integer_encryption.html">Cryptage homomorphic de Craig Gentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/knn_high_dimension.html">Plus proches voisins en grande dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/puzzle_algo_1.html">Puzzles algorithmiques (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/puzzle_algo_2.html">Puzzles algorithmiques (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/gentry_integer_encryption_correction.html">Cryptage homomorphic de Craig Gentry - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/knn_high_dimension_correction.html">2A.algo - Plus proches voisins en grande dimension - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/puzzle_algo_1_correction.html">Puzzles algorithmes (1) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-algo/puzzle_algo_2_correction.html">Puzzles algorithmes (2) - correction</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../index_exam.html">Séances minutées</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Séances minutées</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -410,7 +418,7 @@
 <h1>Algo - Problème d’ordonnancement<a class="headerlink" href="#Algo---Problème-d'ordonnancement" title="Lien permanent vers cette rubrique">#</a></h1>
 <p>Un <a class="reference external" href="https://fr.wikipedia.org/wiki/Th%C3%A9orie_de_l%27ordonnancement">problème d’ordonnancement</a> est un problème dans lequel il faut déterminer le meilleur moment de démarrer un travail, une tâche alors que celles-ci ont des durées bien précises et dépendent les unes des autres.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -421,12 +429,13 @@
 <h2>Enoncé<a class="headerlink" href="#Enoncé" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On définit un problème d’ordonnancement un peu plus simple dans lequel toutes les tâches ont la même durée qu’on représente par une matrice d’adjacence non symétrique.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">teachpyx.tools.nb_helpers</span> <span class="kn">import</span> <span class="n">RenderJsDot</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 
 
 <span class="k">def</span> <span class="nf">plot_network</span><span class="p">(</span><span class="n">mat</span><span class="p">):</span>
@@ -442,7 +451,17 @@
     <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
     <span class="n">dot</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
     <span class="c1"># print(dot)  # décommenter cette ligne pour voir le résultat</span>
-    <span class="k">return</span> <span class="n">RenderJsDot</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span>
+    <span class="n">hdot</span> <span class="o">=</span> <span class="n">dot</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+    <span class="n">uid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &lt;script src=&quot;https://sdpython.github.io/js/viz-lite.js&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">    &lt;div id=&quot;</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;&gt;&lt;/div&gt;</span>
+<span class="s2">    &lt;script&gt;</span>
+<span class="s2">    var svgGraph = Viz(&quot;</span><span class="si">{</span><span class="n">hdot</span><span class="si">}</span><span class="s2">&quot;);</span>
+<span class="s2">    document.getElementById(&#39;</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&#39;).innerHTML = svgGraph;</span>
+<span class="s2">    &lt;/script&gt;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">HTML</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -460,15 +479,15 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<div id="Mc2924cb929e1411bb5136633b4ad16de-cont"><div id="<module 'uuid' from '/usr/lib/python3.10/uuid.py'>" style="width:100%;height:100%;"></div></div>
+<script src="https://sdpython.github.io/js/viz-lite.js"></script>
+<div id="8bbaca87-572c-4a98-959c-3c0c9c4c923c"></div>
 <script>
-
-require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-standalone.js'], function() { var svgGraph = Viz("digraph{ \n  rankdir=\"LR\";\n  size=\"4,4\";\n  0;\n  1;\n  2;\n  3;\n  4;\n  0 -> 1;\n  0 -> 2;\n  0 -> 3;\n  1 -> 2;\n  1 -> 4;\n  2 -> 4;\n  3 -> 4;\n}");document.getElementById("Mc2924cb929e1411bb5136633b4ad16de").innerHTML = svgGraph; });
-
+var svgGraph = Viz("digraph{ \n  rankdir=\"LR\";\n  size=\"4,4\";\n  0;\n  1;\n  2;\n  3;\n  4;\n  0 -> 1;\n  0 -> 2;\n  0 -> 3;\n  1 -> 2;\n  1 -> 4;\n  2 -> 4;\n  3 -> 4;\n}");
+document.getElementById('8bbaca87-572c-4a98-959c-3c0c9c4c923c').innerHTML = svgGraph;
 </script></div>
 </div>
 <p>Le graphe se lit comme suit : <em>pour faire la tâche 2, il faut faire la tâche 0 et 1 d’abord.</em></p>
@@ -495,7 +514,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 <h3>Q1<a class="headerlink" href="#Q1" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>Comment représenter le résultat ? Une idée consiste à créer un tableau fin <img class="math" src="../../_images/math/587972f8acec6bc199273dac705bc28e7fa033bb.svg" alt="F_{i}"/> où <em>i</em> est la tâche. <img class="math" src="../../_images/math/3631b4d7c38bf8f5e41d41e0e6fd146b6dd533dd.svg" alt="F_{i}=t"/> signifie qu’au temps <em>t</em>, la tâche <em>i</em> est finie.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">order_same_weight</span><span class="p">(</span><span class="n">mat</span><span class="p">):</span>
@@ -530,7 +549,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -540,7 +559,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 </div>
 <p>On vérifie sur un graphe plus compliqué.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -558,19 +577,19 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<div id="M7b773831171f46aab5b1cdf34160f3f4-cont"><div id="<module 'uuid' from '/usr/lib/python3.10/uuid.py'>" style="width:100%;height:100%;"></div></div>
+<script src="https://sdpython.github.io/js/viz-lite.js"></script>
+<div id="b25e6056-a381-48b2-bd1c-6ca87449123c"></div>
 <script>
-
-require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-standalone.js'], function() { var svgGraph = Viz("digraph{ \n  rankdir=\"LR\";\n  size=\"4,4\";\n  0;\n  1;\n  2;\n  3;\n  4;\n  5;\n  0 -> 1;\n  0 -> 2;\n  0 -> 3;\n  1 -> 2;\n  1 -> 4;\n  2 -> 4;\n  3 -> 4;\n  5 -> 0;\n}");document.getElementById("M7b773831171f46aab5b1cdf34160f3f4").innerHTML = svgGraph; });
-
+var svgGraph = Viz("digraph{ \n  rankdir=\"LR\";\n  size=\"4,4\";\n  0;\n  1;\n  2;\n  3;\n  4;\n  5;\n  0 -> 1;\n  0 -> 2;\n  0 -> 3;\n  1 -> 2;\n  1 -> 4;\n  2 -> 4;\n  3 -> 4;\n  5 -> 0;\n}");
+document.getElementById('b25e6056-a381-48b2-bd1c-6ca87449123c').innerHTML = svgGraph;
 </script></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order_same_weight</span><span class="p">(</span><span class="n">mat2</span><span class="p">)</span>
@@ -578,7 +597,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -599,7 +618,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 <h3>Q2<a class="headerlink" href="#Q2" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>Une astuce… Une tâche deux fois plus longue, c’est comme si on avait deux tâches, la seconde dépend uniquement de la première ou alors simple tenir compte de la durée lorsqu’on calcule le maximum. Voir la ligne <code class="docutils literal notranslate"><span class="pre">###########</span> <span class="pre">ligne</span> <span class="pre">changée</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">order_any_weight</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">durations</span><span class="p">):</span>
@@ -637,7 +656,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -646,7 +665,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order_any_weight</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">durations</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -654,7 +673,7 @@ require(['https://github.com/mdaines/viz-js/releases/download/v3.1.0%2B1/viz-sta
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
