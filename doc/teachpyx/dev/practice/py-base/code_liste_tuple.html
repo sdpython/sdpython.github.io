@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Heap" href="nbheap.html" /><link rel="prev" title="Exercices sur le langage python" href="../index_python.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
         <title>Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations - Documentation teachpyx 0.3.1</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -254,6 +254,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tri_nlnd.html">Tri plus rapide que prévu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exercice_pi.html">Calculs de surface et autres calculs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="profiling_example.html">Exemple de profiling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="profile_gini.html">Profiling la fonction Gini</a></li>
 <li class="toctree-l2"><a class="reference internal" href="profiling_conv.html">Profiling, application à la convolution</a></li>
@@ -438,43 +439,43 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import time, collections
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">collections</span>
 
-N = 1000000
+<span class="n">N</span> <span class="o">=</span> <span class="mi">1000000</span>
 
-for p in range(0, 3):
-    print(&quot;passage &quot;, p)
-    print(&quot;  insertion en fin&quot;)
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;passage &quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  insertion en fin&quot;</span><span class="p">)</span>
 
-    li = list()
-    a = time.perf_counter()
-    for i in range(0, N):
-        li.append(i)
-    b = time.perf_counter()
-    print(&quot;    list&quot;, N, &quot;éléments, temps par éléments :&quot;, (b - a) / N)
+    <span class="n">li</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    list&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;éléments, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 
-    li = collections.deque()
-    a = time.perf_counter()
-    for i in range(0, N):
-        li.append(i)
-    b = time.perf_counter()
-    print(&quot;    deque&quot;, N, &quot;éléments, temps par éléments :&quot;, (b - a) / N)
+    <span class="n">li</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    deque&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;éléments, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 
-    print(&quot;  insertion au début&quot;)
-    li = collections.deque()
-    a = time.perf_counter()
-    for i in range(0, N):
-        li.appendleft(i)
-    b = time.perf_counter()
-    print(&quot;    deque&quot;, N, &quot;éléments, temps par éléments :&quot;, (b - a) / N)
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  insertion au début&quot;</span><span class="p">)</span>
+    <span class="n">li</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="n">li</span><span class="o">.</span><span class="n">appendleft</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    deque&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;éléments, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 
-    N2 = N // 100
-    li = list()
-    a = time.perf_counter()
-    for i in range(0, N2):
-        li.insert(0, i)
-    b = time.perf_counter()
-    print(&quot;    list&quot;, N, &quot;éléments, temps par éléments :&quot;, (b - a) / N)
+    <span class="n">N2</span> <span class="o">=</span> <span class="n">N</span> <span class="o">//</span> <span class="mi">100</span>
+    <span class="n">li</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N2</span><span class="p">):</span>
+        <span class="n">li</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    list&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;éléments, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -485,25 +486,25 @@ for p in range(0, 3):
 <div class="highlight"><pre>
 passage  0
   insertion en fin
-    list 1000000 éléments, temps par éléments : 1.4931430000069667e-07
-    deque 1000000 éléments, temps par éléments : 1.1550030000216793e-07
+    list 1000000 éléments, temps par éléments : 1.2462739999955374e-07
+    deque 1000000 éléments, temps par éléments : 1.0353370000029826e-07
   insertion au début
-    deque 1000000 éléments, temps par éléments : 9.052890000020853e-08
-    list 1000000 éléments, temps par éléments : 1.617479999913485e-08
+    deque 1000000 éléments, temps par éléments : 9.81406999999308e-08
+    list 1000000 éléments, temps par éléments : 1.796050000029936e-08
 passage  1
   insertion en fin
-    list 1000000 éléments, temps par éléments : 9.72325999973691e-08
-    deque 1000000 éléments, temps par éléments : 9.789069999897038e-08
+    list 1000000 éléments, temps par éléments : 9.953019999920797e-08
+    deque 1000000 éléments, temps par éléments : 8.313129999987723e-08
   insertion au début
-    deque 1000000 éléments, temps par éléments : 8.926229999997304e-08
-    list 1000000 éléments, temps par éléments : 2.2176400001626463e-08
+    deque 1000000 éléments, temps par éléments : 7.568269999956101e-08
+    list 1000000 éléments, temps par éléments : 1.580999999987398e-08
 passage  2
   insertion en fin
-    list 1000000 éléments, temps par éléments : 1.0210229999938748e-07
-    deque 1000000 éléments, temps par éléments : 9.393510000154493e-08
+    list 1000000 éléments, temps par éléments : 8.447889999933977e-08
+    deque 1000000 éléments, temps par éléments : 8.401670000057492e-08
   insertion au début
-    deque 1000000 éléments, temps par éléments : 1.1841930000082357e-07
-    list 1000000 éléments, temps par éléments : 1.944509999884758e-08
+    deque 1000000 éléments, temps par éléments : 7.71205999999438e-08
+    list 1000000 éléments, temps par éléments : 1.6167699999641626e-08
 </pre></div></div>
 </div>
 <p>On voit que l’insertion au début du tableau est beaucoup plus coûteuse pour une liste que pour un <code class="docutils literal notranslate"><span class="pre">deque</span></code>.</p>
@@ -515,47 +516,47 @@ passage  2
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import time, collections
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">collections</span>
 
-N = 100000
-lens = list(range(0, 1000))
-tens = tuple(lens)
-sens = set(lens)
-fens = frozenset(lens)
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">lens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="n">tens</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">lens</span><span class="p">)</span>
+<span class="n">sens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lens</span><span class="p">)</span>
+<span class="n">fens</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">lens</span><span class="p">)</span>
 
-for p in range(0, 3):
-    print(&quot;passage&quot;, p)
-    a = time.perf_counter()
-    s = 0
-    for i in range(0, N):
-        if i in lens:
-            s += 1
-    b = time.perf_counter()
-    print(&quot;  list&quot;, N, &quot;fois, temps par éléments :&quot;, (b - a) / N)
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;passage&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lens</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  list&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;fois, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 
-    a = time.perf_counter()
-    s = 0
-    for i in range(0, N):
-        if i in tens:
-            s += 1
-    b = time.perf_counter()
-    print(&quot;  tuple&quot;, N, &quot;fois, temps par éléments :&quot;, (b - a) / N)
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tens</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  tuple&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;fois, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 
-    a = time.perf_counter()
-    s = 0
-    for i in range(0, N):
-        if i in sens:
-            s += 1
-    b = time.perf_counter()
-    print(&quot;  set&quot;, N, &quot;fois, temps par éléments :&quot;, (b - a) / N)
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sens</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  set&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;fois, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 
-    a = time.perf_counter()
-    s = 0
-    for i in range(0, N):
-        if i in fens:
-            s += 1
-    b = time.perf_counter()
-    print(&quot;  frozenset&quot;, N, &quot;fois, temps par éléments :&quot;, (b - a) / N)
+    <span class="n">a</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fens</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  frozenset&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;fois, temps par éléments :&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -565,20 +566,20 @@ for p in range(0, 3):
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 passage 0
-  list 100000 fois, temps par éléments : 5.936910999989777e-06
-  tuple 100000 fois, temps par éléments : 5.664128999997047e-06
-  set 100000 fois, temps par éléments : 8.605400002124953e-08
-  frozenset 100000 fois, temps par éléments : 8.20949999979348e-08
+  list 100000 fois, temps par éléments : 5.977897000002485e-06
+  tuple 100000 fois, temps par éléments : 6.178353999994215e-06
+  set 100000 fois, temps par éléments : 6.823300000178278e-08
+  frozenset 100000 fois, temps par éléments : 7.471699999769044e-08
 passage 1
-  list 100000 fois, temps par éléments : 5.516229999993811e-06
-  tuple 100000 fois, temps par éléments : 5.690046999989136e-06
-  set 100000 fois, temps par éléments : 8.56039999780478e-08
-  frozenset 100000 fois, temps par éléments : 8.40990000142483e-08
+  list 100000 fois, temps par éléments : 5.712876000006872e-06
+  tuple 100000 fois, temps par éléments : 5.798504000003959e-06
+  set 100000 fois, temps par éléments : 8.035500000005414e-08
+  frozenset 100000 fois, temps par éléments : 8.195899999918766e-08
 passage 2
-  list 100000 fois, temps par éléments : 5.475893999973777e-06
-  tuple 100000 fois, temps par éléments : 5.727637000018149e-06
-  set 100000 fois, temps par éléments : 9.1552000012598e-08
-  frozenset 100000 fois, temps par éléments : 8.212900000216905e-08
+  list 100000 fois, temps par éléments : 5.84480600000461e-06
+  tuple 100000 fois, temps par éléments : 5.923587000006591e-06
+  set 100000 fois, temps par éléments : 7.347799999479321e-08
+  frozenset 100000 fois, temps par éléments : 6.471000000601634e-08
 </pre></div></div>
 </div>
 <p>Il apparaît que les ensemble <code class="docutils literal notranslate"><span class="pre">set</span></code> ou <code class="docutils literal notranslate"><span class="pre">frozenset</span></code> sont beaucoup plus rapides. Plus l’ensemble est grand, plus cette différence est importante.</p>
@@ -586,7 +587,7 @@ passage 2
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>

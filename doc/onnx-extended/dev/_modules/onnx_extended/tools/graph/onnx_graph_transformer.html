@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
         <title>onnx_extended.tools.graph.onnx_graph_transformer - onnx-extended 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
@@ -194,7 +194,9 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/check.html">check</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/ext_test_case.html">ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/helper.html">helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/ortcy.html">ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/ortops.html">ortops</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial.html">ortops.tutorial</a></li>
@@ -207,6 +209,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_graph.html">tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_transformer.html">tools.graph.onnx_graph_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_manipulations.html">tools.onnx_manipulations</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/command_lines.html">command lines</a></li>
@@ -214,6 +217,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../tech/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../tech/gemm.html">Gemm and storage order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tech/2023-09-05-glibc.html">2023-09-05 - version GLIBCXX_3.4.30 not found</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../benchmarks.html">ONNX Benchmarks</a></li>
@@ -272,13 +276,11 @@
         <article role="main">
           <h1>Source code for onnx_extended.tools.graph.onnx_graph_transformer</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
 <span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">make_function</span><span class="p">,</span>
     <span class="n">make_node</span><span class="p">,</span>
-    <span class="n">make_opsetid</span><span class="p">,</span>
     <span class="n">make_tensor</span><span class="p">,</span>
     <span class="n">make_tensor_value_info</span><span class="p">,</span>
     <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span>
@@ -296,7 +298,12 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">onnx.reference.ops.op_cast</span> <span class="kn">import</span> <span class="n">Cast</span>
     <span class="kn">from</span> <span class="nn">onnx.reference.ops.op_quantize_linear</span> <span class="kn">import</span> <span class="n">QuantizeLinear</span>
-<span class="kn">from</span> <span class="nn">...reference.c_reference_evaluator</span> <span class="kn">import</span> <span class="n">from_array_extended</span>
+<span class="kn">from</span> <span class="nn">...helper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_dynamic_quantize_linear_function_proto</span><span class="p">,</span>
+    <span class="n">make_matmul_reshape_transpose_back_function_proto</span><span class="p">,</span>
+    <span class="n">make_matmul_reshape_transpose_function_proto</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">...reference</span> <span class="kn">import</span> <span class="n">from_array_extended</span>
 <span class="kn">from</span> <span class="nn">...validation.cython.fp8</span> <span class="kn">import</span> <span class="n">cast_float32_to_e4m3fn</span>
 <span class="kn">from</span> <span class="nn">.errors</span> <span class="kn">import</span> <span class="n">QuantizationError</span>
 <span class="kn">from</span> <span class="nn">.onnx_graph_struct</span> <span class="kn">import</span> <span class="n">_get_shape</span><span class="p">,</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">NodeKind</span>
@@ -382,8 +389,8 @@
 
 
 <span class="k">def</span> <span class="nf">quantize_weights</span><span class="p">(</span>
-    <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">transpose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">]:</span>
+    <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">transpose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Quantizes a tensor into a tensor of element type *elem_type*.</span>
 
@@ -391,9 +398,32 @@
 <span class="sd">    :param elem_type: element type</span>
 <span class="sd">    :param transpose: transpose the weight before doing it</span>
 <span class="sd">    :return: three new nodes, quantized weights, scale, zero point</span>
+<span class="sd">        and the original shape of the constant</span>
+
+<span class="sd">    See function :func:`quantize_float8_matmul`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tensor</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">get_tensor</span><span class="p">()</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">to_array_extended</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Input </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> is a constant, it must have at &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;least 2 dimensions not </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># Needs to be reshaped.</span>
+        <span class="n">reshaped</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># first input</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># second input</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span>
+                <span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">reshaped</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">T</span>
     <span class="n">scale</span><span class="p">,</span> <span class="n">zp</span> <span class="o">=</span> <span class="n">estimation_quantization_scale</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">elem_type</span><span class="p">)</span>
@@ -420,102 +450,21 @@
     <span class="p">)</span>
     <span class="n">node_zp</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">create_with_new_values</span><span class="p">(</span><span class="n">new_zp</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">node_weight</span><span class="p">,</span> <span class="n">node_scale</span><span class="p">,</span> <span class="n">node_zp</span>
+    <span class="k">return</span> <span class="n">node_weight</span><span class="p">,</span> <span class="n">node_scale</span><span class="p">,</span> <span class="n">node_zp</span><span class="p">,</span> <span class="n">reshaped</span>
 
 
-<span class="k">def</span> <span class="nf">make_dynamic_quantize_linear_function</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">opset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionProto</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Creates the FunctionProto for a function doing a quantization to float 8.</span>
-
-<span class="sd">    :param domain: local domain name</span>
-<span class="sd">    :param opset: opset to use to define the function</span>
-<span class="sd">    :return: FunctionProto</span>
-
-<span class="sd">    The function takes 1 input and returns 3 outputs.</span>
-<span class="sd">    It has one attribute *to* which specified the quantized type.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">normalization_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FN</span><span class="p">:</span> <span class="mf">100.057724</span><span class="p">,</span>
-            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FNUZ</span><span class="p">:</span> <span class="mf">54.26635</span><span class="p">,</span>
-            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2</span><span class="p">:</span> <span class="mf">9535.286</span><span class="p">,</span>
-            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2FNUZ</span><span class="p">:</span> <span class="mf">9403.499</span><span class="p">,</span>
-        <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">)</span>
-
-    <span class="n">cast</span> <span class="o">=</span> <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;zerof&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Zeropoint&quot;</span><span class="p">])</span>
-    <span class="n">att</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="p">()</span>
-    <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;to&quot;</span>
-    <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span> <span class="o">=</span> <span class="s2">&quot;to&quot;</span>
-    <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INT</span>
-    <span class="n">cast</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
-
-    <span class="n">cst</span> <span class="o">=</span> <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="s2">&quot;vto&quot;</span><span class="p">])</span>
-    <span class="n">att</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="p">()</span>
-    <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;value_int&quot;</span>
-    <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span> <span class="o">=</span> <span class="s2">&quot;to&quot;</span>
-    <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INT</span>
-    <span class="n">cst</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
-
-    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
-            <span class="p">[],</span>
-            <span class="p">[</span><span class="s2">&quot;zeroi&quot;</span><span class="p">],</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="s2">&quot;zeroi&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="p">),</span>
-        <span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
-            <span class="p">[],</span>
-            <span class="p">[</span><span class="s2">&quot;zerof&quot;</span><span class="p">],</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="s2">&quot;zerof&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="p">),</span>
-        <span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
-            <span class="p">[],</span>
-            <span class="p">[</span><span class="s2">&quot;newshape&quot;</span><span class="p">],</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="s2">&quot;newshape&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="p">),</span>
-        <span class="n">cast</span><span class="p">,</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Mul&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;xsquare&quot;</span><span class="p">]),</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;ReduceMean&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;xsquare&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Dev&quot;</span><span class="p">],</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Sqrt&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Dev&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;Scale&quot;</span><span class="p">]),</span>
-        <span class="n">cst</span><span class="p">,</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Reshape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;vto&quot;</span><span class="p">,</span> <span class="s2">&quot;newshape&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;vtotensor&quot;</span><span class="p">]),</span>
-        <span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;LabelEncoder&quot;</span><span class="p">,</span>
-            <span class="p">[</span><span class="s2">&quot;vtotensor&quot;</span><span class="p">],</span>
-            <span class="p">[</span><span class="s2">&quot;stdftensor&quot;</span><span class="p">],</span>
-            <span class="n">keys_int64s</span><span class="o">=</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">normalization_values</span><span class="p">],</span>
-            <span class="n">values_floats</span><span class="o">=</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">normalization_values</span><span class="p">],</span>
-            <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;ReduceSum&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;stdftensor&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;stdf&quot;</span><span class="p">],</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;CastLike&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;stdf&quot;</span><span class="p">,</span> <span class="s2">&quot;Scale&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]),</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Div&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Scale&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;ScaleScaled&quot;</span><span class="p">]),</span>
-        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;QuantizeLinear&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;ScaleScaled&quot;</span><span class="p">,</span> <span class="s2">&quot;Zeropoint&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span>
-    <span class="p">]</span>
-    <span class="k">return</span> <span class="n">make_function</span><span class="p">(</span>
-        <span class="n">domain</span><span class="p">,</span>
-        <span class="s2">&quot;DynamicQuantizeLinear&quot;</span><span class="p">,</span>
-        <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span>
-        <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;ScaleScaled&quot;</span><span class="p">,</span> <span class="s2">&quot;Zeropoint&quot;</span><span class="p">],</span>
-        <span class="n">nodes</span><span class="p">,</span>
-        <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">opset</span><span class="p">),</span> <span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span>
-        <span class="n">attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_quantize_float8_matmul</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">quantize_float8_matmul</span><span class="p">(</span>
     <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">output_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">opset</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">local_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">index_transpose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">domain_ops</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TransformResults</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Quantize matrix multiplications.</span>
+<span class="sd">    Quantizes matrix multiplications.</span>
 
 <span class="sd">    :param node: matrix multiplication</span>
 <span class="sd">    :param elem_type: float 8 type to quantize into</span>
@@ -527,99 +476,178 @@
 <span class="sd">        otherwise a dictionary with the existing local functions to</span>
 <span class="sd">        add to the model</span>
 <span class="sd">    :param quiet: True to silently skip failing nodes</span>
+<span class="sd">    :param index_transpose: which input to transpose before calling gemm:</span>
+<span class="sd">        0 (none), 1 (first), 2 (second), 3 for both</span>
+<span class="sd">    :param domain_ops: domain to use for operators used as keys in the dictionary</span>
 <span class="sd">    :return: nodes to remove, nodes to add, new opsets</span>
+
+<span class="sd">    **About tensors with more than two dimensions.**</span>
+
+<span class="sd">    Gemm only supports matrices or 2D tensors.</span>
+<span class="sd">    When one input does not follow that schema,</span>
+<span class="sd">    it uses the following tricks. First one when the first input</span>
+<span class="sd">    has more than one dimension. We could describe that</span>
+<span class="sd">    with the Einstein summation. We want `abij, jk -&gt; abik`.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        abij, jk -&gt; abik</span>
+<span class="sd">        abij ~&gt; Cj</span>
+<span class="sd">        Cj, jk -&gt; Ck      # gemm</span>
+<span class="sd">        Ck ~&gt; abik</span>
+
+<span class="sd">    In python:</span>
+
+<span class="sd">    .. runpython::</span>
+<span class="sd">        :showcode:</span>
+
+<span class="sd">        import numpy as np</span>
+
+<span class="sd">        a = np.arange(16).reshape((2, 2, 2, 2))</span>
+<span class="sd">        b = np.arange(4).reshape((2, 2)) * 10</span>
+
+<span class="sd">        expected = a @ b</span>
+
+<span class="sd">        a2 = a.reshape((-1, a.shape[-1]))</span>
+<span class="sd">        b2 = b</span>
+<span class="sd">        res = a2 @ b2</span>
+<span class="sd">        final = res.reshape(a.shape[:-2] + (-1, res.shape[-1]))</span>
+
+<span class="sd">        print(&quot;------&quot;)</span>
+<span class="sd">        print(a)</span>
+<span class="sd">        print(b)</span>
+<span class="sd">        print(&quot;------&quot;)</span>
+<span class="sd">        print(expected)</span>
+<span class="sd">        print(&quot;------&quot;)</span>
+<span class="sd">        print(final)</span>
+<span class="sd">        assert expected.tolist() == final.tolist()</span>
+
+<span class="sd">    For the other, we use the trick `a @ b = (b&#39; @ a&#39;)&#39;`.</span>
+<span class="sd">    Second one when the second input has more than one dimension.</span>
+<span class="sd">    We want `ij, abjk -&gt; abik`.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        ij, abjk -&gt; abik</span>
+<span class="sd">        abjk ~&gt; Cjk ~&gt; jCk ~&gt; jD</span>
+<span class="sd">        ij, jD -&gt; iD      # gemm</span>
+<span class="sd">        iD ~&gt; iCk ~&gt; Cik ~&gt; abik</span>
+
+<span class="sd">    .. runpython::</span>
+<span class="sd">        :showcode:</span>
+
+<span class="sd">        import numpy as np</span>
+
+<span class="sd">        a = np.arange(4).reshape((2, 2)) * 10</span>
+<span class="sd">        b = np.arange(16).reshape((2, 2, 2, 2))</span>
+
+<span class="sd">        expected = a @ b</span>
+
+<span class="sd">        a2 = a</span>
+<span class="sd">        b2 = (</span>
+<span class="sd">            b.reshape((-1,) + b.shape[-2:])</span>
+<span class="sd">            .transpose((1, 0, 2))</span>
+<span class="sd">            .reshape((b.shape[-2], -1))</span>
+<span class="sd">        )</span>
+<span class="sd">        res = a2 @ b2</span>
+<span class="sd">        final = (</span>
+<span class="sd">            res.reshape(a.shape[0], -1, b.shape[-1])</span>
+<span class="sd">            .transpose((1, 0, 2))</span>
+<span class="sd">            .reshape(b.shape[:-2] + (-1, b.shape[-1]))</span>
+<span class="sd">        )</span>
+
+<span class="sd">        print(&quot;------&quot;)</span>
+<span class="sd">        print(a)</span>
+<span class="sd">        print(b)</span>
+<span class="sd">        print(&quot;------&quot;)</span>
+<span class="sd">        print(expected)</span>
+<span class="sd">        print(&quot;------&quot;)</span>
+<span class="sd">        print(final)</span>
+<span class="sd">        assert expected.tolist() == final.tolist()</span>
+
+<span class="sd">    Both sides cannot have more than two dimensions in the current implementation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">domain_dq</span> <span class="o">=</span> <span class="s2">&quot;local.quant.domain&quot;</span>
+    <span class="k">if</span> <span class="n">domain_ops</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">domain_ops</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="s2">&quot;onnxruntime&quot;</span><span class="p">:</span>
-        <span class="n">domain_dq</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">domain_gemm</span> <span class="o">=</span> <span class="s2">&quot;com.microsoft&quot;</span>
         <span class="n">op_gemm</span> <span class="o">=</span> <span class="s2">&quot;GemmFloat8&quot;</span>
+        <span class="n">domain_gemm</span> <span class="o">=</span> <span class="n">domain_ops</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GemmFloat8&quot;</span><span class="p">,</span> <span class="s2">&quot;com.microsoft&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">version</span> <span class="o">==</span> <span class="s2">&quot;onnx-extended&quot;</span><span class="p">:</span>
-        <span class="n">domain_dq</span> <span class="o">=</span> <span class="s2">&quot;onnx_extented.ortops.tutorial.cpu&quot;</span>
-        <span class="n">domain_gemm</span> <span class="o">=</span> <span class="s2">&quot;onnx_extented.ortops.tutorial.cuda&quot;</span>
         <span class="n">op_gemm</span> <span class="o">=</span> <span class="s2">&quot;CustomGemmFloat8E4M3FN&quot;</span>
+        <span class="n">domain_gemm</span> <span class="o">=</span> <span class="n">domain_ops</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;CustomGemmFloat8E4M3FN&quot;</span><span class="p">,</span> <span class="s2">&quot;onnx_extented.ortops.tutorial.cuda&quot;</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value </span><span class="si">{</span><span class="n">version</span><span class="si">!r}</span><span class="s2"> for version.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">local_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">domain_dq</span> <span class="o">=</span> <span class="s2">&quot;local.quant.domain&quot;</span>
+
     <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;MatMul&quot;</span><span class="p">:</span>
         <span class="n">removed</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">added</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">input_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">was_reshaped</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
-        <span class="n">m1</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">was_reshaped</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">):</span>
+            <span class="n">do_transpose</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">index</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">index_transpose</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
                 <span class="c1"># Quantized constant weights</span>
                 <span class="n">cst</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_node_producer</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-                <span class="n">weight</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">zero_point</span> <span class="o">=</span> <span class="n">quantize_weights</span><span class="p">(</span>
-                    <span class="n">cst</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">index</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="n">weight</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">zero_point</span><span class="p">,</span> <span class="n">reshaped</span> <span class="o">=</span> <span class="n">quantize_weights</span><span class="p">(</span>
+                    <span class="n">cst</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">do_transpose</span>
                 <span class="p">)</span>
                 <span class="n">added</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">weight</span><span class="o">.</span><span class="n">proto</span><span class="p">,</span> <span class="n">scale</span><span class="o">.</span><span class="n">proto</span><span class="p">,</span> <span class="n">zero_point</span><span class="o">.</span><span class="n">proto</span><span class="p">])</span>
                 <span class="n">input_names</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">weight</span><span class="o">.</span><span class="n">outname</span><span class="p">,</span> <span class="n">scale</span><span class="o">.</span><span class="n">outname</span><span class="p">,</span> <span class="n">zero_point</span><span class="o">.</span><span class="n">outname</span><span class="p">])</span>
                 <span class="n">removed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
+                <span class="n">was_reshaped</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">reshaped</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Add DynamicQuantizeLinear</span>
-                <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="c1"># transposition is needed for the first input</span>
-                    <span class="n">shape</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="c1"># Not a constant</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">do_transpose</span><span class="p">:</span>
+                        <span class="c1"># no need</span>
+                        <span class="n">temp_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_tr&quot;</span><span class="p">)</span>
+                        <span class="n">added</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">make_node</span><span class="p">(</span>
+                                <span class="s2">&quot;Transpose&quot;</span><span class="p">,</span>
+                                <span class="p">[</span><span class="n">name</span><span class="p">],</span>
+                                <span class="p">[</span><span class="n">temp_name</span><span class="p">],</span>
+                                <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_node_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tra8_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">temp_name</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="n">QuantizationError</span><span class="p">(</span>
                             <span class="sa">f</span><span class="s2">&quot;Shape is unknown for result </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> in node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">. &quot;</span>
                             <span class="sa">f</span><span class="s2">&quot;This input cannot be transposed with certainty.&quot;</span>
                         <span class="p">)</span>
 
-                    <span class="c1"># Let&#39;s reshape if the dimension is != 2</span>
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                        <span class="c1"># no need</span>
-                        <span class="n">reshaped_name</span> <span class="o">=</span> <span class="n">name</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># The input needs to be reshaped.</span>
-                        <span class="n">reshaped_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sh&quot;</span><span class="p">)</span>
-                        <span class="n">shape_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sh&quot;</span><span class="p">)</span>
-                        <span class="n">new_shape</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_nsh&quot;</span><span class="p">)</span>
-                        <span class="n">last_dim</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_ldim&quot;</span><span class="p">)</span>
-                        <span class="n">m1</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_m1&quot;</span><span class="p">)</span>
-                        <span class="n">was_reshaped</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape_name</span>
-                        <span class="n">added</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                            <span class="p">[</span>
-                                <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="p">[</span><span class="n">shape_name</span><span class="p">]),</span>
-                                <span class="n">make_node</span><span class="p">(</span>
-                                    <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
-                                    <span class="p">[],</span>
-                                    <span class="p">[</span><span class="n">m1</span><span class="p">],</span>
-                                    <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span>
-                                        <span class="n">new_shape</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                                    <span class="p">),</span>
-                                <span class="p">),</span>
-                                <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Gather&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">shape_name</span><span class="p">,</span> <span class="n">m1</span><span class="p">],</span> <span class="p">[</span><span class="n">last_dim</span><span class="p">]),</span>
-                                <span class="n">make_node</span><span class="p">(</span>
-                                    <span class="s2">&quot;Concat&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">m1</span><span class="p">,</span> <span class="n">last_dim</span><span class="p">],</span> <span class="p">[</span><span class="n">new_shape</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
-                                <span class="p">),</span>
-                                <span class="n">make_node</span><span class="p">(</span>
-                                    <span class="s2">&quot;Reshape&quot;</span><span class="p">,</span>
-                                    <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">],</span>
-                                    <span class="p">[</span><span class="n">reshaped_name</span><span class="p">],</span>
-                                    <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_node_name</span><span class="p">(</span>
-                                        <span class="sa">f</span><span class="s2">&quot;resh8_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-                                    <span class="p">),</span>
-                                <span class="p">),</span>
-                            <span class="p">]</span>
-                        <span class="p">)</span>
-
-                    <span class="n">tr_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_tr&quot;</span><span class="p">)</span>
+                    <span class="n">temp_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_tr&quot;</span><span class="p">)</span>
+                    <span class="n">fname</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;MatMulReshapeTranspose</span><span class="si">{</span><span class="s1">&#39;T&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">do_transpose</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;N&#39;</span><span class="si">}{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
                     <span class="n">added</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">make_node</span><span class="p">(</span>
-                            <span class="s2">&quot;Transpose&quot;</span><span class="p">,</span>
-                            <span class="p">[</span><span class="n">reshaped_name</span><span class="p">],</span>
-                            <span class="p">[</span><span class="n">tr_name</span><span class="p">],</span>
+                            <span class="n">fname</span><span class="p">,</span>
+                            <span class="p">[</span><span class="n">name</span><span class="p">],</span>
+                            <span class="p">[</span><span class="n">temp_name</span><span class="p">],</span>
                             <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_node_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tra8_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                            <span class="n">domain</span><span class="o">=</span><span class="n">domain_dq</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
-                    <span class="n">temp_name</span> <span class="o">=</span> <span class="n">tr_name</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># no transposition for the other input</span>
-                    <span class="n">temp_name</span> <span class="o">=</span> <span class="n">name</span>
+                    <span class="n">was_reshaped</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">domain_dq</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">local_functions</span><span class="p">:</span>
+                        <span class="c1"># use local functions</span>
+                        <span class="n">local_functions</span><span class="p">[</span>
+                            <span class="n">domain_dq</span><span class="p">,</span> <span class="n">fname</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">make_matmul_reshape_transpose_function_proto</span><span class="p">(</span>
+                            <span class="n">domain</span><span class="o">=</span><span class="n">domain_dq</span><span class="p">,</span>
+                            <span class="n">opset</span><span class="o">=</span><span class="n">opset</span><span class="p">,</span>
+                            <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+                            <span class="n">transpose</span><span class="o">=</span><span class="n">do_transpose</span><span class="p">,</span>
+                        <span class="p">)</span>
+
                 <span class="n">new_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_f8&quot;</span><span class="p">)</span>
                 <span class="n">scale</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_scale&quot;</span><span class="p">)</span>
                 <span class="n">zero_point</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_zp&quot;</span><span class="p">)</span>
@@ -629,7 +657,6 @@
                     <span class="p">[</span><span class="n">new_name</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">zero_point</span><span class="p">],</span>
                     <span class="n">to</span><span class="o">=</span><span class="n">elem_type</span><span class="p">,</span>
                     <span class="n">domain</span><span class="o">=</span><span class="n">domain_dq</span><span class="p">,</span>
-                    <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_node_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dql8_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
                 <span class="p">)</span>
                 <span class="n">dql</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">proto</span><span class="p">,</span> <span class="n">NodeKind</span><span class="o">.</span><span class="n">NODE</span><span class="p">)</span>
                 <span class="n">added</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">dql</span><span class="o">.</span><span class="n">proto</span><span class="p">])</span>
@@ -641,15 +668,16 @@
                     <span class="c1"># use local functions</span>
                     <span class="n">local_functions</span><span class="p">[</span>
                         <span class="n">domain_dq</span><span class="p">,</span> <span class="s2">&quot;DynamicQuantizeLinear&quot;</span>
-                    <span class="p">]</span> <span class="o">=</span> <span class="n">make_dynamic_quantize_linear_function</span><span class="p">(</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">make_dynamic_quantize_linear_function_proto</span><span class="p">(</span>
                         <span class="n">domain</span><span class="o">=</span><span class="n">domain_dq</span><span class="p">,</span> <span class="n">opset</span><span class="o">=</span><span class="n">opset</span>
                     <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">QuantizationError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;MatMul cannot be replaced by operator Gemm as both inputs &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;are not matrices of shapes </span><span class="si">{</span><span class="n">was_reshaped</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">output_type</span> <span class="ow">in</span> <span class="p">{</span>
             <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT8</span><span class="p">,</span>
             <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT8</span><span class="p">,</span>
@@ -671,6 +699,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># output is not quantized, no need for an output scale</span>
             <span class="n">scale_out</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
         <span class="n">gemm_inputs</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">input_names</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># A</span>
             <span class="n">input_names</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># B</span>
@@ -679,64 +708,73 @@
             <span class="n">input_names</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># scaleB</span>
             <span class="n">scale_out</span><span class="p">,</span>  <span class="c1"># scaleR</span>
         <span class="p">]</span>
-        <span class="k">if</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">gemm_outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_gemm&quot;</span><span class="p">)]</span>
             <span class="n">do_reshape</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">gemm_outputs</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">outputs</span>
             <span class="n">do_reshape</span> <span class="o">=</span> <span class="kc">False</span>
+
         <span class="n">added</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">make_node</span><span class="p">(</span>
                 <span class="n">op_gemm</span><span class="p">,</span>
                 <span class="n">gemm_inputs</span><span class="p">,</span>
                 <span class="n">gemm_outputs</span><span class="p">,</span>
-                <span class="n">rowMajor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">rowMajor</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                 <span class="n">dtype</span><span class="o">=</span><span class="n">output_type</span><span class="p">,</span>
-                <span class="n">transA</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">transA</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="p">(</span><span class="n">index_transpose</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">transB</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="p">(</span><span class="n">index_transpose</span> <span class="o">&amp;</span> <span class="mi">2</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
                 <span class="n">domain</span><span class="o">=</span><span class="n">domain_gemm</span><span class="p">,</span>
                 <span class="n">computeType</span><span class="o">=</span><span class="s2">&quot;CUBLAS_COMPUTE_32F_FAST_TF32&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">do_reshape</span><span class="p">:</span>
             <span class="c1"># One of the inputs had 3 dimensions.</span>
-            <span class="k">if</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">m1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="n">sliced</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sli&quot;</span><span class="p">)</span>
-                <span class="n">new_shape</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_sh1&quot;</span><span class="p">)</span>
-                <span class="n">zero</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="s2">&quot;zero&quot;</span><span class="p">)</span>
-                <span class="n">m2</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_shm2&quot;</span><span class="p">)</span>
-                <span class="n">shm2</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="s2">&quot;m2&quot;</span><span class="p">)</span>
-                <span class="n">sh1</span> <span class="o">=</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">added</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                    <span class="p">[</span>
-                        <span class="n">make_node</span><span class="p">(</span>
-                            <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
-                            <span class="p">[],</span>
-                            <span class="p">[</span><span class="n">zero</span><span class="p">],</span>
-                            <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;MatMulReshapeTransposeBack</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">mmshape</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_mmshape&quot;</span><span class="p">)</span>
+
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">added</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">make_node</span><span class="p">(</span>
+                        <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
+                        <span class="p">[],</span>
+                        <span class="p">[</span><span class="n">mmshape</span><span class="p">],</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span>
+                            <span class="n">mmshape</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)],</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
                         <span class="p">),</span>
-                        <span class="n">make_node</span><span class="p">(</span>
-                            <span class="s2">&quot;Constant&quot;</span><span class="p">,</span>
-                            <span class="p">[],</span>
-                            <span class="p">[</span><span class="n">m2</span><span class="p">],</span>
-                            <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]),</span>
-                        <span class="p">),</span>
-                        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">sh1</span><span class="p">,</span> <span class="n">zero</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">zero</span><span class="p">],</span> <span class="p">[</span><span class="n">sliced</span><span class="p">]),</span>
-                        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Gather&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">sh1</span><span class="p">,</span> <span class="n">m2</span><span class="p">],</span> <span class="p">[</span><span class="n">shm2</span><span class="p">]),</span>
-                        <span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Concat&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">sliced</span><span class="p">,</span> <span class="n">shm2</span><span class="p">,</span> <span class="n">m1</span><span class="p">],</span> <span class="p">[</span><span class="n">new_shape</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-                        <span class="n">make_node</span><span class="p">(</span>
-                            <span class="s2">&quot;Reshape&quot;</span><span class="p">,</span>
-                            <span class="p">[</span><span class="n">gemm_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_shape</span><span class="p">],</span>
-                            <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span>
-                            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_node_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;resh82_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
-                        <span class="p">),</span>
-                    <span class="p">]</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">added</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">shape</span><span class="p">],</span> <span class="p">[</span><span class="n">mmshape</span><span class="p">]))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;MatMul cannot be replaced by operator Gemm, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;shapes are </span><span class="si">{</span><span class="n">was_reshaped</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> in was_reshaped=</span><span class="si">{</span><span class="n">was_reshaped</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="p">)</span>
+
+            <span class="n">added</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">make_node</span><span class="p">(</span>
+                    <span class="n">fname</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">gemm_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mmshape</span><span class="p">],</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span>
+                    <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="n">domain_dq</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">domain_dq</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">local_functions</span><span class="p">:</span>
+                <span class="c1"># use local functions</span>
+                <span class="n">local_functions</span><span class="p">[</span>
+                    <span class="n">domain_dq</span><span class="p">,</span> <span class="n">fname</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">make_matmul_reshape_transpose_back_function_proto</span><span class="p">(</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="n">domain_dq</span><span class="p">,</span> <span class="n">opset</span><span class="o">=</span><span class="n">opset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+                <span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">was_reshaped</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Shape is </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">. This case is not implemented yet.&quot;</span>
+                <span class="p">)</span>
+
         <span class="n">removed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="n">opsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">domain_gemm</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">domain_dq</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
@@ -756,8 +794,9 @@
     <span class="n">output_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
     <span class="n">early_stop</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;onnxruntime&quot;</span><span class="p">,</span>
-    <span class="n">local_function</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">index_transpose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">domain_ops</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Graph</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transforms a graph to introduce quantized weights.</span>
@@ -772,8 +811,10 @@
 <span class="sd">        to stop after n changes</span>
 <span class="sd">    :param version: `&#39;onnxruntime&#39;` to use operators from onnx and onnxruntime,</span>
 <span class="sd">        `&#39;onnx-extended&#39;` to use experimental operators</span>
-<span class="sd">    :param local_function: use local function to inline DynamicQuantizeLinear</span>
 <span class="sd">    :param quiet: catch exception and silently skip failing nodes</span>
+<span class="sd">    :param index_transpose: which input to transpose before calling gemm:</span>
+<span class="sd">        0 (none), 1 (first), 2 (second), 3 for both</span>
+<span class="sd">    :param domain_ops: domain to use for operators used as keys in the dictionary</span>
 <span class="sd">    :return: Graph or None if not modified</span>
 
 <span class="sd">    Transformation are logged with logger `onnx-extended/transformer`.</span>
@@ -781,13 +822,7 @@
 <span class="sd">    Enables the logs gives a better idea of the progress.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">main_opset</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">get_opset</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">local_function</span> <span class="ow">and</span> <span class="n">main_opset</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="ow">and</span> <span class="n">version</span> <span class="o">==</span> <span class="s2">&quot;onnxruntime&quot;</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;[quantize_float8] upgrade model from opset </span><span class="si">%d</span><span class="s2"> to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">main_opset</span><span class="p">,</span> <span class="mi">20</span>
-        <span class="p">)</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">upgrade_opsets</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
-        <span class="n">main_opset</span> <span class="o">=</span> <span class="mi">20</span>
-    <span class="k">elif</span> <span class="n">local_function</span> <span class="ow">and</span> <span class="n">main_opset</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">main_opset</span> <span class="o">&lt;</span> <span class="mi">19</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
             <span class="s2">&quot;[quantize_float8] upgrade model from opset </span><span class="si">%d</span><span class="s2"> to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">main_opset</span><span class="p">,</span> <span class="mi">19</span>
         <span class="p">)</span>
@@ -796,8 +831,8 @@
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Quantization of local functions is not implemented.&quot;</span><span class="p">)</span>
-    <span class="n">local_functions</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">local_function</span> <span class="k">else</span> <span class="kc">None</span>
-    <span class="n">n_local_functions</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">local_functions</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_functions</span><span class="p">)</span>
+    <span class="n">local_functions</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">n_local_functions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_functions</span><span class="p">)</span>
     <span class="n">new_opsets</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">to_add</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
@@ -806,13 +841,15 @@
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;MatMul&quot;</span><span class="p">,</span> <span class="s2">&quot;Gemm&quot;</span><span class="p">}:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;[quantize_float8] </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2"> quantize </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="n">_quantize_float8_matmul</span><span class="p">(</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">quantize_float8_matmul</span><span class="p">(</span>
                     <span class="n">node</span><span class="p">,</span>
                     <span class="n">elem_type</span><span class="p">,</span>
                     <span class="n">output_type</span><span class="p">,</span>
                     <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
                     <span class="n">opset</span><span class="o">=</span><span class="n">main_opset</span><span class="p">,</span>
                     <span class="n">local_functions</span><span class="o">=</span><span class="n">local_functions</span><span class="p">,</span>
+                    <span class="n">index_transpose</span><span class="o">=</span><span class="n">index_transpose</span><span class="p">,</span>
+                    <span class="n">domain_ops</span><span class="o">=</span><span class="n">domain_ops</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="n">QuantizationError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
