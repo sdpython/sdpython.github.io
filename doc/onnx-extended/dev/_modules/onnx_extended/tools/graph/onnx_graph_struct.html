@@ -210,6 +210,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_graph.html">tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_transformer.html">tools.graph.onnx_graph_transformer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_manipulations.html">tools.onnx_manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_other.html">Other tools</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/command_lines.html">command lines</a></li>
@@ -392,6 +393,22 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Node.match"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.match">[docs]</a>    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a node match the proposed pattern.</span>
+
+<span class="sd">        :param pattern: a node matches the pattern `{&quot;name&quot;: &quot;node_name&quot;}`</span>
+<span class="sd">            if its node is equal to `&#39;node_name&#39;`</span>
+<span class="sd">        :return: match</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pattern</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pattern</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">v</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected pattern key k=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">, v=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="Node.get_tensor"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.get_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
         <span class="s2">&quot;Returns the value of the&quot;</span>
