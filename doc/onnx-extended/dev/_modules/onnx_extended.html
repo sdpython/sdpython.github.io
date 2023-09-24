@@ -8,7 +8,7 @@
         <title>onnx_extended - onnx-extended 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -210,6 +210,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_graph.html">tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_transformer.html">tools.graph.onnx_graph_transformer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_manipulations.html">tools.onnx_manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_other.html">Other tools</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/command_lines.html">command lines</a></li>
@@ -344,15 +345,11 @@
 
 <div class="viewcode-block" id="get_stdcpp"><a class="viewcode-back" href="../api/check.html#onnx_extended.get_stdcpp">[docs]</a><span class="k">def</span> <span class="nf">get_stdcpp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns `CXX_FLAGS`.</span>
+<span class="sd">    Returns `CMAKE_CXX_STANDARD`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="kn">from</span> <span class="nn">._config</span> <span class="kn">import</span> <span class="n">CMAKE_CXX_STANDARD</span>
 
-    <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;std[:=]c[+][+]([0-9]+)&quot;</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">get_cxx_flags</span><span class="p">())</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to extract c++ version from </span><span class="si">{</span><span class="n">get_cxx_flags</span><span class="p">()</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="n">CMAKE_CXX_STANDARD</span></div>
 </pre></div>
         </article>
       </div>
