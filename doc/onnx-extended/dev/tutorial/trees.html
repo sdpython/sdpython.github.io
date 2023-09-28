@@ -177,6 +177,7 @@
 <li class="toctree-l2"><a class="reference internal" href="cython_binding.html">Cython Binding of onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="custom_ops.html">Custom Kernels for onnxruntime</a></li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="many_tools.html">Many Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="external_data.html">External Data and Big Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_manipulations.html">Onnx Manipulations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quantize.html">Quantization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="profiling.html">Profiling onnxruntime</a></li>
@@ -218,6 +219,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/validation_cpu.html">validation.cpu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/validation_cuda.html">validation.cuda</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_simple.html">Shortcuts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_graph.html">tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_transformer.html">tools.graph.onnx_graph_transformer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_manipulations.html">tools.onnx_manipulations</a></li>
@@ -291,14 +293,106 @@
         <article role="main">
           <section id="trees">
 <h1>Trees<a class="headerlink" href="#trees" title="Permalink to this heading">#</a></h1>
-<section id="parallelization-parameters">
-<h2>Parallelization parameters<a class="headerlink" href="#parallelization-parameters" title="Permalink to this heading">#</a></h2>
+<section id="parallelization-implementation">
+<h2>Parallelization implementation<a class="headerlink" href="#parallelization-implementation" title="Permalink to this heading">#</a></h2>
+<p>There is no optimal way to parallelize on every machine and for every tree.
+It depends on the tree size, the number of features,
+the cache size, the number of cores.
+The optimal parameters may be twice faster or twice slower, sometimes more,
+than the fixed values currently uses in onnxruntime.</p>
+<section id="six-parameters">
+<h3>Six parameters<a class="headerlink" href="#six-parameters" title="Permalink to this heading">#</a></h3>
 <p>The latency of a tree ensemble depends on the tree size
 and the machine it runs on. The following example
 takes a model using a TreeEnsembleRegressor and replaces
 it with a custom node and additional parameters to tune
 the parallelization. The kernel is a custom operator
-for <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>.</p>
+for <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>. There are six parameters.</p>
+<p>The implementation in onnxruntime only uses the first three.
+It takes place in method
+<a class="reference external" href="https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/core/providers/cpu/ml/tree_ensemble_common.h#L440">compute</a>
+in file <cite>onnxruntime/core/providers/cpu/ml/tree_ensemble_common.h</cite>.</p>
+<p>This package uses the six parameters in an experimental implementation
+to investigate new optimizations which could be brought to onnxruntime
+if they prove to be significantly better. The code is in
+<a class="reference external" href="https://github.com/sdpython/onnx-extended/blob/main/onnx_extended/cpp/include/cpu/c_op_tree_ensemble_common_.hpp#L640">onnx_extended/cpp/include/cpu/c_op_tree_ensemble_common_.hpp</a>.</p>
+<p>The implementation distinguishes between batch inference and one-off inference.
+The second one is usually uses in web services as the prediction always
+happens one at a time. We denote <em>T</em> as the number of trees and
+<em>N</em> the number of predictions to do. <em>N</em> is the batch size.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14.3%" />
+<col style="width: 28.6%" />
+<col style="width: 28.6%" />
+<col style="width: 28.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>name</p></th>
+<th class="head"><p>default</p></th>
+<th class="head"><p>range</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>parallel_tree</p></td>
+<td><p>40</p></td>
+<td><p>[0, <img class="math" src="../_images/math/bc77ef1d57e976aaf1df2652d6a847961be9fdfc.svg" alt="\infty"/> [</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>parallel_tree_N</p></td>
+<td><p>128</p></td>
+<td><p>[0, <img class="math" src="../_images/math/bc77ef1d57e976aaf1df2652d6a847961be9fdfc.svg" alt="\infty"/> [</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>parallel_N</p></td>
+<td><p>50</p></td>
+<td><p>[0, <img class="math" src="../_images/math/bc77ef1d57e976aaf1df2652d6a847961be9fdfc.svg" alt="\infty"/> [</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>batch_size_tree</p></td>
+<td><p>1</p></td>
+<td><p>[1, <img class="math" src="../_images/math/bc77ef1d57e976aaf1df2652d6a847961be9fdfc.svg" alt="\infty"/> [</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>batch_size_rows</p></td>
+<td><p>1</p></td>
+<td><p>[1, <img class="math" src="../_images/math/bc77ef1d57e976aaf1df2652d6a847961be9fdfc.svg" alt="\infty"/> [</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>use_node3</p></td>
+<td><p>0</p></td>
+<td><p>{0, 1}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If <cite>N==1</cite> (one off prediction), the inference is parallelized by tree
+if <cite>T &gt; parallel_tree</cite>. Every chunk of <cite>batch_size_tree</cite> consecutive
+trees is processed in parallel.</p>
+<p>If <cite>N &gt; 1</cite>, no parallelization is done if <cite>N &lt;= parallel_N_ &amp;&amp; T &lt;= parallel_tree_</cite>.</p>
+<p>If <cite>T &gt;= parallel_tree_</cite>, the batch is split into chunks of
+<cite>parallel_tree_N</cite> rows. In every chunk, the parallelization is done by tree:
+every chunk of <cite>batch_size_tree</cite> consecutive
+trees is processed in parallel.</p>
+<p>Otherwise, the parallelisation is done by rows. The dataset is split into
+chunks of <cite>batch_size_rows</cite> rows. Every of them is processed in parallel.</p>
+<p>The last parameter is independant from the other. If enabled, the implementation
+changes the structure to get bigger nodes equivalent to three node from the
+original tree. This was originally intended to use AVX instructions
+to speed up the implementation.</p>
+</section>
+<section id="change-the-parallelization-settings">
+<h3>Change the parallelization settings<a class="headerlink" href="#change-the-parallelization-settings" title="Permalink to this heading">#</a></h3>
+<p>Should we let the users define the parameters or let the
+inference session take some time during the initalization to
+find suitable parameters for the tree and the machine the model
+is running on. The following example shows how to uses a custom
+kernel to change the settings. It replaces the onnx nodes by another
+one with the same parameters plus the parallelization settings.
+The custom operator will be able to used them.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -323,7 +417,7 @@ for <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>
 <span class="c1"># Let&#39;s create model.</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">batch_size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_trees</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_trees</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">batch_size</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">batch_size</span><span class="p">])</span>
 <span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_opset</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 
@@ -359,6 +453,9 @@ for <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>
 
 
 <span class="n">modified_onx</span> <span class="o">=</span> <span class="n">transform_model</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="s2">&quot;TreeEnsembleRegressor&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">optim_params</span><span class="p">)</span>
+
+<span class="c1"># The new attributes are added into the onnx file and defines</span>
+<span class="c1"># how the parallelisation must be done.</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">modified_onx</span><span class="p">))</span>
 
 <span class="c1"># Let&#39;s check it is working.</span>
@@ -381,50 +478,63 @@ for <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>
     <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">17</span>
     <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;onnx_extented.ortops.optim.cpu&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-    <span class="n">TreeEnsembleRegressor</span><span class="p">[</span><span class="n">onnx_extented</span><span class="o">.</span><span class="n">ortops</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">cpu</span><span class="p">](</span><span class="n">X</span><span class="p">,</span> <span class="n">batch_size_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">batch_size_tree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nodes_modes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;BRANCH_LEQ,BRANCH_LEQ,BRANCH_LEQ,LEAF,...LEAF,LEAF&#39;</span><span class="p">,</span> <span class="n">parallel_N</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">parallel_tree</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">parallel_tree_N</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">use_node3</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nodes_falsenodeids</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">4.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_featureids</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">2.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_hitrates</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="o">..</span><span class="mf">.1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">nodes_missing_value_tracks_true</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_nodeids</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.</span><span class="o">.</span><span class="mf">.8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="n">nodes_treeids</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">nodes_truenodeids</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_values</span><span class="o">=</span><span class="mi">24</span><span class="p">:[</span><span class="mf">0.16002894937992096</span><span class="p">,</span><span class="o">-</span><span class="mf">0.6481318473815918</span><span class="o">..</span><span class="mf">.0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">post_transform</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;NONE&#39;</span><span class="p">,</span> <span class="n">target_ids</span><span class="o">=</span><span class="mi">13</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_nodeids</span><span class="o">=</span><span class="mi">13</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">6.</span><span class="o">.</span><span class="mf">.8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="n">target_treeids</span><span class="o">=</span><span class="mi">13</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_weights</span><span class="o">=</span><span class="mi">13</span><span class="p">:[</span><span class="o">-</span><span class="mf">96.27259826660156</span><span class="p">,</span><span class="o">-</span><span class="mf">65.41316223144531</span><span class="o">..</span><span class="mf">.23.989288330078125</span><span class="p">,</span><span class="mf">51.53922653198242</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">variable</span>
+    <span class="n">TreeEnsembleRegressor</span><span class="p">[</span><span class="n">onnx_extented</span><span class="o">.</span><span class="n">ortops</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">cpu</span><span class="p">](</span><span class="n">X</span><span class="p">,</span> <span class="n">batch_size_rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">batch_size_tree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nodes_modes</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;BRANCH_LEQ,BRANCH_LEQ,BRANCH_LEQ,LEAF,...LEAF,LEAF&#39;</span><span class="p">,</span> <span class="n">parallel_N</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">parallel_tree</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">parallel_tree_N</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">use_node3</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nodes_falsenodeids</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">4.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_featureids</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_hitrates</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="o">..</span><span class="mf">.1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">nodes_missing_value_tracks_true</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_nodeids</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.</span><span class="o">.</span><span class="mf">.10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span> <span class="n">nodes_treeids</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">nodes_truenodeids</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">nodes_values</span><span class="o">=</span><span class="mi">28</span><span class="p">:[</span><span class="mf">0.15102006494998932</span><span class="p">,</span><span class="o">-</span><span class="mf">0.5046523809432983</span><span class="o">..</span><span class="mf">.0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">post_transform</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;NONE&#39;</span><span class="p">,</span> <span class="n">target_ids</span><span class="o">=</span><span class="mi">15</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_nodeids</span><span class="o">=</span><span class="mi">15</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mf">6.</span><span class="o">.</span><span class="mf">.10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span> <span class="n">target_treeids</span><span class="o">=</span><span class="mi">15</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.</span><span class="o">.</span><span class="mf">.1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_weights</span><span class="o">=</span><span class="mi">15</span><span class="p">:[</span><span class="o">-</span><span class="mf">51.169532775878906</span><span class="p">,</span><span class="o">-</span><span class="mf">29.89283561706543</span><span class="o">..</span><span class="mf">.53.451934814453125</span><span class="p">,</span><span class="mf">113.51219177246094</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">variable</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;variable&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">104.915</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">161.686</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">78.919</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">78.919</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">78.919</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">78.919</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">58.601</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">86.15</span> <span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">46.099</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">83.092</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">46.099</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">58.601</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">161.686</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">78.919</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">21.104</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">192.545</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">46.099</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">58.601</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">86.15</span> <span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">161.686</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">192.545</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">161.686</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">161.686</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">78.919</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">73.649</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">192.545</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">58.601</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">73.649</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span><span class="o">-</span><span class="mf">161.686</span><span class="p">],</span>
-           <span class="p">[</span>  <span class="mf">46.099</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">],</span>
-           <span class="p">[</span> <span class="o">-</span><span class="mf">31.914</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)]</span>
+    <span class="p">[</span><span class="n">array</span><span class="p">([[</span> <span class="o">-</span><span class="mf">24.975</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">24.747</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span><span class="o">-</span><span class="mf">102.339</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="o">-</span><span class="mf">8.917</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.975</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">25.444</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">52.555</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">73.832</span><span class="p">],</span>
+           <span class="p">[</span> <span class="mf">106.904</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">52.555</span><span class="p">],</span>
+           <span class="p">[</span> <span class="mf">149.875</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">52.555</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">10.267</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">63.939</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">63.316</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">48.471</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">41.837</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">63.939</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">89.814</span><span class="p">],</span>
+           <span class="p">[</span><span class="o">-</span><span class="mf">101.716</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.975</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">73.832</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">41.837</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">24.384</span><span class="p">],</span>
+           <span class="p">[</span> <span class="mf">149.875</span><span class="p">],</span>
+           <span class="p">[</span> <span class="mf">135.395</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="o">-</span><span class="mf">8.917</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">25.444</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">63.939</span><span class="p">],</span>
+           <span class="p">[</span> <span class="o">-</span><span class="mf">35.431</span><span class="p">],</span>
+           <span class="p">[</span>  <span class="mf">24.747</span><span class="p">],</span>
+           <span class="p">[</span> <span class="mf">135.395</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)]</span>
 </pre></div>
 </div>
+</section>
+<section id="optimizes-the-parallelisation-settings">
+<h3>Optimizes the parallelisation settings<a class="headerlink" href="#optimizes-the-parallelisation-settings" title="Permalink to this heading">#</a></h3>
+<p>See example <a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html#l-plot-optim-tree-ensemble"><span class="std std-ref">TreeEnsemble optimization</span></a>.
+It produces the following graph. The baseline means <cite>onnxruntime==1.16.0</cite>.
+The command line is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">plot_optim_tree_ensemble</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">n_features</span><span class="o">=</span><span class="mi">50</span> <span class="o">--</span><span class="n">n_trees</span><span class="o">=</span><span class="mi">100</span> <span class="o">--</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">10</span> <span class="o">--</span><span class="n">scenario</span><span class="o">=</span><span class="n">CUSTOM</span>
+    <span class="o">--</span><span class="n">parallel_tree</span><span class="o">=</span><span class="mi">160</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">40</span> <span class="o">--</span><span class="n">parallel_tree_N</span><span class="o">=</span><span class="mi">192</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">64</span> <span class="o">--</span><span class="n">parallel_N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">25</span>
+    <span class="o">--</span><span class="n">batch_size_tree</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">batch_size_rows</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">use_node3</span><span class="o">=</span><span class="mi">0</span>
+</pre></div>
+</div>
+<img alt="../_images/plot_optim_tree_ensemble.png" src="../_images/plot_optim_tree_ensemble.png" />
+</section>
 </section>
 </section>
 
@@ -484,7 +594,12 @@ for <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Trees</a><ul>
-<li><a class="reference internal" href="#parallelization-parameters">Parallelization parameters</a></li>
+<li><a class="reference internal" href="#parallelization-implementation">Parallelization implementation</a><ul>
+<li><a class="reference internal" href="#six-parameters">Six parameters</a></li>
+<li><a class="reference internal" href="#change-the-parallelization-settings">Change the parallelization settings</a></li>
+<li><a class="reference internal" href="#optimizes-the-parallelisation-settings">Optimizes the parallelisation settings</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

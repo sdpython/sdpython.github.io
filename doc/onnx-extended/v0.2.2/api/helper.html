@@ -177,6 +177,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/cython_binding.html">Cython Binding of onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/custom_ops.html">Custom Kernels for onnxruntime</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/external_data.html">External Data and Big Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/onnx_manipulations.html">Onnx Manipulations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/quantize.html">Quantization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/profiling.html">Profiling onnxruntime</a></li>
@@ -218,6 +219,7 @@
 <li class="toctree-l2"><a class="reference internal" href="validation_cpu.html">validation.cpu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="validation_cuda.html">validation.cuda</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tools_simple.html">Shortcuts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tools_graph.html">tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tools_transformer.html">tools.graph.onnx_graph_transformer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tools_manipulations.html">tools.onnx_manipulations</a></li>
@@ -317,6 +319,33 @@ It has one attribute <em>to</em> which specified the quantized type.</p>
 </dd></dl>
 
 </section>
+<section id="make-simple-dynamic-quantize-linear-function-proto">
+<h2>make_simple_dynamic_quantize_linear_function_proto<a class="headerlink" href="#make-simple-dynamic-quantize-linear-function-proto" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_extended.helper.make_simple_dynamic_quantize_linear_function_proto">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.helper.</span></span><span class="sig-name descname"><span class="pre">make_simple_dynamic_quantize_linear_function_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">17</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.FunctionProto" title="(in ONNX v1.15.0)"><span class="pre">FunctionProto</span></a></span></span><a class="reference internal" href="../_modules/onnx_extended/helper/make_dynamic_quantize_linear.html#make_simple_dynamic_quantize_linear_function_proto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_extended.helper.make_simple_dynamic_quantize_linear_function_proto" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates the FunctionProto for function <cite>SimpleDynamicQuantizeLinear</cite>
+doing a quantization to float 8. A suffix is added to the function name
+to tell which type is used for the quantization. It does not
+support nan values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> – local domain name</p></li>
+<li><p><strong>opset</strong> – opset to use to define the function</p></li>
+<li><p><strong>to</strong> – type to quantize into, it is hardcoded</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FunctionProto</p>
+</dd>
+</dl>
+<p>The function takes 1 input and returns 3 outputs like
+operator <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__DynamicQuantizeLinear.html">DynamicQuantizeLinear</a>.
+It has one attribute <em>to</em> which specified the quantized type.</p>
+</dd></dl>
+
+</section>
 </section>
 
         </article>
@@ -377,6 +406,10 @@ It has one attribute <em>to</em> which specified the quantized type.</p>
 <li><a class="reference internal" href="#">helper</a><ul>
 <li><a class="reference internal" href="#make-dynamic-quantize-linear-function-proto">make_dynamic_quantize_linear_function_proto</a><ul>
 <li><a class="reference internal" href="#onnx_extended.helper.make_dynamic_quantize_linear_function_proto"><code class="docutils literal notranslate"><span class="pre">make_dynamic_quantize_linear_function_proto()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#make-simple-dynamic-quantize-linear-function-proto">make_simple_dynamic_quantize_linear_function_proto</a><ul>
+<li><a class="reference internal" href="#onnx_extended.helper.make_simple_dynamic_quantize_linear_function_proto"><code class="docutils literal notranslate"><span class="pre">make_simple_dynamic_quantize_linear_function_proto()</span></code></a></li>
 </ul>
 </li>
 </ul>

@@ -177,6 +177,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/cython_binding.html">Cython Binding of onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/custom_ops.html">Custom Kernels for onnxruntime</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/external_data.html">External Data and Big Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/onnx_manipulations.html">Onnx Manipulations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/quantize.html">Quantization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/profiling.html">Profiling onnxruntime</a></li>
@@ -218,6 +219,7 @@
 <li class="toctree-l2"><a class="reference internal" href="validation_cpu.html">validation.cpu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="validation_cuda.html">validation.cuda</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tools_simple.html">Shortcuts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tools_graph.html">tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tools_transformer.html">tools.graph.onnx_graph_transformer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tools_manipulations.html">tools.onnx_manipulations</a></li>
@@ -291,8 +293,27 @@
         <article role="main">
           <section id="ortcy">
 <h1>ortcy<a class="headerlink" href="#ortcy" title="Permalink to this heading">#</a></h1>
+<p>It supports any onnxruntime C API greater than version:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnx_extended.ortcy.wrap.ortinf</span> <span class="kn">import</span> <span class="n">get_ort_c_api_supported_version</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">get_ort_c_api_supported_version</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">16</span>
+</pre></div>
+</div>
+<section id="get-ort-c-api-supported-version">
+<h2>get_ort_c_api_supported_version<a class="headerlink" href="#get-ort-c-api-supported-version" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_extended.ortcy.wrap.ortinf.get_ort_c_api_supported_version">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.ortcy.wrap.ortinf.</span></span><span class="sig-name descname"><span class="pre">get_ort_c_api_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#onnx_extended.ortcy.wrap.ortinf.get_ort_c_api_supported_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the supported version of onnxruntime C API.</p>
+</dd></dl>
+
 <section id="ort-get-available-providers">
-<h2>ort_get_available_providers<a class="headerlink" href="#ort-get-available-providers" title="Permalink to this heading">#</a></h2>
+<h3>ort_get_available_providers<a class="headerlink" href="#ort-get-available-providers" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="onnx_extended.ortcy.wrap.ortinf.ort_get_available_providers">
 <span class="sig-prename descclassname"><span class="pre">onnx_extended.ortcy.wrap.ortinf.</span></span><span class="sig-name descname"><span class="pre">ort_get_available_providers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#onnx_extended.ortcy.wrap.ortinf.ort_get_available_providers" title="Permalink to this definition">#</a></dt>
@@ -301,7 +322,7 @@
 
 </section>
 <section id="ortsession">
-<h2>OrtSession<a class="headerlink" href="#ortsession" title="Permalink to this heading">#</a></h2>
+<h3>OrtSession<a class="headerlink" href="#ortsession" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="onnx_extended.ortcy.wrap.ortinf.OrtSession">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onnx_extended.ortcy.wrap.ortinf.</span></span><span class="sig-name descname"><span class="pre">OrtSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_optimization_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_cuda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda_device_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_denormal_as_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimized_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inter_op_num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intra_op_num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_libs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onnx_extended.ortcy.wrap.ortinf.OrtSession" title="Permalink to this definition">#</a></dt>
@@ -363,6 +384,7 @@ The number of inputs and outputs must not exceed 10.</p>
 
 </section>
 </section>
+</section>
 
         </article>
       </div>
@@ -420,6 +442,8 @@ The number of inputs and outputs must not exceed 10.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">ortcy</a><ul>
+<li><a class="reference internal" href="#get-ort-c-api-supported-version">get_ort_c_api_supported_version</a><ul>
+<li><a class="reference internal" href="#onnx_extended.ortcy.wrap.ortinf.get_ort_c_api_supported_version"><code class="docutils literal notranslate"><span class="pre">get_ort_c_api_supported_version()</span></code></a></li>
 <li><a class="reference internal" href="#ort-get-available-providers">ort_get_available_providers</a><ul>
 <li><a class="reference internal" href="#onnx_extended.ortcy.wrap.ortinf.ort_get_available_providers"><code class="docutils literal notranslate"><span class="pre">ort_get_available_providers()</span></code></a></li>
 </ul>
@@ -431,6 +455,8 @@ The number of inputs and outputs must not exceed 10.</p>
 <li><a class="reference internal" href="#onnx_extended.ortcy.wrap.ortinf.OrtSession.run"><code class="docutils literal notranslate"><span class="pre">OrtSession.run()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_extended.ortcy.wrap.ortinf.OrtSession.run_1_1"><code class="docutils literal notranslate"><span class="pre">OrtSession.run_1_1()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_extended.ortcy.wrap.ortinf.OrtSession.run_2"><code class="docutils literal notranslate"><span class="pre">OrtSession.run_2()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
