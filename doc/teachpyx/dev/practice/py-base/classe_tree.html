@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Pivot de gauss avec numpy" href="pivot_gauss.html" /><link rel="prev" title="Classe Permutation et décomposition en transitions" href="classe_permutation.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Itérateur" href="classe_iterateur.html" /><link rel="prev" title="Classe Permutation et décomposition en transitions" href="classe_permutation.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
         <title>Une classe pour représenter un arbre - Documentation teachpyx 0.3.1</title>
@@ -215,6 +215,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_array.html">Calcul Matriciel, Optimisation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_numpy.html">Calcul matriciel avec numpy (version courte)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/numpy_broadcast.html">Numpy et tableau de contingence</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -252,6 +253,7 @@
 <li class="toctree-l2"><a class="reference internal" href="classe_de.html">Jeu de dé, rotation sur un circuit (classes)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="classe_permutation.html">Classe Permutation et décomposition en transitions</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Une classe pour représenter un arbre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classe_iterateur.html">Itérateur</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pivot_gauss.html">Pivot de gauss avec numpy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coloriage_carre.html">Jeux de coloriage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="code_multinomial.html">Simuler une loi multinomiale</a></li>
@@ -544,6 +546,100 @@ A
 </section>
 <section id="Profondeur-moyenne-?">
 <h2>Profondeur moyenne ?<a class="headerlink" href="#Profondeur-moyenne-?" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>L’astuce est souvent la même : il faut calculer la moyenne au dernier moment et jusqu’à ce moment-là, on conserve la somme et le compte. On divise les deux à la fin. Il reste une ambiguïté, est-ce qu’un noeud ayant une feuille à gauche ou droite mais une seul feuille est-il considéré comme une feuille également ? Une demi-feuille ? C’est une convention à choisir en fonction de l’usage qui est fait de cette moyenne. Certaines expressions n’existent pas en mathématique comme <img class="math" src="../../_images/math/90bec551c5a613d1b063b6b5ecd74d7587354c7d.svg" alt="0^0"/>, est-ce
+que cela vaut 0, 1, ou <img class="math" src="../../_images/math/70a1e79525aa38979548db07fcbf9898706eb45a.svg" alt="\infty"/> ? Ce choix vous est laissé. Dans le cas, présent, l’implémentation de la fonction fait qu’un noeud n’ayant qu’un fils est une demi-feuille.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">textwrap</span>
+
+
+<span class="k">def</span> <span class="nf">graph</span><span class="p">():</span>
+    <span class="n">na</span> <span class="o">=</span> <span class="n">Noeud</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+    <span class="n">na</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Noeud</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="n">na</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">Noeud</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="n">na</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Noeud</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+    <span class="n">na</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Noeud</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">na</span>
+
+
+<span class="k">class</span> <span class="nc">Noeud</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;+-&quot;</span> <span class="o">+</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">),</span> <span class="s2">&quot;  &quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;+-&quot;</span> <span class="o">+</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">),</span> <span class="s2">&quot;  &quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">profondeur_maximale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pleft</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">profondeur_maximale</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">pright</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">profondeur_maximale</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">pleft</span><span class="p">,</span> <span class="n">pright</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">profondeur_somme_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">somme</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mf">0.5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sleft</span><span class="p">,</span> <span class="n">cleft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">profondeur_somme_count</span><span class="p">()</span>
+            <span class="n">somme</span> <span class="o">+=</span> <span class="n">sleft</span> <span class="o">+</span> <span class="n">cleft</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="n">cleft</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mf">0.5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sright</span><span class="p">,</span> <span class="n">cright</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">profondeur_somme_count</span><span class="p">()</span>
+            <span class="n">somme</span> <span class="o">+=</span> <span class="n">sright</span> <span class="o">+</span> <span class="n">cright</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="n">cright</span>
+        <span class="k">return</span> <span class="n">somme</span><span class="p">,</span> <span class="n">count</span>
+
+
+<span class="n">na</span> <span class="o">=</span> <span class="n">graph</span><span class="p">()</span>
+<span class="n">somme</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="n">na</span><span class="o">.</span><span class="n">profondeur_somme_count</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">somme</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">somme</span> <span class="o">/</span> <span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+5.0 3.0 1.6666666666666667
+</pre></div></div>
+</div>
+</section>
+<section id="Intermède-:-is-ou-==-?">
+<h2>Intermède : is ou == ?<a class="headerlink" href="#Intermède-:-is-ou-==-?" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">bizarre</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">bizarre</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span> <span class="ow">is</span> <span class="n">b</span><span class="p">,</span> <span class="n">b</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True False
+</pre></div></div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -562,12 +658,12 @@ A
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="pivot_gauss.html">
+          <a class="next-page" href="classe_iterateur.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Pivot de gauss avec numpy</div>
+                <div class="title">Itérateur</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -617,6 +713,7 @@ A
 <li><a class="reference internal" href="#Afficher-l'arbre">Afficher l’arbre</a></li>
 <li><a class="reference internal" href="#Profondeur-maximale-:-le-plus-grand-chemin-depuis-la-racine-jusqu'aux-feuilles">Profondeur maximale : le plus grand chemin depuis la racine jusqu’aux feuilles</a></li>
 <li><a class="reference internal" href="#Profondeur-moyenne-?">Profondeur moyenne ?</a></li>
+<li><a class="reference internal" href="#Intermède-:-is-ou-==-?">Intermède : is ou == ?</a></li>
 </ul>
 </li>
 </ul>
