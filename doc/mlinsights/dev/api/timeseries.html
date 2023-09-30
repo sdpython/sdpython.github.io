@@ -1,0 +1,1071 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Examples Gallery" href="../auto_examples/index.html" /><link rel="prev" title="Blas &amp; Lapack" href="blaslapack.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>Timeseries - mlinsights 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">mlinsights 0.5.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">mlinsights 0.5.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html">Speed up batch training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html">Machine Learning Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree.html">Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_rank.html">search_rank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blaslapack.html">Blas &amp; Lapack</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Timeseries</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_quantile_mlpregression.html">Quantile MLPRegressor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_traceable_ngrams_tfidf.html">Traceable n-grams with tf-idf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_kmeans_l1.html">KMeans with norm L1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_quantile_regression.html">Quantile Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_digitize.html">numpy.digitize as a tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_linear_regression.html">Piecewise linear regression with scikit-learn predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_predictable_tsne.html">Predictable t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_constraint_kmeans.html">Constraint KMeans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_linear_regression_criterion.html">Custom DecisionTreeRegressor adapted to a linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_linear_regression_criterion.html#decisiontreeregressor-with-custom-implementation">DecisionTreeRegressor with custom implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_visualize_pipeline.html">Visualize a scikit-learn pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_leave_neighbors.html">Close leaves in a decision trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_logistic_regression_clustering.html">LogisticRegression and Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_classification.html">Piecewise classification with scikit-learn predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_search_images_torch.html">Search images with deep learning (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_regression_confidence_interval.html">Regression with confidence interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_sklearn_transformed_target.html">Transformed Target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_decision_tree_logreg.html">Decision Tree and Logistic Regression</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../i_ex.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../i_faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="timeseries">
+<h1>Timeseries<a class="headerlink" href="#timeseries" title="Permalink to this heading">#</a></h1>
+<section id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mlinsights.timeseries.datasets.artificial_data">
+<span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.datasets.</span></span><span class="sig-name descname"><span class="pre">artificial_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minutes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/datasets.html#artificial_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.datasets.artificial_data" title="Permalink to this definition">#</a></dt>
+<dd><p>Generates articial data every minutes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt1</strong> – first date</p></li>
+<li><p><strong>dt2</strong> – second date</p></li>
+<li><p><strong>minutes</strong> – interval between two observations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dataframe</p>
+</dd>
+</dl>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">mlinsights.timeseries.datasets</span> <span class="kn">import</span> <span class="n">artificial_data</span>
+
+<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">artificial_data</span><span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span> <span class="n">now</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                            <span class="n">time</span>         <span class="n">y</span>
+    <span class="mi">0</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">21</span> <span class="mi">18</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mf">48.443346</span>  <span class="mf">1.797024</span>
+    <span class="mi">1</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">21</span> <span class="mi">18</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mf">48.443346</span>  <span class="mf">2.018940</span>
+    <span class="mi">2</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">21</span> <span class="mi">18</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mf">48.443346</span>  <span class="mf">2.096460</span>
+    <span class="mi">3</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">21</span> <span class="mi">18</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mf">48.443346</span>  <span class="mf">2.022025</span>
+    <span class="mi">4</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">21</span> <span class="mi">18</span><span class="p">:</span><span class="mi">36</span><span class="p">:</span><span class="mf">48.443346</span>  <span class="mf">1.872459</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="experimentation">
+<h2>Experimentation<a class="headerlink" href="#experimentation" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mlinsights.timeseries.patterns.find_ts_group_pattern">
+<span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.patterns.</span></span><span class="sig-name descname"><span class="pre">find_ts_group_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ttime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_subset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'week'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'half-hour'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/patterns.html#find_ts_group_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.patterns.find_ts_group_pattern" title="Permalink to this definition">#</a></dt>
+<dd><p>Clusters times series to find similar patterns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttime</strong> – time column</p></li>
+<li><p><strong>values</strong> – features to use to cluster</p></li>
+<li><p><strong>names</strong> – column which holds group name</p></li>
+<li><p><strong>name_subset</strong> – subset of groups to study, None for all</p></li>
+<li><p><strong>per</strong> – aggragation per week</p></li>
+<li><p><strong>unit</strong> – unit</p></li>
+<li><p><strong>agg</strong> – aggregation function</p></li>
+<li><p><strong>estimator</strong> – estimator used to find pattern,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.cluster.KMeans</span></code></a> and 10 groups</p></li>
+<li><p><strong>verbose</strong> – verbosity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>found clusters, distances</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="manipulation">
+<h2>Manipulation<a class="headerlink" href="#manipulation" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mlinsights.timeseries.agg.aggregate_timeseries">
+<span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.agg.</span></span><span class="sig-name descname"><span class="pre">aggregate_timeseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'time'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'half-hour'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/agg.html#aggregate_timeseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.agg.aggregate_timeseries" title="Permalink to this definition">#</a></dt>
+<dd><p>Aggregates timeseries assuming the data is in a dataframe.</p>
+<p>&#64;param      df      dataframe
+&#64;param      index   time column
+&#64;param      values  value or values column
+&#64;param      unit    aggregate over a specific period
+&#64;param      sum     kind of aggregation
+&#64;param      per     second aggregation, per week…
+&#64;return             aggregated values</p>
+</dd></dl>
+
+</section>
+<section id="plotting">
+<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mlinsights.timeseries.plotting.plot_week_timeseries">
+<span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.plotting.</span></span><span class="sig-name descname"><span class="pre">plot_week_timeseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">daynames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xfmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%1.0f'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/plotting.html#plot_week_timeseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.plotting.plot_week_timeseries" title="Permalink to this definition">#</a></dt>
+<dd><p>Shows a timeseries dispatched by days as bars.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> – dates</p></li>
+<li><p><strong>value</strong> – values to display as bars.</p></li>
+<li><p><strong>normalise</strong> – normalise data before showing it</p></li>
+<li><p><strong>label</strong> – label of the series</p></li>
+<li><p><strong>h</strong> – scale factor</p></li>
+<li><p><strong>value2</strong> – second series to show as a line</p></li>
+<li><p><strong>label2</strong> – label of the second series</p></li>
+<li><p><strong>daynames</strong> – names to use for week day names (default is English)</p></li>
+<li><p><strong>xfmt</strong> – format number of the X axis</p></li>
+<li><p><strong>ax</strong> – existing axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>axis</p>
+</dd>
+</dl>
+<p>(<a class="reference download internal" download="" href="../_downloads/ee8f46b36cb5ec160184d0b4399c2e7f/timeseries-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="../_downloads/de525ba6e9ca3c7d99175566414d917a/timeseries-1.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/5579eccdba8f7719541ae3205078dd50/timeseries-1.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="../_downloads/c3ab2a9a10d549ec031552ce7e6ceb01/timeseries-1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="../_images/timeseries-1.png" class="plot-directive" src="../_images/timeseries-1.png" />
+</figure>
+</dd></dl>
+
+</section>
+<section id="prediction">
+<h2>Prediction<a class="headerlink" href="#prediction" title="Permalink to this heading">#</a></h2>
+<section id="basereciprocaltimeseriestransformer">
+<h3>BaseReciprocalTimeSeriesTransformer<a class="headerlink" href="#basereciprocaltimeseriestransformer" title="Permalink to this heading">#</a></h3>
+<p>The following function builds a regular dataset from
+a timeseries so that it can be used by machine learning models.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.base.</span></span><span class="sig-name descname"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/base.html#BaseReciprocalTimeSeriesTransformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer" title="Permalink to this definition">#</a></dt>
+<dd><p>Base for all timeseries preprocessing
+automatically applied within a predictor.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/base.html#BaseReciprocalTimeSeriesTransformer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Stores the first values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.get_fct_inv">
+<span class="sig-name descname"><span class="pre">get_fct_inv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/base.html#BaseReciprocalTimeSeriesTransformer.get_fct_inv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.get_fct_inv" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the reverse tranform.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer" title="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></a></span></span><a class="headerlink" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_fit_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>sample_weight<span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_transform_request">
+<span class="sig-name descname"><span class="pre">set_transform_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer" title="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></a></span></span><a class="headerlink" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_transform_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">transform</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>context<span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">context</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p>
+</dd>
+<dt>sample_weight<span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/base.html#BaseReciprocalTimeSeriesTransformer.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.transform" title="Permalink to this definition">#</a></dt>
+<dd><p>Transforms both <em>X</em> and <em>y</em>.
+Returns <em>X</em> and <em>y</em>, returns
+<em>sample_weight</em> as well if not None.
+The context is used when the <em>y</em> series stored
+in the predictor is not related to the <em>y</em> series
+given to the <em>transform</em> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="build-ts-x-y">
+<h3>build_ts_X_y<a class="headerlink" href="#build-ts-x-y" title="Permalink to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="mlinsights.timeseries.utils.build_ts_X_y">
+<span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.utils.</span></span><span class="sig-name descname"><span class="pre">build_ts_X_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">same_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/utils.html#build_ts_X_y"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.utils.build_ts_X_y" title="Permalink to this definition">#</a></dt>
+<dd><p>Builds standard <em>X, y</em> based in the given one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – a timeseries model (<a class="reference internal" href="#mlinsights.timeseries.base.BaseTimeSeries" title="mlinsights.timeseries.base.BaseTimeSeries"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTimeSeries</span></code></a>)</p></li>
+<li><p><strong>X</strong> – times series, used as features, [n_obs, n_features],
+X may be empty (None)</p></li>
+<li><p><strong>y</strong> – timeseries (one single vector),  [n_obs]</p></li>
+<li><p><strong>weights</strong> – weights None or array [n_obs]</p></li>
+<li><p><strong>same_rows</strong> – keeps the same number of rows
+as the original datasets, use nan when no value is available</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>(X, y, weights)</em>:  X is array of features [nrows, n_features + past]
+where <cite>nrows = n_obs + model.delay2 - model.past + 2</cite>,
+y is an array of targets [nrows],
+weights is None or array [nrows]</p>
+</dd>
+</dl>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlinsights.timeseries</span> <span class="kn">import</span> <span class="n">build_ts_X_y</span>
+<span class="kn">from</span> <span class="nn">mlinsights.timeseries.base</span> <span class="kn">import</span> <span class="n">BaseTimeSeries</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="n">bs</span> <span class="o">=</span> <span class="n">BaseTimeSeries</span><span class="p">(</span><span class="n">past</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nw</span> <span class="o">=</span> <span class="n">build_ts_X_y</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X=&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y=&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nx=&quot;</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ny=&quot;</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">X</span><span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">4</span> <span class="mi">5</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">6</span> <span class="mi">7</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">8</span> <span class="mi">9</span><span class="p">]]</span>
+    <span class="n">y</span><span class="o">=</span> <span class="p">[</span>  <span class="mi">0</span> <span class="mi">100</span> <span class="mi">200</span> <span class="mi">300</span> <span class="mi">400</span><span class="p">]</span>
+    <span class="n">nx</span><span class="o">=</span> <span class="p">[[</span>  <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">0</span> <span class="mi">100</span><span class="p">]</span>
+     <span class="p">[</span>  <span class="mi">4</span>   <span class="mi">5</span> <span class="mi">100</span> <span class="mi">200</span><span class="p">]</span>
+     <span class="p">[</span>  <span class="mi">6</span>   <span class="mi">7</span> <span class="mi">200</span> <span class="mi">300</span><span class="p">]]</span>
+    <span class="n">ny</span><span class="o">=</span> <span class="p">[[</span><span class="mi">200</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">300</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">400</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">use_all_past=True</span></code>:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">mlinsights.timeseries.base</span> <span class="kn">import</span> <span class="n">BaseTimeSeries</span>
+<span class="kn">from</span> <span class="nn">mlinsights.timeseries</span> <span class="kn">import</span> <span class="n">build_ts_X_y</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="n">bs</span> <span class="o">=</span> <span class="n">BaseTimeSeries</span><span class="p">(</span><span class="n">past</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">use_all_past</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nw</span> <span class="o">=</span> <span class="n">build_ts_X_y</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X=&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y=&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nx=&quot;</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ny=&quot;</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">X</span><span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">4</span> <span class="mi">5</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">6</span> <span class="mi">7</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">8</span> <span class="mi">9</span><span class="p">]]</span>
+    <span class="n">y</span><span class="o">=</span> <span class="p">[</span>  <span class="mi">0</span> <span class="mi">100</span> <span class="mi">200</span> <span class="mi">300</span> <span class="mi">400</span><span class="p">]</span>
+    <span class="n">nx</span><span class="o">=</span> <span class="p">[[</span>  <span class="mi">0</span>   <span class="mi">1</span>   <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">0</span> <span class="mi">100</span><span class="p">]</span>
+     <span class="p">[</span>  <span class="mi">2</span>   <span class="mi">3</span>   <span class="mi">4</span>   <span class="mi">5</span> <span class="mi">100</span> <span class="mi">200</span><span class="p">]</span>
+     <span class="p">[</span>  <span class="mi">4</span>   <span class="mi">5</span>   <span class="mi">6</span>   <span class="mi">7</span> <span class="mi">200</span> <span class="mi">300</span><span class="p">]]</span>
+    <span class="n">ny</span><span class="o">=</span> <span class="p">[[</span><span class="mi">200</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">300</span><span class="p">]</span>
+     <span class="p">[</span><span class="mi">400</span><span class="p">]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="basetimeseries">
+<h3>BaseTimeSeries<a class="headerlink" href="#basetimeseries" title="Permalink to this heading">#</a></h3>
+<p>The first class defined the template for all timeseries
+estimators. It deals with a timeseries ine one dimension
+and additional features.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseTimeSeries">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.base.</span></span><span class="sig-name descname"><span class="pre">BaseTimeSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">past</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_all_past</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/base.html#BaseTimeSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.base.BaseTimeSeries" title="Permalink to this definition">#</a></dt>
+<dd><p>Base class to build a predictor on timeseries.
+The class computes one or several predictions at each time,
+between <em>delay1</em> and <em>delay2</em>. It computes:
+<img class="math" src="../_images/math/ea4b8548236f79049dd24821a67e9e1ca7970ce7.svg" alt="\hat{Y_{t+d} = f(Y_{t-1}, ..., Y_{t-p})}"/>
+with <em>d</em> in <em>[delay1, delay2[</em> and
+<img class="math" src="../_images/math/fab4305cc8f9000f7fbf7e274b11d30a74f87422.svg" alt="1 \leqslant p \leqslant past"/>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>past</strong> – values to use to predict</p></li>
+<li><p><strong>delay1</strong> – the model computes the first prediction for
+<em>time=t + delay1</em></p></li>
+<li><p><strong>delay2</strong> – the model computes the last prediction for
+<em>time=t + delay2</em> excluded</p></li>
+<li><p><strong>use_all_past</strong> – use all past features, not only the timeseries</p></li>
+<li><p><strong>preprocessing</strong> – preprocessing to apply before predicting,
+only the timeseries itselves, it can be
+a difference, it must be of type
+<a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer" title="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.base.BaseTimeSeries.has_preprocessing">
+<span class="sig-name descname"><span class="pre">has_preprocessing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/base.html#BaseTimeSeries.has_preprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.base.BaseTimeSeries.has_preprocessing" title="Permalink to this definition">#</a></dt>
+<dd><p>Tells if there is one preprocessing.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="dummytimeseriesregressor">
+<h3>DummyTimeSeriesRegressor<a class="headerlink" href="#dummytimeseriesregressor" title="Permalink to this heading">#</a></h3>
+<p>The first predictor is a dummy one: it uses the current value to
+predict the future.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mlinsights.timeseries.dummies.DummyTimeSeriesRegressor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.dummies.</span></span><span class="sig-name descname"><span class="pre">DummyTimeSeriesRegressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dummy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_all_past</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/dummies.html#DummyTimeSeriesRegressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor" title="Permalink to this definition">#</a></dt>
+<dd><p>Dummy regressor for time series. Use past values as prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>estimator</strong> – estimator to use for regression,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.LinearRegression</span></code></a>
+implements a linear auto-regressor,
+<code class="docutils literal notranslate"><span class="pre">'dummy'</span></code> use past value as predictions</p></li>
+<li><p><strong>past</strong> – values to use to predict</p></li>
+<li><p><strong>delay1</strong> – the model computes the first prediction for
+<em>time=t + delay1</em></p></li>
+<li><p><strong>delay2</strong> – the model computes the last prediction for
+<em>time=t + delay2</em> excluded</p></li>
+<li><p><strong>use_all_past</strong> – use all past features, not only the timeseries</p></li>
+<li><p><strong>preprocessing</strong> – preprocessing to apply before predicting,
+only the timeseries itselves, it can be
+a difference, it must be of type
+<a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer" title="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/dummies.html#DummyTimeSeriesRegressor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Trains the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – output of
+X may be empty (None)</p></li>
+<li><p><strong>y</strong> – timeseries (one single vector), array [n_obs]</p></li>
+<li><p><strong>sample_weight</strong> – weights None or array [n_obs]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/dummies.html#DummyTimeSeriesRegressor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.predict" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the prediction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor" title="mlinsights.timeseries.dummies.DummyTimeSeriesRegressor"><span class="pre">DummyTimeSeriesRegressor</span></a></span></span><a class="headerlink" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_fit_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>sample_weight<span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_score_request">
+<span class="sig-name descname"><span class="pre">set_score_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor" title="mlinsights.timeseries.dummies.DummyTimeSeriesRegressor"><span class="pre">DummyTimeSeriesRegressor</span></a></span></span><a class="headerlink" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_score_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">score</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>sample_weight<span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="artimeseriesregressor">
+<h3>ARTimeSeriesRegressor<a class="headerlink" href="#artimeseriesregressor" title="Permalink to this heading">#</a></h3>
+<p>The first regressor is an auto-regressor. It can be estimated
+with any regressor implemented in <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mlinsights.timeseries.ar.ARTimeSeriesRegressor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.ar.</span></span><span class="sig-name descname"><span class="pre">ARTimeSeriesRegressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dummy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_all_past</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/ar.html#ARTimeSeriesRegressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor" title="Permalink to this definition">#</a></dt>
+<dd><p>Base class to build a regressor on timeseries.
+The class computes one or several predictions at each time,
+between <em>delay1</em> and <em>delay2</em>. It computes:
+<img class="math" src="../_images/math/ea4b8548236f79049dd24821a67e9e1ca7970ce7.svg" alt="\hat{Y_{t+d} = f(Y_{t-1}, ..., Y_{t-p})}"/>
+with <em>d</em> in <em>[delay1, delay2[</em> and
+<img class="math" src="../_images/math/fab4305cc8f9000f7fbf7e274b11d30a74f87422.svg" alt="1 \leqslant p \leqslant past"/>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>estimator</strong> – estimator to use for regression,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.LinearRegression</span></code></a>
+implements a linear auto-regressor,
+<code class="docutils literal notranslate"><span class="pre">'dummy'</span></code> use past value as predictions</p></li>
+<li><p><strong>past</strong> – values to use to predict</p></li>
+<li><p><strong>delay1</strong> – the model computes the first prediction for
+<em>time=t + delay1</em></p></li>
+<li><p><strong>delay2</strong> – the model computes the last prediction for
+<em>time=t + delay2</em> excluded</p></li>
+<li><p><strong>use_all_past</strong> – use all past features, not only the timeseries</p></li>
+<li><p><strong>preprocessing</strong> – preprocessing to apply before predicting,
+only the timeseries itselves, it can be
+a difference, it must be of type
+<a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer" title="mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.ar.ARTimeSeriesRegressor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/ar.html#ARTimeSeriesRegressor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Trains the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – output of
+X may be empty (None)</p></li>
+<li><p><strong>y</strong> – timeseries (one single vector), array [n_obs]</p></li>
+<li><p><strong>sample_weight</strong> – weights None or array [n_obs]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.ar.ARTimeSeriesRegressor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/ar.html#ARTimeSeriesRegressor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.predict" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the prediction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor" title="mlinsights.timeseries.ar.ARTimeSeriesRegressor"><span class="pre">ARTimeSeriesRegressor</span></a></span></span><a class="headerlink" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_fit_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>sample_weight<span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h4>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_score_request">
+<span class="sig-name descname"><span class="pre">set_score_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor" title="mlinsights.timeseries.ar.ARTimeSeriesRegressor"><span class="pre">ARTimeSeriesRegressor</span></a></span></span><a class="headerlink" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_score_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.3)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">score</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<section id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>sample_weight<span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h4>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="ts-mape">
+<h3>ts_mape<a class="headerlink" href="#ts-mape" title="Permalink to this heading">#</a></h3>
+<p>The library implements one scoring function which compares
+the prediction to what a dummy predictor would do
+by using the previous day as a prediction.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="mlinsights.timeseries.metrics.ts_mape">
+<span class="sig-prename descclassname"><span class="pre">mlinsights.timeseries.metrics.</span></span><span class="sig-name descname"><span class="pre">ts_mape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expected_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicted_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mlinsights/timeseries/metrics.html#ts_mape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlinsights.timeseries.metrics.ts_mape" title="Permalink to this definition">#</a></dt>
+<dd><p>Computes <img class="math" src="../_images/math/2e4f09a9a3b12c2fd888dc5af40e3b8142c378d1.svg" alt="\frac{\sum_i | \hat{Y_t} - Y_t |}
+{\sum_i | Y_t - Y_{t-1} |}"/>.
+It compares the prediction to what a dummy
+predictor would do by using the previous day
+as a prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expected_y</strong> – expected values</p></li>
+<li><p><strong>predicted_y</strong> – predictions</p></li>
+<li><p><strong>sample_weight</strong> – sample weight</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>metrics</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../auto_examples/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Examples Gallery</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="blaslapack.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Blas &amp; Lapack</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Timeseries</a><ul>
+<li><a class="reference internal" href="#datasets">Datasets</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.datasets.artificial_data"><code class="docutils literal notranslate"><span class="pre">artificial_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#experimentation">Experimentation</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.patterns.find_ts_group_pattern"><code class="docutils literal notranslate"><span class="pre">find_ts_group_pattern()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manipulation">Manipulation</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.agg.aggregate_timeseries"><code class="docutils literal notranslate"><span class="pre">aggregate_timeseries()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plotting">Plotting</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.plotting.plot_week_timeseries"><code class="docutils literal notranslate"><span class="pre">plot_week_timeseries()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#prediction">Prediction</a><ul>
+<li><a class="reference internal" href="#basereciprocaltimeseriestransformer">BaseReciprocalTimeSeriesTransformer</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></code></a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.fit"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.fit()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.get_fct_inv"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.get_fct_inv()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_fit_request"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.set_fit_request()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_transform_request"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.set_transform_request()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.transform"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#build-ts-x-y">build_ts_X_y</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.utils.build_ts_X_y"><code class="docutils literal notranslate"><span class="pre">build_ts_X_y()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#basetimeseries">BaseTimeSeries</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseTimeSeries"><code class="docutils literal notranslate"><span class="pre">BaseTimeSeries</span></code></a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.base.BaseTimeSeries.has_preprocessing"><code class="docutils literal notranslate"><span class="pre">BaseTimeSeries.has_preprocessing()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dummytimeseriesregressor">DummyTimeSeriesRegressor</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor</span></code></a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.fit"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.fit()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.predict"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.predict()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.set_fit_request()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#artimeseriesregressor">ARTimeSeriesRegressor</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor</span></code></a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.fit"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.fit()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.predict"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.predict()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.set_fit_request()</span></code></a></li>
+<li><a class="reference internal" href="#mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ts-mape">ts_mape</a><ul>
+<li><a class="reference internal" href="#mlinsights.timeseries.metrics.ts_mape"><code class="docutils literal notranslate"><span class="pre">ts_mape()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=8d05f57a"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

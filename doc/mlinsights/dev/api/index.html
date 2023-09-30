@@ -1,0 +1,769 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="plotting" href="plotting.html" /><link rel="prev" title="Tutorial" href="../tutorial/index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>API - mlinsights 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">mlinsights 0.5.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">mlinsights 0.5.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html">Speed up batch training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html">Machine Learning Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree.html">Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search_rank.html">search_rank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blaslapack.html">Blas &amp; Lapack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html">Timeseries</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_quantile_mlpregression.html">Quantile MLPRegressor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_traceable_ngrams_tfidf.html">Traceable n-grams with tf-idf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_kmeans_l1.html">KMeans with norm L1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_quantile_regression.html">Quantile Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_digitize.html">numpy.digitize as a tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_linear_regression.html">Piecewise linear regression with scikit-learn predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_predictable_tsne.html">Predictable t-SNE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_constraint_kmeans.html">Constraint KMeans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_linear_regression_criterion.html">Custom DecisionTreeRegressor adapted to a linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_linear_regression_criterion.html#decisiontreeregressor-with-custom-implementation">DecisionTreeRegressor with custom implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_visualize_pipeline.html">Visualize a scikit-learn pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_leave_neighbors.html">Close leaves in a decision trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_logistic_regression_clustering.html">LogisticRegression and Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_piecewise_classification.html">Piecewise classification with scikit-learn predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_search_images_torch.html">Search images with deep learning (torch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_regression_confidence_interval.html">Regression with confidence interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_sklearn_transformed_target.html">Transformed Target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_decision_tree_logreg.html">Decision Tree and Logistic Regression</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../i_ex.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../i_faq.html">FAQ</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">plotting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html#mlinsights.plotting.gallery.plot_gallery_images"><code class="docutils literal notranslate"><span class="pre">plot_gallery_images()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html#mlinsights.plotting.visualize.pipeline2dot"><code class="docutils literal notranslate"><span class="pre">pipeline2dot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html#mlinsights.plotting.visualize.pipeline2str"><code class="docutils literal notranslate"><span class="pre">pipeline2str()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#formatting">Formatting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#mlinsights.helpers.parameters.format_parameters"><code class="docutils literal notranslate"><span class="pre">format_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#mlinsights.helpers.parameters.format_value"><code class="docutils literal notranslate"><span class="pre">format_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#mlinsights.helpers.parameters.format_function_call"><code class="docutils literal notranslate"><span class="pre">format_function_call()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#pipeline">Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#mlinsights.helpers.pipeline.alter_pipeline_for_debugging"><code class="docutils literal notranslate"><span class="pre">alter_pipeline_for_debugging()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#mlinsights.helpers.pipeline.enumerate_pipeline_models"><code class="docutils literal notranslate"><span class="pre">enumerate_pipeline_models()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#mlinsights.metrics.correlations.non_linear_correlations"><code class="docutils literal notranslate"><span class="pre">non_linear_correlations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Speed up batch training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="batch.html#mlcache">MLCache</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache"><code class="docutils literal notranslate"><span class="pre">MLCache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.as_key"><code class="docutils literal notranslate"><span class="pre">MLCache.as_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.cache"><code class="docutils literal notranslate"><span class="pre">MLCache.cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.count"><code class="docutils literal notranslate"><span class="pre">MLCache.count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.create_cache"><code class="docutils literal notranslate"><span class="pre">MLCache.create_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.get"><code class="docutils literal notranslate"><span class="pre">MLCache.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.get_cache"><code class="docutils literal notranslate"><span class="pre">MLCache.get_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.has_cache"><code class="docutils literal notranslate"><span class="pre">MLCache.has_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.items"><code class="docutils literal notranslate"><span class="pre">MLCache.items()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.keys"><code class="docutils literal notranslate"><span class="pre">MLCache.keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.cache_model.MLCache.remove_cache"><code class="docutils literal notranslate"><span class="pre">MLCache.remove_cache()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html#pipelinecache">PipelineCache</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="batch.html#mlinsights.mlbatch.pipeline_cache.PipelineCache"><code class="docutils literal notranslate"><span class="pre">PipelineCache</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#mlinsights.mlbatch.pipeline_cache.PipelineCache.set_score_request"><code class="docutils literal notranslate"><span class="pre">PipelineCache.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mlmodel.html">Machine Learning Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html#helpers">Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#model-featurizer">model_featurizer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.ml_featurizer.model_featurizer"><code class="docutils literal notranslate"><span class="pre">model_featurizer()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html#clustering">Clustering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#constraintkmeans">ConstraintKMeans</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.cluster_edges"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.cluster_edges()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.constraint_kmeans"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.constraint_kmeans()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.fit"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.predict"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.score"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.score()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.set_fit_request"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.set_score_request"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.set_score_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_constraint.ConstraintKMeans.transform"><code class="docutils literal notranslate"><span class="pre">ConstraintKMeans.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#kmeansl1l2">KMeansL1L2</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2"><code class="docutils literal notranslate"><span class="pre">KMeansL1L2</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.fit"><code class="docutils literal notranslate"><span class="pre">KMeansL1L2.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.predict"><code class="docutils literal notranslate"><span class="pre">KMeansL1L2.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.set_fit_request"><code class="docutils literal notranslate"><span class="pre">KMeansL1L2.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.set_predict_request"><code class="docutils literal notranslate"><span class="pre">KMeansL1L2.set_predict_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.set_score_request"><code class="docutils literal notranslate"><span class="pre">KMeansL1L2.set_score_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.transform"><code class="docutils literal notranslate"><span class="pre">KMeansL1L2.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html#trainers">Trainers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#classifierafterkmeans">ClassifierAfterKMeans</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.decision_function"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.decision_function()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.fit"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.get_params"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.get_params()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.predict"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.predict_proba"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.predict_proba()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.set_fit_request"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.set_params"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.set_params()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.set_score_request"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.set_score_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.classification_kmeans.ClassifierAfterKMeans.transform_features"><code class="docutils literal notranslate"><span class="pre">ClassifierAfterKMeans.transform_features()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#customizedmultilayerperceptron">CustomizedMultilayerPerceptron</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_mlpregressor.CustomizedMultilayerPerceptron"><code class="docutils literal notranslate"><span class="pre">CustomizedMultilayerPerceptron</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#intervalregressor">IntervalRegressor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor.fit"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor.n_estimators_"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor.n_estimators_</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor.predict"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor.predict_all"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor.predict_all()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor.predict_sorted"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor.predict_sorted()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.interval_regressor.IntervalRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">IntervalRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#approximatenmfpredictor">ApproximateNMFPredictor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.anmf_predictor.ApproximateNMFPredictor"><code class="docutils literal notranslate"><span class="pre">ApproximateNMFPredictor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.anmf_predictor.ApproximateNMFPredictor.fit"><code class="docutils literal notranslate"><span class="pre">ApproximateNMFPredictor.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.anmf_predictor.ApproximateNMFPredictor.get_params"><code class="docutils literal notranslate"><span class="pre">ApproximateNMFPredictor.get_params()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.anmf_predictor.ApproximateNMFPredictor.predict"><code class="docutils literal notranslate"><span class="pre">ApproximateNMFPredictor.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.anmf_predictor.ApproximateNMFPredictor.set_score_request"><code class="docutils literal notranslate"><span class="pre">ApproximateNMFPredictor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#piecewiseclassifier">PiecewiseClassifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseClassifier"><code class="docutils literal notranslate"><span class="pre">PiecewiseClassifier</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseClassifier.decision_function"><code class="docutils literal notranslate"><span class="pre">PiecewiseClassifier.decision_function()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseClassifier.predict"><code class="docutils literal notranslate"><span class="pre">PiecewiseClassifier.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseClassifier.predict_proba"><code class="docutils literal notranslate"><span class="pre">PiecewiseClassifier.predict_proba()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseClassifier.set_fit_request"><code class="docutils literal notranslate"><span class="pre">PiecewiseClassifier.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseClassifier.set_score_request"><code class="docutils literal notranslate"><span class="pre">PiecewiseClassifier.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#piecewiseregressor">PiecewiseRegressor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseRegressor"><code class="docutils literal notranslate"><span class="pre">PiecewiseRegressor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseRegressor.predict"><code class="docutils literal notranslate"><span class="pre">PiecewiseRegressor.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">PiecewiseRegressor.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_estimator.PiecewiseRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">PiecewiseRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#piecewisetreeregressor">PiecewiseTreeRegressor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor"><code class="docutils literal notranslate"><span class="pre">PiecewiseTreeRegressor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor.fit"><code class="docutils literal notranslate"><span class="pre">PiecewiseTreeRegressor.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor.predict"><code class="docutils literal notranslate"><span class="pre">PiecewiseTreeRegressor.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor.predict_leaves"><code class="docutils literal notranslate"><span class="pre">PiecewiseTreeRegressor.predict_leaves()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">PiecewiseTreeRegressor.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor.set_predict_request"><code class="docutils literal notranslate"><span class="pre">PiecewiseTreeRegressor.set_predict_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression.PiecewiseTreeRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">PiecewiseTreeRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#quantilemlpregressor">QuantileMLPRegressor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_mlpregressor.QuantileMLPRegressor"><code class="docutils literal notranslate"><span class="pre">QuantileMLPRegressor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_mlpregressor.QuantileMLPRegressor.predict"><code class="docutils literal notranslate"><span class="pre">QuantileMLPRegressor.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_mlpregressor.QuantileMLPRegressor.score"><code class="docutils literal notranslate"><span class="pre">QuantileMLPRegressor.score()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_mlpregressor.QuantileMLPRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">QuantileMLPRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#quantilelinearregression">QuantileLinearRegression</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_regression.QuantileLinearRegression"><code class="docutils literal notranslate"><span class="pre">QuantileLinearRegression</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_regression.QuantileLinearRegression.fit"><code class="docutils literal notranslate"><span class="pre">QuantileLinearRegression.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_regression.QuantileLinearRegression.score"><code class="docutils literal notranslate"><span class="pre">QuantileLinearRegression.score()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_regression.QuantileLinearRegression.set_fit_request"><code class="docutils literal notranslate"><span class="pre">QuantileLinearRegression.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_regression.QuantileLinearRegression.set_score_request"><code class="docutils literal notranslate"><span class="pre">QuantileLinearRegression.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#transformedtargetclassifier2">TransformedTargetClassifier2</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.classes_"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.classes_</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.decision_function"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.decision_function()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.fit"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.predict"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.predict_proba"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.predict_proba()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.score"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.score()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.set_fit_request"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetClassifier2.set_score_request"><code class="docutils literal notranslate"><span class="pre">TransformedTargetClassifier2.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#transformedtargetregressor2">TransformedTargetRegressor2</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetRegressor2"><code class="docutils literal notranslate"><span class="pre">TransformedTargetRegressor2</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetRegressor2.fit"><code class="docutils literal notranslate"><span class="pre">TransformedTargetRegressor2.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetRegressor2.predict"><code class="docutils literal notranslate"><span class="pre">TransformedTargetRegressor2.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetRegressor2.score"><code class="docutils literal notranslate"><span class="pre">TransformedTargetRegressor2.score()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetRegressor2.set_fit_request"><code class="docutils literal notranslate"><span class="pre">TransformedTargetRegressor2.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.target_predictors.TransformedTargetRegressor2.set_score_request"><code class="docutils literal notranslate"><span class="pre">TransformedTargetRegressor2.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html#transforms">Transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#ngramsmixin">NGramsMixin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_text.NGramsMixin"><code class="docutils literal notranslate"><span class="pre">NGramsMixin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#basereciprocaltransformer">BaseReciprocalTransformer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv.BaseReciprocalTransformer"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTransformer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv.BaseReciprocalTransformer.get_fct_inv"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTransformer.get_fct_inv()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv.BaseReciprocalTransformer.transform"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTransformer.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#categoriestointegers">CategoriesToIntegers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.categories_to_integers.CategoriesToIntegers"><code class="docutils literal notranslate"><span class="pre">CategoriesToIntegers</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.categories_to_integers.CategoriesToIntegers.fit"><code class="docutils literal notranslate"><span class="pre">CategoriesToIntegers.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.categories_to_integers.CategoriesToIntegers.fit_transform"><code class="docutils literal notranslate"><span class="pre">CategoriesToIntegers.fit_transform()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.categories_to_integers.CategoriesToIntegers.transform"><code class="docutils literal notranslate"><span class="pre">CategoriesToIntegers.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#extendedfeatures">ExtendedFeatures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.extended_features.ExtendedFeatures"><code class="docutils literal notranslate"><span class="pre">ExtendedFeatures</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.extended_features.ExtendedFeatures.fit"><code class="docutils literal notranslate"><span class="pre">ExtendedFeatures.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.extended_features.ExtendedFeatures.get_feature_names_out"><code class="docutils literal notranslate"><span class="pre">ExtendedFeatures.get_feature_names_out()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.extended_features.ExtendedFeatures.transform"><code class="docutils literal notranslate"><span class="pre">ExtendedFeatures.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#functionreciprocaltransformer">FunctionReciprocalTransformer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer"><code class="docutils literal notranslate"><span class="pre">FunctionReciprocalTransformer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.available_fcts"><code class="docutils literal notranslate"><span class="pre">FunctionReciprocalTransformer.available_fcts()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.fit"><code class="docutils literal notranslate"><span class="pre">FunctionReciprocalTransformer.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.get_fct_inv"><code class="docutils literal notranslate"><span class="pre">FunctionReciprocalTransformer.get_fct_inv()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.set_fit_request"><code class="docutils literal notranslate"><span class="pre">FunctionReciprocalTransformer.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.transform"><code class="docutils literal notranslate"><span class="pre">FunctionReciprocalTransformer.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#permutationreciprocaltransformer">PermutationReciprocalTransformer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer"><code class="docutils literal notranslate"><span class="pre">PermutationReciprocalTransformer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.fit"><code class="docutils literal notranslate"><span class="pre">PermutationReciprocalTransformer.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.get_fct_inv"><code class="docutils literal notranslate"><span class="pre">PermutationReciprocalTransformer.get_fct_inv()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.set_fit_request"><code class="docutils literal notranslate"><span class="pre">PermutationReciprocalTransformer.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.transform"><code class="docutils literal notranslate"><span class="pre">PermutationReciprocalTransformer.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#predictabletsne">PredictableTSNE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.predictable_tsne.PredictableTSNE"><code class="docutils literal notranslate"><span class="pre">PredictableTSNE</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.predictable_tsne.PredictableTSNE.fit"><code class="docutils literal notranslate"><span class="pre">PredictableTSNE.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.predictable_tsne.PredictableTSNE.set_fit_request"><code class="docutils literal notranslate"><span class="pre">PredictableTSNE.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.predictable_tsne.PredictableTSNE.transform"><code class="docutils literal notranslate"><span class="pre">PredictableTSNE.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#transfertransformer">TransferTransformer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.transfer_transformer.TransferTransformer"><code class="docutils literal notranslate"><span class="pre">TransferTransformer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.transfer_transformer.TransferTransformer.fit"><code class="docutils literal notranslate"><span class="pre">TransferTransformer.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.transfer_transformer.TransferTransformer.set_fit_request"><code class="docutils literal notranslate"><span class="pre">TransferTransformer.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.transfer_transformer.TransferTransformer.transform"><code class="docutils literal notranslate"><span class="pre">TransferTransformer.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#traceablecountvectorizer">TraceableCountVectorizer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_text.TraceableCountVectorizer"><code class="docutils literal notranslate"><span class="pre">TraceableCountVectorizer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_text.TraceableCountVectorizer.set_fit_request"><code class="docutils literal notranslate"><span class="pre">TraceableCountVectorizer.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_text.TraceableCountVectorizer.set_transform_request"><code class="docutils literal notranslate"><span class="pre">TraceableCountVectorizer.set_transform_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#traceabletfidfvectorizer">TraceableTfidfVectorizer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_text.TraceableTfidfVectorizer"><code class="docutils literal notranslate"><span class="pre">TraceableTfidfVectorizer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_text.TraceableTfidfVectorizer.set_fit_request"><code class="docutils literal notranslate"><span class="pre">TraceableTfidfVectorizer.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.sklearn_text.TraceableTfidfVectorizer.set_transform_request"><code class="docutils literal notranslate"><span class="pre">TraceableTfidfVectorizer.set_transform_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html#exploration">Exploration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#skbasetransformlearner">SkBaseTransformLearner</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_learner.SkBaseTransformLearner"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformLearner</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_learner.SkBaseTransformLearner.fit"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformLearner.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_learner.SkBaseTransformLearner.get_params"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformLearner.get_params()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_learner.SkBaseTransformLearner.set_params"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformLearner.set_params()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_learner.SkBaseTransformLearner.transform"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformLearner.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#skbasetransformstacking">SkBaseTransformStacking</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_stacking.SkBaseTransformStacking"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformStacking</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_stacking.SkBaseTransformStacking.fit"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformStacking.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_stacking.SkBaseTransformStacking.get_params"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformStacking.get_params()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_stacking.SkBaseTransformStacking.set_params"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformStacking.set_params()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="mlmodel.html#mlinsights.sklapi.sklearn_base_transform_stacking.SkBaseTransformStacking.transform"><code class="docutils literal notranslate"><span class="pre">SkBaseTransformStacking.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html#exploration-in-c">Exploration in C</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#simpleregressorcriterion">SimpleRegressorCriterion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression_criterion.SimpleRegressorCriterion"><code class="docutils literal notranslate"><span class="pre">SimpleRegressorCriterion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#simpleregressorcriterionfast">SimpleRegressorCriterionFast</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.piecewise_tree_regression_criterion_fast.SimpleRegressorCriterionFast"><code class="docutils literal notranslate"><span class="pre">SimpleRegressorCriterionFast</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#linearregressorcriterion">LinearRegressorCriterion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#losses">Losses</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel.quantile_mlpregressor.absolute_loss"><code class="docutils literal notranslate"><span class="pre">absolute_loss()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlmodel.html#hidden-api">Hidden API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mlmodel.html#switch-clusters">_switch_clusters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mlmodel.html#mlinsights.mlmodel._kmeans_constraint_._switch_clusters"><code class="docutils literal notranslate"><span class="pre">_switch_clusters()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tree.html">Trees</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tree.html#digging-into-the-tree-structure">Digging into the tree structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_structure.predict_leaves"><code class="docutils literal notranslate"><span class="pre">predict_leaves()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_structure.tree_find_common_node"><code class="docutils literal notranslate"><span class="pre">tree_find_common_node()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_structure.tree_find_path_to_root"><code class="docutils literal notranslate"><span class="pre">tree_find_path_to_root()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_structure.tree_node_parents"><code class="docutils literal notranslate"><span class="pre">tree_node_parents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_structure.tree_node_range"><code class="docutils literal notranslate"><span class="pre">tree_node_range()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_structure.tree_leave_index"><code class="docutils literal notranslate"><span class="pre">tree_leave_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_structure.tree_leave_neighbors"><code class="docutils literal notranslate"><span class="pre">tree_leave_neighbors()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tree.html#experiments-exercise">Experiments, exercise</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#mlinsights.mltree.tree_digitize.digitize2tree"><code class="docutils literal notranslate"><span class="pre">digitize2tree()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="search_rank.html">search_rank</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="search_rank.html#searchenginevectors">SearchEngineVectors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors"><code class="docutils literal notranslate"><span class="pre">SearchEngineVectors</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.fit"><code class="docutils literal notranslate"><span class="pre">SearchEngineVectors.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.kneighbors"><code class="docutils literal notranslate"><span class="pre">SearchEngineVectors.kneighbors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.read_zip"><code class="docutils literal notranslate"><span class="pre">SearchEngineVectors.read_zip()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.to_zip"><code class="docutils literal notranslate"><span class="pre">SearchEngineVectors.to_zip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="search_rank.html#searchenginepredictions">SearchEnginePredictions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_predictions.SearchEnginePredictions"><code class="docutils literal notranslate"><span class="pre">SearchEnginePredictions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_predictions.SearchEnginePredictions.fit"><code class="docutils literal notranslate"><span class="pre">SearchEnginePredictions.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_predictions.SearchEnginePredictions.kneighbors"><code class="docutils literal notranslate"><span class="pre">SearchEnginePredictions.kneighbors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="search_rank.html#searchenginepredictionimages">SearchEnginePredictionImages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_predictions_images.SearchEnginePredictionImages"><code class="docutils literal notranslate"><span class="pre">SearchEnginePredictionImages</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_predictions_images.SearchEnginePredictionImages.fit"><code class="docutils literal notranslate"><span class="pre">SearchEnginePredictionImages.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="search_rank.html#mlinsights.search_rank.search_engine_predictions_images.SearchEnginePredictionImages.kneighbors"><code class="docutils literal notranslate"><span class="pre">SearchEnginePredictionImages.kneighbors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blaslapack.html">Blas &amp; Lapack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blaslapack.html#lapack">Lapack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blaslapack.html#mlinsights.mlmodel.direct_blas_lapack.dgelss"><code class="docutils literal notranslate"><span class="pre">dgelss()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timeseries.html">Timeseries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html#datasets">Datasets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.datasets.artificial_data"><code class="docutils literal notranslate"><span class="pre">artificial_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html#experimentation">Experimentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.patterns.find_ts_group_pattern"><code class="docutils literal notranslate"><span class="pre">find_ts_group_pattern()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html#manipulation">Manipulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.agg.aggregate_timeseries"><code class="docutils literal notranslate"><span class="pre">aggregate_timeseries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html#plotting">Plotting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.plotting.plot_week_timeseries"><code class="docutils literal notranslate"><span class="pre">plot_week_timeseries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html#prediction">Prediction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#basereciprocaltimeseriestransformer">BaseReciprocalTimeSeriesTransformer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.fit"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.get_fct_inv"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.get_fct_inv()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_fit_request"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.set_transform_request"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.set_transform_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseReciprocalTimeSeriesTransformer.transform"><code class="docutils literal notranslate"><span class="pre">BaseReciprocalTimeSeriesTransformer.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#build-ts-x-y">build_ts_X_y</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.utils.build_ts_X_y"><code class="docutils literal notranslate"><span class="pre">build_ts_X_y()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#basetimeseries">BaseTimeSeries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseTimeSeries"><code class="docutils literal notranslate"><span class="pre">BaseTimeSeries</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.base.BaseTimeSeries.has_preprocessing"><code class="docutils literal notranslate"><span class="pre">BaseTimeSeries.has_preprocessing()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#dummytimeseriesregressor">DummyTimeSeriesRegressor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.fit"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.predict"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.dummies.DummyTimeSeriesRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">DummyTimeSeriesRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#artimeseriesregressor">ARTimeSeriesRegressor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.ar.ARTimeSeriesRegressor"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.ar.ARTimeSeriesRegressor.fit"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.fit()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.ar.ARTimeSeriesRegressor.predict"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.predict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_fit_request"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.set_fit_request()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.ar.ARTimeSeriesRegressor.set_score_request"><code class="docutils literal notranslate"><span class="pre">ARTimeSeriesRegressor.set_score_request()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="timeseries.html#ts-mape">ts_mape</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="timeseries.html#mlinsights.timeseries.metrics.ts_mape"><code class="docutils literal notranslate"><span class="pre">ts_mape()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="plotting.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">plotting</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../tutorial/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Tutorial</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=8d05f57a"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>
