@@ -8,7 +8,7 @@
         <title>onnx_extended.tools.ort_debug - onnx-extended 0.2.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -217,6 +217,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cpu.html">validation.cpu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cuda.html">validation.cuda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/validation_trees.html">validation.bench_trees</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tools_io.html">Shortcuts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tools_graph.html">tools.graph</a></li>
@@ -290,11 +291,10 @@
         </div>
         <article role="main">
           <h1>Source code for onnx_extended.tools.ort_debug</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">load</span>
 <span class="kn">from</span> <span class="nn">onnx.reference.op_run</span> <span class="kn">import</span> <span class="n">to_array_extended</span>
-<span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span>
 <span class="kn">from</span> <span class="nn">.onnx_nodes</span> <span class="kn">import</span> <span class="n">select_model_inputs_outputs</span>
 
 
@@ -453,7 +453,7 @@
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_array_extended</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
                     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                             <span class="s2">&quot;Unable to display tensor type </span><span class="si">%r</span><span class="s2">.</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span>
                             <span class="o">%</span> <span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">att</span><span class="p">))</span>
                         <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
@@ -518,8 +518,12 @@
 
 
 <div class="viewcode-block" id="enumerate_ort_run"><a class="viewcode-back" href="../../../api/tools_other.html#onnx_extended.tools.ort_debug.enumerate_ort_run">[docs]</a><span class="k">def</span> <span class="nf">enumerate_ort_run</span><span class="p">(</span>
-    <span class="n">onx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">],</span> <span class="n">feeds</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]:</span>
+    <span class="n">onx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">],</span>
+    <span class="n">feeds</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">NodeProto</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Yields all the intermediate results produced by</span>
 <span class="sd">    :epkg:`onnxruntime`.</span>
@@ -527,8 +531,15 @@
 <span class="sd">    :param onx: model</span>
 <span class="sd">    :param feeds: input tensors</span>
 <span class="sd">    :param verbose: prints out a summary of the results</span>
-<span class="sd">    :return: intermediate results and names</span>
+<span class="sd">    :param providers: if not specified, default is `[&quot;CPUExecutionProvider&quot;]`</span>
+<span class="sd">    :param kwargs: additional parameter to give InferenceSession</span>
+<span class="sd">        when it is initialized</span>
+<span class="sd">    :return: intermediate results, names, and node</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span>
+
+    <span class="k">if</span> <span class="n">providers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">providers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">proto</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -546,35 +557,83 @@
         <span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">to_array_extended</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; +C </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot; +C </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot; +C </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2"> ~ </span><span class="si">%s</span><span class="s2">...&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[:</span><span class="mi">8</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">feeds</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">feeds</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; +I </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot; +I </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot; +I </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2"> ~ </span><span class="si">%s</span><span class="s2">...&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[:</span><span class="mi">8</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">loop</span><span class="p">:</span>
         <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">render_node</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
         <span class="n">subproto</span> <span class="o">=</span> <span class="n">select_model_inputs_outputs</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">names</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span>
-
         <span class="n">sess</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
-            <span class="n">subproto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+            <span class="n">subproto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">verbose</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span>
+                        <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                    <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">names</span><span class="p">,</span> <span class="n">outputs</span></div>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot; + </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s%s</span><span class="s2"> ~ </span><span class="si">%s</span><span class="s2">...&quot;</span>
+                        <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">name</span><span class="p">,</span>
+                            <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                            <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                            <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[:</span><span class="mi">8</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+        <span class="k">yield</span> <span class="n">names</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">node</span></div>
 </pre></div>
         </article>
       </div>

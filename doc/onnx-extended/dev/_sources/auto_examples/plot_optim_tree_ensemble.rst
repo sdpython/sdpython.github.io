@@ -70,14 +70,16 @@ Another example:
     python plot_optim_tree_ensemble.py
         --n_trees=100 --n_features=10 --batch_size=10000 --max_depth=8 -s SHORT        
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-98
+.. GENERATED FROM PYTHON SOURCE LINES 54-103
 
 .. code-block:: default
 
+    import logging
     import os
     import timeit
     import numpy
     import onnx
+    from onnx.helper import make_graph, make_model
     from onnx.reference import ReferenceEvaluator
     import matplotlib.pyplot as plt
     from pandas import DataFrame, concat
@@ -93,7 +95,10 @@ Another example:
         get_node_attribute,
         optimize_model,
     )
+    from onnx_extended.tools.onnx_nodes import multiply_tree
     from onnx_extended.ext_test_case import get_parsed_args, unit_test_going
+
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
     script_args = get_parsed_args(
         "plot_optim_tree_ensemble",
@@ -125,12 +130,12 @@ Another example:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-101
+.. GENERATED FROM PYTHON SOURCE LINES 104-106
 
 Training a model
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-129
+.. GENERATED FROM PYTHON SOURCE LINES 106-144
 
 .. code-block:: default
 
@@ -149,11 +154,21 @@ Training a model
         )
         print(f"Training to get {filename!r} with X.shape={X.shape}")
         X, y = X.astype(numpy.float32), y.astype(numpy.float32)
+        # To be faster, we train only 1 tree.
         model = RandomForestRegressor(
-            n_trees, max_depth=max_depth, verbose=2, n_jobs=int(script_args.n_jobs)
+            1, max_depth=max_depth, verbose=2, n_jobs=int(script_args.n_jobs)
         )
         model.fit(X[:-batch_size], y[:-batch_size])
         onx = to_onnx(model, X[:1])
+
+        # And wd multiply the trees.
+        node = multiply_tree(onx.graph.node[0], n_trees)
+        onx = make_model(
+            make_graph([node], onx.graph.name, onx.graph.input, onx.graph.output),
+            domain=onx.domain,
+            opset_imports=onx.opset_import,
+        )
+
         with open(filename, "wb") as f:
             f.write(onx.SerializeToString())
     else:
@@ -172,43 +187,33 @@ Training a model
 
     Training to get 'plot_optim_tree_ensemble-f5-t10-d5.onnx' with X.shape=(20000, 5)
     [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 8 concurrent workers.
-    building tree 1 of 10
-    building tree 2 of 10
-    building tree 3 of 10
-    building tree 4 of 10
-    building tree 5 of 10
-    building tree 6 of 10
-    building tree 7 of 10
-    building tree 8 of 10
-    building tree 9 of 10
-    building tree 10 of 10
-    [Parallel(n_jobs=-1)]: Done   7 out of  10 | elapsed:  2.4min remaining:  1.0min
-    [Parallel(n_jobs=-1)]: Done  10 out of  10 | elapsed:  2.4min finished
-    2023-09-28 12:14:34,717 skl2onnx [DEBUG] - [Var] +Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))
-    2023-09-28 12:14:34,717 skl2onnx [DEBUG] - [Var] update is_root=True for Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))
-    2023-09-28 12:14:34,717 skl2onnx [DEBUG] - [parsing] found alias='SklearnRandomForestRegressor' for type=<class 'sklearn.ensemble._forest.RandomForestRegressor'>.
-    2023-09-28 12:14:34,717 skl2onnx [DEBUG] - [Op] +Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,719 skl2onnx [DEBUG] - [Op] add In Variable('X', 'X', type=FloatTensorType(shape=[None, 5])) to Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,719 skl2onnx [DEBUG] - [Var] +Variable('variable', 'variable', type=FloatTensorType(shape=[]))
-    2023-09-28 12:14:34,719 skl2onnx [DEBUG] - [Var] set parent for Variable('variable', 'variable', type=FloatTensorType(shape=[])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,719 skl2onnx [DEBUG] - [Op] add Out Variable('variable', 'variable', type=FloatTensorType(shape=[])) to Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,720 skl2onnx [DEBUG] - [Var] update is_leaf=True for Variable('variable', 'variable', type=FloatTensorType(shape=[]))
-    2023-09-28 12:14:34,720 skl2onnx [DEBUG] - [Var] update is_fed=True for Variable('X', 'X', type=FloatTensorType(shape=[None, 5])), parent=None
-    2023-09-28 12:14:34,720 skl2onnx [DEBUG] - [Var] update is_fed=False for Variable('variable', 'variable', type=FloatTensorType(shape=[])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,720 skl2onnx [DEBUG] - [Op] update is_evaluated=False for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,720 skl2onnx [DEBUG] - [Shape2] call infer_types for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,721 skl2onnx [DEBUG] - [Shape-a] Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2)) fed 'True' - 'False'
-    2023-09-28 12:14:34,721 skl2onnx [DEBUG] - [Shape-b] Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2)) inputs=[Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))] - outputs=[Variable('variable', 'variable', type=FloatTensorType(shape=[None, 1]))]
-    2023-09-28 12:14:34,721 skl2onnx [DEBUG] - [Conv] call Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2)) fed 'True' - 'False'
-    2023-09-28 12:14:34,726 skl2onnx [DEBUG] - [Node] 'TreeEnsembleRegressor' - 'X' -> 'variable' (name='TreeEnsembleRegressor')
-    2023-09-28 12:14:34,728 skl2onnx [DEBUG] - [Conv] end - Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,728 skl2onnx [DEBUG] - [Op] update is_evaluated=True for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
-    2023-09-28 12:14:34,728 skl2onnx [DEBUG] - [Var] update is_fed=True for Variable('variable', 'variable', type=FloatTensorType(shape=[None, 1])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=10, n_jobs=-1, verbose=2))
+    building tree 1 of 1
+    [Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.1s finished
+    2023-10-13 16:49:05,398 skl2onnx [DEBUG] - [Var] +Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))
+    2023-10-13 16:49:05,399 skl2onnx [DEBUG] - [Var] update is_root=True for Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))
+    2023-10-13 16:49:05,399 skl2onnx [DEBUG] - [parsing] found alias='SklearnRandomForestRegressor' for type=<class 'sklearn.ensemble._forest.RandomForestRegressor'>.
+    2023-10-13 16:49:05,399 skl2onnx [DEBUG] - [Op] +Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,401 skl2onnx [DEBUG] - [Op] add In Variable('X', 'X', type=FloatTensorType(shape=[None, 5])) to Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,401 skl2onnx [DEBUG] - [Var] +Variable('variable', 'variable', type=FloatTensorType(shape=[]))
+    2023-10-13 16:49:05,401 skl2onnx [DEBUG] - [Var] set parent for Variable('variable', 'variable', type=FloatTensorType(shape=[])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Op] add Out Variable('variable', 'variable', type=FloatTensorType(shape=[])) to Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Var] update is_leaf=True for Variable('variable', 'variable', type=FloatTensorType(shape=[]))
+    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Var] update is_fed=True for Variable('X', 'X', type=FloatTensorType(shape=[None, 5])), parent=None
+    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Var] update is_fed=False for Variable('variable', 'variable', type=FloatTensorType(shape=[])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Op] update is_evaluated=False for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,403 skl2onnx [DEBUG] - [Shape2] call infer_types for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,403 skl2onnx [DEBUG] - [Shape-a] Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2)) fed 'True' - 'False'
+    2023-10-13 16:49:05,403 skl2onnx [DEBUG] - [Shape-b] Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2)) inputs=[Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))] - outputs=[Variable('variable', 'variable', type=FloatTensorType(shape=[None, 1]))]
+    2023-10-13 16:49:05,404 skl2onnx [DEBUG] - [Conv] call Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2)) fed 'True' - 'False'
+    2023-10-13 16:49:05,404 skl2onnx [DEBUG] - [Node] 'TreeEnsembleRegressor' - 'X' -> 'variable' (name='TreeEnsembleRegressor')
+    2023-10-13 16:49:05,405 skl2onnx [DEBUG] - [Conv] end - Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,405 skl2onnx [DEBUG] - [Op] update is_evaluated=True for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
+    2023-10-13 16:49:05,405 skl2onnx [DEBUG] - [Var] update is_fed=True for Variable('variable', 'variable', type=FloatTensorType(shape=[None, 1])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-137
+.. GENERATED FROM PYTHON SOURCE LINES 145-152
 
 Rewrite the onnx file to use a different kernel
 +++++++++++++++++++++++++++++++++++++++++++++++
@@ -218,7 +223,7 @@ the attributes and domain = `"onnx_extented.ortops.optim.cpu"`.
 We call a function to do that replacement.
 First the current model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-142
+.. GENERATED FROM PYTHON SOURCE LINES 152-157
 
 .. code-block:: default
 
@@ -238,17 +243,17 @@ First the current model.
     opset: domain='ai.onnx.ml' version=1
     opset: domain='' version=19
     input: name='X' type=dtype('float32') shape=['', 5]
-    TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[1,0,2...1,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_modes=630:[b'BRANCH_LEQ',b'BRANCH_LEQ'...b'LEAF',b'LEAF'], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.16108554601669312,0.062494851648807526...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-28.71653938293457,-19.51543426513672...17.91996192932129,24.008808135986328]) -> variable
+    TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[2,4,3...4,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_modes=630:[b'BRANCH_LEQ',b'BRANCH_LEQ'...b'LEAF',b'LEAF'], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.3130105137825012,0.09077119082212448...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-349.0422668457031,-258.12200927734375...258.0306396484375,354.7446594238281]) -> variable
     output: name='variable' type=dtype('float32') shape=['', 1]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-144
+.. GENERATED FROM PYTHON SOURCE LINES 158-159
 
 And then the modified model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-167
+.. GENERATED FROM PYTHON SOURCE LINES 159-182
 
 .. code-block:: default
 
@@ -290,18 +295,18 @@ And then the modified model.
     opset: domain='' version=19
     opset: domain='onnx_extented.ortops.optim.cpu' version=1
     input: name='X' type=dtype('float32') shape=['', 5]
-    TreeEnsembleRegressor[onnx_extented.ortops.optim.cpu](X, nodes_modes=b'BRANCH_LEQ,BRANCH_LEQ,BRANCH_LEQ,BRANC...LEAF,LEAF', n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[1,0,2...1,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.16108554601669312,0.062494851648807526...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-28.71653938293457,-19.51543426513672...17.91996192932129,24.008808135986328]) -> variable
+    TreeEnsembleRegressor[onnx_extented.ortops.optim.cpu](X, nodes_modes=b'BRANCH_LEQ,BRANCH_LEQ,BRANCH_LEQ,BRANC...LEAF,LEAF', n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[2,4,3...4,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.3130105137825012,0.09077119082212448...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-349.0422668457031,-258.12200927734375...258.0306396484375,354.7446594238281]) -> variable
     output: name='variable' type=dtype('float32') shape=['', 1]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-170
+.. GENERATED FROM PYTHON SOURCE LINES 183-185
 
 Comparing onnxruntime and the custom kernel
 +++++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-191
+.. GENERATED FROM PYTHON SOURCE LINES 185-206
 
 .. code-block:: default
 
@@ -344,11 +349,11 @@ Comparing onnxruntime and the custom kernel
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 192-193
+.. GENERATED FROM PYTHON SOURCE LINES 207-208
 
 Discrepancies?
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-197
+.. GENERATED FROM PYTHON SOURCE LINES 208-212
 
 .. code-block:: default
 
@@ -364,19 +369,19 @@ Discrepancies?
 
  .. code-block:: none
 
-    Discrepancies: 3.0517578125e-05
+    Discrepancies: 0.000244140625
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 198-202
+.. GENERATED FROM PYTHON SOURCE LINES 213-217
 
 Simple verification
 +++++++++++++++++++
 
 Baseline with onnxruntime.
 
-.. GENERATED FROM PYTHON SOURCE LINES 202-205
+.. GENERATED FROM PYTHON SOURCE LINES 217-220
 
 .. code-block:: default
 
@@ -391,16 +396,16 @@ Baseline with onnxruntime.
 
  .. code-block:: none
 
-    baseline: 0.08234070000253269
+    baseline: 0.06290939999962575
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-207
+.. GENERATED FROM PYTHON SOURCE LINES 221-222
 
 The custom implementation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 207-210
+.. GENERATED FROM PYTHON SOURCE LINES 222-225
 
 .. code-block:: default
 
@@ -415,16 +420,16 @@ The custom implementation.
 
  .. code-block:: none
 
-    new time: 0.04308429999946384
+    new time: 0.032032600000093225
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 211-212
+.. GENERATED FROM PYTHON SOURCE LINES 226-227
 
 The same implementation but ran from the onnx python backend.
 
-.. GENERATED FROM PYTHON SOURCE LINES 212-217
+.. GENERATED FROM PYTHON SOURCE LINES 227-232
 
 .. code-block:: default
 
@@ -441,16 +446,16 @@ The same implementation but ran from the onnx python backend.
 
  .. code-block:: none
 
-    CReferenceEvaluator: 0.17407249999814667
+    CReferenceEvaluator: 0.02749690000200644
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-219
+.. GENERATED FROM PYTHON SOURCE LINES 233-234
 
 The python implementation but from the onnx python backend.
 
-.. GENERATED FROM PYTHON SOURCE LINES 219-227
+.. GENERATED FROM PYTHON SOURCE LINES 234-242
 
 .. code-block:: default
 
@@ -470,12 +475,12 @@ The python implementation but from the onnx python backend.
 
  .. code-block:: none
 
-    ReferenceEvaluator: 3.7600438999979815 (only 5 times instead of 50)
+    ReferenceEvaluator: 3.0222442999984196 (only 5 times instead of 50)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-237
+.. GENERATED FROM PYTHON SOURCE LINES 243-252
 
 Time for comparison
 +++++++++++++++++++
@@ -487,7 +492,7 @@ blob/main/onnx_extended/ortops/optim/cpu/tree_ensemble.cc#L102>`_.
 Let's try out many possibilities.
 The default values are the first ones.
 
-.. GENERATED FROM PYTHON SOURCE LINES 237-285
+.. GENERATED FROM PYTHON SOURCE LINES 252-300
 
 .. code-block:: default
 
@@ -553,11 +558,11 @@ The default values are the first ones.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 286-287
+.. GENERATED FROM PYTHON SOURCE LINES 301-302
 
 Then the optimization.
 
-.. GENERATED FROM PYTHON SOURCE LINES 287-317
+.. GENERATED FROM PYTHON SOURCE LINES 302-332
 
 .. code-block:: default
 
@@ -599,16 +604,16 @@ Then the optimization.
 
  .. code-block:: none
 
-      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:08,  1.75it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:08,  1.75it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:05,  2.67it/s]    i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:05,  2.67it/s]     i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:01<00:03,  3.30it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:01<00:03,  3.30it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.40it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.40it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.47it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.47it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.47it/s]    i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.47it/s]     i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.46it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.46it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.42it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.42it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.50it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.50it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:03<00:01,  3.49it/s]    i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:03<00:01,  3.49it/s]     i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.44it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.44it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.53it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.53it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.51it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.51it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:04<00:00,  3.51it/s]    i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:04<00:00,  3.51it/s]     i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.52it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.52it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.56it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.39it/s]
+      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:07,  2.07it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:07,  2.07it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:04,  2.82it/s]    i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:04,  2.82it/s]     i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:00<00:03,  3.27it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:00<00:03,  3.27it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.53it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.53it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.65it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.65it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.65it/s]    i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.65it/s]     i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.69it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.69it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.73it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.73it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.79it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.79it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:02<00:01,  3.84it/s]    i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:02<00:01,  3.84it/s]     i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.89it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.89it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.87it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.87it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.84it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.84it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:03<00:00,  3.88it/s]    i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:03<00:00,  3.88it/s]     i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.88it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.88it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.85it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.67it/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 318-319
+.. GENERATED FROM PYTHON SOURCE LINES 333-334
 
 And the results.
 
-.. GENERATED FROM PYTHON SOURCE LINES 319-326
+.. GENERATED FROM PYTHON SOURCE LINES 334-341
 
 .. code-block:: default
 
@@ -632,22 +637,24 @@ And the results.
            'short_name', 'TRY', 'name', 'parallel_tree', 'parallel_tree_N',
            'parallel_N', 'batch_size_tree', 'batch_size_rows', 'use_node3'],
           dtype='object')
-        average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  n_exp                                         n_exp_name         short_name  TRY             name  parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3
-    0  0.001653   0.000043  0.001581  0.001719      10      10  0.016532            64     0.008145      0                                     TRY=0,baseline         0,baseline  0.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
-    1  0.001812   0.000354  0.001203  0.002526      10      10  0.018125            64     0.006668      0  TRY=0,parallel_tree=80,parallel_tree_N=128,par...  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0
-    2  0.001275   0.000142  0.001077  0.001501      10      10  0.012754            64     0.004669      1  TRY=0,parallel_tree=80,parallel_tree_N=128,par...  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0
-    3  0.001065   0.000100  0.000969  0.001272      10      10  0.010655            64     0.005027      2  TRY=0,parallel_tree=80,parallel_tree_N=64,para...   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0
-    4  0.001611   0.000824  0.000766  0.002874      10      10  0.016114            64     0.015396      3  TRY=0,parallel_tree=80,parallel_tree_N=64,para...   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
+        average  deviation  min_exec  ...  batch_size_tree  batch_size_rows  use_node3
+    0  0.001146   0.000365  0.000977  ...              NaN              NaN        NaN
+    1  0.001269   0.000679  0.000504  ...              1.0              1.0        0.0
+    2  0.001494   0.000699  0.000605  ...              1.0              1.0        0.0
+    3  0.001292   0.000771  0.000576  ...              1.0              1.0        0.0
+    4  0.001361   0.000608  0.000594  ...              1.0              1.0        0.0
+
+    [5 rows x 20 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 327-329
+.. GENERATED FROM PYTHON SOURCE LINES 342-344
 
 Sorting
 +++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 329-344
+.. GENERATED FROM PYTHON SOURCE LINES 344-359
 
 .. code-block:: default
 
@@ -674,27 +681,29 @@ Sorting
 
  .. code-block:: none
 
-         average  deviation     ttime  warmup_time  n_exp         short_name  TRY             name  parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3
-    3   0.001065   0.000100  0.010655     0.005027      2   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0
-    2   0.001275   0.000142  0.012754     0.004669      1  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0
-    12  0.001443   0.000892  0.014426     0.017050     11   1,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
-    9   0.001540   0.001089  0.015395     0.012873      8  1,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0
-    16  0.001551   0.000906  0.015506     0.013941     15   1,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0
-    5   0.001604   0.000748  0.016043     0.012097      4  0,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0
-    4   0.001611   0.000824  0.016114     0.015396      3   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
-    15  0.001653   0.000950  0.016527     0.013219     14   1,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0
-    0   0.001653   0.000043  0.016532     0.008145      0         0,baseline  0.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
-    6   0.001708   0.001056  0.017081     0.014329      5  0,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
+         average  deviation     ttime  ...  batch_size_tree  batch_size_rows use_node3
+    0   0.001146   0.000365  0.011456  ...              NaN              NaN       NaN
+    1   0.001269   0.000679  0.012689  ...              1.0              1.0       0.0
+    3   0.001292   0.000771  0.012918  ...              1.0              1.0       0.0
+    11  0.001333   0.000679  0.013328  ...              1.0              1.0       0.0
+    14  0.001335   0.000865  0.013353  ...              1.0              1.0       0.0
+    4   0.001361   0.000608  0.013610  ...              1.0              1.0       0.0
+    10  0.001384   0.000594  0.013835  ...              1.0              1.0       0.0
+    15  0.001405   0.000831  0.014052  ...              1.0              1.0       0.0
+    5   0.001418   0.000688  0.014180  ...              1.0              1.0       0.0
+    8   0.001424   0.000758  0.014236  ...              1.0              1.0       0.0
+
+    [10 rows x 14 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 345-347
+.. GENERATED FROM PYTHON SOURCE LINES 360-362
 
 Worst
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 347-351
+.. GENERATED FROM PYTHON SOURCE LINES 362-366
 
 .. code-block:: default
 
@@ -710,27 +719,29 @@ Worst
 
  .. code-block:: none
 
-         average  deviation     ttime  warmup_time  n_exp         short_name  TRY             name  parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3
-    0   0.001653   0.000043  0.016532     0.008145      0         0,baseline  0.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
-    6   0.001708   0.001056  0.017081     0.014329      5  0,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
-    14  0.001711   0.000925  0.017113     0.010606     13  1,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
-    13  0.001714   0.001003  0.017142     0.014240     12  1,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0
-    10  0.001716   0.001044  0.017165     0.014097      9  1,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0
-    7   0.001774   0.000984  0.017736     0.008249      6   0,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0
-    1   0.001812   0.000354  0.018125     0.006668      0  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0
-    8   0.001841   0.001108  0.018413     0.011121      7   0,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0
-    11  0.001856   0.001381  0.018558     0.009867     10   1,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0
-    17  0.002144   0.001527  0.021441     0.032011      0         1,baseline  1.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
+         average  deviation     ttime  ...  batch_size_tree  batch_size_rows use_node3
+    5   0.001418   0.000688  0.014180  ...              1.0              1.0       0.0
+    8   0.001424   0.000758  0.014236  ...              1.0              1.0       0.0
+    9   0.001446   0.000509  0.014457  ...              1.0              1.0       0.0
+    12  0.001464   0.000822  0.014637  ...              1.0              1.0       0.0
+    16  0.001480   0.000681  0.014802  ...              1.0              1.0       0.0
+    2   0.001494   0.000699  0.014942  ...              1.0              1.0       0.0
+    13  0.001503   0.000776  0.015035  ...              1.0              1.0       0.0
+    7   0.001513   0.000628  0.015127  ...              1.0              1.0       0.0
+    6   0.001571   0.000781  0.015711  ...              1.0              1.0       0.0
+    17  0.001913   0.001220  0.019128  ...              NaN              NaN       NaN
+
+    [10 rows x 14 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 352-354
+.. GENERATED FROM PYTHON SOURCE LINES 367-369
 
 Plot
 ++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 354-397
+.. GENERATED FROM PYTHON SOURCE LINES 369-412
 
 .. code-block:: default
 
@@ -791,158 +802,6 @@ Plot
  .. code-block:: none
 
     Index(['average', 'min', 'max'], dtype='object')
-    2023-09-28 12:14:45,042 matplotlib.font_manager [DEBUG] - findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0.
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,043 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,044 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
-    2023-09-28 12:14:45,045 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf', name='Ubuntu', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-Th.ttf', name='Ubuntu', style='normal', variant='normal', weight=250, stretch='normal', size='scalable')) = 10.1925
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 0.24
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-R.ttf', name='Ubuntu Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-RI.ttf', name='Ubuntu', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-BI.ttf', name='Ubuntu', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-LI.ttf', name='Ubuntu', style='italic', variant='normal', weight=300, stretch='normal', size='scalable')) = 11.145
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,046 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf', name='Ubuntu', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf', name='Ubuntu Condensed', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-B.ttf', name='Ubuntu Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-RI.ttf', name='Ubuntu Mono', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 0.25
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='condensed', size='scalable')) = 1.25
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf', name='Ubuntu', style='normal', variant='normal', weight=500, stretch='normal', size='scalable')) = 10.145
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 0.5349999999999999
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,047 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-MI.ttf', name='Ubuntu', style='italic', variant='normal', weight=500, stretch='normal', size='scalable')) = 11.145
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-BI.ttf', name='Ubuntu Mono', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-L.ttf', name='Ubuntu', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='condensed', size='scalable')) = 1.535
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf', name='DejaVu Math TeX Gyre', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
-    2023-09-28 12:14:45,048 matplotlib.font_manager [DEBUG] - findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=10.0 to DejaVu Sans ('/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
-    2023-09-28 12:14:45,156 matplotlib.font_manager [DEBUG] - findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0.
-    2023-09-28 12:14:45,156 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
-    2023-09-28 12:14:45,156 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf', name='STIXSizeFiveSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,156 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf', name='DejaVu Serif Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf', name='STIXGeneral', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf', name='cmb10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf', name='STIXGeneral', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf', name='cmex10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf', name='cmss10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf', name='cmtt10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf', name='STIXSizeThreeSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,157 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf', name='STIXSizeOneSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf', name='cmr10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf', name='cmsy10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf', name='cmmi10', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf', name='STIXNonUnicode', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf', name='STIXSizeFourSym', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf', name='DejaVu Sans Display', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf', name='STIXGeneral', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf', name='STIXNonUnicode', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf', name='STIXGeneral', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,158 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf', name='STIXSizeTwoSym', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 10.535
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf', name='Ubuntu', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 0.33499999999999996
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-Th.ttf', name='Ubuntu', style='normal', variant='normal', weight=250, stretch='normal', size='scalable')) = 10.1925
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-ExtraLight.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=200, stretch='normal', size='scalable')) = 0.24
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-R.ttf', name='Ubuntu Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-RI.ttf', name='Ubuntu', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-BI.ttf', name='Ubuntu', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='condensed', size='scalable')) = 11.25
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-LI.ttf', name='Ubuntu', style='italic', variant='normal', weight=300, stretch='normal', size='scalable')) = 11.145
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf', name='Ubuntu', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 0.05
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf', name='Ubuntu Condensed', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-B.ttf', name='Ubuntu Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,159 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-RI.ttf', name='Ubuntu Mono', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf', name='DejaVu Sans Mono', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 0.25
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='condensed', size='scalable')) = 1.25
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf', name='DejaVu Serif', style='normal', variant='normal', weight=400, stretch='condensed', size='scalable')) = 10.25
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf', name='Ubuntu', style='normal', variant='normal', weight=500, stretch='normal', size='scalable')) = 10.145
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf', name='DejaVu Sans', style='normal', variant='normal', weight=700, stretch='condensed', size='scalable')) = 0.5349999999999999
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', name='DejaVu Sans Mono', style='normal', variant='normal', weight=700, stretch='normal', size='scalable')) = 10.335
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='normal', size='scalable')) = 1.335
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-MI.ttf', name='Ubuntu', style='italic', variant='normal', weight=500, stretch='normal', size='scalable')) = 11.145
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/UbuntuMono-BI.ttf', name='Ubuntu Mono', style='italic', variant='normal', weight=700, stretch='normal', size='scalable')) = 11.335
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=400, stretch='normal', size='scalable')) = 11.05
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-BoldItalic.ttf', name='DejaVu Serif', style='italic', variant='normal', weight=700, stretch='condensed', size='scalable')) = 11.535
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/ubuntu/Ubuntu-L.ttf', name='Ubuntu', style='normal', variant='normal', weight=300, stretch='normal', size='scalable')) = 10.145
-    2023-09-28 12:14:45,160 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-BoldOblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=700, stretch='condensed', size='scalable')) = 1.535
-    2023-09-28 12:14:45,161 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuMathTeXGyre.ttf', name='DejaVu Math TeX Gyre', style='normal', variant='normal', weight=400, stretch='normal', size='scalable')) = 10.05
-    2023-09-28 12:14:45,161 matplotlib.font_manager [DEBUG] - findfont: score(FontEntry(fname='/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf', name='DejaVu Sans', style='oblique', variant='normal', weight=400, stretch='normal', size='scalable')) = 1.05
-    2023-09-28 12:14:45,161 matplotlib.font_manager [DEBUG] - findfont: Matching sans\-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('/home/xadupre/.local/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf') with score of 0.050000.
 
 
 
@@ -950,7 +809,7 @@ Plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 43.621 seconds)
+   **Total running time of the script:** (0 minutes 17.924 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optim_tree_ensemble.py:

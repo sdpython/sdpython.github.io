@@ -3,6 +3,11 @@
 tools.onnx_nodes
 ================
 
+convert_onnx_model
+==================
+
+.. autofunction:: onnx_extended.tools.onnx_nodes.convert_onnx_model
+
 enumerate_onnx_node_types
 =========================
 
@@ -12,6 +17,11 @@ get_hidden_inputs
 =================
 
 .. autofunction:: onnx_extended.tools.onnx_nodes.get_hidden_inputs
+
+multiply_tree
+=============
+
+.. autofunction:: onnx_extended.tools.onnx_nodes.multiply_tree
 
 onnx_merge_models
 =================

@@ -6,12 +6,12 @@
 
 Computation times
 =================
-**02:43.621** total execution time for **auto_examples** files:
+**00:24.463** total execution time for **auto_examples** files:
 
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_optim_tree_ensemble.py` (``plot_optim_tree_ensemble.py``)                             | 02:43.621 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_optim_tree_ensemble.py` (``plot_optim_tree_ensemble.py``)                             | 00:17.924 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``plot_bench_cpu.py``)                                                 | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``plot_bench_cpu.py``)                                                 | 00:06.539 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``plot_bench_cpu_vector_sum.py``)                           | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+

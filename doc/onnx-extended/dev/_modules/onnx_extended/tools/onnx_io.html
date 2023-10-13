@@ -8,7 +8,7 @@
         <title>onnx_extended.tools.onnx_io - onnx-extended 0.2.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -217,6 +217,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cpu.html">validation.cpu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cuda.html">validation.cuda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/validation_trees.html">validation.bench_trees</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tools_io.html">Shortcuts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tools_graph.html">tools.graph</a></li>
@@ -290,7 +291,9 @@
         </div>
         <article role="main">
           <h1>Source code for onnx_extended.tools.onnx_io</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">onnx</span>
 
@@ -385,6 +388,56 @@
     <span class="n">proto</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">write_external_data_tensors</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">dirname</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="onnx2string"><a class="viewcode-back" href="../../../api/tools_io.html#onnx_extended.tools.onnx2string">[docs]</a><span class="k">def</span> <span class="nf">onnx2string</span><span class="p">(</span><span class="n">proto</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">as_code</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes a model and returns a string pluggagle in</span>
+<span class="sd">    a python script. It uses module `base64`.</span>
+
+<span class="sd">    :param proto: model proto</span>
+<span class="sd">    :param as_code: if true, returns the model as a piece of code</span>
+<span class="sd">    :return: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">as_code</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">content</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">content</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">64</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">[:</span><span class="mi">64</span><span class="p">])</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="mi">64</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="k">break</span>
+    <span class="n">slines</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;    &quot;</span><span class="si">{</span><span class="n">li</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">])</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    from onnx_extended.tools.onnx_io import string2onnx</span>
+<span class="sd">    </span>
+<span class="sd">    text = (</span>
+<span class="sd">    {model}</span>
+<span class="sd">    )</span>
+<span class="sd">    model = string2onnx(text)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">slines</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="string2onnx"><a class="viewcode-back" href="../../../api/tools_io.html#onnx_extended.tools.string2onnx">[docs]</a><span class="k">def</span> <span class="nf">string2onnx</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Restores a model saved with</span>
+<span class="sd">    :func:`onnx2string &lt;onnx_extended.tools.onnx_io.onnx2string&gt;`.</span>
+
+<span class="sd">    :param text: string produced by</span>
+<span class="sd">        :func:`onnx2string &lt;onnx_extended.tools.onnx_io.onnx2string&gt;`</span>
+<span class="sd">    :return: ModelProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span></div>
 </pre></div>
         </article>
       </div>

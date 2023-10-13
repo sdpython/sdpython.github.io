@@ -8,7 +8,7 @@
         <title>onnx_extended.tools.onnx_nodes - onnx-extended 0.2.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -217,6 +217,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cpu.html">validation.cpu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/validation_cuda.html">validation.cuda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/validation_trees.html">validation.bench_trees</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tools_io.html">Shortcuts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tools_graph.html">tools.graph</a></li>
@@ -303,6 +304,7 @@
     <span class="n">Tuple</span><span class="p">,</span>
     <span class="n">Union</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AttributeProto</span><span class="p">,</span>
     <span class="n">FunctionProto</span><span class="p">,</span>
@@ -317,13 +319,17 @@
 <span class="kn">from</span> <span class="nn">onnx.compose</span> <span class="kn">import</span> <span class="n">merge_models</span>
 <span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">make_attribute</span><span class="p">,</span>
+    <span class="n">make_node</span><span class="p">,</span>
     <span class="n">make_graph</span><span class="p">,</span>
     <span class="n">make_function</span><span class="p">,</span>
     <span class="n">make_model</span><span class="p">,</span>
+    <span class="n">make_opsetid</span><span class="p">,</span>
+    <span class="n">make_tensor</span><span class="p">,</span>
     <span class="n">make_tensor_value_info</span><span class="p">,</span>
     <span class="n">np_dtype_to_tensor_dtype</span><span class="p">,</span>
     <span class="n">set_model_props</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">from_array</span><span class="p">,</span> <span class="n">to_array</span>
 <span class="kn">from</span> <span class="nn">onnx.shape_inference</span> <span class="kn">import</span> <span class="n">infer_shapes</span> <span class="k">as</span> <span class="n">onnx_infer_shapes</span>
 <span class="kn">from</span> <span class="nn">onnx.version_converter</span> <span class="kn">import</span> <span class="n">convert_version</span>
 <span class="kn">from</span> <span class="nn">.onnx_io</span> <span class="kn">import</span> <span class="n">load_model</span>
@@ -412,21 +418,25 @@
         <span class="k">if</span> <span class="n">debug_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">debug_info</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">fct</span><span class="p">(</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;GRAPH&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">new_model</span> <span class="o">=</span> <span class="n">make_model</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">functions</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span>
+        <span class="n">functions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">fct</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;FUNCTION </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">functions</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="s2">&quot;value_info&quot;</span><span class="p">):</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">value_info</span><span class="p">)</span>
+        <span class="n">new_model</span> <span class="o">=</span> <span class="n">make_model</span><span class="p">(</span>
+            <span class="n">graph</span><span class="p">,</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">make_opsetid</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">version</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">opset_import</span>
+            <span class="p">],</span>
+            <span class="n">functions</span><span class="o">=</span><span class="n">functions</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">new_model</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">ir_version</span>
         <span class="n">new_model</span><span class="o">.</span><span class="n">producer_name</span> <span class="o">=</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">producer_name</span>
         <span class="n">new_model</span><span class="o">.</span><span class="n">producer_version</span> <span class="o">=</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">producer_version</span>
         <span class="n">new_model</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">domain</span>
         <span class="n">new_model</span><span class="o">.</span><span class="n">model_version</span> <span class="o">=</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">model_version</span>
         <span class="n">new_model</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">doc_string</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="s2">&quot;value_info&quot;</span><span class="p">):</span>
-            <span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">value_info</span><span class="p">)</span>
-        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">new_model</span><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">oimp</span> <span class="ow">in</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">:</span>
-            <span class="n">op_set</span> <span class="o">=</span> <span class="n">new_model</span><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
-            <span class="n">op_set</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">oimp</span><span class="o">.</span><span class="n">domain</span>
-            <span class="n">op_set</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">oimp</span><span class="o">.</span><span class="n">version</span>
         <span class="k">return</span> <span class="n">new_model</span>
     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;This function only works on &#39;ModelProto&#39; anod not not on </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
@@ -1110,6 +1120,270 @@
                 <span class="k">continue</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[onnx_merge_models] no update implemented for domain </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> to </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">merge_models</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">io_map</span><span class="o">=</span><span class="n">io_map</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">tree_ensemble_use_as_tensor_attributes</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uses only attributes suffixed with `_as_tensor` for tree ensemble operators.</span>
+
+<span class="sd">    :param node: node to update</span>
+<span class="sd">    :return: modified node</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;TreeEnsembleRegressor&quot;</span><span class="p">,</span> <span class="s2">&quot;TreeEnsembleClassifier&quot;</span><span class="p">}:</span>
+        <span class="n">atts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;base_values&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_hitrates&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_values&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;target_weights&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;class_weights&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">atts</span><span class="p">:</span>
+                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">floats</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">floats</span><span class="p">)</span>
+            <span class="n">tensor</span> <span class="o">=</span> <span class="n">make_tensor</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">floats</span><span class="p">)],</span> <span class="n">floats</span><span class="p">)</span>
+            <span class="n">att</span> <span class="o">=</span> <span class="n">make_attribute</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_as_tensor&quot;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
+            <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+            <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">modified</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">node</span>
+        <span class="n">new_node</span> <span class="o">=</span> <span class="n">make_node</span><span class="p">(</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span>
+        <span class="p">)</span>
+        <span class="n">new_node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_node</span>
+
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Unable to apply tree_ensemble_use_as_tensor_attributes &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;on operator type </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="convert_onnx_model"><a class="viewcode-back" href="../../../api/tools_nodes.html#onnx_extended.tools.convert_onnx_model">[docs]</a><span class="k">def</span> <span class="nf">convert_onnx_model</span><span class="p">(</span>
+    <span class="n">onnx_model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">],</span>
+    <span class="n">opsets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">use_as_tensor_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">_from_opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">debug_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Upgrades a model to the latest opsets.</span>
+
+<span class="sd">    :param onnx_model: proto</span>
+<span class="sd">    :param opsets: list of opsets to update</span>
+<span class="sd">    :param recursive: looks into subgraphs</span>
+<span class="sd">    :param use_as_tensor_attributes: use attributes siffixed with `as_tensor` for trees</span>
+<span class="sd">    :param verbose: verbosity</span>
+<span class="sd">    :param _from_opset: tells which opset a node belongs too, only used when</span>
+<span class="sd">        onnx_model is a NodeProto</span>
+<span class="sd">    :param debug_info: unused</span>
+<span class="sd">    :return: new proto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_change_opsets</span><span class="p">(</span><span class="n">proto</span><span class="p">):</span>
+        <span class="n">old_opsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">opset_import</span><span class="p">}</span>
+        <span class="n">old_opsets</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">opsets</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">proto</span><span class="o">.</span><span class="n">opset_import</span><span class="p">[:]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">old_opsets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">proto</span><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">k</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">_from_opset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;_from_opset must be None for ModelProto.&quot;</span><span class="p">)</span>
+        <span class="n">old_opsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[convert_onnx_model] upgrade ModelProto from opset &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">old_opsets</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">opsets</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">new_opset</span> <span class="o">=</span> <span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">old_opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">new_opset</span> <span class="o">!=</span> <span class="n">old_opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">onnx_model</span> <span class="o">=</span> <span class="n">convert_version</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">opsets</span><span class="p">)</span>
+        <span class="n">new_onnx</span> <span class="o">=</span> <span class="n">_apply_optimisation_on_graph</span><span class="p">(</span>
+            <span class="n">convert_onnx_model</span><span class="p">,</span>
+            <span class="n">onnx_model</span><span class="p">,</span>
+            <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">opsets</span><span class="o">=</span><span class="n">opsets</span><span class="p">,</span>
+            <span class="n">use_as_tensor_attributes</span><span class="o">=</span><span class="n">use_as_tensor_attributes</span><span class="p">,</span>
+            <span class="n">_from_opset</span><span class="o">=</span><span class="n">old_opsets</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">_change_opsets</span><span class="p">(</span><span class="n">new_onnx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_onnx</span>
+
+    <span class="n">is_function</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_function</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_from_opset</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_from_opset must a dictionary not </span><span class="si">{</span><span class="n">_from_opset</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">onnx_model</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[convert_onnx_model] upgrade node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2"> from opset &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_from_opset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">_from_opset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;ai.onnx.ml&quot;</span>
+            <span class="ow">or</span> <span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">node</span>
+        <span class="k">if</span> <span class="n">_from_opset</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">]</span> <span class="o">!=</span> <span class="n">opsets</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;TreeEnsembleRegressor&quot;</span><span class="p">,</span> <span class="s2">&quot;TreeEnsembleClassifier&quot;</span><span class="p">}:</span>
+                <span class="c1"># nothing to do</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No upgrade is available from </span><span class="si">{</span><span class="n">_from_opset</span><span class="si">}</span><span class="s2"> to &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">opsets</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">]</span><span class="si">}</span><span class="s2"> for operator type &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;TreeEnsembleRegressor&quot;</span><span class="p">,</span> <span class="s2">&quot;TreeEnsembleClassifier&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="n">use_as_tensor_attributes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">_from_opset</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">opsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                        <span class="s2">&quot;Opset 3 is required when use_as_tensor_attributes is True.&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">new_node</span> <span class="o">=</span> <span class="n">tree_ensemble_use_as_tensor_attributes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">atts</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">new_node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[convert_onnx_model] </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">: attributes=</span><span class="si">{</span><span class="n">atts</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">new_node</span>
+        <span class="k">return</span> <span class="n">node</span>
+
+    <span class="k">if</span> <span class="n">is_function</span><span class="p">:</span>
+        <span class="n">old_opsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">old_opsets</span> <span class="o">=</span> <span class="n">_from_opset</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[convert_onnx_model] upgrade </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span><span class="si">}</span><span class="s2"> from opset &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">old_opsets</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">opsets</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">node</span>
+    <span class="n">new_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">convert_onnx_model</span><span class="p">(</span>
+                <span class="n">node</span><span class="p">,</span>
+                <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">opsets</span><span class="o">=</span><span class="n">opsets</span><span class="p">,</span>
+                <span class="n">use_as_tensor_attributes</span><span class="o">=</span><span class="n">use_as_tensor_attributes</span><span class="p">,</span>
+                <span class="n">_from_opset</span><span class="o">=</span><span class="n">_from_opset</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Finally create the new graph.</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_nodes</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">is_function</span><span class="p">:</span>
+        <span class="n">onx</span> <span class="o">=</span> <span class="n">make_function</span><span class="p">(</span>
+            <span class="n">onnx_model</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
+            <span class="n">onnx_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">onnx_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
+            <span class="n">onnx_model</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+            <span class="n">new_nodes</span><span class="p">,</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">,</span>  <span class="c1"># opsets should have been updated</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span>
+            <span class="n">doc_string</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">_change_opsets</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">onx</span>
+
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">make_graph</span><span class="p">(</span>
+        <span class="n">new_nodes</span><span class="p">,</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span>
+        <span class="n">sparse_initializer</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">sparse_initializer</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">value_info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="multiply_tree"><a class="viewcode-back" href="../../../api/tools_nodes.html#onnx_extended.tools.multiply_tree">[docs]</a><span class="k">def</span> <span class="nf">multiply_tree</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multiplies the number of trees in TreeEnsemble operator.</span>
+<span class="sd">    It replicates the existing trees.</span>
+
+<span class="sd">    :param node: tree ensemble operator</span>
+<span class="sd">    :param n: number of times the existing trees must be multiplied</span>
+<span class="sd">    :return: the new trees</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;node is not a NodeProto but </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;TreeEnsemble&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected node type </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;domain&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;aggregate_function&quot;</span><span class="p">,</span> <span class="s2">&quot;post_transform&quot;</span><span class="p">}:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">s</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;n_targets&quot;</span><span class="p">}:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">i</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;classlabels_int64s&quot;</span><span class="p">:</span>
+            <span class="n">ints</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">ints</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ints</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ints</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;classlabels_strings&quot;</span><span class="p">:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">strings</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;base_values&quot;</span><span class="p">:</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">floats</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="o">.</span><span class="n">att</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">fs</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_as_tensor&quot;</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">to_array</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;base_values_as_tensor&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;class_ids&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;class_nodeids&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_falsenodeids&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_featureids&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_missing_value_tracks_true&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_nodeids&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_truenodeids&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;target_ids&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;target_nodeids&quot;</span><span class="p">,</span>
+        <span class="p">}:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">ints</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;class_treeids&quot;</span><span class="p">,</span> <span class="s2">&quot;nodes_treeids&quot;</span><span class="p">,</span> <span class="s2">&quot;target_treeids&quot;</span><span class="p">}:</span>
+            <span class="n">ints</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">ints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">ints</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+                <span class="n">arr</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ints</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;nodes_modes&quot;</span><span class="p">}:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">strings</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;nodes_hitrates&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes_values&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;target_weights&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;class_weights&quot;</span><span class="p">,</span>
+        <span class="p">}:</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">floats</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">*</span> <span class="n">n</span>
+
+    <span class="k">return</span> <span class="n">make_node</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
         </article>
       </div>
