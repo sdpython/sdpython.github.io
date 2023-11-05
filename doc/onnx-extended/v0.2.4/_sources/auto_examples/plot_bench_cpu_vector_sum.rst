@@ -88,23 +88,23 @@ Vector Sum
 
  .. code-block:: none
 
-      0%|          | 0/14 [00:00<?, ?it/s]      7%|7         | 1/14 [00:01<00:16,  1.28s/it]     14%|#4        | 2/14 [00:02<00:15,  1.25s/it]     21%|##1       | 3/14 [00:03<00:14,  1.28s/it]     29%|##8       | 4/14 [00:04<00:11,  1.19s/it]     36%|###5      | 5/14 [00:06<00:11,  1.22s/it]     43%|####2     | 6/14 [00:07<00:09,  1.21s/it]     50%|#####     | 7/14 [00:08<00:08,  1.16s/it]     57%|#####7    | 8/14 [00:09<00:07,  1.24s/it]     64%|######4   | 9/14 [00:11<00:06,  1.27s/it]     71%|#######1  | 10/14 [00:12<00:05,  1.30s/it]     79%|#######8  | 11/14 [00:13<00:03,  1.30s/it]     86%|########5 | 12/14 [00:14<00:02,  1.23s/it]     93%|#########2| 13/14 [00:16<00:01,  1.22s/it]    100%|##########| 14/14 [00:17<00:00,  1.23s/it]    100%|##########| 14/14 [00:17<00:00,  1.24s/it]
+      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:13,  1.06s/it]     14%|█▍        | 2/14 [00:02<00:15,  1.28s/it]     21%|██▏       | 3/14 [00:03<00:14,  1.31s/it]     29%|██▊       | 4/14 [00:05<00:13,  1.34s/it]     36%|███▌      | 5/14 [00:06<00:11,  1.29s/it]     43%|████▎     | 6/14 [00:08<00:11,  1.44s/it]     50%|█████     | 7/14 [00:09<00:09,  1.41s/it]     57%|█████▋    | 8/14 [00:10<00:08,  1.39s/it]     64%|██████▍   | 9/14 [00:11<00:06,  1.30s/it]     71%|███████▏  | 10/14 [00:13<00:05,  1.30s/it]     79%|███████▊  | 11/14 [00:14<00:03,  1.28s/it]     86%|████████▌ | 12/14 [00:15<00:02,  1.25s/it]     93%|█████████▎| 13/14 [00:16<00:01,  1.26s/it]    100%|██████████| 14/14 [00:18<00:00,  1.29s/it]    100%|██████████| 14/14 [00:18<00:00,  1.31s/it]
     direction          cols          rows
     dim                                  
-    500        1.156774e-09  1.110292e-09
-    700        1.490994e-09  1.176214e-09
-    800        1.399189e-09  1.163705e-09
-    900        1.125521e-09  1.070834e-09
-    1000       1.517947e-09  1.099748e-09
-    1100       1.347685e-09  1.464948e-09
-    1200       1.437535e-09  1.129206e-09
-    1300       2.319475e-09  1.328544e-09
-    1400       5.188417e-09  3.125614e-09
-    1500       2.605655e-09  1.736140e-09
-    1600       5.250663e-09  1.302334e-09
-    1700       5.790478e-09  1.337977e-09
-    1800       8.286016e-09  1.321148e-09
-    2000       6.833117e-09  1.291707e-09
+    500        1.339969e-09  1.398809e-09
+    700        2.704142e-09  1.588704e-09
+    800        2.250259e-09  2.394541e-09
+    900        2.731479e-09  1.534094e-09
+    1000       1.621978e-09  1.341229e-09
+    1100       3.462591e-09  2.001703e-09
+    1200       2.360225e-09  1.937548e-09
+    1300       4.133977e-09  2.443859e-09
+    1400       3.382357e-09  2.302352e-09
+    1500       4.393149e-09  1.420842e-09
+    1600       7.830828e-09  1.252001e-09
+    1700       8.417469e-09  1.289557e-09
+    1800       1.035628e-08  1.272862e-09
+    2000       1.024360e-08  1.249983e-09
 
 
 
@@ -114,7 +114,7 @@ Vector Sum
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-73
+.. GENERATED FROM PYTHON SOURCE LINES 63-74
 
 .. code-block:: default
 
@@ -126,6 +126,7 @@ Plots
     piv.plot(ax=ax[0], logx=True, title="Comparison between two summation")
     piv_diff.plot(ax=ax[1], logx=True, logy=True, title="Summation errors")
     piv_time.plot(ax=ax[2], logx=True, logy=True, title="Total time")
+    fig.tight_layout()
     fig.savefig("plot_bench_cpu_vector_sum.png")
 
 
@@ -141,13 +142,13 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:741: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:747: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-77
+.. GENERATED FROM PYTHON SOURCE LINES 75-78
 
 The summation by rows is much faster as expected.
 That explains why it is usually more efficient to
@@ -156,7 +157,7 @@ transpose the first matrix before a matrix multiplication.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  18.393 seconds)
+   **Total running time of the script:** (0 minutes 20.575 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum.py:

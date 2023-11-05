@@ -6,30 +6,32 @@
 
 Computation times
 =================
-**00:24.463** total execution time for **auto_examples** files:
+**05:18.968** total execution time for **auto_examples** files:
 
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_optim_tree_ensemble.py` (``plot_optim_tree_ensemble.py``)                             | 00:17.924 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_bench_gpu_vector_sum_gpu.py` (``plot_bench_gpu_vector_sum_gpu.py``)                   | 01:04.137 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``plot_bench_cpu.py``)                                                 | 00:06.539 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_conv_denorm.py` (``plot_conv_denorm.py``)                                             | 01:02.278 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``plot_bench_cpu_vector_sum.py``)                           | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py` (``plot_bench_cpu_vector_sum_avx_parallel.py``) | 00:52.829 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py` (``plot_bench_cpu_vector_sum_avx_parallel.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_op_einsum.py` (``plot_op_einsum.py``)                                                 | 00:45.029 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py` (``plot_bench_cpu_vector_sum_parallel.py``)         | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py` (``plot_bench_cpu_vector_sum_parallel.py``)         | 00:43.693 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bench_cypy_ort.py` (``plot_bench_cypy_ort.py``)                                       | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``plot_bench_cpu_vector_sum.py``)                           | 00:20.575 | 0.0 MB |
++-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``plot_bench_cpu.py``)                                                 | 00:13.335 | 0.0 MB |
++-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_auto_examples_plot_conv.py` (``plot_conv.py``)                                                           | 00:12.061 | 0.0 MB |
++-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_auto_examples_plot_bench_cypy_ort.py` (``plot_bench_cypy_ort.py``)                                       | 00:05.031 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py` (``plot_bench_gemm_f8.py``)                                         | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``plot_bench_gemm_ort.py``)                                       | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_bench_gpu_vector_sum_gpu.py` (``plot_bench_gpu_vector_sum_gpu.py``)                   | 00:00.000 | 0.0 MB |
-+-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_conv.py` (``plot_conv.py``)                                                           | 00:00.000 | 0.0 MB |
-+-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_conv_denorm.py` (``plot_conv_denorm.py``)                                             | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_optim_tree_ensemble.py` (``plot_optim_tree_ensemble.py``)                             | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_profile_gemm_ort.py` (``plot_profile_gemm_ort.py``)                                   | 00:00.000 | 0.0 MB |
 +-------------------------------------------------------------------------------------------------------------------------+-----------+--------+

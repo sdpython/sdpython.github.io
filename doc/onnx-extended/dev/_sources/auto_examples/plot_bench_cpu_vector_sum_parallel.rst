@@ -104,23 +104,23 @@ Vector Sum
 
  .. code-block:: none
 
-      0%|          | 0/14 [00:00<?, ?it/s]      7%|7         | 1/14 [00:02<00:26,  2.01s/it]     14%|#4        | 2/14 [00:03<00:22,  1.85s/it]     21%|##1       | 3/14 [00:06<00:24,  2.21s/it]     29%|##8       | 4/14 [00:08<00:23,  2.37s/it]     36%|###5      | 5/14 [00:10<00:19,  2.21s/it]     43%|####2     | 6/14 [00:12<00:16,  2.06s/it]     50%|#####     | 7/14 [00:16<00:17,  2.57s/it]     57%|#####7    | 8/14 [00:19<00:15,  2.63s/it]     64%|######4   | 9/14 [00:21<00:13,  2.61s/it]     71%|#######1  | 10/14 [00:25<00:11,  2.85s/it]     79%|#######8  | 11/14 [00:28<00:08,  2.90s/it]     86%|########5 | 12/14 [00:31<00:06,  3.04s/it]     93%|#########2| 13/14 [00:33<00:02,  2.84s/it]    100%|##########| 14/14 [00:35<00:00,  2.55s/it]    100%|##########| 14/14 [00:35<00:00,  2.55s/it]
+      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:24,  1.89s/it]     14%|█▍        | 2/14 [00:05<00:35,  2.95s/it]     21%|██▏       | 3/14 [00:09<00:38,  3.52s/it]     29%|██▊       | 4/14 [00:16<00:46,  4.64s/it]     36%|███▌      | 5/14 [00:18<00:33,  3.68s/it]     43%|████▎     | 6/14 [00:22<00:32,  4.02s/it]     50%|█████     | 7/14 [00:25<00:26,  3.75s/it]     57%|█████▋    | 8/14 [00:27<00:18,  3.12s/it]     64%|██████▍   | 9/14 [00:29<00:14,  2.80s/it]     71%|███████▏  | 10/14 [00:32<00:10,  2.72s/it]     79%|███████▊  | 11/14 [00:34<00:07,  2.45s/it]     86%|████████▌ | 12/14 [00:37<00:05,  2.62s/it]     93%|█████████▎| 13/14 [00:39<00:02,  2.42s/it]    100%|██████████| 14/14 [00:41<00:00,  2.38s/it]    100%|██████████| 14/14 [00:41<00:00,  2.96s/it]
     direction        cols//          rows        rows//
     dim                                                
-    500        4.501106e-10  1.143559e-09  4.139325e-10
-    700        6.155812e-10  1.073944e-09  3.556286e-10
-    800        6.970523e-10  1.117020e-09  4.847324e-10
-    900        4.924685e-09  1.859755e-09  4.701204e-09
-    1000       6.969506e-09  1.727890e-09  4.129575e-09
-    1100       7.630074e-09  2.125762e-09  3.901288e-09
-    1200       7.776375e-09  1.905790e-09  4.013687e-09
-    1300       5.484795e-09  1.815760e-09  2.989803e-09
-    1400       6.822384e-09  1.657764e-09  2.738828e-09
-    1500       7.283323e-09  3.763968e-09  4.062766e-09
-    1600       7.517995e-09  2.326358e-09  3.914371e-09
-    1700       7.771251e-09  3.978246e-09  3.644829e-09
-    1800       8.769196e-09  4.425172e-09  3.465385e-09
-    2000       7.528083e-09  3.870298e-09  3.345342e-09
+    500        1.037369e-09  1.300040e-09  1.129432e-09
+    700        1.476130e-09  1.169075e-09  5.886387e-10
+    800        5.565624e-09  1.712218e-09  1.994842e-09
+    900        6.913475e-09  6.336311e-09  6.311189e-09
+    1000       9.452526e-09  2.694111e-09  3.518850e-09
+    1100       1.139617e-08  3.026725e-09  4.407049e-09
+    1200       7.324529e-09  3.892918e-09  4.542762e-09
+    1300       8.466274e-09  2.565693e-09  4.714653e-09
+    1400       8.790963e-09  3.610252e-09  3.793022e-09
+    1500       8.061403e-09  3.546912e-09  2.803073e-09
+    1600       5.992225e-09  2.636379e-09  3.167657e-09
+    1700       6.062934e-09  1.788432e-09  2.113258e-09
+    1800       5.413899e-09  1.828977e-09  1.777880e-09
+    2000       6.471589e-09  1.730441e-09  1.546076e-09
 
 
 
@@ -130,7 +130,7 @@ Vector Sum
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-89
+.. GENERATED FROM PYTHON SOURCE LINES 79-90
 
 .. code-block:: default
 
@@ -142,6 +142,7 @@ Plots
     piv.plot(ax=ax[0], logx=True, title="Comparison between two summation")
     piv_diff.plot(ax=ax[1], logx=True, logy=True, title="Summation errors")
     piv_time.plot(ax=ax[2], logx=True, logy=True, title="Total time")
+    fig.tight_layout()
     fig.savefig("plot_bench_cpu_vector_sum_parallel.png")
 
 
@@ -157,13 +158,13 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:741: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:747: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-94
+.. GENERATED FROM PYTHON SOURCE LINES 91-95
 
 The summation by rows is much faster as expected.
 That explains why it is usually more efficient to
@@ -173,7 +174,7 @@ Parallelization is faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  37.957 seconds)
+   **Total running time of the script:** (0 minutes 43.693 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum_parallel.py:

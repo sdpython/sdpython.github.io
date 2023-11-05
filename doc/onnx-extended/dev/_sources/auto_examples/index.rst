@@ -154,6 +154,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example compares different equations for function numpy.einsum. It compares numpy implemen...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_einsum_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_op_einsum.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compares implementations of Einsum</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="An example with Conv. The floats followed the IEEE standard Single-precision floating-point for...">
 
 .. only:: html
@@ -236,6 +253,7 @@ Examples Gallery
    /auto_examples/plot_bench_cypy_ort
    /auto_examples/plot_bench_gpu_vector_sum_gpu
    /auto_examples/plot_bench_gemm_f8
+   /auto_examples/plot_op_einsum
    /auto_examples/plot_conv_denorm
    /auto_examples/plot_optim_tree_ensemble
    /auto_examples/plot_profile_gemm_ort

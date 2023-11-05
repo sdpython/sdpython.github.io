@@ -19,4 +19,5 @@ Introduction
     cython_binding
     custom_ops
     many_tools
-    examples
+    ops
+    parallelization
