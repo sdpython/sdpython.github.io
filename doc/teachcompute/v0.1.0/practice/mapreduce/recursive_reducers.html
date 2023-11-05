@@ -1,0 +1,925 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Reservoir Sampling distribué - énoncé" href="reservoir_sampling.html" /><link rel="prev" title="Notebooks sur Spark" href="../index_spark.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>Reducers récursifs - Documentation teachcompute 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Documentation teachcompute 0.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachcompute 0.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-11-31-route2023.html">2023-11-31 : rappel feuille de route 2023</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index_spark.html">Notebooks sur Spark</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Notebooks sur Spark</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Reducers récursifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reservoir_sampling.html">Reservoir Sampling distribué - énoncé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skewdata_reduce.html">Reduce skew data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skewed_dataset_correction.html">Données antipathiques (skewed), Appariement (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skewed_dataset.html">Données antipathiques (skewed), Appariement - énoncé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql_map_reduce.html">Mapper, Reducers customisés avec SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spark/spark_matrix_3_columns.html">Matrices en 3 colonnes</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../i_index.html">En diagonal</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of En diagonal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook_gallery.html">Tous les notebooks</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ext_test_case.html">teachcompute.ext_test_case</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Reducers-récursifs">
+<h1>Reducers récursifs<a class="headerlink" href="#Reducers-récursifs" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>J’utilise volontiers une terminologie découverte chez Microsoft pour illustrer une façon d’écrire le même calcul qui a un impact sur la facilité avec laquelle on peut le distribution : utiliser des comptes plutôt que des moyennes.</p>
+<p>Le notebook utilise des fonctions développées pour illustrer les notions, plus claires qu’efficaces.</p>
+<section id="Stream">
+<h2>Stream<a class="headerlink" href="#Stream" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le map reduce s’applique à des jeux de données très grands. D’un point de vue mathématique, on écrit des algorithmes qui s’appliquent à des jeux de données infinis ou plutôt dont la taille n’est pas connu. Pour les distinguer des jeux de données, on les appelle des <em>flux</em> ou <em>stream</em> en anglais.</p>
+<p>En aparté, écrits pour être parallélisés, ces traitements ont la particuliarité de ne pas conserver l’ordre dans lequel il traite les données. C’est particulièrement vrai lorsque le jeu de données est divisé sur plusieurs disques durs. Il est impossible de choisir un morceau en premier.</p>
+</section>
+<section id="Mapper">
+<h2>Mapper<a class="headerlink" href="#Mapper" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un <em>mapper</em> applique le même traitement à chaque observation du <em>stream</em> de façon indépendante.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ens</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">teachcompute.fctmr</span> <span class="kn">import</span> <span class="n">mapper</span>
+
+<span class="n">stream1</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ens</span><span class="p">)</span>
+<span class="n">stream1</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;map at 0x7f0e1b597fd0&gt;
+</pre></div></div>
+</div>
+<p>Le résultat n’existe pas tant qu’on ne demande explicitement que le calcul soit faut. Il faut parcourir le résultat.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 2), (&#39;b&#39;, 5), (&#39;a&#39;, 7), (&#39;a&#39;, 4)]
+</pre></div></div>
+</div>
+<p>Et on ne peut le parcourir qu’une fois :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[]
+</pre></div></div>
+</div>
+</section>
+<section id="Coût-du-premier-élément">
+<h2>Coût du premier élément<a class="headerlink" href="#Coût-du-premier-élément" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Quand on a une infinité d’éléments à traiter, il est important de pouvoir regarder ce qu’un traitement donne sur les premiers éléments. Avec un mapper, cela correspond au coût d’un seul map.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">teachcompute.fctmr</span> <span class="kn">import</span> <span class="n">take</span>
+
+<span class="n">first</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">it</span><span class="p">:</span> <span class="n">take</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">big_ens</span> <span class="o">=</span> <span class="n">ens</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 list(mapper(lambda el: (el[0], el[1]+1), big_ens))
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+45.5 µs ± 13.1 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 first(mapper(lambda el: (el[0], el[1]+1), big_ens))
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+834 ns ± 574 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+</section>
+<section id="Reducer">
+<h2>Reducer<a class="headerlink" href="#Reducer" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un vrai <em>reducer</em> réduit les éléments d’un ensemble, il ne répartit pas les données. En pratique, on réduit rarement un ensemble qu’on n’a pas distribué au préalable, comme avec un <em>groupby</em>. On ne réduit pas toujours non plus un ensemble à une seule ligne. On empile les opérations de streaming, on repousse également le moment d’évaluer. La distribution s’effectue selon une clé qui est hashée (voir <a class="reference external" href="http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/notebooks/hash_distribution.html">Hash et
+distribution</a>). La première lambda fonction décrit ce qu’est cette clé, le premier élément du couple dans ce cas.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">teachcompute.fctmr</span> <span class="kn">import</span> <span class="n">reducer</span>
+
+<span class="n">stream1</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ens</span><span class="p">)</span>
+<span class="n">stream2</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream1</span><span class="p">,</span> <span class="n">asiter</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">stream2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;generator object reducer at 0x7f0e1b5dba70&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, [(&#39;a&#39;, 2), (&#39;a&#39;, 4), (&#39;a&#39;, 7)]), (&#39;b&#39;, [(&#39;b&#39;, 5)])]
+</pre></div></div>
+</div>
+<p>Dans cet exemple, le <em>reducer</em> réduit chaque groupe à un seul résultat qui est l’ensemble des éléments. Quel est le coup du premier élément…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test2</span><span class="p">(</span><span class="n">ens</span><span class="p">,</span> <span class="n">one</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">stream1</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ens</span><span class="p">)</span>
+    <span class="n">stream2</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream1</span><span class="p">,</span> <span class="n">asiter</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">stream2</span><span class="p">)</span> <span class="k">if</span> <span class="n">one</span> <span class="k">else</span> <span class="n">first</span><span class="p">(</span><span class="n">stream2</span><span class="p">)</span>
+
+
+<span class="o">%</span><span class="k">timeit</span> -n 1000 test2(big_ens)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2.35 µs ± 841 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 test2(big_ens, one=True)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+186 µs ± 30.9 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<p>C’est plus court mais pas significativement plus court. Cela correspond au coût d’un tri de l’ensemble des observations et du coût de la construction du premier groupe.</p>
+</section>
+<section id="Reducer-et-tri">
+<h2>Reducer et tri<a class="headerlink" href="#Reducer-et-tri" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un stream est infini en théorie. En pratique il est fini mais on ne sait pas si un ou plusieurs groupes entiers tiendraient en mémoire. Une façon de faire est de limiter la présence des données en mémoire à un seul groupe et pour cela, il faut d’abord trier les données selon les clés. Ce n’est pas indispensable mais dans le pire des cas, c’est une bonne option. On pourrait avoir un stream comme suit :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pas_cool</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="mi">96</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">11111111</span><span class="o">**</span><span class="mi">2</span><span class="p">))]</span>
+<span class="n">pas_cool</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 0),
+ (&#39;b&#39;, 1),
+ (&#39;c&#39;, 2),
+ (&#39;d&#39;, 3),
+ (&#39;e&#39;, 4),
+ (&#39;f&#39;, 5),
+ (&#39;g&#39;, 6),
+ (&#39;h&#39;, 7),
+ (&#39;g&#39;, 8),
+ (&#39;f&#39;, 9),
+ (&#39;e&#39;, 10),
+ (&#39;d&#39;, 11),
+ (&#39;c&#39;, 12),
+ (&#39;b&#39;, 13),
+ (&#39;a&#39;, 14)]
+</pre></div></div>
+</div>
+<p>Le groupe <em>a</em> est au début et à la fin, si on regroupe en mémoire, le groupe associé à <em>a</em> doit rester en mémoire du début à la fin. On ne sait jamais si un groupe ne va pas réapparaître plus tard. En triant, on est sûr.</p>
+</section>
+<section id="Un-autre-map">
+<h2>Un autre map<a class="headerlink" href="#Un-autre-map" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On ajoute un dernier map qui fait la somme des éléments de chaque groupe.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sum_gr</span><span class="p">(</span><span class="n">key_gr</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">key_gr</span>
+    <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">gr</span><span class="p">)</span>
+
+
+<span class="n">stream1</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ens</span><span class="p">)</span>
+<span class="n">stream2</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream1</span><span class="p">)</span>
+<span class="n">stream3</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">sum_gr</span><span class="p">,</span> <span class="n">stream2</span><span class="p">)</span>
+<span class="n">stream3</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;map at 0x7f0e1b597580&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 13), (&#39;b&#39;, 5)]
+</pre></div></div>
+</div>
+</section>
+<section id="Combiner-ou-join">
+<h2>Combiner ou join<a class="headerlink" href="#Combiner-ou-join" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Un <em>combiner</em> ou <em>join</em> permet de fusionner deux bases de données qui ont en commun une clé.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">teachcompute.fctmr</span> <span class="kn">import</span> <span class="n">combiner</span>
+
+<span class="n">stream1</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ens</span><span class="p">)</span>
+<span class="n">stream2</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream1</span><span class="p">)</span>
+<span class="n">stream3</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">sum_gr</span><span class="p">,</span> <span class="n">stream2</span><span class="p">)</span>
+<span class="n">stream4</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span><span class="p">),</span> <span class="n">pas_cool</span><span class="p">)</span>
+<span class="n">comb</span> <span class="o">=</span> <span class="n">combiner</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream3</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream4</span><span class="p">)</span>
+<span class="n">comb</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;generator object combiner at 0x7f0e1b5dba00&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">comb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[((&#39;a&#39;, 13), (&#39;a&#39;, 10)),
+ ((&#39;a&#39;, 13), (&#39;a&#39;, 24)),
+ ((&#39;b&#39;, 5), (&#39;b&#39;, 11)),
+ ((&#39;b&#39;, 5), (&#39;b&#39;, 23))]
+</pre></div></div>
+</div>
+<p>Le coût du premier élément est un peu plus compliqué à inférer, cela dépend beaucoup des données.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="n">ens</span><span class="p">,</span> <span class="n">ens2</span><span class="p">,</span> <span class="n">one</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sens</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">stream1</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ens</span><span class="p">)</span>
+    <span class="n">stream2</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream1</span><span class="p">)</span>
+    <span class="n">stream3</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">sum_gr</span><span class="p">,</span> <span class="n">stream2</span><span class="p">)</span>
+    <span class="n">stream4</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span><span class="p">),</span> <span class="n">ens2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sens</span><span class="p">:</span>
+        <span class="n">comb</span> <span class="o">=</span> <span class="n">combiner</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream3</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream4</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">comb</span> <span class="o">=</span> <span class="n">combiner</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream4</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stream3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">comb</span><span class="p">)</span> <span class="k">if</span> <span class="n">one</span> <span class="k">else</span> <span class="n">first</span><span class="p">(</span><span class="n">comb</span><span class="p">)</span>
+
+
+<span class="o">%</span><span class="k">timeit</span> -n 1000 job(big_ens, pas_cool)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+3.72 µs ± 1.26 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 job(big_ens, pas_cool, sens=False)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4.41 µs ± 1.82 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 job(big_ens, pas_cool, one=True)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+247 µs ± 35.3 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 job(big_ens, pas_cool, one=True, sens=False)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+220 µs ± 22.5 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div></div>
+</div>
+<p>Il y a différentes façons de coder un <em>combiner</em>, l’une d’elle consiste à réduire chacun des deux streams puis à faire le produit croisé de chaque groupe assemblé.</p>
+</section>
+<section id="id1">
+<h2>Reducers récursifs<a class="headerlink" href="#id1" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>C’est pas loin d’être un abus de langage, disons que cela réduit la dépendance au tri. Un exemple.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sum_gr</span><span class="p">(</span><span class="n">key_gr</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">key_gr</span>
+    <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">gr</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">):</span>
+    <span class="n">stream2</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ens</span><span class="p">)</span>
+    <span class="n">stream3</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">sum_gr</span><span class="p">,</span> <span class="n">stream2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">stream3</span><span class="p">)</span>
+
+
+<span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 10), (&#39;b&#39;, 4)]
+</pre></div></div>
+</div>
+<p>Et maintenant, on coupe en deux :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ens</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 1), (&#39;b&#39;, 4)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 9)]
+</pre></div></div>
+</div>
+<p>Et maintenant :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_recursif</span><span class="p">(</span><span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span> <span class="o">+</span> <span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 10), (&#39;b&#39;, 4)]
+</pre></div></div>
+</div>
+<p>Le job ainsi écrit est associatif en quelque sorte. Cela laisse plus de liberté pour la distribution car on peut maintenant distribuer des clés identiques sur des machines différentes puis réappliquer le <em>reducer</em> sur les résultats de la première salve. C’est d’autant plus efficace que le <em>reducer</em> réduit beaucoup les données. Il reste à voir le cas d’un <em>reducer</em> <strong>non récursif</strong>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">ens</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ens</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">mean_gr</span><span class="p">(</span><span class="n">key_gr</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">key_gr</span>
+    <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">mean</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">gr</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">):</span>
+    <span class="n">stream2</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">el</span><span class="p">:</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ens</span><span class="p">)</span>
+    <span class="n">stream3</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">mean_gr</span><span class="p">,</span> <span class="n">stream2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">stream3</span><span class="p">)</span>
+
+
+<span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 3.3333333333333335), (&#39;b&#39;, 4.0)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ens</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 1.0), (&#39;b&#39;, 4.0)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 4.5)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_non_recursif</span><span class="p">(</span><span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span> <span class="o">+</span> <span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;a&#39;, 2.75), (&#39;b&#39;, 4.0)]
+</pre></div></div>
+</div>
+<p>Ce <em>job</em> ne doit pas être distribué n’importe comment.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<p><a class="reference external" href="https://github.com/sdpython/teachcompute/tree/main/_doc/practice/mapreduce/recursive_reducers.ipynb">Notebook on github</a></p>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="reservoir_sampling.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Reservoir Sampling distribué - énoncé</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../index_spark.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Notebooks sur Spark</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Reducers récursifs</a><ul>
+<li><a class="reference internal" href="#Stream">Stream</a></li>
+<li><a class="reference internal" href="#Mapper">Mapper</a></li>
+<li><a class="reference internal" href="#Coût-du-premier-élément">Coût du premier élément</a></li>
+<li><a class="reference internal" href="#Reducer">Reducer</a></li>
+<li><a class="reference internal" href="#Reducer-et-tri">Reducer et tri</a></li>
+<li><a class="reference internal" href="#Un-autre-map">Un autre map</a></li>
+<li><a class="reference internal" href="#Combiner-ou-join">Combiner ou join</a></li>
+<li><a class="reference internal" href="#id1">Reducers récursifs</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=24e0e37a"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

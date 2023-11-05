@@ -1,0 +1,1671 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Matrices en 3 colonnes" href="../spark/spark_matrix_3_columns.html" /><link rel="prev" title="Données antipathiques (skewed), Appariement - énoncé" href="skewed_dataset.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>Mapper, Reducers customisés avec SQL - Documentation teachcompute 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Documentation teachcompute 0.1.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachcompute 0.1.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-11-31-route2023.html">2023-11-31 : rappel feuille de route 2023</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index_spark.html">Notebooks sur Spark</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Notebooks sur Spark</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="recursive_reducers.html">Reducers récursifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reservoir_sampling.html">Reservoir Sampling distribué - énoncé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skewdata_reduce.html">Reduce skew data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skewed_dataset_correction.html">Données antipathiques (skewed), Appariement (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skewed_dataset.html">Données antipathiques (skewed), Appariement - énoncé</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Mapper, Reducers customisés avec SQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spark/spark_matrix_3_columns.html">Matrices en 3 colonnes</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../i_index.html">En diagonal</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of En diagonal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook_gallery.html">Tous les notebooks</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ext_test_case.html">teachcompute.ext_test_case</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Mapper,-Reducers-customisés-avec-SQL">
+<h1>Mapper, Reducers customisés avec SQL<a class="headerlink" href="#Mapper,-Reducers-customisés-avec-SQL" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Ce notebook propose l’utilisation de SQL avec <a class="reference external" href="https://sqlite.org/">SQLite</a> pour manipuler les données depuis un notebook (avec le module <a class="reference external" href="https://docs.python.org/3.6/library/sqlite3.html">sqlite3</a>).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+</pre></div>
+</div>
+</div>
+<section id="Représentation">
+<h2>Représentation<a class="headerlink" href="#Représentation" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le module <a class="reference external" href="http://pandas.pydata.org/">pandas</a> manipule des tables et c’est la façon la plus commune de représenter les données. Lorsque les données sont multidimensionnelles, on distingue les coordonnées des valeurs :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;cube1.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_mapreduce_sql_map_reduce_4_0.png" src="../../_images/practice_mapreduce_sql_map_reduce_4_0.png" />
+</div>
+</div>
+<p>Dans cet exemple, il y a :</p>
+<ul class="simple">
+<li><p>3 coordonnées : Age, Profession, Annéee</p></li>
+<li><p>2 valeurs : Espérance de vie, Population</p></li>
+</ul>
+<p>On peut représenter les donnés également comme ceci :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;cube2.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_mapreduce_sql_map_reduce_6_0.png" src="../../_images/practice_mapreduce_sql_map_reduce_6_0.png" />
+</div>
+</div>
+<p>C’est assez simple. Prenons un exemple : <a class="reference external" href="http://www.data-publica.com/opendata/7098--population-et-conditions-sociales-table-de-mortalite-de-1960-a-2010">table de mortalité de 1960 à 2010</a> qu’on récupère à l’aide de la fonction <a class="reference external" href="http://www.xavierdupre.fr/app/actuariat_python/helpsphinx/actuariat_python/data/population.html#actuariat_python.data.population.table_mortalite_euro_stat">table_mortalite_euro_stat</a>. C’est assez long (4-5 minutes) sur l’ensemble des données car elles doivent être
+prétraitées (voir la documentation de la fonction). Pour écouter, il faut utiliser le paramètre <em>stop_at</em>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/home/xadupre/github/teachcompute&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">teachcompute.datasets</span> <span class="kn">import</span> <span class="n">mortality_table</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="n">mortality_table</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">filename</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;./mortality.txt&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;size=</span><span class="si">{</span><span class="n">size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="si">:</span><span class="s2">1.3f</span><span class="si">}</span><span class="s2"> Mb&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+size=120.594 Mb
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>annee</th>
+      <th>valeur</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>indicateur</th>
+      <th>genre</th>
+      <th>pays</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021</td>
+      <td>0.00015</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020</td>
+      <td>0.00052</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2019</td>
+      <td>0.00021</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2018</td>
+      <td>0.00067</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2017</td>
+      <td>0.00046</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Les indicateurs pour deux âges différents :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span>
+    <span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">age</span> <span class="o">==</span> <span class="s2">&quot;Y60&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">age</span> <span class="o">==</span> <span class="s2">&quot;Y61&quot;</span><span class="p">))</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">annee</span> <span class="o">==</span> <span class="mi">2000</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">pays</span> <span class="o">==</span> <span class="s2">&quot;FR&quot;</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">genre</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>annee</th>
+      <th>valeur</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>indicateur</th>
+      <th>genre</th>
+      <th>pays</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>105650</th>
+      <td>2000</td>
+      <td>5.020000e-03</td>
+      <td>Y60</td>
+      <td>60.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>107522</th>
+      <td>2000</td>
+      <td>4.860000e-03</td>
+      <td>Y61</td>
+      <td>61.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>587296</th>
+      <td>2000</td>
+      <td>2.580000e+01</td>
+      <td>Y60</td>
+      <td>60.0</td>
+      <td>LIFEXP</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>589157</th>
+      <td>2000</td>
+      <td>2.490000e+01</td>
+      <td>Y61</td>
+      <td>61.0</td>
+      <td>LIFEXP</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>1087844</th>
+      <td>2000</td>
+      <td>5.010000e-03</td>
+      <td>Y60</td>
+      <td>60.0</td>
+      <td>PROBDEATH</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>1089716</th>
+      <td>2000</td>
+      <td>4.850000e-03</td>
+      <td>Y61</td>
+      <td>61.0</td>
+      <td>PROBDEATH</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>1569977</th>
+      <td>2000</td>
+      <td>9.949900e-01</td>
+      <td>Y60</td>
+      <td>60.0</td>
+      <td>PROBSURV</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>1571849</th>
+      <td>2000</td>
+      <td>9.951500e-01</td>
+      <td>Y61</td>
+      <td>61.0</td>
+      <td>PROBSURV</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>2051560</th>
+      <td>2000</td>
+      <td>9.307600e+04</td>
+      <td>Y60</td>
+      <td>60.0</td>
+      <td>PYLIVED</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>2053421</th>
+      <td>2000</td>
+      <td>9.261800e+04</td>
+      <td>Y61</td>
+      <td>61.0</td>
+      <td>PYLIVED</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>2531170</th>
+      <td>2000</td>
+      <td>9.331000e+04</td>
+      <td>Y60</td>
+      <td>60.0</td>
+      <td>SURVIVORS</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>2533031</th>
+      <td>2000</td>
+      <td>9.284300e+04</td>
+      <td>Y61</td>
+      <td>61.0</td>
+      <td>SURVIVORS</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>3010828</th>
+      <td>2000</td>
+      <td>2.405594e+06</td>
+      <td>Y60</td>
+      <td>60.0</td>
+      <td>TOTPYLIVED</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+    <tr>
+      <th>3012689</th>
+      <td>2000</td>
+      <td>2.312517e+06</td>
+      <td>Y61</td>
+      <td>61.0</td>
+      <td>TOTPYLIVED</td>
+      <td>F</td>
+      <td>FR</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Données-trop-grosses-pour-tenir-en-mémoire-:-SQLite">
+<h2>Données trop grosses pour tenir en mémoire : SQLite<a class="headerlink" href="#Données-trop-grosses-pour-tenir-en-mémoire-:-SQLite" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On charge une grosse base de données (assez petite pour que la séance ne soit pas trop longue).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(3385344, 7)
+</pre></div></div>
+</div>
+<p>Les données sont trop grosses pour tenir dans une feuille Excel et les consulter il n’y a pas d’autres moyens que d’en regarder des extraits. Que passe-t-il quand les données sont encore plus grosses et qu’elles ne tiennent pas en mémoire ? Quelques solutions :</p>
+<ul class="simple">
+<li><p>augmenter la mémoire de l’ordinateur, avec 20 Go, on peut faire beaucoup de choses,</p></li>
+<li><p>stocker les données dans un serveur SQL,</p></li>
+<li><p>stocker les données sur un système distribué (cloud, Hadoop, …)</p></li>
+</ul>
+<p>La seconde option n’est pas toujours simple, il faut installer un serveur SQL. Pour aller plus vite, on peut simplement utiliser <a class="reference external" href="https://www.sqlite.org/">SQLite</a> qui est une façon de faire du SQL sans serveur (cela prend quelques minutes). On utilise la méthode <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.to_sql.html">to_sql</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">sql</span>
+
+<span class="n">cnx</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mortalite.db3&quot;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;mortalite&quot;</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="n">cnx</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;Table &#39;mortalite&#39; already exists&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+        <span class="c1"># seulement si l&#39;erreur ne vient pas du fait que cela</span>
+        <span class="c1"># a déjà été fait</span>
+        <span class="k">raise</span> <span class="n">e</span>
+<span class="c1"># on peut ajouter d&#39;autres dataframe à la table comme si elle était créée par morceau</span>
+<span class="c1"># voir le paramètre if_exists de la fonction to_sql</span>
+</pre></div>
+</div>
+</div>
+<p>On peut maintenant récupérer un morceau avec la fonction <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_sql.html?highlight=read_sql#pandas.read_sql">read_sql</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">example</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM mortalite WHERE age_num==50 LIMIT 5&quot;</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+<span class="n">example</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>annee</th>
+      <th>valeur</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>indicateur</th>
+      <th>genre</th>
+      <th>pays</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>84185</td>
+      <td>2021</td>
+      <td>0.00234</td>
+      <td>Y50</td>
+      <td>50.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>84186</td>
+      <td>2020</td>
+      <td>0.00237</td>
+      <td>Y50</td>
+      <td>50.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>84187</td>
+      <td>2019</td>
+      <td>0.00188</td>
+      <td>Y50</td>
+      <td>50.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>84188</td>
+      <td>2018</td>
+      <td>0.00195</td>
+      <td>Y50</td>
+      <td>50.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>84189</td>
+      <td>2017</td>
+      <td>0.00170</td>
+      <td>Y50</td>
+      <td>50.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>AL</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>L’ensemble des données restent sur le disque, seul le résultat de la requête est chargé en mémoire. Si on ne peut pas faire tenir les données en mémoire, il faut soit en obtenir une vue partielle (un échantillon aléatoire, un vue filtrée), soit une vue agrégrée. Pour finir, il faut fermer la connexion pour laisser d’autres applications ou notebook modifier la base ou tout simplement supprimer le fichier.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cnx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Sous Windows, on peut consulter la base avec le logiciel <a class="reference external" href="http://www.yunqa.de/delphi/doku.php/products/sqlitespy/index">SQLiteSpy</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;sqlite.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_mapreduce_sql_map_reduce_22_0.png" src="../../_images/practice_mapreduce_sql_map_reduce_22_0.png" />
+</div>
+</div>
+<p>Sous Linux ou Max, on peut utiliser une extension Firefox <a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/?src">SQLite Manager</a>.</p>
+</section>
+<section id="Cas-1-:-filtrer-pour-créer-un-échantillon-aléatoire">
+<h2>Cas 1 : filtrer pour créer un échantillon aléatoire<a class="headerlink" href="#Cas-1-:-filtrer-pour-créer-un-échantillon-aléatoire" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Si on ne peut pas faire tenir les données en mémoire, on peut soit regarder les premières lignes soit prendre un échantillon aléatoire. Deux options :</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sample.html">Dataframe.sample</a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3.4/library/sqlite3.html#sqlite3.Connection.create_function">create_function</a></p></li>
+</ul>
+<p>La première fonction est simple :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+((338534, 7), (3385344, 7))
+</pre></div></div>
+</div>
+<p>Je ne sais pas si cela peut être réalisé sans charger les données en mémoire. Si les données pèsent 20 Go, cette méthode n’aboutira pas. Pourtant, on veut juste un échantillon pour commencer à regarder les données. On utilise la seconde option avec <a class="reference external" href="https://docs.python.org/3.4/library/sqlite3.html#sqlite3.Connection.create_function">create_function</a> et la fonction suivante :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>  <span class="c1"># loi uniforme</span>
+
+
+<span class="k">def</span> <span class="nf">echantillon</span><span class="p">(</span><span class="n">proportion</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">proportion</span> <span class="k">else</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">sql</span>
+
+<span class="n">cnx</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mortalite.db3&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>On déclare la fonction à la base de données.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cnx</span><span class="o">.</span><span class="n">create_function</span><span class="p">(</span><span class="s2">&quot;echantillon&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">echantillon</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>On veut récupérer environ 1% de la table ? On écrit d’abord le filtre.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM mortalite WHERE echantillon(0.01)&quot;</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+<span class="n">sample</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(34027, 8)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>annee</th>
+      <th>valeur</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>indicateur</th>
+      <th>genre</th>
+      <th>pays</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>82</td>
+      <td>2021</td>
+      <td>0.00026</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>BE</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>147</td>
+      <td>2018</td>
+      <td>0.00073</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>BG</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>223</td>
+      <td>2012</td>
+      <td>0.00015</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>CH</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>294</td>
+      <td>2003</td>
+      <td>0.00000</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>CY</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>342</td>
+      <td>1984</td>
+      <td>0.00065</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>DEATHRATE</td>
+      <td>F</td>
+      <td>CZ</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>On ferme la connexion.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cnx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Pseudo-Map/Reduce-avec-SQLite">
+<h2>Pseudo Map/Reduce avec SQLite<a class="headerlink" href="#Pseudo-Map/Reduce-avec-SQLite" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>La liste des <a class="reference external" href="https://www.sqlite.org/keyword_index.html">mots-clés du langage SQL utilisés par SQLite</a> n’est pas aussi riche que d’autres solutions de serveurs SQL. La médiane ne semble pas en faire partie. Cependant, pour une année, un genre, un âge donné, on voudrait calculer la médiane de l’espérance de vie sur l’ensembles des pays.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span><span class="o">,</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">pandas.io</span> <span class="kn">import</span> <span class="n">sql</span>
+
+<span class="n">cnx</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mortalite.db3&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pays</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT pays, COUNT(*) FROM mortalite GROUP BY pays&quot;</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+<span class="n">pays</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pays</th>
+      <th>COUNT(*)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AL</td>
+      <td>16758</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AM</td>
+      <td>16254</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AT</td>
+      <td>94428</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AZ</td>
+      <td>21672</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>BE</td>
+      <td>112488</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Il n’y a pas le même nombre de données selon les pays, il est probable que le nombre de pays pour lesquels il existe des données varie selon les âges et les années.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;SELECT nb_country, COUNT(*) AS nb_rows FROM (</span>
+<span class="s2">                SELECT annee,age,age_num, count(*) AS nb_country FROM mortalite</span>
+<span class="s2">                WHERE indicateur==&quot;LIFEXP&quot; AND genre==&quot;F&quot;</span>
+<span class="s2">                GROUP BY annee,age,age_num</span>
+<span class="s2">            ) GROUP BY nb_country&quot;&quot;&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;nb_country&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>nb_country</th>
+      <th>nb_rows</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>24</th>
+      <td>50</td>
+      <td>860</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>49</td>
+      <td>172</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;nb_country&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;nb_rows&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Nombre de données par pays&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_mapreduce_sql_map_reduce_43_0.png" src="../../_images/practice_mapreduce_sql_map_reduce_43_0.png" />
+</div>
+</div>
+<p>Soit un nombre inconstant de pays. Le fait qu’on est 100 pays suggère qu’on ait une erreur également.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;SELECT annee,age,age_num, count(*) AS nb_country FROM mortalite</span>
+<span class="s2">                WHERE indicateur==&quot;LIFEXP&quot; AND genre==&quot;F&quot;</span>
+<span class="s2">                GROUP BY annee,age,age_num</span>
+<span class="s2">                HAVING nb_country &gt;= 100&quot;&quot;&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>annee</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>nb_country</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Ce sont des valeurs manquantes. Le problème pour calculer la médiane pour chaque observation est qu’il faut d’abord regrouper les lignes de la table par indicateur puis choisir la médiane dans chaque de ces petits groupes. On s’inspire pour cela de la logique Map/Reduce et de la fonction <a class="reference external" href="https://docs.python.org/3.4/library/sqlite3.html#sqlite3.Connection.create_aggregate">create_aggregate</a>.</p>
+</section>
+<section id="Cas-2-:-reducer-customisé-avec-SQL">
+<h2>Cas 2 : reducer customisé avec SQL<a class="headerlink" href="#Cas-2-:-reducer-customisé-avec-SQL" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le reducer se présente toujours sous la forme suivante :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReducerMediane</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ???</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># ???</span>
+        <span class="c1">#</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ???</span>
+        <span class="c1"># return ... //2 ]</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<p>Qu’on renseigne de la sorte :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReducerMediane</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>On le déclare ensuite à <em>sqllite3</em>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cnx</span><span class="o">.</span><span class="n">create_aggregate</span><span class="p">(</span><span class="s2">&quot;ReducerMediane&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ReducerMediane</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;SELECT annee,age,age_num, ReducerMediane(valeur) AS mediane FROM mortalite</span>
+<span class="s2">                WHERE indicateur==&quot;LIFEXP&quot; AND genre==&quot;F&quot;</span>
+<span class="s2">                GROUP BY annee,age,age_num&quot;&quot;&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>annee</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>mediane</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1960</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>73.7</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1960</td>
+      <td>Y02</td>
+      <td>2.0</td>
+      <td>72.8</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1960</td>
+      <td>Y03</td>
+      <td>3.0</td>
+      <td>71.9</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1960</td>
+      <td>Y04</td>
+      <td>4.0</td>
+      <td>71.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1960</td>
+      <td>Y05</td>
+      <td>5.0</td>
+      <td>70.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Un reducer à deux entrées même si cela n’a pas beaucoup de sens ici :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReducerMediane2</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value2</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+
+
+<span class="n">cnx</span><span class="o">.</span><span class="n">create_aggregate</span><span class="p">(</span><span class="s2">&quot;ReducerMediane2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ReducerMediane2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;SELECT annee,age,age_num, ReducerMediane2(valeur, valeur+1) AS mediane2 FROM mortalite</span>
+<span class="s2">                WHERE indicateur==&quot;LIFEXP&quot; AND genre==&quot;F&quot;</span>
+<span class="s2">                GROUP BY annee,age,age_num&quot;&quot;&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>annee</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>mediane2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1960</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>74.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1960</td>
+      <td>Y02</td>
+      <td>2.0</td>
+      <td>73.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1960</td>
+      <td>Y03</td>
+      <td>3.0</td>
+      <td>72.3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1960</td>
+      <td>Y04</td>
+      <td>4.0</td>
+      <td>71.3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1960</td>
+      <td>Y05</td>
+      <td>5.0</td>
+      <td>70.4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Il n’est apparemment pas possible de retourner deux résultats mais on peut utiliser une ruse qui consise à les concaténer dans une chaîne de caracères.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReducerQuantile</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">q1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">q2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">[</span><span class="mi">3</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indicateur</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%f</span><span class="s2">;</span><span class="si">%f</span><span class="s2">;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+
+<span class="n">cnx</span><span class="o">.</span><span class="n">create_aggregate</span><span class="p">(</span><span class="s2">&quot;ReducerQuantile&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ReducerQuantile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;SELECT annee,age,age_num, ReducerQuantile(valeur) AS quantiles FROM mortalite</span>
+<span class="s2">                WHERE indicateur==&quot;LIFEXP&quot; AND genre==&quot;F&quot;</span>
+<span class="s2">                GROUP BY annee,age,age_num&quot;&quot;&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">cnx</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>annee</th>
+      <th>age</th>
+      <th>age_num</th>
+      <th>quantiles</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1960</td>
+      <td>None</td>
+      <td>NaN</td>
+      <td>4.400000;72.800000;20</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1960</td>
+      <td>Y01</td>
+      <td>1.0</td>
+      <td>73.000000;74.000000;10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1960</td>
+      <td>Y02</td>
+      <td>2.0</td>
+      <td>72.100000;73.200000;10</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1960</td>
+      <td>Y03</td>
+      <td>3.0</td>
+      <td>71.200000;72.300000;10</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1960</td>
+      <td>Y04</td>
+      <td>4.0</td>
+      <td>70.300000;71.300000;10</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>On ferme la connexion.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cnx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Notion-d'index">
+<h2>Notion d’index<a class="headerlink" href="#Notion-d'index" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>En SQL et pour de grandes tables, la notion d’index joue un rôle important pour accélérer les opérations de jointures (<code class="docutils literal notranslate"><span class="pre">JOIN</span></code>) ou de regroupement (<code class="docutils literal notranslate"><span class="pre">GROUP</span> <span class="pre">BY</span></code>). L’article <a class="reference external" href="http://sebastianraschka.com/Articles/2014_sqlite_in_python_tutorial.html">A thorough guide to SQLite database operations in Python</a> montre comment faire les principales opérations.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<p><a class="reference external" href="https://github.com/sdpython/teachcompute/tree/main/_doc/practice/mapreduce/sql_map_reduce.ipynb">Notebook on github</a></p>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../spark/spark_matrix_3_columns.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Matrices en 3 colonnes</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="skewed_dataset.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Données antipathiques (skewed), Appariement - énoncé</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Mapper, Reducers customisés avec SQL</a><ul>
+<li><a class="reference internal" href="#Représentation">Représentation</a></li>
+<li><a class="reference internal" href="#Données-trop-grosses-pour-tenir-en-mémoire-:-SQLite">Données trop grosses pour tenir en mémoire : SQLite</a></li>
+<li><a class="reference internal" href="#Cas-1-:-filtrer-pour-créer-un-échantillon-aléatoire">Cas 1 : filtrer pour créer un échantillon aléatoire</a></li>
+<li><a class="reference internal" href="#Pseudo-Map/Reduce-avec-SQLite">Pseudo Map/Reduce avec SQLite</a></li>
+<li><a class="reference internal" href="#Cas-2-:-reducer-customisé-avec-SQL">Cas 2 : reducer customisé avec SQL</a></li>
+<li><a class="reference internal" href="#Notion-d'index">Notion d’index</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=24e0e37a"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
