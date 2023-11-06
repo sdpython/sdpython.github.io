@@ -9,7 +9,7 @@
         <title>Compares implementations of Einsum - onnx-extended 0.2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -518,7 +518,7 @@ equal to the default number of used threads to parallelize.</p>
 <p>The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-0f073f9d9daddcc977f886aad0469cb7eac2d0fb.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-5e6337010e24eb83830fbefd45e2326464c59eac.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -527,28 +527,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbsnh\\n[ 0  3  2  1 -1]&quot;];
-140706654963456 [label=&quot;id\\nNone&quot;];
-0 -&gt; 140706654963456;
-140706654551008 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-140706654963456 -&gt; 140706654551008;
+140118724774208 [label=&quot;id\\nNone&quot;];
+0 -&gt; 140118724774208;
+140118724774304 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+140118724774208 -&gt; 140118724774304;
 1 [label=&quot;input 1\\nbtnh\\n[ 0  3  2 -1  1]&quot;];
-140706654550768 [label=&quot;id\\nNone&quot;];
-1 -&gt; 140706654550768;
-140706654549520 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-140706654550768 -&gt; 140706654549520;
-140706656599488 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-140706656585568 -&gt; 140706656599488;
-140706654541312 -&gt; 140706656599488;
-140706668903056 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-140706654543520 -&gt; 140706668903056;
-140706668897296 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-140706668903056 -&gt; 140706668897296;
-140706656585568 [label=&quot;transpose - I0\\nperm=(0, 2, 1, 4, 3)None&quot; style=filled fillcolor=red];
-140706654551008 -&gt; 140706656585568;
-140706654541312 [label=&quot;transpose\\nperm=(0, 2, 3, 1, 4)None&quot;];
-140706654549520 -&gt; 140706654541312;
-140706654543520 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-140706656599488 -&gt; 140706654543520;
+140118724774256 [label=&quot;id\\nNone&quot;];
+1 -&gt; 140118724774256;
+140118721428016 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+140118724774256 -&gt; 140118721428016;
+140120190125920 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+140120190139456 -&gt; 140120190125920;
+140118724785776 -&gt; 140120190125920;
+140120190136048 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+140118724774064 -&gt; 140120190136048;
+140120190124624 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+140120190136048 -&gt; 140120190124624;
+140120190139456 [label=&quot;transpose - I0\\nperm=(0, 2, 1, 4, 3)None&quot; style=filled fillcolor=red];
+140118724774304 -&gt; 140120190139456;
+140118724785776 [label=&quot;transpose\\nperm=(0, 2, 3, 1, 4)None&quot;];
+140118721428016 -&gt; 140118724785776;
+140118724774064 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+140120190125920 -&gt; 140118724774064;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dfs</span></a> <span class="o">=</span> <span class="p">[]</span>
@@ -601,7 +601,7 @@ Is it worth transposing before doing the summation…
 The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-d0534963adb8e56e2face78254c995b5d8b0d44f.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-1e7f279f90ff1fa60b91453e154ba6e216d5429d.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -610,28 +610,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbshn\\n[ 0  2  3  1 -1]&quot;];
-140706656599872 [label=&quot;id\\nNone&quot;];
-0 -&gt; 140706656599872;
-140706656595648 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-140706656599872 -&gt; 140706656595648;
+140118724719424 [label=&quot;id\\nNone&quot;];
+0 -&gt; 140118724719424;
+140118724719616 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+140118724719424 -&gt; 140118724719616;
 1 [label=&quot;input 1\\nbthn\\n[ 0  2  3 -1  1]&quot;];
-140706656593440 [label=&quot;id\\nNone&quot;];
-1 -&gt; 140706656593440;
-140706656599008 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-140706656593440 -&gt; 140706656599008;
-140706654548512 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-140706656588880 -&gt; 140706654548512;
-140706654967920 -&gt; 140706654548512;
-140706668888704 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-140706654550768 -&gt; 140706668888704;
-140706656595456 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-140706668888704 -&gt; 140706656595456;
-140706656588880 [label=&quot;transpose - I0\\nperm=(0, 3, 1, 4, 2)None&quot; style=filled fillcolor=red];
-140706656595648 -&gt; 140706656588880;
-140706654967920 [label=&quot;transpose\\nperm=(0, 4, 3, 1, 2)None&quot;];
-140706656599008 -&gt; 140706654967920;
-140706654550768 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-140706654548512 -&gt; 140706654550768;
+140118724718416 [label=&quot;id\\nNone&quot;];
+1 -&gt; 140118724718416;
+140118724709584 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+140118724718416 -&gt; 140118724709584;
+140118724712368 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+140118724711360 -&gt; 140118724712368;
+140118724711504 -&gt; 140118724712368;
+140118724718320 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+140118724717360 -&gt; 140118724718320;
+140118724713184 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+140118724718320 -&gt; 140118724713184;
+140118724711360 [label=&quot;transpose - I0\\nperm=(0, 3, 1, 4, 2)None&quot; style=filled fillcolor=red];
+140118724719616 -&gt; 140118724711360;
+140118724711504 [label=&quot;transpose\\nperm=(0, 4, 3, 1, 2)None&quot;];
+140118724709584 -&gt; 140118724711504;
+140118724717360 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+140118724712368 -&gt; 140118724717360;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">equation</span></a> <span class="o">=</span> <span class="s2">&quot;bshn,bthn-&gt;bnts&quot;</span>
@@ -684,7 +684,7 @@ on the second one. It is worth transposing before multiplying.
 The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-074e3e7d6c860bd169f7c44a7690ddea0e1d7a68.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-67c259a64ca612df239dfa42a3602da5e1180bb1.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -693,28 +693,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbhsn\\n[ 0  1  3  2 -1]&quot;];
-140706656587872 [label=&quot;id\\nNone&quot;];
-0 -&gt; 140706656587872;
-140706656583792 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-140706656587872 -&gt; 140706656583792;
+140118724970768 [label=&quot;id\\nNone&quot;];
+0 -&gt; 140118724970768;
+140118724980992 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+140118724970768 -&gt; 140118724980992;
 1 [label=&quot;input 1\\nbhtn\\n[ 0  1  3 -1  2]&quot;];
-140706656588544 [label=&quot;id\\nNone&quot;];
-1 -&gt; 140706656588544;
-140706656590416 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-140706656588544 -&gt; 140706656590416;
-140706656593248 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-140706656589024 -&gt; 140706656593248;
-140706656587920 -&gt; 140706656593248;
-140706656587152 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-140706656594832 -&gt; 140706656587152;
-140706656599056 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-140706656587152 -&gt; 140706656599056;
-140706656589024 [label=&quot;transpose - I0\\nperm=(0, 3, 2, 4, 1)None&quot; style=filled fillcolor=red];
-140706656583792 -&gt; 140706656589024;
-140706656587920 [label=&quot;transpose\\nperm=(0, 4, 3, 2, 1)None&quot;];
-140706656590416 -&gt; 140706656587920;
-140706656594832 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-140706656593248 -&gt; 140706656594832;
+140118598807760 [label=&quot;id\\nNone&quot;];
+1 -&gt; 140118598807760;
+140118598809584 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+140118598807760 -&gt; 140118598809584;
+140118598806800 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+140118598806368 -&gt; 140118598806800;
+140118598806704 -&gt; 140118598806800;
+140118598806224 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+140118598806560 -&gt; 140118598806224;
+140118598806272 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+140118598806224 -&gt; 140118598806272;
+140118598806368 [label=&quot;transpose - I0\\nperm=(0, 3, 2, 4, 1)None&quot; style=filled fillcolor=red];
+140118724980992 -&gt; 140118598806368;
+140118598806704 [label=&quot;transpose\\nperm=(0, 4, 3, 2, 1)None&quot;];
+140118598809584 -&gt; 140118598806704;
+140118598806560 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+140118598806800 -&gt; 140118598806560;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">equation</span></a> <span class="o">=</span> <span class="s2">&quot;bhsn,bhtn-&gt;bnts&quot;</span>
