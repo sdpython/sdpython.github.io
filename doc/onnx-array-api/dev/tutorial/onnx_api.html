@@ -206,7 +206,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tech/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../tech/aapi.html">Difficulty to implement an an Array API for ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tech/aapi.html">Difficulty to implement an Array API for ONNX</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -282,7 +282,7 @@ Let’s see how it looks like a very simply example.</p>
     <span class="k">return</span> <span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">Y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>The mathematical function must first be translate with <a class="reference external" href="https://onnx.ai/onnx/operators/">ONNX Operators</a> or
+<p>The mathematical function must first be translated with <a class="reference external" href="https://onnx.ai/onnx/operators/">ONNX Operators</a> or
 primitives. It is usually easy because the primitives are very close to what
 numpy defines. It can be expressed as (the syntax is just for illustration).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx</span>
@@ -322,12 +322,67 @@ the true implementation would be the following.</p>
         <span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">opset</span><span class="p">)])</span>
         <span class="k">return</span> <span class="n">model</span>
 
-    <span class="n">model</span> <span class="o">=</span> <span class="n">make_euclidean</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">make_euclidean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">ir_version</span><span class="p">:</span> <span class="mi">9</span>
+    <span class="n">opset_import</span> <span class="p">{</span>
+      <span class="n">domain</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+      <span class="n">version</span><span class="p">:</span> <span class="mi">21</span>
+    <span class="p">}</span>
+    <span class="n">graph</span> <span class="p">{</span>
+      <span class="n">node</span> <span class="p">{</span>
+        <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;X&quot;</span>
+        <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;Y&quot;</span>
+        <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;dxy&quot;</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="s2">&quot;Sub&quot;</span>
+      <span class="p">}</span>
+      <span class="n">node</span> <span class="p">{</span>
+        <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;dxy&quot;</span>
+        <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;two&quot;</span>
+        <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;dxy2&quot;</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="s2">&quot;Pow&quot;</span>
+      <span class="p">}</span>
+      <span class="n">node</span> <span class="p">{</span>
+        <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;dxy2&quot;</span>
+        <span class="n">output</span><span class="p">:</span> <span class="s2">&quot;Z&quot;</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="s2">&quot;ReduceSum&quot;</span>
+      <span class="p">}</span>
+      <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;euclidian&quot;</span>
+      <span class="n">initializer</span> <span class="p">{</span>
+        <span class="n">dims</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="n">data_type</span><span class="p">:</span> <span class="mi">7</span>
+        <span class="n">int64_data</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;two&quot;</span>
+      <span class="p">}</span>
+      <span class="nb">input</span> <span class="p">{</span>
+        <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;X&quot;</span>
+        <span class="nb">type</span> <span class="p">{</span>
+          <span class="n">tensor_type</span> <span class="p">{</span>
+            <span class="n">elem_type</span><span class="p">:</span> <span class="mi">1</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="nb">input</span> <span class="p">{</span>
+        <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;Y&quot;</span>
+        <span class="nb">type</span> <span class="p">{</span>
+          <span class="n">tensor_type</span> <span class="p">{</span>
+            <span class="n">elem_type</span><span class="p">:</span> <span class="mi">1</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="n">output</span> <span class="p">{</span>
+        <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;Z&quot;</span>
+        <span class="nb">type</span> <span class="p">{</span>
+          <span class="n">tensor_type</span> <span class="p">{</span>
+            <span class="n">elem_type</span><span class="p">:</span> <span class="mi">1</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
 </pre></div>
 </div>
 <p>Since it is a second implementation of an existing function, it is necessary to
@@ -497,7 +552,7 @@ rather than using an existing one.</p>
 The development is usually driven by what they are used for. Each of them
 may not fully support all your needs and it is not always easy to understand
 the error messages they provide when something goes wrong.
-It is better to understand its own need fefore choosing one.
+It is better to understand its own need before choosing one.
 Here are some of the questions which may need to be answered.</p>
 <ul class="simple">
 <li><p>ability to easily write loops and tests (control flow)</p></li>
@@ -519,7 +574,7 @@ based on the same version</p></li>
 It converts python code to onnx code by analyzing the python code
 (through <a class="reference external" href="https://docs.python.org/3/library/ast.html">ast</a>). The package makes it very easy to use loops and tests in onnx.
 It is very close to onnx syntax. It is not easy to support multiple
-implementing depending on the opset version required by the user.</p>
+implementation depending on the opset version required by the user.</p>
 <p>Example taken from the documentation :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx</span>
 
@@ -587,9 +642,11 @@ implementing depending on the opset version required by the user.</p>
 </section>
 <section id="spox">
 <h3>spox<a class="headerlink" href="#spox" title="Permalink to this heading">#</a></h3>
-<p>The syntax of epkg:<cite>spox</cite> is similar but it does not use <a class="reference external" href="https://docs.python.org/3/library/ast.html">ast</a>.
+<p>The syntax of <a class="reference external" href="https://github.com/Quantco/spox">spox</a> is similar but it does not use <a class="reference external" href="https://docs.python.org/3/library/ast.html">ast</a>.
 Therefore, <a class="reference external" href="https://spox.readthedocs.io/en/latest/guides/advanced.html#Control-flow">loops and tests</a>
-are expressed in a very different way.</p>
+are expressed in a very different way. The tricky part with it is to handle
+the local context. A variable created in the main graph is known by any
+of its subgraphs.</p>
 <p>Example taken from the documentation :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx</span>
 
@@ -619,14 +676,15 @@ are expressed in a very different way.</p>
 <section id="sklearn-onnx">
 <h3>sklearn-onnx<a class="headerlink" href="#sklearn-onnx" title="Permalink to this heading">#</a></h3>
 <p><a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a> also implements its own API to add custom graphs.
-It was designed to shorten the time spend in reimplementing the scikit-learn
-code into onnx code. It can be used to implement a new converted as
-described in this example:
+It was designed to shorten the time spent in reimplementing <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>
+code into <a class="reference external" href="https://onnx.ai/onnx/">onnx</a> code. It can be used to implement a new converter
+mapped a custom model as described in this example:
 <a class="reference external" href="https://onnx.ai/sklearn-onnx/auto_tutorial/plot_icustom_converter.html">Implement a new converter</a>.
-But it can also be used to build standalone example:</p>
+But it can also be used to build standalone models.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">onnx</span>
+<span class="kn">import</span> <span class="nn">onnx.helper</span> <span class="k">as</span> <span class="nn">oh</span>
 <span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
 
 
@@ -649,12 +707,20 @@ But it can also be used to build standalone example:</p>
     <span class="n">dummy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">np_type</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">final</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">({</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">dummy</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="n">dummy</span><span class="p">})</span>
 
-    <span class="n">model</span> <span class="o">=</span> <span class="n">make_euclidean</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">make_euclidean_skl2onnx</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">15</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Po_Powcst&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Su_C0</span>
+      <span class="n">Pow</span><span class="p">(</span><span class="n">Su_C0</span><span class="p">,</span> <span class="n">Po_Powcst</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Po_Z0</span>
+        <span class="n">ReduceSum</span><span class="p">(</span><span class="n">Po_Z0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Z</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
@@ -662,7 +728,7 @@ But it can also be used to build standalone example:</p>
 <h3>onnxblocks<a class="headerlink" href="#onnxblocks" title="Permalink to this heading">#</a></h3>
 <p><a class="reference external" href="https://onnxruntime.ai/docs/api/python/on_device_training/training_artifacts.html#prepare-for-training">onnxblocks</a>
 was introduced in onnxruntime to define custom losses in order to train
-a model with <a class="reference external" href="https://onnxruntime.ai/docs/get-started/training-on-device.html">onnxruntime-training</a>.</p>
+a model with <a class="reference external" href="https://onnxruntime.ai/docs/get-started/training-on-device.html">onnxruntime-training</a>. It is mostly used for this usage.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnxruntime.training.onnxblock</span> <span class="k">as</span> <span class="nn">onnxblock</span>
 <span class="kn">from</span> <span class="nn">onnxruntime.training</span> <span class="kn">import</span> <span class="n">artifacts</span>
 
@@ -709,7 +775,7 @@ a model with <a class="reference external" href="https://onnxruntime.ai/docs/get
 </section>
 <section id="numpy-api-for-onnx">
 <h3>numpy API for onnx<a class="headerlink" href="#numpy-api-for-onnx" title="Permalink to this heading">#</a></h3>
-<p>See <a class="reference internal" href="numpy_api.html#l-numpy-api-onnx"><span class="std std-ref">Numpy API for ONNX</span></a>. This API was introduced to create graph
+<p>See <a class="reference internal" href="numpy_api.html#l-numpy-api-onnx"><span class="std std-ref">Numpy API for ONNX</span></a>. This API was introduced to create graphs
 by using numpy API. If a function is defined only with numpy,
 it should be possible to use the exact same code to create the
 corresponding onnx graph. That’s what this API tries to achieve.
