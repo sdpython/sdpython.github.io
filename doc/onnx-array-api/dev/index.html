@@ -257,8 +257,8 @@
           </label>
         </div>
         <article role="main">
-          <section id="onnx-array-api-numpy-array-api-for-onnx">
-<h1>onnx-array-api: (Numpy) Array API for ONNX<a class="headerlink" href="#onnx-array-api-numpy-array-api-for-onnx" title="Permalink to this heading">#</a></h1>
+          <section id="onnx-array-api-apis-to-create-onnx-graphs">
+<h1>onnx-array-api: APIs to create ONNX Graphs<a class="headerlink" href="#onnx-array-api-apis-to-create-onnx-graphs" title="Permalink to this heading">#</a></h1>
 <a class="reference external image-reference" href="https://dev.azure.com/xavierdupre3/onnx-array-api/"><img alt="https://dev.azure.com/xavierdupre3/onnx-array-api/_apis/build/status/sdpython.onnx-array-api" src="https://dev.azure.com/xavierdupre3/onnx-array-api/_apis/build/status/sdpython.onnx-array-api" /></a>
 <a class="reference external image-reference" href="http://badge.fury.io/py/onnx-array-api"><img alt="https://badge.fury.io/py/onnx-array-api.svg" src="https://badge.fury.io/py/onnx-array-api.svg" /></a>
 <a class="reference external image-reference" href="https://github.com/sdpython/onnx-array-api/issues"><img alt="GitHub Issues" src="http://img.shields.io/github/issues/sdpython/onnx-array-api.png" /></a>
@@ -266,10 +266,8 @@
 <a class="reference external image-reference" href="https://github.com/sdpython/onnx-array-api/"><img alt="size" src="https://img.shields.io/github/repo-size/sdpython/onnx-array-api" /></a>
 <a class="reference external image-reference" href="https://github.com/psf/black"><img alt="https://img.shields.io/badge/code%20style-black-000000.svg" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/sdpython/onnx-array-api"><img alt="https://codecov.io/gh/sdpython/onnx-array-api/branch/main/graph/badge.svg?token=Wb9ZGDta8J" src="https://codecov.io/gh/sdpython/onnx-array-api/branch/main/graph/badge.svg?token=Wb9ZGDta8J" /></a>
-<p><strong>onnx-array-api</strong> implements a numpy API for ONNX.
-It gives the user the ability to convert functions written
-following the numpy API to convert that function into ONNX as
-well as to execute it.</p>
+<p><strong>onnx-array-api</strong> implements APIs to create custom ONNX graphs.
+The objective is to speed up the implementation of converter libraries.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
@@ -286,12 +284,13 @@ well as to execute it.</p>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 </div>
+<p><strong>Numpy API</strong></p>
 <p>Sources available on
 <a class="reference external" href="https://github.com/sdpython/onnx-array-api">github/onnx-array-api</a>.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  <span class="c1"># A</span>
 <span class="kn">from</span> <span class="nn">onnx_array_api.npx</span> <span class="kn">import</span> <span class="n">absolute</span><span class="p">,</span> <span class="n">jit_onnx</span>
-<span class="kn">from</span> <span class="nn">onnx_array_api.plotting.dot_plot</span> <span class="kn">import</span> <span class="n">to_dot</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
 
 
 <span class="k">def</span> <span class="nf">l1_loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -312,17 +311,56 @@ well as to execute it.</p>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.44</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">jitted_myloss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">jitted_myloss</span><span class="o">.</span><span class="n">get_onnx</span><span class="p">()))</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">0.042</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">18</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x0&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__0</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__1</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__2</span>
+      <span class="n">Slice</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">cst__0</span><span class="p">,</span> <span class="n">cst__1</span><span class="p">,</span> <span class="n">cst__2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__12</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__3</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__4</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__5</span>
+      <span class="n">Slice</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">cst__3</span><span class="p">,</span> <span class="n">cst__4</span><span class="p">,</span> <span class="n">cst__5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__14</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__6</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__7</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__8</span>
+      <span class="n">Slice</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">cst__6</span><span class="p">,</span> <span class="n">cst__7</span><span class="p">,</span> <span class="n">cst__8</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__16</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__9</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__10</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__11</span>
+      <span class="n">Slice</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">cst__9</span><span class="p">,</span> <span class="n">cst__10</span><span class="p">,</span> <span class="n">cst__11</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__18</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__13</span>
+      <span class="n">Squeeze</span><span class="p">(</span><span class="n">r__12</span><span class="p">,</span> <span class="n">cst__13</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__20</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__15</span>
+      <span class="n">Squeeze</span><span class="p">(</span><span class="n">r__14</span><span class="p">,</span> <span class="n">cst__15</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__21</span>
+        <span class="n">Sub</span><span class="p">(</span><span class="n">r__20</span><span class="p">,</span> <span class="n">r__21</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__24</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__17</span>
+      <span class="n">Squeeze</span><span class="p">(</span><span class="n">r__16</span><span class="p">,</span> <span class="n">cst__17</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__22</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">cst__19</span>
+      <span class="n">Squeeze</span><span class="p">(</span><span class="n">r__18</span><span class="p">,</span> <span class="n">cst__19</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__23</span>
+        <span class="n">Sub</span><span class="p">(</span><span class="n">r__22</span><span class="p">,</span> <span class="n">r__23</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__25</span>
+          <span class="n">Abs</span><span class="p">(</span><span class="n">r__25</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__28</span>
+            <span class="n">ReduceSum</span><span class="p">(</span><span class="n">r__28</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__30</span>
+    <span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__26</span>
+      <span class="n">CastLike</span><span class="p">(</span><span class="n">r__26</span><span class="p">,</span> <span class="n">r__24</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__27</span>
+        <span class="n">Pow</span><span class="p">(</span><span class="n">r__24</span><span class="p">,</span> <span class="n">r__27</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__29</span>
+          <span class="n">ReduceSum</span><span class="p">(</span><span class="n">r__29</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__31</span>
+            <span class="n">Add</span><span class="p">(</span><span class="n">r__30</span><span class="p">,</span> <span class="n">r__31</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r__32</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;r__32&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
 </pre></div>
 </div>
-<div class="graphviz"><img src="_images/graphviz-fc9a146486ec25da7a3846e468331dc3abdbfd70.png" alt="digraph{
-  nodesep=0.05;
-  orientation=portrait;
+<div class="graphviz"><img src="_images/graphviz-355f7e32b52da8fee86535b86f4700586cf7aac6.png" alt="digraph{
   size=7;
+  orientation=portrait;
   ranksep=0.25;
+  nodesep=0.05;
 
   x0 [shape=box color=red label=&quot;x0\nTensorProto.FLOAT\nshape=['', '']&quot; fontsize=10];
   x1 [shape=box color=red label=&quot;x1\nTensorProto.FLOAT\nshape=['', '']&quot; fontsize=10];
@@ -498,6 +536,42 @@ well as to execute it.</p>
   r__31 -&gt; Add;
   Add -&gt; r__32;
 }" class="graphviz" /></div>
+<p><strong>Light API</strong></p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.light_api</span> <span class="kn">import</span> <span class="n">start</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">start</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">bring</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">Sub</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;dxy&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">cst</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="s2">&quot;two&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">bring</span><span class="p">(</span><span class="s2">&quot;dxy&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">Pow</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">ReduceSum</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">vout</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;two&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dxy</span>
+      <span class="n">Pow</span><span class="p">(</span><span class="n">dxy</span><span class="p">,</span> <span class="n">two</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r1_0</span>
+        <span class="n">ReduceSum</span><span class="p">(</span><span class="n">r1_0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">noop_with_empty_axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Z</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+</pre></div>
+</div>
 </section>
 
         </article>
@@ -545,7 +619,7 @@ well as to execute it.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">onnx-array-api: (Numpy) Array API for ONNX</a><ul>
+<li><a class="reference internal" href="#">onnx-array-api: APIs to create ONNX Graphs</a><ul>
 </ul>
 </li>
 </ul>

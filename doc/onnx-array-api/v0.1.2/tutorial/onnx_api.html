@@ -272,6 +272,63 @@ is no converter from numpy to onnx. Sometimes, it is needed to extend
 an existing onnx models or to merge models coming from different packages.
 Sometimes, they are just not available, only onnx is.
 Let’s see how it looks like a very simply example.</p>
+<section id="use-torch-or-tensorflow">
+<h2>Use torch or tensorflow<a class="headerlink" href="#use-torch-or-tensorflow" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://pytorch.org/">pytorch</a> offers the possibility to convert any function
+implemented with pytorch function into onnx with <a class="reference external" href="https://pytorch.org/docs/stable/onnx.html">torch.onnx</a>.
+A couple of examples.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span>
+
+
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="o">+</span> <span class="n">bias</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bias&quot;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">}</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),)</span>
+
+<span class="n">export_output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">dynamo_export</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;my_simple_model.onnx&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.onnx</span>
+
+
+<span class="k">def</span> <span class="nf">func_with_nested_input_structure</span><span class="p">(</span>
+    <span class="n">x_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+    <span class="n">y_tuple</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;a&quot;</span> <span class="ow">in</span> <span class="n">x_dict</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x_dict</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s2">&quot;b&quot;</span> <span class="ow">in</span> <span class="n">x_dict</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x_dict</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">y1</span><span class="p">,</span> <span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">)</span> <span class="o">=</span> <span class="n">y_tuple</span>
+
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span> <span class="o">+</span> <span class="n">y3</span>
+
+<span class="n">x_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.</span><span class="p">)}</span>
+<span class="n">y_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">2.</span><span class="p">),</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">3.</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">4.</span><span class="p">)))</span>
+<span class="n">export_output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">dynamo_export</span><span class="p">(</span><span class="n">func_with_nested_input_structure</span><span class="p">,</span> <span class="n">x_dict</span><span class="p">,</span> <span class="n">y_tuple</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">export_output</span><span class="o">.</span><span class="n">adapt_torch_inputs_to_onnx</span><span class="p">(</span><span class="n">x_dict</span><span class="p">,</span> <span class="n">y_tuple</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
 <section id="euclidian-distance">
 <h2>Euclidian distance<a class="headerlink" href="#euclidian-distance" title="Permalink to this heading">#</a></h2>
 <p>For example, the well known Euclidian distance
@@ -449,7 +506,22 @@ A second unit test must be added to check this one as well.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="n">ONNXRuntimeError</span><span class="p">]</span> <span class="p">:</span> <span class="mi">2</span> <span class="p">:</span> <span class="n">INVALID_ARGUMENT</span> <span class="p">:</span> <span class="n">Failed</span> <span class="n">to</span> <span class="n">load</span> <span class="n">model</span> <span class="k">with</span> <span class="n">error</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">onnxruntime</span><span class="o">/</span><span class="n">onnxruntime</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">graph</span><span class="o">/</span><span class="n">model_load_utils</span><span class="o">.</span><span class="n">h</span><span class="p">:</span><span class="mi">46</span> <span class="n">void</span> <span class="n">onnxruntime</span><span class="p">::</span><span class="n">model_load_utils</span><span class="p">::</span><span class="n">ValidateOpsetForDomain</span><span class="p">(</span><span class="n">const</span> <span class="n">std</span><span class="p">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="p">::</span><span class="n">__cxx11</span><span class="p">::</span><span class="n">basic_string</span><span class="o">&lt;</span><span class="n">char</span><span class="o">&gt;</span><span class="p">,</span> <span class="nb">int</span><span class="o">&gt;&amp;</span><span class="p">,</span> <span class="n">const</span> <span class="n">onnxruntime</span><span class="p">::</span><span class="n">logging</span><span class="p">::</span><span class="n">Logger</span><span class="o">&amp;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="n">ONNX</span> <span class="n">Runtime</span> <span class="n">only</span> <span class="o">*</span><span class="n">guarantees</span><span class="o">*</span> <span class="n">support</span> <span class="k">for</span> <span class="n">models</span> <span class="n">stamped</span> <span class="k">with</span> <span class="n">official</span> <span class="n">released</span> <span class="n">onnx</span> <span class="n">opset</span> <span class="n">versions</span><span class="o">.</span> <span class="n">Opset</span> <span class="mi">21</span> <span class="ow">is</span> <span class="n">under</span> <span class="n">development</span> <span class="ow">and</span> <span class="n">support</span> <span class="k">for</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">limited</span><span class="o">.</span> <span class="n">The</span> <span class="n">operator</span> <span class="n">schemas</span> <span class="ow">and</span> <span class="ow">or</span> <span class="n">other</span> <span class="n">functionality</span> <span class="n">may</span> <span class="n">change</span> <span class="n">before</span> <span class="nb">next</span> <span class="n">ONNX</span> <span class="n">release</span> <span class="ow">and</span> <span class="ow">in</span> <span class="n">this</span> <span class="n">case</span> <span class="n">ONNX</span> <span class="n">Runtime</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">guarantee</span> <span class="n">backward</span> <span class="n">compatibility</span><span class="o">.</span> <span class="n">Current</span> <span class="n">official</span> <span class="n">support</span> <span class="k">for</span> <span class="n">domain</span> <span class="n">ai</span><span class="o">.</span><span class="n">onnx</span> <span class="ow">is</span> <span class="n">till</span> <span class="n">opset</span> <span class="mf">20.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    /home/xadupre/.local/lib/python3.10/site-packages/cerberus/__init__.py:13: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+      from pkg_resources import get_distribution, DistributionNotFound
+    /home/xadupre/.local/lib/python3.10/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+    Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+      declare_namespace(pkg)
+    /home/xadupre/.local/lib/python3.10/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+    Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+      declare_namespace(pkg)
+    /home/xadupre/.local/lib/python3.10/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+    Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+      declare_namespace(pkg)
+    /home/xadupre/.local/lib/python3.10/site-packages/pkg_resources/__init__.py:2871: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace(&#39;sphinxcontrib&#39;)`.
+    Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+      declare_namespace(pkg)
+    [2023-11-07 19:00:20,475] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+    [ONNXRuntimeError] : 2 : INVALID_ARGUMENT : Failed to load model with error: /home/xadupre/github/onnxruntime/onnxruntime/core/graph/model_load_utils.h:46 void onnxruntime::model_load_utils::ValidateOpsetForDomain(const std::unordered_map&lt;std::__cxx11::basic_string&lt;char&gt;, int&gt;&amp;, const onnxruntime::logging::Logger&amp;, bool, const string&amp;, int) ONNX Runtime only *guarantees* support for models stamped with official released onnx opset versions. Opset 21 is under development and support for this is limited. The operator schemas and or other functionality may change before next ONNX release and in this case ONNX Runtime will not guarantee backward compatibility. Current official support for domain ai.onnx is till opset 20.
 </pre></div>
 </div>
 <p>The list of operators is constantly evolving: onnx is versioned.
@@ -917,6 +989,7 @@ There is no eager mode.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Many ways to implement a custom graph in ONNX</a><ul>
+<li><a class="reference internal" href="#use-torch-or-tensorflow">Use torch or tensorflow</a></li>
 <li><a class="reference internal" href="#euclidian-distance">Euclidian distance</a></li>
 <li><a class="reference internal" href="#existing-api">Existing API</a><ul>
 <li><a class="reference internal" href="#onnxscript">onnxscript</a></li>
