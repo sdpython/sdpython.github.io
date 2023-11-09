@@ -284,7 +284,7 @@ est déjà partitionnée sur cette colonne.</p>
 </section>
 <section id="Spark-et-Python">
 <h3>Spark et Python<a class="headerlink" href="#Spark-et-Python" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Spark est implémenté en Java. L’API <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD">Python</a> permet de faire beaucoup de choses mais :</p>
+<p>Spark est implémenté en Java. L’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">Python</a> permet de faire beaucoup de choses mais :</p>
 <ul class="simple">
 <li><p>Elle ne sera jamais aussi complète que l’API <a class="reference external" href="http://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>.</p></li>
 <li><p>Elle sera plus lente que l’API <a class="reference external" href="http://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a> ou <a class="reference external" href="http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD">Scala</a> (car <a class="reference external" href="http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD">Scala</a> est une surcouche fonctionnelle de <a class="reference external" href="http://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>).</p></li>
@@ -327,7 +327,11 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text_file</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;spark_first_steps.ipynb&quot;</span><span class="p">)</span>
-<span class="n">counts</span> <span class="o">=</span> <span class="n">text_file</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">text_file</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">counts</span><span class="o">.</span><span class="n">saveAsTextFile</span><span class="p">(</span><span class="s2">&quot;fichier.out.txt&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -345,6 +349,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
 <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;fichier.out.txt/&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -389,7 +394,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
         <span class="n">content</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data_adult.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s2">&quot;data_adult.zip&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s2">&quot;data_adult.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
         <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;data_adult.txt&quot;</span><span class="p">)</span>
 </pre></div>
@@ -400,6 +405,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
 <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data_adult.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -593,6 +599,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;out&quot;</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;out&quot;</span><span class="p">)</span>
 </pre></div>
@@ -667,6 +674,8 @@ _SUCCESS  part-00000  part-00001
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
+
+
 <span class="k">def</span> <span class="nf">read_rdd</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
     <span class="n">pat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;part*&quot;</span><span class="p">)</span>
     <span class="n">all_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">pat</span><span class="p">)</span>
@@ -683,6 +692,7 @@ _SUCCESS  part-00000  part-00001
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No file to read in &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
     <span class="n">concatenated_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">merge</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">concatenated_df</span>
+
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">read_rdd</span><span class="p">(</span><span class="s2">&quot;out/copy_adult.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -813,6 +823,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
 <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">_</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">res</span><span class="p">])</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -911,7 +922,8 @@ _SUCCESS  part-00000  part-00001
     <span class="n">spl</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">spl</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">]</span>
 
-<span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">extract_column</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">row</span><span class="p">))</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">extract_column</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">row</span><span class="p">))</span>
 <span class="n">res</span><span class="o">.</span><span class="n">collect</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -937,6 +949,7 @@ _SUCCESS  part-00000  part-00001
     <span class="n">spl</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&lt;=50K&quot;</span>
 
+
 <span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">filter_column</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
 <span class="n">res</span><span class="o">.</span><span class="n">collect</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
 </pre></div>
@@ -960,8 +973,10 @@ _SUCCESS  part-00000  part-00001
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">filter_column_split</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&lt;=50K&quot;</span>
 
-<span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">extract_column</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">))</span> \
-         <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">filter_column_split</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">extract_column</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">))</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">filter_column_split</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">res</span><span class="o">.</span><span class="n">collect</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -987,6 +1002,7 @@ _SUCCESS  part-00000  part-00001
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extract_column_and_multiply_row</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
     <span class="n">spl</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">spl</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+
 
 <span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">extract_column_and_multiply_row</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
 <span class="n">res</span><span class="o">.</span><span class="n">collect</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span>
@@ -1068,9 +1084,11 @@ _SUCCESS  part-00000  part-00001
     <span class="n">age</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">spl</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
+
 <span class="k">def</span> <span class="nf">custom_agg</span><span class="p">(</span><span class="n">aggset</span><span class="p">):</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">aggset</span><span class="p">])</span>
     <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
 
 <span class="n">ave</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">extract_age_rich</span><span class="p">)</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">mapValues</span><span class="p">(</span><span class="n">custom_agg</span><span class="p">)</span>
 <span class="n">fin</span> <span class="o">=</span> <span class="n">ave</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
@@ -1094,7 +1112,7 @@ _SUCCESS  part-00000  part-00001
 </section>
 <section id="join">
 <h3>join<a class="headerlink" href="#join" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Et on remet la moyenne dans le stream initial. Il vaut mieux regarder la documentation de la méthode <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.join">join</a> avant de commencer à lire le code qui suit.</p>
+<p>Et on remet la moyenne dans le stream initial. Il vaut mieux regarder la documentation de la méthode <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.join">join</a> avant de commencer à lire le code qui suit.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
@@ -1182,7 +1200,7 @@ _SUCCESS  part-00000  part-00001
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">ages</span><span class="o">.</span><span class="n">value</span> <span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">ages</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="n">subset</span><span class="o">.</span><span class="n">collect</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1200,7 +1218,7 @@ _SUCCESS  part-00000  part-00001
 </section>
 <section id="les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert">
 <h3>les trucs qui servent parfois parce que … à l’usage ça sert<a class="headerlink" href="#les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Ce que font les méthodes associées aux <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD">RDD</a>, un peu comme les itérateurs, n’est pas toujours intuitif, mais il est à peu près sûr qu’elles vous serviront un jour (peut-être après avoir googlé ou bingé comme des fous).</p>
+<p>Ce que font les méthodes associées aux <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">RDD</a>, un peu comme les itérateurs, n’est pas toujours intuitif, mais il est à peu près sûr qu’elles vous serviront un jour (peut-être après avoir googlé ou bingé comme des fous).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
@@ -1236,7 +1254,7 @@ _SUCCESS  part-00000  part-00001
 [1, 1, 2, 1, 2, 3]
 </pre></div></div>
 </div>
-<p><a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.histogram">histogram</a>, <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.groupByKey">groupByKey</a></p>
+<p><a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.histogram">histogram</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.groupByKey">groupByKey</a></p>
 </section>
 <section id="le-truc-à-retenir">
 <h3>le truc à retenir<a class="headerlink" href="#le-truc-à-retenir" title="Lien permanent vers cette rubrique">#</a></h3>
@@ -1246,7 +1264,7 @@ _SUCCESS  part-00000  part-00001
 <li><p>Le traitement à proprement parler.</p></li>
 <li><p>La déclaration des flux de sorties.</p></li>
 </ol>
-<p>A moins d’écrire du java bas niveau, le job est transformé en un plan d’exécution qui n’est jamais exécuté si <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.collect">collect</a> ou <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.saveAsTextFile">save machin chouette</a> n’est jamais exécuté. Bref, c’est du <a class="reference external" href="https://en.wikipedia.org/wiki/Lazy_evaluation">lazy</a>.</p>
+<p>A moins d’écrire du java bas niveau, le job est transformé en un plan d’exécution qui n’est jamais exécuté si <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.collect">collect</a> ou <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.saveAsTextFile">save machin chouette</a> n’est jamais exécuté. Bref, c’est du <a class="reference external" href="https://en.wikipedia.org/wiki/Lazy_evaluation">lazy</a>.</p>
 </section>
 </section>
 <section id="Spark-DataFrame">
@@ -1258,6 +1276,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
 <span class="n">data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data_adult.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1636,6 +1655,7 @@ root
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
 <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data_adult.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1883,7 +1903,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fifty</span> <span class="o">=</span> <span class="n">fullsdf</span> <span class="p">[</span><span class="n">fullsdf</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fifty</span> <span class="o">=</span> <span class="n">fullsdf</span><span class="p">[</span><span class="n">fullsdf</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1928,23 +1948,18 @@ only showing top 20 rows
 
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
+</section>
+</section>
+<section id="Fin">
+<h2>Fin<a class="headerlink" href="#Fin" title="Lien permanent vers cette rubrique">#</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-</section>
 </section>
 </section>
 <hr class="docutils" />
@@ -2042,6 +2057,7 @@ only showing top 20 rows
 <li><a class="reference internal" href="#Dataframe-Spark-VS-Dataframe-pandas">Dataframe Spark VS Dataframe pandas</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#Fin">Fin</a></li>
 </ul>
 </li>
 </ul>

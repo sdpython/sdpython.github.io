@@ -492,7 +492,7 @@ array([[1.2962659 , 2.75236533],
 </section>
 <section id="Produit-matriciel">
 <h2>Produit matriciel<a class="headerlink" href="#Produit-matriciel" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Il faut d’abord faire la jointure avec la méthode <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.join">join</a>. Il faut que la clé soit sur la première colonne.</p>
+<p>Il faut d’abord faire la jointure avec la méthode <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.join">join</a>. Il faut que la clé soit sur la première colonne.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
@@ -565,11 +565,11 @@ array([[1.2962659 , 2.75236533],
  (5, 1, 0.4338072685535089)]
 </pre></div></div>
 </div>
-<p>Il ne reste plus qu’à agréger <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.reduceByKey">reduceByKey</a>. La documentation fournit un exemple facilement transposable. Elle indique aussi : <em>Merge the values for each key using an associative and commutative reduce function.</em> Pourquoi précise-t-elle <strong>associative et commutative</strong> ? Cela signifie que le résultat ne dépend pas de l’ordre dans lequel l’agrégation est réalisée et qu’on peut commencer à agréger sans attendre
+<p>Il ne reste plus qu’à agréger <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.reduceByKey">reduceByKey</a>. La documentation fournit un exemple facilement transposable. Elle indique aussi : <em>Merge the values for each key using an associative and commutative reduce function.</em> Pourquoi précise-t-elle <strong>associative et commutative</strong> ? Cela signifie que le résultat ne dépend pas de l’ordre dans lequel l’agrégation est réalisée et qu’on peut commencer à agréger sans attendre
 d’avoir regroupé toutes les valeurs associées à une clé.</p>
 <ul class="simple">
-<li><p><em>Cas 1 :</em> <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.groupBy">groupBy</a> + agrégation qui commence une fois les valeurs regroupées</p></li>
-<li><p><em>Cas 2 :</em> <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.reduceByKey">reduceByKey</a> + agrégation qui commence dès les premières valeurs regroupées</p></li>
+<li><p><em>Cas 1 :</em> <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.groupBy">groupBy</a> + agrégation qui commence une fois les valeurs regroupées</p></li>
+<li><p><em>Cas 2 :</em> <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.reduceByKey">reduceByKey</a> + agrégation qui commence dès les premières valeurs regroupées</p></li>
 </ul>
 <p>Le cas 2 est moins consommateur en terme de données. Le cas 1 n’est possible que si les valeurs agrégées ne sont pas trop nombreuses. Ca tombe bien, dans notre cas, le cas 2 convient.</p>
 <div class="nbinput docutils container">
@@ -643,7 +643,7 @@ array([[1.2962659 , 2.75236533],
 </section>
 <section id="Même-algorithme-avec-les-Spark-DataFrame">
 <h2>Même algorithme avec les Spark DataFrame<a class="headerlink" href="#Même-algorithme-avec-les-Spark-DataFrame" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>On a besoin de réaliser un <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.html#pyspark.RDD.flatMap">flatMap</a>. Une façon de faire est de créer des colonnes qui sont de type composé : un tableau, une structure. La multiplication des lignes est obtenue avec la fonction <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.functions.explode">explode</a>.</p>
+<p>On a besoin de réaliser un <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.flatMap">flatMap</a>. Une façon de faire est de créer des colonnes qui sont de type composé : un tableau, une structure. La multiplication des lignes est obtenue avec la fonction <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.functions.explode">explode</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
@@ -1098,11 +1098,14 @@ root
 (20, 3)
 </pre></div></div>
 </div>
+</section>
+<section id="Fin">
+<h2>Fin<a class="headerlink" href="#Fin" title="Lien permanent vers cette rubrique">#</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1172,6 +1175,7 @@ root
 <li><a class="reference internal" href="#Conversion-d'une-matrice-au-format-Spark">Conversion d’une matrice au format Spark</a></li>
 <li><a class="reference internal" href="#Produit-matriciel">Produit matriciel</a></li>
 <li><a class="reference internal" href="#Même-algorithme-avec-les-Spark-DataFrame">Même algorithme avec les Spark DataFrame</a></li>
+<li><a class="reference internal" href="#Fin">Fin</a></li>
 </ul>
 </li>
 </ul>

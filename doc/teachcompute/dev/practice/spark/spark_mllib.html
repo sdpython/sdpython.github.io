@@ -262,7 +262,7 @@
         <span class="n">content</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data_adult.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s2">&quot;data_adult.zip&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s2">&quot;data_adult.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
         <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;data_adult.txt&quot;</span><span class="p">)</span>
 </pre></div>
@@ -273,6 +273,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
 <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data_adult.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -512,11 +513,11 @@ dtype: object
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 your 131072x1 screen size is bogus. expect trouble
-23/11/06 18:16:21 WARN Utils: Your hostname, DESKTOP-USNMVAJ resolves to a loopback address: 127.0.1.1; using 172.28.4.178 instead (on interface eth0)
-23/11/06 18:16:21 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+23/11/09 20:35:02 WARN Utils: Your hostname, DESKTOP-USNMVAJ resolves to a loopback address: 127.0.1.1; using 172.28.7.44 instead (on interface eth0)
+23/11/09 20:35:02 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
 Setting default log level to &#34;WARN&#34;.
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-23/11/06 18:16:23 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+23/11/09 20:35:05 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -569,11 +570,15 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parsePoint</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-    <span class="n">spl</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.mllib.regression</span> <span class="kn">import</span> <span class="n">LabeledPoint</span>
+
+
+<span class="k">def</span> <span class="nf">parsePoint</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="n">spl</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spl</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">column_keep</span><span class="p">]</span>
     <span class="n">target</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&lt;=50K&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">LabeledPoint</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
 
 <span class="c1"># We prepare the training data</span>
 <span class="n">parsedData</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">parsePoint</span><span class="p">)</span>
@@ -586,347 +591,37 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-23/11/06 18:16:39 ERROR Executor: Exception in task 1.0 in stage 1.0 (TID 2)
-org.apache.spark.api.python.PythonException: Traceback (most recent call last):
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1247, in main
-    process()
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1239, in process
-    serializer.dump_stream(out_iter, outfile)
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/serializers.py&#34;, line 274, in dump_stream
-    vs = list(itertools.islice(iterator, batch))
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/util.py&#34;, line 83, in wrapper
-    return f(*args, **kwargs)
-  File &#34;/tmp/ipykernel_13967/2255358802.py&#34;, line 5, in parsePoint
-NameError: name &#39;LabeledPoint&#39; is not defined
 
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.handlePythonException(PythonRunner.scala:572)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:784)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:766)
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:525)
-        at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
-        at scala.collection.Iterator.foreach(Iterator.scala:943)
-        at scala.collection.Iterator.foreach$(Iterator.scala:943)
-        at org.apache.spark.InterruptibleIterator.foreach(InterruptibleIterator.scala:28)
-        at scala.collection.generic.Growable.$plus$plus$eq(Growable.scala:62)
-        at scala.collection.generic.Growable.$plus$plus$eq$(Growable.scala:53)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:105)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:49)
-        at scala.collection.TraversableOnce.to(TraversableOnce.scala:366)
-        at scala.collection.TraversableOnce.to$(TraversableOnce.scala:364)
-        at org.apache.spark.InterruptibleIterator.to(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toBuffer(TraversableOnce.scala:358)
-        at scala.collection.TraversableOnce.toBuffer$(TraversableOnce.scala:358)
-        at org.apache.spark.InterruptibleIterator.toBuffer(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toArray(TraversableOnce.scala:345)
-        at scala.collection.TraversableOnce.toArray$(TraversableOnce.scala:339)
-        at org.apache.spark.InterruptibleIterator.toArray(InterruptibleIterator.scala:28)
-        at org.apache.spark.rdd.RDD.$anonfun$collect$2(RDD.scala:1046)
-        at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2438)
-        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
-        at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
-        at org.apache.spark.scheduler.Task.run(Task.scala:141)
-        at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
-        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
-        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
-        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-        at java.base/java.lang.Thread.run(Thread.java:829)
-23/11/06 18:16:39 ERROR Executor: Exception in task 0.0 in stage 1.0 (TID 1)
-org.apache.spark.api.python.PythonException: Traceback (most recent call last):
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1247, in main
-    process()
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1239, in process
-    serializer.dump_stream(out_iter, outfile)
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/serializers.py&#34;, line 274, in dump_stream
-    vs = list(itertools.islice(iterator, batch))
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/util.py&#34;, line 83, in wrapper
-    return f(*args, **kwargs)
-  File &#34;/tmp/ipykernel_13967/2255358802.py&#34;, line 5, in parsePoint
-NameError: name &#39;LabeledPoint&#39; is not defined
-
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.handlePythonException(PythonRunner.scala:572)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:784)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:766)
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:525)
-        at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
-        at scala.collection.Iterator.foreach(Iterator.scala:943)
-        at scala.collection.Iterator.foreach$(Iterator.scala:943)
-        at org.apache.spark.InterruptibleIterator.foreach(InterruptibleIterator.scala:28)
-        at scala.collection.generic.Growable.$plus$plus$eq(Growable.scala:62)
-        at scala.collection.generic.Growable.$plus$plus$eq$(Growable.scala:53)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:105)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:49)
-        at scala.collection.TraversableOnce.to(TraversableOnce.scala:366)
-        at scala.collection.TraversableOnce.to$(TraversableOnce.scala:364)
-        at org.apache.spark.InterruptibleIterator.to(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toBuffer(TraversableOnce.scala:358)
-        at scala.collection.TraversableOnce.toBuffer$(TraversableOnce.scala:358)
-        at org.apache.spark.InterruptibleIterator.toBuffer(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toArray(TraversableOnce.scala:345)
-        at scala.collection.TraversableOnce.toArray$(TraversableOnce.scala:339)
-        at org.apache.spark.InterruptibleIterator.toArray(InterruptibleIterator.scala:28)
-        at org.apache.spark.rdd.RDD.$anonfun$collect$2(RDD.scala:1046)
-        at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2438)
-        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
-        at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
-        at org.apache.spark.scheduler.Task.run(Task.scala:141)
-        at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
-        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
-        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
-        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-        at java.base/java.lang.Thread.run(Thread.java:829)
-23/11/06 18:16:39 WARN TaskSetManager: Lost task 1.0 in stage 1.0 (TID 2) (172.28.4.178 executor driver): org.apache.spark.api.python.PythonException: Traceback (most recent call last):
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1247, in main
-    process()
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1239, in process
-    serializer.dump_stream(out_iter, outfile)
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/serializers.py&#34;, line 274, in dump_stream
-    vs = list(itertools.islice(iterator, batch))
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/util.py&#34;, line 83, in wrapper
-    return f(*args, **kwargs)
-  File &#34;/tmp/ipykernel_13967/2255358802.py&#34;, line 5, in parsePoint
-NameError: name &#39;LabeledPoint&#39; is not defined
-
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.handlePythonException(PythonRunner.scala:572)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:784)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:766)
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:525)
-        at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
-        at scala.collection.Iterator.foreach(Iterator.scala:943)
-        at scala.collection.Iterator.foreach$(Iterator.scala:943)
-        at org.apache.spark.InterruptibleIterator.foreach(InterruptibleIterator.scala:28)
-        at scala.collection.generic.Growable.$plus$plus$eq(Growable.scala:62)
-        at scala.collection.generic.Growable.$plus$plus$eq$(Growable.scala:53)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:105)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:49)
-        at scala.collection.TraversableOnce.to(TraversableOnce.scala:366)
-        at scala.collection.TraversableOnce.to$(TraversableOnce.scala:364)
-        at org.apache.spark.InterruptibleIterator.to(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toBuffer(TraversableOnce.scala:358)
-        at scala.collection.TraversableOnce.toBuffer$(TraversableOnce.scala:358)
-        at org.apache.spark.InterruptibleIterator.toBuffer(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toArray(TraversableOnce.scala:345)
-        at scala.collection.TraversableOnce.toArray$(TraversableOnce.scala:339)
-        at org.apache.spark.InterruptibleIterator.toArray(InterruptibleIterator.scala:28)
-        at org.apache.spark.rdd.RDD.$anonfun$collect$2(RDD.scala:1046)
-        at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2438)
-        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
-        at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
-        at org.apache.spark.scheduler.Task.run(Task.scala:141)
-        at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
-        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
-        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
-        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-        at java.base/java.lang.Thread.run(Thread.java:829)
-
-23/11/06 18:16:39 ERROR TaskSetManager: Task 1 in stage 1.0 failed 1 times; aborting job
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">Py4JJavaError</span>                             Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">/home/xadupre/github/teachcompute/_doc/practice/spark/spark_mllib.ipynb Cell 15</span> line <span class="ansi-cyan-fg">9
-</span><span class="ansi-green-intense-fg ansi-bold">      &lt;a href=&#39;vscode-notebook-cell://wsl%2Bubuntu-22.04/home/xadupre/github/teachcompute/_doc/practice/spark/spark_mllib.ipynb#X16sdnNjb2RlLXJlbW90ZQ%3D%3D?line=6&#39;&gt;7&lt;/a&gt;</span> # We prepare the training data
-<span class="ansi-green-intense-fg ansi-bold">      &lt;a href=&#39;vscode-notebook-cell://wsl%2Bubuntu-22.04/home/xadupre/github/teachcompute/_doc/practice/spark/spark_mllib.ipynb#X16sdnNjb2RlLXJlbW90ZQ%3D%3D?line=7&#39;&gt;8&lt;/a&gt;</span> parsedData = data.map(parsePoint)
-<span class="ansi-green-fg">----&gt; &lt;a href=&#39;vscode-notebook-cell://wsl%2Bubuntu-22.04/home/xadupre/github/teachcompute/_doc/practice/spark/spark_mllib.ipynb#X16sdnNjb2RlLXJlbW90ZQ%3D%3D?line=8&#39;&gt;9&lt;/a&gt;</span> parsedData.collect()[:2]
-
-File <span class="ansi-green-fg">~/.local/lib/python3.10/site-packages/pyspark/rdd.py:1833</span>, in <span class="ansi-cyan-fg">RDD.collect</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1831</span> with SCCallSiteSync(self.context):
-<span class="ansi-green-intense-fg ansi-bold">   1832</span>     assert self.ctx._jvm is not None
-<span class="ansi-green-fg">-&gt; 1833</span>     sock_info = self.ctx._jvm.PythonRDD.collectAndServe(self._jrdd.rdd())
-<span class="ansi-green-intense-fg ansi-bold">   1834</span> return list(_load_from_socket(sock_info, self._jrdd_deserializer))
-
-File <span class="ansi-green-fg">~/.local/lib/python3.10/site-packages/py4j/java_gateway.py:1322</span>, in <span class="ansi-cyan-fg">JavaMember.__call__</span><span class="ansi-blue-fg">(self, *args)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1316</span> command = proto.CALL_COMMAND_NAME +\
-<span class="ansi-green-intense-fg ansi-bold">   1317</span>     self.command_header +\
-<span class="ansi-green-intense-fg ansi-bold">   1318</span>     args_command +\
-<span class="ansi-green-intense-fg ansi-bold">   1319</span>     proto.END_COMMAND_PART
-<span class="ansi-green-intense-fg ansi-bold">   1321</span> answer = self.gateway_client.send_command(command)
-<span class="ansi-green-fg">-&gt; 1322</span> return_value = get_return_value(
-<span class="ansi-green-intense-fg ansi-bold">   1323</span>     answer, self.gateway_client, self.target_id, self.name)
-<span class="ansi-green-intense-fg ansi-bold">   1325</span> for temp_arg in temp_args:
-<span class="ansi-green-intense-fg ansi-bold">   1326</span>     if hasattr(temp_arg, &#34;_detach&#34;):
-
-File <span class="ansi-green-fg">~/.local/lib/python3.10/site-packages/pyspark/errors/exceptions/captured.py:179</span>, in <span class="ansi-cyan-fg">capture_sql_exception.&lt;locals&gt;.deco</span><span class="ansi-blue-fg">(*a, **kw)</span>
-<span class="ansi-green-intense-fg ansi-bold">    177</span> def deco(*a: Any, **kw: Any) -&gt; Any:
-<span class="ansi-green-intense-fg ansi-bold">    178</span>     try:
-<span class="ansi-green-fg">--&gt; 179</span>         return f(*a, **kw)
-<span class="ansi-green-intense-fg ansi-bold">    180</span>     except Py4JJavaError as e:
-<span class="ansi-green-intense-fg ansi-bold">    181</span>         converted = convert_exception(e.java_exception)
-
-File <span class="ansi-green-fg">~/.local/lib/python3.10/site-packages/py4j/protocol.py:326</span>, in <span class="ansi-cyan-fg">get_return_value</span><span class="ansi-blue-fg">(answer, gateway_client, target_id, name)</span>
-<span class="ansi-green-intense-fg ansi-bold">    324</span> value = OUTPUT_CONVERTER[type](answer[2:], gateway_client)
-<span class="ansi-green-intense-fg ansi-bold">    325</span> if answer[1] == REFERENCE_TYPE:
-<span class="ansi-green-fg">--&gt; 326</span>     raise Py4JJavaError(
-<span class="ansi-green-intense-fg ansi-bold">    327</span>         &#34;An error occurred while calling {0}{1}{2}.\n&#34;.
-<span class="ansi-green-intense-fg ansi-bold">    328</span>         format(target_id, &#34;.&#34;, name), value)
-<span class="ansi-green-intense-fg ansi-bold">    329</span> else:
-<span class="ansi-green-intense-fg ansi-bold">    330</span>     raise Py4JError(
-<span class="ansi-green-intense-fg ansi-bold">    331</span>         &#34;An error occurred while calling {0}{1}{2}. Trace:\n{3}\n&#34;.
-<span class="ansi-green-intense-fg ansi-bold">    332</span>         format(target_id, &#34;.&#34;, name, value))
-
-<span class="ansi-red-fg">Py4JJavaError</span>: An error occurred while calling z:org.apache.spark.api.python.PythonRDD.collectAndServe.
-: org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 1.0 failed 1 times, most recent failure: Lost task 1.0 in stage 1.0 (TID 2) (172.28.4.178 executor driver): org.apache.spark.api.python.PythonException: Traceback (most recent call last):
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1247, in main
-    process()
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1239, in process
-    serializer.dump_stream(out_iter, outfile)
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/serializers.py&#34;, line 274, in dump_stream
-    vs = list(itertools.islice(iterator, batch))
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/util.py&#34;, line 83, in wrapper
-    return f(*args, **kwargs)
-  File &#34;/tmp/ipykernel_13967/2255358802.py&#34;, line 5, in parsePoint
-NameError: name &#39;LabeledPoint&#39; is not defined
-
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.handlePythonException(PythonRunner.scala:572)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:784)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:766)
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:525)
-        at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
-        at scala.collection.Iterator.foreach(Iterator.scala:943)
-        at scala.collection.Iterator.foreach$(Iterator.scala:943)
-        at org.apache.spark.InterruptibleIterator.foreach(InterruptibleIterator.scala:28)
-        at scala.collection.generic.Growable.$plus$plus$eq(Growable.scala:62)
-        at scala.collection.generic.Growable.$plus$plus$eq$(Growable.scala:53)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:105)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:49)
-        at scala.collection.TraversableOnce.to(TraversableOnce.scala:366)
-        at scala.collection.TraversableOnce.to$(TraversableOnce.scala:364)
-        at org.apache.spark.InterruptibleIterator.to(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toBuffer(TraversableOnce.scala:358)
-        at scala.collection.TraversableOnce.toBuffer$(TraversableOnce.scala:358)
-        at org.apache.spark.InterruptibleIterator.toBuffer(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toArray(TraversableOnce.scala:345)
-        at scala.collection.TraversableOnce.toArray$(TraversableOnce.scala:339)
-        at org.apache.spark.InterruptibleIterator.toArray(InterruptibleIterator.scala:28)
-        at org.apache.spark.rdd.RDD.$anonfun$collect$2(RDD.scala:1046)
-        at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2438)
-        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
-        at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
-        at org.apache.spark.scheduler.Task.run(Task.scala:141)
-        at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
-        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
-        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
-        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-        at java.base/java.lang.Thread.run(Thread.java:829)
-
-Driver stacktrace:
-        at org.apache.spark.scheduler.DAGScheduler.failJobAndIndependentStages(DAGScheduler.scala:2844)
-        at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:2780)
-        at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:2779)
-        at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
-        at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
-        at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
-        at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:2779)
-        at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1242)
-        at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1242)
-        at scala.Option.foreach(Option.scala:407)
-        at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1242)
-        at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3048)
-        at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2982)
-        at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2971)
-        at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
-        at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:984)
-        at org.apache.spark.SparkContext.runJob(SparkContext.scala:2398)
-        at org.apache.spark.SparkContext.runJob(SparkContext.scala:2419)
-        at org.apache.spark.SparkContext.runJob(SparkContext.scala:2438)
-        at org.apache.spark.SparkContext.runJob(SparkContext.scala:2463)
-        at org.apache.spark.rdd.RDD.$anonfun$collect$1(RDD.scala:1046)
-        at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
-        at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
-        at org.apache.spark.rdd.RDD.withScope(RDD.scala:407)
-        at org.apache.spark.rdd.RDD.collect(RDD.scala:1045)
-        at org.apache.spark.api.python.PythonRDD$.collectAndServe(PythonRDD.scala:195)
-        at org.apache.spark.api.python.PythonRDD.collectAndServe(PythonRDD.scala)
-        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-        at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-        at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-        at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
-        at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
-        at py4j.Gateway.invoke(Gateway.java:282)
-        at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
-        at py4j.commands.CallCommand.execute(CallCommand.java:79)
-        at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
-        at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
-        at java.base/java.lang.Thread.run(Thread.java:829)
-Caused by: org.apache.spark.api.python.PythonException: Traceback (most recent call last):
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1247, in main
-    process()
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/worker.py&#34;, line 1239, in process
-    serializer.dump_stream(out_iter, outfile)
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/serializers.py&#34;, line 274, in dump_stream
-    vs = list(itertools.islice(iterator, batch))
-  File &#34;/home/xadupre/.local/lib/python3.10/site-packages/pyspark/python/lib/pyspark.zip/pyspark/util.py&#34;, line 83, in wrapper
-    return f(*args, **kwargs)
-  File &#34;/tmp/ipykernel_13967/2255358802.py&#34;, line 5, in parsePoint
-NameError: name &#39;LabeledPoint&#39; is not defined
-
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.handlePythonException(PythonRunner.scala:572)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:784)
-        at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:766)
-        at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:525)
-        at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
-        at scala.collection.Iterator.foreach(Iterator.scala:943)
-        at scala.collection.Iterator.foreach$(Iterator.scala:943)
-        at org.apache.spark.InterruptibleIterator.foreach(InterruptibleIterator.scala:28)
-        at scala.collection.generic.Growable.$plus$plus$eq(Growable.scala:62)
-        at scala.collection.generic.Growable.$plus$plus$eq$(Growable.scala:53)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:105)
-        at scala.collection.mutable.ArrayBuffer.$plus$plus$eq(ArrayBuffer.scala:49)
-        at scala.collection.TraversableOnce.to(TraversableOnce.scala:366)
-        at scala.collection.TraversableOnce.to$(TraversableOnce.scala:364)
-        at org.apache.spark.InterruptibleIterator.to(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toBuffer(TraversableOnce.scala:358)
-        at scala.collection.TraversableOnce.toBuffer$(TraversableOnce.scala:358)
-        at org.apache.spark.InterruptibleIterator.toBuffer(InterruptibleIterator.scala:28)
-        at scala.collection.TraversableOnce.toArray(TraversableOnce.scala:345)
-        at scala.collection.TraversableOnce.toArray$(TraversableOnce.scala:339)
-        at org.apache.spark.InterruptibleIterator.toArray(InterruptibleIterator.scala:28)
-        at org.apache.spark.rdd.RDD.$anonfun$collect$2(RDD.scala:1046)
-        at org.apache.spark.SparkContext.$anonfun$runJob$5(SparkContext.scala:2438)
-        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:93)
-        at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:161)
-        at org.apache.spark.scheduler.Task.run(Task.scala:141)
-        at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$4(Executor.scala:620)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:64)
-        at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:61)
-        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:94)
-        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:623)
-        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-        ... 1 more
-
+[LabeledPoint(1.0, [39.0,77516.0,13.0,2174.0,0.0,40.0]),
+ LabeledPoint(1.0, [50.0,83311.0,13.0,0.0,0.0,13.0])]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.mllib.classification</span> <span class="kn">import</span> <span class="n">LogisticRegressionWithLBFGS</span><span class="p">,</span> <span class="n">LogisticRegressionModel</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.mllib.classification</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LogisticRegressionWithLBFGS</span><span class="p">,</span>
+    <span class="n">LogisticRegressionModel</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pyspark.mllib.regression</span> <span class="kn">import</span> <span class="n">LabeledPoint</span>
+
 
 <span class="c1"># Load and parse the data</span>
 <span class="k">def</span> <span class="nf">parsePoint</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-    <span class="n">spl</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">spl</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spl</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">column_keep</span><span class="p">]</span>
     <span class="n">target</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&lt;=50K&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">LabeledPoint</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
 
 <span class="c1"># We prepare the training data</span>
 <span class="n">parsedData</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">parsePoint</span><span class="p">)</span>
@@ -941,12 +636,12 @@ NameError: name &#39;LabeledPoint&#39; is not defined
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-23/11/06 18:17:03 WARN Instrumentation: [7f9b01f3] Initial coefficients will be ignored! Its dimensions (1, 6) did not match the expected size (1, 6)
+23/11/09 20:35:39 WARN Instrumentation: [2358f247] Initial coefficients will be ignored! Its dimensions (1, 6) did not match the expected size (1, 6)
 </pre></div></div>
 </div>
 <p>Pendant que ça tourne, il faut regarder la fenêtre terminal qui affiche les messages du serveur de notebook.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">numClasses</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">numFeatures</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">weights</span>
@@ -954,7 +649,7 @@ NameError: name &#39;LabeledPoint&#39; is not defined
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -963,10 +658,12 @@ NameError: name &#39;LabeledPoint&#39; is not defined
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">remove_folder</span><span class="p">(</span><span class="n">top</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">remove_also_top</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">raise_exception</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">remove_folder</span><span class="p">(</span>
+    <span class="n">top</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remove_also_top</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">raise_exception</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Removes everything in folder *top*.</span>
 
@@ -977,7 +674,8 @@ NameError: name &#39;LabeledPoint&#39; is not defined
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">top</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;C:&quot;</span><span class="p">,</span> <span class="s2">&quot;c:&quot;</span><span class="p">,</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;c:</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;d:&quot;</span><span class="p">,</span> <span class="s2">&quot;D:&quot;</span><span class="p">,</span> <span class="s2">&quot;D:</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;d:</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">}:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
-            <span class="s2">&quot;top is a root (c: for example), this is not safe&quot;</span><span class="p">)</span>
+            <span class="s2">&quot;top is a root (c: for example), this is not safe&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">first_root</span> <span class="o">=</span> <span class="kc">None</span>
@@ -988,8 +686,7 @@ NameError: name &#39;LabeledPoint&#39; is not defined
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">PermissionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
                 <span class="k">if</span> <span class="n">raise_exception</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">PermissionError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;unable to remove file </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="k">raise</span> <span class="ne">PermissionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unable to remove file </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
                 <span class="n">remove_also_top</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">continue</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">))</span>
@@ -999,8 +696,7 @@ NameError: name &#39;LabeledPoint&#39; is not defined
                 <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">raise_exception</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;unable to remove folder </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unable to remove folder </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
                 <span class="n">remove_also_top</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># pragma: no cover</span>
                 <span class="k">continue</span>  <span class="c1"># pragma: no cover</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;dir&quot;</span><span class="p">))</span>
@@ -1016,18 +712,22 @@ NameError: name &#39;LabeledPoint&#39; is not defined
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">remove_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[]</span>
+
+
 <span class="n">clean</span><span class="p">(</span><span class="s2">&quot;target/pythonLogisticRegressionWithLBFGSModel&quot;</span><span class="p">)</span>
 
 <span class="c1"># Save and load model</span>
 <span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="s2">&quot;target/pythonLogisticRegressionWithLBFGSModel&quot;</span><span class="p">)</span>
-<span class="n">sameModel</span> <span class="o">=</span> <span class="n">LogisticRegressionModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="s2">&quot;target/pythonLogisticRegressionWithLBFGSModel&quot;</span><span class="p">)</span>
+<span class="n">sameModel</span> <span class="o">=</span> <span class="n">LogisticRegressionModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+    <span class="n">sc</span><span class="p">,</span> <span class="s2">&quot;target/pythonLogisticRegressionWithLBFGSModel&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1040,13 +740,17 @@ NameError: name &#39;LabeledPoint&#39; is not defined
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluating the model on training data</span>
 <span class="n">labelsAndPreds</span> <span class="o">=</span> <span class="n">parsedData</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">features</span><span class="p">)))</span>
+
+
 <span class="k">def</span> <span class="nf">filter_error</span><span class="p">(</span><span class="n">ys</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ys</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
 <span class="n">trainErr</span> <span class="o">=</span> <span class="n">labelsAndPreds</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">filter_error</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">parsedData</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training Error = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">trainErr</span><span class="p">))</span>
 </pre></div>
@@ -1073,19 +777,37 @@ Training Error = 0.20217438039372254
 <h2>Régression logisitique (DataFrame)<a class="headerlink" href="#Régression-logisitique-(DataFrame)" title="Lien permanent vers cette rubrique">#</a></h2>
 <p>On s’inspire de l’exemple : <a class="reference external" href="http://spark.apache.org/docs/latest/ml-classification-regression.html#logistic-regression">Régression Logistique</a>. Le code change, la préparation des données aussi. Les modèles acceptent comme entrées un vecteur colonne créé par un <a class="reference external" href="http://spark.apache.org/docs/latest/api/python/pyspark.ml.html?highlight=vector#pyspark.ml.feature.VectorAssembler">VectorAssembler</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.ml.linalg</span> <span class="kn">import</span> <span class="n">Vectors</span>
 <span class="kn">from</span> <span class="nn">pyspark.ml.feature</span> <span class="kn">import</span> <span class="n">VectorAssembler</span>
+
 <span class="n">training</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="n">training</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">training</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="s2">&quot; &lt;=50K&quot;</span><span class="p">)</span>
-<span class="n">training</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">training</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">))</span>
-<span class="n">training</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;fnlwgt&quot;</span><span class="p">,</span> <span class="s2">&quot;education_num&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_gain&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_loss&quot;</span><span class="p">,</span>
-                           <span class="s2">&quot;hours_per_week&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">])</span>
+<span class="n">training</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">training</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="s2">&quot; &lt;=50K&quot;</span><span class="p">)</span>
+<span class="n">training</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">training</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">))</span>
+<span class="n">training</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fnlwgt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;education_num&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;capital_gain&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;capital_loss&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hours_per_week&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Y&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 <span class="n">assembler</span> <span class="o">=</span> <span class="n">VectorAssembler</span><span class="p">(</span>
-    <span class="n">inputCols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;fnlwgt&quot;</span><span class="p">,</span> <span class="s2">&quot;education_num&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_gain&quot;</span><span class="p">,</span> <span class="s2">&quot;capital_loss&quot;</span><span class="p">,</span> <span class="s2">&quot;hours_per_week&quot;</span><span class="p">],</span>
-    <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">)</span>
+    <span class="n">inputCols</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fnlwgt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;education_num&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;capital_gain&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;capital_loss&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hours_per_week&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">outputCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">training</span> <span class="o">=</span> <span class="n">assembler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">training</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1100,7 +822,7 @@ Training Error = 0.20217438039372254
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training</span><span class="o">.</span><span class="n">explain</span><span class="p">()</span>
@@ -1113,14 +835,14 @@ Training Error = 0.20217438039372254
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 == Physical Plan ==
-*(1) Project [age#89L, fnlwgt#91L, education_num#93L, capital_gain#99L, capital_loss#100L, hours_per_week#101L, cast((target#103 =  &lt;=50K) as float) AS Y#136, UDF(struct(age_double_VectorAssembler_d5fa09ce28ee, cast(age#89L as double), fnlwgt_double_VectorAssembler_d5fa09ce28ee, cast(fnlwgt#91L as double), education_num_double_VectorAssembler_d5fa09ce28ee, cast(education_num#93L as double), capital_gain_double_VectorAssembler_d5fa09ce28ee, cast(capital_gain#99L as double), capital_loss_double_VectorAssembler_d5fa09ce28ee, cast(capital_loss#100L as double), hours_per_week_double_VectorAssembler_d5fa09ce28ee, cast(hours_per_week#101L as double))) AS features#167]
+*(1) Project [age#89L, fnlwgt#91L, education_num#93L, capital_gain#99L, capital_loss#100L, hours_per_week#101L, cast((target#103 =  &lt;=50K) as float) AS Y#136, UDF(struct(age_double_VectorAssembler_eca5e915e5f5, cast(age#89L as double), fnlwgt_double_VectorAssembler_eca5e915e5f5, cast(fnlwgt#91L as double), education_num_double_VectorAssembler_eca5e915e5f5, cast(education_num#93L as double), capital_gain_double_VectorAssembler_eca5e915e5f5, cast(capital_gain#99L as double), capital_loss_double_VectorAssembler_eca5e915e5f5, cast(capital_loss#100L as double), hours_per_week_double_VectorAssembler_eca5e915e5f5, cast(hours_per_week#101L as double))) AS features#167]
 +- *(1) Scan ExistingRDD[age#89L,workclass#90,fnlwgt#91L,education#92,education_num#93L,marital_status#94,occupation#95,relationship#96,race#97,sex#98,capital_gain#99L,capital_loss#100L,hours_per_week#101L,native_country#102,target#103]
 
 
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1129,7 +851,7 @@ Training Error = 0.20217438039372254
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1139,7 +861,7 @@ Training Error = 0.20217438039372254
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training</span><span class="o">.</span><span class="n">schema</span>
@@ -1147,7 +869,7 @@ Training Error = 0.20217438039372254
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1156,7 +878,7 @@ StructType([StructField(&#39;age&#39;, LongType(), True), StructField(&#39;fnlwg
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
@@ -1172,7 +894,7 @@ StructType([StructField(&#39;age&#39;, LongType(), True), StructField(&#39;fnlwg
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1181,7 +903,7 @@ StructType([StructField(&#39;age&#39;, LongType(), True), StructField(&#39;fnlwg
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.ml.classification</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
@@ -1189,10 +911,12 @@ StructType([StructField(&#39;age&#39;, LongType(), True), StructField(&#39;fnlwg
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">maxIter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">regParam</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">elasticNetParam</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">labelCol</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span>
+    <span class="n">maxIter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">regParam</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">elasticNetParam</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span>
+<span class="p">)</span>
 
 <span class="c1"># Fit the model</span>
 <span class="n">lrModel</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training</span><span class="p">)</span>
@@ -1202,6 +926,14 @@ StructType([StructField(&#39;age&#39;, LongType(), True), StructField(&#39;fnlwg
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Intercept: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lrModel</span><span class="o">.</span><span class="n">intercept</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -1213,7 +945,7 @@ Intercept: 1.1482462553407051
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prediction</span> <span class="o">=</span> <span class="n">lrModel</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">training</span><span class="p">)</span>
@@ -1222,7 +954,7 @@ Intercept: 1.1482462553407051
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1231,11 +963,14 @@ Intercept: 1.1482462553407051
  Row(age=50, fnlwgt=83311, education_num=13, capital_gain=0, capital_loss=0, hours_per_week=13, Y=1.0, features=DenseVector([50.0, 83311.0, 13.0, 0.0, 0.0, 13.0]), rawPrediction=DenseVector([-1.1482, 1.1482]), probability=DenseVector([0.2408, 0.7592]), prediction=1.0)]
 </pre></div></div>
 </div>
+</section>
+<section id="Fin">
+<h2>Fin<a class="headerlink" href="#Fin" title="Lien permanent vers cette rubrique">#</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1303,6 +1038,7 @@ Intercept: 1.1482462553407051
 <li><a class="reference internal" href="#Data">Data</a></li>
 <li><a class="reference internal" href="#Régression-logistique-(RDD)">Régression logistique (RDD)</a></li>
 <li><a class="reference internal" href="#Régression-logisitique-(DataFrame)">Régression logisitique (DataFrame)</a></li>
+<li><a class="reference internal" href="#Fin">Fin</a></li>
 </ul>
 </li>
 </ul>
