@@ -256,9 +256,9 @@
 <h2>Deux ou trois petites choses à ne pas oublier<a class="headerlink" href="#Deux-ou-trois-petites-choses-à-ne-pas-oublier" title="Lien permanent vers cette rubrique">#</a></h2>
 <section id="Local-et-cluster">
 <h3>Local et cluster<a class="headerlink" href="#Local-et-cluster" title="Lien permanent vers cette rubrique">#</a></h3>
-<p><a class="reference external" href="http://spark.apache.org/">Spark</a> n’est pas un langage de programmation mais un environnement de calcul distribué. L’installation en locale reproduit ce que <a class="reference external" href="http://spark.apache.org/">Spark</a> donnerait à grande échelle sur un cluster mais ce n’est pas rigoureusement identique. En particulier cela veut dire que si votre script tourne en local sur un petit jeu de données, il est possible qu’il échoue sur le cluster :</p>
+<p><a class="reference external" href="https://spark.apache.org/">Spark</a> n’est pas un langage de programmation mais un environnement de calcul distribué. L’installation en locale reproduit ce que <a class="reference external" href="https://spark.apache.org/">Spark</a> donnerait à grande échelle sur un cluster mais ce n’est pas rigoureusement identique. En particulier cela veut dire que si votre script tourne en local sur un petit jeu de données, il est possible qu’il échoue sur le cluster :</p>
 <ul class="simple">
-<li><p>Les dépendances du script sont installées en local mais pas sur chaque machine du cluster <a class="reference external" href="http://spark.apache.org/">Spark</a>. Cela peut se faire à l’installation du cluster pour des dépendances conséquentes ou juste avant l’exécution d’un <em>job</em> pour des dépendances ponctuelles.</p></li>
+<li><p>Les dépendances du script sont installées en local mais pas sur chaque machine du cluster <a class="reference external" href="https://spark.apache.org/">Spark</a>. Cela peut se faire à l’installation du cluster pour des dépendances conséquentes ou juste avant l’exécution d’un <em>job</em> pour des dépendances ponctuelles.</p></li>
 <li><p>Les données sur le cluster sont en plus grand nombre, il est fort probable que l’échantillon aléatoire local ne soit pas représentatif.</p></li>
 <li><p>Les chemins locaux ne fonctionnent pas sur le cluster. Il faudra d’abord uploader les données sur le cluster pour faire tourner le script.</p></li>
 <li><p>Débugger est compliqué : les print ne marchent pas souvent, surtout si c’est en distribué. Le print va s’exécuter sur une machine distance qui est à mille lieues de votre écran.</p></li>
@@ -268,7 +268,7 @@ contournante.</p>
 </section>
 <section id="Spark-et-RDD">
 <h3>Spark et RDD<a class="headerlink" href="#Spark-et-RDD" title="Lien permanent vers cette rubrique">#</a></h3>
-<p><a class="reference external" href="http://spark.apache.org/">Spark</a> ne manipule pas des fichiers mais des <a class="reference external" href="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf">Resilient Distributed Dataset</a> ou <em>RDD</em>. En particulier :</p>
+<p><a class="reference external" href="https://spark.apache.org/">Spark</a> ne manipule pas des fichiers mais des <a class="reference external" href="http://www-bcf.usc.edu/~minlanyu/teach/csci599-fall12/papers/nsdi_spark.pdf">Resilient Distributed Dataset</a> ou <em>RDD</em>. En particulier :</p>
 <ol class="arabic simple">
 <li><p>Les <em>RDD</em> sont organisés en ligne : ce sont des blocs qui ne seront jamais <em>cassés</em> ni <em>modifié</em>. Ces lignes ne peuvent pas excéder 2 Go (voir <a class="reference external" href="https://issues.apache.org/jira/browse/SPARK-6235">SPARK-6235</a>) mais il est conseillé de ne pas aller au-delà de quelques Mo.</p></li>
 <li><p>Sauf exception, il est impossible d’accéder à une partie du fichier. Il faut le parcourir en entier (il n’y a pas d’index).</p></li>
@@ -279,20 +279,20 @@ contournante.</p>
 </section>
 <section id="Les-partitions">
 <h3>Les partitions<a class="headerlink" href="#Les-partitions" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Il existe une exception au point 2 : les <a class="reference external" href="http://dev.sortable.com/spark-repartition/">partitions</a>. Une partition est un ensemble de lignes traitées par le même processus. La parallélisation ne peut excéder le nombre de partitions. Par défaut, c’est aléatoire (hash hash). Mais on peut tout-à-fait partionner selon une colonne, deux colonnes. D’ailleurs, c’est là-dessus qu’on joue pour optimiser la distribution. Si on réduit (ou grouper) selon une colonne, c’est d’autant plus rapide si le stream
-est déjà partitionnée sur cette colonne.</p>
+<p>Il existe une exception au point 2 : les <strong>partitions</strong>. Une partition est un ensemble de lignes traitées par le même processus. La parallélisation ne peut excéder le nombre de partitions. Par défaut, c’est aléatoire (hash hash). Mais on peut tout-à-fait partionner selon une colonne, deux colonnes. D’ailleurs, c’est là-dessus qu’on joue pour optimiser la distribution. Si on réduit (ou grouper) selon une colonne, c’est d’autant plus rapide si le stream est déjà partitionnée sur cette colonne.
+Voir également <a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.RDD.repartition.html?highlight=repartition#pyspark.RDD.repartition">pyspark.RDD.repartition</a>.</p>
 </section>
 <section id="Spark-et-Python">
 <h3>Spark et Python<a class="headerlink" href="#Spark-et-Python" title="Lien permanent vers cette rubrique">#</a></h3>
 <p>Spark est implémenté en Java. L’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">Python</a> permet de faire beaucoup de choses mais :</p>
 <ul class="simple">
-<li><p>Elle ne sera jamais aussi complète que l’API <a class="reference external" href="http://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>.</p></li>
-<li><p>Elle sera plus lente que l’API <a class="reference external" href="http://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a> ou <a class="reference external" href="http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD">Scala</a> (car <a class="reference external" href="http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD">Scala</a> est une surcouche fonctionnelle de <a class="reference external" href="http://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>).</p></li>
+<li><p>Elle ne sera jamais aussi complète que l’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>.</p></li>
+<li><p>Elle sera plus lente que l’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a> ou <a class="reference external" href="https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD">Scala</a> (car <a class="reference external" href="https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD">Scala</a> est une surcouche fonctionnelle de <a class="reference external" href="https://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>).</p></li>
 </ul>
 </section>
 <section id="Librairies-sur-Spark">
 <h3>Librairies sur Spark<a class="headerlink" href="#Librairies-sur-Spark" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Un des succès de Spark est de proposer des extensions dédiées à certains usages comme <a class="reference external" href="http://spark.apache.org/mllib/">MLlib</a> qui implémente des algorihmes de machine learning distribués, <a class="reference external" href="http://spark.apache.org/graphx/">GraphX</a> pour des algorithmes sur des graphes. <a class="reference external" href="http://spark.apache.org/mllib/">MLlib</a> sera bientôt remplacé par ML qui s’appuie sur les <a class="reference external" href="http://spark.apache.org/docs/latest/sql-programming-guide.html#datasets-and-dataframes">DataFrame</a>.</p>
+<p>Un des succès de Spark est de proposer des extensions dédiées à certains usages comme <a class="reference external" href="https://spark.apache.org/mllib/">MLlib</a> qui implémente des algorihmes de machine learning distribués, <a class="reference external" href="https://spark.apache.org/graphx/">GraphX</a> pour des algorithmes sur des graphes. <a class="reference external" href="https://spark.apache.org/mllib/">MLlib</a> sera bientôt remplacé par ML qui s’appuie sur les <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html#datasets-and-dataframes">DataFrame</a>.</p>
 </section>
 <section id="Vérifier-que-Spark-en-local-fonctionne">
 <h3>Vérifier que Spark en local fonctionne<a class="headerlink" href="#Vérifier-que-Spark-en-local-fonctionne" title="Lien permanent vers cette rubrique">#</a></h3>
@@ -376,7 +376,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </section>
 <section id="Les-opérations-de-bases">
 <h2>Les opérations de bases<a class="headerlink" href="#Les-opérations-de-bases" title="Lien permanent vers cette rubrique">#</a></h2>
-<p>Documentation : <a class="reference external" href="http://spark.apache.org/docs/latest/programming-guide.html#transformations">programming-guide.html - transformations</a>.</p>
+<p>Documentation : <a class="reference external" href="https://spark.apache.org/docs/latest/programming-guide.html#transformations">programming-guide.html - transformations</a>.</p>
 <p>Dans cette section, on considère les données comme un ensemble de lignes de texte. Rien de plus. Donc, pas d’information de type, des conversions quasiment tout le temps. Bref, c’est utile pour comprendre. On y revient quand le reste ne marche pas. En général, on commence par <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a>. Ah oui j’oubliais, on s’en sert beaucoup quand les données ne sont pas structurées et sont décrites par du JSON, genre des logs d’un site
 internet. Chaque ligne est en fait un gros JSON.</p>
 <p>On utilise un jeu de données de machine learning <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/Adult">Adult</a> légèrement pré-traités.</p>
@@ -1173,7 +1173,7 @@ _SUCCESS  part-00000  part-00001
    (7841, 346963.0)))]
 </pre></div></div>
 </div>
-<p>On commence à comprendre pourquoi <a class="reference external" href="http://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a>, ça risque d’être pas mal.</p>
+<p>On commence à comprendre pourquoi <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a>, ça risque d’être pas mal.</p>
 </section>
 <section id="le-choix-existentiel-du-join-:-le-petit-join">
 <h3>le choix existentiel du join : le petit join<a class="headerlink" href="#le-choix-existentiel-du-join-:-le-petit-join" title="Lien permanent vers cette rubrique">#</a></h3>
@@ -1269,7 +1269,7 @@ _SUCCESS  part-00000  part-00001
 </section>
 <section id="Spark-DataFrame">
 <h2>Spark DataFrame<a class="headerlink" href="#Spark-DataFrame" title="Lien permanent vers cette rubrique">#</a></h2>
-<p><a class="reference external" href="http://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a></p>
+<p><a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a></p>
 <p>Au début, ça commence par… créer un dataframe. Et comme pour pandas, ces objets retienennt les noms et les types.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
