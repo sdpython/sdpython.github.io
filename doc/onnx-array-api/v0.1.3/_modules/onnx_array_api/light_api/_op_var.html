@@ -8,7 +8,7 @@
         <title>onnx_array_api.light_api._op_var - onnx-array-api 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -257,6 +257,7 @@
         <article role="main">
           <h1>Source code for onnx_array_api.light_api._op_var</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">.annotations</span> <span class="kn">import</span> <span class="n">AI_ONNX_ML</span><span class="p">,</span> <span class="n">domain</span>
 
 
 <div class="viewcode-block" id="OpsVar"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api._op_var.OpsVar">[docs]</a><span class="k">class</span> <span class="nc">OpsVar</span><span class="p">:</span>
@@ -575,7 +576,11 @@
 
     <span class="k">def</span> <span class="nf">Transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">perm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
         <span class="n">perm</span> <span class="o">=</span> <span class="n">perm</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Transpose&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Transpose&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">)</span>
+
+    <span class="nd">@domain</span><span class="p">(</span><span class="n">AI_ONNX_ML</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">Normalizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MAX&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Normalizer&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">AI_ONNX_ML</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_complete</span><span class="p">():</span>

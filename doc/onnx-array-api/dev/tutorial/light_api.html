@@ -337,6 +337,43 @@ defined in class <a class="reference internal" href="../api/light_api.html#onnx_
 <a class="reference internal" href="../api/light_api.html#onnx_array_api.light_api.Vars" title="onnx_array_api.light_api.Vars"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vars</span></code></a> depending on the number of
 inputs they require. Their name starts with a lower letter.</p>
 </section>
+<section id="other-domains">
+<h2>Other domains<a class="headerlink" href="#other-domains" title="Permalink to this heading">#</a></h2>
+<p>The following example uses operator <em>Normalizer</em> from domain
+<em>ai.onnx.ml</em>. The operator name is called with the syntax
+<cite>&lt;domain&gt;.&lt;operator name&gt;</cite>. The domain may have dots in its name
+but it must follow the python definition of a variable.
+The operator <em>Normalizer</em> becomes <cite>ai.onnx.ml.Normalizer</cite>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.light_api</span> <span class="kn">import</span> <span class="n">start</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">start</span><span class="p">(</span><span class="n">opset</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">opsets</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;USE&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">ai</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">ml</span><span class="o">.</span><span class="n">Normalizer</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="s2">&quot;MAX&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">vout</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">19</span>
+    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;ai.onnx.ml&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">3</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;r&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">])</span>
+    <span class="n">Reshape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">USE</span>
+      <span class="n">Normalizer</span><span class="p">(</span><span class="n">USE</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;MAX&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Y</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+</pre></div>
+</div>
+</section>
 </section>
 
         </article>
@@ -398,6 +435,7 @@ inputs they require. Their name starts with a lower letter.</p>
 <li><a class="reference internal" href="#graph-methods">Graph methods</a></li>
 <li><a class="reference internal" href="#operator-methods">Operator methods</a></li>
 <li><a class="reference internal" href="#numpy-methods">Numpy methods</a></li>
+<li><a class="reference internal" href="#other-domains">Other domains</a></li>
 </ul>
 </li>
 </ul>
