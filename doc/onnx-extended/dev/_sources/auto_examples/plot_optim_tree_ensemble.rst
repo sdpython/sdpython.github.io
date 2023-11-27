@@ -72,7 +72,7 @@ Another example:
 
 .. GENERATED FROM PYTHON SOURCE LINES 54-103
 
-.. code-block:: default
+.. code-block:: Python
 
     import logging
     import os
@@ -137,7 +137,7 @@ Training a model
 
 .. GENERATED FROM PYTHON SOURCE LINES 106-144
 
-.. code-block:: default
+.. code-block:: Python
 
 
     batch_size = script_args.batch_size
@@ -189,26 +189,6 @@ Training a model
     [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 8 concurrent workers.
     building tree 1 of 1
     [Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.1s finished
-    2023-10-13 16:49:05,398 skl2onnx [DEBUG] - [Var] +Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))
-    2023-10-13 16:49:05,399 skl2onnx [DEBUG] - [Var] update is_root=True for Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))
-    2023-10-13 16:49:05,399 skl2onnx [DEBUG] - [parsing] found alias='SklearnRandomForestRegressor' for type=<class 'sklearn.ensemble._forest.RandomForestRegressor'>.
-    2023-10-13 16:49:05,399 skl2onnx [DEBUG] - [Op] +Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,401 skl2onnx [DEBUG] - [Op] add In Variable('X', 'X', type=FloatTensorType(shape=[None, 5])) to Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,401 skl2onnx [DEBUG] - [Var] +Variable('variable', 'variable', type=FloatTensorType(shape=[]))
-    2023-10-13 16:49:05,401 skl2onnx [DEBUG] - [Var] set parent for Variable('variable', 'variable', type=FloatTensorType(shape=[])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Op] add Out Variable('variable', 'variable', type=FloatTensorType(shape=[])) to Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Var] update is_leaf=True for Variable('variable', 'variable', type=FloatTensorType(shape=[]))
-    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Var] update is_fed=True for Variable('X', 'X', type=FloatTensorType(shape=[None, 5])), parent=None
-    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Var] update is_fed=False for Variable('variable', 'variable', type=FloatTensorType(shape=[])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,402 skl2onnx [DEBUG] - [Op] update is_evaluated=False for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,403 skl2onnx [DEBUG] - [Shape2] call infer_types for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,403 skl2onnx [DEBUG] - [Shape-a] Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2)) fed 'True' - 'False'
-    2023-10-13 16:49:05,403 skl2onnx [DEBUG] - [Shape-b] Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2)) inputs=[Variable('X', 'X', type=FloatTensorType(shape=[None, 5]))] - outputs=[Variable('variable', 'variable', type=FloatTensorType(shape=[None, 1]))]
-    2023-10-13 16:49:05,404 skl2onnx [DEBUG] - [Conv] call Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2)) fed 'True' - 'False'
-    2023-10-13 16:49:05,404 skl2onnx [DEBUG] - [Node] 'TreeEnsembleRegressor' - 'X' -> 'variable' (name='TreeEnsembleRegressor')
-    2023-10-13 16:49:05,405 skl2onnx [DEBUG] - [Conv] end - Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,405 skl2onnx [DEBUG] - [Op] update is_evaluated=True for Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
-    2023-10-13 16:49:05,405 skl2onnx [DEBUG] - [Var] update is_fed=True for Variable('variable', 'variable', type=FloatTensorType(shape=[None, 1])), parent=Operator(type='SklearnRandomForestRegressor', onnx_name='SklearnRandomForestRegressor', inputs='X', outputs='variable', raw_operator=RandomForestRegressor(max_depth=5, n_estimators=1, n_jobs=-1, verbose=2))
 
 
 
@@ -225,7 +205,7 @@ First the current model.
 
 .. GENERATED FROM PYTHON SOURCE LINES 152-157
 
-.. code-block:: default
+.. code-block:: Python
 
 
     with open(filename, "rb") as f:
@@ -243,7 +223,7 @@ First the current model.
     opset: domain='ai.onnx.ml' version=1
     opset: domain='' version=19
     input: name='X' type=dtype('float32') shape=['', 5]
-    TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[2,4,3...4,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_modes=630:[b'BRANCH_LEQ',b'BRANCH_LEQ'...b'LEAF',b'LEAF'], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.3130105137825012,0.09077119082212448...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-349.0422668457031,-258.12200927734375...258.0306396484375,354.7446594238281]) -> variable
+    TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[1,4,3...4,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_modes=630:[b'BRANCH_LEQ',b'BRANCH_LEQ'...b'LEAF',b'LEAF'], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.08259797841310501,0.1536654382944107...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-224.0664825439453,-152.08779907226562...144.68251037597656,210.63485717773438]) -> variable
     output: name='variable' type=dtype('float32') shape=['', 1]
 
 
@@ -253,15 +233,17 @@ First the current model.
 
 And then the modified model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-182
+.. GENERATED FROM PYTHON SOURCE LINES 159-184
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
     def transform_model(onx, **kwargs):
         att = get_node_attribute(onx.graph.node[0], "nodes_modes")
-        modes = ",".join(map(lambda s: s.decode("ascii"), att.strings))
+        modes = ",".join(map(lambda s: s.decode("ascii"), att.strings)).replace(
+            "BRANCH_", ""
+        )
         return change_onnx_operator_domain(
             onx,
             op_type="TreeEnsembleRegressor",
@@ -295,20 +277,20 @@ And then the modified model.
     opset: domain='' version=19
     opset: domain='onnx_extented.ortops.optim.cpu' version=1
     input: name='X' type=dtype('float32') shape=['', 5]
-    TreeEnsembleRegressor[onnx_extented.ortops.optim.cpu](X, nodes_modes=b'BRANCH_LEQ,BRANCH_LEQ,BRANCH_LEQ,BRANC...LEAF,LEAF', n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[2,4,3...4,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.3130105137825012,0.09077119082212448...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-349.0422668457031,-258.12200927734375...258.0306396484375,354.7446594238281]) -> variable
+    TreeEnsembleRegressor[onnx_extented.ortops.optim.cpu](X, nodes_modes=b'LEQ,LEQ,LEQ,LEQ,LEQ,LEAF,LEAF,LEQ,LEAF...LEAF,LEAF', n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[1,4,3...4,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.08259797841310501,0.1536654382944107...0.0,0.0], post_transform=b'NONE', target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-224.0664825439453,-152.08779907226562...144.68251037597656,210.63485717773438]) -> variable
     output: name='variable' type=dtype('float32') shape=['', 1]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 183-185
+.. GENERATED FROM PYTHON SOURCE LINES 185-187
 
 Comparing onnxruntime and the custom kernel
 +++++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 185-206
+.. GENERATED FROM PYTHON SOURCE LINES 187-208
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(f"Loading {filename!r}")
@@ -349,13 +331,13 @@ Comparing onnxruntime and the custom kernel
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 207-208
+.. GENERATED FROM PYTHON SOURCE LINES 209-210
 
 Discrepancies?
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-212
+.. GENERATED FROM PYTHON SOURCE LINES 210-214
 
-.. code-block:: default
+.. code-block:: Python
 
 
     diff = numpy.abs(base - got).max()
@@ -374,16 +356,16 @@ Discrepancies?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 213-217
+.. GENERATED FROM PYTHON SOURCE LINES 215-219
 
 Simple verification
 +++++++++++++++++++
 
 Baseline with onnxruntime.
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-220
+.. GENERATED FROM PYTHON SOURCE LINES 219-222
 
-.. code-block:: default
+.. code-block:: Python
 
     t1 = timeit.timeit(lambda: sess_ort.run(None, {"X": Xb}), number=50)
     print(f"baseline: {t1}")
@@ -396,18 +378,18 @@ Baseline with onnxruntime.
 
  .. code-block:: none
 
-    baseline: 0.06290939999962575
+    baseline: 0.05545519999941462
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 221-222
+.. GENERATED FROM PYTHON SOURCE LINES 223-224
 
 The custom implementation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 222-225
+.. GENERATED FROM PYTHON SOURCE LINES 224-227
 
-.. code-block:: default
+.. code-block:: Python
 
     t2 = timeit.timeit(lambda: sess_cus.run(None, {"X": Xb}), number=50)
     print(f"new time: {t2}")
@@ -420,18 +402,18 @@ The custom implementation.
 
  .. code-block:: none
 
-    new time: 0.032032600000093225
+    new time: 0.03444329999911133
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-227
+.. GENERATED FROM PYTHON SOURCE LINES 228-229
 
 The same implementation but ran from the onnx python backend.
 
-.. GENERATED FROM PYTHON SOURCE LINES 227-232
+.. GENERATED FROM PYTHON SOURCE LINES 229-234
 
-.. code-block:: default
+.. code-block:: Python
 
     ref = CReferenceEvaluator(filename)
     ref.run(None, {"X": Xb})
@@ -446,18 +428,18 @@ The same implementation but ran from the onnx python backend.
 
  .. code-block:: none
 
-    CReferenceEvaluator: 0.02749690000200644
+    CReferenceEvaluator: 0.03877419999844278
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 233-234
+.. GENERATED FROM PYTHON SOURCE LINES 235-236
 
 The python implementation but from the onnx python backend.
 
-.. GENERATED FROM PYTHON SOURCE LINES 234-242
+.. GENERATED FROM PYTHON SOURCE LINES 236-244
 
-.. code-block:: default
+.. code-block:: Python
 
     if n_trees < 50:
         # It is usully slow.
@@ -475,12 +457,12 @@ The python implementation but from the onnx python backend.
 
  .. code-block:: none
 
-    ReferenceEvaluator: 3.0222442999984196 (only 5 times instead of 50)
+    ReferenceEvaluator: 3.5065701000021363 (only 5 times instead of 50)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 243-252
+.. GENERATED FROM PYTHON SOURCE LINES 245-254
 
 Time for comparison
 +++++++++++++++++++
@@ -492,9 +474,9 @@ blob/main/onnx_extended/ortops/optim/cpu/tree_ensemble.cc#L102>`_.
 Let's try out many possibilities.
 The default values are the first ones.
 
-.. GENERATED FROM PYTHON SOURCE LINES 252-300
+.. GENERATED FROM PYTHON SOURCE LINES 254-302
 
-.. code-block:: default
+.. code-block:: Python
 
 
     if unit_test_going():
@@ -558,13 +540,13 @@ The default values are the first ones.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 301-302
+.. GENERATED FROM PYTHON SOURCE LINES 303-304
 
 Then the optimization.
 
-.. GENERATED FROM PYTHON SOURCE LINES 302-332
+.. GENERATED FROM PYTHON SOURCE LINES 304-334
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -604,18 +586,18 @@ Then the optimization.
 
  .. code-block:: none
 
-      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:07,  2.07it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:07,  2.07it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:04,  2.82it/s]    i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:04,  2.82it/s]     i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:00<00:03,  3.27it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:00<00:03,  3.27it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.53it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.53it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.65it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.65it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.65it/s]    i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.65it/s]     i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.69it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.69it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.73it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.73it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.79it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.79it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:02<00:01,  3.84it/s]    i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:02<00:01,  3.84it/s]     i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.89it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.89it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.87it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.87it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.84it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.84it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:03<00:00,  3.88it/s]    i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:03<00:00,  3.88it/s]     i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.88it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.88it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.85it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.67it/s]
+      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:08,  1.85it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:   6%|▋         | 1/16 [00:00<00:08,  1.85it/s]    i=2/16 TRY=0 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:05,  2.69it/s]    i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  12%|█▎        | 2/16 [00:00<00:05,  2.69it/s]     i=3/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:01<00:04,  3.10it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  19%|█▉        | 3/16 [00:01<00:04,  3.10it/s]    i=4/16 TRY=0 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.29it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  25%|██▌       | 4/16 [00:01<00:03,  3.29it/s]    i=5/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.44it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  31%|███▏      | 5/16 [00:01<00:03,  3.44it/s]    i=6/16 TRY=0 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.54it/s]    i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  38%|███▊      | 6/16 [00:01<00:02,  3.54it/s]     i=7/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.63it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  44%|████▍     | 7/16 [00:02<00:02,  3.63it/s]    i=8/16 TRY=0 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.66it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  50%|█████     | 8/16 [00:02<00:02,  3.66it/s]    i=9/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.64it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  56%|█████▋    | 9/16 [00:02<00:01,  3.64it/s]    i=10/16 TRY=1 parallel_tree=80 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:02<00:01,  3.78it/s]    i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  62%|██████▎   | 10/16 [00:02<00:01,  3.78it/s]     i=11/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.76it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  69%|██████▉   | 11/16 [00:03<00:01,  3.76it/s]    i=12/16 TRY=1 parallel_tree=80 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.77it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  75%|███████▌  | 12/16 [00:03<00:01,  3.77it/s]    i=13/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.48it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  81%|████████▏ | 13/16 [00:03<00:00,  3.48it/s]    i=14/16 TRY=1 parallel_tree=40 parallel_tree_N=128 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:04<00:00,  3.71it/s]    i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  88%|████████▊ | 14/16 [00:04<00:00,  3.71it/s]     i=15/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=50 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.74it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0:  94%|█████████▍| 15/16 [00:04<00:00,  3.74it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.87it/s]    i=16/16 TRY=1 parallel_tree=40 parallel_tree_N=64 parallel_N=25 batch_size_tree=1 batch_size_rows=1 use_node3=0: 100%|██████████| 16/16 [00:04<00:00,  3.54it/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 333-334
+.. GENERATED FROM PYTHON SOURCE LINES 335-336
 
 And the results.
 
-.. GENERATED FROM PYTHON SOURCE LINES 334-341
+.. GENERATED FROM PYTHON SOURCE LINES 336-343
 
-.. code-block:: default
+.. code-block:: Python
 
 
     df = DataFrame(res)
@@ -638,25 +620,25 @@ And the results.
            'parallel_N', 'batch_size_tree', 'batch_size_rows', 'use_node3'],
           dtype='object')
         average  deviation  min_exec  ...  batch_size_tree  batch_size_rows  use_node3
-    0  0.001146   0.000365  0.000977  ...              NaN              NaN        NaN
-    1  0.001269   0.000679  0.000504  ...              1.0              1.0        0.0
-    2  0.001494   0.000699  0.000605  ...              1.0              1.0        0.0
-    3  0.001292   0.000771  0.000576  ...              1.0              1.0        0.0
-    4  0.001361   0.000608  0.000594  ...              1.0              1.0        0.0
+    0  0.001534   0.000385  0.001250  ...              NaN              NaN        NaN
+    1  0.001499   0.000787  0.000693  ...              1.0              1.0        0.0
+    2  0.001339   0.000737  0.000509  ...              1.0              1.0        0.0
+    3  0.001531   0.000529  0.000735  ...              1.0              1.0        0.0
+    4  0.001596   0.000881  0.000694  ...              1.0              1.0        0.0
 
     [5 rows x 20 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 342-344
+.. GENERATED FROM PYTHON SOURCE LINES 344-346
 
 Sorting
 +++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 344-359
+.. GENERATED FROM PYTHON SOURCE LINES 346-361
 
-.. code-block:: default
+.. code-block:: Python
 
 
     small_df = df.drop(
@@ -682,30 +664,30 @@ Sorting
  .. code-block:: none
 
          average  deviation     ttime  ...  batch_size_tree  batch_size_rows use_node3
-    0   0.001146   0.000365  0.011456  ...              NaN              NaN       NaN
-    1   0.001269   0.000679  0.012689  ...              1.0              1.0       0.0
-    3   0.001292   0.000771  0.012918  ...              1.0              1.0       0.0
-    11  0.001333   0.000679  0.013328  ...              1.0              1.0       0.0
-    14  0.001335   0.000865  0.013353  ...              1.0              1.0       0.0
-    4   0.001361   0.000608  0.013610  ...              1.0              1.0       0.0
-    10  0.001384   0.000594  0.013835  ...              1.0              1.0       0.0
-    15  0.001405   0.000831  0.014052  ...              1.0              1.0       0.0
-    5   0.001418   0.000688  0.014180  ...              1.0              1.0       0.0
-    8   0.001424   0.000758  0.014236  ...              1.0              1.0       0.0
+    14  0.001058   0.000775  0.010584  ...              1.0              1.0       0.0
+    16  0.001197   0.000776  0.011972  ...              1.0              1.0       0.0
+    10  0.001269   0.000576  0.012685  ...              1.0              1.0       0.0
+    2   0.001339   0.000737  0.013388  ...              1.0              1.0       0.0
+    7   0.001430   0.000672  0.014297  ...              1.0              1.0       0.0
+    6   0.001464   0.000775  0.014638  ...              1.0              1.0       0.0
+    15  0.001478   0.000613  0.014781  ...              1.0              1.0       0.0
+    1   0.001499   0.000787  0.014986  ...              1.0              1.0       0.0
+    12  0.001511   0.000626  0.015108  ...              1.0              1.0       0.0
+    5   0.001518   0.000933  0.015176  ...              1.0              1.0       0.0
 
     [10 rows x 14 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 360-362
+.. GENERATED FROM PYTHON SOURCE LINES 362-364
 
 Worst
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 362-366
+.. GENERATED FROM PYTHON SOURCE LINES 364-368
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(small_df.tail(n=10))
@@ -720,30 +702,30 @@ Worst
  .. code-block:: none
 
          average  deviation     ttime  ...  batch_size_tree  batch_size_rows use_node3
-    5   0.001418   0.000688  0.014180  ...              1.0              1.0       0.0
-    8   0.001424   0.000758  0.014236  ...              1.0              1.0       0.0
-    9   0.001446   0.000509  0.014457  ...              1.0              1.0       0.0
-    12  0.001464   0.000822  0.014637  ...              1.0              1.0       0.0
-    16  0.001480   0.000681  0.014802  ...              1.0              1.0       0.0
-    2   0.001494   0.000699  0.014942  ...              1.0              1.0       0.0
-    13  0.001503   0.000776  0.015035  ...              1.0              1.0       0.0
-    7   0.001513   0.000628  0.015127  ...              1.0              1.0       0.0
-    6   0.001571   0.000781  0.015711  ...              1.0              1.0       0.0
-    17  0.001913   0.001220  0.019128  ...              NaN              NaN       NaN
+    12  0.001511   0.000626  0.015108  ...              1.0              1.0       0.0
+    5   0.001518   0.000933  0.015176  ...              1.0              1.0       0.0
+    3   0.001531   0.000529  0.015313  ...              1.0              1.0       0.0
+    11  0.001531   0.000767  0.015315  ...              1.0              1.0       0.0
+    0   0.001534   0.000385  0.015342  ...              NaN              NaN       NaN
+    8   0.001539   0.000670  0.015388  ...              1.0              1.0       0.0
+    9   0.001592   0.000806  0.015920  ...              1.0              1.0       0.0
+    4   0.001596   0.000881  0.015960  ...              1.0              1.0       0.0
+    17  0.001849   0.001744  0.018489  ...              NaN              NaN       NaN
+    13  0.002272   0.001836  0.022721  ...              1.0              1.0       0.0
 
     [10 rows x 14 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 367-369
+.. GENERATED FROM PYTHON SOURCE LINES 369-371
 
 Plot
 ++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 369-412
+.. GENERATED FROM PYTHON SOURCE LINES 371-414
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dfm = (
@@ -809,7 +791,7 @@ Plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 17.924 seconds)
+   **Total running time of the script:** (0 minutes 10.195 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optim_tree_ensemble.py:
@@ -818,16 +800,13 @@ Plot
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_optim_tree_ensemble.ipynb <plot_optim_tree_ensemble.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_optim_tree_ensemble.py <plot_optim_tree_ensemble.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_optim_tree_ensemble.ipynb <plot_optim_tree_ensemble.ipynb>`
 
 
 .. only:: html

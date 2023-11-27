@@ -1,0 +1,637 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Change Logs" href="../CHANGELOGS.html" /><link rel="prev" title="Measuring onnxruntime performance against a cython binding" href="plot_bench_cypy_ort.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>Measuring performance of TfIdfVectorizer - onnx-extended 0.2.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">onnx-extended 0.2.4 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-extended 0.2.4 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/reference_evaluator.html">CReferenceEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/cython_binding.html">Cython Binding of onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/custom_ops.html">Custom Kernels for onnxruntime</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/ops.html">Focus on operators optimization</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Focus on operators optimization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/external_data.html">External Data and Big Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/onnx_manipulations.html">Onnx Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/quantize.html">Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/statistics.html">Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/profiling.html">Profiling onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/ort_debug.html">Debug Intermediate Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/old_version.html">Compare multiple versions of onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/trees.html">Trees</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/build.html">Build from source</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Build from source</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_cython.html">Build with cython</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_pybind11.html">Build with pybind11</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_cuda.html">Build with CUDA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_ortext.html">Build with onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/readings.html">Readings</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/parallelization.html">Experiments about parallelization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Experiments about parallelization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../command_lines.html">command lines</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/check.html">onnx_extended.__init__.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/ortcy.html">onnx_extended.ortcy</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/reference.html">onnx_extended.reference</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/validation_cpu.html">validation.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/validation_cuda.html">validation.cuda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/validation_sparse.html">validation.bench_trees</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/validation_trees.html">validation.bench_trees</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_io.html">onnx_extended.tools.onnx_io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_einsum.html">onnx_extended.tools.einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_graph.html">onnx_extended.tools.graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_graph_transformer.html">onnx_extended.tools.graph.onnx_graph_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_nodes.html">onnx_extended.tools.onnx_nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_stats.html">onnx_extended.tools.stats_nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_other.html">onnx_extended.tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tech/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tech/install_cuda_wsl.html">Install CUDA on WSL (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tech/usefulcmd.html">Useful commands on Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tech/gemm.html">Gemm and storage order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tech/2023-09-05-glibc.html">2023-09-05 - version GLIBCXX_3.4.30 not found</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">ONNX Benchmarks</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-optim-tfidf-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="measuring-performance-of-tfidfvectorizer">
+<span id="l-plot-optim-tfidf"></span><span id="sphx-glr-auto-examples-plot-optim-tfidf-py"></span><h1>Measuring performance of TfIdfVectorizer<a class="headerlink" href="#measuring-performance-of-tfidfvectorizer" title="Permalink to this heading">#</a></h1>
+<p>The banchmark measures the performance of a TfIdfVectizer along two
+parameters, the vocabulary size, the batch size whether. It measures
+the benefit of using sparse implementation.</p>
+<section id="a-simple-model">
+<h2>A simple model<a class="headerlink" href="#a-simple-model" title="Permalink to this heading">#</a></h2>
+<p>We start with a model including only one node TfIdfVectorizer.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="typing.Tuple" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-data"><span class="n">Tuple</span></a>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class"><span class="n">ModelProto</span></a>
+<span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_attribute" title="onnx.helper.make_attribute" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_attribute</span></a>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">SessionOptions</span>
+<span class="kn">from</span> <span class="nn">onnx_extended.ext_test_case</span> <span class="kn">import</span> <span class="n">measure_time</span><span class="p">,</span> <span class="n">unit_test_going</span>
+<span class="kn">from</span> <span class="nn">onnx_extended.reference</span> <span class="kn">import</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator" title="onnx.reference.ReferenceEvaluator" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-class"><span class="n">CReferenceEvaluator</span></a>
+<span class="kn">from</span> <span class="nn">onnx_extended.ortops.optim.cpu</span> <span class="kn">import</span> <span class="n">get_ort_ext_libs</span>
+
+
+<span class="k">def</span> <span class="nf">make_onnx</span><span class="p">(</span><span class="n">n_words</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class"><span class="n">ModelProto</span></a><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">skl2onnx.common.data_types</span> <span class="kn">import</span> <span class="n">Int64TensorType</span><span class="p">,</span> <span class="n">FloatTensorType</span>
+    <span class="kn">from</span> <span class="nn">skl2onnx.algebra.onnx_ops</span> <span class="kn">import</span> <span class="n">OnnxTfIdfVectorizer</span>
+
+    <span class="c1"># from onnx_array_api.light_api import start</span>
+    <span class="c1"># onx = (</span>
+    <span class="c1">#     start(opset=19, opsets={&quot;ai.onnx.ml&quot;: 3})</span>
+    <span class="c1">#     .vin(&quot;X&quot;, elem_type=TensorProto.INT64)</span>
+    <span class="c1">#     .ai.onnx.TfIdfVectorizer(</span>
+    <span class="c1">#     ...</span>
+    <span class="c1">#     )</span>
+    <span class="c1">#     .rename(Y)</span>
+    <span class="c1">#     .vout(elem_type=TensorProto.FLOAT)</span>
+    <span class="c1">#     .to_onnx()</span>
+    <span class="c1"># )</span>
+    <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <span class="n">OnnxTfIdfVectorizer</span><span class="p">(</span>
+        <span class="s2">&quot;X&quot;</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;TF&quot;</span><span class="p">,</span>
+        <span class="n">min_gram_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">max_gram_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">max_skip_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">ngram_counts</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ngram_indexes</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_words</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+        <span class="n">pool_int64s</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_words</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+        <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">],</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">Int64TensorType</span><span class="p">())],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">FloatTensorType</span><span class="p">())])</span>
+    <span class="c1">#     .rename(Y)</span>
+    <span class="c1">#     .vout(elem_type=TensorProto.FLOAT)</span>
+    <span class="c1">#     .to_onnx()</span>
+    <span class="c1"># )</span>
+    <span class="k">return</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a>
+
+
+<a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <span class="n">make_onnx</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">ref</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator" title="onnx.reference.ReferenceEvaluator" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-class"><span class="n">CReferenceEvaluator</span></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got</span></a> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="numpy.int64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">int64</span></a><span class="p">)})</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2023-11-27 15:07:00,265] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[array([[1., 1., 0., 0., 0., 0., 0.],
+       [0., 0., 1., 1., 0., 0., 0.]], dtype=float32)]
+</pre></div>
+</div>
+<p>It works as expected. Let’s now compare the execution
+with onnxruntime for different batch size and vocabulary size.</p>
+</section>
+<section id="benchmark">
+<h2>Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_sessions</span><span class="p">(</span>
+    <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="p">:</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class"><span class="n">ModelProto</span></a><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <a href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="typing.Tuple" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-data"><span class="n">Tuple</span></a><span class="p">[</span><span class="n">InferenceSession</span><span class="p">,</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">InferenceSession</span><span class="p">]:</span>
+    <span class="c1"># first: onnxruntime</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
+
+    <span class="c1"># second: custom kernel equivalent to the onnxruntime implementation</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;TfIdfVectorizer&quot;</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="s2">&quot;onnx_extented.ortops.optim.cpu&quot;</span>
+            <span class="c1"># new_add = make_attribute(&quot;sparse&quot;, 1)</span>
+            <span class="c1"># node.attribute.append(new_add)</span>
+
+    <span class="n">d</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="s2">&quot;onnx_extented.ortops.optim.cpu&quot;</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">get_ort_ext_libs</span><span class="p">()</span>
+    <span class="n">opts</span> <span class="o">=</span> <span class="n">SessionOptions</span><span class="p">()</span>
+    <span class="n">opts</span><span class="o">.</span><span class="n">register_custom_ops_library</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cus</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
+        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># third: with sparse</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;TfIdfVectorizer&quot;</span><span class="p">:</span>
+            <span class="n">new_add</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_attribute" title="onnx.helper.make_attribute" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_attribute</span></a><span class="p">(</span><span class="s2">&quot;sparse&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_add</span><span class="p">)</span>
+    <span class="n">cussp</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
+        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ref</span><span class="p">,</span> <span class="n">cus</span><span class="p">,</span> <span class="n">cussp</span>
+
+
+<span class="k">if</span> <span class="n">unit_test_going</span><span class="p">():</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocabulary_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocabulary_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">]</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">confs</span></a> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><a href="https://docs.python.org/3/library/itertools.html#itertools.product" title="itertools.product" class="sphx-glr-backref-module-itertools sphx-glr-backref-type-py-function"><span class="n">itertools</span><span class="o">.</span><span class="n">product</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocabulary_sizes</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a><span class="p">))</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">confs</span></a><span class="p">):</span>
+    <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <span class="n">make_onnx</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="p">)</span>
+    <span class="n">ref</span><span class="p">,</span> <span class="n">cus</span><span class="p">,</span> <span class="n">sparse</span> <span class="o">=</span> <span class="n">make_sessions</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="p">)</span>
+
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">X</span><span class="o">=</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">%</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="p">)</span>
+        <span class="o">.</span><span class="n">reshape</span><span class="p">((</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="numpy.int64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">int64</span></a><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># reference</span>
+    <span class="n">ref</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ref</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">),</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ref&quot;</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">))</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">)</span>
+
+    <span class="c1"># custom</span>
+    <span class="n">cus</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">cus</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">),</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;custom&quot;</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">))</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">)</span>
+
+    <span class="c1"># sparse</span>
+    <span class="n">sparse</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">sparse</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">),</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sparse&quot;</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">voc_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">))</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">obs</span></a><span class="p">)</span>
+
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">)</span>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html#pandas.DataFrame.to_csv" title="pandas.DataFrame.to_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span></a><span class="p">(</span><span class="s2">&quot;plot_optim_tfidf.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">head</span></a><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/12 [00:00&lt;?, ?it/s]
+  8%|▊         | 1/12 [00:03&lt;00:42,  3.87s/it]
+ 17%|█▋        | 2/12 [00:07&lt;00:37,  3.71s/it]
+ 25%|██▌       | 3/12 [00:11&lt;00:35,  3.93s/it]
+ 33%|███▎      | 4/12 [00:15&lt;00:32,  4.06s/it]
+ 42%|████▏     | 5/12 [00:19&lt;00:27,  3.88s/it]
+ 50%|█████     | 6/12 [00:23&lt;00:22,  3.77s/it]
+ 58%|█████▊    | 7/12 [00:27&lt;00:19,  3.97s/it]
+ 67%|██████▋   | 8/12 [00:31&lt;00:15,  3.88s/it]
+ 75%|███████▌  | 9/12 [00:35&lt;00:12,  4.11s/it]
+ 83%|████████▎ | 10/12 [00:40&lt;00:08,  4.23s/it]
+ 92%|█████████▏| 11/12 [00:44&lt;00:04,  4.18s/it]
+100%|██████████| 12/12 [00:51&lt;00:00,  5.17s/it]
+100%|██████████| 12/12 [00:51&lt;00:00,  4.31s/it]
+    average  deviation  min_exec  ...    name  voc_size  batch_size
+0  0.000128   0.000039  0.000105  ...     ref       100         500
+1  0.000097   0.000019  0.000058  ...  custom       100         500
+2  0.000253   0.000004  0.000235  ...  sparse       100         500
+3  0.000217   0.000019  0.000205  ...     ref       100        1000
+4  0.000118   0.000020  0.000102  ...  custom       100        1000
+
+[5 rows x 12 columns]
+</pre></div>
+</div>
+</section>
+<section id="plots">
+<h2>Plots<a class="headerlink" href="#plots" title="Permalink to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.pivot_table.html#pandas.pivot_table" title="pandas.pivot_table" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pandas</span><span class="o">.</span><span class="n">pivot_table</span></a><span class="p">(</span>
+    <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;voc_size&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;average&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size           500       1000      2000
+voc_size name
+100      custom  0.000097  0.000118  0.000186
+         ref     0.000128  0.000217  0.000389
+         sparse  0.000253  0.000477  0.000974
+1000     custom  0.000215  0.000377  0.001005
+         ref     0.000590  0.001418  0.003193
+         sparse  0.000285  0.000505  0.000921
+5000     custom  0.001305  0.003876  0.011228
+         ref     0.004234  0.008521  0.021832
+         sparse  0.000312  0.000549  0.000915
+10000    custom  0.006140  0.012380  0.023083
+         ref     0.008022  0.018877  0.045320
+         sparse  0.000222  0.000624  0.002724
+</pre></div>
+</div>
+<p>Graphs.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">histograms</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">):</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span><span class="o">.</span><span class="n">batch_size</span></a><span class="p">)))</span>
+    <span class="n">voc_sizes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span><span class="o">.</span><span class="n">voc_size</span></a><span class="p">)))</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a><span class="p">)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">voc_sizes</span><span class="p">)</span>
+
+    <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">B</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">V</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.suptitle" title="matplotlib.figure.Figure.suptitle" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span></a><span class="p">(</span><span class="s2">&quot;Compares Implementations of TfIdfVectorizer&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V</span><span class="p">):</span>
+            <span class="n">aa</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">v</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
+            <span class="n">sub</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">[(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span><span class="o">.</span><span class="n">batch_size</span></a> <span class="o">==</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a><span class="p">[</span><span class="n">b</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span><span class="o">.</span><span class="n">voc_size</span></a> <span class="o">==</span> <span class="n">voc_sizes</span><span class="p">[</span><span class="n">v</span><span class="p">])][</span>
+                <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;average&quot;</span><span class="p">]</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">sub</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">sub</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+            <span class="n">sub</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+                <span class="n">ax</span><span class="o">=</span><span class="n">aa</span><span class="p">,</span> <span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">aa</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;vocabulary=</span><span class="si">{</span><span class="n">voc_sizes</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">V</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">aa</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;batch_size=</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">aa</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+    <span class="k">return</span> <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a>
+
+
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a> <span class="o">=</span> <span class="n">histograms</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">)</span>
+<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_optim_tfidf.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_optim_tfidf_001.png" srcset="../_images/sphx_glr_plot_optim_tfidf_001.png" alt="Compares Implementations of TfIdfVectorizer" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 18.712 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optim-tfidf-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/0080b6c00f6299474e8b0e8ebb63a8b9/plot_optim_tfidf.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optim_tfidf.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/483687deb4f48b615b418a3d274b276e/plot_optim_tfidf.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_optim_tfidf.py</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../CHANGELOGS.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Change Logs</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="plot_bench_cypy_ort.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Measuring onnxruntime performance against a cython binding</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Measuring performance of TfIdfVectorizer</a><ul>
+<li><a class="reference internal" href="#a-simple-model">A simple model</a></li>
+<li><a class="reference internal" href="#benchmark">Benchmark</a></li>
+<li><a class="reference internal" href="#plots">Plots</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=94f1748a"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

@@ -31,7 +31,7 @@ This function offers many options.
 
 .. GENERATED FROM PYTHON SOURCE LINES 13-97
 
-.. code-block:: default
+.. code-block:: Python
 
     import pprint
     import platform
@@ -121,6 +121,12 @@ This function offers many options.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    [2023-11-27 15:15:22,073] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+
 
 
 
@@ -131,7 +137,7 @@ Device properties
 
 .. GENERATED FROM PYTHON SOURCE LINES 100-109
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -178,7 +184,7 @@ or a custom implementation from domain
 
 .. GENERATED FROM PYTHON SOURCE LINES 117-197
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -288,7 +294,7 @@ It must be called with tensor of type `OrtValue`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 202-232
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -345,7 +351,7 @@ The benchmark will run the following configurations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 237-250
 
-.. code-block:: default
+.. code-block:: Python
 
 
     types = list(getattr(TensorProto, a) for a in script_args.types.split(","))
@@ -373,7 +379,7 @@ Let's cache the matrices involved.
 
 .. GENERATED FROM PYTHON SOURCE LINES 252-307
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -438,7 +444,7 @@ Let's cache the matrices involved.
 
  .. code-block:: none
 
-      0%|          | 0/28 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   0%|          | 0/28 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:20<09:10, 20.40s/it]    t=1 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:20<09:10, 20.40s/it]     t=10 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:20<09:10, 20.40s/it]    t=16 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:20<09:10, 20.40s/it]    t=17 dim=[64, 64, 64]:   4%|▎         | 1/28 [00:20<09:10, 20.40s/it]    t=1 dim=[64, 64, 64]:   4%|▎         | 1/28 [00:20<09:10, 20.40s/it]     t=1 dim=[64, 64, 64]:  21%|██▏       | 6/28 [00:20<00:55,  2.53s/it]    t=10 dim=[64, 64, 64]:  21%|██▏       | 6/28 [00:20<00:55,  2.53s/it]    t=16 dim=[64, 64, 64]:  21%|██▏       | 6/28 [00:20<00:55,  2.53s/it]    t=17 dim=[128, 128, 128]:  21%|██▏       | 6/28 [00:20<00:55,  2.53s/it]    t=1 dim=[128, 128, 128]:  21%|██▏       | 6/28 [00:20<00:55,  2.53s/it]     t=10 dim=[128, 128, 128]:  21%|██▏       | 6/28 [00:20<00:55,  2.53s/it]    t=10 dim=[128, 128, 128]:  39%|███▉      | 11/28 [00:20<00:19,  1.14s/it]    t=16 dim=[128, 128, 128]:  39%|███▉      | 11/28 [00:20<00:19,  1.14s/it]    t=17 dim=[256, 256, 256]:  39%|███▉      | 11/28 [00:20<00:19,  1.14s/it]    t=1 dim=[256, 256, 256]:  39%|███▉      | 11/28 [00:20<00:19,  1.14s/it]     t=10 dim=[256, 256, 256]:  39%|███▉      | 11/28 [00:20<00:19,  1.14s/it]    t=10 dim=[256, 256, 256]:  54%|█████▎    | 15/28 [00:21<00:09,  1.37it/s]    t=16 dim=[256, 256, 256]:  54%|█████▎    | 15/28 [00:21<00:09,  1.37it/s]    t=17 dim=[400, 400, 400]:  54%|█████▎    | 15/28 [00:21<00:09,  1.37it/s]    t=1 dim=[400, 400, 400]:  54%|█████▎    | 15/28 [00:21<00:09,  1.37it/s]     t=1 dim=[400, 400, 400]:  64%|██████▍   | 18/28 [00:21<00:05,  1.82it/s]    t=10 dim=[400, 400, 400]:  64%|██████▍   | 18/28 [00:21<00:05,  1.82it/s]    t=16 dim=[400, 400, 400]:  64%|██████▍   | 18/28 [00:21<00:05,  1.82it/s]    t=16 dim=[400, 400, 400]:  71%|███████▏  | 20/28 [00:21<00:03,  2.20it/s]    t=17 dim=[512, 512, 512]:  71%|███████▏  | 20/28 [00:21<00:03,  2.20it/s]    t=1 dim=[512, 512, 512]:  71%|███████▏  | 20/28 [00:21<00:03,  2.20it/s]     t=1 dim=[512, 512, 512]:  79%|███████▊  | 22/28 [00:21<00:02,  2.64it/s]    t=10 dim=[512, 512, 512]:  79%|███████▊  | 22/28 [00:21<00:02,  2.64it/s]    t=16 dim=[512, 512, 512]:  79%|███████▊  | 22/28 [00:22<00:02,  2.64it/s]    t=16 dim=[512, 512, 512]:  86%|████████▌ | 24/28 [00:22<00:01,  3.18it/s]    t=17 dim=[1024, 1024, 1024]:  86%|████████▌ | 24/28 [00:22<00:01,  3.18it/s]    t=1 dim=[1024, 1024, 1024]:  86%|████████▌ | 24/28 [00:22<00:01,  3.18it/s]     t=1 dim=[1024, 1024, 1024]:  93%|█████████▎| 26/28 [00:22<00:00,  3.25it/s]    t=10 dim=[1024, 1024, 1024]:  93%|█████████▎| 26/28 [00:22<00:00,  3.25it/s]    t=10 dim=[1024, 1024, 1024]:  96%|█████████▋| 27/28 [00:22<00:00,  3.47it/s]    t=16 dim=[1024, 1024, 1024]:  96%|█████████▋| 27/28 [00:22<00:00,  3.47it/s]    t=16 dim=[1024, 1024, 1024]: 100%|██████████| 28/28 [00:23<00:00,  3.69it/s]    t=16 dim=[1024, 1024, 1024]: 100%|██████████| 28/28 [00:23<00:00,  1.21it/s]
+      0%|          | 0/28 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   0%|          | 0/28 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=1 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]     t=10 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=16 dim=[32, 32, 32]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=17 dim=[64, 64, 64]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=1 dim=[64, 64, 64]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]     t=10 dim=[64, 64, 64]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=16 dim=[64, 64, 64]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=17 dim=[128, 128, 128]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=1 dim=[128, 128, 128]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]     t=10 dim=[128, 128, 128]:   4%|▎         | 1/28 [00:08<03:46,  8.40s/it]    t=10 dim=[128, 128, 128]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]    t=16 dim=[128, 128, 128]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]    t=17 dim=[256, 256, 256]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]    t=1 dim=[256, 256, 256]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]     t=10 dim=[256, 256, 256]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]    t=16 dim=[256, 256, 256]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]    t=17 dim=[400, 400, 400]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]    t=1 dim=[400, 400, 400]:  39%|███▉      | 11/28 [00:08<00:09,  1.79it/s]     t=1 dim=[400, 400, 400]:  64%|██████▍   | 18/28 [00:08<00:02,  3.36it/s]    t=10 dim=[400, 400, 400]:  64%|██████▍   | 18/28 [00:08<00:02,  3.36it/s]    t=16 dim=[400, 400, 400]:  64%|██████▍   | 18/28 [00:08<00:02,  3.36it/s]    t=17 dim=[512, 512, 512]:  64%|██████▍   | 18/28 [00:08<00:02,  3.36it/s]    t=1 dim=[512, 512, 512]:  64%|██████▍   | 18/28 [00:08<00:02,  3.36it/s]     t=10 dim=[512, 512, 512]:  64%|██████▍   | 18/28 [00:08<00:02,  3.36it/s]    t=16 dim=[512, 512, 512]:  64%|██████▍   | 18/28 [00:08<00:02,  3.36it/s]    t=16 dim=[512, 512, 512]:  86%|████████▌ | 24/28 [00:08<00:00,  5.02it/s]    t=17 dim=[1024, 1024, 1024]:  86%|████████▌ | 24/28 [00:08<00:00,  5.02it/s]    t=1 dim=[1024, 1024, 1024]:  86%|████████▌ | 24/28 [00:08<00:00,  5.02it/s]     t=10 dim=[1024, 1024, 1024]:  86%|████████▌ | 24/28 [00:09<00:00,  5.02it/s]    t=16 dim=[1024, 1024, 1024]:  86%|████████▌ | 24/28 [00:09<00:00,  5.02it/s]    t=16 dim=[1024, 1024, 1024]: 100%|██████████| 28/28 [00:09<00:00,  3.03it/s]
     28 matrices were created.
 
 
@@ -450,7 +456,7 @@ Let's run the benchmark
 
 .. GENERATED FROM PYTHON SOURCE LINES 309-469
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -598,7 +604,7 @@ Let's run the benchmark
 
             obs = measure_time(fct_benchmarked, repeat=repeat, number=number)
             internal_time = None
-            if len(times) > 0:
+            if times:
                 np_times = [t.numpy() for t in times]
                 internal_time = (sum(np_times) / len(times))[0]
 
@@ -620,7 +626,7 @@ Let's run the benchmark
 
  .. code-block:: none
 
-      0%|          | 0/336 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/336 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:07<00:22, 10.94it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:07<00:22, 10.94it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:08<00:22, 10.94it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  26%|██▌       | 87/336 [00:08<00:23, 10.48it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 87/336 [00:08<00:23, 10.48it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 88/336 [00:13<00:50,  4.92it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 88/336 [00:13<00:50,  4.92it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▋       | 89/336 [00:13<00:50,  4.88it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▋       | 89/336 [00:13<00:50,  4.88it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  26%|██▋       | 89/336 [00:13<00:50,  4.88it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 91/336 [00:18<01:39,  2.45it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 91/336 [00:18<01:39,  2.45it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 92/336 [00:19<01:40,  2.44it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 92/336 [00:19<01:40,  2.44it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 92/336 [00:19<01:40,  2.44it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 94/336 [00:20<01:49,  2.21it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 94/336 [00:20<01:49,  2.21it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 95/336 [00:20<01:46,  2.26it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 95/336 [00:20<01:46,  2.26it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 95/336 [00:20<01:46,  2.26it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 97/336 [00:21<01:37,  2.46it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 97/336 [00:21<01:37,  2.46it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 98/336 [00:21<01:30,  2.62it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 98/336 [00:21<01:30,  2.62it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▉       | 98/336 [00:21<01:30,  2.62it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|██▉       | 100/336 [00:22<01:25,  2.75it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|██▉       | 100/336 [00:22<01:25,  2.75it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|███       | 101/336 [00:22<01:25,  2.76it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|███       | 101/336 [00:22<01:25,  2.76it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  30%|███       | 101/336 [00:22<01:25,  2.76it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 103/336 [00:24<02:06,  1.84it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 103/336 [00:24<02:06,  1.84it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 104/336 [00:25<02:42,  1.43it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 104/336 [00:25<02:42,  1.43it/s]    t=1 e=InferenceSession p=CPUE dim=[32, 32, 32]:  31%|███       | 104/336 [00:25<02:42,  1.43it/s]          t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:  31%|███       | 104/336 [00:25<02:42,  1.43it/s]    t=1 e=InferenceSession p=CPUE dim=[128, 128, 128]:  31%|███       | 104/336 [00:25<02:42,  1.43it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  31%|███       | 104/336 [00:25<02:42,  1.43it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  35%|███▍      | 116/336 [00:26<00:39,  5.61it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  35%|███▍      | 116/336 [00:26<00:39,  5.61it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  35%|███▍      | 116/336 [00:26<00:39,  5.61it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  36%|███▋      | 122/336 [00:26<00:26,  7.97it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  36%|███▋      | 122/336 [00:26<00:26,  7.97it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]       t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]          t=1 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:27<00:34,  6.11it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  45%|████▌     | 152/336 [00:27<00:09, 20.41it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  45%|████▌     | 152/336 [00:27<00:09, 20.41it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  45%|████▌     | 152/336 [00:28<00:09, 20.41it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  45%|████▌     | 152/336 [00:28<00:09, 20.41it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  48%|████▊     | 161/336 [00:28<00:12, 13.95it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  48%|████▊     | 161/336 [00:28<00:12, 13.95it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  48%|████▊     | 161/336 [00:28<00:12, 13.95it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  48%|████▊     | 161/336 [00:28<00:12, 13.95it/s]            t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 169/336 [00:35<00:46,  3.62it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 169/336 [00:35<00:46,  3.62it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 169/336 [00:36<00:46,  3.62it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  50%|█████     | 169/336 [00:36<00:46,  3.62it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  50%|█████     | 169/336 [00:44<00:46,  3.62it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  50%|█████     | 169/336 [00:44<00:46,  3.62it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  52%|█████▏    | 174/336 [00:44<01:29,  1.80it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 174/336 [00:44<01:29,  1.80it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 174/336 [00:53<01:29,  1.80it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 174/336 [00:53<01:29,  1.80it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  53%|█████▎    | 177/336 [00:53<02:18,  1.15it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  53%|█████▎    | 177/336 [00:53<02:18,  1.15it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  53%|█████▎    | 177/336 [00:56<02:18,  1.15it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  53%|█████▎    | 177/336 [00:57<02:18,  1.15it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  54%|█████▎    | 180/336 [00:57<02:23,  1.08it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▎    | 180/336 [00:57<02:23,  1.08it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▎    | 180/336 [01:00<02:23,  1.08it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▍    | 182/336 [01:00<02:38,  1.03s/it]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▍    | 182/336 [01:00<02:38,  1.03s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  54%|█████▍    | 182/336 [01:00<02:38,  1.03s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▍    | 184/336 [01:06<03:16,  1.29s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▍    | 184/336 [01:06<03:16,  1.29s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▌    | 185/336 [01:06<02:58,  1.18s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▌    | 185/336 [01:06<02:58,  1.18s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  55%|█████▌    | 185/336 [01:06<02:58,  1.18s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 187/336 [01:40<11:56,  4.81s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 187/336 [01:40<11:56,  4.81s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 188/336 [01:41<10:33,  4.28s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 188/336 [01:41<10:33,  4.28s/it]    t=10 e=InferenceSession p=CPUE dim=[32, 32, 32]:  56%|█████▌    | 188/336 [01:41<10:33,  4.28s/it]          t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  56%|█████▌    | 188/336 [01:41<10:33,  4.28s/it]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  56%|█████▌    | 188/336 [01:41<10:33,  4.28s/it]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  59%|█████▊    | 197/336 [01:42<03:36,  1.55s/it]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  59%|█████▊    | 197/336 [01:42<03:36,  1.55s/it]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  60%|█████▉    | 200/336 [01:42<02:43,  1.21s/it]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  60%|█████▉    | 200/336 [01:42<02:43,  1.21s/it]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  60%|██████    | 203/336 [01:42<02:02,  1.09it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  60%|██████    | 203/336 [01:42<02:02,  1.09it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  61%|██████▏   | 206/336 [01:42<01:31,  1.43it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  61%|██████▏   | 206/336 [01:42<01:31,  1.43it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]       t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:44<01:19,  1.59it/s]          t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  69%|██████▉   | 233/336 [01:44<00:16,  6.23it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  69%|██████▉   | 233/336 [01:44<00:16,  6.23it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  69%|██████▉   | 233/336 [01:44<00:16,  6.23it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  69%|██████▉   | 233/336 [01:44<00:16,  6.23it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  72%|███████▏  | 242/336 [01:45<00:13,  7.20it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  72%|███████▏  | 242/336 [01:45<00:13,  7.20it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  72%|███████▏  | 242/336 [01:45<00:13,  7.20it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  72%|███████▏  | 242/336 [01:45<00:13,  7.20it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  72%|███████▏  | 242/336 [01:45<00:13,  7.20it/s]             t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  76%|███████▌  | 254/336 [01:45<00:08,  9.93it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  76%|███████▌  | 254/336 [01:45<00:08,  9.93it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  76%|███████▌  | 254/336 [01:45<00:08,  9.93it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  76%|███████▋  | 257/336 [01:45<00:08,  9.78it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  76%|███████▋  | 257/336 [01:45<00:08,  9.78it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  76%|███████▋  | 257/336 [01:45<00:08,  9.78it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  77%|███████▋  | 260/336 [01:46<00:08,  9.08it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  77%|███████▋  | 260/336 [01:46<00:08,  9.08it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  77%|███████▋  | 260/336 [01:46<00:08,  9.08it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 263/336 [01:46<00:08,  9.12it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 263/336 [01:46<00:08,  9.12it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  78%|███████▊  | 263/336 [01:46<00:08,  9.12it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  79%|███████▉  | 266/336 [01:46<00:07,  9.79it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  79%|███████▉  | 266/336 [01:46<00:07,  9.79it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  79%|███████▉  | 266/336 [01:46<00:07,  9.79it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  80%|████████  | 269/336 [01:47<00:06,  9.92it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  80%|████████  | 269/336 [01:47<00:06,  9.92it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  80%|████████  | 269/336 [01:47<00:06,  9.92it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[32, 32, 32]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]          t=16 e=InferenceSession p=CPUE dim=[64, 64, 64]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[128, 128, 128]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[256, 256, 256]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[400, 400, 400]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[512, 512, 512]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]       t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]          t=16 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:48<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]: 100%|██████████| 336/336 [01:48<00:00,  3.10it/s]
+      0%|          | 0/336 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/336 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:02<00:06, 40.98it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:02<00:06, 40.98it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:02<00:06, 40.98it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 85/336 [00:02<00:06, 40.98it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 85/336 [00:04<00:06, 40.98it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 85/336 [00:04<00:06, 40.98it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  27%|██▋       | 90/336 [00:04<00:13, 18.54it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 90/336 [00:04<00:13, 18.54it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 90/336 [00:05<00:13, 18.54it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 92/336 [00:05<00:21, 11.60it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 92/336 [00:05<00:21, 11.60it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 92/336 [00:05<00:21, 11.60it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 94/336 [00:06<00:22, 10.69it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 94/336 [00:06<00:22, 10.69it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 94/336 [00:06<00:22, 10.69it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 94/336 [00:06<00:22, 10.69it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 97/336 [00:06<00:22, 10.84it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 97/336 [00:06<00:22, 10.84it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 97/336 [00:06<00:22, 10.84it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▉       | 97/336 [00:06<00:22, 10.84it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|██▉       | 100/336 [00:06<00:21, 11.02it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|██▉       | 100/336 [00:06<00:21, 11.02it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|██▉       | 100/336 [00:06<00:21, 11.02it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  30%|██▉       | 100/336 [00:06<00:21, 11.02it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 103/336 [00:07<00:23,  9.96it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 103/336 [00:07<00:23,  9.96it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 104/336 [00:07<00:25,  9.00it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 104/336 [00:07<00:25,  9.00it/s]    t=1 e=InferenceSession p=CPUE dim=[32, 32, 32]:  31%|███       | 104/336 [00:07<00:25,  9.00it/s]          t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:  31%|███       | 104/336 [00:07<00:25,  9.00it/s]    t=1 e=InferenceSession p=CPUE dim=[128, 128, 128]:  31%|███       | 104/336 [00:07<00:25,  9.00it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  31%|███       | 104/336 [00:07<00:25,  9.00it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  31%|███       | 104/336 [00:07<00:25,  9.00it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  35%|███▌      | 119/336 [00:07<00:10, 20.51it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  35%|███▌      | 119/336 [00:07<00:10, 20.51it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  35%|███▌      | 119/336 [00:07<00:10, 20.51it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]       t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]          t=1 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  37%|███▋      | 125/336 [00:08<00:14, 14.71it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  46%|████▌     | 155/336 [00:08<00:05, 35.77it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  46%|████▌     | 155/336 [00:08<00:05, 35.77it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  46%|████▌     | 155/336 [00:08<00:05, 35.77it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  46%|████▌     | 155/336 [00:08<00:05, 35.77it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  49%|████▉     | 165/336 [00:08<00:04, 42.14it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  49%|████▉     | 165/336 [00:08<00:04, 42.14it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  49%|████▉     | 165/336 [00:08<00:04, 42.14it/s]            t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  49%|████▉     | 165/336 [00:10<00:04, 42.14it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  49%|████▉     | 165/336 [00:10<00:04, 42.14it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  49%|████▉     | 165/336 [00:10<00:04, 42.14it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  49%|████▉     | 165/336 [00:12<00:04, 42.14it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  49%|████▉     | 165/336 [00:12<00:04, 42.14it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  52%|█████▏    | 174/336 [00:12<00:19,  8.50it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 174/336 [00:12<00:19,  8.50it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 174/336 [00:14<00:19,  8.50it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 174/336 [00:14<00:19,  8.50it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 174/336 [00:14<00:19,  8.50it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 174/336 [00:14<00:19,  8.50it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 174/336 [00:14<00:19,  8.50it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  54%|█████▎    | 180/336 [00:14<00:26,  5.90it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▎    | 180/336 [00:14<00:26,  5.90it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▎    | 180/336 [00:15<00:26,  5.90it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▎    | 180/336 [00:15<00:26,  5.90it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  54%|█████▎    | 180/336 [00:15<00:26,  5.90it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  54%|█████▎    | 180/336 [00:15<00:26,  5.90it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▌    | 185/336 [00:15<00:25,  5.94it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▌    | 185/336 [00:15<00:25,  5.94it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  55%|█████▌    | 185/336 [00:15<00:25,  5.94it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  55%|█████▌    | 185/336 [00:17<00:25,  5.94it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  55%|█████▌    | 185/336 [00:17<00:25,  5.94it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▋    | 189/336 [00:17<00:33,  4.39it/s]    t=10 e=InferenceSession p=CPUE dim=[32, 32, 32]:  56%|█████▋    | 189/336 [00:17<00:33,  4.39it/s]          t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  56%|█████▋    | 189/336 [00:17<00:33,  4.39it/s]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  56%|█████▋    | 189/336 [00:17<00:33,  4.39it/s]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  59%|█████▊    | 197/336 [00:17<00:21,  6.32it/s]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  59%|█████▊    | 197/336 [00:17<00:21,  6.32it/s]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  60%|█████▉    | 201/336 [00:17<00:18,  7.50it/s]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  60%|█████▉    | 201/336 [00:17<00:18,  7.50it/s]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  61%|██████    | 205/336 [00:17<00:14,  9.05it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  61%|██████    | 205/336 [00:17<00:14,  9.05it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  61%|██████    | 205/336 [00:18<00:14,  9.05it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]       t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  62%|██████▏   | 209/336 [00:19<00:19,  6.58it/s]          t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  69%|██████▉   | 233/336 [00:19<00:05, 18.27it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  69%|██████▉   | 233/336 [00:19<00:05, 18.27it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  69%|██████▉   | 233/336 [00:19<00:05, 18.27it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  69%|██████▉   | 233/336 [00:19<00:05, 18.27it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  72%|███████▏  | 242/336 [00:19<00:05, 18.12it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  72%|███████▏  | 242/336 [00:19<00:05, 18.12it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  72%|███████▏  | 242/336 [00:19<00:05, 18.12it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  72%|███████▏  | 242/336 [00:19<00:05, 18.12it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  72%|███████▏  | 242/336 [00:19<00:05, 18.12it/s]             t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  76%|███████▌  | 254/336 [00:19<00:03, 24.56it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  76%|███████▌  | 254/336 [00:19<00:03, 24.56it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  76%|███████▌  | 254/336 [00:19<00:03, 24.56it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  76%|███████▌  | 254/336 [00:20<00:03, 24.56it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  76%|███████▌  | 254/336 [00:20<00:03, 24.56it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  76%|███████▌  | 254/336 [00:20<00:03, 24.56it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  78%|███████▊  | 261/336 [00:20<00:02, 25.70it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 261/336 [00:20<00:02, 25.70it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 261/336 [00:20<00:02, 25.70it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  78%|███████▊  | 261/336 [00:20<00:02, 25.70it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  78%|███████▊  | 261/336 [00:20<00:02, 25.70it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  79%|███████▉  | 267/336 [00:20<00:02, 29.06it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  79%|███████▉  | 267/336 [00:20<00:02, 29.06it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  79%|███████▉  | 267/336 [00:20<00:02, 29.06it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  79%|███████▉  | 267/336 [00:20<00:02, 29.06it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  79%|███████▉  | 267/336 [00:20<00:02, 29.06it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=InferenceSession p=CPUE dim=[32, 32, 32]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]          t=16 e=InferenceSession p=CPUE dim=[64, 64, 64]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=InferenceSession p=CPUE dim=[128, 128, 128]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=InferenceSession p=CPUE dim=[256, 256, 256]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=InferenceSession p=CPUE dim=[400, 400, 400]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=InferenceSession p=CPUE dim=[512, 512, 512]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]       t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]          t=16 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  81%|████████▏ | 273/336 [00:20<00:02, 28.54it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]: 100%|██████████| 336/336 [00:20<00:00, 16.34it/s]
 
 
 
@@ -632,7 +638,7 @@ Results
 
 .. GENERATED FROM PYTHON SOURCE LINES 472-482
 
-.. code-block:: default
+.. code-block:: Python
 
 
     df = DataFrame(data)
@@ -653,15 +659,15 @@ Results
  .. code-block:: none
 
                                 0  ...                    4
-    average              0.009009  ...             0.008234
-    deviation            0.002026  ...             0.001375
-    min_exec             0.005501  ...             0.005689
-    max_exec             0.012335  ...             0.010571
+    average              0.002719  ...             0.002275
+    deviation            0.000193  ...             0.000217
+    min_exec             0.002239  ...             0.001972
+    max_exec             0.003332  ...             0.002919
     repeat                     40  ...                   40
     number                     16  ...                   16
-    ttime                0.360375  ...             0.329349
+    ttime                0.108777  ...             0.090999
     context_size               64  ...                   64
-    warmup_time           0.00644  ...             0.006481
+    warmup_time          0.002788  ...             0.002506
     engine                    ort  ...                  ort
     stype                     f32  ...                  f32
     type                      f32  ...                  f32
@@ -725,15 +731,15 @@ Results
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.009009</td>
-          <td>0.002026</td>
-          <td>0.005501</td>
-          <td>0.012335</td>
+          <td>0.002719</td>
+          <td>1.933278e-04</td>
+          <td>0.002239</td>
+          <td>0.003332</td>
           <td>40</td>
           <td>16</td>
-          <td>0.360375</td>
+          <td>0.108777</td>
           <td>64</td>
-          <td>0.006440</td>
+          <td>0.002788</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -749,15 +755,15 @@ Results
         </tr>
         <tr>
           <th>1</th>
-          <td>0.000609</td>
-          <td>0.000302</td>
-          <td>0.000228</td>
-          <td>0.001603</td>
+          <td>0.000137</td>
+          <td>1.688041e-05</td>
+          <td>0.000111</td>
+          <td>0.000165</td>
           <td>40</td>
           <td>16</td>
-          <td>0.024373</td>
+          <td>0.005465</td>
           <td>64</td>
-          <td>0.000773</td>
+          <td>0.000174</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -773,15 +779,15 @@ Results
         </tr>
         <tr>
           <th>2</th>
-          <td>0.007497</td>
-          <td>0.001333</td>
-          <td>0.005541</td>
-          <td>0.011082</td>
+          <td>0.002664</td>
+          <td>2.771045e-04</td>
+          <td>0.002173</td>
+          <td>0.003334</td>
           <td>40</td>
           <td>16</td>
-          <td>0.299867</td>
+          <td>0.106553</td>
           <td>64</td>
-          <td>0.004795</td>
+          <td>0.006765</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -797,15 +803,15 @@ Results
         </tr>
         <tr>
           <th>3</th>
-          <td>0.000374</td>
-          <td>0.000092</td>
-          <td>0.000298</td>
-          <td>0.000776</td>
+          <td>0.000144</td>
+          <td>2.276735e-05</td>
+          <td>0.000124</td>
+          <td>0.000248</td>
           <td>40</td>
           <td>16</td>
-          <td>0.014959</td>
+          <td>0.005754</td>
           <td>64</td>
-          <td>0.001250</td>
+          <td>0.000211</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -821,15 +827,15 @@ Results
         </tr>
         <tr>
           <th>4</th>
-          <td>0.008234</td>
-          <td>0.001375</td>
-          <td>0.005689</td>
-          <td>0.010571</td>
+          <td>0.002275</td>
+          <td>2.174965e-04</td>
+          <td>0.001972</td>
+          <td>0.002919</td>
           <td>40</td>
           <td>16</td>
-          <td>0.329349</td>
+          <td>0.090999</td>
           <td>64</td>
-          <td>0.006481</td>
+          <td>0.002506</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -845,15 +851,15 @@ Results
         </tr>
         <tr>
           <th>5</th>
-          <td>0.000690</td>
-          <td>0.000126</td>
-          <td>0.000530</td>
-          <td>0.001056</td>
+          <td>0.000225</td>
+          <td>5.785517e-05</td>
+          <td>0.000184</td>
+          <td>0.000441</td>
           <td>40</td>
           <td>16</td>
-          <td>0.027615</td>
+          <td>0.009014</td>
           <td>64</td>
-          <td>0.001315</td>
+          <td>0.000336</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -869,15 +875,15 @@ Results
         </tr>
         <tr>
           <th>6</th>
-          <td>0.008488</td>
-          <td>0.001155</td>
-          <td>0.006853</td>
-          <td>0.010638</td>
+          <td>0.002512</td>
+          <td>2.208300e-04</td>
+          <td>0.002214</td>
+          <td>0.002913</td>
           <td>20</td>
           <td>8</td>
-          <td>0.169762</td>
+          <td>0.050237</td>
           <td>64</td>
-          <td>0.007884</td>
+          <td>0.003314</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -893,15 +899,15 @@ Results
         </tr>
         <tr>
           <th>7</th>
-          <td>0.001935</td>
-          <td>0.000295</td>
-          <td>0.001687</td>
-          <td>0.003135</td>
+          <td>0.000486</td>
+          <td>3.968702e-05</td>
+          <td>0.000434</td>
+          <td>0.000585</td>
           <td>20</td>
           <td>8</td>
-          <td>0.038692</td>
+          <td>0.009729</td>
           <td>64</td>
-          <td>0.002603</td>
+          <td>0.000564</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -917,15 +923,15 @@ Results
         </tr>
         <tr>
           <th>8</th>
-          <td>0.011320</td>
-          <td>0.001234</td>
-          <td>0.009806</td>
-          <td>0.013460</td>
+          <td>0.003238</td>
+          <td>3.576874e-04</td>
+          <td>0.002863</td>
+          <td>0.003991</td>
           <td>10</td>
           <td>4</td>
-          <td>0.113197</td>
+          <td>0.032379</td>
           <td>64</td>
-          <td>0.010692</td>
+          <td>0.003232</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -941,15 +947,15 @@ Results
         </tr>
         <tr>
           <th>9</th>
-          <td>0.004401</td>
-          <td>0.000193</td>
-          <td>0.004142</td>
-          <td>0.004787</td>
+          <td>0.000996</td>
+          <td>6.869747e-05</td>
+          <td>0.000914</td>
+          <td>0.001122</td>
           <td>10</td>
           <td>4</td>
-          <td>0.044013</td>
+          <td>0.009963</td>
           <td>64</td>
-          <td>0.004646</td>
+          <td>0.000921</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -965,15 +971,15 @@ Results
         </tr>
         <tr>
           <th>10</th>
-          <td>0.013148</td>
-          <td>0.000837</td>
-          <td>0.012055</td>
-          <td>0.014771</td>
+          <td>0.003947</td>
+          <td>2.244850e-04</td>
+          <td>0.003735</td>
+          <td>0.004351</td>
           <td>10</td>
           <td>4</td>
-          <td>0.131476</td>
+          <td>0.039469</td>
           <td>64</td>
-          <td>0.013755</td>
+          <td>0.004172</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -989,15 +995,15 @@ Results
         </tr>
         <tr>
           <th>11</th>
-          <td>0.007626</td>
-          <td>0.000641</td>
-          <td>0.006427</td>
-          <td>0.008425</td>
+          <td>0.001450</td>
+          <td>8.474000e-05</td>
+          <td>0.001354</td>
+          <td>0.001559</td>
           <td>10</td>
           <td>4</td>
-          <td>0.076256</td>
+          <td>0.014498</td>
           <td>64</td>
-          <td>0.006763</td>
+          <td>0.001429</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1013,15 +1019,15 @@ Results
         </tr>
         <tr>
           <th>12</th>
-          <td>0.040819</td>
-          <td>0.003275</td>
-          <td>0.037106</td>
-          <td>0.047196</td>
+          <td>0.007946</td>
+          <td>3.097932e-04</td>
+          <td>0.007527</td>
+          <td>0.008537</td>
           <td>10</td>
           <td>4</td>
-          <td>0.408193</td>
+          <td>0.079461</td>
           <td>64</td>
-          <td>0.040123</td>
+          <td>0.008553</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1037,15 +1043,15 @@ Results
         </tr>
         <tr>
           <th>13</th>
-          <td>0.029408</td>
-          <td>0.001331</td>
-          <td>0.028637</td>
-          <td>0.033298</td>
+          <td>0.005128</td>
+          <td>9.730620e-05</td>
+          <td>0.004965</td>
+          <td>0.005347</td>
           <td>10</td>
           <td>4</td>
-          <td>0.294082</td>
+          <td>0.051284</td>
           <td>64</td>
-          <td>0.029161</td>
+          <td>0.005212</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1061,15 +1067,15 @@ Results
         </tr>
         <tr>
           <th>14</th>
+          <td>0.000009</td>
+          <td>1.207111e-06</td>
+          <td>0.000008</td>
           <td>0.000014</td>
-          <td>0.000003</td>
-          <td>0.000012</td>
-          <td>0.000023</td>
           <td>40</td>
           <td>16</td>
-          <td>0.000541</td>
+          <td>0.000344</td>
           <td>64</td>
-          <td>0.000031</td>
+          <td>0.000022</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1085,15 +1091,15 @@ Results
         </tr>
         <tr>
           <th>15</th>
-          <td>0.000025</td>
-          <td>0.000002</td>
-          <td>0.000024</td>
-          <td>0.000031</td>
+          <td>0.000013</td>
+          <td>4.927420e-07</td>
+          <td>0.000012</td>
+          <td>0.000014</td>
           <td>40</td>
           <td>16</td>
-          <td>0.000998</td>
+          <td>0.000501</td>
           <td>64</td>
-          <td>0.000044</td>
+          <td>0.000025</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1109,15 +1115,15 @@ Results
         </tr>
         <tr>
           <th>16</th>
-          <td>0.000057</td>
-          <td>0.000006</td>
+          <td>0.000040</td>
+          <td>3.937311e-06</td>
           <td>0.000035</td>
-          <td>0.000077</td>
+          <td>0.000060</td>
           <td>40</td>
           <td>16</td>
-          <td>0.002276</td>
+          <td>0.001613</td>
           <td>64</td>
-          <td>0.000053</td>
+          <td>0.000063</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1133,15 +1139,15 @@ Results
         </tr>
         <tr>
           <th>17</th>
-          <td>0.000287</td>
-          <td>0.000054</td>
-          <td>0.000170</td>
-          <td>0.000335</td>
+          <td>0.000145</td>
+          <td>1.069105e-05</td>
+          <td>0.000128</td>
+          <td>0.000165</td>
           <td>20</td>
           <td>8</td>
-          <td>0.005735</td>
+          <td>0.002906</td>
           <td>64</td>
-          <td>0.000184</td>
+          <td>0.000135</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1157,15 +1163,15 @@ Results
         </tr>
         <tr>
           <th>18</th>
-          <td>0.001204</td>
-          <td>0.000026</td>
-          <td>0.001141</td>
-          <td>0.001241</td>
+          <td>0.000524</td>
+          <td>7.349516e-06</td>
+          <td>0.000514</td>
+          <td>0.000536</td>
           <td>10</td>
           <td>4</td>
-          <td>0.012042</td>
+          <td>0.005243</td>
           <td>64</td>
-          <td>0.001254</td>
+          <td>0.000523</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1181,15 +1187,15 @@ Results
         </tr>
         <tr>
           <th>19</th>
-          <td>0.002018</td>
-          <td>0.000378</td>
-          <td>0.001602</td>
-          <td>0.002575</td>
+          <td>0.001543</td>
+          <td>3.051318e-04</td>
+          <td>0.001064</td>
+          <td>0.001976</td>
           <td>10</td>
           <td>4</td>
-          <td>0.020180</td>
+          <td>0.015430</td>
           <td>64</td>
-          <td>0.002917</td>
+          <td>0.001732</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1205,15 +1211,15 @@ Results
         </tr>
         <tr>
           <th>20</th>
-          <td>0.020366</td>
-          <td>0.003053</td>
-          <td>0.016020</td>
-          <td>0.024805</td>
+          <td>0.014285</td>
+          <td>1.032318e-03</td>
+          <td>0.012611</td>
+          <td>0.016390</td>
           <td>10</td>
           <td>4</td>
-          <td>0.203658</td>
+          <td>0.142849</td>
           <td>64</td>
-          <td>0.019036</td>
+          <td>0.014387</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -1229,15 +1235,15 @@ Results
         </tr>
         <tr>
           <th>21</th>
-          <td>0.000051</td>
-          <td>0.000030</td>
           <td>0.000029</td>
-          <td>0.000156</td>
+          <td>2.774829e-06</td>
+          <td>0.000026</td>
+          <td>0.000038</td>
           <td>40</td>
           <td>16</td>
-          <td>0.002039</td>
+          <td>0.001158</td>
           <td>64</td>
-          <td>0.000145</td>
+          <td>0.000113</td>
           <td>np</td>
           <td>f32</td>
           <td>f32</td>
@@ -1253,15 +1259,15 @@ Results
         </tr>
         <tr>
           <th>22</th>
-          <td>0.000060</td>
-          <td>0.000021</td>
-          <td>0.000045</td>
-          <td>0.000117</td>
+          <td>0.000040</td>
+          <td>6.734323e-06</td>
+          <td>0.000036</td>
+          <td>0.000073</td>
           <td>40</td>
           <td>16</td>
-          <td>0.002381</td>
+          <td>0.001605</td>
           <td>64</td>
-          <td>0.000087</td>
+          <td>0.000069</td>
           <td>np</td>
           <td>f32</td>
           <td>f32</td>
@@ -1277,15 +1283,15 @@ Results
         </tr>
         <tr>
           <th>23</th>
-          <td>0.001453</td>
-          <td>0.002314</td>
-          <td>0.000127</td>
-          <td>0.010408</td>
+          <td>0.000143</td>
+          <td>1.354442e-04</td>
+          <td>0.000089</td>
+          <td>0.000703</td>
           <td>40</td>
           <td>16</td>
-          <td>0.058136</td>
+          <td>0.005727</td>
           <td>64</td>
-          <td>0.015361</td>
+          <td>0.000141</td>
           <td>np</td>
           <td>f32</td>
           <td>f32</td>
@@ -1301,15 +1307,15 @@ Results
         </tr>
         <tr>
           <th>24</th>
-          <td>0.001599</td>
-          <td>0.003010</td>
-          <td>0.000401</td>
-          <td>0.013659</td>
+          <td>0.000582</td>
+          <td>8.551221e-04</td>
+          <td>0.000281</td>
+          <td>0.004209</td>
           <td>20</td>
           <td>8</td>
-          <td>0.031973</td>
+          <td>0.011637</td>
           <td>64</td>
-          <td>0.004922</td>
+          <td>0.000302</td>
           <td>np</td>
           <td>f32</td>
           <td>f32</td>
@@ -1325,15 +1331,15 @@ Results
         </tr>
         <tr>
           <th>25</th>
-          <td>0.011181</td>
-          <td>0.000724</td>
-          <td>0.010081</td>
-          <td>0.012660</td>
+          <td>0.002693</td>
+          <td>2.687273e-04</td>
+          <td>0.002105</td>
+          <td>0.003647</td>
           <td>40</td>
           <td>16</td>
-          <td>0.447260</td>
+          <td>0.107719</td>
           <td>64</td>
-          <td>0.010180</td>
+          <td>0.002983</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1349,15 +1355,15 @@ Results
         </tr>
         <tr>
           <th>26</th>
-          <td>0.000407</td>
-          <td>0.000116</td>
-          <td>0.000243</td>
-          <td>0.000760</td>
+          <td>0.000149</td>
+          <td>2.807796e-05</td>
+          <td>0.000111</td>
+          <td>0.000240</td>
           <td>40</td>
           <td>16</td>
-          <td>0.016285</td>
+          <td>0.005969</td>
           <td>64</td>
-          <td>0.000639</td>
+          <td>0.000154</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1373,15 +1379,15 @@ Results
         </tr>
         <tr>
           <th>27</th>
-          <td>0.013345</td>
-          <td>0.001437</td>
-          <td>0.011736</td>
-          <td>0.018519</td>
+          <td>0.002912</td>
+          <td>2.483586e-04</td>
+          <td>0.002426</td>
+          <td>0.003353</td>
           <td>40</td>
           <td>16</td>
-          <td>0.533815</td>
+          <td>0.116485</td>
           <td>64</td>
-          <td>0.011887</td>
+          <td>0.002586</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1397,15 +1403,15 @@ Results
         </tr>
         <tr>
           <th>28</th>
-          <td>0.000377</td>
-          <td>0.000072</td>
-          <td>0.000314</td>
-          <td>0.000653</td>
+          <td>0.000152</td>
+          <td>2.197739e-05</td>
+          <td>0.000124</td>
+          <td>0.000220</td>
           <td>40</td>
           <td>16</td>
-          <td>0.015085</td>
+          <td>0.006094</td>
           <td>64</td>
-          <td>0.000505</td>
+          <td>0.000195</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1421,15 +1427,15 @@ Results
         </tr>
         <tr>
           <th>29</th>
-          <td>0.013004</td>
-          <td>0.000915</td>
-          <td>0.011794</td>
-          <td>0.015355</td>
+          <td>0.002602</td>
+          <td>2.402348e-04</td>
+          <td>0.002217</td>
+          <td>0.003169</td>
           <td>40</td>
           <td>16</td>
-          <td>0.520161</td>
+          <td>0.104095</td>
           <td>64</td>
-          <td>0.011739</td>
+          <td>0.003160</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1445,15 +1451,15 @@ Results
         </tr>
         <tr>
           <th>30</th>
-          <td>0.000553</td>
-          <td>0.000138</td>
-          <td>0.000426</td>
-          <td>0.000889</td>
+          <td>0.000181</td>
+          <td>2.865555e-05</td>
+          <td>0.000148</td>
+          <td>0.000264</td>
           <td>40</td>
           <td>16</td>
-          <td>0.022119</td>
+          <td>0.007251</td>
           <td>64</td>
-          <td>0.001015</td>
+          <td>0.000194</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1469,15 +1475,15 @@ Results
         </tr>
         <tr>
           <th>31</th>
-          <td>0.019564</td>
-          <td>0.000976</td>
-          <td>0.018148</td>
-          <td>0.022663</td>
+          <td>0.003242</td>
+          <td>1.868430e-04</td>
+          <td>0.002881</td>
+          <td>0.003826</td>
           <td>20</td>
           <td>8</td>
-          <td>0.391278</td>
+          <td>0.064833</td>
           <td>64</td>
-          <td>0.019093</td>
+          <td>0.003545</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1493,15 +1499,15 @@ Results
         </tr>
         <tr>
           <th>32</th>
-          <td>0.001673</td>
-          <td>0.000223</td>
-          <td>0.001366</td>
-          <td>0.002181</td>
+          <td>0.000309</td>
+          <td>2.955061e-05</td>
+          <td>0.000283</td>
+          <td>0.000372</td>
           <td>20</td>
           <td>8</td>
-          <td>0.033465</td>
+          <td>0.006182</td>
           <td>64</td>
-          <td>0.001747</td>
+          <td>0.000381</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1517,15 +1523,15 @@ Results
         </tr>
         <tr>
           <th>33</th>
-          <td>0.072115</td>
-          <td>0.001931</td>
-          <td>0.069211</td>
-          <td>0.075709</td>
+          <td>0.006361</td>
+          <td>1.955808e-04</td>
+          <td>0.006063</td>
+          <td>0.006630</td>
           <td>10</td>
           <td>4</td>
-          <td>0.721149</td>
+          <td>0.063615</td>
           <td>64</td>
-          <td>0.072799</td>
+          <td>0.006181</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1541,15 +1547,15 @@ Results
         </tr>
         <tr>
           <th>34</th>
-          <td>0.003287</td>
-          <td>0.000243</td>
-          <td>0.002975</td>
-          <td>0.003623</td>
+          <td>0.000686</td>
+          <td>4.261961e-05</td>
+          <td>0.000615</td>
+          <td>0.000738</td>
           <td>10</td>
           <td>4</td>
-          <td>0.032874</td>
+          <td>0.006863</td>
           <td>64</td>
-          <td>0.003382</td>
+          <td>0.000573</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1565,15 +1571,15 @@ Results
         </tr>
         <tr>
           <th>35</th>
-          <td>0.115477</td>
-          <td>0.003482</td>
-          <td>0.106952</td>
-          <td>0.120060</td>
+          <td>0.009225</td>
+          <td>8.889426e-04</td>
+          <td>0.008573</td>
+          <td>0.011587</td>
           <td>10</td>
           <td>4</td>
-          <td>1.154775</td>
+          <td>0.092247</td>
           <td>64</td>
-          <td>0.122946</td>
+          <td>0.008928</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1589,15 +1595,15 @@ Results
         </tr>
         <tr>
           <th>36</th>
-          <td>0.004559</td>
-          <td>0.000097</td>
-          <td>0.004375</td>
-          <td>0.004676</td>
+          <td>0.000881</td>
+          <td>9.550475e-05</td>
+          <td>0.000811</td>
+          <td>0.001129</td>
           <td>10</td>
           <td>4</td>
-          <td>0.045587</td>
+          <td>0.008810</td>
           <td>64</td>
-          <td>0.004554</td>
+          <td>0.001743</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1613,15 +1619,15 @@ Results
         </tr>
         <tr>
           <th>37</th>
-          <td>0.750374</td>
-          <td>0.014164</td>
-          <td>0.731821</td>
-          <td>0.768926</td>
+          <td>0.041662</td>
+          <td>4.527824e-04</td>
+          <td>0.041032</td>
+          <td>0.042792</td>
           <td>10</td>
           <td>4</td>
-          <td>7.503737</td>
+          <td>0.416619</td>
           <td>64</td>
-          <td>0.767520</td>
+          <td>0.041405</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1637,15 +1643,15 @@ Results
         </tr>
         <tr>
           <th>38</th>
-          <td>0.021694</td>
-          <td>0.000453</td>
-          <td>0.020840</td>
-          <td>0.022315</td>
+          <td>0.003113</td>
+          <td>6.628913e-05</td>
+          <td>0.002980</td>
+          <td>0.003237</td>
           <td>10</td>
           <td>4</td>
-          <td>0.216943</td>
+          <td>0.031130</td>
           <td>64</td>
-          <td>0.020999</td>
+          <td>0.002947</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1661,15 +1667,15 @@ Results
         </tr>
         <tr>
           <th>39</th>
-          <td>0.000042</td>
-          <td>0.000010</td>
-          <td>0.000035</td>
-          <td>0.000079</td>
+          <td>0.000018</td>
+          <td>3.835451e-06</td>
+          <td>0.000013</td>
+          <td>0.000024</td>
           <td>40</td>
           <td>16</td>
-          <td>0.001691</td>
+          <td>0.000736</td>
           <td>64</td>
-          <td>0.000073</td>
+          <td>0.000042</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1685,15 +1691,15 @@ Results
         </tr>
         <tr>
           <th>40</th>
-          <td>0.000060</td>
-          <td>0.000013</td>
-          <td>0.000046</td>
-          <td>0.000079</td>
+          <td>0.000034</td>
+          <td>1.259771e-06</td>
+          <td>0.000033</td>
+          <td>0.000038</td>
           <td>40</td>
           <td>16</td>
-          <td>0.002401</td>
+          <td>0.001374</td>
           <td>64</td>
-          <td>0.000081</td>
+          <td>0.000047</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1709,15 +1715,15 @@ Results
         </tr>
         <tr>
           <th>41</th>
-          <td>0.000233</td>
-          <td>0.000037</td>
-          <td>0.000148</td>
-          <td>0.000290</td>
+          <td>0.000107</td>
+          <td>1.270348e-05</td>
+          <td>0.000097</td>
+          <td>0.000180</td>
           <td>40</td>
           <td>16</td>
-          <td>0.009330</td>
+          <td>0.004289</td>
           <td>64</td>
-          <td>0.000259</td>
+          <td>0.000163</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1733,15 +1739,15 @@ Results
         </tr>
         <tr>
           <th>42</th>
-          <td>0.000995</td>
-          <td>0.000142</td>
-          <td>0.000686</td>
-          <td>0.001195</td>
+          <td>0.000603</td>
+          <td>1.229770e-04</td>
+          <td>0.000481</td>
+          <td>0.000792</td>
           <td>20</td>
           <td>8</td>
-          <td>0.019894</td>
+          <td>0.012065</td>
           <td>64</td>
-          <td>0.000759</td>
+          <td>0.000758</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1757,15 +1763,15 @@ Results
         </tr>
         <tr>
           <th>43</th>
-          <td>0.003304</td>
-          <td>0.000369</td>
-          <td>0.002363</td>
-          <td>0.003707</td>
+          <td>0.002109</td>
+          <td>7.467230e-05</td>
+          <td>0.001982</td>
+          <td>0.002198</td>
           <td>10</td>
           <td>4</td>
-          <td>0.033038</td>
+          <td>0.021087</td>
           <td>64</td>
-          <td>0.003506</td>
+          <td>0.002174</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1781,15 +1787,15 @@ Results
         </tr>
         <tr>
           <th>44</th>
-          <td>0.006177</td>
-          <td>0.000821</td>
-          <td>0.004749</td>
-          <td>0.007480</td>
+          <td>0.002977</td>
+          <td>2.221617e-04</td>
+          <td>0.002762</td>
+          <td>0.003480</td>
           <td>10</td>
           <td>4</td>
-          <td>0.061773</td>
+          <td>0.029772</td>
           <td>64</td>
-          <td>0.006089</td>
+          <td>0.002769</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1805,15 +1811,15 @@ Results
         </tr>
         <tr>
           <th>45</th>
-          <td>0.027700</td>
-          <td>0.002535</td>
-          <td>0.022565</td>
-          <td>0.030959</td>
+          <td>0.021431</td>
+          <td>1.300648e-03</td>
+          <td>0.019429</td>
+          <td>0.023478</td>
           <td>10</td>
           <td>4</td>
-          <td>0.277002</td>
+          <td>0.214309</td>
           <td>64</td>
-          <td>0.025069</td>
+          <td>0.019985</td>
           <td>ort</td>
           <td>f16</td>
           <td>f16</td>
@@ -1829,15 +1835,15 @@ Results
         </tr>
         <tr>
           <th>46</th>
-          <td>0.000370</td>
-          <td>0.000076</td>
-          <td>0.000274</td>
-          <td>0.000565</td>
+          <td>0.000204</td>
+          <td>6.898829e-06</td>
+          <td>0.000190</td>
+          <td>0.000219</td>
           <td>40</td>
           <td>16</td>
-          <td>0.014789</td>
+          <td>0.008179</td>
           <td>64</td>
-          <td>0.000326</td>
+          <td>0.000260</td>
           <td>np</td>
           <td>f16</td>
           <td>f16</td>
@@ -1853,15 +1859,15 @@ Results
         </tr>
         <tr>
           <th>47</th>
-          <td>0.001747</td>
-          <td>0.000014</td>
-          <td>0.001733</td>
-          <td>0.001761</td>
+          <td>0.001308</td>
+          <td>2.802500e-05</td>
+          <td>0.001280</td>
+          <td>0.001336</td>
           <td>2</td>
           <td>2</td>
-          <td>0.003495</td>
+          <td>0.002617</td>
           <td>64</td>
-          <td>0.001759</td>
+          <td>0.001304</td>
           <td>np</td>
           <td>f16</td>
           <td>f16</td>
@@ -1877,15 +1883,15 @@ Results
         </tr>
         <tr>
           <th>48</th>
-          <td>0.011787</td>
-          <td>0.000013</td>
-          <td>0.011774</td>
-          <td>0.011801</td>
+          <td>0.009443</td>
+          <td>7.872500e-05</td>
+          <td>0.009364</td>
+          <td>0.009522</td>
           <td>2</td>
           <td>2</td>
-          <td>0.023575</td>
+          <td>0.018886</td>
           <td>64</td>
-          <td>0.012247</td>
+          <td>0.009669</td>
           <td>np</td>
           <td>f16</td>
           <td>f16</td>
@@ -1901,15 +1907,15 @@ Results
         </tr>
         <tr>
           <th>49</th>
-          <td>0.110748</td>
-          <td>0.014778</td>
-          <td>0.095969</td>
-          <td>0.125526</td>
+          <td>0.073266</td>
+          <td>2.052725e-03</td>
+          <td>0.071214</td>
+          <td>0.075319</td>
           <td>2</td>
           <td>2</td>
-          <td>0.221495</td>
+          <td>0.146533</td>
           <td>64</td>
-          <td>0.095044</td>
+          <td>0.070752</td>
           <td>np</td>
           <td>f16</td>
           <td>f16</td>
@@ -1925,15 +1931,15 @@ Results
         </tr>
         <tr>
           <th>50</th>
-          <td>0.000557</td>
-          <td>0.000231</td>
-          <td>0.000338</td>
-          <td>0.001347</td>
+          <td>0.000206</td>
+          <td>5.879587e-05</td>
+          <td>0.000137</td>
+          <td>0.000432</td>
           <td>40</td>
           <td>16</td>
-          <td>0.022298</td>
+          <td>0.008231</td>
           <td>64</td>
-          <td>0.000508</td>
+          <td>0.000282</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -1949,15 +1955,15 @@ Results
         </tr>
         <tr>
           <th>51</th>
-          <td>0.000510</td>
-          <td>0.000079</td>
-          <td>0.000394</td>
-          <td>0.000704</td>
+          <td>0.000151</td>
+          <td>1.367697e-05</td>
+          <td>0.000129</td>
+          <td>0.000188</td>
           <td>40</td>
           <td>16</td>
-          <td>0.020409</td>
+          <td>0.006059</td>
           <td>64</td>
-          <td>0.000516</td>
+          <td>0.000189</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -1973,15 +1979,15 @@ Results
         </tr>
         <tr>
           <th>52</th>
-          <td>0.000702</td>
-          <td>0.000079</td>
-          <td>0.000576</td>
-          <td>0.000919</td>
+          <td>0.000175</td>
+          <td>1.732747e-05</td>
+          <td>0.000155</td>
+          <td>0.000228</td>
           <td>40</td>
           <td>16</td>
-          <td>0.028075</td>
+          <td>0.006980</td>
           <td>64</td>
-          <td>0.001008</td>
+          <td>0.000225</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -1997,15 +2003,15 @@ Results
         </tr>
         <tr>
           <th>53</th>
-          <td>0.001838</td>
-          <td>0.000127</td>
-          <td>0.001633</td>
-          <td>0.002102</td>
+          <td>0.000374</td>
+          <td>6.953561e-05</td>
+          <td>0.000277</td>
+          <td>0.000508</td>
           <td>20</td>
           <td>8</td>
-          <td>0.036761</td>
+          <td>0.007489</td>
           <td>64</td>
-          <td>0.001500</td>
+          <td>0.000337</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -2021,15 +2027,15 @@ Results
         </tr>
         <tr>
           <th>54</th>
-          <td>0.004134</td>
-          <td>0.000142</td>
-          <td>0.003949</td>
-          <td>0.004397</td>
+          <td>0.000603</td>
+          <td>2.150987e-05</td>
+          <td>0.000571</td>
+          <td>0.000655</td>
           <td>10</td>
           <td>4</td>
-          <td>0.041341</td>
+          <td>0.006032</td>
           <td>64</td>
-          <td>0.004283</td>
+          <td>0.000628</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -2045,15 +2051,15 @@ Results
         </tr>
         <tr>
           <th>55</th>
-          <td>0.005802</td>
-          <td>0.000127</td>
-          <td>0.005526</td>
-          <td>0.005952</td>
+          <td>0.000930</td>
+          <td>7.063767e-05</td>
+          <td>0.000859</td>
+          <td>0.001063</td>
           <td>10</td>
           <td>4</td>
-          <td>0.058018</td>
+          <td>0.009297</td>
           <td>64</td>
-          <td>0.005700</td>
+          <td>0.000954</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -2069,15 +2075,15 @@ Results
         </tr>
         <tr>
           <th>56</th>
-          <td>0.027407</td>
-          <td>0.000107</td>
-          <td>0.027150</td>
-          <td>0.027508</td>
+          <td>0.003609</td>
+          <td>1.364272e-04</td>
+          <td>0.003425</td>
+          <td>0.003800</td>
           <td>10</td>
           <td>4</td>
-          <td>0.274073</td>
+          <td>0.036088</td>
           <td>64</td>
-          <td>0.027812</td>
+          <td>0.003518</td>
           <td>ort</td>
           <td>bf16</td>
           <td>bf16</td>
@@ -2105,7 +2111,7 @@ The errors
 
 .. GENERATED FROM PYTHON SOURCE LINES 485-488
 
-.. code-block:: default
+.. code-block:: Python
 
     for i, e in enumerate(errors):
         print(f"{i+1}/{len(errors)}-{e}")
@@ -2160,34 +2166,34 @@ The errors
     40/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
     41/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
     42/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    43/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    44/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    45/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    46/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    47/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    48/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    49/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    50/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    51/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    52/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    53/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    54/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    55/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
-    56/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    43/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    44/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    45/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    46/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    47/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    48/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    49/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    50/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    51/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    52/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    53/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    54/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    55/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
+    56/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     57/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    58/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    58/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     59/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    60/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    60/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     61/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    62/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    62/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     63/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    64/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    64/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     65/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    66/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    66/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     67/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    68/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    68/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     69/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    70/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', Fail('[ONNXRuntimeError] : 1 : FAIL : Fatal error: com.microsoft:GemmFloat8(-1) is not a registered function/op'))
+    70/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
     71/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
     72/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
     73/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
@@ -2213,7 +2219,7 @@ Summary
 
 .. GENERATED FROM PYTHON SOURCE LINES 491-506
 
-.. code-block:: default
+.. code-block:: Python
 
 
     piv = pivot_table(
@@ -2245,13 +2251,13 @@ Summary
     domain           ORT                 ORT  ...       ORT       EXT       ORT
     engine            np       ort        np  ...       ort       ort       ort
     cost                                      ...                              
-    131072      0.000370  0.000042  0.000051  ...  0.000407  0.009009  0.000609
-    1048576     0.001747  0.000060  0.000060  ...  0.000377  0.007497  0.000374
-    8388608     0.011787  0.000233  0.001453  ...  0.000553  0.008234  0.000690
-    67108864    0.110748  0.000995  0.001599  ...  0.001673  0.008488  0.001935
-    256000000        NaN  0.003304       NaN  ...  0.003287  0.011320  0.004401
-    536870912        NaN  0.006177       NaN  ...  0.004559  0.013148  0.007626
-    4294967296       NaN  0.027700       NaN  ...  0.021694  0.040819  0.029408
+    131072      0.000204  0.000018  0.000029  ...  0.000149  0.002719  0.000137
+    1048576     0.001308  0.000034  0.000040  ...  0.000152  0.002664  0.000144
+    8388608     0.009443  0.000107  0.000143  ...  0.000181  0.002275  0.000225
+    67108864    0.073266  0.000603  0.000582  ...  0.000309  0.002512  0.000486
+    256000000        NaN  0.002109       NaN  ...  0.000686  0.003238  0.000996
+    536870912        NaN  0.002977       NaN  ...  0.000881  0.003947  0.001450
+    4294967296       NaN  0.021431       NaN  ...  0.003113  0.007946  0.005128
 
     [7 rows x 9 columns]
 
@@ -2334,87 +2340,87 @@ Summary
       <tbody>
         <tr>
           <th>131072</th>
-          <td>0.000370</td>
-          <td>0.000042</td>
-          <td>0.000051</td>
-          <td>0.000014</td>
-          <td>0.000557</td>
-          <td>0.011181</td>
-          <td>0.000407</td>
-          <td>0.009009</td>
-          <td>0.000609</td>
+          <td>0.000204</td>
+          <td>0.000018</td>
+          <td>0.000029</td>
+          <td>0.000009</td>
+          <td>0.000206</td>
+          <td>0.002693</td>
+          <td>0.000149</td>
+          <td>0.002719</td>
+          <td>0.000137</td>
         </tr>
         <tr>
           <th>1048576</th>
-          <td>0.001747</td>
-          <td>0.000060</td>
-          <td>0.000060</td>
-          <td>0.000025</td>
-          <td>0.000510</td>
-          <td>0.013345</td>
-          <td>0.000377</td>
-          <td>0.007497</td>
-          <td>0.000374</td>
+          <td>0.001308</td>
+          <td>0.000034</td>
+          <td>0.000040</td>
+          <td>0.000013</td>
+          <td>0.000151</td>
+          <td>0.002912</td>
+          <td>0.000152</td>
+          <td>0.002664</td>
+          <td>0.000144</td>
         </tr>
         <tr>
           <th>8388608</th>
-          <td>0.011787</td>
-          <td>0.000233</td>
-          <td>0.001453</td>
-          <td>0.000057</td>
-          <td>0.000702</td>
-          <td>0.013004</td>
-          <td>0.000553</td>
-          <td>0.008234</td>
-          <td>0.000690</td>
+          <td>0.009443</td>
+          <td>0.000107</td>
+          <td>0.000143</td>
+          <td>0.000040</td>
+          <td>0.000175</td>
+          <td>0.002602</td>
+          <td>0.000181</td>
+          <td>0.002275</td>
+          <td>0.000225</td>
         </tr>
         <tr>
           <th>67108864</th>
-          <td>0.110748</td>
-          <td>0.000995</td>
-          <td>0.001599</td>
-          <td>0.000287</td>
-          <td>0.001838</td>
-          <td>0.019564</td>
-          <td>0.001673</td>
-          <td>0.008488</td>
-          <td>0.001935</td>
+          <td>0.073266</td>
+          <td>0.000603</td>
+          <td>0.000582</td>
+          <td>0.000145</td>
+          <td>0.000374</td>
+          <td>0.003242</td>
+          <td>0.000309</td>
+          <td>0.002512</td>
+          <td>0.000486</td>
         </tr>
         <tr>
           <th>256000000</th>
           <td>NaN</td>
-          <td>0.003304</td>
+          <td>0.002109</td>
           <td>NaN</td>
-          <td>0.001204</td>
-          <td>0.004134</td>
-          <td>0.072115</td>
-          <td>0.003287</td>
-          <td>0.011320</td>
-          <td>0.004401</td>
+          <td>0.000524</td>
+          <td>0.000603</td>
+          <td>0.006361</td>
+          <td>0.000686</td>
+          <td>0.003238</td>
+          <td>0.000996</td>
         </tr>
         <tr>
           <th>536870912</th>
           <td>NaN</td>
-          <td>0.006177</td>
+          <td>0.002977</td>
           <td>NaN</td>
-          <td>0.002018</td>
-          <td>0.005802</td>
-          <td>0.115477</td>
-          <td>0.004559</td>
-          <td>0.013148</td>
-          <td>0.007626</td>
+          <td>0.001543</td>
+          <td>0.000930</td>
+          <td>0.009225</td>
+          <td>0.000881</td>
+          <td>0.003947</td>
+          <td>0.001450</td>
         </tr>
         <tr>
           <th>4294967296</th>
           <td>NaN</td>
-          <td>0.027700</td>
+          <td>0.021431</td>
           <td>NaN</td>
-          <td>0.020366</td>
-          <td>0.027407</td>
-          <td>0.750374</td>
-          <td>0.021694</td>
-          <td>0.040819</td>
-          <td>0.029408</td>
+          <td>0.014285</td>
+          <td>0.003609</td>
+          <td>0.041662</td>
+          <td>0.003113</td>
+          <td>0.007946</td>
+          <td>0.005128</td>
         </tr>
       </tbody>
     </table>
@@ -2429,7 +2435,7 @@ With the dimensions.
 
 .. GENERATED FROM PYTHON SOURCE LINES 508-517
 
-.. code-block:: default
+.. code-block:: Python
 
 
     pivs = pivot_table(
@@ -2454,13 +2460,13 @@ With the dimensions.
     domain                          ORT            ...       EXT       ORT
     engine                           np       ort  ...       ort       ort
     cost_s                                         ...                    
-    1048576-64x64x64           0.001747  0.000060  ...  0.007497  0.000374
-    131072-32x32x32            0.000370  0.000042  ...  0.009009  0.000609
-    256000000-400x400x400           NaN  0.003304  ...  0.011320  0.004401
-    4294967296-1024x1024x1024       NaN  0.027700  ...  0.040819  0.029408
-    536870912-512x512x512           NaN  0.006177  ...  0.013148  0.007626
-    67108864-256x256x256       0.110748  0.000995  ...  0.008488  0.001935
-    8388608-128x128x128        0.011787  0.000233  ...  0.008234  0.000690
+    1048576-64x64x64           0.001308  0.000034  ...  0.002664  0.000144
+    131072-32x32x32            0.000204  0.000018  ...  0.002719  0.000137
+    256000000-400x400x400           NaN  0.002109  ...  0.003238  0.000996
+    4294967296-1024x1024x1024       NaN  0.021431  ...  0.007946  0.005128
+    536870912-512x512x512           NaN  0.002977  ...  0.003947  0.001450
+    67108864-256x256x256       0.073266  0.000603  ...  0.002512  0.000486
+    8388608-128x128x128        0.009443  0.000107  ...  0.002275  0.000225
 
     [7 rows x 9 columns]
 
@@ -2473,7 +2479,7 @@ plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 519-541
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dfi = df[
@@ -2506,1746 +2512,13 @@ plot
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    2023-09-16 12:25:18,218 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,218 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,234 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,235 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,237 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,238 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,372 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,372 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,373 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,373 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,374 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,374 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,375 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,375 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,379 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,379 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,380 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,380 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,398 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,399 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,408 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,408 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,409 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,409 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,491 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,491 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,492 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,492 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,493 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,493 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,493 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,494 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,497 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,497 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,498 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,498 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,500 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,500 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,501 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,501 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,502 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,502 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,506 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,506 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,507 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,507 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,508 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,508 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,535 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,535 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,536 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,536 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,537 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,537 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,548 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,548 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,558 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,558 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,559 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,559 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,719 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,719 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,721 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,721 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,723 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,723 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,789 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,789 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,791 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,791 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,793 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,793 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,814 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,814 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,817 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,818 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,820 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,820 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,828 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,828 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,829 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,829 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,831 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,832 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,852 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,852 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,853 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,854 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,856 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,856 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,884 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,884 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,886 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,886 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,888 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,889 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,897 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,897 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,900 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,900 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:18,902 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:18,902 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:18,914 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,914 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,917 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,917 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,919 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,920 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,927 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,927 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,929 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,929 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,932 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,933 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,971 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,972 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,975 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,975 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:18,978 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,979 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,995 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,995 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:18,997 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:18,998 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,001 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,001 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,021 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,022 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,023 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,023 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,025 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,025 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,053 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,053 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,078 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,078 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,083 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,083 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,247 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,248 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,249 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,249 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,250 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,250 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,263 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,263 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,264 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,264 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,266 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,266 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,281 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,281 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,282 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,283 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,284 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,284 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,289 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,289 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,290 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,291 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,292 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,292 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,305 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,306 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,307 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,307 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,309 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,309 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,332 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,332 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,333 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,334 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,336 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,336 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,345 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,345 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,347 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,347 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,349 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,349 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,357 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,357 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,358 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,359 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,360 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,361 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,368 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,368 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,369 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,369 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,371 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,371 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,399 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,399 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,400 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,400 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,401 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,401 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,406 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,406 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,407 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,407 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,408 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,408 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,418 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,418 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,419 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,419 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,420 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,420 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,431 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,432 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,432 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,432 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,433 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,433 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,454 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,454 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,455 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,455 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,456 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,456 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,465 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,465 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,466 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,466 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,467 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,467 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,473 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,473 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,474 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,474 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,475 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,475 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,498 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,499 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,499 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,500 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,500 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,501 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,510 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,510 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,511 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,511 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,512 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,512 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,548 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,549 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,549 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,549 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,550 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,551 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,554 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,554 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,555 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,555 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,556 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,556 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,565 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,565 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,566 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,566 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,567 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,567 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,577 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,577 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,578 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,578 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,579 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,579 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,600 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,600 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,601 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,601 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,602 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,602 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,611 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,611 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,612 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,612 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,612 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,613 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,618 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,618 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,619 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,619 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,620 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,620 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,643 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,643 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,643 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,644 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,645 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,645 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,654 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,654 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,655 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,655 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,656 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,656 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,686 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,686 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,687 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,687 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,688 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,688 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,692 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,692 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,693 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,693 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,694 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,694 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,704 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,704 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,705 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,705 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,706 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,706 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,718 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,718 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,719 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,719 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,720 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,720 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,742 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,743 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,743 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,743 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,744 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,745 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,753 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,753 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,754 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,754 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,755 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,755 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,761 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,761 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,762 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,762 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,763 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,763 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,788 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,788 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,788 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,789 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,789 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,790 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,798 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,798 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,799 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,799 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,800 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,800 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,844 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,845 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,845 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,846 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,847 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,847 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,851 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,851 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,851 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,852 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,852 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,853 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,862 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,862 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,863 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,863 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,864 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,864 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,878 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,878 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,879 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,880 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,881 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,881 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,912 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,913 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,914 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,914 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,915 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,915 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,927 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,927 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,928 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,928 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:19,930 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:19,930 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:19,938 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,939 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,940 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,940 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,941 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,941 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,976 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,977 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,977 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,978 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,979 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,979 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,990 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,990 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:19,991 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,991 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:19,992 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:19,993 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,085 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,086 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,086 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,087 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,087 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,088 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,092 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,092 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,092 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,092 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,093 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,093 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,102 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,103 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,103 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,103 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,105 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,105 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,117 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,118 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,118 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,119 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,120 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,120 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,142 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,142 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,143 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,143 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,144 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,144 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,153 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,153 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,153 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,153 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,154 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,155 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,160 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,160 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,161 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,161 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,162 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,162 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,185 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,185 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,185 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,186 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,186 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,187 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,195 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,196 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,196 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,196 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,197 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,197 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,232 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,232 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,233 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,233 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,234 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,234 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,238 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,238 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,238 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,239 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,239 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,240 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,248 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,248 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,249 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,249 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,250 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,250 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,261 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,261 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,262 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,262 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,263 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,263 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,284 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,285 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,285 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,285 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,286 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,286 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,295 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,295 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,296 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,296 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,297 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,297 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,302 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,303 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,303 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,303 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,304 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,304 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,326 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,326 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,326 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,327 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,327 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,328 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,336 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,336 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,337 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,337 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,338 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,338 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,366 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,367 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,368 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,368 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,369 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,369 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,374 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,375 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,376 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,376 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,377 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,377 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,392 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,392 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,393 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,393 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,395 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,395 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,413 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,413 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,415 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,415 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,416 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,416 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,452 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,452 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,454 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,454 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,455 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,455 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,467 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,467 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,468 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,468 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,469 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,469 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,476 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,476 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,476 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,477 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,478 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,478 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,502 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,503 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,503 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,503 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,504 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,504 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,514 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,514 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,515 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,515 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,516 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,516 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,562 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,562 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,563 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,563 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,564 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,564 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,568 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,568 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,569 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,569 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,570 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,570 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,579 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,579 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,580 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,580 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,581 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,581 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,592 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,592 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,592 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,592 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,593 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,593 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,615 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,615 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,616 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,616 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,617 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,617 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,625 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,625 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,626 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,626 matplotlib.ticker [DEBUG] - ticklocs array([2.e+03, 3.e+03, 4.e+03, 5.e+03, 6.e+03, 7.e+03, 8.e+03, 9.e+03,
-           2.e+04, 3.e+04, 4.e+04, 5.e+04, 6.e+04, 7.e+04, 8.e+04, 9.e+04,
-           2.e+05, 3.e+05, 4.e+05, 5.e+05, 6.e+05, 7.e+05, 8.e+05, 9.e+05,
-           2.e+06, 3.e+06, 4.e+06, 5.e+06, 6.e+06, 7.e+06, 8.e+06, 9.e+06,
-           2.e+07, 3.e+07, 4.e+07, 5.e+07, 6.e+07, 7.e+07, 8.e+07, 9.e+07,
-           2.e+08, 3.e+08, 4.e+08, 5.e+08, 6.e+08, 7.e+08, 8.e+08, 9.e+08,
-           2.e+09, 3.e+09, 4.e+09, 5.e+09, 6.e+09, 7.e+09, 8.e+09, 9.e+09,
-           2.e+10, 3.e+10, 4.e+10, 5.e+10, 6.e+10, 7.e+10, 8.e+10, 9.e+10,
-           2.e+11, 3.e+11, 4.e+11, 5.e+11, 6.e+11, 7.e+11, 8.e+11, 9.e+11])
-    2023-09-16 12:25:20,627 matplotlib.ticker [DEBUG] - vmin 77935.87748881834 vmax 7223245205.6766815
-    2023-09-16 12:25:20,627 matplotlib.ticker [DEBUG] - ticklocs array([1.e+03, 1.e+04, 1.e+05, 1.e+06, 1.e+07, 1.e+08, 1.e+09, 1.e+10,
-           1.e+11])
-    2023-09-16 12:25:20,634 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,634 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,635 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,635 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,636 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,636 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,671 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,671 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,673 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,673 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,675 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,675 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,690 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,691 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-    2023-09-16 12:25:20,692 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,692 matplotlib.ticker [DEBUG] - ticklocs array([2.e-07, 3.e-07, 4.e-07, 5.e-07, 6.e-07, 7.e-07, 8.e-07, 9.e-07,
-           2.e-06, 3.e-06, 4.e-06, 5.e-06, 6.e-06, 7.e-06, 8.e-06, 9.e-06,
-           2.e-05, 3.e-05, 4.e-05, 5.e-05, 6.e-05, 7.e-05, 8.e-05, 9.e-05,
-           2.e-04, 3.e-04, 4.e-04, 5.e-04, 6.e-04, 7.e-04, 8.e-04, 9.e-04,
-           2.e-03, 3.e-03, 4.e-03, 5.e-03, 6.e-03, 7.e-03, 8.e-03, 9.e-03,
-           2.e-02, 3.e-02, 4.e-02, 5.e-02, 6.e-02, 7.e-02, 8.e-02, 9.e-02,
-           2.e-01, 3.e-01, 4.e-01, 5.e-01, 6.e-01, 7.e-01, 8.e-01, 9.e-01,
-           2.e+00, 3.e+00, 4.e+00, 5.e+00, 6.e+00, 7.e+00, 8.e+00, 9.e+00,
-           2.e+01, 3.e+01, 4.e+01, 5.e+01, 6.e+01, 7.e+01, 8.e+01, 9.e+01,
-           2.e+02, 3.e+02, 4.e+02, 5.e+02, 6.e+02, 7.e+02, 8.e+02, 9.e+02])
-    2023-09-16 12:25:20,693 matplotlib.ticker [DEBUG] - vmin 7.82714747784675e-06 vmax 1.295687196987124
-    2023-09-16 12:25:20,694 matplotlib.ticker [DEBUG] - ticklocs array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
-           1.e+01, 1.e+02])
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 21.760 seconds)
+   **Total running time of the script:** (0 minutes 42.347 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_gemm_ort.py:
@@ -4254,16 +2527,13 @@ plot
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_bench_gemm_ort.ipynb <plot_bench_gemm_ort.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_gemm_ort.py <plot_bench_gemm_ort.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_bench_gemm_ort.ipynb <plot_bench_gemm_ort.ipynb>`
 
 
 .. only:: html
