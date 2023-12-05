@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:45.965** total execution time for 1 file **from all galleries**:
+**01:56.713** total execution time for 1 file **from all galleries**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_torch_export.py` (``examples/plot_torch_export.py``)
-     - 01:45.965
+     - 01:56.713
      - 0.0

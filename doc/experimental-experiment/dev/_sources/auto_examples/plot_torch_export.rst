@@ -78,7 +78,7 @@ Some helpers
             obs["cuda_count"] = torch.cuda.device_count()
             obs["cuda_name"] = torch.cuda.get_device_name()
             obs["cuda_capa"] = torch.cuda.get_device_capability()
-        except RuntimeError:
+        except (RuntimeError, AssertionError):
             # no cuda
             pass
         return obs
@@ -252,7 +252,7 @@ Let's check they are working.
  .. code-block:: none
 
     run exporter script
-    [2023-12-05 14:03:15,850] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+    [2023-12-05 17:12:57,997] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
     done.
     run exporter dynamo
     /home/xadupre/.local/lib/python3.10/site-packages/torch/onnx/_internal/exporter.py:130: UserWarning: torch.onnx.dynamo_export only implements opset version 18 for now. If you need to use a different opset version, please register them with register_custom_op.
@@ -302,7 +302,7 @@ Exporter speed
         data.append(
             dict(
                 export=k,
-                time=np.mean(duration),
+                time=np.mean(times),
                 min=min(times),
                 max=max(times),
                 first=times[0],
@@ -383,16 +383,29 @@ The last export to measure time torch spends in export the model
 before any other export can begin the translation
 except the first one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-215
+.. GENERATED FROM PYTHON SOURCE LINES 208-228
 
 .. code-block:: Python
 
 
-    begin = time.perf_counter()
+    times = []
     for i in range(5):
+        begin = time.perf_counter()
         exported_mod = torch.export.export(model, (input_tensor,))
-    duration = time.perf_counter() - begin
-    data.append(dict(export="torch", time=duration / 5))
+        duration = time.perf_counter() - begin
+        times.append(duration)
+    data.append(
+        dict(
+            export="torch",
+            time=np.mean(times),
+            min=min(times),
+            max=max(times),
+            first=times[0],
+            last=times[-1],
+            std=np.std(times),
+            nodes=len(onx.graph.node),
+        )
+    )
 
 
 
@@ -401,11 +414,11 @@ except the first one.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 216-217
+.. GENERATED FROM PYTHON SOURCE LINES 229-230
 
 The result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-226
+.. GENERATED FROM PYTHON SOURCE LINES 230-239
 
 .. code-block:: Python
 
@@ -414,7 +427,7 @@ The result.
 
     fig, ax = plt.subplots(1, 1)
     dfi = df1[["export", "time", "std"]].set_index("export")
-    dfi["time"].plot.barh(ax=ax, title="Export time", yerr=dfi["std"])
+    dfi["time"].plot.bar(ax=ax, title="Export time", yerr=dfi["std"], rot=30)
     fig.tight_layout()
     fig.savefig("plot_torch_export.png")
 
@@ -432,23 +445,23 @@ The result.
  .. code-block:: none
 
        export      time       min       max     first      last       std  nodes
-    0  script  0.195931  0.183295  0.257570  0.210905  0.195931  0.025777   12.0
-    1  dynamo  0.625513  0.488551  0.786897  0.656923  0.625513  0.109937   13.0
-    2  dynopt  0.858001  0.814010  0.936153  0.885437  0.858001  0.039646   13.0
-    3  cus_p0  0.460740  0.360371  0.460740  0.360371  0.460740  0.037929   27.0
-    4  cus_p1  0.350459  0.350459  0.452602  0.362487  0.350459  0.039809   15.0
-    5  cus_p2  0.459033  0.396157  0.486254  0.416429  0.459033  0.032243   12.0
-    6   torch  0.214853       NaN       NaN       NaN       NaN       NaN    NaN
+    0  script  0.350621  0.165329  0.440233  0.165329  0.440233  0.098664     12
+    1  dynamo  0.530251  0.430999  0.602355  0.585678  0.602355  0.063828     13
+    2  dynopt  1.262143  1.082738  1.504692  1.504692  1.115929  0.179166     13
+    3  cus_p0  0.523215  0.469518  0.585807  0.469518  0.585807  0.042538     27
+    4  cus_p1  0.606241  0.497163  0.761185  0.761185  0.557719  0.089791     15
+    5  cus_p2  1.636196  0.779323  2.048278  0.779323  2.048278  0.451984     12
+    6   torch  1.090138  0.406689  1.636102  1.636102  0.406689  0.411706     12
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 227-229
+.. GENERATED FROM PYTHON SOURCE LINES 240-242
 
 Profiling
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 229-264
+.. GENERATED FROM PYTHON SOURCE LINES 242-277
 
 .. code-block:: Python
 
@@ -495,218 +508,218 @@ Profiling
 
  .. code-block:: none
 
-             1782086 function calls (1681746 primitive calls) in 4.993 seconds
+             1827575 function calls (1727235 primitive calls) in 9.696 seconds
 
        Ordered by: cumulative time
 
        ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-            5    0.002    0.000    5.138    1.028 /_doc/examples/plot_torch_export.py:119(export_cus_p0)
-            5    0.003    0.001    4.799    0.960 /EXPERIMENTAL_EXPERIMENT/torch_exp/onnx_export.py:8(to_onnx)
-            5    0.000    0.000    3.930    0.786 /torch/export/__init__.py:930(export)
-            5    0.002    0.000    3.930    0.786 /torch/_export/__init__.py:212(export)
-        15/10    0.001    0.000    2.819    0.282 /torch/_dynamo/utils.py:182(time_wrapper)
-        20/10    0.000    0.000    2.732    0.273 /torch/_dynamo/eval_frame.py:307(_fn)
-    3520/1655    0.012    0.000    2.595    0.002 /torch/utils/_stats.py:15(wrapper)
-       115/55    0.001    0.000    2.482    0.045 /torch/nn/modules/module.py:1514(_wrapped_call_impl)
-       115/55    0.001    0.000    2.482    0.045 /torch/nn/modules/module.py:1520(_call_impl)
-    2910/1810    0.018    0.000    2.121    0.001 /torch/_subclasses/fake_tensor.py:1246(__torch_dispatch__)
-    2910/1810    0.137    0.000    2.088    0.001 /torch/_subclasses/fake_tensor.py:1270(dispatch)
-            5    0.001    0.000    1.692    0.338 /torch/_dynamo/eval_frame.py:1028(inner)
-           20    0.004    0.000    1.691    0.085 /torch/fx/interpreter.py:99(run)
-          355    0.004    0.000    1.670    0.005 /torch/fx/interpreter.py:177(run_node)
-            5    0.000    0.000    1.590    0.318 /torch/_functorch/aot_autograd.py:3914(aot_export_module)
-            5    0.000    0.000    1.586    0.317 /torch/_functorch/aot_autograd.py:4164(_aot_export_function)
-            5    0.001    0.000    1.583    0.317 /torch/_functorch/aot_autograd.py:3277(create_aot_dispatcher_function)
-        15/10    0.000    0.000    1.491    0.149 /torch/_dynamo/external_utils.py:15(inner)
-           10    0.000    0.000    1.243    0.124 /torch/_functorch/aot_autograd.py:3519(flat_fn)
-           10    0.001    0.000    1.241    0.124 /torch/_functorch/aot_autograd.py:3486(functional_call)
-            5    0.000    0.000    1.240    0.248 /torch/_dynamo/eval_frame.py:456(catch_errors)
-            5    0.000    0.000    1.240    0.248 /torch/_dynamo/convert_frame.py:122(_fn)
-            5    0.000    0.000    1.237    0.247 /torch/_dynamo/convert_frame.py:249(_convert_frame_assert)
-            5    0.000    0.000    1.236    0.247 /torch/_dynamo/convert_frame.py:414(_compile)
-            5    0.000    0.000    1.234    0.247 /torch/_dynamo/convert_frame.py:481(compile_inner)
-            5    0.000    0.000    1.160    0.232 /torch/_functorch/aot_autograd.py:2182(aot_wrapper_dedupe)
-            5    0.000    0.000    1.160    0.232 /torch/_functorch/aot_autograd.py:2375(aot_wrapper_synthetic_base)
-            5    0.000    0.000    1.159    0.232 /torch/_functorch/aot_autograd.py:1518(aot_dispatch_base_graph)
-            5    0.000    0.000    1.121    0.224 /torch/_functorch/aot_autograd.py:1349(create_functionalized_graph)
-            5    0.000    0.000    1.121    0.224 /torch/fx/experimental/proxy_tensor.py:721(wrapped)
-    2590/1295    0.007    0.000    1.118    0.001 /torch/_ops.py:447(__call__)
-            5    0.000    0.000    1.114    0.223 /torch/_compile.py:20(inner)
-            5    0.000    0.000    1.113    0.223 /torch/fx/experimental/proxy_tensor.py:462(dispatch_trace)
-    45710/11325    0.224    0.000    1.094    0.000 /torch/utils/_pytree.py:230(tree_flatten)
-            5    0.000    0.000    1.085    0.217 /torch/fx/_symbolic_trace.py:695(trace)
-            5    0.000    0.000    1.058    0.212 /torch/fx/experimental/proxy_tensor.py:477(wrapped)
-            5    0.000    0.000    1.046    0.209 /torch/_dynamo/bytecode_transformation.py:1020(transform_code_object)
-            5    0.000    0.000    1.038    0.208 /torch/_dynamo/convert_frame.py:439(transform)
-            5    0.000    0.000    1.000    0.200 /torch/_dynamo/symbolic_convert.py:2068(run)
-            5    0.001    0.000    1.000    0.200 /torch/_dynamo/symbolic_convert.py:712(run)
-          265    0.005    0.000    0.998    0.004 /torch/_dynamo/symbolic_convert.py:617(step)
-            5    0.000    0.000    0.920    0.184 /torch/_functorch/aot_autograd.py:1411(fwd_helper)
-            5    0.000    0.000    0.920    0.184 /torch/_functorch/aot_autograd.py:1357(functionalized_f_helper)
-      600/175    0.003    0.000    0.911    0.005 /torch/_prims_common/wrappers.py:221(_fn)
-            5    0.000    0.000    0.908    0.182 /torch/_functorch/aot_autograd.py:1164(inner_fn)
-           60    0.001    0.000    0.890    0.015 /torch/nn/modules/linear.py:113(forward)
-           60    0.013    0.000    0.889    0.015 {built-in method torch._C._nn.linear}
-      410/380    0.003    0.000    0.884    0.002 /torch/fx/experimental/proxy_tensor.py:552(__torch_dispatch__)
-    5660/3350    0.022    0.000    0.879    0.000 /torch/utils/_pytree.py:281(tree_map)
-      410/380    0.001    0.000    0.871    0.002 /torch/fx/experimental/proxy_tensor.py:573(inner_torch_dispatch)
-           50    0.000    0.000    0.867    0.017 /torch/fx/interpreter.py:291(call_module)
-       105/75    0.006    0.000    0.860    0.011 /torch/fx/experimental/proxy_tensor.py:243(proxy_call)
-            5    0.000    0.000    0.838    0.168 /EXPERIMENTAL_EXPERIMENT/torch_exp/graph_builder.py:325(to_onnx)
-           60    0.000    0.000    0.838    0.014 /torch/_dynamo/symbolic_convert.py:384(wrapper)
-           60    0.000    0.000    0.832    0.014 /torch/_dynamo/symbolic_convert.py:1106(CALL_FUNCTION)
-           60    0.001    0.000    0.830    0.014 /torch/_dynamo/symbolic_convert.py:537(call_function)
-           65    0.000    0.000    0.797    0.012 /torch/_dynamo/variables/builder.py:1190(wrap_fx_proxy)
-           65    0.004    0.000    0.796    0.012 /torch/_dynamo/variables/builder.py:1240(wrap_fx_proxy_cls)
-           75    0.002    0.000    0.761    0.010 /torch/_decomp/decompositions.py:48(inner)
-           60    0.003    0.000    0.711    0.012 /torch/_dynamo/utils.py:1291(get_fake_value)
-           90    0.000    0.000    0.699    0.008 /torch/_dynamo/utils.py:914(wrap_fake_exception)
-           25    0.000    0.000    0.632    0.025 /torch/fx/_symbolic_trace.py:785(module_call_wrapper)
-           25    0.000    0.000    0.630    0.025 /torch/fx/experimental/proxy_tensor.py:422(call_module)
-           25    0.000    0.000    0.630    0.025 /torch/fx/_symbolic_trace.py:787(forward)
-          155    0.001    0.000    0.621    0.004 /torch/fx/interpreter.py:249(call_function)
-           25    0.001    0.000    0.619    0.025 /torch/_dynamo/variables/nn_module.py:243(call_function)
-           10    0.000    0.000    0.590    0.059 /torch/export/__init__.py:395(_transform)
-    5660/3350    0.013    0.000    0.547    0.000 /torch/utils/_pytree.py:283(<listcomp>)
-           10    0.000    0.000    0.525    0.052 /torch/fx/passes/infra/pass_manager.py:242(__call__)
-           75    0.008    0.000    0.498    0.007 /torch/_decomp/decompositions.py:1222(addmm)
-           10    0.000    0.000    0.483    0.048 /torch/fx/passes/infra/pass_base.py:34(__call__)
-            5    0.000    0.000    0.482    0.096 /torch/_export/passes/add_runtime_assertions_for_constraints_pass.py:138(call)
-            5    0.000    0.000    0.476    0.095 /torch/_export/pass_base.py:400(call)
-            5    0.000    0.000    0.475    0.095 /torch/_export/pass_base.py:376(call_submodule)
-         4410    0.012    0.000    0.475    0.000 /torch/_subclasses/fake_tensor.py:207(tree_flatten_only)
-      310/260    0.010    0.000    0.440    0.002 {method 'detach' of 'torch._C._TensorBase' objects}
-         1920    0.009    0.000    0.440    0.000 /torch/utils/_pytree.py:352(tree_map_only)
-           40    0.000    0.000    0.434    0.011 /torch/nn/modules/conv.py:459(forward)
-           40    0.000    0.000    0.433    0.011 /torch/nn/modules/conv.py:451(_conv_forward)
-          145    0.001    0.000    0.433    0.003 /torch/_export/pass_base.py:230(run_node)
-           40    0.007    0.000    0.433    0.011 {built-in method torch.conv2d}
-           90    0.002    0.000    0.387    0.004 /torch/_export/pass_base.py:244(_fx)
-           85    0.001    0.000    0.387    0.005 /torch/_export/pass_base.py:173(call_function)
-            5    0.002    0.000    0.380    0.076 /EXPERIMENTAL_EXPERIMENT/torch_exp/graph_builder.py:305(_build_initializers)
-            5    0.001    0.000    0.378    0.076 /torch/_dynamo/eval_frame.py:1075(result_capturing_wrapper)
-           50    0.149    0.003    0.378    0.008 /EXPERIMENTAL_EXPERIMENT/torch_exp/graph_builder.py:270(from_array)
-           75    0.001    0.000    0.376    0.005 /torch/_export/passes/add_runtime_assertions_for_constraints_pass.py:84(call_operator)
-           75    0.000    0.000    0.374    0.005 /torch/_export/pass_base.py:312(call_operator)
-        20520    0.258    0.000    0.371    0.000 /torch/utils/_pytree.py:223(__init__)
-           60    0.000    0.000    0.368    0.006 /torch/_dynamo/utils.py:1338(<lambda>)
-           60    0.000    0.000    0.368    0.006 /torch/_dynamo/utils.py:1379(run_node)
-           80    0.000    0.000    0.351    0.004 /torch/nn/functional.py:1460(relu)
-           80    0.008    0.000    0.351    0.004 {built-in method torch.relu}
-            5    0.001    0.000    0.343    0.069 /torch/_functorch/aot_autograd.py:742(inner)
-            5    0.000    0.000    0.343    0.069 /torch/_functorch/functional_call.py:10(functional_call)
-            5    0.000    0.000    0.343    0.069 /torch/nn/utils/stateless.py:230(_functional_call)
-            5    0.000    0.000    0.340    0.068 /torch/fx/graph_module.py:677(call_wrapped)
-            5    0.000    0.000    0.340    0.068 /torch/fx/graph_module.py:269(__call__)
-      655/250    0.003    0.000    0.333    0.001 /usr/lib/python3.10/copy.py:259(_reconstruct)
-      2405/70    0.012    0.000    0.332    0.005 /usr/lib/python3.10/copy.py:128(deepcopy)
-       105/45    0.002    0.000    0.327    0.007 /usr/lib/python3.10/copy.py:227(_deepcopy_dict)
-           25    0.000    0.000    0.325    0.013 /torch/_dynamo/utils.py:925(deepcopy_to_fake_tensor)
-           25    0.000    0.000    0.324    0.013 /torch/_dynamo/utils.py:927(<lambda>)
-         1430    0.004    0.000    0.315    0.000 /torch/_subclasses/fake_tensor.py:1569(validate_and_convert_non_fake_tensors)
-           50    0.002    0.000    0.302    0.006 /torch/nn/parameter.py:54(__deepcopy__)
-          250    0.002    0.000    0.297    0.001 /torch/_subclasses/fake_tensor.py:1799(__torch_function__)
-         1005    0.006    0.000    0.296    0.000 /torch/_subclasses/fake_tensor.py:1604(wrap_meta_outputs_with_default_device_logic)
-            5    0.000    0.000    0.292    0.058 /onnx/helper.py:278(make_model)
-           15    0.000    0.000    0.292    0.019 /google/protobuf/message.py:118(CopyFrom)
-           15    0.291    0.019    0.291    0.019 {method 'MergeFrom' of 'google._upb._message.Message' objects}
-      525/325    0.011    0.000    0.289    0.001 /torch/_prims_common/wrappers.py:110(_fn)
-           80    0.000    0.000    0.288    0.004 /torch/fx/experimental/proxy_tensor.py:182(track_tensor_tree)
-       155/80    0.001    0.000    0.287    0.004 /torch/fx/experimental/proxy_tensor.py:183(wrap_with_proxy)
-          150    0.001    0.000    0.267    0.002 /torch/fx/experimental/proxy_tensor.py:144(set_meta)
-      170/150    0.001    0.000    0.262    0.002 /torch/fx/experimental/proxy_tensor.py:117(extract_val)
-          160    0.000    0.000    0.261    0.002 /torch/fx/experimental/proxy_tensor.py:114(snapshot_fake)
-      200/150    0.003    0.000    0.254    0.002 /torch/_subclasses/fake_tensor.py:1059(__torch_dispatch__)
-         1055    0.009    0.000    0.252    0.000 /torch/_subclasses/fake_tensor.py:1620(wrap)
-          180    0.001    0.000    0.247    0.001 /torch/utils/_pytree.py:375(tree_all_only)
-           70    0.001    0.000    0.240    0.003 /torch/fx/graph_module.py:649(recompile)
-        70900    0.091    0.000    0.237    0.000 /torch/utils/_pytree.py:186(_get_node_type)
-          400    0.010    0.000    0.233    0.001 {method 'to' of 'torch._C._TensorBase' objects}
-        45710    0.062    0.000    0.218    0.000 /torch/utils/_pytree.py:192(_is_leaf)
-           70    0.001    0.000    0.215    0.003 /torch/fx/graph.py:1208(python_code)
-           35    0.005    0.000    0.208    0.006 /torch/_dynamo/variables/torch.py:208(call_function)
-           70    0.001    0.000    0.202    0.003 /torch/fx/graph.py:1270(_python_code)
-           70    0.012    0.000    0.202    0.003 /torch/fx/graph.py:326(_gen_python_code)
-    265050/258585    0.171    0.000    0.200    0.000 {built-in method builtins.isinstance}
-      290/240    0.074    0.000    0.189    0.001 {method 'clone' of 'torch._C._TensorBase' objects}
-            5    0.001    0.000    0.186    0.037 /torch/_dynamo/guards.py:879(__init__)
-           50    0.000    0.000    0.181    0.004 /torch/nn/parameter.py:33(__new__)
-           40    0.000    0.000    0.174    0.004 /torch/_jit_internal.py:478(fn)
-           40    0.001    0.000    0.174    0.004 /torch/nn/functional.py:769(_max_pool2d)
-           40    0.005    0.000    0.173    0.004 {built-in method torch.max_pool2d}
-          155    0.166    0.001    0.172    0.001 {method 'extend' of 'google._upb._message.RepeatedCompositeContainer' objects}
-            5    0.172    0.034    0.172    0.034 {method 'write' of '_io.BufferedWriter' objects}
-        45715    0.104    0.000    0.170    0.000 /torch/utils/_pytree.py:207(__post_init__)
-          225    0.001    0.000    0.169    0.001 /torch/_decomp/decompositions.py:58(increase_prec)
-            5    0.000    0.000    0.165    0.033 /onnx/helper.py:191(make_graph)
-          420    0.003    0.000    0.165    0.000 /torch/fx/proxy.py:170(create_proxy)
-         1430    0.006    0.000    0.165    0.000 /torch/_subclasses/fake_tensor.py:1557(check_for_subclass)
-           55    0.159    0.003    0.159    0.003 {method 'tobytes' of 'numpy.ndarray' objects}
-           45    0.002    0.000    0.158    0.004 /torch/fx/graph_module.py:318(__init__)
-      490/400    0.004    0.000    0.154    0.000 /torch/nn/modules/module.py:1697(__setattr__)
-            5    0.001    0.000    0.152    0.030 /torch/_dynamo/guards.py:943(compile_check_fn)
-         1005    0.006    0.000    0.151    0.000 /torch/_subclasses/fake_tensor.py:1115(_find_common_device)
-          100    0.001    0.000    0.150    0.002 /torch/_refs/nn/functional/__init__.py:134(_fn)
-           45    0.000    0.000    0.148    0.003 /torch/fx/graph_module.py:416(graph)
-            5    0.001    0.000    0.147    0.029 /torch/_dynamo/guards.py:1162(build_guard_function)
-        70900    0.105    0.000    0.146    0.000 /torch/utils/_pytree.py:176(_is_namedtuple_instance)
-         6670    0.014    0.000    0.141    0.000 /torch/fx/node.py:632(map_arg)
-    17415/5695    0.085    0.000    0.134    0.000 /torch/utils/_pytree.py:252(tree_unflatten)
-          100    0.001    0.000    0.130    0.001 /torch/_refs/nn/functional/__init__.py:246(relu)
-    14150/6675    0.057    0.000    0.123    0.000 /torch/fx/node.py:640(map_aggregate)
-           35    0.118    0.003    0.118    0.003 {method 'SerializeToString' of 'google._upb._message.Message' objects}
-     5390/330    0.013    0.000    0.116    0.000 /usr/lib/python3.10/ast.py:414(visit)
-          225    0.001    0.000    0.110    0.000 /torch/_subclasses/fake_tensor.py:358(__call__)
-          225    0.002    0.000    0.109    0.000 /torch/_subclasses/fake_tensor.py:283(from_real_tensor)
-          165    0.006    0.000    0.100    0.001 /torch/_subclasses/meta_utils.py:494(__call__)
-    15445/14455    0.019    0.000    0.096    0.000 {built-in method builtins.next}
-          430    0.006    0.000    0.096    0.000 /torch/fx/proxy.py:114(create_node)
-          165    0.011    0.000    0.093    0.001 /torch/_subclasses/meta_utils.py:177(meta_tensor)
-           60    0.000    0.000    0.092    0.002 /torch/_refs/__init__.py:4265(t)
-           60    0.001    0.000    0.092    0.002 {built-in method torch.transpose}
-           75    0.002    0.000    0.091    0.001 {built-in method torch.mm}
-          250    0.003    0.000    0.089    0.000 /torch/_refs/__init__.py:957(_ref)
-         1450    0.012    0.000    0.088    0.000 /torch/fx/graph.py:482(emit_node)
-           60    0.001    0.000    0.087    0.001 /torch/_refs/__init__.py:4301(transpose)
-           60    0.001    0.000    0.087    0.001 /torch/_dynamo/symbolic_convert.py:1184(LOAD_ATTR)
-           60    0.001    0.000    0.086    0.001 {built-in method torch.permute}
-         1055    0.010    0.000    0.086    0.000 /torch/_subclasses/fake_tensor.py:341(from_meta_and_device)
-            1    0.000    0.000    0.083    0.083 <eval_with_key>.518:4(forward)
-    8925/8365    0.010    0.000    0.080    0.000 /torch/fx/node.py:646(<genexpr>)
-          440    0.005    0.000    0.079    0.000 /torch/fx/graph.py:805(create_node)
-          165    0.001    0.000    0.077    0.000 /torch/_subclasses/fake_tensor.py:1702(from_tensor)
-          425    0.009    0.000    0.076    0.000 /torch/_prims/__init__.py:331(_elementwise_meta)
-     1080/480    0.007    0.000    0.075    0.000 /torch/_dynamo/variables/base.py:95(__call__)
-        70/50    0.005    0.000    0.074    0.001 {built-in method torch._ops.aten.}
-            1    0.000    0.000    0.072    0.072 <eval_with_key>.490:4(forward)
-            1    0.000    0.000    0.072    0.072 <eval_with_key>.546:4(forward)
-           15    0.000    0.000    0.071    0.005 /torch/export/__init__.py:232(__init__)
-          670    0.002    0.000    0.071    0.000 /torch/_dynamo/guards.py:128(_ast_unparse)
-           15    0.000    0.000    0.071    0.005 /torch/_export/exported_program.py:230(_create_graph_module_for_export)
-           10    0.001    0.000    0.070    0.007 /torch/_decomp/decompositions_for_rng.py:129(reset)
-          110    0.000    0.000    0.070    0.001 /torch/_dynamo/guards.py:1169(replace)
-          110    0.001    0.000    0.069    0.001 /torch/_dynamo/guards.py:862(replace)
-          670    0.002    0.000    0.069    0.000 /usr/lib/python3.10/ast.py:1679(unparse)
-           50    0.003    0.000    0.068    0.001 /torch/_subclasses/fake_tensor.py:653(conv)
-     3685/310    0.027    0.000    0.068    0.000 /torch/_dynamo/variables/base.py:141(apply)
-           30    0.000    0.000    0.068    0.002 /torch/_decomp/decompositions_for_rng.py:71(__init__)
-           30    0.000    0.000    0.068    0.002 /torch/_decomp/decompositions_for_rng.py:74(reset)
-           60    0.004    0.000    0.067    0.001 {built-in method torch.tensor}
-     1080/480    0.002    0.000    0.067    0.000 /torch/_dynamo/variables/base.py:346(__post_init__)
-          670    0.002    0.000    0.066    0.000 /usr/lib/python3.10/ast.py:811(visit)
-    110035/109870    0.065    0.000    0.065    0.000 {built-in method builtins.len}
+            5    0.002    0.000    9.900    1.980 /_doc/examples/plot_torch_export.py:119(export_cus_p0)
+            5    0.004    0.001    9.263    1.853 /EXPERIMENTAL_EXPERIMENT/torch_exp/onnx_export.py:8(to_onnx)
+            5    0.000    0.000    7.932    1.586 /torch/export/__init__.py:930(export)
+            5    0.014    0.003    7.931    1.586 /torch/_export/__init__.py:212(export)
+        15/10    0.001    0.000    5.512    0.551 /torch/_dynamo/utils.py:182(time_wrapper)
+        20/10    0.001    0.000    5.382    0.538 /torch/_dynamo/eval_frame.py:307(_fn)
+    3520/1655    0.028    0.000    5.069    0.003 /torch/utils/_stats.py:15(wrapper)
+       115/55    0.001    0.000    4.773    0.087 /torch/nn/modules/module.py:1514(_wrapped_call_impl)
+       115/55    0.002    0.000    4.773    0.087 /torch/nn/modules/module.py:1520(_call_impl)
+    2910/1810    0.039    0.000    4.487    0.002 /torch/_subclasses/fake_tensor.py:1246(__torch_dispatch__)
+    2910/1810    0.307    0.000    4.417    0.002 /torch/_subclasses/fake_tensor.py:1270(dispatch)
+            5    0.001    0.000    3.521    0.704 /torch/_dynamo/eval_frame.py:1028(inner)
+           20    0.019    0.001    3.177    0.159 /torch/fx/interpreter.py:99(run)
+          355    0.007    0.000    3.127    0.009 /torch/fx/interpreter.py:177(run_node)
+            5    0.001    0.000    3.055    0.611 /torch/_functorch/aot_autograd.py:3914(aot_export_module)
+            5    0.000    0.000    3.037    0.607 /torch/_functorch/aot_autograd.py:4164(_aot_export_function)
+            5    0.002    0.000    3.032    0.606 /torch/_functorch/aot_autograd.py:3277(create_aot_dispatcher_function)
+        15/10    0.000    0.000    2.895    0.289 /torch/_dynamo/external_utils.py:15(inner)
+            5    0.000    0.000    2.486    0.497 /torch/_dynamo/eval_frame.py:456(catch_errors)
+            5    0.000    0.000    2.485    0.497 /torch/_dynamo/convert_frame.py:122(_fn)
+            5    0.000    0.000    2.483    0.497 /torch/_dynamo/convert_frame.py:249(_convert_frame_assert)
+            5    0.000    0.000    2.481    0.496 /torch/_dynamo/convert_frame.py:414(_compile)
+            5    0.001    0.000    2.478    0.496 /torch/_dynamo/convert_frame.py:481(compile_inner)
+    2590/1295    0.015    0.000    2.409    0.002 /torch/_ops.py:447(__call__)
+           10    0.000    0.000    2.262    0.226 /torch/_functorch/aot_autograd.py:3519(flat_fn)
+           10    0.001    0.000    2.259    0.226 /torch/_functorch/aot_autograd.py:3486(functional_call)
+            5    0.000    0.000    2.139    0.428 /torch/_functorch/aot_autograd.py:2182(aot_wrapper_dedupe)
+            5    0.000    0.000    2.138    0.428 /torch/_functorch/aot_autograd.py:2375(aot_wrapper_synthetic_base)
+            5    0.000    0.000    2.136    0.427 /torch/_functorch/aot_autograd.py:1518(aot_dispatch_base_graph)
+            5    0.000    0.000    2.044    0.409 /torch/_dynamo/bytecode_transformation.py:1020(transform_code_object)
+            5    0.001    0.000    2.037    0.407 /torch/_functorch/aot_autograd.py:1349(create_functionalized_graph)
+            5    0.001    0.000    2.036    0.407 /torch/fx/experimental/proxy_tensor.py:721(wrapped)
+            5    0.000    0.000    2.026    0.405 /torch/_compile.py:20(inner)
+            5    0.000    0.000    2.024    0.405 /torch/fx/experimental/proxy_tensor.py:462(dispatch_trace)
+            5    0.000    0.000    2.018    0.404 /torch/_dynamo/convert_frame.py:439(transform)
+            5    0.001    0.000    1.964    0.393 /torch/fx/_symbolic_trace.py:695(trace)
+           60    0.001    0.000    1.926    0.032 /torch/nn/modules/linear.py:113(forward)
+           60    0.034    0.001    1.924    0.032 {built-in method torch._C._nn.linear}
+            5    0.000    0.000    1.923    0.385 /torch/fx/experimental/proxy_tensor.py:477(wrapped)
+            5    0.000    0.000    1.916    0.383 /torch/_dynamo/symbolic_convert.py:2068(run)
+            5    0.001    0.000    1.916    0.383 /torch/_dynamo/symbolic_convert.py:712(run)
+      600/175    0.006    0.000    1.915    0.011 /torch/_prims_common/wrappers.py:221(_fn)
+          265    0.010    0.000    1.914    0.007 /torch/_dynamo/symbolic_convert.py:617(step)
+    5660/3350    0.051    0.000    1.802    0.001 /torch/utils/_pytree.py:281(tree_map)
+    45710/11325    0.462    0.000    1.696    0.000 /torch/utils/_pytree.py:230(tree_flatten)
+           75    0.004    0.000    1.629    0.022 /torch/_decomp/decompositions.py:48(inner)
+            5    0.000    0.000    1.623    0.325 /torch/_functorch/aot_autograd.py:1411(fwd_helper)
+            5    0.000    0.000    1.622    0.324 /torch/_functorch/aot_autograd.py:1357(functionalized_f_helper)
+            5    0.000    0.000    1.596    0.319 /torch/_functorch/aot_autograd.py:1164(inner_fn)
+           60    0.001    0.000    1.582    0.026 /torch/_dynamo/symbolic_convert.py:384(wrapper)
+           60    0.001    0.000    1.572    0.026 /torch/_dynamo/symbolic_convert.py:1106(CALL_FUNCTION)
+           60    0.002    0.000    1.570    0.026 /torch/_dynamo/symbolic_convert.py:537(call_function)
+      410/380    0.006    0.000    1.532    0.004 /torch/fx/experimental/proxy_tensor.py:552(__torch_dispatch__)
+      410/380    0.003    0.000    1.508    0.004 /torch/fx/experimental/proxy_tensor.py:573(inner_torch_dispatch)
+           65    0.001    0.000    1.496    0.023 /torch/_dynamo/variables/builder.py:1190(wrap_fx_proxy)
+           65    0.008    0.000    1.495    0.023 /torch/_dynamo/variables/builder.py:1240(wrap_fx_proxy_cls)
+       105/75    0.017    0.000    1.485    0.020 /torch/fx/experimental/proxy_tensor.py:243(proxy_call)
+           50    0.008    0.000    1.428    0.029 /torch/fx/interpreter.py:291(call_module)
+           60    0.006    0.000    1.341    0.022 /torch/_dynamo/utils.py:1291(get_fake_value)
+          155    0.001    0.000    1.326    0.009 /torch/fx/interpreter.py:249(call_function)
+           90    0.000    0.000    1.313    0.015 /torch/_dynamo/utils.py:914(wrap_fake_exception)
+            5    0.000    0.000    1.262    0.252 /EXPERIMENTAL_EXPERIMENT/torch_exp/graph_builder.py:325(to_onnx)
+           10    0.001    0.000    1.209    0.121 /torch/export/__init__.py:395(_transform)
+           25    0.002    0.000    1.184    0.047 /torch/_dynamo/variables/nn_module.py:243(call_function)
+    5660/3350    0.039    0.000    1.140    0.000 /torch/utils/_pytree.py:283(<listcomp>)
+           75    0.019    0.000    1.066    0.014 /torch/_decomp/decompositions.py:1222(addmm)
+           10    0.001    0.000    1.064    0.106 /torch/fx/passes/infra/pass_manager.py:242(__call__)
+           10    0.000    0.000    0.980    0.098 /torch/fx/passes/infra/pass_base.py:34(__call__)
+            5    0.001    0.000    0.973    0.195 /torch/_export/passes/add_runtime_assertions_for_constraints_pass.py:138(call)
+           25    0.000    0.000    0.970    0.039 /torch/fx/_symbolic_trace.py:785(module_call_wrapper)
+           25    0.000    0.000    0.968    0.039 /torch/fx/experimental/proxy_tensor.py:422(call_module)
+           25    0.000    0.000    0.968    0.039 /torch/fx/_symbolic_trace.py:787(forward)
+            5    0.001    0.000    0.963    0.193 /torch/_export/pass_base.py:400(call)
+            5    0.001    0.000    0.961    0.192 /torch/_export/pass_base.py:376(call_submodule)
+      310/260    0.025    0.000    0.956    0.004 {method 'detach' of 'torch._C._TensorBase' objects}
+         4410    0.023    0.000    0.925    0.000 /torch/_subclasses/fake_tensor.py:207(tree_flatten_only)
+            5    0.001    0.000    0.871    0.174 /torch/_dynamo/eval_frame.py:1075(result_capturing_wrapper)
+          145    0.001    0.000    0.867    0.006 /torch/_export/pass_base.py:230(run_node)
+         1920    0.017    0.000    0.849    0.000 /torch/utils/_pytree.py:352(tree_map_only)
+            5    0.000    0.000    0.780    0.156 /torch/_functorch/functional_call.py:10(functional_call)
+            5    0.000    0.000    0.780    0.156 /torch/nn/utils/stateless.py:230(_functional_call)
+            5    0.000    0.000    0.776    0.155 /torch/fx/graph_module.py:677(call_wrapped)
+            5    0.000    0.000    0.776    0.155 /torch/fx/graph_module.py:269(__call__)
+           90    0.005    0.000    0.771    0.009 /torch/_export/pass_base.py:244(_fx)
+           85    0.002    0.000    0.770    0.009 /torch/_export/pass_base.py:173(call_function)
+           75    0.001    0.000    0.752    0.010 /torch/_export/passes/add_runtime_assertions_for_constraints_pass.py:84(call_operator)
+           75    0.000    0.000    0.747    0.010 /torch/_export/pass_base.py:312(call_operator)
+           80    0.001    0.000    0.710    0.009 /torch/nn/functional.py:1460(relu)
+           80    0.016    0.000    0.709    0.009 {built-in method torch.relu}
+            5    0.002    0.000    0.681    0.136 /torch/_functorch/aot_autograd.py:742(inner)
+           60    0.000    0.000    0.668    0.011 /torch/_dynamo/utils.py:1338(<lambda>)
+           60    0.001    0.000    0.668    0.011 /torch/_dynamo/utils.py:1379(run_node)
+      655/250    0.006    0.000    0.650    0.003 /usr/lib/python3.10/copy.py:259(_reconstruct)
+      2405/70    0.020    0.000    0.648    0.009 /usr/lib/python3.10/copy.py:128(deepcopy)
+       105/45    0.003    0.000    0.640    0.014 /usr/lib/python3.10/copy.py:227(_deepcopy_dict)
+           25    0.001    0.000    0.634    0.025 /torch/_dynamo/utils.py:925(deepcopy_to_fake_tensor)
+           25    0.000    0.000    0.633    0.025 /torch/_dynamo/utils.py:927(<lambda>)
+         1005    0.013    0.000    0.627    0.001 /torch/_subclasses/fake_tensor.py:1604(wrap_meta_outputs_with_default_device_logic)
+           80    0.001    0.000    0.626    0.008 /torch/fx/experimental/proxy_tensor.py:182(track_tensor_tree)
+       155/80    0.002    0.000    0.626    0.008 /torch/fx/experimental/proxy_tensor.py:183(wrap_with_proxy)
+      525/325    0.022    0.000    0.602    0.002 /torch/_prims_common/wrappers.py:110(_fn)
+           50    0.004    0.000    0.600    0.012 /torch/nn/parameter.py:54(__deepcopy__)
+          250    0.004    0.000    0.589    0.002 /torch/_subclasses/fake_tensor.py:1799(__torch_function__)
+          150    0.002    0.000    0.589    0.004 /torch/fx/experimental/proxy_tensor.py:144(set_meta)
+         1430    0.008    0.000    0.583    0.000 /torch/_subclasses/fake_tensor.py:1569(validate_and_convert_non_fake_tensors)
+      170/150    0.001    0.000    0.579    0.004 /torch/fx/experimental/proxy_tensor.py:117(extract_val)
+          160    0.001    0.000    0.578    0.004 /torch/fx/experimental/proxy_tensor.py:114(snapshot_fake)
+         1055    0.022    0.000    0.539    0.001 /torch/_subclasses/fake_tensor.py:1620(wrap)
+            5    0.004    0.001    0.525    0.105 /EXPERIMENTAL_EXPERIMENT/torch_exp/graph_builder.py:305(_build_initializers)
+      200/150    0.008    0.000    0.523    0.003 /torch/_subclasses/fake_tensor.py:1059(__torch_dispatch__)
+           50    0.228    0.005    0.517    0.010 /EXPERIMENTAL_EXPERIMENT/torch_exp/graph_builder.py:270(from_array)
+           70    0.003    0.000    0.514    0.007 /torch/fx/graph_module.py:649(recompile)
+          400    0.023    0.000    0.486    0.001 {method 'to' of 'torch._C._TensorBase' objects}
+           40    0.001    0.000    0.468    0.012 /torch/nn/modules/conv.py:459(forward)
+           40    0.000    0.000    0.467    0.012 /torch/nn/modules/conv.py:451(_conv_forward)
+           40    0.025    0.001    0.466    0.012 {built-in method torch.conv2d}
+        45715    0.142    0.000    0.461    0.000 <string>:2(__init__)
+           70    0.002    0.000    0.460    0.007 /torch/fx/graph.py:1208(python_code)
+           70    0.001    0.000    0.435    0.006 /torch/fx/graph.py:1270(_python_code)
+           70    0.028    0.000    0.433    0.006 /torch/fx/graph.py:326(_gen_python_code)
+        70900    0.151    0.000    0.430    0.000 /torch/utils/_pytree.py:186(_get_node_type)
+    265050/258585    0.342    0.000    0.428    0.000 {built-in method builtins.isinstance}
+            5    0.001    0.000    0.422    0.084 /torch/_dynamo/guards.py:879(__init__)
+        45710    0.117    0.000    0.415    0.000 /torch/utils/_pytree.py:192(_is_leaf)
+            5    0.000    0.000    0.406    0.081 /onnx/helper.py:278(make_model)
+           15    0.000    0.000    0.406    0.027 /google/protobuf/message.py:118(CopyFrom)
+           15    0.406    0.027    0.406    0.027 {method 'MergeFrom' of 'google._upb._message.Message' objects}
+           35    0.010    0.000    0.382    0.011 /torch/_dynamo/variables/torch.py:208(call_function)
+           50    0.001    0.000    0.381    0.008 /torch/nn/parameter.py:33(__new__)
+           40    0.000    0.000    0.362    0.009 /torch/_jit_internal.py:478(fn)
+           40    0.001    0.000    0.362    0.009 /torch/nn/functional.py:769(_max_pool2d)
+           40    0.010    0.000    0.360    0.009 {built-in method torch.max_pool2d}
+          225    0.002    0.000    0.359    0.002 /torch/_decomp/decompositions.py:58(increase_prec)
+            1    0.000    0.000    0.359    0.359 /_doc/examples/plot_torch_export.py:83(forward)
+           45    0.004    0.000    0.354    0.008 /torch/fx/graph_module.py:318(__init__)
+         1430    0.016    0.000    0.348    0.000 /torch/_subclasses/fake_tensor.py:1557(check_for_subclass)
+          155    0.333    0.002    0.347    0.002 {method 'extend' of 'google._upb._message.RepeatedCompositeContainer' objects}
+      490/400    0.007    0.000    0.345    0.001 /torch/nn/modules/module.py:1697(__setattr__)
+            5    0.001    0.000    0.345    0.069 /torch/_dynamo/guards.py:943(compile_check_fn)
+          420    0.006    0.000    0.344    0.001 /torch/fx/proxy.py:170(create_proxy)
+            5    0.004    0.001    0.336    0.067 /torch/_dynamo/guards.py:1162(build_guard_function)
+           45    0.001    0.000    0.333    0.007 /torch/fx/graph_module.py:416(graph)
+            5    0.000    0.000    0.331    0.066 /onnx/helper.py:191(make_graph)
+      290/240    0.121    0.000    0.328    0.001 {method 'clone' of 'torch._C._TensorBase' objects}
+         1005    0.012    0.000    0.323    0.000 /torch/_subclasses/fake_tensor.py:1115(_find_common_device)
+        45715    0.198    0.000    0.319    0.000 /torch/utils/_pytree.py:207(__post_init__)
+            5    0.315    0.063    0.315    0.063 {method 'write' of '_io.BufferedWriter' objects}
+            1    0.000    0.000    0.310    0.310 <eval_with_key>.504:4(forward)
+        20520    0.094    0.000    0.294    0.000 /torch/utils/_pytree.py:223(__init__)
+          100    0.003    0.000    0.288    0.003 /torch/_refs/nn/functional/__init__.py:134(_fn)
+    17415/5695    0.194    0.000    0.283    0.000 /torch/utils/_pytree.py:252(tree_unflatten)
+        70900    0.214    0.000    0.279    0.000 /torch/utils/_pytree.py:176(_is_namedtuple_instance)
+         6670    0.036    0.000    0.279    0.000 /torch/fx/node.py:632(map_arg)
+     5390/330    0.035    0.000    0.267    0.001 /usr/lib/python3.10/ast.py:414(visit)
+          225    0.001    0.000    0.260    0.001 /torch/_subclasses/fake_tensor.py:358(__call__)
+          225    0.003    0.000    0.258    0.001 /torch/_subclasses/fake_tensor.py:283(from_real_tensor)
+          100    0.001    0.000    0.251    0.003 /torch/_refs/nn/functional/__init__.py:246(relu)
+          165    0.011    0.000    0.243    0.001 /torch/_subclasses/meta_utils.py:494(__call__)
+    14150/6675    0.119    0.000    0.236    0.000 /torch/fx/node.py:640(map_aggregate)
+          165    0.029    0.000    0.230    0.001 /torch/_subclasses/meta_utils.py:177(meta_tensor)
+          430    0.014    0.000    0.211    0.000 /torch/fx/proxy.py:114(create_node)
+          250    0.006    0.000    0.202    0.001 /torch/_refs/__init__.py:957(_ref)
+           60    0.001    0.000    0.201    0.003 /torch/_refs/__init__.py:4265(t)
+           60    0.002    0.000    0.201    0.003 {built-in method torch.transpose}
+           10    0.001    0.000    0.199    0.020 /torch/_decomp/decompositions_for_rng.py:129(reset)
+           35    0.196    0.006    0.196    0.006 {method 'SerializeToString' of 'google._upb._message.Message' objects}
+    15445/14455    0.032    0.000    0.196    0.000 {built-in method builtins.next}
+           30    0.000    0.000    0.195    0.007 /torch/_decomp/decompositions_for_rng.py:71(__init__)
+           30    0.000    0.000    0.195    0.006 /torch/_decomp/decompositions_for_rng.py:74(reset)
+           60    0.012    0.000    0.194    0.003 {built-in method torch.tensor}
+           60    0.001    0.000    0.192    0.003 /torch/_refs/__init__.py:4301(transpose)
+           60    0.003    0.000    0.189    0.003 {built-in method torch.permute}
+         1450    0.028    0.000    0.188    0.000 /torch/fx/graph.py:482(emit_node)
+         1055    0.023    0.000    0.185    0.000 /torch/_subclasses/fake_tensor.py:341(from_meta_and_device)
+           55    0.185    0.003    0.185    0.003 {method 'tobytes' of 'numpy.ndarray' objects}
+           60    0.001    0.000    0.180    0.003 /torch/_dynamo/symbolic_convert.py:1184(LOAD_ATTR)
+           75    0.005    0.000    0.179    0.002 {built-in method torch.mm}
+          440    0.009    0.000    0.175    0.000 /torch/fx/graph.py:805(create_node)
+           15    0.001    0.000    0.175    0.012 /torch/export/__init__.py:232(__init__)
+           15    0.000    0.000    0.174    0.012 /torch/_export/exported_program.py:230(_create_graph_module_for_export)
+        70/50    0.020    0.000    0.167    0.003 {built-in method torch._ops.aten.}
+          425    0.017    0.000    0.164    0.000 /torch/_prims/__init__.py:331(_elementwise_meta)
+           50    0.006    0.000    0.163    0.003 /torch/_subclasses/fake_tensor.py:653(conv)
+          110    0.001    0.000    0.163    0.001 /torch/_dynamo/guards.py:1169(replace)
+          110    0.002    0.000    0.162    0.001 /torch/_dynamo/guards.py:862(replace)
+    8925/8365    0.017    0.000    0.155    0.000 /torch/fx/node.py:646(<genexpr>)
+          670    0.006    0.000    0.154    0.000 /torch/_dynamo/guards.py:128(_ast_unparse)
+          165    0.001    0.000    0.154    0.001 /torch/_subclasses/fake_tensor.py:1702(from_tensor)
+          670    0.003    0.000    0.148    0.000 /usr/lib/python3.10/ast.py:1679(unparse)
+            5    0.000    0.000    0.147    0.029 /torch/_dynamo/eval_frame.py:806(rewrite_signature)
+          670    0.008    0.000    0.143    0.000 /usr/lib/python3.10/ast.py:811(visit)
+          425    0.008    0.000    0.143    0.000 /torch/_refs/__init__.py:402(_maybe_broadcast)
+            1    0.000    0.000    0.141    0.141 <eval_with_key>.518:4(forward)
+           70    0.001    0.000    0.141    0.002 /torch/_dynamo/variables/builder.py:216(__call__)
+     1080/480    0.012    0.000    0.140    0.000 /torch/_dynamo/variables/base.py:95(__call__)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 265-269
+.. GENERATED FROM PYTHON SOURCE LINES 278-282
 
 The following display helps to understand.
 Most of the tiume added by the custom converter is used to
 converter the initializer and build the onnx model once the conversion
 is complete.
 
-.. GENERATED FROM PYTHON SOURCE LINES 269-275
+.. GENERATED FROM PYTHON SOURCE LINES 282-288
 
 .. code-block:: Python
 
@@ -723,12 +736,12 @@ is complete.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 276-278
+.. GENERATED FROM PYTHON SOURCE LINES 289-291
 
 Benchmark
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 278-355
+.. GENERATED FROM PYTHON SOURCE LINES 291-368
 
 .. code-block:: Python
 
@@ -818,41 +831,43 @@ Benchmark
  .. code-block:: none
 
       0%|          | 0/24 [00:00<?, ?it/s]number of experiments: 24
-    0.012920297619053773 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   0%|          | 0/24 [00:01<?, ?it/s]    0.012920297619053773 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   4%|▍         | 1/24 [00:01<00:33,  1.47s/it]    0.013763085057470217 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   4%|▍         | 1/24 [00:03<00:33,  1.47s/it]    0.013763085057470217 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   8%|▊         | 2/24 [00:03<00:35,  1.62s/it]    0.001620969485291461 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:   8%|▊         | 2/24 [00:28<00:35,  1.62s/it]    0.001620969485291461 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  12%|█▎        | 3/24 [00:28<04:23, 12.56s/it]    0.001593664592593861 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  12%|█▎        | 3/24 [00:30<04:23, 12.56s/it]    0.001593664592593861 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  17%|█▋        | 4/24 [00:30<02:47,  8.37s/it]    0.014656697101441829 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  17%|█▋        | 4/24 [00:32<02:47,  8.37s/it]                             0.014656697101441829 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  21%|██        | 5/24 [00:32<01:51,  5.87s/it]    0.013667482666666425 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  21%|██        | 5/24 [00:33<01:51,  5.87s/it]    0.013667482666666425 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  25%|██▌       | 6/24 [00:33<01:18,  4.36s/it]    0.0017512387878813377 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  25%|██▌       | 6/24 [00:35<01:18,  4.36s/it]    0.0017512387878813377 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  29%|██▉       | 7/24 [00:35<00:58,  3.41s/it]    0.00160631751151929 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  29%|██▉       | 7/24 [00:36<00:58,  3.41s/it]      0.00160631751151929 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  33%|███▎      | 8/24 [00:36<00:44,  2.76s/it]    0.008168666433569222 plot_torch_export_script.onnx ['CPUExecutionProvider']:  33%|███▎      | 8/24 [00:38<00:44,  2.76s/it]                            0.008168666433569222 plot_torch_export_script.onnx ['CPUExecutionProvider']:  38%|███▊      | 9/24 [00:38<00:36,  2.42s/it]    0.009028141666673643 plot_torch_export_script.onnx ['CPUExecutionProvider']:  38%|███▊      | 9/24 [00:40<00:36,  2.42s/it]    0.009028141666673643 plot_torch_export_script.onnx ['CPUExecutionProvider']:  42%|████▏     | 10/24 [00:40<00:32,  2.35s/it]    0.0015296807017556714 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  42%|████▏     | 10/24 [00:41<00:32,  2.35s/it]    0.0015296807017556714 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  46%|████▌     | 11/24 [00:41<00:27,  2.15s/it]    0.001618982296651428 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  46%|████▌     | 11/24 [00:43<00:27,  2.15s/it]     0.001618982296651428 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  50%|█████     | 12/24 [00:43<00:23,  1.94s/it]    0.02053954901966077 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  50%|█████     | 12/24 [00:45<00:23,  1.94s/it]                              0.02053954901966077 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  54%|█████▍    | 13/24 [00:45<00:23,  2.11s/it]    0.019018220895576185 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  54%|█████▍    | 13/24 [00:48<00:23,  2.11s/it]    0.019018220895576185 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  58%|█████▊    | 14/24 [00:48<00:21,  2.15s/it]    0.002281675793653001 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  58%|█████▊    | 14/24 [00:49<00:21,  2.15s/it]    0.002281675793653001 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  62%|██████▎   | 15/24 [00:49<00:17,  1.96s/it]    0.0022854861261261215 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  62%|██████▎   | 15/24 [00:51<00:17,  1.96s/it]    0.0022854861261261215 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  67%|██████▋   | 16/24 [00:51<00:14,  1.85s/it]    0.025161007142872092 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  67%|██████▋   | 16/24 [00:53<00:14,  1.85s/it]                              0.025161007142872092 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  71%|███████   | 17/24 [00:53<00:13,  1.92s/it]    0.044606683333389206 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  71%|███████   | 17/24 [00:55<00:13,  1.92s/it]    0.044606683333389206 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  75%|███████▌  | 18/24 [00:55<00:12,  2.04s/it]    0.0023448135881035787 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  75%|███████▌  | 18/24 [00:57<00:12,  2.04s/it]    0.0023448135881035787 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  79%|███████▉  | 19/24 [00:57<00:09,  1.90s/it]    0.004259221544710205 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  79%|███████▉  | 19/24 [00:58<00:09,  1.90s/it]     0.004259221544710205 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  83%|████████▎ | 20/24 [00:58<00:07,  1.78s/it]    0.020721249206337868 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  83%|████████▎ | 20/24 [01:01<00:07,  1.78s/it]                             0.020721249206337868 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  88%|████████▊ | 21/24 [01:01<00:05,  1.95s/it]    0.04156973030297773 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  88%|████████▊ | 21/24 [01:03<00:05,  1.95s/it]     0.04156973030297773 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  92%|█████████▏| 22/24 [01:03<00:03,  1.93s/it]    0.0022504826235135514 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  92%|█████████▏| 22/24 [01:04<00:03,  1.93s/it]    0.0022504826235135514 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  96%|█████████▌| 23/24 [01:04<00:01,  1.95s/it]    0.005023675980398776 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  96%|█████████▌| 23/24 [01:06<00:01,  1.95s/it]     0.005023675980398776 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 24/24 [01:06<00:00,  1.79s/it]    0.005023675980398776 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 24/24 [01:06<00:00,  2.77s/it]
-                                 name                                   providers compute  aot  export  n_nodes  n_function  n_sub   average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time
-    0   plot_torch_export_cus_p1.onnx                        CPUExecutionProvider     CPU    1  cus_p1       15           0      0  0.012920   0.000795  0.011773  0.013512       1    84.0  1.085305            64     0.011963
-    1   plot_torch_export_cus_p1.onnx                        CPUExecutionProvider     CPU    0  cus_p1       15           0      0  0.013763   0.000693  0.012633  0.014831       1    87.0  1.197388            64     0.013315
-    2   plot_torch_export_cus_p1.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  cus_p1       15           0      0  0.001621   0.000454  0.001512  0.008372       1   816.0  1.322711            64     0.008215
-    3   plot_torch_export_cus_p1.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  cus_p1       15           0      0  0.001594   0.000011  0.001447  0.001599       1   675.0  1.075724            64     0.001626
-    4   plot_torch_export_cus_p2.onnx                        CPUExecutionProvider     CPU    1  cus_p2       12           0      0  0.014657   0.000546  0.013585  0.015057       1    69.0  1.011312            64     0.013433
-    5   plot_torch_export_cus_p2.onnx                        CPUExecutionProvider     CPU    0  cus_p2       12           0      0  0.013667   0.000541  0.012986  0.014449       1    75.0  1.025061            64     0.013617
-    6   plot_torch_export_cus_p2.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  cus_p2       12           0      0  0.001751   0.000028  0.001479  0.001769       1   660.0  1.155818            64     0.001579
-    7   plot_torch_export_cus_p2.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  cus_p2       12           0      0  0.001606   0.000011  0.001515  0.001620       1   651.0  1.045713            64     0.001455
-    8   plot_torch_export_script.onnx                        CPUExecutionProvider     CPU    1  script       12           0      0  0.008169   0.000392  0.007682  0.010543       1   143.0  1.168119            64     0.007879
-    9   plot_torch_export_script.onnx                        CPUExecutionProvider     CPU    0  script       12           0      0  0.009028   0.000598  0.008200  0.009886       1   120.0  1.083377            64     0.007946
-    10  plot_torch_export_script.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  script       12           0      0  0.001530   0.000032  0.001487  0.001564       1   855.0  1.307877            64     0.001788
-    11  plot_torch_export_script.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  script       12           0      0  0.001619   0.000071  0.001570  0.002383       1   627.0  1.015102            64     0.001484
-    12  plot_torch_export_cus_p0.onnx                        CPUExecutionProvider     CPU    1  cus_p0       27           0      2  0.020540   0.001648  0.019366  0.022974       1    51.0  1.047517            64     0.020749
-    13  plot_torch_export_cus_p0.onnx                        CPUExecutionProvider     CPU    0  cus_p0       27           0      2  0.019018   0.000640  0.018166  0.020004       1    67.0  1.274221            64     0.018788
-    14  plot_torch_export_cus_p0.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  cus_p0       27           0      2  0.002282   0.000025  0.001874  0.002289       1   504.0  1.149965            64     0.001880
-    15  plot_torch_export_cus_p0.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  cus_p0       27           0      2  0.002285   0.000028  0.002110  0.002538       1   555.0  1.268445            64     0.002031
-    16  plot_torch_export_dynopt.onnx                        CPUExecutionProvider     CPU    1  dynopt       13          21      0  0.025161   0.002672  0.020189  0.027220       1    42.0  1.056762            64     0.022742
-    17  plot_torch_export_dynopt.onnx                        CPUExecutionProvider     CPU    0  dynopt       13          21      0  0.044607   0.002668  0.038980  0.048468       1    24.0  1.070560            64     0.046328
-    18  plot_torch_export_dynopt.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  dynopt       13          21      0  0.002345   0.000068  0.002119  0.002393       1   471.0  1.104407            64     0.002019
-    19  plot_torch_export_dynopt.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  dynopt       13          21      0  0.004259   0.000037  0.003758  0.004286       1   246.0  1.047768            64     0.003568
-    20  plot_torch_export_dynamo.onnx                        CPUExecutionProvider     CPU    1  dynamo       13          13      0  0.020721   0.001366  0.018397  0.021614       1    63.0  1.305439            64     0.019942
-    21  plot_torch_export_dynamo.onnx                        CPUExecutionProvider     CPU    0  dynamo       13          13      0  0.041570   0.003044  0.039782  0.053197       1    33.0  1.371801            64     0.044708
-    22  plot_torch_export_dynamo.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  dynamo       13          13      0  0.002250   0.000011  0.002240  0.002270       1   587.0  1.321033            64     0.002417
-    23  plot_torch_export_dynamo.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  dynamo       13          13      0  0.005024   0.000028  0.004635  0.005029       1   204.0  1.024830            64     0.004803
+    0.01435662799999894 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   0%|          | 0/24 [00:01<?, ?it/s]    0.01435662799999894 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   4%|▍         | 1/24 [00:01<00:35,  1.57s/it]    0.01708664126982469 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   4%|▍         | 1/24 [00:03<00:35,  1.57s/it]    0.01708664126982469 plot_torch_export_cus_p1.onnx ['CPUExecutionProvider']:   8%|▊         | 2/24 [00:03<00:33,  1.51s/it]    0.0015930594377455158 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:   8%|▊         | 2/24 [00:15<00:33,  1.51s/it]    0.0015930594377455158 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  12%|█▎        | 3/24 [00:15<02:20,  6.70s/it]    0.0015328173027950372 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  12%|█▎        | 3/24 [00:17<02:20,  6.70s/it]    0.0015328173027950372 plot_torch_export_cus_p1.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  17%|█▋        | 4/24 [00:17<01:33,  4.67s/it]    0.013948288505695206 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  17%|█▋        | 4/24 [00:19<01:33,  4.67s/it]                              0.013948288505695206 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  21%|██        | 5/24 [00:19<01:07,  3.57s/it]    0.013323481609111842 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  21%|██        | 5/24 [00:20<01:07,  3.57s/it]    0.013323481609111842 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  25%|██▌       | 6/24 [00:20<00:51,  2.89s/it]    0.0017884948914470302 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  25%|██▌       | 6/24 [00:22<00:51,  2.89s/it]    0.0017884948914470302 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  29%|██▉       | 7/24 [00:22<00:42,  2.50s/it]    0.0022198849673217636 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  29%|██▉       | 7/24 [00:24<00:42,  2.50s/it]    0.0022198849673217636 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  33%|███▎      | 8/24 [00:24<00:36,  2.26s/it]    0.013479507017556196 plot_torch_export_script.onnx ['CPUExecutionProvider']:  33%|███▎      | 8/24 [00:26<00:36,  2.26s/it]                              0.013479507017556196 plot_torch_export_script.onnx ['CPUExecutionProvider']:  38%|███▊      | 9/24 [00:26<00:34,  2.31s/it]    0.009387667938926477 plot_torch_export_script.onnx ['CPUExecutionProvider']:  38%|███▊      | 9/24 [00:28<00:34,  2.31s/it]    0.009387667938926477 plot_torch_export_script.onnx ['CPUExecutionProvider']:  42%|████▏     | 10/24 [00:28<00:30,  2.16s/it]    0.001605140254237779 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  42%|████▏     | 10/24 [00:29<00:30,  2.16s/it]    0.001605140254237779 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  46%|████▌     | 11/24 [00:29<00:25,  1.94s/it]    0.0015587610644205614 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  46%|████▌     | 11/24 [00:31<00:25,  1.94s/it]    0.0015587610644205614 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  50%|█████     | 12/24 [00:31<00:21,  1.81s/it]    0.027748971794864748 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  50%|█████     | 12/24 [00:34<00:21,  1.81s/it]                              0.027748971794864748 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  54%|█████▍    | 13/24 [00:34<00:22,  2.08s/it]    0.023434440000115006 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  54%|█████▍    | 13/24 [00:36<00:22,  2.08s/it]    0.023434440000115006 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  58%|█████▊    | 14/24 [00:36<00:22,  2.25s/it]    0.002633516778530393 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  58%|█████▊    | 14/24 [00:38<00:22,  2.25s/it]    0.002633516778530393 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  62%|██████▎   | 15/24 [00:38<00:18,  2.05s/it]    0.002382198126443533 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  62%|██████▎   | 15/24 [00:39<00:18,  2.05s/it]    0.002382198126443533 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  67%|██████▋   | 16/24 [00:39<00:15,  1.92s/it]    0.023885112280703124 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  67%|██████▋   | 16/24 [00:42<00:15,  1.92s/it]                             0.023885112280703124 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  71%|███████   | 17/24 [00:42<00:14,  2.03s/it]    0.04249741481490438 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  71%|███████   | 17/24 [00:43<00:14,  2.03s/it]     0.04249741481490438 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  75%|███████▌  | 18/24 [00:43<00:11,  1.92s/it]    0.002214792735055828 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  75%|███████▌  | 18/24 [00:45<00:11,  1.92s/it]    0.002214792735055828 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  79%|███████▉  | 19/24 [00:45<00:08,  1.79s/it]    0.00425435637859024 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  79%|███████▉  | 19/24 [00:46<00:08,  1.79s/it]     0.00425435637859024 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  83%|████████▎ | 20/24 [00:46<00:06,  1.67s/it]    0.051433961904660375 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  83%|████████▎ | 20/24 [00:49<00:06,  1.67s/it]                            0.051433961904660375 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  88%|████████▊ | 21/24 [00:49<00:06,  2.11s/it]    0.04570852173903562 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  88%|████████▊ | 21/24 [00:51<00:06,  2.11s/it]     0.04570852173903562 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  92%|█████████▏| 22/24 [00:51<00:04,  2.09s/it]    0.0026424060975708615 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  92%|█████████▏| 22/24 [00:54<00:04,  2.09s/it]    0.0026424060975708615 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  96%|█████████▌| 23/24 [00:54<00:02,  2.14s/it]    0.005336299999994697 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  96%|█████████▌| 23/24 [00:55<00:02,  2.14s/it]     0.005336299999994697 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 24/24 [00:55<00:00,  2.01s/it]    0.005336299999994697 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 24/24 [00:55<00:00,  2.33s/it]
+                                 name  ... warmup_time
+    0   plot_torch_export_cus_p1.onnx  ...    0.019359
+    1   plot_torch_export_cus_p1.onnx  ...    0.014290
+    2   plot_torch_export_cus_p1.onnx  ...    0.002311
+    3   plot_torch_export_cus_p1.onnx  ...    0.001310
+    4   plot_torch_export_cus_p2.onnx  ...    0.014692
+    5   plot_torch_export_cus_p2.onnx  ...    0.014002
+    6   plot_torch_export_cus_p2.onnx  ...    0.002229
+    7   plot_torch_export_cus_p2.onnx  ...    0.001721
+    8   plot_torch_export_script.onnx  ...    0.008847
+    9   plot_torch_export_script.onnx  ...    0.008325
+    10  plot_torch_export_script.onnx  ...    0.002055
+    11  plot_torch_export_script.onnx  ...    0.001376
+    12  plot_torch_export_cus_p0.onnx  ...    0.027252
+    13  plot_torch_export_cus_p0.onnx  ...    0.020315
+    14  plot_torch_export_cus_p0.onnx  ...    0.002522
+    15  plot_torch_export_cus_p0.onnx  ...    0.002964
+    16  plot_torch_export_dynopt.onnx  ...    0.034636
+    17  plot_torch_export_dynopt.onnx  ...    0.049269
+    18  plot_torch_export_dynopt.onnx  ...    0.002528
+    19  plot_torch_export_dynopt.onnx  ...    0.005325
+    20  plot_torch_export_dynamo.onnx  ...    0.085985
+    21  plot_torch_export_dynamo.onnx  ...    0.063649
+    22  plot_torch_export_dynamo.onnx  ...    0.001979
+    23  plot_torch_export_dynamo.onnx  ...    0.004548
+
+    [24 rows x 17 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 356-357
+.. GENERATED FROM PYTHON SOURCE LINES 369-370
 
 Other view
 
-.. GENERATED FROM PYTHON SOURCE LINES 357-369
+.. GENERATED FROM PYTHON SOURCE LINES 370-382
 
 .. code-block:: Python
 
@@ -884,53 +899,32 @@ Other view
     compute       CPU                CUDA          
     aot             0         1         0         1
     export                                         
-    cus_p0   0.019018  0.020540  0.002285  0.002282
-    cus_p1   0.013763  0.012920  0.001594  0.001621
-    cus_p2   0.013667  0.014657  0.001606  0.001751
-    dynamo   0.041570  0.020721  0.005024  0.002250
-    dynopt   0.044607  0.025161  0.004259  0.002345
-    script   0.009028  0.008169  0.001619  0.001530
+    cus_p0   0.023434  0.027749  0.002382  0.002634
+    cus_p1   0.017087  0.014357  0.001533  0.001593
+    cus_p2   0.013323  0.013948  0.002220  0.001788
+    dynamo   0.045709  0.051434  0.005336  0.002642
+    dynopt   0.042497  0.023885  0.004254  0.002215
+    script   0.009388  0.013480  0.001559  0.001605
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 370-372
+.. GENERATED FROM PYTHON SOURCE LINES 383-388
 
-Show the interesting models
-+++++++++++++++++++++++++++
+Show the interesting models for CPU
++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 372-400
+script
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 388-392
 
 .. code-block:: Python
 
 
-    models = [
-        _ for _ in os.listdir(".") if ".onnx" in _ and _.startswith("ort-plot_torch_export")
-    ]
-    for model in models:
-        if (
-            "cpu" not in model
-            and "cuda" not in model
-            or "aot" not in model
-            or "cus_p0" in model
-            or "cus_p1" in model
-        ):
-            print("skip1", model)
-            continue
-        if ("dynamo" in model or "dynopt" in model) and "aot0" in model:
-            print("skip2", model)
-            continue
-        if "aot1" in model and ("dynamo" in model or "dynopt" in model):
-            print("skip3", model)
-            continue
-        print()
-        print("#################################################")
-        print(model)
-        print("#################################################")
-        onx = onnx.load(model)
-        print(onnx_simple_text_plot(onx))
+    model = "ort-plot_torch_export_cus_p2-cpu-aot0.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
 
-    print("done.")
 
 
 
@@ -939,48 +933,6 @@ Show the interesting models
 
  .. code-block:: none
 
-    skip1 ort-plot_torch_export_cus_p0-cpu-aot1.onnx
-    skip1 ort-plot_torch_export_cus_p0-cpu-aot0.onnx
-
-    #################################################
-    ort-plot_torch_export_cus_p2-cuda-aot1.onnx
-    #################################################
-    opset: domain='' version=18
-    opset: domain='ai.onnx.ml' version=4
-    opset: domain='ai.onnx.training' version=1
-    opset: domain='ai.onnx.preview.training' version=1
-    opset: domain='com.microsoft' version=1
-    opset: domain='com.microsoft.experimental' version=1
-    opset: domain='com.microsoft.nchwc' version=1
-    opset: domain='org.pytorch.aten' version=1
-    input: name='input' type=dtype('float32') shape=[1, 1, 128, 128]
-    init: name='arg0_1' type=dtype('float32') shape=(128, 1, 5, 5)
-    init: name='arg1_1' type=dtype('float32') shape=(128,)
-    init: name='arg2_1' type=dtype('float32') shape=(16, 128, 5, 5)
-    init: name='arg3_1' type=dtype('float32') shape=(16,)
-    init: name='arg5_1' type=dtype('float32') shape=(1024,)
-    init: name='arg7_1' type=dtype('float32') shape=(128,)
-    init: name='arg9_1' type=dtype('float32') shape=(10,)
-    init: name='ortshared_7_1_2_0_token_8' type=dtype('int64') shape=(2,) -- array([    1, 13456])
-    init: name='permute' type=dtype('float32') shape=(13456, 1024)
-    init: name='permute_1' type=dtype('float32') shape=(1024, 128)
-    init: name='permute_2' type=dtype('float32') shape=(128, 10)
-    FusedConv[com.microsoft](input, arg0_1, arg1_1, activation=b'Relu', dilations=[1,1], group=1, strides=[1,1], pads=[0,0,0,0], auto_pad=b'NOTSET') -> relu
-      MaxPool(relu, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _onx_maxpool0, _onx_maxpool1
-        FusedConv[com.microsoft](_onx_maxpool0, arg2_1, arg3_1, activation=b'Relu', dilations=[1,1], group=1, strides=[1,1], pads=[0,0,0,0], auto_pad=b'NOTSET') -> relu_1
-          MaxPool(relu_1, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _onx_maxpool03, _onx_maxpool13
-            Reshape(_onx_maxpool03, ortshared_7_1_2_0_token_8, allowzero=0) -> view
-              Gemm(view, permute, arg5_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> addmm
-                Relu(addmm) -> relu_2
-                  Gemm(relu_2, permute_1, arg7_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> addmm_1
-                    Relu(addmm_1) -> relu_3
-                      Gemm(relu_3, permute_2, arg9_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> output
-    output: name='output' type=dtype('float32') shape=[1, 10]
-    skip1 ort-plot_torch_export_cus_p1-cpu-aot0.onnx
-
-    #################################################
-    ort-plot_torch_export_cus_p2-cpu-aot1.onnx
-    #################################################
     opset: domain='' version=18
     opset: domain='ai.onnx.ml' version=4
     opset: domain='ai.onnx.training' version=1
@@ -1013,48 +965,31 @@ Show the interesting models
                       FusedGemm[com.microsoft](relu_2, permute_1, arg7_1, activation=b'Relu', transB=0, transA=0, alpha=1.00, beta=1.00) -> relu_3
                         Gemm(relu_3, permute_2, arg9_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> output
     output: name='output' type=dtype('float32') shape=[1, 10]
-    skip1 ort-plot_torch_export_cus_p1-cpu-aot1.onnx
-    skip1 ort-plot_torch_export_cus_p1-cuda-aot0.onnx
 
-    #################################################
-    ort-plot_torch_export_script-cpu-aot0.onnx
-    #################################################
-    opset: domain='' version=17
-    opset: domain='ai.onnx.ml' version=4
-    opset: domain='ai.onnx.training' version=1
-    opset: domain='ai.onnx.preview.training' version=1
-    opset: domain='com.microsoft' version=1
-    opset: domain='com.microsoft.experimental' version=1
-    opset: domain='com.microsoft.nchwc' version=1
-    opset: domain='org.pytorch.aten' version=1
-    input: name='input' type=dtype('float32') shape=[1, 1, 128, 128]
-    init: name='reorder' type=dtype('float32') shape=(128, 1, 5, 5)
-    init: name='conv1.bias' type=dtype('float32') shape=(128,)
-    init: name='reorder_token_2' type=dtype('float32') shape=(16, 128, 5, 5)
-    init: name='conv2.bias' type=dtype('float32') shape=(16,)
-    init: name='fc1.weight' type=dtype('float32') shape=(1024, 13456)
-    init: name='fc1.bias' type=dtype('float32') shape=(1024,)
-    init: name='fc2.weight' type=dtype('float32') shape=(128, 1024)
-    init: name='fc2.bias' type=dtype('float32') shape=(128,)
-    init: name='fc3.weight' type=dtype('float32') shape=(10, 128)
-    init: name='fc3.bias' type=dtype('float32') shape=(10,)
-    Conv[com.microsoft.nchwc](input, reorder, conv1.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> reorder_token_0
-      MaxPool[com.microsoft.nchwc](reorder_token_0, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> reorder_token_1
-        Conv[com.microsoft.nchwc](reorder_token_1, reorder_token_2, conv2.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> reorder_token_3
-          MaxPool[com.microsoft.nchwc](reorder_token_3, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> reorder_token_4
-            ReorderOutput[com.microsoft.nchwc](reorder_token_4, channels_last=0, channels=16) -> /MaxPool_1_output_0
-              Flatten(/MaxPool_1_output_0, axis=1) -> /Flatten_output_0
-                FusedGemm[com.microsoft](/Flatten_output_0, fc1.weight, fc1.bias, activation=b'Relu', alpha=1.00, beta=1.00, transA=0, transB=1) -> /Relu_2_output_0
-                  FusedGemm[com.microsoft](/Relu_2_output_0, fc2.weight, fc2.bias, activation=b'Relu', alpha=1.00, beta=1.00, transA=0, transB=1) -> /Relu_3_output_0
-                    Gemm(/Relu_3_output_0, fc3.weight, fc3.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> 22
-    output: name='22' type=dtype('float32') shape=[1, 10]
-    skip1 ort-plot_torch_export_cus_p0-cuda-aot0.onnx
-    skip3 ort-plot_torch_export_dynopt-cpu-aot1.onnx
-    skip2 ort-plot_torch_export_dynamo-cpu-aot0.onnx
 
-    #################################################
-    ort-plot_torch_export_cus_p2-cpu-aot0.onnx
-    #################################################
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 393-395
+
+cus_p2
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 395-399
+
+.. code-block:: Python
+
+
+    model = "ort-plot_torch_export_cus_p2-cpu-aot0.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
     opset: domain='' version=18
     opset: domain='ai.onnx.ml' version=4
     opset: domain='ai.onnx.training' version=1
@@ -1087,14 +1022,35 @@ Show the interesting models
                       FusedGemm[com.microsoft](relu_2, permute_1, arg7_1, activation=b'Relu', transB=0, transA=0, alpha=1.00, beta=1.00) -> relu_3
                         Gemm(relu_3, permute_2, arg9_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> output
     output: name='output' type=dtype('float32') shape=[1, 10]
-    skip3 ort-plot_torch_export_dynamo-cuda-aot1.onnx
-    skip1 ort-plot_torch_export_cus_p1-cuda-aot1.onnx
-    skip3 ort-plot_torch_export_dynopt-cuda-aot1.onnx
 
-    #################################################
-    ort-plot_torch_export_script-cuda-aot0.onnx
-    #################################################
-    opset: domain='' version=17
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 400-402
+
+dynopt
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 402-406
+
+.. code-block:: Python
+
+
+    model = "ort-plot_torch_export_dynopt-cpu-aot1.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    opset: domain='pkg.torch.2.1.1+cu118' version=1
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
     opset: domain='ai.onnx.ml' version=4
     opset: domain='ai.onnx.training' version=1
     opset: domain='ai.onnx.preview.training' version=1
@@ -1102,7 +1058,323 @@ Show the interesting models
     opset: domain='com.microsoft.experimental' version=1
     opset: domain='com.microsoft.nchwc' version=1
     opset: domain='org.pytorch.aten' version=1
-    input: name='input' type=dtype('float32') shape=[1, 1, 128, 128]
+    input: name='arg0' type=dtype('float32') shape=[1, 1, 128, 128]
+    init: name='reorder_token_11' type=dtype('float32') shape=(16, 128, 5, 5)
+    init: name='conv1.bias' type=dtype('float32') shape=(128,)
+    init: name='reorder' type=dtype('float32') shape=(128, 1, 5, 5)
+    init: name='conv2.bias' type=dtype('float32') shape=(16,)
+    init: name='fc1.weight' type=dtype('float32') shape=(1024, 13456)
+    init: name='fc1.bias' type=dtype('float32') shape=(1024,)
+    init: name='_inlfunc_torch_nn_modules_linear_Linear_fc3_1|folded_0|folded_0_t_2' type=dtype('float32') shape=(128, 10)
+    init: name='fc2.bias' type=dtype('float32') shape=(128,)
+    init: name='_inlfunc_torch_nn_modules_linear_Linear_fc2_1|folded_0|folded_0_t_1' type=dtype('float32') shape=(1024, 128)
+    init: name='fc3.bias' type=dtype('float32') shape=(10,)
+    init: name='_inlfunc_aten_view|folded_0|folded_0_size_0' type=dtype('int64') shape=(2,) -- array([    1, 13456])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_0' type=dtype('int64') shape=() -- array([4])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank_cast
+    Transpose(fc1.weight, perm=[1,0]) -> _inlfunc_torch_nn_modules_linear_Linear_fc1_1|folded_0|folded_0_t
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank_cast
+    Conv[com.microsoft.nchwc](arg0, reorder, conv1.bias, auto_pad=b'NOTSET', pads=[0,0,0,0], strides=[1,1], group=1, dilations=[1,1]) -> reorder_token_10
+      ReorderOutput[com.microsoft.nchwc](reorder_token_10, channels_last=0, channels=128) -> _inlfunc__aten_convolution_onnx|folded_0|folded_0_result_7
+        Identity(_inlfunc__aten_convolution_onnx|folded_0|folded_0_result_7) -> conv1_1
+          Relu(conv1_1) -> relu
+            Shape(relu, start=0) -> _inlfunc_Rank|folded_2|folded_0_tmp
+              Size(_inlfunc_Rank|folded_2|folded_0_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_tmp
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_tmp, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank
+        If(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank, else_branch=G1, then_branch=G2) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_2
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0__, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_flatten_indices
+            Slice(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_starts, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_ends, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_axes) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_delta
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_pool_result, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_indices
+            Sub(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_delta) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_indices_3
+        If(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank, else_branch=G3, then_branch=G4) -> max_pool2d_with_indices_1.1, max_pool2d_with_indices
+          Shape(max_pool2d_with_indices, start=0) -> _inlfunc_Rank|folded_3|folded_0_tmp
+            Size(_inlfunc_Rank|folded_3|folded_0_tmp) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp
+              Equal(_inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp, _inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_0) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_1
+                Not(_inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_1) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch
+                  If(_inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch, else_branch=G5, then_branch=G6) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_input_5
+                    ReorderInput[com.microsoft.nchwc](_inlfunc__aten_convolution_onnx|folded_1|folded_0_input_5, channels_last=0) -> reorder_token_12
+                      Conv[com.microsoft.nchwc](reorder_token_12, reorder_token_11, conv2.bias, auto_pad=b'NOTSET', pads=[0,0,0,0], strides=[1,1], group=1, dilations=[1,1]) -> reorder_token_13
+                        ReorderOutput[com.microsoft.nchwc](reorder_token_13, channels_last=0, channels=16) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_result_7
+                  If(_inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch, else_branch=G7, then_branch=G8) -> conv2_1
+                    Relu(conv2_1) -> relu_1
+                      Shape(relu_1, start=0) -> _inlfunc_Rank|folded_5|folded_0_tmp
+                        Size(_inlfunc_Rank|folded_5|folded_0_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_tmp
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_tmp, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank
+        If(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank, else_branch=G9, then_branch=G10) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_2
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0__, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_flatten_indices
+            Slice(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_starts, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_ends, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_axes) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_delta
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_pool_result, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_indices
+            Sub(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_delta) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_indices_3
+        If(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank, else_branch=G11, then_branch=G12) -> max_pool2d_with_indices_1_1, max_pool2d_with_indices_1
+          Reshape(max_pool2d_with_indices_1, _inlfunc_aten_view|folded_0|folded_0_size_0, allowzero=0) -> view
+      FusedGemm[com.microsoft](view, _inlfunc_torch_nn_modules_linear_Linear_fc1_1|folded_0|folded_0_t, fc1.bias, activation=b'Relu', transB=0, transA=0, alpha=1.00, beta=1.00) -> relu_2
+        FusedGemm[com.microsoft](relu_2, _inlfunc_torch_nn_modules_linear_Linear_fc2_1|folded_0|folded_0_t_1, fc2.bias, activation=b'Relu', transB=0, transA=0, alpha=1.00, beta=1.00) -> relu_3
+          Gemm(relu_3, _inlfunc_torch_nn_modules_linear_Linear_fc3_1|folded_0|folded_0_t_2, fc3.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc3_1
+    output: name='fc3_1' type=dtype('float32') shape=[1, 10]
+    ----- function name=_aten_convolution_onnx|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: ConvXd with attributes pre-computed to fit the ONNX spec.
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'input'
+    input: 'weight'
+    input: 'bias'
+    input: 'transposed'
+    attribute: 'strides'
+    attribute: 'pads'
+    attribute: 'dilations'
+    Conv(input, weight, bias, dilations=$dilations, group=$groups, pads=$pads, strides=$strides) -> result_7
+      Identity(result_7) -> result_11
+    output: name='result_11' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv1_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'arg0'
+    input: 'conv1.weight'
+    input: 'conv1.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx|folded_0|folded_0[pkg.onnxscript.torch_lib](arg0, conv1.weight, conv1.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution
+    output: name='convolution' type=? shape=?
+    ----- function name=aten_relu|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=Rank|folded_2|folded_0 domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_max_pool_with_indices_onnx|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    attribute: 'kernel_size'
+    attribute: 'stride'
+    attribute: 'padding'
+    attribute: 'dilation'
+    attribute: 'ceil_mode'
+    attribute: 'unbatched_rank'
+    attribute: 'n_dims_one'
+    attribute: 'n_dims_zero'
+    attribute: 'n_dims_axes'
+    Constant(value_int=$unbatched_rank) -> unbatched_rank
+    Rank|folded_2|folded_0[pkg.onnxscript.torch_lib.common](self) -> tmp
+      CastLike(unbatched_rank, tmp) -> unbatched_rank_cast
+      Equal(tmp, unbatched_rank_cast) -> self_rank_is_unbatched_rank
+        If(self_rank_is_unbatched_rank, then_branch=G13, else_branch=G14) -> self_2
+          MaxPool(self_2, ceil_mode=$ceil_mode, dilations=$dilation, kernel_shape=$kernel_size, pads=$padding, strides=$stride) -> pool_result, indices
+          MaxPool(self_2, dilations=$dilation, kernel_shape=$n_dims_one, strides=$n_dims_one) -> _, flatten_indices
+    Constant(value_ints=$n_dims_one) -> ends
+    Constant(value_ints=$n_dims_zero) -> starts
+    Constant(value_ints=$n_dims_axes) -> axes
+      Slice(flatten_indices, starts, ends, axes) -> delta
+        Sub(indices, delta) -> indices_3
+    If(self_rank_is_unbatched_rank, then_branch=G15, else_branch=G16) -> indices_10, pool_result_11
+    output: name='pool_result_11' type=? shape=?
+    output: name='indices_10' type=? shape=?
+    ----- function name=Rank|folded_3|folded_0 domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_convolution_onnx|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: ConvXd with attributes pre-computed to fit the ONNX spec.
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'input'
+    input: 'weight'
+    input: 'bias'
+    input: 'transposed'
+    attribute: 'strides'
+    attribute: 'pads'
+    attribute: 'dilations'
+    Constant(value=4) -> tmp_0
+    Rank|folded_3|folded_0[pkg.onnxscript.torch_lib.common](input) -> tmp
+      Equal(tmp, tmp_0) -> tmp_1
+        Not(tmp_1) -> no_batch
+          If(no_batch, then_branch=G17, else_branch=G18) -> input_5
+            Conv(input_5, weight, bias, dilations=$dilations, group=$groups, pads=$pads, strides=$strides) -> result_7
+          If(no_batch, then_branch=G19, else_branch=G20) -> result_11
+    output: name='result_11' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv2_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'getitem'
+    input: 'conv2.weight'
+    input: 'conv2.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx|folded_1|folded_0[pkg.onnxscript.torch_lib](getitem, conv2.weight, conv2.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution_1
+    output: name='convolution_1' type=? shape=?
+    ----- function name=aten_relu|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=Rank|folded_5|folded_0 domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_max_pool_with_indices_onnx|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    attribute: 'kernel_size'
+    attribute: 'stride'
+    attribute: 'padding'
+    attribute: 'dilation'
+    attribute: 'ceil_mode'
+    attribute: 'unbatched_rank'
+    attribute: 'n_dims_one'
+    attribute: 'n_dims_zero'
+    attribute: 'n_dims_axes'
+    Constant(value_int=$unbatched_rank) -> unbatched_rank
+    Rank|folded_5|folded_0[pkg.onnxscript.torch_lib.common](self) -> tmp
+      CastLike(unbatched_rank, tmp) -> unbatched_rank_cast
+      Equal(tmp, unbatched_rank_cast) -> self_rank_is_unbatched_rank
+        If(self_rank_is_unbatched_rank, then_branch=G21, else_branch=G22) -> self_2
+          MaxPool(self_2, ceil_mode=$ceil_mode, dilations=$dilation, kernel_shape=$kernel_size, pads=$padding, strides=$stride) -> pool_result, indices
+          MaxPool(self_2, dilations=$dilation, kernel_shape=$n_dims_one, strides=$n_dims_one) -> _, flatten_indices
+    Constant(value_ints=$n_dims_one) -> ends
+    Constant(value_ints=$n_dims_zero) -> starts
+    Constant(value_ints=$n_dims_axes) -> axes
+      Slice(flatten_indices, starts, ends, axes) -> delta
+        Sub(indices, delta) -> indices_3
+    If(self_rank_is_unbatched_rank, then_branch=G23, else_branch=G24) -> indices_10, pool_result_11
+    output: name='pool_result_11' type=? shape=?
+    output: name='indices_10' type=? shape=?
+    ----- function name=aten_view|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: view(Tensor(a) self, SymInt[] size) -> Tensor(a)
+    opset: domain='' version=18
+    input: 'self'
+    input: 'size'
+    Constant(value=[1, 13456]) -> size_0
+      Reshape(self, size_0) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=aten_t|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: t(Tensor(a) self) -> Tensor(a)
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    Transpose(self, perm=[1,0]) -> result_1
+    output: name='result_1' type=? shape=?
+    ----- function name=aten_addmm|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc1_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'view'
+    input: 'fc1.weight'
+    input: 'fc1.bias'
+    aten_t|folded_0|folded_0[pkg.onnxscript.torch_lib](fc1.weight) -> t
+      aten_addmm|folded_0|folded_0[pkg.onnxscript.torch_lib](fc1.bias, view, t, alpha=1.00, beta=1.00) -> addmm
+    output: name='addmm' type=? shape=?
+    ----- function name=aten_relu|folded_2|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=aten_addmm|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc2_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_2'
+    input: 'fc2.weight'
+    input: 'fc2.bias'
+    Constant(value=[[0.021504...) -> t_1
+      aten_addmm|folded_1|folded_0[pkg.onnxscript.torch_lib](fc2.bias, relu_2, t_1, alpha=1.00, beta=1.00) -> addmm_1
+    output: name='addmm_1' type=? shape=?
+    ----- function name=aten_relu|folded_3|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=aten_addmm|folded_2|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc3_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_3'
+    input: 'fc3.weight'
+    input: 'fc3.bias'
+    Constant(value=[[0.000341...) -> t_2
+      aten_addmm|folded_2|folded_0[pkg.onnxscript.torch_lib](fc3.bias, relu_3, t_2, alpha=1.00, beta=1.00) -> addmm_2
+    output: name='addmm_2' type=? shape=?
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 407-409
+
+dynamo
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 409-414
+
+.. code-block:: Python
+
+
+    model = "ort-plot_torch_export_dynamo-cpu-aot1.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    opset: domain='pkg.torch.2.1.1+cu118' version=1
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='ai.onnx.ml' version=4
+    opset: domain='ai.onnx.training' version=1
+    opset: domain='ai.onnx.preview.training' version=1
+    opset: domain='com.microsoft' version=1
+    opset: domain='com.microsoft.experimental' version=1
+    opset: domain='com.microsoft.nchwc' version=1
+    opset: domain='org.pytorch.aten' version=1
+    input: name='arg0' type=dtype('float32') shape=[1, 1, 128, 128]
     init: name='conv1.weight' type=dtype('float32') shape=(128, 1, 5, 5)
     init: name='conv1.bias' type=dtype('float32') shape=(128,)
     init: name='conv2.weight' type=dtype('float32') shape=(16, 128, 5, 5)
@@ -1113,23 +1385,250 @@ Show the interesting models
     init: name='fc2.bias' type=dtype('float32') shape=(128,)
     init: name='fc3.weight' type=dtype('float32') shape=(10, 128)
     init: name='fc3.bias' type=dtype('float32') shape=(10,)
-    FusedConv[com.microsoft](input, conv1.weight, conv1.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> /Relu_output_0
-      MaxPool(/Relu_output_0, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> /MaxPool_output_0
-        FusedConv[com.microsoft](/MaxPool_output_0, conv2.weight, conv2.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> /Relu_1_output_0
-          MaxPool(/Relu_1_output_0, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> /MaxPool_1_output_0
-            Flatten(/MaxPool_1_output_0, axis=1) -> /Flatten_output_0
-              Gemm(/Flatten_output_0, fc1.weight, fc1.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> /fc1/Gemm_output_0
-                Relu(/fc1/Gemm_output_0) -> /Relu_2_output_0
-                  Gemm(/Relu_2_output_0, fc2.weight, fc2.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> /fc2/Gemm_output_0
-                    Relu(/fc2/Gemm_output_0) -> /Relu_3_output_0
-                      Gemm(/Relu_3_output_0, fc3.weight, fc3.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> 22
-    output: name='22' type=dtype('float32') shape=[1, 10]
-    skip2 ort-plot_torch_export_dynamo-cuda-aot0.onnx
-    skip2 ort-plot_torch_export_dynopt-cpu-aot0.onnx
+    init: name='ortshared_7_1_2_0_token_8' type=dtype('int64') shape=(2,) -- array([    1, 13456])
+    init: name='_inlfunc_torch_nn_modules_conv_Conv2d_conv1_1__val_3' type=dtype('bool') shape=() -- array([False])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc_torch_nn_modules_conv_Conv2d_conv2_1__val_3' type=dtype('bool') shape=() -- array([False])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc_aten_t_int64_2' type=dtype('int64') shape=() -- array([2])
+    init: name='_inlfunc_aten_t_token_16_int64_2' type=dtype('int64') shape=() -- array([2])
+    init: name='_inlfunc_aten_t_token_18_int64_2' type=dtype('int64') shape=() -- array([2])
+    Cast(_inlfunc_aten_t_int64_2, to=7) -> _inlfunc_aten_t_int64_2_cast
+    Shape(fc1.weight, start=0) -> _inlfunc_Rank_token_24_tmp
+      Size(_inlfunc_Rank_token_24_tmp) -> _inlfunc_aten_t_rank
+      Equal(_inlfunc_aten_t_rank, _inlfunc_aten_t_int64_2_cast) -> _inlfunc_aten_t_cond
+        If(_inlfunc_aten_t_cond, else_branch=G1, then_branch=G2) -> _inlfunc_torch_nn_modules_linear_Linear_fc1_1_t
+    Cast(ortshared_7_1_2_0_token_8, to=7) -> _inlfunc_aten_view_size_0
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank_cast
+    Shape(conv2.weight, start=0) -> _inlfunc_Rank_token_23_tmp
+      Size(_inlfunc_Rank_token_23_tmp) -> _inlfunc__aten_convolution_onnx_token_13_tmp_0
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank_cast
+    Shape(conv1.weight, start=0) -> _inlfunc_Rank_token_21_tmp
+      Size(_inlfunc_Rank_token_21_tmp) -> _inlfunc__aten_convolution_onnx_tmp_0
+    Shape(arg0, start=0) -> _inlfunc_Rank_token_20_tmp
+      Size(_inlfunc_Rank_token_20_tmp) -> _inlfunc__aten_convolution_onnx_tmp
+        Equal(_inlfunc__aten_convolution_onnx_tmp, _inlfunc__aten_convolution_onnx_tmp_0) -> _inlfunc__aten_convolution_onnx_tmp_1
+          Not(_inlfunc__aten_convolution_onnx_tmp_1) -> _inlfunc__aten_convolution_onnx_no_batch
+            If(_inlfunc__aten_convolution_onnx_no_batch, else_branch=G3, then_branch=G4) -> _inlfunc__aten_convolution_onnx_input_5
+    If(_inlfunc_torch_nn_modules_conv_Conv2d_conv1_1__val_3, else_branch=G5, then_branch=G6) -> _inlfunc__aten_convolution_onnx_result_7
+    If(_inlfunc__aten_convolution_onnx_no_batch, else_branch=G7, then_branch=G8) -> conv1_1
+      Relu(conv1_1) -> relu
+        Shape(relu, start=0) -> _inlfunc_Rank_tmp
+          Size(_inlfunc_Rank_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx_tmp
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx_tmp, _inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank
+        If(_inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank, else_branch=G9, then_branch=G10) -> _inlfunc__aten_max_pool_with_indices_onnx_self_2
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx__, _inlfunc__aten_max_pool_with_indices_onnx_flatten_indices
+            Slice(_inlfunc__aten_max_pool_with_indices_onnx_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx_starts, _inlfunc__aten_max_pool_with_indices_onnx_ends, _inlfunc__aten_max_pool_with_indices_onnx_axes) -> _inlfunc__aten_max_pool_with_indices_onnx_delta
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx_pool_result, _inlfunc__aten_max_pool_with_indices_onnx_indices
+            Sub(_inlfunc__aten_max_pool_with_indices_onnx_indices, _inlfunc__aten_max_pool_with_indices_onnx_delta) -> _inlfunc__aten_max_pool_with_indices_onnx_indices_3
+        If(_inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank, else_branch=G11, then_branch=G12) -> max_pool2d_with_indices_1.1, max_pool2d_with_indices
+          Shape(max_pool2d_with_indices, start=0) -> _inlfunc_Rank_token_22_tmp
+            Size(_inlfunc_Rank_token_22_tmp) -> _inlfunc__aten_convolution_onnx_token_13_tmp
+        Equal(_inlfunc__aten_convolution_onnx_token_13_tmp, _inlfunc__aten_convolution_onnx_token_13_tmp_0) -> _inlfunc__aten_convolution_onnx_token_13_tmp_1
+          Not(_inlfunc__aten_convolution_onnx_token_13_tmp_1) -> _inlfunc__aten_convolution_onnx_token_13_no_batch
+            If(_inlfunc__aten_convolution_onnx_token_13_no_batch, else_branch=G13, then_branch=G14) -> _inlfunc__aten_convolution_onnx_token_13_input_5
+    If(_inlfunc_torch_nn_modules_conv_Conv2d_conv2_1__val_3, else_branch=G15, then_branch=G16) -> _inlfunc__aten_convolution_onnx_token_13_result_7
+    If(_inlfunc__aten_convolution_onnx_token_13_no_batch, else_branch=G17, then_branch=G18) -> conv2_1
+      Relu(conv2_1) -> relu_1
+        Shape(relu_1, start=0) -> _inlfunc_Rank_token_14_tmp
+          Size(_inlfunc_Rank_token_14_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_tmp
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx_token_10_tmp, _inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank
+        If(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank, else_branch=G19, then_branch=G20) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_self_2
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10__, _inlfunc__aten_max_pool_with_indices_onnx_token_10_flatten_indices
+            Slice(_inlfunc__aten_max_pool_with_indices_onnx_token_10_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx_token_10_starts, _inlfunc__aten_max_pool_with_indices_onnx_token_10_ends, _inlfunc__aten_max_pool_with_indices_onnx_token_10_axes) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_delta
+          MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_pool_result, _inlfunc__aten_max_pool_with_indices_onnx_token_10_indices
+            Sub(_inlfunc__aten_max_pool_with_indices_onnx_token_10_indices, _inlfunc__aten_max_pool_with_indices_onnx_token_10_delta) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_indices_3
+        If(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank, else_branch=G21, then_branch=G22) -> max_pool2d_with_indices_1_1, max_pool2d_with_indices_1
+      Reshape(max_pool2d_with_indices_1, _inlfunc_aten_view_size_0, allowzero=0) -> view
+        FusedGemm[com.microsoft](view, _inlfunc_torch_nn_modules_linear_Linear_fc1_1_t, fc1.bias, activation=b'Relu', transB=0, transA=0, alpha=1.00, beta=1.00) -> relu_2
+    Cast(_inlfunc_aten_t_token_16_int64_2, to=7) -> _inlfunc_aten_t_token_16_int64_2_cast
+    Shape(fc2.weight, start=0) -> _inlfunc_Rank_token_26_tmp
+      Size(_inlfunc_Rank_token_26_tmp) -> _inlfunc_aten_t_token_16_rank
+      Equal(_inlfunc_aten_t_token_16_rank, _inlfunc_aten_t_token_16_int64_2_cast) -> _inlfunc_aten_t_token_16_cond
+        If(_inlfunc_aten_t_token_16_cond, else_branch=G23, then_branch=G24) -> _inlfunc_torch_nn_modules_linear_Linear_fc2_1_t_1
+          FusedGemm[com.microsoft](relu_2, _inlfunc_torch_nn_modules_linear_Linear_fc2_1_t_1, fc2.bias, activation=b'Relu', transB=0, transA=0, alpha=1.00, beta=1.00) -> relu_3
+    Cast(_inlfunc_aten_t_token_18_int64_2, to=7) -> _inlfunc_aten_t_token_18_int64_2_cast
+    Shape(fc3.weight, start=0) -> _inlfunc_Rank_token_28_tmp
+      Size(_inlfunc_Rank_token_28_tmp) -> _inlfunc_aten_t_token_18_rank
+      Equal(_inlfunc_aten_t_token_18_rank, _inlfunc_aten_t_token_18_int64_2_cast) -> _inlfunc_aten_t_token_18_cond
+        If(_inlfunc_aten_t_token_18_cond, else_branch=G25, then_branch=G26) -> _inlfunc_torch_nn_modules_linear_Linear_fc3_1_t_2
+          Gemm(relu_3, _inlfunc_torch_nn_modules_linear_Linear_fc3_1_t_2, fc3.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc3_1
+    output: name='fc3_1' type=dtype('float32') shape=[1, 10]
+    ----- function name=_aten_convolution_onnx domain=pkg.onnxscript.torch_lib
+    ----- doc_string: ConvXd with attributes pre-computed to fit the ONNX spec.
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'input'
+    input: 'weight'
+    input: 'bias'
+    input: 'transposed'
+    attribute: 'strides'
+    attribute: 'pads'
+    attribute: 'dilations'
+    Rank[pkg.onnxscript.torch_lib.common](input) -> tmp
+    Rank[pkg.onnxscript.torch_lib.common](weight) -> tmp_0
+      Equal(tmp, tmp_0) -> tmp_1
+        Not(tmp_1) -> no_batch
+          If(no_batch, then_branch=G27, else_branch=G28) -> input_5
+    If(transposed, then_branch=G29, else_branch=G30) -> result_7
+    If(no_batch, then_branch=G31, else_branch=G32) -> result_11
+    output: name='result_11' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv1_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'arg0'
+    input: 'conv1.weight'
+    input: 'conv1.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx[pkg.onnxscript.torch_lib](arg0, conv1.weight, conv1.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution
+    output: name='convolution' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv2_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'getitem'
+    input: 'conv2.weight'
+    input: 'conv2.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx[pkg.onnxscript.torch_lib](getitem, conv2.weight, conv2.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution_1
+    output: name='convolution_1' type=? shape=?
+    ----- function name=aten_t domain=pkg.onnxscript.torch_lib
+    ----- doc_string: t(Tensor(a) self) -> Tensor(a)
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    Constant(value=2) -> int64_2
+    Rank[pkg.onnxscript.torch_lib.common](self) -> rank
+      CastLike(int64_2, rank) -> int64_2_cast
+      Equal(rank, int64_2_cast) -> cond
+        If(cond, then_branch=G28, else_branch=G33) -> result_1
+    output: name='result_1' type=? shape=?
+    ----- function name=aten_addmm domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc1_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'view'
+    input: 'fc1.weight'
+    input: 'fc1.bias'
+    aten_t[pkg.onnxscript.torch_lib](fc1.weight) -> t
+      aten_addmm[pkg.onnxscript.torch_lib](fc1.bias, view, t, alpha=1.00, beta=1.00) -> addmm
+    output: name='addmm' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc2_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_2'
+    input: 'fc2.weight'
+    input: 'fc2.bias'
+    aten_t[pkg.onnxscript.torch_lib](fc2.weight) -> t_1
+      aten_addmm[pkg.onnxscript.torch_lib](fc2.bias, relu_2, t_1, alpha=1.00, beta=1.00) -> addmm_1
+    output: name='addmm_1' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc3_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_3'
+    input: 'fc3.weight'
+    input: 'fc3.bias'
+    aten_t[pkg.onnxscript.torch_lib](fc3.weight) -> t_2
+      aten_addmm[pkg.onnxscript.torch_lib](fc3.bias, relu_3, t_2, alpha=1.00, beta=1.00) -> addmm_2
+    output: name='addmm_2' type=? shape=?
+    ----- function name=aten_relu domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_max_pool_with_indices_onnx domain=pkg.onnxscript.torch_lib
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    attribute: 'kernel_size'
+    attribute: 'stride'
+    attribute: 'padding'
+    attribute: 'dilation'
+    attribute: 'ceil_mode'
+    attribute: 'unbatched_rank'
+    attribute: 'n_dims_one'
+    attribute: 'n_dims_zero'
+    attribute: 'n_dims_axes'
+    Constant(value_int=$unbatched_rank) -> unbatched_rank
+    Rank[pkg.onnxscript.torch_lib.common](self) -> tmp
+      CastLike(unbatched_rank, tmp) -> unbatched_rank_cast
+      Equal(tmp, unbatched_rank_cast) -> self_rank_is_unbatched_rank
+        If(self_rank_is_unbatched_rank, then_branch=G34, else_branch=G35) -> self_2
+          MaxPool(self_2, ceil_mode=$ceil_mode, dilations=$dilation, kernel_shape=$kernel_size, pads=$padding, strides=$stride) -> pool_result, indices
+          MaxPool(self_2, dilations=$dilation, kernel_shape=$n_dims_one, strides=$n_dims_one) -> _, flatten_indices
+    Constant(value_ints=$n_dims_one) -> ends
+    Constant(value_ints=$n_dims_zero) -> starts
+    Constant(value_ints=$n_dims_axes) -> axes
+      Slice(flatten_indices, starts, ends, axes) -> delta
+        Sub(indices, delta) -> indices_3
+    If(self_rank_is_unbatched_rank, then_branch=G36, else_branch=G37) -> indices_10, pool_result_11
+    output: name='pool_result_11' type=? shape=?
+    output: name='indices_10' type=? shape=?
+    ----- function name=aten_view domain=pkg.onnxscript.torch_lib
+    ----- doc_string: view(Tensor(a) self, SymInt[] size) -> Tensor(a)
+    opset: domain='' version=18
+    input: 'self'
+    input: 'size'
+    Cast(size, to=7) -> size_0
+      Reshape(self, size_0) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=Rank domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=IsScalar domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Return whether the input has rank 0, or is a scalar.
+    opset: domain='' version=18
+    input: 'input'
+    Constant(value_int=0) -> tmp_1
+    Shape(input) -> tmp
+      Size(tmp) -> tmp_0
+      Equal(tmp_0, tmp_1) -> return_val
+    output: name='return_val' type=? shape=?
 
-    #################################################
-    ort-plot_torch_export_cus_p2-cuda-aot0.onnx
-    #################################################
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 415-420
+
+Show the interesting models for CUDA
++++++++++++++++++++++++++++++++++++
+
+script
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 420-424
+
+.. code-block:: Python
+
+
+    model = "ort-plot_torch_export_cus_p2-cuda-aot0.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
     opset: domain='' version=18
     opset: domain='ai.onnx.ml' version=4
     opset: domain='ai.onnx.training' version=1
@@ -1161,13 +1660,32 @@ Show the interesting models
                     Relu(addmm_1) -> relu_3
                       Gemm(relu_3, permute_2, arg9_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> output
     output: name='output' type=dtype('float32') shape=[1, 10]
-    skip2 ort-plot_torch_export_dynopt-cuda-aot0.onnx
-    skip3 ort-plot_torch_export_dynamo-cpu-aot1.onnx
 
-    #################################################
-    ort-plot_torch_export_script-cuda-aot1.onnx
-    #################################################
-    opset: domain='' version=17
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 425-427
+
+cus_p2
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 427-431
+
+.. code-block:: Python
+
+
+    model = "ort-plot_torch_export_cus_p2-cuda-aot0.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=18
     opset: domain='ai.onnx.ml' version=4
     opset: domain='ai.onnx.training' version=1
     opset: domain='ai.onnx.preview.training' version=1
@@ -1176,6 +1694,384 @@ Show the interesting models
     opset: domain='com.microsoft.nchwc' version=1
     opset: domain='org.pytorch.aten' version=1
     input: name='input' type=dtype('float32') shape=[1, 1, 128, 128]
+    init: name='arg0_1' type=dtype('float32') shape=(128, 1, 5, 5)
+    init: name='arg1_1' type=dtype('float32') shape=(128,)
+    init: name='arg2_1' type=dtype('float32') shape=(16, 128, 5, 5)
+    init: name='arg3_1' type=dtype('float32') shape=(16,)
+    init: name='arg5_1' type=dtype('float32') shape=(1024,)
+    init: name='arg7_1' type=dtype('float32') shape=(128,)
+    init: name='arg9_1' type=dtype('float32') shape=(10,)
+    init: name='ortshared_7_1_2_0_token_8' type=dtype('int64') shape=(2,) -- array([    1, 13456])
+    init: name='permute' type=dtype('float32') shape=(13456, 1024)
+    init: name='permute_1' type=dtype('float32') shape=(1024, 128)
+    init: name='permute_2' type=dtype('float32') shape=(128, 10)
+    FusedConv[com.microsoft](input, arg0_1, arg1_1, activation=b'Relu', dilations=[1,1], group=1, strides=[1,1], pads=[0,0,0,0], auto_pad=b'NOTSET') -> relu
+      MaxPool(relu, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _onx_maxpool0, _onx_maxpool1
+        FusedConv[com.microsoft](_onx_maxpool0, arg2_1, arg3_1, activation=b'Relu', dilations=[1,1], group=1, strides=[1,1], pads=[0,0,0,0], auto_pad=b'NOTSET') -> relu_1
+          MaxPool(relu_1, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _onx_maxpool03, _onx_maxpool13
+            Reshape(_onx_maxpool03, ortshared_7_1_2_0_token_8, allowzero=0) -> view
+              Gemm(view, permute, arg5_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> addmm
+                Relu(addmm) -> relu_2
+                  Gemm(relu_2, permute_1, arg7_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> addmm_1
+                    Relu(addmm_1) -> relu_3
+                      Gemm(relu_3, permute_2, arg9_1, transB=0, transA=0, alpha=1.00, beta=1.00) -> output
+    output: name='output' type=dtype('float32') shape=[1, 10]
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 432-434
+
+dynopt
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 434-438
+
+.. code-block:: Python
+
+
+    model = "ort-plot_torch_export_dynopt-cuda-aot1.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    opset: domain='pkg.torch.2.1.1+cu118' version=1
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='ai.onnx.ml' version=4
+    opset: domain='ai.onnx.training' version=1
+    opset: domain='ai.onnx.preview.training' version=1
+    opset: domain='com.microsoft' version=1
+    opset: domain='com.microsoft.experimental' version=1
+    opset: domain='com.microsoft.nchwc' version=1
+    opset: domain='org.pytorch.aten' version=1
+    input: name='arg0' type=dtype('float32') shape=[1, 1, 128, 128]
+    init: name='conv1.weight' type=dtype('float32') shape=(128, 1, 5, 5)
+    init: name='conv1.bias' type=dtype('float32') shape=(128,)
+    init: name='conv2.weight' type=dtype('float32') shape=(16, 128, 5, 5)
+    init: name='conv2.bias' type=dtype('float32') shape=(16,)
+    init: name='fc1.weight' type=dtype('float32') shape=(1024, 13456)
+    init: name='fc1.bias' type=dtype('float32') shape=(1024,)
+    init: name='_inlfunc_torch_nn_modules_linear_Linear_fc3_1|folded_0|folded_0_t_2' type=dtype('float32') shape=(128, 10)
+    init: name='fc2.bias' type=dtype('float32') shape=(128,)
+    init: name='_inlfunc_torch_nn_modules_linear_Linear_fc2_1|folded_0|folded_0_t_1' type=dtype('float32') shape=(1024, 128)
+    init: name='fc3.bias' type=dtype('float32') shape=(10,)
+    init: name='_inlfunc_aten_view|folded_0|folded_0_size_0' type=dtype('int64') shape=(2,) -- array([    1, 13456])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_0' type=dtype('int64') shape=() -- array([4])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank_cast
+    Transpose(fc1.weight, perm=[1,0]) -> _inlfunc_torch_nn_modules_linear_Linear_fc1_1|folded_0|folded_0_t
+    Conv(arg0, conv1.weight, conv1.bias, auto_pad=b'NOTSET', pads=[0,0,0,0], strides=[1,1], group=1, dilations=[1,1]) -> _inlfunc__aten_convolution_onnx|folded_0|folded_0_result_7
+      Identity(_inlfunc__aten_convolution_onnx|folded_0|folded_0_result_7) -> conv1_1
+        Relu(conv1_1) -> relu
+          Shape(relu, start=0) -> _inlfunc_Rank|folded_2|folded_0_tmp
+            Size(_inlfunc_Rank|folded_2|folded_0_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_tmp
+              MemcpyFromHost(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_tmp_CUDAExecutionProvider
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_tmp_CUDAExecutionProvider, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank_CUDAExecutionProvider
+        MemcpyToHost(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank_CUDAExecutionProvider) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank
+          If(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank, else_branch=G1, then_branch=G2) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_2
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0__, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_flatten_indices
+              Slice(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_starts, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_ends, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_axes) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_delta
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_pool_result, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_indices
+              Sub(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_delta) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_indices_3
+          If(_inlfunc__aten_max_pool_with_indices_onnx|folded_0|folded_0_self_rank_is_unbatched_rank, else_branch=G3, then_branch=G4) -> max_pool2d_with_indices_1.1, max_pool2d_with_indices
+            Shape(max_pool2d_with_indices, start=0) -> _inlfunc_Rank|folded_3|folded_0_tmp
+              Size(_inlfunc_Rank|folded_3|folded_0_tmp) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp
+                MemcpyFromHost(_inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_CUDAExecutionProvider
+                  Equal(_inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_CUDAExecutionProvider, _inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_0) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_1
+                    Not(_inlfunc__aten_convolution_onnx|folded_1|folded_0_tmp_1) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch_CUDAExecutionProvider
+                      MemcpyToHost(_inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch_CUDAExecutionProvider) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch
+                        If(_inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch, else_branch=G5, then_branch=G6) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_input_5
+                          Conv(_inlfunc__aten_convolution_onnx|folded_1|folded_0_input_5, conv2.weight, conv2.bias, auto_pad=b'NOTSET', pads=[0,0,0,0], strides=[1,1], group=1, dilations=[1,1]) -> _inlfunc__aten_convolution_onnx|folded_1|folded_0_result_7
+                        If(_inlfunc__aten_convolution_onnx|folded_1|folded_0_no_batch, else_branch=G7, then_branch=G8) -> conv2_1
+                          Relu(conv2_1) -> relu_1
+                            Shape(relu_1, start=0) -> _inlfunc_Rank|folded_5|folded_0_tmp
+                              Size(_inlfunc_Rank|folded_5|folded_0_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_tmp
+                                MemcpyFromHost(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_tmp_CUDAExecutionProvider
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank_cast
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_tmp_CUDAExecutionProvider, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank_CUDAExecutionProvider
+        MemcpyToHost(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank_CUDAExecutionProvider) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank
+          If(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank, else_branch=G9, then_branch=G10) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_2
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0__, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_flatten_indices
+              Slice(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_starts, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_ends, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_axes) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_delta
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_pool_result, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_indices
+              Sub(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_indices, _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_delta) -> _inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_indices_3
+          If(_inlfunc__aten_max_pool_with_indices_onnx|folded_1|folded_0_self_rank_is_unbatched_rank, else_branch=G11, then_branch=G12) -> max_pool2d_with_indices_1_1, max_pool2d_with_indices_1
+            Reshape(max_pool2d_with_indices_1, _inlfunc_aten_view|folded_0|folded_0_size_0, allowzero=0) -> view
+      Gemm(view, _inlfunc_torch_nn_modules_linear_Linear_fc1_1|folded_0|folded_0_t, fc1.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc1_1
+        Relu(fc1_1) -> relu_2
+          Gemm(relu_2, _inlfunc_torch_nn_modules_linear_Linear_fc2_1|folded_0|folded_0_t_1, fc2.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc2_1
+            Relu(fc2_1) -> relu_3
+              Gemm(relu_3, _inlfunc_torch_nn_modules_linear_Linear_fc3_1|folded_0|folded_0_t_2, fc3.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc3_1
+    output: name='fc3_1' type=dtype('float32') shape=[1, 10]
+    ----- function name=_aten_convolution_onnx|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: ConvXd with attributes pre-computed to fit the ONNX spec.
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'input'
+    input: 'weight'
+    input: 'bias'
+    input: 'transposed'
+    attribute: 'strides'
+    attribute: 'pads'
+    attribute: 'dilations'
+    Conv(input, weight, bias, dilations=$dilations, group=$groups, pads=$pads, strides=$strides) -> result_7
+      Identity(result_7) -> result_11
+    output: name='result_11' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv1_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'arg0'
+    input: 'conv1.weight'
+    input: 'conv1.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx|folded_0|folded_0[pkg.onnxscript.torch_lib](arg0, conv1.weight, conv1.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution
+    output: name='convolution' type=? shape=?
+    ----- function name=aten_relu|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=Rank|folded_2|folded_0 domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_max_pool_with_indices_onnx|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    attribute: 'kernel_size'
+    attribute: 'stride'
+    attribute: 'padding'
+    attribute: 'dilation'
+    attribute: 'ceil_mode'
+    attribute: 'unbatched_rank'
+    attribute: 'n_dims_one'
+    attribute: 'n_dims_zero'
+    attribute: 'n_dims_axes'
+    Constant(value_int=$unbatched_rank) -> unbatched_rank
+    Rank|folded_2|folded_0[pkg.onnxscript.torch_lib.common](self) -> tmp
+      CastLike(unbatched_rank, tmp) -> unbatched_rank_cast
+      Equal(tmp, unbatched_rank_cast) -> self_rank_is_unbatched_rank
+        If(self_rank_is_unbatched_rank, then_branch=G13, else_branch=G14) -> self_2
+          MaxPool(self_2, ceil_mode=$ceil_mode, dilations=$dilation, kernel_shape=$kernel_size, pads=$padding, strides=$stride) -> pool_result, indices
+          MaxPool(self_2, dilations=$dilation, kernel_shape=$n_dims_one, strides=$n_dims_one) -> _, flatten_indices
+    Constant(value_ints=$n_dims_one) -> ends
+    Constant(value_ints=$n_dims_zero) -> starts
+    Constant(value_ints=$n_dims_axes) -> axes
+      Slice(flatten_indices, starts, ends, axes) -> delta
+        Sub(indices, delta) -> indices_3
+    If(self_rank_is_unbatched_rank, then_branch=G15, else_branch=G16) -> indices_10, pool_result_11
+    output: name='pool_result_11' type=? shape=?
+    output: name='indices_10' type=? shape=?
+    ----- function name=Rank|folded_3|folded_0 domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_convolution_onnx|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: ConvXd with attributes pre-computed to fit the ONNX spec.
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'input'
+    input: 'weight'
+    input: 'bias'
+    input: 'transposed'
+    attribute: 'strides'
+    attribute: 'pads'
+    attribute: 'dilations'
+    Constant(value=4) -> tmp_0
+    Rank|folded_3|folded_0[pkg.onnxscript.torch_lib.common](input) -> tmp
+      Equal(tmp, tmp_0) -> tmp_1
+        Not(tmp_1) -> no_batch
+          If(no_batch, then_branch=G17, else_branch=G18) -> input_5
+            Conv(input_5, weight, bias, dilations=$dilations, group=$groups, pads=$pads, strides=$strides) -> result_7
+          If(no_batch, then_branch=G19, else_branch=G20) -> result_11
+    output: name='result_11' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv2_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'getitem'
+    input: 'conv2.weight'
+    input: 'conv2.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx|folded_1|folded_0[pkg.onnxscript.torch_lib](getitem, conv2.weight, conv2.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution_1
+    output: name='convolution_1' type=? shape=?
+    ----- function name=aten_relu|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=Rank|folded_5|folded_0 domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_max_pool_with_indices_onnx|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    attribute: 'kernel_size'
+    attribute: 'stride'
+    attribute: 'padding'
+    attribute: 'dilation'
+    attribute: 'ceil_mode'
+    attribute: 'unbatched_rank'
+    attribute: 'n_dims_one'
+    attribute: 'n_dims_zero'
+    attribute: 'n_dims_axes'
+    Constant(value_int=$unbatched_rank) -> unbatched_rank
+    Rank|folded_5|folded_0[pkg.onnxscript.torch_lib.common](self) -> tmp
+      CastLike(unbatched_rank, tmp) -> unbatched_rank_cast
+      Equal(tmp, unbatched_rank_cast) -> self_rank_is_unbatched_rank
+        If(self_rank_is_unbatched_rank, then_branch=G21, else_branch=G22) -> self_2
+          MaxPool(self_2, ceil_mode=$ceil_mode, dilations=$dilation, kernel_shape=$kernel_size, pads=$padding, strides=$stride) -> pool_result, indices
+          MaxPool(self_2, dilations=$dilation, kernel_shape=$n_dims_one, strides=$n_dims_one) -> _, flatten_indices
+    Constant(value_ints=$n_dims_one) -> ends
+    Constant(value_ints=$n_dims_zero) -> starts
+    Constant(value_ints=$n_dims_axes) -> axes
+      Slice(flatten_indices, starts, ends, axes) -> delta
+        Sub(indices, delta) -> indices_3
+    If(self_rank_is_unbatched_rank, then_branch=G23, else_branch=G24) -> indices_10, pool_result_11
+    output: name='pool_result_11' type=? shape=?
+    output: name='indices_10' type=? shape=?
+    ----- function name=aten_view|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: view(Tensor(a) self, SymInt[] size) -> Tensor(a)
+    opset: domain='' version=18
+    input: 'self'
+    input: 'size'
+    Constant(value=[1, 13456]) -> size_0
+      Reshape(self, size_0) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=aten_t|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: t(Tensor(a) self) -> Tensor(a)
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    Transpose(self, perm=[1,0]) -> result_1
+    output: name='result_1' type=? shape=?
+    ----- function name=aten_addmm|folded_0|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc1_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'view'
+    input: 'fc1.weight'
+    input: 'fc1.bias'
+    aten_t|folded_0|folded_0[pkg.onnxscript.torch_lib](fc1.weight) -> t
+      aten_addmm|folded_0|folded_0[pkg.onnxscript.torch_lib](fc1.bias, view, t, alpha=1.00, beta=1.00) -> addmm
+    output: name='addmm' type=? shape=?
+    ----- function name=aten_relu|folded_2|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=aten_addmm|folded_1|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc2_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_2'
+    input: 'fc2.weight'
+    input: 'fc2.bias'
+    Constant(value=[[0.021504...) -> t_1
+      aten_addmm|folded_1|folded_0[pkg.onnxscript.torch_lib](fc2.bias, relu_2, t_1, alpha=1.00, beta=1.00) -> addmm_1
+    output: name='addmm_1' type=? shape=?
+    ----- function name=aten_relu|folded_3|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=aten_addmm|folded_2|folded_0 domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc3_1|folded_0|folded_0 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_3'
+    input: 'fc3.weight'
+    input: 'fc3.bias'
+    Constant(value=[[0.000341...) -> t_2
+      aten_addmm|folded_2|folded_0[pkg.onnxscript.torch_lib](fc3.bias, relu_3, t_2, alpha=1.00, beta=1.00) -> addmm_2
+    output: name='addmm_2' type=? shape=?
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 439-441
+
+dynamo
+~~~~~~
+
+.. GENERATED FROM PYTHON SOURCE LINES 441-444
+
+.. code-block:: Python
+
+
+    model = "ort-plot_torch_export_dynamo-cuda-aot1.onnx"
+    print(onnx_simple_text_plot(onnx.load(model)))
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    opset: domain='pkg.torch.2.1.1+cu118' version=1
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='ai.onnx.ml' version=4
+    opset: domain='ai.onnx.training' version=1
+    opset: domain='ai.onnx.preview.training' version=1
+    opset: domain='com.microsoft' version=1
+    opset: domain='com.microsoft.experimental' version=1
+    opset: domain='com.microsoft.nchwc' version=1
+    opset: domain='org.pytorch.aten' version=1
+    input: name='arg0' type=dtype('float32') shape=[1, 1, 128, 128]
     init: name='conv1.weight' type=dtype('float32') shape=(128, 1, 5, 5)
     init: name='conv1.bias' type=dtype('float32') shape=(128,)
     init: name='conv2.weight' type=dtype('float32') shape=(16, 128, 5, 5)
@@ -1186,52 +2082,241 @@ Show the interesting models
     init: name='fc2.bias' type=dtype('float32') shape=(128,)
     init: name='fc3.weight' type=dtype('float32') shape=(10, 128)
     init: name='fc3.bias' type=dtype('float32') shape=(10,)
-    FusedConv[com.microsoft](input, conv1.weight, conv1.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> /Relu_output_0
-      MaxPool(/Relu_output_0, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> /MaxPool_output_0
-        FusedConv[com.microsoft](/MaxPool_output_0, conv2.weight, conv2.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> /Relu_1_output_0
-          MaxPool(/Relu_1_output_0, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> /MaxPool_1_output_0
-            Flatten(/MaxPool_1_output_0, axis=1) -> /Flatten_output_0
-              Gemm(/Flatten_output_0, fc1.weight, fc1.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> /fc1/Gemm_output_0
-                Relu(/fc1/Gemm_output_0) -> /Relu_2_output_0
-                  Gemm(/Relu_2_output_0, fc2.weight, fc2.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> /fc2/Gemm_output_0
-                    Relu(/fc2/Gemm_output_0) -> /Relu_3_output_0
-                      Gemm(/Relu_3_output_0, fc3.weight, fc3.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> 22
-    output: name='22' type=dtype('float32') shape=[1, 10]
-    skip1 ort-plot_torch_export_cus_p0-cuda-aot1.onnx
-
-    #################################################
-    ort-plot_torch_export_script-cpu-aot1.onnx
-    #################################################
-    opset: domain='' version=17
-    opset: domain='ai.onnx.ml' version=4
-    opset: domain='ai.onnx.training' version=1
-    opset: domain='ai.onnx.preview.training' version=1
-    opset: domain='com.microsoft' version=1
-    opset: domain='com.microsoft.experimental' version=1
-    opset: domain='com.microsoft.nchwc' version=1
-    opset: domain='org.pytorch.aten' version=1
-    input: name='input' type=dtype('float32') shape=[1, 1, 128, 128]
-    init: name='reorder' type=dtype('float32') shape=(128, 1, 5, 5)
-    init: name='conv1.bias' type=dtype('float32') shape=(128,)
-    init: name='reorder_token_2' type=dtype('float32') shape=(16, 128, 5, 5)
-    init: name='conv2.bias' type=dtype('float32') shape=(16,)
-    init: name='fc1.weight' type=dtype('float32') shape=(1024, 13456)
-    init: name='fc1.bias' type=dtype('float32') shape=(1024,)
-    init: name='fc2.weight' type=dtype('float32') shape=(128, 1024)
-    init: name='fc2.bias' type=dtype('float32') shape=(128,)
-    init: name='fc3.weight' type=dtype('float32') shape=(10, 128)
-    init: name='fc3.bias' type=dtype('float32') shape=(10,)
-    Conv[com.microsoft.nchwc](input, reorder, conv1.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> reorder_token_0
-      MaxPool[com.microsoft.nchwc](reorder_token_0, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> reorder_token_1
-        Conv[com.microsoft.nchwc](reorder_token_1, reorder_token_2, conv2.bias, activation=b'Relu', auto_pad=b'NOTSET', dilations=[1,1], group=1, strides=[1,1], kernel_shape=[5,5], pads=[0,0,0,0]) -> reorder_token_3
-          MaxPool[com.microsoft.nchwc](reorder_token_3, storage_order=0, ceil_mode=0, kernel_shape=[2,2], pads=[0,0,0,0], auto_pad=b'NOTSET', strides=[2,2]) -> reorder_token_4
-            ReorderOutput[com.microsoft.nchwc](reorder_token_4, channels_last=0, channels=16) -> /MaxPool_1_output_0
-              Flatten(/MaxPool_1_output_0, axis=1) -> /Flatten_output_0
-                FusedGemm[com.microsoft](/Flatten_output_0, fc1.weight, fc1.bias, activation=b'Relu', alpha=1.00, beta=1.00, transA=0, transB=1) -> /Relu_2_output_0
-                  FusedGemm[com.microsoft](/Relu_2_output_0, fc2.weight, fc2.bias, activation=b'Relu', alpha=1.00, beta=1.00, transA=0, transB=1) -> /Relu_3_output_0
-                    Gemm(/Relu_3_output_0, fc3.weight, fc3.bias, alpha=1.00, beta=1.00, transA=0, transB=1) -> 22
-    output: name='22' type=dtype('float32') shape=[1, 10]
-    done.
+    init: name='ortshared_7_1_2_0_token_8' type=dtype('int64') shape=(2,) -- array([    1, 13456])
+    init: name='_inlfunc_torch_nn_modules_conv_Conv2d_conv1_1__val_3' type=dtype('bool') shape=() -- array([False])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc_torch_nn_modules_conv_Conv2d_conv2_1__val_3' type=dtype('bool') shape=() -- array([False])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank' type=dtype('int64') shape=() -- array([3])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_ends' type=dtype('int64') shape=(2,) -- array([1, 1])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_starts' type=dtype('int64') shape=(2,) -- array([0, 0])
+    init: name='_inlfunc__aten_max_pool_with_indices_onnx_token_10_axes' type=dtype('int64') shape=(2,) -- array([2, 3])
+    init: name='_inlfunc_aten_t_int64_2' type=dtype('int64') shape=() -- array([2])
+    init: name='_inlfunc_aten_t_token_16_int64_2' type=dtype('int64') shape=() -- array([2])
+    init: name='_inlfunc_aten_t_token_18_int64_2' type=dtype('int64') shape=() -- array([2])
+    Cast(_inlfunc_aten_t_token_18_int64_2, to=7) -> _inlfunc_aten_t_token_18_int64_2_cast
+    Shape(fc3.weight, start=0) -> _inlfunc_Rank_token_28_tmp
+      Size(_inlfunc_Rank_token_28_tmp) -> _inlfunc_aten_t_token_18_rank
+        MemcpyFromHost(_inlfunc_aten_t_token_18_rank) -> _inlfunc_aten_t_token_18_rank_CUDAExecutionProvider
+      Equal(_inlfunc_aten_t_token_18_rank_CUDAExecutionProvider, _inlfunc_aten_t_token_18_int64_2_cast) -> _inlfunc_aten_t_token_18_cond_CUDAExecutionProvider
+        MemcpyToHost(_inlfunc_aten_t_token_18_cond_CUDAExecutionProvider) -> _inlfunc_aten_t_token_18_cond
+          If(_inlfunc_aten_t_token_18_cond, else_branch=G1, then_branch=G2) -> _inlfunc_torch_nn_modules_linear_Linear_fc3_1_t_2
+    Shape(fc2.weight, start=0) -> _inlfunc_Rank_token_26_tmp
+      Size(_inlfunc_Rank_token_26_tmp) -> _inlfunc_aten_t_token_16_rank
+        MemcpyFromHost(_inlfunc_aten_t_token_16_rank) -> _inlfunc_aten_t_token_16_rank_CUDAExecutionProvider
+    Cast(_inlfunc_aten_t_token_16_int64_2, to=7) -> _inlfunc_aten_t_token_16_int64_2_cast
+      Equal(_inlfunc_aten_t_token_16_rank_CUDAExecutionProvider, _inlfunc_aten_t_token_16_int64_2_cast) -> _inlfunc_aten_t_token_16_cond_CUDAExecutionProvider
+        MemcpyToHost(_inlfunc_aten_t_token_16_cond_CUDAExecutionProvider) -> _inlfunc_aten_t_token_16_cond
+          If(_inlfunc_aten_t_token_16_cond, else_branch=G3, then_branch=G4) -> _inlfunc_torch_nn_modules_linear_Linear_fc2_1_t_1
+    Shape(fc1.weight, start=0) -> _inlfunc_Rank_token_24_tmp
+      Size(_inlfunc_Rank_token_24_tmp) -> _inlfunc_aten_t_rank
+        MemcpyFromHost(_inlfunc_aten_t_rank) -> _inlfunc_aten_t_rank_CUDAExecutionProvider
+    Cast(_inlfunc_aten_t_int64_2, to=7) -> _inlfunc_aten_t_int64_2_cast
+      Equal(_inlfunc_aten_t_rank_CUDAExecutionProvider, _inlfunc_aten_t_int64_2_cast) -> _inlfunc_aten_t_cond_CUDAExecutionProvider
+        MemcpyToHost(_inlfunc_aten_t_cond_CUDAExecutionProvider) -> _inlfunc_aten_t_cond
+          If(_inlfunc_aten_t_cond, else_branch=G5, then_branch=G6) -> _inlfunc_torch_nn_modules_linear_Linear_fc1_1_t
+    Cast(ortshared_7_1_2_0_token_8, to=7) -> _inlfunc_aten_view_size_0_CUDAExecutionProvider
+      MemcpyToHost(_inlfunc_aten_view_size_0_CUDAExecutionProvider) -> _inlfunc_aten_view_size_0
+    Shape(conv2.weight, start=0) -> _inlfunc_Rank_token_23_tmp
+      Size(_inlfunc_Rank_token_23_tmp) -> _inlfunc__aten_convolution_onnx_token_13_tmp_0
+        MemcpyFromHost(_inlfunc__aten_convolution_onnx_token_13_tmp_0) -> _inlfunc__aten_convolution_onnx_token_13_tmp_0_CUDAExecutionProvider
+    Shape(conv1.weight, start=0) -> _inlfunc_Rank_token_21_tmp
+      Size(_inlfunc_Rank_token_21_tmp) -> _inlfunc__aten_convolution_onnx_tmp_0
+        MemcpyFromHost(_inlfunc__aten_convolution_onnx_tmp_0) -> _inlfunc__aten_convolution_onnx_tmp_0_CUDAExecutionProvider
+    Shape(arg0, start=0) -> _inlfunc_Rank_token_20_tmp
+      Size(_inlfunc_Rank_token_20_tmp) -> _inlfunc__aten_convolution_onnx_tmp
+        MemcpyFromHost(_inlfunc__aten_convolution_onnx_tmp) -> _inlfunc__aten_convolution_onnx_tmp_CUDAExecutionProvider
+          Equal(_inlfunc__aten_convolution_onnx_tmp_CUDAExecutionProvider, _inlfunc__aten_convolution_onnx_tmp_0_CUDAExecutionProvider) -> _inlfunc__aten_convolution_onnx_tmp_1
+            Not(_inlfunc__aten_convolution_onnx_tmp_1) -> _inlfunc__aten_convolution_onnx_no_batch_CUDAExecutionProvider
+              MemcpyToHost(_inlfunc__aten_convolution_onnx_no_batch_CUDAExecutionProvider) -> _inlfunc__aten_convolution_onnx_no_batch
+                If(_inlfunc__aten_convolution_onnx_no_batch, else_branch=G7, then_branch=G8) -> _inlfunc__aten_convolution_onnx_input_5
+    If(_inlfunc_torch_nn_modules_conv_Conv2d_conv1_1__val_3, else_branch=G9, then_branch=G10) -> _inlfunc__aten_convolution_onnx_result_7
+    If(_inlfunc__aten_convolution_onnx_no_batch, else_branch=G11, then_branch=G12) -> conv1_1
+      Relu(conv1_1) -> relu
+        Shape(relu, start=0) -> _inlfunc_Rank_tmp
+          Size(_inlfunc_Rank_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx_tmp
+            MemcpyFromHost(_inlfunc__aten_max_pool_with_indices_onnx_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx_tmp_CUDAExecutionProvider
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank_cast
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx_tmp_CUDAExecutionProvider, _inlfunc__aten_max_pool_with_indices_onnx_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank_CUDAExecutionProvider
+        MemcpyToHost(_inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank_CUDAExecutionProvider) -> _inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank
+          If(_inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank, else_branch=G13, then_branch=G14) -> _inlfunc__aten_max_pool_with_indices_onnx_self_2
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx__, _inlfunc__aten_max_pool_with_indices_onnx_flatten_indices
+              Slice(_inlfunc__aten_max_pool_with_indices_onnx_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx_starts, _inlfunc__aten_max_pool_with_indices_onnx_ends, _inlfunc__aten_max_pool_with_indices_onnx_axes) -> _inlfunc__aten_max_pool_with_indices_onnx_delta
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx_pool_result, _inlfunc__aten_max_pool_with_indices_onnx_indices
+              Sub(_inlfunc__aten_max_pool_with_indices_onnx_indices, _inlfunc__aten_max_pool_with_indices_onnx_delta) -> _inlfunc__aten_max_pool_with_indices_onnx_indices_3
+          If(_inlfunc__aten_max_pool_with_indices_onnx_self_rank_is_unbatched_rank, else_branch=G15, then_branch=G16) -> max_pool2d_with_indices_1.1, max_pool2d_with_indices
+            Shape(max_pool2d_with_indices, start=0) -> _inlfunc_Rank_token_22_tmp
+              Size(_inlfunc_Rank_token_22_tmp) -> _inlfunc__aten_convolution_onnx_token_13_tmp
+                MemcpyFromHost(_inlfunc__aten_convolution_onnx_token_13_tmp) -> _inlfunc__aten_convolution_onnx_token_13_tmp_CUDAExecutionProvider
+          Equal(_inlfunc__aten_convolution_onnx_token_13_tmp_CUDAExecutionProvider, _inlfunc__aten_convolution_onnx_token_13_tmp_0_CUDAExecutionProvider) -> _inlfunc__aten_convolution_onnx_token_13_tmp_1
+            Not(_inlfunc__aten_convolution_onnx_token_13_tmp_1) -> _inlfunc__aten_convolution_onnx_token_13_no_batch_CUDAExecutionProvider
+              MemcpyToHost(_inlfunc__aten_convolution_onnx_token_13_no_batch_CUDAExecutionProvider) -> _inlfunc__aten_convolution_onnx_token_13_no_batch
+                If(_inlfunc__aten_convolution_onnx_token_13_no_batch, else_branch=G17, then_branch=G18) -> _inlfunc__aten_convolution_onnx_token_13_input_5
+    If(_inlfunc_torch_nn_modules_conv_Conv2d_conv2_1__val_3, else_branch=G19, then_branch=G20) -> _inlfunc__aten_convolution_onnx_token_13_result_7
+    If(_inlfunc__aten_convolution_onnx_token_13_no_batch, else_branch=G21, then_branch=G22) -> conv2_1
+      Relu(conv2_1) -> relu_1
+        Shape(relu_1, start=0) -> _inlfunc_Rank_token_14_tmp
+          Size(_inlfunc_Rank_token_14_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_tmp
+            MemcpyFromHost(_inlfunc__aten_max_pool_with_indices_onnx_token_10_tmp) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_tmp_CUDAExecutionProvider
+    Cast(_inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank, to=7) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank_cast
+      Equal(_inlfunc__aten_max_pool_with_indices_onnx_token_10_tmp_CUDAExecutionProvider, _inlfunc__aten_max_pool_with_indices_onnx_token_10_unbatched_rank_cast) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank_CUDAExecutionProvider
+        MemcpyToHost(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank_CUDAExecutionProvider) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank
+          If(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank, else_branch=G23, then_branch=G24) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_self_2
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_2, auto_pad=b'NOTSET', dilations=[1,1], ceil_mode=0, kernel_shape=[1,1], storage_order=0, strides=[1,1]) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10__, _inlfunc__aten_max_pool_with_indices_onnx_token_10_flatten_indices
+              Slice(_inlfunc__aten_max_pool_with_indices_onnx_token_10_flatten_indices, _inlfunc__aten_max_pool_with_indices_onnx_token_10_starts, _inlfunc__aten_max_pool_with_indices_onnx_token_10_ends, _inlfunc__aten_max_pool_with_indices_onnx_token_10_axes) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_delta
+            MaxPool(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_2, storage_order=0, auto_pad=b'NOTSET', ceil_mode=0, dilations=[1,1], kernel_shape=[2,2], pads=[0,0,0,0], strides=[2,2]) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_pool_result, _inlfunc__aten_max_pool_with_indices_onnx_token_10_indices
+              Sub(_inlfunc__aten_max_pool_with_indices_onnx_token_10_indices, _inlfunc__aten_max_pool_with_indices_onnx_token_10_delta) -> _inlfunc__aten_max_pool_with_indices_onnx_token_10_indices_3
+          If(_inlfunc__aten_max_pool_with_indices_onnx_token_10_self_rank_is_unbatched_rank, else_branch=G25, then_branch=G26) -> max_pool2d_with_indices_1_1, max_pool2d_with_indices_1
+        Reshape(max_pool2d_with_indices_1, _inlfunc_aten_view_size_0, allowzero=0) -> view
+          Gemm(view, _inlfunc_torch_nn_modules_linear_Linear_fc1_1_t, fc1.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc1_1
+            Relu(fc1_1) -> relu_2
+            Gemm(relu_2, _inlfunc_torch_nn_modules_linear_Linear_fc2_1_t_1, fc2.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc2_1
+              Relu(fc2_1) -> relu_3
+            Gemm(relu_3, _inlfunc_torch_nn_modules_linear_Linear_fc3_1_t_2, fc3.bias, transB=0, transA=0, alpha=1.00, beta=1.00) -> fc3_1
+    output: name='fc3_1' type=dtype('float32') shape=[1, 10]
+    ----- function name=_aten_convolution_onnx domain=pkg.onnxscript.torch_lib
+    ----- doc_string: ConvXd with attributes pre-computed to fit the ONNX spec.
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'input'
+    input: 'weight'
+    input: 'bias'
+    input: 'transposed'
+    attribute: 'strides'
+    attribute: 'pads'
+    attribute: 'dilations'
+    Rank[pkg.onnxscript.torch_lib.common](input) -> tmp
+    Rank[pkg.onnxscript.torch_lib.common](weight) -> tmp_0
+      Equal(tmp, tmp_0) -> tmp_1
+        Not(tmp_1) -> no_batch
+          If(no_batch, then_branch=G27, else_branch=G28) -> input_5
+    If(transposed, then_branch=G29, else_branch=G30) -> result_7
+    If(no_batch, then_branch=G31, else_branch=G32) -> result_11
+    output: name='result_11' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv1_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'arg0'
+    input: 'conv1.weight'
+    input: 'conv1.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx[pkg.onnxscript.torch_lib](arg0, conv1.weight, conv1.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution
+    output: name='convolution' type=? shape=?
+    ----- function name=torch_nn_modules_conv_Conv2d_conv2_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'getitem'
+    input: 'conv2.weight'
+    input: 'conv2.bias'
+    Constant(value=False) -> _val_3
+      _aten_convolution_onnx[pkg.onnxscript.torch_lib](getitem, conv2.weight, conv2.bias, _val_3, dilations=[1,1], groups=1, output_padding=[0,0], pads=[0,0,0,0], strides=[1,1]) -> convolution_1
+    output: name='convolution_1' type=? shape=?
+    ----- function name=aten_t domain=pkg.onnxscript.torch_lib
+    ----- doc_string: t(Tensor(a) self) -> Tensor(a)
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    Constant(value=2) -> int64_2
+    Rank[pkg.onnxscript.torch_lib.common](self) -> rank
+      CastLike(int64_2, rank) -> int64_2_cast
+      Equal(rank, int64_2_cast) -> cond
+        If(cond, then_branch=G28, else_branch=G33) -> result_1
+    output: name='result_1' type=? shape=?
+    ----- function name=aten_addmm domain=pkg.onnxscript.torch_lib
+    ----- doc_string: addmm(Tensor self, Tensor mat1, Tensor mat2, *, Scalar beta=1, Scalar alpha=1) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    input: 'mat1'
+    input: 'mat2'
+    Gemm(mat1, mat2, self, alpha=$alpha, beta=$beta) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc1_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'view'
+    input: 'fc1.weight'
+    input: 'fc1.bias'
+    aten_t[pkg.onnxscript.torch_lib](fc1.weight) -> t
+      aten_addmm[pkg.onnxscript.torch_lib](fc1.bias, view, t, alpha=1.00, beta=1.00) -> addmm
+    output: name='addmm' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc2_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_2'
+    input: 'fc2.weight'
+    input: 'fc2.bias'
+    aten_t[pkg.onnxscript.torch_lib](fc2.weight) -> t_1
+      aten_addmm[pkg.onnxscript.torch_lib](fc2.bias, relu_2, t_1, alpha=1.00, beta=1.00) -> addmm_1
+    output: name='addmm_1' type=? shape=?
+    ----- function name=torch_nn_modules_linear_Linear_fc3_1 domain=pkg.torch.2.1.1+cu118
+    opset: domain='' version=18
+    opset: domain='pkg.onnxscript.torch_lib' version=1
+    input: 'relu_3'
+    input: 'fc3.weight'
+    input: 'fc3.bias'
+    aten_t[pkg.onnxscript.torch_lib](fc3.weight) -> t_2
+      aten_addmm[pkg.onnxscript.torch_lib](fc3.bias, relu_3, t_2, alpha=1.00, beta=1.00) -> addmm_2
+    output: name='addmm_2' type=? shape=?
+    ----- function name=aten_relu domain=pkg.onnxscript.torch_lib
+    ----- doc_string: relu(Tensor self) -> Tensor
+    opset: domain='' version=18
+    input: 'self'
+    Relu(self) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=_aten_max_pool_with_indices_onnx domain=pkg.onnxscript.torch_lib
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: 'self'
+    attribute: 'kernel_size'
+    attribute: 'stride'
+    attribute: 'padding'
+    attribute: 'dilation'
+    attribute: 'ceil_mode'
+    attribute: 'unbatched_rank'
+    attribute: 'n_dims_one'
+    attribute: 'n_dims_zero'
+    attribute: 'n_dims_axes'
+    Constant(value_int=$unbatched_rank) -> unbatched_rank
+    Rank[pkg.onnxscript.torch_lib.common](self) -> tmp
+      CastLike(unbatched_rank, tmp) -> unbatched_rank_cast
+      Equal(tmp, unbatched_rank_cast) -> self_rank_is_unbatched_rank
+        If(self_rank_is_unbatched_rank, then_branch=G34, else_branch=G35) -> self_2
+          MaxPool(self_2, ceil_mode=$ceil_mode, dilations=$dilation, kernel_shape=$kernel_size, pads=$padding, strides=$stride) -> pool_result, indices
+          MaxPool(self_2, dilations=$dilation, kernel_shape=$n_dims_one, strides=$n_dims_one) -> _, flatten_indices
+    Constant(value_ints=$n_dims_one) -> ends
+    Constant(value_ints=$n_dims_zero) -> starts
+    Constant(value_ints=$n_dims_axes) -> axes
+      Slice(flatten_indices, starts, ends, axes) -> delta
+        Sub(indices, delta) -> indices_3
+    If(self_rank_is_unbatched_rank, then_branch=G36, else_branch=G37) -> indices_10, pool_result_11
+    output: name='pool_result_11' type=? shape=?
+    output: name='indices_10' type=? shape=?
+    ----- function name=aten_view domain=pkg.onnxscript.torch_lib
+    ----- doc_string: view(Tensor(a) self, SymInt[] size) -> Tensor(a)
+    opset: domain='' version=18
+    input: 'self'
+    input: 'size'
+    Cast(size, to=7) -> size_0
+      Reshape(self, size_0) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=Rank domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Take the rank of the input tensor.
+    opset: domain='' version=18
+    input: 'input'
+    Shape(input) -> tmp
+      Size(tmp) -> return_val
+    output: name='return_val' type=? shape=?
+    ----- function name=IsScalar domain=pkg.onnxscript.torch_lib.common
+    ----- doc_string: Return whether the input has rank 0, or is a scalar.
+    opset: domain='' version=18
+    input: 'input'
+    Constant(value_int=0) -> tmp_1
+    Shape(input) -> tmp
+      Size(tmp) -> tmp_0
+      Equal(tmp_0, tmp_1) -> return_val
+    output: name='return_val' type=? shape=?
 
 
 
@@ -1239,7 +2324,7 @@ Show the interesting models
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 45.965 seconds)
+   **Total running time of the script:** (1 minutes 56.713 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export.py:
