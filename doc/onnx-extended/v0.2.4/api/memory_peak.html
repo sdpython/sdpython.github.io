@@ -1,0 +1,484 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="onnx_extended.helper" href="helper.html" /><link rel="prev" title="onnx_extended.ext_test_case" href="ext_test_case.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>onnx_extended.memory_peak - onnx-extended 0.2.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">onnx-extended 0.2.4 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-extended 0.2.4 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/reference_evaluator.html">CReferenceEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/cython_binding.html">Cython Binding of onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/custom_ops.html">Custom Kernels for onnxruntime</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/ops.html">Focus on operators optimization</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Focus on operators optimization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/external_data.html">External Data and Big Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/onnx_manipulations.html">Onnx Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/quantize.html">Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/statistics.html">Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/profiling.html">Profiling onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/ort_debug.html">Debug Intermediate Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/old_version.html">Compare multiple versions of onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/trees.html">Trees</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/build.html">Build from source</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Build from source</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_cython.html">Build with cython</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_pybind11.html">Build with pybind11</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_cuda.html">Build with CUDA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/build_ortext.html">Build with onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/readings.html">Readings</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/parallelization.html">Experiments about parallelization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Experiments about parallelization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_cpu.html">Measuring CPU performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../command_lines.html">command lines</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="check.html">onnx_extended.__init__.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">onnx_extended.memory_peak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helper.html">onnx_extended.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ortcy.html">onnx_extended.ortcy</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ortops_optim.html">onnx_extended.ortops.optim</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html">onnx_extended.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">onnx_extended.reference</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="validation_cpu.html">validation.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation_cuda.html">validation.cuda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation_sparse.html">validation.bench_trees</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation_trees.html">validation.bench_trees</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tools_io.html">onnx_extended.tools.onnx_io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_einsum.html">onnx_extended.tools.einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_graph.html">onnx_extended.tools.graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_graph_transformer.html">onnx_extended.tools.graph.onnx_graph_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_nodes.html">onnx_extended.tools.onnx_nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_stats.html">onnx_extended.tools.stats_nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools_other.html">onnx_extended.tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tech/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tech/install_cuda_wsl.html">Install CUDA on WSL (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tech/usefulcmd.html">Useful commands on Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tech/gemm.html">Gemm and storage order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tech/2023-09-05-glibc.html">2023-09-05 - version GLIBCXX_3.4.30 not found</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">ONNX Benchmarks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cpu.html">Measuring CPU performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="onnx-extended-memory-peak">
+<h1>onnx_extended.memory_peak<a class="headerlink" href="#onnx-extended-memory-peak" title="Permalink to this heading">#</a></h1>
+<section id="get-memory-rss">
+<h2>get_memory_rss<a class="headerlink" href="#get-memory-rss" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_extended.memory_peak.get_memory_rss">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.memory_peak.</span></span><span class="sig-name descname"><span class="pre">get_memory_rss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/onnx_extended/memory_peak.html#get_memory_rss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_extended.memory_peak.get_memory_rss" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the physical memory used by a process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pid</strong> – process id, current one is <cite>os.getpid()</cite></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>physical memory</p>
+</dd>
+</dl>
+<p>It relies on the module <a class="reference external" href="https://psutil.readthedocs.io/en/latest/">psutil</a>.</p>
+</dd></dl>
+
+</section>
+<section id="memoryspy">
+<h2>MemorySpy<a class="headerlink" href="#memoryspy" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="onnx_extended.memory_peak.MemorySpy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onnx_extended.memory_peak.</span></span><span class="sig-name descname"><span class="pre">MemorySpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/onnx_extended/memory_peak.html#MemorySpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_extended.memory_peak.MemorySpy" title="Permalink to this definition">#</a></dt>
+<dd><p>Information about the spy. It class method <cite>start</cite>.
+Method <cite>stop</cite> can be called to end the measure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid</strong> – process id  of the process to spy on</p></li>
+<li><p><strong>delay</strong> – spy on every delay seconds</p></li>
+<li><p><strong>cuda</strong> – enable cuda monitoring</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_extended.memory_peak.MemorySpy.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#onnx_extended.memory_peak.MemorySpy" title="onnx_extended.memory_peak.MemorySpy"><span class="pre">MemorySpy</span></a></span></span><a class="reference internal" href="../_modules/onnx_extended/memory_peak.html#MemorySpy.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_extended.memory_peak.MemorySpy.start" title="Permalink to this definition">#</a></dt>
+<dd><p>Starts another process and tells it to spy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_extended.memory_peak.MemorySpy.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/onnx_extended/memory_peak.html#MemorySpy.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_extended.memory_peak.MemorySpy.stop" title="Permalink to this definition">#</a></dt>
+<dd><p>Stops spying on.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="start-spying-on">
+<h2>start_spying_on<a class="headerlink" href="#start-spying-on" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_extended.memory_peak.start_spying_on">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.memory_peak.</span></span><span class="sig-name descname"><span class="pre">start_spying_on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#onnx_extended.memory_peak.MemorySpy" title="onnx_extended.memory_peak.MemorySpy"><span class="pre">MemorySpy</span></a></span></span><a class="reference internal" href="../_modules/onnx_extended/memory_peak.html#start_spying_on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_extended.memory_peak.start_spying_on" title="Permalink to this definition">#</a></dt>
+<dd><p>Starts the memory spy. The function starts another
+process spying on the one sent as an argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid</strong> – process id to spy or the the current one.</p></li>
+<li><p><strong>delay</strong> – delay between two measures.</p></li>
+<li><p><strong>cuda</strong> – True or False to get memory for cuda devices</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>from onnx_extended.memory_peak import start_spying_on</p>
+<p>p = start_spying_on()
+# …
+# code to measure
+# …
+stat = p.stop()
+print(stat)</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="helper.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">onnx_extended.helper</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="ext_test_case.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">onnx_extended.ext_test_case</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">onnx_extended.memory_peak</a><ul>
+<li><a class="reference internal" href="#get-memory-rss">get_memory_rss</a><ul>
+<li><a class="reference internal" href="#onnx_extended.memory_peak.get_memory_rss"><code class="docutils literal notranslate"><span class="pre">get_memory_rss()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#memoryspy">MemorySpy</a><ul>
+<li><a class="reference internal" href="#onnx_extended.memory_peak.MemorySpy"><code class="docutils literal notranslate"><span class="pre">MemorySpy</span></code></a><ul>
+<li><a class="reference internal" href="#onnx_extended.memory_peak.MemorySpy.start"><code class="docutils literal notranslate"><span class="pre">MemorySpy.start()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_extended.memory_peak.MemorySpy.stop"><code class="docutils literal notranslate"><span class="pre">MemorySpy.stop()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#start-spying-on">start_spying_on</a><ul>
+<li><a class="reference internal" href="#onnx_extended.memory_peak.start_spying_on"><code class="docutils literal notranslate"><span class="pre">start_spying_on()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=94f1748a"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

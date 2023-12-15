@@ -176,7 +176,8 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -212,6 +213,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../api/check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -220,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/validation_cpu.html">validation.cpu</a></li>
@@ -256,11 +259,12 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -315,7 +319,7 @@ to download the full example code</p>
 CPU, GPU.</p>
 <section id="vector-sum">
 <h2>Vector Sum<a class="headerlink" href="#vector-sum" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a>
@@ -436,37 +440,37 @@ CPU, GPU.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/14 [00:00&lt;?, ?it/s]
-  7%|▋         | 1/14 [00:08&lt;01:51,  8.58s/it]
- 14%|█▍        | 2/14 [00:14&lt;01:23,  6.95s/it]
- 21%|██▏       | 3/14 [00:18&lt;01:01,  5.58s/it]
- 29%|██▊       | 4/14 [00:22&lt;00:49,  4.99s/it]
- 36%|███▌      | 5/14 [00:26&lt;00:40,  4.50s/it]
- 43%|████▎     | 6/14 [00:30&lt;00:35,  4.38s/it]
- 50%|█████     | 7/14 [00:33&lt;00:29,  4.16s/it]
- 57%|█████▋    | 8/14 [00:37&lt;00:24,  4.07s/it]
- 64%|██████▍   | 9/14 [00:41&lt;00:20,  4.04s/it]
- 71%|███████▏  | 10/14 [00:45&lt;00:16,  4.02s/it]
- 79%|███████▊  | 11/14 [00:49&lt;00:11,  3.96s/it]
- 86%|████████▌ | 12/14 [00:53&lt;00:07,  3.97s/it]
- 93%|█████████▎| 13/14 [00:57&lt;00:04,  4.02s/it]
-100%|██████████| 14/14 [01:01&lt;00:00,  4.08s/it]
-100%|██████████| 14/14 [01:01&lt;00:00,  4.42s/it]
+  7%|▋         | 1/14 [00:06&lt;01:22,  6.35s/it]
+ 14%|█▍        | 2/14 [00:10&lt;01:03,  5.33s/it]
+ 21%|██▏       | 3/14 [00:15&lt;00:52,  4.82s/it]
+ 29%|██▊       | 4/14 [00:18&lt;00:43,  4.39s/it]
+ 36%|███▌      | 5/14 [00:22&lt;00:37,  4.13s/it]
+ 43%|████▎     | 6/14 [00:27&lt;00:34,  4.31s/it]
+ 50%|█████     | 7/14 [00:30&lt;00:28,  4.06s/it]
+ 57%|█████▋    | 8/14 [00:34&lt;00:24,  4.02s/it]
+ 64%|██████▍   | 9/14 [00:38&lt;00:20,  4.07s/it]
+ 71%|███████▏  | 10/14 [00:42&lt;00:15,  3.97s/it]
+ 79%|███████▊  | 11/14 [00:46&lt;00:11,  3.90s/it]
+ 86%|████████▌ | 12/14 [00:50&lt;00:08,  4.01s/it]
+ 93%|█████████▎| 13/14 [00:54&lt;00:04,  4.06s/it]
+100%|██████████| 14/14 [00:59&lt;00:00,  4.18s/it]
+100%|██████████| 14/14 [00:59&lt;00:00,  4.23s/it]
 direction       0cuda32      6cuda256  ...           avx         avx//
 dim                                    ...
-500        5.068255e-09  5.086405e-09  ...  1.350621e-10  3.813397e-11
-700        5.865645e-09  3.575336e-09  ...  1.390092e-10  2.110315e-10
-800        3.782300e-09  3.424230e-09  ...  1.503414e-10  2.151026e-10
-900        3.133791e-09  3.028803e-09  ...  1.302498e-10  5.081189e-11
-1000       2.938939e-09  2.368646e-09  ...  1.290745e-10  3.936214e-11
-1100       2.731831e-09  2.424588e-09  ...  1.416669e-10  5.099386e-11
-1200       2.654448e-09  2.343269e-09  ...  1.536799e-10  4.227917e-11
-1300       2.745305e-09  2.343295e-09  ...  1.950324e-10  4.740533e-11
-1400       2.378784e-09  2.095555e-09  ...  2.230695e-10  6.772691e-11
-1500       2.157809e-09  2.256516e-09  ...  2.557967e-10  1.047900e-10
-1600       2.047901e-09  2.026867e-09  ...  2.764784e-10  1.163602e-10
-1700       2.129237e-09  1.901075e-09  ...  2.947995e-10  1.401582e-10
-1800       2.025738e-09  1.883757e-09  ...  2.957016e-10  1.265517e-10
-2000       1.956562e-09  1.833966e-09  ...  3.160851e-10  1.462329e-10
+500        5.036245e-09  7.268893e-09  ...  1.859213e-10  2.281707e-08
+700        4.226166e-09  1.084517e-08  ...  2.401971e-10  1.910138e-10
+800        2.227471e-08  2.161253e-08  ...  1.088650e-09  6.822135e-08
+900        1.155868e-08  4.924744e-09  ...  8.603484e-10  5.165603e-08
+1000       3.791375e-09  3.951779e-09  ...  2.841767e-10  1.031243e-10
+1100       3.289597e-09  3.137300e-09  ...  2.639584e-10  3.537208e-10
+1200       3.395060e-09  2.994300e-09  ...  3.037742e-10  2.494262e-10
+1300       3.193286e-09  5.644537e-09  ...  3.305565e-10  1.619933e-10
+1400       4.737736e-09  4.612419e-09  ...  4.814121e-10  1.445763e-09
+1500       7.629071e-09  4.732648e-09  ...  4.596704e-10  5.424890e-09
+1600       5.029871e-09  4.265221e-09  ...  3.915358e-10  1.191421e-09
+1700       4.337288e-09  4.678027e-09  ...  4.464440e-10  1.491259e-09
+1800       4.574217e-09  4.178649e-09  ...  4.132734e-10  7.106424e-10
+2000       3.817553e-09  3.943320e-09  ...  4.522228e-10  9.109139e-10
 
 [14 rows x 6 columns]
 </pre></div>
@@ -474,7 +478,7 @@ dim                                    ...
 </section>
 <section id="plots">
 <h2>Plots<a class="headerlink" href="#plots" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv_diff</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">pivot</span></a><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a><span class="o">=</span><span class="s2">&quot;diff&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv_diff</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">pivot</span></a><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a><span class="o">=</span><span class="s2">&quot;diff&quot;</span><span class="p">)</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv_time</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">pivot</span></a><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -513,13 +517,13 @@ torch, numpy, onnxruntime, the <a class="reference external" href="https://githu
 avoids copying the data when switching.</p>
 <p>The copy of a big tensor can happens by block. The computation may start
 before the data is fully copied.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 4.137 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 3.298 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-bench-gpu-vector-sum-gpu-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/6f3f0cd3861676a5040075575e231ade/plot_bench_gpu_vector_sum_gpu.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_bench_gpu_vector_sum_gpu.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c1aeb614e8588725160d1ad84f8ddb87/plot_bench_gpu_vector_sum_gpu.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bench_gpu_vector_sum_gpu.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/6f3f0cd3861676a5040075575e231ade/plot_bench_gpu_vector_sum_gpu.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_bench_gpu_vector_sum_gpu.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

@@ -30,7 +30,7 @@ Vector Sum
 
 .. GENERATED FROM PYTHON SOURCE LINES 12-60
 
-.. code-block:: default
+.. code-block:: Python
 
     from tqdm import tqdm
     import numpy
@@ -88,23 +88,23 @@ Vector Sum
 
  .. code-block:: none
 
-      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:13,  1.06s/it]     14%|█▍        | 2/14 [00:02<00:15,  1.28s/it]     21%|██▏       | 3/14 [00:03<00:14,  1.31s/it]     29%|██▊       | 4/14 [00:05<00:13,  1.34s/it]     36%|███▌      | 5/14 [00:06<00:11,  1.29s/it]     43%|████▎     | 6/14 [00:08<00:11,  1.44s/it]     50%|█████     | 7/14 [00:09<00:09,  1.41s/it]     57%|█████▋    | 8/14 [00:10<00:08,  1.39s/it]     64%|██████▍   | 9/14 [00:11<00:06,  1.30s/it]     71%|███████▏  | 10/14 [00:13<00:05,  1.30s/it]     79%|███████▊  | 11/14 [00:14<00:03,  1.28s/it]     86%|████████▌ | 12/14 [00:15<00:02,  1.25s/it]     93%|█████████▎| 13/14 [00:16<00:01,  1.26s/it]    100%|██████████| 14/14 [00:18<00:00,  1.29s/it]    100%|██████████| 14/14 [00:18<00:00,  1.31s/it]
+      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:14,  1.10s/it]     14%|█▍        | 2/14 [00:02<00:12,  1.07s/it]     21%|██▏       | 3/14 [00:03<00:12,  1.11s/it]     29%|██▊       | 4/14 [00:04<00:11,  1.17s/it]     36%|███▌      | 5/14 [00:05<00:11,  1.24s/it]     43%|████▎     | 6/14 [00:07<00:10,  1.28s/it]     50%|█████     | 7/14 [00:08<00:08,  1.27s/it]     57%|█████▋    | 8/14 [00:09<00:07,  1.32s/it]     64%|██████▍   | 9/14 [00:11<00:06,  1.28s/it]     71%|███████▏  | 10/14 [00:12<00:04,  1.24s/it]     79%|███████▊  | 11/14 [00:13<00:03,  1.25s/it]     86%|████████▌ | 12/14 [00:14<00:02,  1.21s/it]     93%|█████████▎| 13/14 [00:15<00:01,  1.23s/it]    100%|██████████| 14/14 [00:17<00:00,  1.23s/it]    100%|██████████| 14/14 [00:17<00:00,  1.23s/it]
     direction          cols          rows
     dim                                  
-    500        1.339969e-09  1.398809e-09
-    700        2.704142e-09  1.588704e-09
-    800        2.250259e-09  2.394541e-09
-    900        2.731479e-09  1.534094e-09
-    1000       1.621978e-09  1.341229e-09
-    1100       3.462591e-09  2.001703e-09
-    1200       2.360225e-09  1.937548e-09
-    1300       4.133977e-09  2.443859e-09
-    1400       3.382357e-09  2.302352e-09
-    1500       4.393149e-09  1.420842e-09
-    1600       7.830828e-09  1.252001e-09
-    1700       8.417469e-09  1.289557e-09
-    1800       1.035628e-08  1.272862e-09
-    2000       1.024360e-08  1.249983e-09
+    500        1.135726e-09  1.165875e-09
+    700        1.145957e-09  1.093638e-09
+    800        1.340071e-09  1.170840e-09
+    900        1.567920e-09  1.275385e-09
+    1000       1.539905e-09  1.182090e-09
+    1100       1.494326e-09  1.251227e-09
+    1200       1.378659e-09  1.221055e-09
+    1300       1.997362e-09  1.185168e-09
+    1400       1.460494e-09  1.251018e-09
+    1500       2.137646e-09  1.180704e-09
+    1600       4.364105e-09  1.201662e-09
+    1700       6.372006e-09  1.201249e-09
+    1800       6.120020e-09  1.214613e-09
+    2000       6.625351e-09  1.271502e-09
 
 
 
@@ -116,7 +116,7 @@ Plots
 
 .. GENERATED FROM PYTHON SOURCE LINES 63-74
 
-.. code-block:: default
+.. code-block:: Python
 
 
     piv_diff = df.pivot(index="dim", columns="direction", values="diff")
@@ -157,7 +157,7 @@ transpose the first matrix before a matrix multiplication.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 20.575 seconds)
+   **Total running time of the script:** (0 minutes 19.388 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum.py:
@@ -166,16 +166,13 @@ transpose the first matrix before a matrix multiplication.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_bench_cpu_vector_sum.ipynb <plot_bench_cpu_vector_sum.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cpu_vector_sum.py <plot_bench_cpu_vector_sum.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_bench_cpu_vector_sum.ipynb <plot_bench_cpu_vector_sum.ipynb>`
 
 
 .. only:: html

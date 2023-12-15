@@ -176,7 +176,8 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -212,6 +213,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../api/check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -220,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/validation_cpu.html">validation.cpu</a></li>
@@ -256,11 +259,12 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -319,7 +323,7 @@ are automatically available through class
 The following example compares the processing time for three runtimes.</p>
 <section id="creation-of-a-simple-model">
 <h2>Creation of a simple model<a class="headerlink" href="#creation-of-a-simple-model" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
@@ -353,14 +357,14 @@ The following example compares the processing time for three runtimes.</p>
 <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onnx_model</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_model" title="onnx.helper.make_model" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_model</span></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/classes.html#onnx.GraphProto" title="onnx.GraphProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">graph</span></a><span class="p">,</span> <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_opsetid" title="onnx.helper.make_opsetid" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_opsetid</span></a><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)],</span> <span class="n">ir_version</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2023-11-05 12:44:38,938] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2023-12-15 18:53:09,223] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 </pre></div>
 </div>
 </section>
 <section id="referenceevaluator-and-creferenceevaluator">
 <h2>ReferenceEvaluator and CReferenceEvaluator<a class="headerlink" href="#referenceevaluator-and-creferenceevaluator" title="Permalink to this heading">#</a></h2>
 <p>Let’s first compare the outputs are the same.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">W</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html#numpy.ones" title="numpy.ones" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">B</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([[[[</span><span class="mi">0</span><span class="p">]]]],</span> <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
@@ -381,7 +385,7 @@ The following example compares the processing time for three runtimes.</p>
 </section>
 <section id="time-measurement">
 <h2>Time measurement<a class="headerlink" href="#time-measurement" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">W</span></a><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">B</span></a><span class="p">}</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">W</span></a><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">B</span></a><span class="p">}</span>
 
 <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator.run" title="onnx.reference.ReferenceEvaluator.run" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-method"><span class="n">sess1</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ReferenceEvaluator: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
@@ -391,13 +395,13 @@ The following example compares the processing time for three runtimes.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;speedup is </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t2</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 0.0006839216000225862s
-CReferenceEvaluator: 7.935840003483463e-05s
-speedup is 8.61813745895049
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 0.0012356597999987572s
+CReferenceEvaluator: 0.00010133580000001531s
+speedup is 12.193714363517834
 </pre></div>
 </div>
 <p>Let’s add <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> as well.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sess3</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sess3</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
     <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onnx_model</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 
@@ -406,14 +410,14 @@ speedup is 8.61813745895049
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;speedup is </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t3</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>InferenceSession: 2.8631600027438252e-05s
-speedup is 23.88695006102244
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>InferenceSession: 7.203260000096634e-05s
+speedup is 17.15417463734726
 </pre></div>
 </div>
 </section>
 <section id="plotting">
 <h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">([</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">64</span><span class="p">]):</span>
     <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a>
@@ -433,11 +437,11 @@ speedup is 23.88695006102244
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/4 [00:00&lt;?, ?it/s]
- 25%|██▌       | 1/4 [00:00&lt;00:00,  7.25it/s]
- 50%|█████     | 2/4 [00:00&lt;00:00,  7.38it/s]
- 75%|███████▌  | 3/4 [00:00&lt;00:00,  7.08it/s]
-100%|██████████| 4/4 [00:00&lt;00:00,  3.57it/s]
-100%|██████████| 4/4 [00:00&lt;00:00,  4.38it/s]
+ 25%|██▌       | 1/4 [00:00&lt;00:00,  6.13it/s]
+ 50%|█████     | 2/4 [00:00&lt;00:00,  6.46it/s]
+ 75%|███████▌  | 3/4 [00:00&lt;00:00,  6.09it/s]
+100%|██████████| 4/4 [00:00&lt;00:00,  3.62it/s]
+100%|██████████| 4/4 [00:00&lt;00:00,  4.28it/s]
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -468,26 +472,26 @@ speedup is 23.88695006102244
     <tr>
       <th>0</th>
       <td>16</td>
-      <td>0.000252</td>
-      <td>0.000021</td>
+      <td>0.000292</td>
+      <td>0.000029</td>
     </tr>
     <tr>
       <th>1</th>
       <td>32</td>
-      <td>0.000243</td>
-      <td>0.000021</td>
+      <td>0.000268</td>
+      <td>0.000027</td>
     </tr>
     <tr>
       <th>2</th>
       <td>48</td>
-      <td>0.000269</td>
-      <td>0.000024</td>
+      <td>0.000317</td>
+      <td>0.000030</td>
     </tr>
     <tr>
       <th>3</th>
       <td>64</td>
-      <td>0.000866</td>
-      <td>0.000095</td>
+      <td>0.000794</td>
+      <td>0.000097</td>
     </tr>
   </tbody>
 </table>
@@ -495,7 +499,7 @@ speedup is 23.88695006102244
 </div>
 <br />
 <br /><p>Finally.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.set_index.html#pandas.DataFrame.set_index" title="pandas.DataFrame.set_index" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">set_index</span></a><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.set_index.html#pandas.DataFrame.set_index" title="pandas.DataFrame.set_index" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">set_index</span></a><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="o">=</span><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">,</span> <span class="n">logx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Comparison python / C implementation for Conv&quot;</span>
@@ -509,13 +513,13 @@ speedup is 23.88695006102244
 <span class="c1"># plt.show()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_conv_001.png" srcset="../_images/sphx_glr_plot_conv_001.png" alt="Comparison python / C implementation for Conv" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.061 seconds)</p>
+<img src="../_images/sphx_glr_plot_conv_001.png" srcset="../_images/sphx_glr_plot_conv_001.png" alt="Comparison python / C implementation for Conv" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 20.447 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-conv-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/77ad8c186a225fefa3695d0015907530/plot_conv.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_conv.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/46ce950a6e9b6ee76e563f706b23a4d9/plot_conv.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_conv.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/77ad8c186a225fefa3695d0015907530/plot_conv.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_conv.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

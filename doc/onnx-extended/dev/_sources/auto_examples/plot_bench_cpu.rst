@@ -32,7 +32,7 @@ Cache Performance
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-24
 
-.. code-block:: default
+.. code-block:: Python
 
     from tqdm import tqdm
     import matplotlib.pyplot as plt
@@ -58,7 +58,7 @@ Code of `benchmark_cache
 
 .. GENERATED FROM PYTHON SOURCE LINES 27-55
 
-.. code-block:: default
+.. code-block:: Python
 
 
     obs = []
@@ -96,7 +96,7 @@ Code of `benchmark_cache
 
  .. code-block:: none
 
-      0%|          | 0/256 [00:00<?, ?it/s]     43%|████▎     | 109/256 [00:00<00:00, 1085.93it/s]     85%|████████▌ | 218/256 [00:00<00:00, 528.80it/s]     100%|██████████| 256/256 [00:00<00:00, 455.34it/s]
+      0%|          | 0/256 [00:00<?, ?it/s]     33%|███▎      | 85/256 [00:00<00:00, 830.08it/s]     66%|██████▌   | 169/256 [00:00<00:00, 400.09it/s]     86%|████████▋ | 221/256 [00:00<00:00, 268.94it/s]    100%|██████████| 256/256 [00:00<00:00, 279.72it/s]
 
 
 
@@ -108,7 +108,7 @@ Cache size estimator
 
 .. GENERATED FROM PYTHON SOURCE LINES 58-63
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cache_size_index = int(df.delta.argmax())
@@ -123,7 +123,7 @@ Cache size estimator
 
  .. code-block:: none
 
-    L2 cache size estimation is 1.625 Mb.
+    L2 cache size estimation is 0.266 Mb.
 
 
 
@@ -135,7 +135,7 @@ Verification
 
 .. GENERATED FROM PYTHON SOURCE LINES 66-79
 
-.. code-block:: default
+.. code-block:: Python
 
 
     try:
@@ -185,7 +185,7 @@ The code of `benchmark_cache_tree
 
 .. GENERATED FROM PYTHON SOURCE LINES 89-117
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dfs = []
@@ -223,7 +223,7 @@ The code of `benchmark_cache_tree
 
  .. code-block:: none
 
-      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:02<00:08,  2.14s/it]     40%|████      | 2/5 [00:04<00:07,  2.34s/it]     60%|██████    | 3/5 [00:08<00:05,  2.85s/it]     80%|████████  | 4/5 [00:09<00:02,  2.23s/it]    100%|██████████| 5/5 [00:10<00:00,  1.96s/it]    100%|██████████| 5/5 [00:10<00:00,  2.17s/it]
+      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:02<00:09,  2.28s/it]     40%|████      | 2/5 [00:04<00:06,  2.20s/it]     60%|██████    | 3/5 [00:06<00:04,  2.07s/it]     80%|████████  | 4/5 [00:08<00:02,  2.01s/it]    100%|██████████| 5/5 [00:10<00:00,  1.96s/it]    100%|██████████| 5/5 [00:10<00:00,  2.02s/it]
 
 
 .. raw:: html
@@ -260,58 +260,58 @@ The code of `benchmark_cache_tree
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.044565</td>
-          <td>0.119351</td>
-          <td>0.061643</td>
-          <td>0.060124</td>
-          <td>0.049564</td>
+          <td>0.074233</td>
+          <td>0.062156</td>
+          <td>0.058301</td>
+          <td>0.059226</td>
+          <td>0.06101</td>
           <td>0</td>
-          <td>0.067049</td>
-          <td>0.060124</td>
+          <td>0.062985</td>
+          <td>0.06101</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.044565</td>
-          <td>0.119351</td>
-          <td>0.061643</td>
-          <td>0.060124</td>
-          <td>0.049564</td>
+          <td>0.074233</td>
+          <td>0.062156</td>
+          <td>0.058301</td>
+          <td>0.059226</td>
+          <td>0.06101</td>
           <td>1</td>
-          <td>0.067049</td>
-          <td>0.060124</td>
+          <td>0.062985</td>
+          <td>0.06101</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.044565</td>
-          <td>0.119351</td>
-          <td>0.061643</td>
-          <td>0.060124</td>
-          <td>0.049564</td>
+          <td>0.074233</td>
+          <td>0.062156</td>
+          <td>0.058301</td>
+          <td>0.059226</td>
+          <td>0.06101</td>
           <td>2</td>
-          <td>0.067049</td>
-          <td>0.060124</td>
+          <td>0.062985</td>
+          <td>0.06101</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.044565</td>
-          <td>0.119351</td>
-          <td>0.061643</td>
-          <td>0.060124</td>
-          <td>0.049564</td>
+          <td>0.074233</td>
+          <td>0.062156</td>
+          <td>0.058301</td>
+          <td>0.059226</td>
+          <td>0.06101</td>
           <td>3</td>
-          <td>0.067049</td>
-          <td>0.060124</td>
+          <td>0.062985</td>
+          <td>0.06101</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.044565</td>
-          <td>0.119351</td>
-          <td>0.061643</td>
-          <td>0.060124</td>
-          <td>0.049564</td>
+          <td>0.074233</td>
+          <td>0.062156</td>
+          <td>0.058301</td>
+          <td>0.059226</td>
+          <td>0.06101</td>
           <td>4</td>
-          <td>0.067049</td>
-          <td>0.060124</td>
+          <td>0.062985</td>
+          <td>0.06101</td>
         </tr>
       </tbody>
     </table>
@@ -327,7 +327,7 @@ Estimation
 
 .. GENERATED FROM PYTHON SOURCE LINES 120-128
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print("Optimal batch size is among:")
@@ -347,16 +347,16 @@ Estimation
 
     Optimal batch size is among:
           i  time_med  time_avg
-    0  1664  0.045608  0.047535
-    1    64  0.048114  0.058792
-    2   128  0.048463  0.061234
-    3  1536  0.049872  0.060541
-    4  1728  0.053520  0.048497
-    5  1920  0.053918  0.060863
-    6  1600  0.054935  0.054345
-    7   832  0.054975  0.071452
-    8   768  0.057307  0.074435
-    9  1856  0.057521  0.060181
+    0  1536  0.058318  0.061507
+    1   512  0.058416  0.060073
+    2  1792  0.058697  0.060458
+    3   576  0.058802  0.061641
+    4  1856  0.059029  0.059280
+    5   704  0.059139  0.062909
+    6  1600  0.059184  0.061121
+    7   640  0.059519  0.064732
+    8  1664  0.059598  0.060001
+    9  1408  0.059755  0.071853
 
 
 
@@ -367,7 +367,7 @@ One possible estimation
 
 .. GENERATED FROM PYTHON SOURCE LINES 130-135
 
-.. code-block:: default
+.. code-block:: Python
 
 
     subdfs = dfs[:20]
@@ -382,7 +382,7 @@ One possible estimation
 
  .. code-block:: none
 
-    Estimation: 1075.8217402081941
+    Estimation: 1101.8327097382032
 
 
 
@@ -393,7 +393,7 @@ Plots.
 
 .. GENERATED FROM PYTHON SOURCE LINES 137-146
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cols_time = ["time_avg", "time_med"]
@@ -419,7 +419,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 13.335 seconds)
+   **Total running time of the script:** (0 minutes 13.382 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu.py:
@@ -428,16 +428,13 @@ Plots.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_bench_cpu.ipynb <plot_bench_cpu.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cpu.py <plot_bench_cpu.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_bench_cpu.ipynb <plot_bench_cpu.ipynb>`
 
 
 .. only:: html

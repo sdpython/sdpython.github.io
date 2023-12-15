@@ -30,7 +30,7 @@ Vector Sum
 
 .. GENERATED FROM PYTHON SOURCE LINES 12-76
 
-.. code-block:: default
+.. code-block:: Python
 
     from tqdm import tqdm
     import numpy
@@ -104,23 +104,23 @@ Vector Sum
 
  .. code-block:: none
 
-      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:24,  1.89s/it]     14%|█▍        | 2/14 [00:05<00:35,  2.95s/it]     21%|██▏       | 3/14 [00:09<00:38,  3.52s/it]     29%|██▊       | 4/14 [00:16<00:46,  4.64s/it]     36%|███▌      | 5/14 [00:18<00:33,  3.68s/it]     43%|████▎     | 6/14 [00:22<00:32,  4.02s/it]     50%|█████     | 7/14 [00:25<00:26,  3.75s/it]     57%|█████▋    | 8/14 [00:27<00:18,  3.12s/it]     64%|██████▍   | 9/14 [00:29<00:14,  2.80s/it]     71%|███████▏  | 10/14 [00:32<00:10,  2.72s/it]     79%|███████▊  | 11/14 [00:34<00:07,  2.45s/it]     86%|████████▌ | 12/14 [00:37<00:05,  2.62s/it]     93%|█████████▎| 13/14 [00:39<00:02,  2.42s/it]    100%|██████████| 14/14 [00:41<00:00,  2.38s/it]    100%|██████████| 14/14 [00:41<00:00,  2.96s/it]
+      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:23,  1.79s/it]     14%|█▍        | 2/14 [00:05<00:38,  3.20s/it]     21%|██▏       | 3/14 [00:08<00:32,  2.91s/it]     29%|██▊       | 4/14 [00:11<00:28,  2.82s/it]     36%|███▌      | 5/14 [00:13<00:24,  2.72s/it]     43%|████▎     | 6/14 [00:15<00:20,  2.54s/it]     50%|█████     | 7/14 [00:17<00:16,  2.29s/it]     57%|█████▋    | 8/14 [00:19<00:13,  2.23s/it]     64%|██████▍   | 9/14 [00:21<00:10,  2.13s/it]     71%|███████▏  | 10/14 [00:23<00:08,  2.01s/it]     79%|███████▊  | 11/14 [00:25<00:06,  2.05s/it]     86%|████████▌ | 12/14 [00:27<00:04,  2.02s/it]     93%|█████████▎| 13/14 [00:29<00:01,  1.98s/it]    100%|██████████| 14/14 [00:31<00:00,  1.89s/it]    100%|██████████| 14/14 [00:31<00:00,  2.23s/it]
     direction        cols//          rows        rows//
     dim                                                
-    500        1.037369e-09  1.300040e-09  1.129432e-09
-    700        1.476130e-09  1.169075e-09  5.886387e-10
-    800        5.565624e-09  1.712218e-09  1.994842e-09
-    900        6.913475e-09  6.336311e-09  6.311189e-09
-    1000       9.452526e-09  2.694111e-09  3.518850e-09
-    1100       1.139617e-08  3.026725e-09  4.407049e-09
-    1200       7.324529e-09  3.892918e-09  4.542762e-09
-    1300       8.466274e-09  2.565693e-09  4.714653e-09
-    1400       8.790963e-09  3.610252e-09  3.793022e-09
-    1500       8.061403e-09  3.546912e-09  2.803073e-09
-    1600       5.992225e-09  2.636379e-09  3.167657e-09
-    1700       6.062934e-09  1.788432e-09  2.113258e-09
-    1800       5.413899e-09  1.828977e-09  1.777880e-09
-    2000       6.471589e-09  1.730441e-09  1.546076e-09
+    500        1.509324e-08  1.230796e-09  1.655797e-08
+    700        1.159998e-09  1.122447e-09  1.176860e-09
+    800        7.792476e-10  1.457489e-09  5.123994e-10
+    900        1.839405e-09  1.423705e-09  6.004625e-10
+    1000       1.933310e-09  1.470140e-09  1.324988e-09
+    1100       6.976809e-09  1.546805e-09  6.641507e-09
+    1200       1.240113e-08  1.872574e-09  5.532521e-09
+    1300       2.227765e-08  1.974358e-09  1.135675e-08
+    1400       8.820904e-09  1.096655e-08  1.539367e-08
+    1500       5.059793e-09  2.394131e-09  3.042752e-09
+    1600       8.660289e-09  1.980274e-09  1.735109e-09
+    1700       3.812879e-09  2.174785e-09  2.059494e-09
+    1800       5.070599e-09  1.501974e-09  6.496916e-10
+    2000       5.260990e-09  1.400095e-09  1.590519e-09
 
 
 
@@ -132,7 +132,7 @@ Plots
 
 .. GENERATED FROM PYTHON SOURCE LINES 79-90
 
-.. code-block:: default
+.. code-block:: Python
 
 
     piv_diff = df.pivot(index="dim", columns="direction", values="diff")
@@ -174,7 +174,7 @@ Parallelization is faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 43.693 seconds)
+   **Total running time of the script:** (0 minutes 32.665 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum_parallel.py:
@@ -183,16 +183,13 @@ Parallelization is faster.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_bench_cpu_vector_sum_parallel.ipynb <plot_bench_cpu_vector_sum_parallel.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cpu_vector_sum_parallel.py <plot_bench_cpu_vector_sum_parallel.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_bench_cpu_vector_sum_parallel.ipynb <plot_bench_cpu_vector_sum_parallel.ipynb>`
 
 
 .. only:: html

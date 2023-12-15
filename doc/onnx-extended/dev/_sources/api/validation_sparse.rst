@@ -15,12 +15,27 @@ from dense from/to sparse.
 Functions
 =========
 
+onnx_extended.validation.cpu._validation.dense_to_sparse_struct
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. autofunction:: onnx_extended.validation.cpu._validation.dense_to_sparse_struct
+
+onnx_extended.validation.cpu._validation.sparse_struct_indices_values
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. autofunction:: onnx_extended.validation.cpu._validation.sparse_struct_indices_values
+
 onnx_extended.validation.cpu._validation.sparse_struct_to_dense
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. autofunction:: onnx_extended.validation.cpu._validation.sparse_struct_to_dense
 
-onnx_extended.validation.cpu._validation.dense_to_sparse_struct
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+onnx_extended.validation.cpu._validation.sparse_struct_to_csr
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. autofunction:: onnx_extended.validation.cpu._validation.dense_to_sparse_struct
+.. autofunction:: onnx_extended.validation.cpu._validation.sparse_struct_to_csr
+
+onnx_extended.validation.cpu._validation.sparse_struct_to_maps
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. autofunction:: onnx_extended.validation.cpu._validation.sparse_struct_to_maps

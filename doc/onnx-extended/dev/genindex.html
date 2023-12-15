@@ -174,7 +174,8 @@
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -210,6 +211,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -218,6 +220,7 @@
 <li class="toctree-l3"><a class="reference internal" href="api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="api/plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/validation_cpu.html">validation.cpu</a></li>
@@ -254,11 +257,12 @@
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -318,15 +322,19 @@
 </li>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.append">append() (onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.apply">apply() (onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl.apply_einsum_sequence">apply_einsum_sequence() (in module onnx_extended.tools.einsum.einsum_impl)</a>
 </li>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.apply_sequence">apply_sequence() (onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp method)</a>
 </li>
         <li><a href="api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertAlmostEqual">assertAlmostEqual() (onnx_extended.ext_test_case.ExtTestCase method)</a>
+</li>
+        <li><a href="api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertIns">assertIns() (onnx_extended.ext_test_case.ExtTestCase method)</a>
+</li>
+        <li><a href="api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertNotAlmostEqual">assertNotAlmostEqual() (onnx_extended.ext_test_case.ExtTestCase method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -390,12 +398,12 @@
 </li>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.compute_output_row">compute_output_row() (onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_ml.compute_transposition_features">compute_transposition_features() (in module onnx_extended.tools.einsum.einsum_ml)</a>
 </li>
         <li><a href="api/reference.html#onnx_extended.reference.c_ops.c_op_conv.Conv">Conv (class in onnx_extended.reference.c_ops.c_op_conv)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/tools_nodes.html#onnx_extended.tools.onnx_nodes.convert_onnx_model">convert_onnx_model() (in module onnx_extended.tools.onnx_nodes)</a>
 </li>
         <li><a href="api/validation_trees.html#onnx_extended.validation.bench_trees.create_decision_tree">create_decision_tree() (in module onnx_extended.validation.bench_trees)</a>
@@ -414,8 +422,20 @@
 </li>
         <li><a href="api/reference.html#onnx_extended.reference.c_reference_backend.CReferenceEvaluatorBackendRep">CReferenceEvaluatorBackendRep (class in onnx_extended.reference.c_reference_backend)</a>
 </li>
-        <li><a href="api/check.html#onnx_extended.cuda_version">cuda_version() (in module onnx_extended)</a>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.cuda_device_count">cuda_device_count() (in module onnx_extended.validation.cuda.cuda_example_py)</a>
 </li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.cuda_device_memory">cuda_device_memory() (in module onnx_extended.validation.cuda.cuda_example_py)</a>
+</li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.cuda_devices_memory">cuda_devices_memory() (in module onnx_extended.validation.cuda.cuda_example_py)</a>
+</li>
+        <li><a href="api/check.html#onnx_extended.cuda_version">cuda_version() (in module onnx_extended)</a>
+
+        <ul>
+          <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.cuda_version">(in module onnx_extended.validation.cuda.cuda_example_py)</a>
+</li>
+          <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_monitor.cuda_version">(in module onnx_extended.validation.cuda.cuda_monitor)</a>
+</li>
+        </ul></li>
         <li><a href="api/check.html#onnx_extended.cuda_version_int">cuda_version_int() (in module onnx_extended)</a>
 </li>
     </ul></td>
@@ -508,11 +528,15 @@
 </li>
         <li><a href="api/check.html#onnx_extended.get_cxx_flags">get_cxx_flags() (in module onnx_extended)</a>
 </li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.get_device_prop">get_device_prop() (in module onnx_extended.validation.cuda.cuda_example_py)</a>
+</li>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.get_dot_kind">get_dot_kind() (onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp method)</a>
 </li>
         <li><a href="api/tools_nodes.html#onnx_extended.tools.onnx_nodes.get_hidden_inputs">get_hidden_inputs() (in module onnx_extended.tools.onnx_nodes)</a>
 </li>
         <li><a href="api/ortcy.html#onnx_extended.ortcy.wrap.ortinf.OrtSession.get_input_count">get_input_count() (onnx_extended.ortcy.wrap.ortinf.OrtSession method)</a>
+</li>
+        <li><a href="api/memory_peak.html#onnx_extended.memory_peak.get_memory_rss">get_memory_rss() (in module onnx_extended.memory_peak)</a>
 </li>
         <li><a href="api/tools_graph.html#onnx_extended.tools.graph.Graph.get_node_producer">get_node_producer() (onnx_extended.tools.graph.Graph method)</a>
 </li>
@@ -520,10 +544,10 @@
 </li>
         <li><a href="api/tools_graph.html#onnx_extended.tools.graph.Graph.get_opsets">get_opsets() (onnx_extended.tools.graph.Graph method)</a>
 </li>
-        <li><a href="api/ortcy.html#onnx_extended.ortcy.wrap.ortinf.get_ort_c_api_supported_version">get_ort_c_api_supported_version() (in module onnx_extended.ortcy.wrap.ortinf)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/ortcy.html#onnx_extended.ortcy.wrap.ortinf.get_ort_c_api_supported_version">get_ort_c_api_supported_version() (in module onnx_extended.ortcy.wrap.ortinf)</a>
+</li>
         <li><a href="api/ortops_optim.html#onnx_extended.ortops.optim.cpu.get_ort_ext_libs">get_ort_ext_libs() (in module onnx_extended.ortops.optim.cpu)</a>
 
         <ul>
@@ -555,6 +579,8 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/check.html#onnx_extended.has_cuda">has_cuda() (in module onnx_extended)</a>
+</li>
+        <li><a href="api/plotting.html#onnx_extended.plotting.benchmark.hhistograms">hhistograms() (in module onnx_extended.plotting.benchmark)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
@@ -654,6 +680,8 @@
 </li>
         <li><a href="api/ext_test_case.html#onnx_extended.ext_test_case.measure_time">measure_time() (in module onnx_extended.ext_test_case)</a>
 </li>
+        <li><a href="api/memory_peak.html#onnx_extended.memory_peak.MemorySpy">MemorySpy (class in onnx_extended.memory_peak)</a>
+</li>
         <li><a href="api/tools_nodes.html#onnx_extended.tools.onnx_nodes.multiply_tree">multiply_tree() (in module onnx_extended.tools.onnx_nodes)</a>
 </li>
         <li><a href="api/validation_cpu.html#onnx_extended.validation.cpu._validation.murmurhash3_bytes_s32">murmurhash3_bytes_s32() (in module onnx_extended.validation.cpu._validation)</a>
@@ -678,12 +706,12 @@
 </li>
         <li><a href="api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeKind">NodeKind (class in onnx_extended.tools.graph.onnx_graph_struct)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeSet">NodeSet (class in onnx_extended.tools.graph.onnx_graph_struct)</a>
 </li>
         <li><a href="api/tools_stats.html#onnx_extended.tools.stats_nodes.NodeStatistics">NodeStatistics (class in onnx_extended.tools.stats_nodes)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeWithSubGraph">NodeWithSubGraph (class in onnx_extended.tools.graph.onnx_graph_struct)</a>
 </li>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_ext.numpy_extended_dot">numpy_extended_dot() (in module onnx_extended.tools.einsum.einsum_impl_ext)</a>
@@ -691,6 +719,14 @@
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_ext.numpy_extended_dot_matrix">numpy_extended_dot_matrix() (in module onnx_extended.tools.einsum.einsum_impl_ext)</a>
 </li>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_ext.numpy_extended_dot_python">numpy_extended_dot_python() (in module onnx_extended.tools.einsum.einsum_impl_ext)</a>
+</li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_monitor.nvml_device_get_count">nvml_device_get_count() (in module onnx_extended.validation.cuda.cuda_monitor)</a>
+</li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_monitor.nvml_device_get_memory_info">nvml_device_get_memory_info() (in module onnx_extended.validation.cuda.cuda_monitor)</a>
+</li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_monitor.nvml_init">nvml_init() (in module onnx_extended.validation.cuda.cuda_monitor)</a>
+</li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_monitor.nvml_shutdown">nvml_shutdown() (in module onnx_extended.validation.cuda.cuda_monitor)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -822,11 +858,23 @@
 </li>
         <li><a href="api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.simplify_mm_nodes">simplify_mm_nodes() (onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp method)</a>
 </li>
+        <li><a href="api/validation_sparse.html#onnx_extended.validation.cpu._validation.sparse_struct_indices_values">sparse_struct_indices_values() (in module onnx_extended.validation.cpu._validation)</a>
+</li>
+        <li><a href="api/validation_sparse.html#onnx_extended.validation.cpu._validation.sparse_struct_to_csr">sparse_struct_to_csr() (in module onnx_extended.validation.cpu._validation)</a>
+</li>
         <li><a href="api/validation_sparse.html#onnx_extended.validation.cpu._validation.sparse_struct_to_dense">sparse_struct_to_dense() (in module onnx_extended.validation.cpu._validation)</a>
+</li>
+        <li><a href="api/validation_sparse.html#onnx_extended.validation.cpu._validation.sparse_struct_to_maps">sparse_struct_to_maps() (in module onnx_extended.validation.cpu._validation)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/memory_peak.html#onnx_extended.memory_peak.MemorySpy.start">start() (onnx_extended.memory_peak.MemorySpy method)</a>
+</li>
+        <li><a href="api/memory_peak.html#onnx_extended.memory_peak.start_spying_on">start_spying_on() (in module onnx_extended.memory_peak)</a>
+</li>
         <li><a href="api/tools_stats.html#onnx_extended.tools.stats_nodes.stats_tree_ensemble">stats_tree_ensemble() (in module onnx_extended.tools.stats_nodes)</a>
+</li>
+        <li><a href="api/memory_peak.html#onnx_extended.memory_peak.MemorySpy.stop">stop() (onnx_extended.memory_peak.MemorySpy method)</a>
 </li>
         <li><a href="command_lines.html#onnx_extended._command_lines.store_intermediate_results">store_intermediate_results() (in module onnx_extended._command_lines)</a>
 </li>
@@ -914,10 +962,10 @@
 </li>
         <li><a href="api/validation_cpu.html#onnx_extended.validation.cpu._validation.vector_sum">vector_sum() (in module onnx_extended.validation.cpu._validation)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.vector_sum0">vector_sum0() (in module onnx_extended.validation.cuda.cuda_example_py)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.vector_sum6">vector_sum6() (in module onnx_extended.validation.cuda.cuda_example_py)</a>
 </li>
         <li><a href="api/validation_cpu.html#onnx_extended.validation.cpu._validation.vector_sum_array">vector_sum_array() (in module onnx_extended.validation.cpu._validation)</a>
@@ -927,6 +975,10 @@
         <li><a href="api/validation_cpu.html#onnx_extended.validation.cpu._validation.vector_sum_array_avx_parallel">vector_sum_array_avx_parallel() (in module onnx_extended.validation.cpu._validation)</a>
 </li>
         <li><a href="api/validation_cpu.html#onnx_extended.validation.cpu._validation.vector_sum_array_parallel">vector_sum_array_parallel() (in module onnx_extended.validation.cpu._validation)</a>
+</li>
+        <li><a href="api/validation_cuda.html#onnx_extended.validation.cuda.cuda_example_py.vector_sum_atomic">vector_sum_atomic() (in module onnx_extended.validation.cuda.cuda_example_py)</a>
+</li>
+        <li><a href="api/plotting.html#onnx_extended.plotting.benchmark.vhistograms">vhistograms() (in module onnx_extended.plotting.benchmark)</a>
 </li>
     </ul></td>
   </tr></table>

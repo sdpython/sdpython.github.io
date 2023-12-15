@@ -176,7 +176,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="many_tools.html">Many Tools to help investigating issues</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -212,6 +213,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../api/check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -220,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/validation_cpu.html">validation.cpu</a></li>
@@ -256,11 +259,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -379,16 +383,16 @@ be evaluated on. This is done with function <a class="reference internal" href="
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">train</span> <span class="n">RandomForestRegressor</span> <span class="n">n_trees</span><span class="o">=</span><span class="mi">10</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">10</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span>
     <span class="n">conversion</span> <span class="n">to</span> <span class="n">onnx</span>
-    <span class="n">size</span><span class="p">:</span> <span class="mi">4738</span>
+    <span class="n">size</span><span class="p">:</span> <span class="mi">5614</span>
     <span class="n">create</span> <span class="n">the</span> <span class="n">benchmark</span>
     <span class="n">end</span>
-    <span class="mf">4.6</span> <span class="n">Kb</span><span class="p">:</span> <span class="n">test_ort_version</span><span class="o">-</span><span class="n">F10</span><span class="o">-</span><span class="n">T10</span><span class="o">-</span><span class="n">D3</span><span class="o">-</span><span class="n">B10</span><span class="o">/</span><span class="n">rf</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">onnx</span>
+    <span class="mf">5.5</span> <span class="n">Kb</span><span class="p">:</span> <span class="n">test_ort_version</span><span class="o">-</span><span class="n">F10</span><span class="o">-</span><span class="n">T10</span><span class="o">-</span><span class="n">D3</span><span class="o">-</span><span class="n">B10</span><span class="o">/</span><span class="n">rf</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">onnx</span>
     <span class="mf">0.4</span> <span class="n">Kb</span><span class="p">:</span> <span class="n">test_ort_version</span><span class="o">-</span><span class="n">F10</span><span class="o">-</span><span class="n">T10</span><span class="o">-</span><span class="n">D3</span><span class="o">-</span><span class="n">B10</span><span class="o">/</span><span class="n">rf</span><span class="o">/</span><span class="n">test_data_set_0</span><span class="o">/</span><span class="n">input_0</span><span class="o">.</span><span class="n">pb</span>
     <span class="mf">0.1</span> <span class="n">Kb</span><span class="p">:</span> <span class="n">test_ort_version</span><span class="o">-</span><span class="n">F10</span><span class="o">-</span><span class="n">T10</span><span class="o">-</span><span class="n">D3</span><span class="o">-</span><span class="n">B10</span><span class="o">/</span><span class="n">rf</span><span class="o">/</span><span class="n">test_data_set_0</span><span class="o">/</span><span class="n">output_0</span><span class="o">.</span><span class="n">pb</span>
     <span class="p">[</span><span class="n">runpythonerror</span><span class="p">]</span>
     <span class="p">[</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]:</span> <span class="n">Using</span> <span class="n">backend</span> <span class="n">ThreadingBackend</span> <span class="k">with</span> <span class="mi">8</span> <span class="n">concurrent</span> <span class="n">workers</span><span class="o">.</span>
-    <span class="p">[</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]:</span> <span class="n">Done</span>   <span class="mi">6</span> <span class="n">out</span> <span class="n">of</span>  <span class="mi">10</span> <span class="o">|</span> <span class="n">elapsed</span><span class="p">:</span>    <span class="mf">0.4</span><span class="n">s</span> <span class="n">remaining</span><span class="p">:</span>    <span class="mf">0.3</span><span class="n">s</span>
-    <span class="p">[</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]:</span> <span class="n">Done</span>  <span class="mi">10</span> <span class="n">out</span> <span class="n">of</span>  <span class="mi">10</span> <span class="o">|</span> <span class="n">elapsed</span><span class="p">:</span>    <span class="mf">0.4</span><span class="n">s</span> <span class="n">finished</span>
+    <span class="p">[</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]:</span> <span class="n">Done</span>   <span class="mi">6</span> <span class="n">out</span> <span class="n">of</span>  <span class="mi">10</span> <span class="o">|</span> <span class="n">elapsed</span><span class="p">:</span>    <span class="mf">0.2</span><span class="n">s</span> <span class="n">remaining</span><span class="p">:</span>    <span class="mf">0.1</span><span class="n">s</span>
+    <span class="p">[</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]:</span> <span class="n">Done</span>  <span class="mi">10</span> <span class="n">out</span> <span class="n">of</span>  <span class="mi">10</span> <span class="o">|</span> <span class="n">elapsed</span><span class="p">:</span>    <span class="mf">0.2</span><span class="n">s</span> <span class="n">finished</span>
 </pre></div>
 </div>
 <p>The output are not used to measure the performance but it can be

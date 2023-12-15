@@ -42,7 +42,7 @@ equal to the default number of used threads to parallelize.
 
 .. GENERATED FROM PYTHON SOURCE LINES 24-47
 
-.. code-block:: default
+.. code-block:: Python
 
     import logging
     import numpy
@@ -81,7 +81,7 @@ Einsum: common code
 
 .. GENERATED FROM PYTHON SOURCE LINES 50-212
 
-.. code-block:: default
+.. code-block:: Python
 
 
     try:
@@ -270,7 +270,7 @@ the following.
 
 .. GENERATED FROM PYTHON SOURCE LINES 226-233
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dfs = []
@@ -292,8 +292,8 @@ the following.
 
  .. code-block:: none
 
-      0%|          | 0/121 [00:00<?, ?it/s]    0.011 rtbest='bsnh,btnh->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.011 rtbest='bsnh,btnh->bnts':   1%|          | 1/121 [00:00<00:16,  7.41it/s]    0.0098 rtbest='bsnh,btnh->bnts':   1%|          | 1/121 [00:00<00:16,  7.41it/s]    0.009 rtbest='bnsh,btsh->bstn':   1%|          | 1/121 [00:00<00:16,  7.41it/s]     0.0077 rtbest='bnth,bsth->btsn':   1%|          | 1/121 [00:00<00:16,  7.41it/s]    0.0069 rtbest='btsh,bnsh->bsnt':   1%|          | 1/121 [00:00<00:16,  7.41it/s]    0.0066 rtbest='bsth,bnth->btns':   1%|          | 1/121 [00:00<00:16,  7.41it/s]    0.0062 rtbest='bthn,bshn->bhst':   1%|          | 1/121 [00:00<00:16,  7.41it/s]    0.0062 rtbest='bnhs,bths->bhtn':   1%|          | 1/121 [00:00<00:16,  7.41it/s]    0.0062 rtbest='bnhs,bths->bhtn':   8%|▊         | 10/121 [00:00<00:02, 48.47it/s]    0.0061 rtbest='bths,bnhs->bhnt':   8%|▊         | 10/121 [00:00<00:02, 48.47it/s]    0.006 rtbest='bsht,bnht->bhns':   8%|▊         | 10/121 [00:00<00:02, 48.47it/s]     0.006 rtbest='bsht,bnht->bhns':  18%|█▊        | 22/121 [00:00<00:01, 76.08it/s]    0.006 rtbest='bsht,bnht->bhns':  28%|██▊       | 34/121 [00:00<00:00, 90.16it/s]    0.006 rtbest='bsht,bnht->bhns':  37%|███▋      | 45/121 [00:00<00:00, 96.31it/s]    0.006 rtbest='bsht,bnht->bhns':  46%|████▋     | 56/121 [00:00<00:00, 100.04it/s]    0.006 rtbest='bsht,bnht->bhns':  55%|█████▌    | 67/121 [00:00<00:00, 99.18it/s]     0.006 rtbest='bsht,bnht->bhns':  64%|██████▍   | 78/121 [00:00<00:00, 99.53it/s]    0.006 rtbest='bsht,bnht->bhns':  74%|███████▎  | 89/121 [00:00<00:00, 100.25it/s]    0.006 rtbest='bsht,bnht->bhns':  83%|████████▎ | 100/121 [00:01<00:00, 100.60it/s]    0.006 rtbest='bsht,bnht->bhns':  92%|█████████▏| 111/121 [00:01<00:00, 101.20it/s]    0.006 rtbest='bsht,bnht->bhns': 100%|██████████| 121/121 [00:01<00:00, 93.04it/s] 
-      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:00<00:01,  6.20it/s]     38%|███▊      | 3/8 [00:00<00:00, 11.43it/s]     62%|██████▎   | 5/8 [00:01<00:00,  4.12it/s]     75%|███████▌  | 6/8 [00:02<00:00,  2.16it/s]     88%|████████▊ | 7/8 [00:04<00:01,  1.04s/it]    100%|██████████| 8/8 [00:08<00:00,  1.83s/it]    100%|██████████| 8/8 [00:08<00:00,  1.06s/it]
+      0%|          | 0/121 [00:00<?, ?it/s]    0.021 rtbest='bsnh,btnh->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.021 rtbest='bsnh,btnh->bnts':   1%|          | 1/121 [00:00<00:25,  4.78it/s]    0.02 rtbest='bnth,bsth->btsn':   1%|          | 1/121 [00:00<00:25,  4.78it/s]     0.02 rtbest='bnth,bsth->btsn':   4%|▍         | 5/121 [00:00<00:06, 18.16it/s]    0.017 rtbest='btsh,bnsh->bsnt':   4%|▍         | 5/121 [00:00<00:06, 18.16it/s]    0.016 rtbest='bsth,bnth->btns':   4%|▍         | 5/121 [00:00<00:06, 18.16it/s]    0.016 rtbest='bsth,bnth->btns':   8%|▊         | 10/121 [00:00<00:03, 27.99it/s]    0.016 rtbest='bsth,bnth->btns':  12%|█▏        | 14/121 [00:00<00:03, 29.35it/s]    0.016 rtbest='bsth,bnth->btns':  15%|█▍        | 18/121 [00:00<00:03, 30.28it/s]    0.016 rtbest='bsth,bnth->btns':  18%|█▊        | 22/121 [00:00<00:03, 32.46it/s]    0.016 rtbest='bsth,bnth->btns':  21%|██▏       | 26/121 [00:00<00:02, 33.94it/s]    0.016 rtbest='bsth,bnth->btns':  25%|██▍       | 30/121 [00:01<00:02, 35.11it/s]    0.016 rtbest='snhb,sthb->shtn':  25%|██▍       | 30/121 [00:01<00:02, 35.11it/s]    0.016 rtbest='snhb,sthb->shtn':  29%|██▉       | 35/121 [00:01<00:02, 38.63it/s]    0.016 rtbest='snhb,sthb->shtn':  32%|███▏      | 39/121 [00:01<00:02, 38.84it/s]    0.016 rtbest='snhb,sthb->shtn':  36%|███▌      | 43/121 [00:01<00:02, 37.71it/s]    0.016 rtbest='snhb,sthb->shtn':  39%|███▉      | 47/121 [00:01<00:02, 34.58it/s]    0.016 rtbest='snhb,sthb->shtn':  42%|████▏     | 51/121 [00:01<00:02, 33.11it/s]    0.016 rtbest='snhb,sthb->shtn':  45%|████▌     | 55/121 [00:01<00:01, 33.72it/s]    0.016 rtbest='snhb,sthb->shtn':  50%|████▉     | 60/121 [00:01<00:01, 35.29it/s]    0.016 rtbest='snhb,sthb->shtn':  53%|█████▎    | 64/121 [00:01<00:01, 35.19it/s]    0.015 rtbest='ntbs,nhbs->nbht':  53%|█████▎    | 64/121 [00:02<00:01, 35.19it/s]    0.015 rtbest='ntbs,nhbs->nbht':  56%|█████▌    | 68/121 [00:02<00:01, 35.76it/s]    0.014 rtbest='nsbt,nhbt->nbhs':  56%|█████▌    | 68/121 [00:02<00:01, 35.76it/s]    0.014 rtbest='snbt,shbt->sbhn':  56%|█████▌    | 68/121 [00:02<00:01, 35.76it/s]    0.014 rtbest='snbt,shbt->sbhn':  61%|██████    | 74/121 [00:02<00:01, 40.77it/s]    0.014 rtbest='snbt,shbt->sbhn':  66%|██████▌   | 80/121 [00:02<00:00, 43.58it/s]    0.014 rtbest='snbt,shbt->sbhn':  71%|███████   | 86/121 [00:02<00:00, 45.29it/s]    0.014 rtbest='snbt,shbt->sbhn':  75%|███████▌  | 91/121 [00:02<00:00, 42.89it/s]    0.014 rtbest='snbt,shbt->sbhn':  79%|███████▉  | 96/121 [00:02<00:00, 41.47it/s]    0.014 rtbest='snbt,shbt->sbhn':  83%|████████▎ | 101/121 [00:02<00:00, 41.94it/s]    0.014 rtbest='snbt,shbt->sbhn':  88%|████████▊ | 106/121 [00:02<00:00, 43.81it/s]    0.014 rtbest='snbt,shbt->sbhn':  92%|█████████▏| 111/121 [00:03<00:00, 43.92it/s]    0.014 rtbest='snbt,shbt->sbhn':  96%|█████████▌| 116/121 [00:03<00:00, 44.60it/s]    0.014 rtbest='snbt,shbt->sbhn': 100%|██████████| 121/121 [00:03<00:00, 45.72it/s]    0.014 rtbest='snbt,shbt->sbhn': 100%|██████████| 121/121 [00:03<00:00, 37.50it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     25%|██▌       | 2/8 [00:00<00:00, 13.43it/s]     50%|█████     | 4/8 [00:00<00:00,  4.32it/s]     62%|██████▎   | 5/8 [00:01<00:01,  2.19it/s]     75%|███████▌  | 6/8 [00:03<00:01,  1.21it/s]     88%|████████▊ | 7/8 [00:07<00:01,  1.86s/it]    100%|██████████| 8/8 [00:16<00:00,  3.87s/it]    100%|██████████| 8/8 [00:16<00:00,  2.05s/it]
 
 
 
@@ -319,7 +319,7 @@ the following.
 
 .. GENERATED FROM PYTHON SOURCE LINES 250-256
 
-.. code-block:: default
+.. code-block:: Python
 
 
     equation = "bshn,bthn->bnts"
@@ -340,8 +340,8 @@ the following.
 
  .. code-block:: none
 
-      0%|          | 0/121 [00:00<?, ?it/s]    0.0081 rtbest='bshn,bthn->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.008 rtbest='bthn,bshn->bnst':   0%|          | 0/121 [00:00<?, ?it/s]     0.008 rtbest='btnh,bsnh->bhst':   0%|          | 0/121 [00:00<?, ?it/s]    0.008 rtbest='btnh,bsnh->bhst':   7%|▋         | 9/121 [00:00<00:01, 89.94it/s]    0.0079 rtbest='bhns,btns->bsth':   7%|▋         | 9/121 [00:00<00:01, 89.94it/s]    0.0079 rtbest='bhst,bnst->btnh':   7%|▋         | 9/121 [00:00<00:01, 89.94it/s]    0.0079 rtbest='bhts,bnts->bsnh':   7%|▋         | 9/121 [00:00<00:01, 89.94it/s]    0.0079 rtbest='bhts,bnts->bsnh':  16%|█▌        | 19/121 [00:00<00:01, 90.50it/s]    0.0076 rtbest='btns,bhns->bsht':  16%|█▌        | 19/121 [00:00<00:01, 90.50it/s]    0.0076 rtbest='btns,bhns->bsht':  24%|██▍       | 29/121 [00:00<00:00, 92.49it/s]    0.0075 rtbest='nhbs,ntbs->nsth':  24%|██▍       | 29/121 [00:00<00:00, 92.49it/s]    0.0075 rtbest='nhbs,ntbs->nsth':  32%|███▏      | 39/121 [00:00<00:00, 94.14it/s]    0.0074 rtbest='ntbs,nhbs->nsht':  32%|███▏      | 39/121 [00:00<00:00, 94.14it/s]    0.0074 rtbest='ntbs,nhbs->nsht':  40%|████      | 49/121 [00:00<00:00, 94.49it/s]    0.0074 rtbest='ntbs,nhbs->nsht':  49%|████▉     | 59/121 [00:00<00:00, 96.14it/s]    0.0074 rtbest='shnb,stnb->sbth':  49%|████▉     | 59/121 [00:00<00:00, 96.14it/s]    0.0074 rtbest='shnb,stnb->sbth':  58%|█████▊    | 70/121 [00:00<00:00, 97.53it/s]    0.0074 rtbest='hbns,htns->hstb':  58%|█████▊    | 70/121 [00:00<00:00, 97.53it/s]    0.0071 rtbest='hbnt,hsnt->htsb':  58%|█████▊    | 70/121 [00:00<00:00, 97.53it/s]    0.0071 rtbest='nbht,nsht->ntsb':  58%|█████▊    | 70/121 [00:00<00:00, 97.53it/s]    0.0071 rtbest='nbht,nsht->ntsb':  67%|██████▋   | 81/121 [00:00<00:00, 98.63it/s]    0.0071 rtbest='nbht,nsht->ntsb':  76%|███████▌  | 92/121 [00:00<00:00, 99.60it/s]    0.007 rtbest='sbnt,shnt->sthb':  76%|███████▌  | 92/121 [00:00<00:00, 99.60it/s]     0.007 rtbest='sbnt,shnt->sthb':  84%|████████▍ | 102/121 [00:01<00:00, 99.24it/s]    0.007 rtbest='sbnt,shnt->sthb':  93%|█████████▎| 112/121 [00:01<00:00, 97.03it/s]    0.007 rtbest='sbnt,shnt->sthb': 100%|██████████| 121/121 [00:01<00:00, 96.47it/s]
-      0%|          | 0/8 [00:00<?, ?it/s]     38%|███▊      | 3/8 [00:00<00:00, 20.83it/s]     75%|███████▌  | 6/8 [00:02<00:01,  1.88it/s]     88%|████████▊ | 7/8 [00:07<00:01,  1.46s/it]    100%|██████████| 8/8 [00:27<00:00,  5.96s/it]    100%|██████████| 8/8 [00:27<00:00,  3.48s/it]
+      0%|          | 0/121 [00:00<?, ?it/s]    0.021 rtbest='bshn,bthn->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.02 rtbest='bnhs,bths->bstn':   0%|          | 0/121 [00:00<?, ?it/s]     0.02 rtbest='bnhs,bths->bstn':   3%|▎         | 4/121 [00:00<00:03, 33.57it/s]    0.019 rtbest='bths,bnhs->bsnt':   3%|▎         | 4/121 [00:00<00:03, 33.57it/s]    0.019 rtbest='bsnh,btnh->bhts':   3%|▎         | 4/121 [00:00<00:03, 33.57it/s]    0.019 rtbest='bsnh,btnh->bhts':   7%|▋         | 8/121 [00:00<00:03, 36.79it/s]    0.019 rtbest='bsnh,btnh->bhts':  10%|▉         | 12/121 [00:00<00:02, 36.91it/s]    0.019 rtbest='bsnh,btnh->bhts':  13%|█▎        | 16/121 [00:00<00:03, 34.19it/s]    0.019 rtbest='bsnh,btnh->bhts':  17%|█▋        | 20/121 [00:00<00:02, 34.41it/s]    0.019 rtbest='bsnh,btnh->bhts':  20%|█▉        | 24/121 [00:00<00:02, 35.55it/s]    0.019 rtbest='bsnh,btnh->bhts':  23%|██▎       | 28/121 [00:00<00:02, 36.28it/s]    0.019 rtbest='bsnh,btnh->bhts':  26%|██▋       | 32/121 [00:00<00:02, 34.29it/s]    0.019 rtbest='bsnh,btnh->bhts':  30%|██▉       | 36/121 [00:01<00:02, 35.02it/s]    0.019 rtbest='bsnh,btnh->bhts':  34%|███▍      | 41/121 [00:01<00:02, 36.69it/s]    0.019 rtbest='bsnh,btnh->bhts':  37%|███▋      | 45/121 [00:01<00:02, 36.54it/s]    0.019 rtbest='bsnh,btnh->bhts':  40%|████      | 49/121 [00:01<00:01, 36.02it/s]    0.019 rtbest='bsnh,btnh->bhts':  44%|████▍     | 53/121 [00:01<00:02, 30.32it/s]    0.019 rtbest='bsnh,btnh->bhts':  47%|████▋     | 57/121 [00:01<00:02, 28.55it/s]    0.019 rtbest='bsnh,btnh->bhts':  50%|████▉     | 60/121 [00:01<00:02, 28.24it/s]    0.019 rtbest='bsnh,btnh->bhts':  52%|█████▏    | 63/121 [00:01<00:02, 25.79it/s]    0.019 rtbest='bsnh,btnh->bhts':  55%|█████▍    | 66/121 [00:02<00:02, 24.02it/s]    0.019 rtbest='bsnh,btnh->bhts':  57%|█████▋    | 69/121 [00:02<00:02, 23.05it/s]    0.019 rtbest='bsnh,btnh->bhts':  60%|█████▉    | 72/121 [00:02<00:02, 20.35it/s]    0.019 rtbest='bsnh,btnh->bhts':  62%|██████▏   | 75/121 [00:02<00:02, 20.75it/s]    0.019 rtbest='bsnh,btnh->bhts':  64%|██████▍   | 78/121 [00:02<00:01, 21.67it/s]    0.019 rtbest='bsnh,btnh->bhts':  67%|██████▋   | 81/121 [00:02<00:01, 21.50it/s]    0.019 rtbest='bsnh,btnh->bhts':  69%|██████▉   | 84/121 [00:03<00:01, 20.15it/s]    0.019 rtbest='bsnh,btnh->bhts':  72%|███████▏  | 87/121 [00:03<00:01, 20.45it/s]    0.019 rtbest='bsnh,btnh->bhts':  74%|███████▍  | 90/121 [00:03<00:01, 20.31it/s]    0.019 rtbest='bsnh,btnh->bhts':  77%|███████▋  | 93/121 [00:03<00:01, 20.41it/s]    0.019 rtbest='bsnh,btnh->bhts':  79%|███████▉  | 96/121 [00:03<00:01, 19.88it/s]    0.019 rtbest='bsnh,btnh->bhts':  82%|████████▏ | 99/121 [00:03<00:01, 21.79it/s]    0.019 rtbest='bsnh,btnh->bhts':  84%|████████▍ | 102/121 [00:03<00:00, 23.58it/s]    0.019 rtbest='bsnh,btnh->bhts':  87%|████████▋ | 105/121 [00:03<00:00, 23.66it/s]    0.019 rtbest='bsnh,btnh->bhts':  89%|████████▉ | 108/121 [00:04<00:00, 24.96it/s]    0.019 rtbest='bsnh,btnh->bhts':  92%|█████████▏| 111/121 [00:04<00:00, 25.38it/s]    0.019 rtbest='bsnh,btnh->bhts':  94%|█████████▍| 114/121 [00:04<00:00, 26.17it/s]    0.019 rtbest='bsnh,btnh->bhts':  98%|█████████▊| 118/121 [00:04<00:00, 25.89it/s]    0.019 rtbest='bsnh,btnh->bhts': 100%|██████████| 121/121 [00:04<00:00, 25.11it/s]    0.019 rtbest='bsnh,btnh->bhts': 100%|██████████| 121/121 [00:04<00:00, 26.47it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:00<00:00,  8.92it/s]     25%|██▌       | 2/8 [00:00<00:00,  6.75it/s]     38%|███▊      | 3/8 [00:00<00:01,  3.78it/s]     50%|█████     | 4/8 [00:01<00:02,  1.85it/s]     62%|██████▎   | 5/8 [00:03<00:03,  1.09s/it]     75%|███████▌  | 6/8 [00:07<00:03,  1.84s/it]     88%|████████▊ | 7/8 [00:13<00:03,  3.44s/it]    100%|██████████| 8/8 [00:24<00:00,  5.62s/it]    100%|██████████| 8/8 [00:24<00:00,  3.00s/it]
 
 
 
@@ -366,7 +366,7 @@ the following.
 
 .. GENERATED FROM PYTHON SOURCE LINES 272-278
 
-.. code-block:: default
+.. code-block:: Python
 
 
     equation = "bhsn,bhtn->bnts"
@@ -387,8 +387,8 @@ the following.
 
  .. code-block:: none
 
-      0%|          | 0/121 [00:00<?, ?it/s]    0.0079 rtbest='bhsn,bhtn->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.0078 rtbest='bhsn,bhtn->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.0078 rtbest='bhsn,bhtn->bnts':   7%|▋         | 9/121 [00:00<00:01, 84.95it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  15%|█▍        | 18/121 [00:00<00:01, 86.52it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  22%|██▏       | 27/121 [00:00<00:01, 84.92it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  30%|██▉       | 36/121 [00:00<00:01, 82.04it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  37%|███▋      | 45/121 [00:00<00:00, 77.47it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  45%|████▍     | 54/121 [00:00<00:00, 79.63it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  52%|█████▏    | 63/121 [00:00<00:00, 80.44it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  60%|█████▉    | 72/121 [00:00<00:00, 76.63it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  66%|██████▌   | 80/121 [00:01<00:00, 76.95it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  74%|███████▎  | 89/121 [00:01<00:00, 79.08it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  81%|████████  | 98/121 [00:01<00:00, 81.26it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  88%|████████▊ | 107/121 [00:01<00:00, 83.76it/s]    0.0078 rtbest='bhsn,bhtn->bnts':  97%|█████████▋| 117/121 [00:01<00:00, 86.06it/s]    0.0078 rtbest='bhsn,bhtn->bnts': 100%|██████████| 121/121 [00:01<00:00, 82.20it/s]
-      0%|          | 0/8 [00:00<?, ?it/s]     38%|███▊      | 3/8 [00:00<00:00, 14.90it/s]     62%|██████▎   | 5/8 [00:00<00:00,  6.29it/s]     75%|███████▌  | 6/8 [00:01<00:00,  4.57it/s]     88%|████████▊ | 7/8 [00:01<00:00,  3.05it/s]    100%|██████████| 8/8 [00:02<00:00,  2.21it/s]    100%|██████████| 8/8 [00:02<00:00,  3.20it/s]
+      0%|          | 0/121 [00:00<?, ?it/s]    0.022 rtbest='bhsn,bhtn->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.022 rtbest='bhsn,bhtn->bnts':   0%|          | 0/121 [00:00<?, ?it/s]    0.022 rtbest='bhsn,bhtn->bnts':   3%|▎         | 4/121 [00:00<00:03, 33.82it/s]    0.022 rtbest='bhnt,bhst->btsn':   3%|▎         | 4/121 [00:00<00:03, 33.82it/s]    0.022 rtbest='bhnt,bhst->btsn':   7%|▋         | 8/121 [00:00<00:03, 28.57it/s]    0.022 rtbest='bhnt,bhst->btsn':   9%|▉         | 11/121 [00:00<00:05, 20.99it/s]    0.022 rtbest='bhnt,bhst->btsn':  12%|█▏        | 14/121 [00:00<00:07, 14.18it/s]    0.022 rtbest='bhnt,bhst->btsn':  13%|█▎        | 16/121 [00:00<00:07, 13.39it/s]    0.022 rtbest='bhnt,bhst->btsn':  15%|█▍        | 18/121 [00:01<00:08, 12.13it/s]    0.022 rtbest='bhnt,bhst->btsn':  17%|█▋        | 20/121 [00:01<00:09, 10.48it/s]    0.022 rtbest='bhnt,bhst->btsn':  18%|█▊        | 22/121 [00:01<00:08, 11.04it/s]    0.022 rtbest='bhnt,bhst->btsn':  20%|█▉        | 24/121 [00:01<00:09, 10.62it/s]    0.022 rtbest='bhnt,bhst->btsn':  21%|██▏       | 26/121 [00:02<00:09,  9.64it/s]    0.022 rtbest='bhnt,bhst->btsn':  23%|██▎       | 28/121 [00:02<00:09, 10.24it/s]    0.022 rtbest='bhnt,bhst->btsn':  25%|██▍       | 30/121 [00:02<00:08, 10.41it/s]    0.022 rtbest='bhnt,bhst->btsn':  26%|██▋       | 32/121 [00:02<00:07, 11.54it/s]    0.022 rtbest='bhnt,bhst->btsn':  28%|██▊       | 34/121 [00:02<00:06, 12.44it/s]    0.022 rtbest='bhnt,bhst->btsn':  30%|██▉       | 36/121 [00:02<00:06, 13.61it/s]    0.022 rtbest='bhnt,bhst->btsn':  31%|███▏      | 38/121 [00:02<00:05, 14.09it/s]    0.022 rtbest='bhnt,bhst->btsn':  33%|███▎      | 40/121 [00:03<00:05, 14.43it/s]    0.022 rtbest='bhnt,bhst->btsn':  35%|███▍      | 42/121 [00:03<00:05, 14.22it/s]    0.022 rtbest='bhnt,bhst->btsn':  36%|███▋      | 44/121 [00:03<00:05, 13.83it/s]    0.022 rtbest='bhnt,bhst->btsn':  38%|███▊      | 46/121 [00:03<00:05, 14.07it/s]    0.022 rtbest='bhnt,bhst->btsn':  40%|███▉      | 48/121 [00:03<00:04, 15.35it/s]    0.022 rtbest='bhnt,bhst->btsn':  41%|████▏     | 50/121 [00:03<00:04, 15.34it/s]    0.022 rtbest='bhnt,bhst->btsn':  43%|████▎     | 52/121 [00:03<00:04, 15.90it/s]    0.022 rtbest='bhnt,bhst->btsn':  45%|████▌     | 55/121 [00:03<00:03, 18.71it/s]    0.022 rtbest='bhnt,bhst->btsn':  49%|████▉     | 59/121 [00:04<00:02, 22.50it/s]    0.022 rtbest='bhnt,bhst->btsn':  52%|█████▏    | 63/121 [00:04<00:02, 24.95it/s]    0.022 rtbest='bhnt,bhst->btsn':  55%|█████▍    | 66/121 [00:04<00:02, 25.78it/s]    0.022 rtbest='bhnt,bhst->btsn':  58%|█████▊    | 70/121 [00:04<00:01, 27.36it/s]    0.022 rtbest='bhnt,bhst->btsn':  60%|██████    | 73/121 [00:04<00:01, 26.63it/s]    0.021 rtbest='hsbn,hstn->hntb':  60%|██████    | 73/121 [00:04<00:01, 26.63it/s]    0.021 rtbest='hsbn,hstn->hntb':  63%|██████▎   | 76/121 [00:04<00:01, 26.48it/s]    0.021 rtbest='hsbn,hstn->hntb':  65%|██████▌   | 79/121 [00:04<00:01, 26.15it/s]    0.021 rtbest='hsbn,hstn->hntb':  68%|██████▊   | 82/121 [00:04<00:01, 26.62it/s]    0.02 rtbest='shbt,shnt->stnb':  68%|██████▊   | 82/121 [00:04<00:01, 26.62it/s]     0.02 rtbest='nsbh,nsth->nhtb':  68%|██████▊   | 82/121 [00:05<00:01, 26.62it/s]    0.02 rtbest='nsbh,nsth->nhtb':  71%|███████   | 86/121 [00:05<00:01, 29.46it/s]    0.02 rtbest='nsbh,nsth->nhtb':  74%|███████▍  | 90/121 [00:05<00:00, 31.61it/s]    0.02 rtbest='nsbh,nsth->nhtb':  78%|███████▊  | 94/121 [00:05<00:00, 33.04it/s]    0.02 rtbest='nsbh,nsth->nhtb':  81%|████████  | 98/121 [00:05<00:01, 21.75it/s]    0.02 rtbest='nsbh,nsth->nhtb':  83%|████████▎ | 101/121 [00:05<00:01, 17.87it/s]    0.02 rtbest='nsbh,nsth->nhtb':  86%|████████▌ | 104/121 [00:06<00:01, 15.46it/s]    0.02 rtbest='nsbh,nsth->nhtb':  88%|████████▊ | 106/121 [00:06<00:00, 15.45it/s]    0.02 rtbest='nsbh,nsth->nhtb':  90%|█████████ | 109/121 [00:06<00:00, 17.28it/s]    0.02 rtbest='nsbh,nsth->nhtb':  93%|█████████▎| 112/121 [00:06<00:00, 18.63it/s]    0.02 rtbest='nsbh,nsth->nhtb':  95%|█████████▌| 115/121 [00:06<00:00, 19.44it/s]    0.02 rtbest='nsbh,nsth->nhtb':  98%|█████████▊| 118/121 [00:06<00:00, 21.73it/s]    0.02 rtbest='nsbh,nsth->nhtb': 100%|██████████| 121/121 [00:06<00:00, 17.78it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     25%|██▌       | 2/8 [00:00<00:00,  9.20it/s]     38%|███▊      | 3/8 [00:00<00:00,  5.84it/s]     50%|█████     | 4/8 [00:01<00:01,  3.07it/s]     62%|██████▎   | 5/8 [00:01<00:01,  1.99it/s]     75%|███████▌  | 6/8 [00:02<00:01,  1.50it/s]     88%|████████▊ | 7/8 [00:05<00:01,  1.14s/it]    100%|██████████| 8/8 [00:07<00:00,  1.40s/it]    100%|██████████| 8/8 [00:07<00:00,  1.14it/s]
 
 
 
@@ -404,7 +404,7 @@ the implementation of einsum and find some ways to optimize it.
 
 .. GENERATED FROM PYTHON SOURCE LINES 285-293
 
-.. code-block:: default
+.. code-block:: Python
 
 
     merged = pandas.concat(dfs)
@@ -429,7 +429,7 @@ the implementation of einsum and find some ways to optimize it.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 45.029 seconds)
+   **Total running time of the script:** (1 minutes 6.572 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_einsum.py:
@@ -438,16 +438,13 @@ the implementation of einsum and find some ways to optimize it.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_op_einsum.ipynb <plot_op_einsum.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_op_einsum.py <plot_op_einsum.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_op_einsum.ipynb <plot_op_einsum.ipynb>`
 
 
 .. only:: html

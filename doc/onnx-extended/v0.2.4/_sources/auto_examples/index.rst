@@ -141,10 +141,10 @@ Examples Gallery
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optim_tfidf_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_tfidfvectorizer_sparse_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_optim_tfidf.py`
+  :ref:`sphx_glr_auto_examples_plot_op_tfidfvectorizer_sparse.py`
 
 .. raw:: html
 
@@ -209,14 +209,31 @@ Examples Gallery
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optim_tree_ensemble_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_tree_ensemble_optim_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_optim_tree_ensemble.py`
+  :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_optim.py`
 
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">TreeEnsemble optimization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The example benchmarks the sparse implementation for TreeEnsemble. The default set of optimized...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_tree_ensemble_sparse_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_sparse.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">TreeEnsemble, dense, and sparse</div>
     </div>
 
 
@@ -269,11 +286,12 @@ Examples Gallery
    /auto_examples/plot_conv
    /auto_examples/plot_bench_cypy_ort
    /auto_examples/plot_bench_gpu_vector_sum_gpu
-   /auto_examples/plot_optim_tfidf
+   /auto_examples/plot_op_tfidfvectorizer_sparse
    /auto_examples/plot_bench_gemm_f8
    /auto_examples/plot_op_einsum
    /auto_examples/plot_conv_denorm
-   /auto_examples/plot_optim_tree_ensemble
+   /auto_examples/plot_op_tree_ensemble_optim
+   /auto_examples/plot_op_tree_ensemble_sparse
    /auto_examples/plot_profile_gemm_ort
    /auto_examples/plot_bench_gemm_ort
 

@@ -35,7 +35,7 @@ Creation of a simple model
 
 .. GENERATED FROM PYTHON SOURCE LINES 17-50
 
-.. code-block:: default
+.. code-block:: Python
 
     import numpy as np
     import matplotlib.pyplot as plt
@@ -78,7 +78,7 @@ Creation of a simple model
 
  .. code-block:: none
 
-    [2023-11-05 12:44:38,938] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+    [2023-12-15 18:53:09,223] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 
 
 
@@ -91,7 +91,7 @@ Let's first compare the outputs are the same.
 
 .. GENERATED FROM PYTHON SOURCE LINES 54-68
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sH, sW = 64, 64
@@ -129,7 +129,7 @@ Time measurement
 
 .. GENERATED FROM PYTHON SOURCE LINES 73-83
 
-.. code-block:: default
+.. code-block:: Python
 
 
     feeds = {"X": X, "W": W, "B": B}
@@ -149,9 +149,9 @@ Time measurement
 
  .. code-block:: none
 
-    ReferenceEvaluator: 0.0006839216000225862s
-    CReferenceEvaluator: 7.935840003483463e-05s
-    speedup is 8.61813745895049
+    ReferenceEvaluator: 0.0012356597999987572s
+    CReferenceEvaluator: 0.00010133580000001531s
+    speedup is 12.193714363517834
 
 
 
@@ -162,7 +162,7 @@ Let's add :epkg:`onnxruntime` as well.
 
 .. GENERATED FROM PYTHON SOURCE LINES 85-95
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sess3 = InferenceSession(
@@ -182,8 +182,8 @@ Let's add :epkg:`onnxruntime` as well.
 
  .. code-block:: none
 
-    InferenceSession: 2.8631600027438252e-05s
-    speedup is 23.88695006102244
+    InferenceSession: 7.203260000096634e-05s
+    speedup is 17.15417463734726
 
 
 
@@ -195,7 +195,7 @@ Plotting
 
 .. GENERATED FROM PYTHON SOURCE LINES 98-118
 
-.. code-block:: default
+.. code-block:: Python
 
 
     data = []
@@ -225,7 +225,7 @@ Plotting
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:00,  7.25it/s]     50%|█████     | 2/4 [00:00<00:00,  7.38it/s]     75%|███████▌  | 3/4 [00:00<00:00,  7.08it/s]    100%|██████████| 4/4 [00:00<00:00,  3.57it/s]    100%|██████████| 4/4 [00:00<00:00,  4.38it/s]
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:00,  6.13it/s]     50%|█████     | 2/4 [00:00<00:00,  6.46it/s]     75%|███████▌  | 3/4 [00:00<00:00,  6.09it/s]    100%|██████████| 4/4 [00:00<00:00,  3.62it/s]    100%|██████████| 4/4 [00:00<00:00,  4.28it/s]
 
 
 .. raw:: html
@@ -258,26 +258,26 @@ Plotting
         <tr>
           <th>0</th>
           <td>16</td>
-          <td>0.000252</td>
-          <td>0.000021</td>
+          <td>0.000292</td>
+          <td>0.000029</td>
         </tr>
         <tr>
           <th>1</th>
           <td>32</td>
-          <td>0.000243</td>
-          <td>0.000021</td>
+          <td>0.000268</td>
+          <td>0.000027</td>
         </tr>
         <tr>
           <th>2</th>
           <td>48</td>
-          <td>0.000269</td>
-          <td>0.000024</td>
+          <td>0.000317</td>
+          <td>0.000030</td>
         </tr>
         <tr>
           <th>3</th>
           <td>64</td>
-          <td>0.000866</td>
-          <td>0.000095</td>
+          <td>0.000794</td>
+          <td>0.000097</td>
         </tr>
       </tbody>
     </table>
@@ -292,7 +292,7 @@ Finally.
 
 .. GENERATED FROM PYTHON SOURCE LINES 120-133
 
-.. code-block:: default
+.. code-block:: Python
 
 
     df = df.set_index("size")
@@ -322,7 +322,7 @@ Finally.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.061 seconds)
+   **Total running time of the script:** (0 minutes 20.447 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_conv.py:
@@ -331,16 +331,13 @@ Finally.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_conv.ipynb <plot_conv.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_conv.py <plot_conv.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_conv.ipynb <plot_conv.ipynb>`
 
 
 .. only:: html

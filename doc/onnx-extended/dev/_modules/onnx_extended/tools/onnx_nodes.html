@@ -175,7 +175,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -211,6 +212,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -219,6 +221,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/validation_cpu.html">validation.cpu</a></li>
@@ -255,11 +258,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -362,51 +366,6 @@
     <span class="k">return</span> <span class="n">attr</span>
 
 
-<span class="k">def</span> <span class="nf">_make_node</span><span class="p">(</span>
-    <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">doc_string</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Constructs a NodeProto.</span>
-
-<span class="sd">    :param op_type: (string): The name of the operator to construct</span>
-<span class="sd">    :param inputs: list of input names</span>
-<span class="sd">    :param outputs: list of output names</span>
-<span class="sd">    :param name: optional unique identifier for NodeProto</span>
-<span class="sd">    :param doc_string: optional documentation</span>
-<span class="sd">        string for NodeProto</span>
-<span class="sd">    :param domain: optional domain for NodeProto.</span>
-<span class="sd">        If it&#39;s None, we will just use default domain (which is empty)</span>
-<span class="sd">    :param attributes: the attributes of the node. The acceptable values</span>
-<span class="sd">        are documented in `make_attribute`.</span>
-<span class="sd">    :return: node</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">node</span> <span class="o">=</span> <span class="n">NodeProto</span><span class="p">()</span>
-    <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">=</span> <span class="n">op_type</span>
-    <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-    <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-        <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
-        <span class="n">node</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
-    <span class="k">if</span> <span class="n">domain</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                <span class="n">make_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-            <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">attributes</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">att</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">node</span>
-
-
 <span class="k">def</span> <span class="nf">_apply_optimisation_on_graph</span><span class="p">(</span>
     <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">onnx_model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">],</span>
@@ -430,7 +389,12 @@
             <span class="n">debug_info</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="n">fct</span><span class="p">(</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;GRAPH&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">functions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">fct</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;FUNCTION </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">fct</span><span class="p">(</span>
+                <span class="n">f</span><span class="p">,</span>
+                <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;FUNCTION </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
+                <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">functions</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="s2">&quot;value_info&quot;</span><span class="p">):</span>
@@ -452,81 +416,6 @@
     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;This function only works on &#39;ModelProto&#39; anod not not on </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
     <span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_apply_remove_node_fct_node</span><span class="p">(</span>
-    <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">debug_info</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Applies an optimizing function on a subgraphs.</span>
-
-<span class="sd">    :param node: onnx node</span>
-<span class="sd">    :param recursive: does it in subgraphs as well</span>
-<span class="sd">    :return: new node</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">node</span>
-    <span class="n">modified</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">new_atts</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="s2">&quot;then_branch&quot;</span><span class="p">,</span> <span class="s2">&quot;else_branch&quot;</span><span class="p">):</span>
-            <span class="n">new_body</span> <span class="o">=</span> <span class="n">fct</span><span class="p">(</span>
-                <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span> <span class="o">+</span> <span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_make_att_graph</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_body</span><span class="p">))</span>
-            <span class="n">modified</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">modified</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">new_node</span> <span class="o">=</span> <span class="n">_make_node</span><span class="p">(</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">new_atts</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">new_node</span>
-    <span class="k">return</span> <span class="n">node</span>
-
-
-<span class="k">def</span> <span class="nf">_process_node</span><span class="p">(</span>
-    <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">edges</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">paths</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;:X:&quot;</span><span class="p">,</span>
-    <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
-    <span class="n">node_name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span>
-    <span class="n">data</span><span class="p">[</span><span class="n">node_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">path</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">paths</span><span class="p">[</span><span class="n">node_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_name</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
-        <span class="n">data</span><span class="p">[</span><span class="n">inp</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
-        <span class="n">edges</span><span class="p">[(</span><span class="n">inp</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">node_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">node</span>
-        <span class="n">paths</span><span class="p">[</span><span class="n">inp</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
-        <span class="k">if</span> <span class="n">sep</span> <span class="ow">in</span> <span class="n">node_name</span><span class="p">:</span>
-            <span class="c1"># We need to link an input to the parent node</span>
-            <span class="c1"># if the node is part of subgraph.</span>
-            <span class="c1"># path_r = paths[inp, 0]</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unexpected path </span><span class="si">{</span><span class="n">path</span><span class="si">!r}</span><span class="s2">, this may happen &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;if sep=</span><span class="si">{</span><span class="n">sep</span><span class="si">!r}</span><span class="s2"> is already used in the original model.&quot;</span>
-                <span class="p">)</span>
-            <span class="n">edges</span><span class="p">[(</span><span class="n">inp</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">node</span>
-
-    <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
-        <span class="n">data</span><span class="p">[</span><span class="n">out</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
-        <span class="n">paths</span><span class="p">[</span><span class="n">out</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_name</span>
-        <span class="n">edges</span><span class="p">[(</span><span class="n">node_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">node</span>
-    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">att</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="k">for</span> <span class="n">no</span> <span class="ow">in</span> <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
-                <span class="n">_process_node</span><span class="p">(</span><span class="n">no</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">paths</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">node_name</span> <span class="o">+</span> <span class="n">sep</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="onnx_remove_node_unused"><a class="viewcode-back" href="../../../api/tools_nodes.html#onnx_extended.tools.onnx_remove_node_unused">[docs]</a><span class="k">def</span> <span class="nf">onnx_remove_node_unused</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
@@ -559,48 +448,57 @@
     <span class="n">graph</span> <span class="o">=</span> <span class="n">onnx_model</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;onnx_remove_node_unused:begin with </span><span class="si">%d</span><span class="s2"> nodes.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">))</span>
     <span class="n">is_function</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">valid</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">edges</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">paths</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># mark outputs</span>
+    <span class="k">if</span> <span class="n">is_function</span><span class="p">:</span>
+        <span class="n">marked</span> <span class="o">=</span> <span class="p">{</span><span class="n">o</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">marked</span> <span class="o">=</span> <span class="p">{</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">}</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="c1"># Handles subgraphs.</span>
+    <span class="n">sub_graphs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                <span class="n">sub_graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">sub_graphs</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;Remove unused is not implemented when there are subgraphs.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># mark node output</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+        <span class="n">used</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">marked</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                    <span class="n">marked</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">used</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">used</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                <span class="n">marked</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># removed nodes</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">marked_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">marked</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">marked_set</span><span class="p">):</span>
+            <span class="n">removed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_function</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">init</span>
+        <span class="n">initializers</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">initializer</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">marked</span><span class="p">]</span>
+        <span class="n">sparse_initializers</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">sparse_initializer</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">marked</span><span class="p">]</span>
+    <span class="n">new_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">removed</span><span class="p">]</span>
 
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
-        <span class="n">_process_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">paths</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
-        <span class="n">valid</span><span class="p">[</span><span class="n">out</span> <span class="k">if</span> <span class="n">is_function</span> <span class="k">else</span> <span class="n">out</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-
-    <span class="n">modif</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">while</span> <span class="n">modif</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">modif</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">valid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">valid</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-                <span class="n">valid</span><span class="p">[</span><span class="n">e1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">modif</span> <span class="o">+=</span> <span class="mi">1</span>
-
-    <span class="n">new_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">node</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">in</span> <span class="n">valid</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_function</span><span class="p">:</span>
-        <span class="n">new_inits</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">initializer</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">in</span> <span class="n">valid</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
-        <span class="c1"># Handles subgraphs.</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">)):</span>
-            <span class="n">node</span> <span class="o">=</span> <span class="n">new_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="n">new_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_apply_remove_node_fct_node</span><span class="p">(</span>
-                <span class="n">onnx_remove_node_unused</span><span class="p">,</span>
-                <span class="n">node</span><span class="p">,</span>
-                <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span> <span class="o">+</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
-            <span class="p">)</span>
+    <span class="k">if</span> <span class="n">sub_graphs</span> <span class="ow">and</span> <span class="n">recursive</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;Remove unused is not implemented when there are subgraphs.&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Finally create the new graph.</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_nodes</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">is_function</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;onnx_remove_node_unused:end function with </span><span class="si">%d</span><span class="s2"> nodes.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">make_function</span><span class="p">(</span>
@@ -608,13 +506,18 @@
             <span class="n">onnx_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">onnx_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
             <span class="n">onnx_model</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
-            <span class="n">nodes</span><span class="p">,</span>
+            <span class="n">new_nodes</span><span class="p">,</span>
             <span class="n">opset_imports</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">,</span>
             <span class="n">attributes</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span>
             <span class="n">doc_string</span><span class="o">=</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">make_graph</span><span class="p">(</span>
-        <span class="n">nodes</span><span class="p">,</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">onnx_model</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">new_inits</span>
+        <span class="n">new_nodes</span><span class="p">,</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+        <span class="n">initializers</span><span class="p">,</span>
+        <span class="n">sparse_initializers</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">onnx_model</span><span class="o">.</span><span class="n">value_info</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;onnx_remove_node_unused:end graph with </span><span class="si">%d</span><span class="s2"> nodes.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>

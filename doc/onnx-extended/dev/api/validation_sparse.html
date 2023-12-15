@@ -176,7 +176,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -212,6 +213,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -220,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="ortops_optim.html">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="validation.html">validation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="validation_cpu.html">validation.cpu</a></li>
@@ -256,11 +259,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -316,6 +320,26 @@ from dense from/to sparse.</p>
 </section>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h2>
+<section id="onnx-extended-validation-cpu-validation-dense-to-sparse-struct">
+<h3>onnx_extended.validation.cpu._validation.dense_to_sparse_struct<a class="headerlink" href="#onnx-extended-validation-cpu-validation-dense-to-sparse-struct" title="Permalink to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_extended.validation.cpu._validation.dense_to_sparse_struct">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.validation.cpu._validation.</span></span><span class="sig-name descname"><span class="pre">dense_to_sparse_struct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#onnx_extended.validation.cpu._validation.dense_to_sparse_struct" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts a dense float tensor into a sparse structure
+stored in a float tensor.</p>
+</dd></dl>
+
+</section>
+<section id="onnx-extended-validation-cpu-validation-sparse-struct-indices-values">
+<h3>onnx_extended.validation.cpu._validation.sparse_struct_indices_values<a class="headerlink" href="#onnx-extended-validation-cpu-validation-sparse-struct-indices-values" title="Permalink to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_extended.validation.cpu._validation.sparse_struct_indices_values">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.validation.cpu._validation.</span></span><span class="sig-name descname"><span class="pre">sparse_struct_indices_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></span><a class="headerlink" href="#onnx_extended.validation.cpu._validation.sparse_struct_indices_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the indices and the values from a sparse structure
+stored in a float tensor.</p>
+</dd></dl>
+
+</section>
 <section id="onnx-extended-validation-cpu-validation-sparse-struct-to-dense">
 <h3>onnx_extended.validation.cpu._validation.sparse_struct_to_dense<a class="headerlink" href="#onnx-extended-validation-cpu-validation-sparse-struct-to-dense" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
@@ -326,13 +350,24 @@ into a dense vector.</p>
 </dd></dl>
 
 </section>
-<section id="onnx-extended-validation-cpu-validation-dense-to-sparse-struct">
-<h3>onnx_extended.validation.cpu._validation.dense_to_sparse_struct<a class="headerlink" href="#onnx-extended-validation-cpu-validation-dense-to-sparse-struct" title="Permalink to this heading">#</a></h3>
+<section id="onnx-extended-validation-cpu-validation-sparse-struct-to-csr">
+<h3>onnx_extended.validation.cpu._validation.sparse_struct_to_csr<a class="headerlink" href="#onnx-extended-validation-cpu-validation-sparse-struct-to-csr" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
-<dt class="sig sig-object py" id="onnx_extended.validation.cpu._validation.dense_to_sparse_struct">
-<span class="sig-prename descclassname"><span class="pre">onnx_extended.validation.cpu._validation.</span></span><span class="sig-name descname"><span class="pre">dense_to_sparse_struct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#onnx_extended.validation.cpu._validation.dense_to_sparse_struct" title="Permalink to this definition">#</a></dt>
-<dd><p>Converts a dense float tensor into a sparse structure
-stored in a float tensor.</p>
+<dt class="sig sig-object py" id="onnx_extended.validation.cpu._validation.sparse_struct_to_csr">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.validation.cpu._validation.</span></span><span class="sig-name descname"><span class="pre">sparse_struct_to_csr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></span><a class="headerlink" href="#onnx_extended.validation.cpu._validation.sparse_struct_to_csr" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the position of the first elements of each row.
+The array has n+1 elements if n is the number of non null elements.
+The second array stores the column index for every element.</p>
+</dd></dl>
+
+</section>
+<section id="onnx-extended-validation-cpu-validation-sparse-struct-to-maps">
+<h3>onnx_extended.validation.cpu._validation.sparse_struct_to_maps<a class="headerlink" href="#onnx-extended-validation-cpu-validation-sparse-struct-to-maps" title="Permalink to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_extended.validation.cpu._validation.sparse_struct_to_maps">
+<span class="sig-prename descclassname"><span class="pre">onnx_extended.validation.cpu._validation.</span></span><span class="sig-name descname"><span class="pre">sparse_struct_to_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#onnx_extended.validation.cpu._validation.sparse_struct_to_maps" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts a sparse structure stored in a float tensor
+into a list of dictionaries. The sparse tensor needs to be 2D.</p>
 </dd></dl>
 
 </section>
@@ -397,12 +432,24 @@ stored in a float tensor.</p>
 <li><a class="reference internal" href="#">validation.bench_trees</a><ul>
 <li><a class="reference internal" href="#design">Design</a></li>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#onnx-extended-validation-cpu-validation-dense-to-sparse-struct">onnx_extended.validation.cpu._validation.dense_to_sparse_struct</a><ul>
+<li><a class="reference internal" href="#onnx_extended.validation.cpu._validation.dense_to_sparse_struct"><code class="docutils literal notranslate"><span class="pre">dense_to_sparse_struct()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#onnx-extended-validation-cpu-validation-sparse-struct-indices-values">onnx_extended.validation.cpu._validation.sparse_struct_indices_values</a><ul>
+<li><a class="reference internal" href="#onnx_extended.validation.cpu._validation.sparse_struct_indices_values"><code class="docutils literal notranslate"><span class="pre">sparse_struct_indices_values()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#onnx-extended-validation-cpu-validation-sparse-struct-to-dense">onnx_extended.validation.cpu._validation.sparse_struct_to_dense</a><ul>
 <li><a class="reference internal" href="#onnx_extended.validation.cpu._validation.sparse_struct_to_dense"><code class="docutils literal notranslate"><span class="pre">sparse_struct_to_dense()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#onnx-extended-validation-cpu-validation-dense-to-sparse-struct">onnx_extended.validation.cpu._validation.dense_to_sparse_struct</a><ul>
-<li><a class="reference internal" href="#onnx_extended.validation.cpu._validation.dense_to_sparse_struct"><code class="docutils literal notranslate"><span class="pre">dense_to_sparse_struct()</span></code></a></li>
+<li><a class="reference internal" href="#onnx-extended-validation-cpu-validation-sparse-struct-to-csr">onnx_extended.validation.cpu._validation.sparse_struct_to_csr</a><ul>
+<li><a class="reference internal" href="#onnx_extended.validation.cpu._validation.sparse_struct_to_csr"><code class="docutils literal notranslate"><span class="pre">sparse_struct_to_csr()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#onnx-extended-validation-cpu-validation-sparse-struct-to-maps">onnx_extended.validation.cpu._validation.sparse_struct_to_maps</a><ul>
+<li><a class="reference internal" href="#onnx_extended.validation.cpu._validation.sparse_struct_to_maps"><code class="docutils literal notranslate"><span class="pre">sparse_struct_to_maps()</span></code></a></li>
 </ul>
 </li>
 </ul>

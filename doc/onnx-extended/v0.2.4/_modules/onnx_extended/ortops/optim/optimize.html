@@ -175,7 +175,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -211,6 +212,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -219,6 +221,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/validation_cpu.html">validation.cpu</a></li>
@@ -255,11 +258,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -438,11 +442,10 @@
 
     <span class="k">if</span> <span class="n">new_op_domain</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">new_op_domain</span> <span class="o">=</span> <span class="n">op_domain</span>
-    <span class="k">if</span> <span class="n">new_op_domain</span> <span class="o">==</span> <span class="n">op_domain</span> <span class="ow">and</span> <span class="n">new_opset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;If new_op_domain==</span><span class="si">{</span><span class="n">new_op_domain</span><span class="si">!r}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;new_opset must be None not </span><span class="si">{</span><span class="n">new_opset</span><span class="si">}</span><span class="s2">.&quot;</span>
-        <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">new_op_domain</span> <span class="o">!=</span> <span class="n">op_domain</span> <span class="ow">or</span> <span class="n">new_opset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;If new_op_domain==</span><span class="si">{</span><span class="n">new_op_domain</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;new_opset must be None not </span><span class="si">{</span><span class="n">new_opset</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span>
     <span class="n">opsets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">opset_import</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">new_op_domain</span> <span class="o">!=</span> <span class="n">op_domain</span><span class="p">:</span>
         <span class="n">opsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_opsetid</span><span class="p">(</span><span class="n">new_op_domain</span><span class="p">,</span> <span class="n">new_opset</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">))</span>
@@ -503,8 +506,7 @@
 
 <span class="sd">    See example :ref:`l-plot-optim-tree-ensemble` for an example.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">sleep</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sleep=</span><span class="si">{</span><span class="n">sleep</span><span class="si">}</span><span class="s2"> &gt;= 1, probably a mistake.&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">sleep</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;sleep=</span><span class="si">{</span><span class="n">sleep</span><span class="si">}</span><span class="s2"> &gt;= 1, probably a mistake.&quot;</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TRY&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">sets</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_tries</span><span class="p">))]</span> <span class="o">+</span> <span class="p">[</span><span class="n">params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
     <span class="n">loops</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">sets</span><span class="p">))</span>

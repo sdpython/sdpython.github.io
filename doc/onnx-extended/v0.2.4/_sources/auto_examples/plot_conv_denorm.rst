@@ -34,7 +34,7 @@ Create one model
 
 .. GENERATED FROM PYTHON SOURCE LINES 16-87
 
-.. code-block:: default
+.. code-block:: Python
 
     import struct
     import matplotlib.pyplot as plt
@@ -120,7 +120,7 @@ The model looks like:
 
 .. GENERATED FROM PYTHON SOURCE LINES 89-95
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(onnx_simple_text_plot(onx))
@@ -154,7 +154,7 @@ Let's first compare the outputs are the same.
 
 .. GENERATED FROM PYTHON SOURCE LINES 99-114
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sess_options = SessionOptions()
@@ -179,7 +179,7 @@ Let's first compare the outputs are the same.
 
  .. code-block:: none
 
-    difference: 2.6702880859375e-05
+    difference: 3.814697265625e-05
 
 
 
@@ -193,7 +193,7 @@ Time measurement
 
 .. GENERATED FROM PYTHON SOURCE LINES 119-128
 
-.. code-block:: default
+.. code-block:: Python
 
 
     feeds = {"X": X}
@@ -212,8 +212,8 @@ Time measurement
 
  .. code-block:: none
 
-    CReferenceEvaluator: 0.10542444999955478s
-    InferenceSession: 0.11749124000052688s
+    CReferenceEvaluator: 0.17307839000004605s
+    InferenceSession: 0.13686461000002054s
 
 
 
@@ -228,7 +228,7 @@ Let's choose an random input.
 
 .. GENERATED FROM PYTHON SOURCE LINES 134-237
 
-.. code-block:: default
+.. code-block:: Python
 
     has_cuda = "CUDAExecutionProvider" in get_available_providers()
     X = numpy.random.random(X.shape).astype(X.dtype)
@@ -341,7 +341,7 @@ Let's choose an random input.
 
  .. code-block:: none
 
-      0%|          | 0/16 [00:00<?, ?it/s]      6%|▋         | 1/16 [00:28<07:02, 28.19s/it]     12%|█▎        | 2/16 [00:33<03:26, 14.78s/it]     19%|█▉        | 3/16 [00:36<02:03,  9.50s/it]     25%|██▌       | 4/16 [00:38<01:18,  6.52s/it]     31%|███▏      | 5/16 [00:40<00:52,  4.74s/it]     38%|███▊      | 6/16 [00:41<00:36,  3.64s/it]     44%|████▍     | 7/16 [00:43<00:27,  3.09s/it]     50%|█████     | 8/16 [00:45<00:21,  2.65s/it]     56%|█████▋    | 9/16 [00:46<00:15,  2.27s/it]     62%|██████▎   | 10/16 [00:48<00:12,  2.01s/it]     69%|██████▉   | 11/16 [00:49<00:09,  1.82s/it]     75%|███████▌  | 12/16 [00:51<00:06,  1.69s/it]     81%|████████▏ | 13/16 [00:52<00:04,  1.64s/it]     88%|████████▊ | 14/16 [00:54<00:03,  1.58s/it]     94%|█████████▍| 15/16 [00:55<00:01,  1.53s/it]    100%|██████████| 16/16 [00:57<00:00,  1.54s/it]    100%|██████████| 16/16 [00:57<00:00,  3.57s/it]
+      0%|          | 0/16 [00:00<?, ?it/s]      6%|▋         | 1/16 [03:07<46:52, 187.47s/it]     12%|█▎        | 2/16 [03:17<19:20, 82.88s/it]      19%|█▉        | 3/16 [03:22<10:16, 47.45s/it]     25%|██▌       | 4/16 [03:26<06:02, 30.22s/it]     31%|███▏      | 5/16 [03:28<03:43, 20.31s/it]     38%|███▊      | 6/16 [03:31<02:21, 14.18s/it]     44%|████▍     | 7/16 [03:33<01:32, 10.30s/it]     50%|█████     | 8/16 [03:36<01:02,  7.86s/it]     56%|█████▋    | 9/16 [03:39<00:45,  6.48s/it]     62%|██████▎   | 10/16 [03:42<00:31,  5.25s/it]     69%|██████▉   | 11/16 [03:44<00:21,  4.38s/it]     75%|███████▌  | 12/16 [03:46<00:15,  3.78s/it]     81%|████████▏ | 13/16 [03:49<00:10,  3.47s/it]     88%|████████▊ | 14/16 [03:52<00:06,  3.15s/it]     94%|█████████▍| 15/16 [03:54<00:02,  2.95s/it]    100%|██████████| 16/16 [03:57<00:00,  2.80s/it]    100%|██████████| 16/16 [03:57<00:00, 14.82s/it]
 
 
 .. raw:: html
@@ -381,210 +381,210 @@ Let's choose an random input.
         <tr>
           <th>0</th>
           <td>1</td>
-          <td>0.101288</td>
+          <td>0.133286</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.080742</td>
-          <td>0.501265</td>
-          <td>0.186240</td>
-          <td>0.178247</td>
-          <td>0.000397</td>
-          <td>0.000397</td>
+          <td>0.117916</td>
+          <td>0.498074</td>
+          <td>0.232953</td>
+          <td>0.247723</td>
+          <td>0.000684</td>
+          <td>0.000684</td>
         </tr>
         <tr>
           <th>1</th>
           <td>4</td>
-          <td>0.029100</td>
+          <td>0.057989</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.028220</td>
-          <td>0.161830</td>
-          <td>0.106612</td>
-          <td>0.153332</td>
-          <td>0.000445</td>
-          <td>0.000445</td>
+          <td>0.068554</td>
+          <td>0.160380</td>
+          <td>0.220922</td>
+          <td>0.206274</td>
+          <td>0.000503</td>
+          <td>0.000503</td>
         </tr>
         <tr>
           <th>2</th>
           <td>16</td>
-          <td>0.011889</td>
+          <td>0.018503</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.011689</td>
-          <td>0.043998</td>
-          <td>0.061263</td>
-          <td>0.060149</td>
-          <td>0.000441</td>
-          <td>0.000441</td>
+          <td>0.019603</td>
+          <td>0.043657</td>
+          <td>0.088775</td>
+          <td>0.081474</td>
+          <td>0.000846</td>
+          <td>0.000846</td>
         </tr>
         <tr>
           <th>3</th>
           <td>64</td>
-          <td>0.007394</td>
+          <td>0.009783</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.004657</td>
-          <td>0.011147</td>
-          <td>0.019736</td>
-          <td>0.018786</td>
-          <td>0.000447</td>
-          <td>0.000447</td>
+          <td>0.008432</td>
+          <td>0.011024</td>
+          <td>0.031374</td>
+          <td>0.033267</td>
+          <td>0.000756</td>
+          <td>0.000756</td>
         </tr>
         <tr>
           <th>4</th>
           <td>256</td>
-          <td>0.003169</td>
+          <td>0.006148</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002519</td>
-          <td>0.002904</td>
-          <td>0.006173</td>
-          <td>0.005830</td>
-          <td>0.000429</td>
-          <td>0.000429</td>
+          <td>0.005123</td>
+          <td>0.002762</td>
+          <td>0.009320</td>
+          <td>0.009058</td>
+          <td>0.000906</td>
+          <td>0.000906</td>
         </tr>
         <tr>
           <th>5</th>
           <td>1024</td>
-          <td>0.001839</td>
+          <td>0.004477</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002595</td>
-          <td>0.000756</td>
-          <td>0.003530</td>
-          <td>0.003258</td>
-          <td>0.000430</td>
-          <td>0.000430</td>
+          <td>0.003711</td>
+          <td>0.000695</td>
+          <td>0.003953</td>
+          <td>0.005033</td>
+          <td>0.000748</td>
+          <td>0.000748</td>
         </tr>
         <tr>
           <th>6</th>
           <td>4096</td>
-          <td>0.001882</td>
+          <td>0.003671</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002349</td>
-          <td>0.000209</td>
-          <td>0.001665</td>
-          <td>0.004908</td>
-          <td>0.000546</td>
-          <td>0.000546</td>
+          <td>0.004260</td>
+          <td>0.000154</td>
+          <td>0.002960</td>
+          <td>0.003128</td>
+          <td>0.000585</td>
+          <td>0.000585</td>
         </tr>
         <tr>
           <th>7</th>
           <td>16384</td>
-          <td>0.003399</td>
+          <td>0.004497</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002569</td>
-          <td>0.000054</td>
-          <td>0.001676</td>
-          <td>0.002183</td>
-          <td>0.000431</td>
-          <td>0.000431</td>
+          <td>0.004469</td>
+          <td>0.000039</td>
+          <td>0.002544</td>
+          <td>0.003470</td>
+          <td>0.000593</td>
+          <td>0.000593</td>
         </tr>
         <tr>
           <th>8</th>
           <td>65536</td>
-          <td>0.002437</td>
+          <td>0.005874</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002134</td>
-          <td>0.000014</td>
-          <td>0.000998</td>
-          <td>0.001539</td>
-          <td>0.000553</td>
-          <td>0.000553</td>
+          <td>0.007243</td>
+          <td>0.000017</td>
+          <td>0.002627</td>
+          <td>0.004601</td>
+          <td>0.000675</td>
+          <td>0.000675</td>
         </tr>
         <tr>
           <th>9</th>
           <td>262144</td>
-          <td>0.002506</td>
+          <td>0.005926</td>
           <td>0.0</td>
           <td>0.0</td>
+          <td>0.003397</td>
+          <td>0.000002</td>
           <td>0.002026</td>
-          <td>0.000005</td>
-          <td>0.001307</td>
-          <td>0.001781</td>
-          <td>0.000556</td>
-          <td>0.000556</td>
+          <td>0.003090</td>
+          <td>0.000550</td>
+          <td>0.000550</td>
         </tr>
         <tr>
           <th>10</th>
           <td>1048576</td>
-          <td>0.003751</td>
+          <td>0.004256</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.001552</td>
+          <td>0.004502</td>
           <td>0.000002</td>
-          <td>0.001254</td>
-          <td>0.002101</td>
-          <td>0.000415</td>
-          <td>0.000415</td>
+          <td>0.002687</td>
+          <td>0.004154</td>
+          <td>0.000606</td>
+          <td>0.000606</td>
         </tr>
         <tr>
           <th>11</th>
           <td>4194304</td>
-          <td>0.002521</td>
+          <td>0.004864</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.001640</td>
+          <td>0.003379</td>
           <td>0.000000</td>
-          <td>0.000951</td>
-          <td>0.001862</td>
-          <td>0.000410</td>
-          <td>0.000410</td>
+          <td>0.002660</td>
+          <td>0.003549</td>
+          <td>0.000628</td>
+          <td>0.000628</td>
         </tr>
         <tr>
           <th>12</th>
           <td>16777216</td>
-          <td>0.002469</td>
+          <td>0.004724</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002198</td>
+          <td>0.005606</td>
           <td>0.000000</td>
-          <td>0.001461</td>
-          <td>0.002178</td>
-          <td>0.000456</td>
-          <td>0.000456</td>
+          <td>0.002158</td>
+          <td>0.004168</td>
+          <td>0.000572</td>
+          <td>0.000572</td>
         </tr>
         <tr>
           <th>13</th>
           <td>67108864</td>
-          <td>0.002377</td>
+          <td>0.004267</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002073</td>
+          <td>0.004704</td>
           <td>0.000000</td>
-          <td>0.000994</td>
-          <td>0.001840</td>
-          <td>0.000436</td>
-          <td>0.000436</td>
+          <td>0.002281</td>
+          <td>0.003048</td>
+          <td>0.000600</td>
+          <td>0.000600</td>
         </tr>
         <tr>
           <th>14</th>
           <td>268435456</td>
-          <td>0.002462</td>
+          <td>0.008093</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.001993</td>
+          <td>0.005404</td>
           <td>0.000000</td>
-          <td>0.001510</td>
-          <td>0.001908</td>
-          <td>0.000552</td>
-          <td>0.000552</td>
+          <td>0.002529</td>
+          <td>0.003330</td>
+          <td>0.000933</td>
+          <td>0.000933</td>
         </tr>
         <tr>
           <th>15</th>
           <td>1073741824</td>
-          <td>0.003191</td>
+          <td>0.003959</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.002224</td>
+          <td>0.005557</td>
           <td>0.000000</td>
-          <td>0.002089</td>
-          <td>0.001924</td>
-          <td>0.000484</td>
-          <td>0.000484</td>
+          <td>0.003173</td>
+          <td>0.002989</td>
+          <td>0.000695</td>
+          <td>0.000695</td>
         </tr>
       </tbody>
     </table>
@@ -599,7 +599,7 @@ Finally.
 
 .. GENERATED FROM PYTHON SOURCE LINES 239-252
 
-.. code-block:: default
+.. code-block:: Python
 
 
     dfp = df.drop(["diff", "diff0", "n_denorm"], axis=1).set_index("scale")
@@ -636,7 +636,7 @@ Denormalized numbers should be avoided.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 2.278 seconds)
+   **Total running time of the script:** (4 minutes 6.767 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_conv_denorm.py:
@@ -645,16 +645,13 @@ Denormalized numbers should be avoided.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_conv_denorm.ipynb <plot_conv_denorm.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_conv_denorm.py <plot_conv_denorm.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_conv_denorm.ipynb <plot_conv_denorm.ipynb>`
 
 
 .. only:: html

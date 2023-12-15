@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="onnx_extended.reference" href="reference.html" /><link rel="prev" title="onnx_extended.ortops.tutorial.cuda" href="ortops_tutorial_cuda.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="onnx_extended.plotting" href="plotting.html" /><link rel="prev" title="onnx_extended.ortops.tutorial.cuda" href="ortops_tutorial_cuda.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
         <title>onnx_extended.ortops.optim - onnx-extended 0.2.4 documentation</title>
@@ -176,7 +176,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -212,6 +213,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="check.html">onnx_extended.__init__.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory_peak.html">onnx_extended.memory_peak</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ortcy.html">onnx_extended.ortcy</a></li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="ortops.html">onnx_extended.ortops</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -220,6 +222,7 @@
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">onnx_extended.ortops.optim</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html">onnx_extended.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html">onnx_extended.reference</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="validation_cpu.html">validation.cpu</a></li>
@@ -256,11 +259,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optim_tfidf.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 </ul>
@@ -406,6 +410,32 @@ The only change:</p>
 <li><p>T3: int64</p></li>
 </ul>
 </section>
+<section id="onnx-extented-ortops-option-cpu-treeensembleclassifiersparse">
+<h3>onnx_extented.ortops.option.cpu.TreeEnsembleClassifierSparse<a class="headerlink" href="#onnx-extented-ortops-option-cpu-treeensembleclassifiersparse" title="Permalink to this heading">#</a></h3>
+<p>It does the sum of two tensors.</p>
+<p><strong>Provider</strong></p>
+<p>CPUExecutionProvider</p>
+<p><strong>Attributes</strong></p>
+<p>See <a class="reference external" href="https://onnx.ai/onnx/operators/onnx_aionnxml_TreeEnsembleClassifier.html">onnx TreeEnsembleClassifier</a>.
+The implementation does not support string labels.
+The only change:</p>
+<p>nodes_modes: string contenation with <cite>,</cite></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T1): tensor of type T1 (sparse)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>label (T3): labels of type T3</p></li>
+<li><p>Y (T2): probabilities of type T2</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T1: float, double</p></li>
+<li><p>T2: float, double</p></li>
+<li><p>T3: int64</p></li>
+</ul>
+</section>
 <section id="onnx-extented-ortops-option-cpu-treeensembleregressor">
 <h3>onnx_extented.ortops.option.cpu.TreeEnsembleRegressor<a class="headerlink" href="#onnx-extented-ortops-option-cpu-treeensembleregressor" title="Permalink to this heading">#</a></h3>
 <p>It does the sum of two tensors.</p>
@@ -418,6 +448,29 @@ The only change:</p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
 <li><p>X (T1): tensor of type T1</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Y (T2): prediction of type T2</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T1: float, double</p></li>
+<li><p>T2: float, double</p></li>
+</ul>
+</section>
+<section id="onnx-extented-ortops-option-cpu-treeensembleregressorsparse">
+<h3>onnx_extented.ortops.option.cpu.TreeEnsembleRegressorSparse<a class="headerlink" href="#onnx-extented-ortops-option-cpu-treeensembleregressorsparse" title="Permalink to this heading">#</a></h3>
+<p>It does the sum of two tensors.</p>
+<p><strong>Provider</strong></p>
+<p>CPUExecutionProvider</p>
+<p><strong>Attributes</strong></p>
+<p>See <a class="reference external" href="https://onnx.ai/onnx/operators/onnx_aionnxml_TreeEnsembleRegressor.html">onnx TreeEnsembleRegressor</a>.
+The only change:</p>
+<p>nodes_modes: string contenation with <cite>,</cite></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T1): tensor of type T1 (sparse)</p></li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
@@ -462,7 +515,7 @@ be increased</p></li>
 <dd class="field-even"><p>list of results returned by <a class="reference internal" href="ext_test_case.html#onnx_extended.ext_test_case.measure_time" title="onnx_extended.ext_test_case.measure_time"><code class="xref py py-func docutils literal notranslate"><span class="pre">measure_time</span></code></a></p>
 </dd>
 </dl>
-<p>See example <a class="reference internal" href="../auto_examples/plot_optim_tree_ensemble.html#l-plot-optim-tree-ensemble"><span class="std std-ref">TreeEnsemble optimization</span></a> for an example.</p>
+<p>See example <a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html#l-plot-optim-tree-ensemble"><span class="std std-ref">TreeEnsemble optimization</span></a> for an example.</p>
 </dd></dl>
 
 </section>
@@ -473,12 +526,12 @@ be increased</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="reference.html">
+          <a class="next-page" href="plotting.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">onnx_extended.reference</div>
+                <div class="title">onnx_extended.plotting</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
