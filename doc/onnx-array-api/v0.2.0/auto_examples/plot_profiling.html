@@ -9,7 +9,7 @@
         <title>Profiling with onnxruntime - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -167,6 +167,7 @@
 <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/onnx_api.html">Many ways to implement a custom graph in ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/graph_api.html">GraphBuilder: common API for ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/light_api.html">Light API for ONNX: everything in one line</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/numpy_api.html">Numpy API for ONNX</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Numpy API for ONNX</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="plot_first_example.html">First examples with onnx-array-api</a></li>
@@ -186,6 +187,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/npx_array_api.html">onnx_array_api.npx.npx_array_api</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/light_api.html">onnx_array_api.light_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/npx_functions.html">npx.npx_functions</a></li>
@@ -271,7 +273,7 @@ are implemented in onnxruntime (see <a class="reference external" href="https://
 This example profiles the two models.</p>
 <section id="optimize-a-model-with-onnxruntime">
 <h2>Optimize a model with onnxruntime<a class="headerlink" href="#optimize-a-model-with-onnxruntime" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">get_available_providers</span>
@@ -298,7 +300,7 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
 </section>
 <section id="profiling">
 <span id="l-example-ort-profiling"></span><h2>Profiling<a class="headerlink" href="#profiling" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.random.html#numpy.random.random" title="numpy.random.random" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">112</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)}</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.random.html#numpy.random.random" title="numpy.random.random" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">112</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)}</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_base</span></a> <span class="o">=</span> <span class="n">ort_profile</span><span class="p">(</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a><span class="p">,</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">,</span>
@@ -354,10 +356,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>0</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>1289</td>
-      <td>6</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>795</td>
+      <td>5</td>
       <td>X</td>
       <td>model_loading_uri</td>
       <td>NaN</td>
@@ -376,10 +378,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>1</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>1282</td>
-      <td>1348</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>731</td>
+      <td>846</td>
       <td>X</td>
       <td>session_initialization</td>
       <td>NaN</td>
@@ -398,10 +400,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>2</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>126</td>
-      <td>2889</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>2</td>
+      <td>1787</td>
       <td>X</td>
       <td>n0_fence_before</td>
       <td>Conv</td>
@@ -420,10 +422,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>3</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>7003</td>
-      <td>3024</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>906</td>
+      <td>1821</td>
       <td>X</td>
       <td>n0_kernel_time</td>
       <td>Conv</td>
@@ -442,10 +444,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>4</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>2</td>
-      <td>10056</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>1</td>
+      <td>2741</td>
       <td>X</td>
       <td>n0_fence_after</td>
       <td>Conv</td>
@@ -486,10 +488,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>261</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>2</td>
-      <td>189960</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>1</td>
+      <td>103052</td>
       <td>X</td>
       <td>n13_fence_before</td>
       <td>Add</td>
@@ -508,10 +510,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>262</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>249</td>
-      <td>189965</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>135</td>
+      <td>103056</td>
       <td>X</td>
       <td>n13_kernel_time</td>
       <td>Add</td>
@@ -530,10 +532,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>263</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
+      <td>23011</td>
+      <td>23011</td>
       <td>0</td>
-      <td>190224</td>
+      <td>103199</td>
       <td>X</td>
       <td>n13_fence_after</td>
       <td>Add</td>
@@ -552,10 +554,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>264</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>26751</td>
-      <td>163480</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>15081</td>
+      <td>88124</td>
       <td>X</td>
       <td>SequentialExecutor::Execute</td>
       <td>NaN</td>
@@ -574,10 +576,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>265</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>26791</td>
-      <td>163457</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>15114</td>
+      <td>88106</td>
       <td>X</td>
       <td>model_run</td>
       <td>NaN</td>
@@ -600,7 +602,7 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
 </div>
 <br />
 <br /><p>And the optimized model.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_opti</span></a> <span class="o">=</span> <span class="n">ort_profile</span><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_opti</span></a> <span class="o">=</span> <span class="n">ort_profile</span><span class="p">(</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">optimized</span></a><span class="p">,</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">,</span>
     <span class="n">repeat</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
@@ -655,10 +657,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>0</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>2226</td>
-      <td>6</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>1153</td>
+      <td>5</td>
       <td>X</td>
       <td>model_loading_uri</td>
       <td>NaN</td>
@@ -677,10 +679,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>1</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>1564</td>
-      <td>2334</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>702</td>
+      <td>1210</td>
       <td>X</td>
       <td>session_initialization</td>
       <td>NaN</td>
@@ -699,10 +701,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>2</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>2</td>
-      <td>4259</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>1</td>
+      <td>2127</td>
       <td>X</td>
       <td>r0_nchwc_fence_before</td>
       <td>Conv</td>
@@ -721,10 +723,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>3</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>492</td>
-      <td>4270</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>651</td>
+      <td>2133</td>
       <td>X</td>
       <td>r0_nchwc_kernel_time</td>
       <td>Conv</td>
@@ -743,10 +745,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>4</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
+      <td>23011</td>
+      <td>23011</td>
       <td>1</td>
-      <td>4774</td>
+      <td>2793</td>
       <td>X</td>
       <td>r0_nchwc_fence_after</td>
       <td>Conv</td>
@@ -787,14 +789,14 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>351</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
+      <td>23011</td>
+      <td>23011</td>
       <td>1</td>
-      <td>167151</td>
+      <td>117752</td>
       <td>X</td>
-      <td>ReorderOutput_token_15_fence_before</td>
+      <td>ReorderOutput_token_16_fence_before</td>
       <td>ReorderOutput</td>
-      <td>ReorderOutput_token_15</td>
+      <td>ReorderOutput_token_16</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -809,14 +811,14 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>352</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>166</td>
-      <td>167156</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>129</td>
+      <td>117757</td>
       <td>X</td>
-      <td>ReorderOutput_token_15_kernel_time</td>
+      <td>ReorderOutput_token_16_kernel_time</td>
       <td>ReorderOutput</td>
-      <td>ReorderOutput_token_15</td>
+      <td>ReorderOutput_token_16</td>
       <td>{'main_thread': {'thread_pool_name': 'session-...</td>
       <td>[{'float': [1, 64, 56, 56]}]</td>
       <td>802816</td>
@@ -831,14 +833,14 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>353</th>
       <td>Node</td>
-      <td>25140</td>
-      <td>25140</td>
+      <td>23011</td>
+      <td>23011</td>
       <td>1</td>
-      <td>167330</td>
+      <td>117898</td>
       <td>X</td>
-      <td>ReorderOutput_token_15_fence_after</td>
+      <td>ReorderOutput_token_16_fence_after</td>
       <td>ReorderOutput</td>
-      <td>ReorderOutput_token_15</td>
+      <td>ReorderOutput_token_16</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -853,10 +855,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>354</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>60249</td>
-      <td>107089</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>17980</td>
+      <td>99927</td>
       <td>X</td>
       <td>SequentialExecutor::Execute</td>
       <td>NaN</td>
@@ -875,10 +877,10 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
     <tr>
       <th>355</th>
       <td>Session</td>
-      <td>25140</td>
-      <td>25140</td>
-      <td>60296</td>
-      <td>107063</td>
+      <td>23011</td>
+      <td>23011</td>
+      <td>18030</td>
+      <td>99900</td>
       <td>X</td>
       <td>model_run</td>
       <td>NaN</td>
@@ -901,7 +903,7 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
 </div>
 <br />
 <br /><p>And the graph is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#set" title="builtins.set" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">unique_op</span></a> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_base</span></a><span class="p">[</span><span class="s2">&quot;args_op_name&quot;</span><span class="p">])</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#set" title="builtins.set" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">unique_op</span></a> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_base</span></a><span class="p">[</span><span class="s2">&quot;args_op_name&quot;</span><span class="p">])</span>
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#set" title="builtins.set" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">unique_op</span></a><span class="p">)),</span> <span class="n">sharex</span><span class="o">=</span><span class="s2">&quot;col&quot;</span><span class="p">)</span>
 <span class="n">plot_ort_profile</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_base</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;baseline&quot;</span><span class="p">)</span>
 <span class="n">plot_ort_profile</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_opti</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;optimized&quot;</span><span class="p">)</span>
@@ -915,9 +917,15 @@ optimized=&#39;data/small.onnx.optimized.onnx&#39;
 <p>Let’s try to compare both profiles assuming every iteration
 process the same image and the input and output size are the
 same at every iteration.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">merge</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gr</span></a> <span class="o">=</span> <span class="n">merge_ort_profile</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_base</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_opti</span></a><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">merge</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gr</span></a> <span class="o">=</span> <span class="n">merge_ort_profile</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_base</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_opti</span></a><span class="p">)</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_excel.html#pandas.DataFrame.to_excel" title="pandas.DataFrame.to_excel" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">merge</span><span class="o">.</span><span class="n">to_excel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plot_profiling_merged</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">suffix</span></a><span class="si">}</span><span class="s2">.xlsx&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">merge</span></a>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable &lt;function sum at 0x7ff797565bd0&gt; is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass &#39;sum&#39; instead.
+  .agg(
+/home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable &lt;function sum at 0x7ff797565bd0&gt; is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass &#39;sum&#39; instead.
+  .agg(
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -958,7 +966,7 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 56, 56]}, {'float': [1, 64,...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>1444.0</td>
+      <td>934.0</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -970,9 +978,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}, {'float': [64]}...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>4414.0</td>
+      <td>2936.0</td>
       <td>6.0</td>
-      <td>5195.0</td>
+      <td>4371.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -982,9 +990,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 1, 112, 112]}, {'float': [1, 1,...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>320.0</td>
+      <td>174.0</td>
       <td>6.0</td>
-      <td>258.0</td>
+      <td>293.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -994,7 +1002,7 @@ same at every iteration.</p>
       <td>[{'float': [1, 2, 112, 112]}, {'float': [1, 2,...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>3993.0</td>
+      <td>1651.0</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1006,9 +1014,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 3, 112, 112]}, {'float': [64, 3...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>12420.0</td>
+      <td>4037.0</td>
       <td>6.0</td>
-      <td>3522.0</td>
+      <td>4385.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1018,9 +1026,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>82441.0</td>
+      <td>56648.0</td>
       <td>6.0</td>
-      <td>80298.0</td>
+      <td>49205.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1030,9 +1038,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>4151.0</td>
+      <td>2738.0</td>
       <td>6.0</td>
-      <td>1819.0</td>
+      <td>2636.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1044,7 +1052,7 @@ same at every iteration.</p>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>14744.0</td>
+      <td>13495.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1054,7 +1062,7 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>32614.0</td>
+      <td>18137.0</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1068,7 +1076,7 @@ same at every iteration.</p>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>3367.0</td>
+      <td>2877.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1078,9 +1086,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 1, 112, 112]}, {'float': [1, 64...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>3511.0</td>
+      <td>1306.0</td>
       <td>6.0</td>
-      <td>2868.0</td>
+      <td>3082.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1090,9 +1098,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>13660.0</td>
+      <td>2007.0</td>
       <td>6.0</td>
-      <td>3809.0</td>
+      <td>2917.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1102,9 +1110,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
       <td>CPUExecutionProvider</td>
       <td>1</td>
-      <td>5202.0</td>
+      <td>2208.0</td>
       <td>6.0</td>
-      <td>5714.0</td>
+      <td>2845.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1114,9 +1122,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}]</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>6126.0</td>
+      <td>3037.0</td>
       <td>6.0</td>
-      <td>15560.0</td>
+      <td>3899.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1126,9 +1134,9 @@ same at every iteration.</p>
       <td>[{'float': [1, 64, 112, 112]}]</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>5809.0</td>
+      <td>2541.0</td>
       <td>6.0</td>
-      <td>3344.0</td>
+      <td>3862.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1140,7 +1148,7 @@ same at every iteration.</p>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2774.0</td>
+      <td>3039.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1152,7 +1160,7 @@ same at every iteration.</p>
       <td>1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2230.0</td>
+      <td>2704.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1164,7 +1172,7 @@ same at every iteration.</p>
       <td>2</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2343.0</td>
+      <td>2022.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1176,7 +1184,7 @@ same at every iteration.</p>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>328.0</td>
+      <td>406.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1188,7 +1196,7 @@ same at every iteration.</p>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>3260.0</td>
+      <td>3700.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1200,7 +1208,7 @@ same at every iteration.</p>
       <td>1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4664.0</td>
+      <td>3477.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1212,7 +1220,7 @@ same at every iteration.</p>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>1390.0</td>
+      <td>1336.0</td>
       <td>6.0</td>
     </tr>
     <tr>
@@ -1222,7 +1230,7 @@ same at every iteration.</p>
       <td>[{'float': [1, 1, 112, 112]}]</td>
       <td>CPUExecutionProvider</td>
       <td>0</td>
-      <td>1251.0</td>
+      <td>134.0</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1233,7 +1241,7 @@ same at every iteration.</p>
 </div>
 <br />
 <br /><p>More detailed</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_excel.html#pandas.DataFrame.to_excel" title="pandas.DataFrame.to_excel" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">gr</span><span class="o">.</span><span class="n">to_excel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plot_profiling_merged_details</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">suffix</span></a><span class="si">}</span><span class="s2">.xlsx&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_excel.html#pandas.DataFrame.to_excel" title="pandas.DataFrame.to_excel" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">gr</span><span class="o">.</span><span class="n">to_excel</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plot_profiling_merged_details</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">suffix</span></a><span class="si">}</span><span class="s2">.xlsx&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gr</span></a>
 </pre></div>
 </div>
@@ -1273,133 +1281,133 @@ same at every iteration.</p>
     <tr>
       <th>[+CPU]Conv(f-1x2x112x112,f-8x2x7x7)-&gt;f-1x8x112x112</th>
       <td>0.0</td>
-      <td>3367.0</td>
+      <td>2877.0</td>
       <td>0.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[+CPU]Conv(f-1x64x112x112,f-64x64x3x3,f-64,f-1x64x56x56)-&gt;f-1x64x56x56</th>
       <td>0.0</td>
-      <td>14744.0</td>
+      <td>13495.0</td>
       <td>0.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[+CPU]ReorderInput(f-1x64x112x112)-&gt;f-1x64x112x112</th>
       <td>0.0</td>
-      <td>7347.0</td>
+      <td>7765.0</td>
       <td>0.0</td>
       <td>18.0</td>
     </tr>
     <tr>
       <th>[+CPU]ReorderOutput(f-1x64x112x112)-&gt;f-1x64x112x112</th>
       <td>0.0</td>
-      <td>7924.0</td>
+      <td>7177.0</td>
       <td>0.0</td>
       <td>12.0</td>
     </tr>
     <tr>
       <th>[+CPU]ReorderOutput(f-1x64x56x56)-&gt;f-1x64x56x56</th>
       <td>0.0</td>
-      <td>1390.0</td>
+      <td>1336.0</td>
       <td>0.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[+CPU]ReorderOutput(f-1x8x112x112)-&gt;f-1x1x112x112</th>
       <td>0.0</td>
-      <td>328.0</td>
+      <td>406.0</td>
       <td>0.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[-CPU]Add(f-1x64x56x56,f-1x64x56x56)-&gt;f-1x64x56x56</th>
-      <td>1444.0</td>
+      <td>934.0</td>
       <td>0.0</td>
       <td>6.0</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>[-CPU]Conv(f-1x2x112x112,f-1x2x7x7)-&gt;f-1x1x112x112</th>
-      <td>3993.0</td>
+      <td>1651.0</td>
       <td>0.0</td>
       <td>6.0</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>[-CPU]Conv(f-1x64x112x112,f-64x64x3x3,f-64)-&gt;f-1x64x56x56</th>
-      <td>32614.0</td>
+      <td>18137.0</td>
       <td>0.0</td>
       <td>6.0</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>[-CPU]Sigmoid(f-1x1x112x112)-&gt;f-1x1x112x112</th>
-      <td>1251.0</td>
+      <td>134.0</td>
       <td>0.0</td>
       <td>6.0</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>[=CPU]BatchNormalization(f-1x64x112x112,f-64,f-64,f-64,f-64)-&gt;f-1x64x112x112</th>
-      <td>4414.0</td>
-      <td>5195.0</td>
+      <td>2936.0</td>
+      <td>4371.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[=CPU]Concat(f-1x1x112x112,f-1x1x112x112)-&gt;f-1x2x112x112</th>
-      <td>320.0</td>
-      <td>258.0</td>
+      <td>174.0</td>
+      <td>293.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[=CPU]Conv(f-1x3x112x112,f-64x3x3x3,f-64)-&gt;f-1x64x112x112</th>
-      <td>12420.0</td>
-      <td>3522.0</td>
+      <td>4037.0</td>
+      <td>4385.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[=CPU]Conv(f-1x64x112x112,f-64x64x1x1,f-64)-&gt;f-1x64x56x56</th>
-      <td>4151.0</td>
-      <td>1819.0</td>
+      <td>2738.0</td>
+      <td>2636.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[=CPU]Conv(f-1x64x112x112,f-64x64x3x3,f-64)-&gt;f-1x64x112x112</th>
-      <td>82441.0</td>
-      <td>80298.0</td>
+      <td>56648.0</td>
+      <td>49205.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[=CPU]Mul(f-1x1x112x112,f-1x64x112x112)-&gt;f-1x64x112x112</th>
-      <td>3511.0</td>
-      <td>2868.0</td>
+      <td>1306.0</td>
+      <td>3082.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[=CPU]PRelu(f-1x64x112x112,f-64x1x1)-&gt;f-1x64x112x112</th>
-      <td>18862.0</td>
-      <td>9523.0</td>
+      <td>4215.0</td>
+      <td>5762.0</td>
       <td>12.0</td>
       <td>12.0</td>
     </tr>
     <tr>
       <th>[=CPU]ReduceMax(f-1x64x112x112)-&gt;f-1x1x112x112</th>
-      <td>6126.0</td>
-      <td>15560.0</td>
+      <td>3037.0</td>
+      <td>3899.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
     <tr>
       <th>[=CPU]ReduceMean(f-1x64x112x112)-&gt;f-1x1x112x112</th>
-      <td>5809.0</td>
-      <td>3344.0</td>
+      <td>2541.0</td>
+      <td>3862.0</td>
       <td>6.0</td>
       <td>6.0</td>
     </tr>
@@ -1411,7 +1419,7 @@ same at every iteration.</p>
 <br /></section>
 <section id="final-plot">
 <h2>Final plot<a class="headerlink" href="#final-plot" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s filter out unsignificant operator.</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s filter out unsignificant operator.</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grmax</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gr</span></a><span class="p">[</span><span class="s2">&quot;durbase&quot;</span><span class="p">]</span> <span class="o">+</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">gr</span></a><span class="p">[</span><span class="s2">&quot;duropti&quot;</span><span class="p">]</span>
 <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">total</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.sum.html#pandas.Series.sum" title="pandas.Series.sum" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">grmax</span><span class="o">.</span><span class="n">sum</span></a><span class="p">()</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grmax</span></a> <span class="o">/=</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">total</span></a>
@@ -1431,7 +1439,7 @@ same at every iteration.</p>
 <img src="../_images/sphx_glr_plot_profiling_002.png" srcset="../_images/sphx_glr_plot_profiling_002.png" alt="Side by side duration, Side by side count" class = "sphx-glr-single-img"/></section>
 <section id="on-cuda">
 <h2>On CUDA<a class="headerlink" href="#on-cuda" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="s2">&quot;CUDAExecutionProvider&quot;</span> <span class="ow">in</span> <span class="n">get_available_providers</span><span class="p">():</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="s2">&quot;CUDAExecutionProvider&quot;</span> <span class="ow">in</span> <span class="n">get_available_providers</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Profiling on CUDA&quot;</span><span class="p">)</span>
     <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof_base</span></a> <span class="o">=</span> <span class="n">ort_profile</span><span class="p">(</span>
         <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a><span class="p">,</span>
@@ -1488,19 +1496,23 @@ same at every iteration.</p>
 <li><img src="../_images/sphx_glr_plot_profiling_004.png" srcset="../_images/sphx_glr_plot_profiling_004.png" alt="Side by side duration, Side by side count" class = "sphx-glr-multi-img"/></li>
 </ul>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Profiling on CUDA
+/home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable &lt;function sum at 0x7ff797565bd0&gt; is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass &#39;sum&#39; instead.
+  .agg(
+/home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable &lt;function sum at 0x7ff797565bd0&gt; is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass &#39;sum&#39; instead.
+  .agg(
 
 array([&lt;Axes: title={&#39;center&#39;: &#39;Side by side duration&#39;}, ylabel=&#39;label&#39;&gt;,
        &lt;Axes: title={&#39;center&#39;: &#39;Side by side count&#39;}, ylabel=&#39;label&#39;&gt;],
       dtype=object)
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  26.098 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 15.365 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-profiling-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/cfe61aca1f0a89486c7024466ea500fd/plot_profiling.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_profiling.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/ccbbfd4f60683438ab99a4c42d3fbbdf/plot_profiling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_profiling.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/cfe61aca1f0a89486c7024466ea500fd/plot_profiling.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_profiling.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

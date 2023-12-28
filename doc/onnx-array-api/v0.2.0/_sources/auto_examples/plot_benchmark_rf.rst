@@ -33,7 +33,7 @@ import and registration of necessary converters
 
 .. GENERATED FROM PYTHON SOURCE LINES 15-64
 
-.. code-block:: default
+.. code-block:: Python
 
     import pickle
     import os
@@ -88,6 +88,12 @@ import and registration of necessary converters
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    [2023-12-28 19:25:43,247] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+
 
 
 
@@ -98,7 +104,7 @@ Machine details
 
 .. GENERATED FROM PYTHON SOURCE LINES 67-71
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -124,7 +130,7 @@ Let's extract the cache information.
 
 .. GENERATED FROM PYTHON SOURCE LINES 74-81
 
-.. code-block:: default
+.. code-block:: Python
 
 
     try:
@@ -141,7 +147,6 @@ Let's extract the cache information.
 
  .. code-block:: none
 
-    ['lscpu']
     <Popen: returncode: None args: ['lscpu']>
 
 
@@ -153,7 +158,7 @@ Or with the following command.
 
 .. GENERATED FROM PYTHON SOURCE LINES 83-86
 
-.. code-block:: default
+.. code-block:: Python
 
     out, err = run_cmd("cat /proc/cpuinfo")
     print(out)
@@ -166,7 +171,6 @@ Or with the following command.
 
  .. code-block:: none
 
-    ['cat', '/proc/cpuinfo']
     <Popen: returncode: None args: ['cat', '/proc/cpuinfo']>
 
 
@@ -179,7 +183,7 @@ Fonction to measure inference time
 
 .. GENERATED FROM PYTHON SOURCE LINES 89-120
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -230,7 +234,7 @@ into ONNX and for the following configurations.
 
 .. GENERATED FROM PYTHON SOURCE LINES 127-149
 
-.. code-block:: default
+.. code-block:: Python
 
 
     small = cpu_count() < 12
@@ -267,7 +271,7 @@ Benchmark parameters
 
 .. GENERATED FROM PYTHON SOURCE LINES 151-155
 
-.. code-block:: default
+.. code-block:: Python
 
     repeat = 7  # repeat n times the same inference
     quantile = 1  # exclude extreme times
@@ -286,7 +290,7 @@ Data
 
 .. GENERATED FROM PYTHON SOURCE LINES 157-247
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -386,7 +390,7 @@ Data
 
  .. code-block:: none
 
-      0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 ISession:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predict1:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predictB:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predictO:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predictO:   3%|2         | 1/36 [00:00<00:04,  8.48it/s]    J=8 E=20 D=4 ISession:   3%|2         | 1/36 [00:00<00:04,  8.48it/s]    J=8 E=20 D=4 predict1:   3%|2         | 1/36 [00:00<00:04,  8.48it/s]    J=8 E=20 D=4 predictB:   3%|2         | 1/36 [00:00<00:04,  8.48it/s]    J=8 E=20 D=4 predictO:   3%|2         | 1/36 [00:00<00:04,  8.48it/s]    J=8 E=20 D=4 predictO:   6%|5         | 2/36 [00:00<00:04,  7.28it/s]    J=8 E=30 D=4 ISession:   6%|5         | 2/36 [00:00<00:04,  7.28it/s]    J=8 E=30 D=4 predict1:   6%|5         | 2/36 [00:00<00:04,  7.28it/s]    J=8 E=30 D=4 predictB:   6%|5         | 2/36 [00:00<00:04,  7.28it/s]    J=8 E=30 D=4 predictO:   6%|5         | 2/36 [00:00<00:04,  7.28it/s]    J=8 E=30 D=4 predictO:   8%|8         | 3/36 [00:00<00:05,  6.03it/s]    J=8 E=10 D=6 ISession:   8%|8         | 3/36 [00:00<00:05,  6.03it/s]    J=8 E=10 D=6 predict1:   8%|8         | 3/36 [00:00<00:05,  6.03it/s]    J=8 E=10 D=6 predictB:   8%|8         | 3/36 [00:00<00:05,  6.03it/s]    J=8 E=10 D=6 predictO:   8%|8         | 3/36 [00:00<00:05,  6.03it/s]    J=8 E=10 D=6 predictO:  11%|#1        | 4/36 [00:00<00:04,  7.04it/s]    J=8 E=20 D=6 ISession:  11%|#1        | 4/36 [00:00<00:04,  7.04it/s]    J=8 E=20 D=6 predict1:  11%|#1        | 4/36 [00:00<00:04,  7.04it/s]    J=8 E=20 D=6 predictB:  11%|#1        | 4/36 [00:00<00:04,  7.04it/s]    J=8 E=20 D=6 predictO:  11%|#1        | 4/36 [00:00<00:04,  7.04it/s]    J=8 E=20 D=6 predictO:  14%|#3        | 5/36 [00:00<00:04,  7.07it/s]    J=8 E=30 D=6 ISession:  14%|#3        | 5/36 [00:00<00:04,  7.07it/s]    J=8 E=30 D=6 predict1:  14%|#3        | 5/36 [00:00<00:04,  7.07it/s]    J=8 E=30 D=6 predictB:  14%|#3        | 5/36 [00:00<00:04,  7.07it/s]    J=8 E=30 D=6 predictO:  14%|#3        | 5/36 [00:00<00:04,  7.07it/s]    J=8 E=30 D=6 predictO:  17%|#6        | 6/36 [00:00<00:04,  6.53it/s]    J=8 E=10 D=8 ISession:  17%|#6        | 6/36 [00:00<00:04,  6.53it/s]    J=8 E=10 D=8 predict1:  17%|#6        | 6/36 [00:00<00:04,  6.53it/s]    J=8 E=10 D=8 predictB:  17%|#6        | 6/36 [00:00<00:04,  6.53it/s]    J=8 E=10 D=8 predictO:  17%|#6        | 6/36 [00:01<00:04,  6.53it/s]    J=8 E=10 D=8 predictO:  19%|#9        | 7/36 [00:01<00:04,  7.16it/s]    J=8 E=20 D=8 ISession:  19%|#9        | 7/36 [00:01<00:04,  7.16it/s]    J=8 E=20 D=8 predict1:  19%|#9        | 7/36 [00:01<00:04,  7.16it/s]    J=8 E=20 D=8 predictB:  19%|#9        | 7/36 [00:01<00:04,  7.16it/s]    J=8 E=20 D=8 predictO:  19%|#9        | 7/36 [00:01<00:04,  7.16it/s]    J=8 E=20 D=8 predictO:  22%|##2       | 8/36 [00:01<00:04,  6.98it/s]    J=8 E=30 D=8 ISession:  22%|##2       | 8/36 [00:01<00:04,  6.98it/s]    J=8 E=30 D=8 predict1:  22%|##2       | 8/36 [00:01<00:04,  6.98it/s]    J=8 E=30 D=8 predictB:  22%|##2       | 8/36 [00:01<00:04,  6.98it/s]    J=8 E=30 D=8 predictO:  22%|##2       | 8/36 [00:01<00:04,  6.98it/s]    J=8 E=30 D=8 predictO:  25%|##5       | 9/36 [00:01<00:04,  6.09it/s]    J=8 E=10 D=10 ISession:  25%|##5       | 9/36 [00:01<00:04,  6.09it/s]    J=8 E=10 D=10 predict1:  25%|##5       | 9/36 [00:01<00:04,  6.09it/s]    J=8 E=10 D=10 predictB:  25%|##5       | 9/36 [00:01<00:04,  6.09it/s]    J=8 E=10 D=10 predictO:  25%|##5       | 9/36 [00:01<00:04,  6.09it/s]    J=8 E=10 D=10 predictO:  28%|##7       | 10/36 [00:01<00:03,  6.58it/s]    J=8 E=20 D=10 ISession:  28%|##7       | 10/36 [00:01<00:03,  6.58it/s]    J=8 E=20 D=10 predict1:  28%|##7       | 10/36 [00:01<00:03,  6.58it/s]    J=8 E=20 D=10 predictB:  28%|##7       | 10/36 [00:01<00:03,  6.58it/s]    J=8 E=20 D=10 predictO:  28%|##7       | 10/36 [00:01<00:03,  6.58it/s]    J=8 E=20 D=10 predictO:  31%|###       | 11/36 [00:01<00:03,  6.55it/s]    J=8 E=30 D=10 ISession:  31%|###       | 11/36 [00:01<00:03,  6.55it/s]    J=8 E=30 D=10 predict1:  31%|###       | 11/36 [00:01<00:03,  6.55it/s]    J=8 E=30 D=10 predictB:  31%|###       | 11/36 [00:01<00:03,  6.55it/s]    J=8 E=30 D=10 predictO:  31%|###       | 11/36 [00:01<00:03,  6.55it/s]    J=8 E=30 D=10 predictO:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]    J=4 E=10 D=4 ISession:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]     J=4 E=10 D=4 predict1:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]    J=4 E=10 D=4 predictB:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]    J=4 E=10 D=4 predictO:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]    J=4 E=20 D=4 ISession:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]    J=4 E=20 D=4 predict1:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]    J=4 E=20 D=4 predictB:  33%|###3      | 12/36 [00:01<00:04,  5.84it/s]    J=4 E=20 D=4 predictO:  33%|###3      | 12/36 [00:02<00:04,  5.84it/s]    J=4 E=20 D=4 predictO:  39%|###8      | 14/36 [00:02<00:03,  7.28it/s]    J=4 E=30 D=4 ISession:  39%|###8      | 14/36 [00:02<00:03,  7.28it/s]    J=4 E=30 D=4 predict1:  39%|###8      | 14/36 [00:02<00:03,  7.28it/s]    J=4 E=30 D=4 predictB:  39%|###8      | 14/36 [00:02<00:03,  7.28it/s]    J=4 E=30 D=4 predictO:  39%|###8      | 14/36 [00:02<00:03,  7.28it/s]    J=4 E=30 D=4 predictO:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=10 D=6 ISession:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=10 D=6 predict1:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=10 D=6 predictB:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=10 D=6 predictO:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=20 D=6 ISession:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=20 D=6 predict1:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=20 D=6 predictB:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=20 D=6 predictO:  42%|####1     | 15/36 [00:02<00:02,  7.14it/s]    J=4 E=20 D=6 predictO:  47%|####7     | 17/36 [00:02<00:02,  8.33it/s]    J=4 E=30 D=6 ISession:  47%|####7     | 17/36 [00:02<00:02,  8.33it/s]    J=4 E=30 D=6 predict1:  47%|####7     | 17/36 [00:02<00:02,  8.33it/s]    J=4 E=30 D=6 predictB:  47%|####7     | 17/36 [00:02<00:02,  8.33it/s]    J=4 E=30 D=6 predictO:  47%|####7     | 17/36 [00:02<00:02,  8.33it/s]    J=4 E=30 D=6 predictO:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=10 D=8 ISession:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=10 D=8 predict1:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=10 D=8 predictB:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=10 D=8 predictO:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=20 D=8 ISession:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=20 D=8 predict1:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=20 D=8 predictB:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=20 D=8 predictO:  50%|#####     | 18/36 [00:02<00:02,  7.79it/s]    J=4 E=20 D=8 predictO:  56%|#####5    | 20/36 [00:02<00:01,  8.63it/s]    J=4 E=30 D=8 ISession:  56%|#####5    | 20/36 [00:02<00:01,  8.63it/s]    J=4 E=30 D=8 predict1:  56%|#####5    | 20/36 [00:02<00:01,  8.63it/s]    J=4 E=30 D=8 predictB:  56%|#####5    | 20/36 [00:02<00:01,  8.63it/s]    J=4 E=30 D=8 predictO:  56%|#####5    | 20/36 [00:02<00:01,  8.63it/s]    J=4 E=30 D=8 predictO:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=10 D=10 ISession:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=10 D=10 predict1:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=10 D=10 predictB:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=10 D=10 predictO:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=20 D=10 ISession:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=20 D=10 predict1:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=20 D=10 predictB:  58%|#####8    | 21/36 [00:02<00:01,  8.29it/s]    J=4 E=20 D=10 predictO:  58%|#####8    | 21/36 [00:03<00:01,  8.29it/s]    J=4 E=20 D=10 predictO:  64%|######3   | 23/36 [00:03<00:01,  8.75it/s]    J=4 E=30 D=10 ISession:  64%|######3   | 23/36 [00:03<00:01,  8.75it/s]    J=4 E=30 D=10 predict1:  64%|######3   | 23/36 [00:03<00:01,  8.75it/s]    J=4 E=30 D=10 predictB:  64%|######3   | 23/36 [00:03<00:01,  8.75it/s]    J=4 E=30 D=10 predictO:  64%|######3   | 23/36 [00:03<00:01,  8.75it/s]    J=4 E=30 D=10 predictO:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=4 ISession:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]     J=1 E=10 D=4 predict1:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=4 predictB:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=4 predictO:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=6 ISession:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=6 predict1:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=6 predictB:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=6 predictO:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=8 ISession:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=8 predict1:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=8 predictB:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=8 predictO:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=10 ISession:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=10 predict1:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=10 predictB:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=10 predictO:  67%|######6   | 24/36 [00:03<00:01,  7.32it/s]    J=1 E=10 D=10 predictO:  94%|#########4| 34/36 [00:03<00:00, 23.42it/s]    J=1 E=10 D=10 predictO: 100%|##########| 36/36 [00:03<00:00, 10.52it/s]
+      0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 ISession:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predict1:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predictB:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predictO:   0%|          | 0/36 [00:00<?, ?it/s]    J=8 E=10 D=4 predictO:   3%|▎         | 1/36 [00:00<00:04,  7.71it/s]    J=8 E=20 D=4 ISession:   3%|▎         | 1/36 [00:00<00:04,  7.71it/s]    J=8 E=20 D=4 predict1:   3%|▎         | 1/36 [00:00<00:04,  7.71it/s]    J=8 E=20 D=4 predictB:   3%|▎         | 1/36 [00:00<00:04,  7.71it/s]    J=8 E=20 D=4 predictO:   3%|▎         | 1/36 [00:00<00:04,  7.71it/s]    J=8 E=20 D=4 predictO:   6%|▌         | 2/36 [00:00<00:05,  6.56it/s]    J=8 E=30 D=4 ISession:   6%|▌         | 2/36 [00:00<00:05,  6.56it/s]    J=8 E=30 D=4 predict1:   6%|▌         | 2/36 [00:00<00:05,  6.56it/s]    J=8 E=30 D=4 predictB:   6%|▌         | 2/36 [00:00<00:05,  6.56it/s]    J=8 E=30 D=4 predictO:   6%|▌         | 2/36 [00:00<00:05,  6.56it/s]    J=8 E=30 D=4 predictO:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=10 D=6 ISession:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=10 D=6 predict1:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=10 D=6 predictB:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=10 D=6 predictO:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=20 D=6 ISession:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=20 D=6 predict1:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=20 D=6 predictB:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=20 D=6 predictO:   8%|▊         | 3/36 [00:00<00:06,  5.24it/s]    J=8 E=20 D=6 predictO:  14%|█▍        | 5/36 [00:00<00:04,  6.58it/s]    J=8 E=30 D=6 ISession:  14%|█▍        | 5/36 [00:00<00:04,  6.58it/s]    J=8 E=30 D=6 predict1:  14%|█▍        | 5/36 [00:00<00:04,  6.58it/s]    J=8 E=30 D=6 predictB:  14%|█▍        | 5/36 [00:00<00:04,  6.58it/s]    J=8 E=30 D=6 predictO:  14%|█▍        | 5/36 [00:00<00:04,  6.58it/s]    J=8 E=30 D=6 predictO:  17%|█▋        | 6/36 [00:01<00:05,  5.81it/s]    J=8 E=10 D=8 ISession:  17%|█▋        | 6/36 [00:01<00:05,  5.81it/s]    J=8 E=10 D=8 predict1:  17%|█▋        | 6/36 [00:01<00:05,  5.81it/s]    J=8 E=10 D=8 predictB:  17%|█▋        | 6/36 [00:01<00:05,  5.81it/s]    J=8 E=10 D=8 predictO:  17%|█▋        | 6/36 [00:01<00:05,  5.81it/s]    J=8 E=10 D=8 predictO:  19%|█▉        | 7/36 [00:01<00:04,  5.86it/s]    J=8 E=20 D=8 ISession:  19%|█▉        | 7/36 [00:01<00:04,  5.86it/s]    J=8 E=20 D=8 predict1:  19%|█▉        | 7/36 [00:01<00:04,  5.86it/s]    J=8 E=20 D=8 predictB:  19%|█▉        | 7/36 [00:01<00:04,  5.86it/s]    J=8 E=20 D=8 predictO:  19%|█▉        | 7/36 [00:01<00:04,  5.86it/s]    J=8 E=20 D=8 predictO:  22%|██▏       | 8/36 [00:01<00:05,  5.39it/s]    J=8 E=30 D=8 ISession:  22%|██▏       | 8/36 [00:01<00:05,  5.39it/s]    J=8 E=30 D=8 predict1:  22%|██▏       | 8/36 [00:01<00:05,  5.39it/s]    J=8 E=30 D=8 predictB:  22%|██▏       | 8/36 [00:01<00:05,  5.39it/s]    J=8 E=30 D=8 predictO:  22%|██▏       | 8/36 [00:01<00:05,  5.39it/s]    J=8 E=30 D=8 predictO:  25%|██▌       | 9/36 [00:01<00:05,  5.25it/s]    J=8 E=10 D=10 ISession:  25%|██▌       | 9/36 [00:01<00:05,  5.25it/s]    J=8 E=10 D=10 predict1:  25%|██▌       | 9/36 [00:01<00:05,  5.25it/s]    J=8 E=10 D=10 predictB:  25%|██▌       | 9/36 [00:01<00:05,  5.25it/s]    J=8 E=10 D=10 predictO:  25%|██▌       | 9/36 [00:01<00:05,  5.25it/s]    J=8 E=10 D=10 predictO:  28%|██▊       | 10/36 [00:01<00:04,  6.05it/s]    J=8 E=20 D=10 ISession:  28%|██▊       | 10/36 [00:01<00:04,  6.05it/s]    J=8 E=20 D=10 predict1:  28%|██▊       | 10/36 [00:01<00:04,  6.05it/s]    J=8 E=20 D=10 predictB:  28%|██▊       | 10/36 [00:01<00:04,  6.05it/s]    J=8 E=20 D=10 predictO:  28%|██▊       | 10/36 [00:01<00:04,  6.05it/s]    J=8 E=20 D=10 predictO:  31%|███       | 11/36 [00:01<00:04,  5.94it/s]    J=8 E=30 D=10 ISession:  31%|███       | 11/36 [00:01<00:04,  5.94it/s]    J=8 E=30 D=10 predict1:  31%|███       | 11/36 [00:01<00:04,  5.94it/s]    J=8 E=30 D=10 predictB:  31%|███       | 11/36 [00:01<00:04,  5.94it/s]    J=8 E=30 D=10 predictO:  31%|███       | 11/36 [00:02<00:04,  5.94it/s]    J=8 E=30 D=10 predictO:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=10 D=4 ISession:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]     J=4 E=10 D=4 predict1:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=10 D=4 predictB:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=10 D=4 predictO:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=20 D=4 ISession:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=20 D=4 predict1:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=20 D=4 predictB:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=20 D=4 predictO:  33%|███▎      | 12/36 [00:02<00:04,  5.15it/s]    J=4 E=20 D=4 predictO:  39%|███▉      | 14/36 [00:02<00:03,  6.45it/s]    J=4 E=30 D=4 ISession:  39%|███▉      | 14/36 [00:02<00:03,  6.45it/s]    J=4 E=30 D=4 predict1:  39%|███▉      | 14/36 [00:02<00:03,  6.45it/s]    J=4 E=30 D=4 predictB:  39%|███▉      | 14/36 [00:02<00:03,  6.45it/s]    J=4 E=30 D=4 predictO:  39%|███▉      | 14/36 [00:02<00:03,  6.45it/s]    J=4 E=30 D=4 predictO:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=10 D=6 ISession:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=10 D=6 predict1:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=10 D=6 predictB:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=10 D=6 predictO:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=20 D=6 ISession:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=20 D=6 predict1:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=20 D=6 predictB:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=20 D=6 predictO:  42%|████▏     | 15/36 [00:02<00:03,  6.22it/s]    J=4 E=20 D=6 predictO:  47%|████▋     | 17/36 [00:02<00:02,  7.24it/s]    J=4 E=30 D=6 ISession:  47%|████▋     | 17/36 [00:02<00:02,  7.24it/s]    J=4 E=30 D=6 predict1:  47%|████▋     | 17/36 [00:02<00:02,  7.24it/s]    J=4 E=30 D=6 predictB:  47%|████▋     | 17/36 [00:02<00:02,  7.24it/s]    J=4 E=30 D=6 predictO:  47%|████▋     | 17/36 [00:02<00:02,  7.24it/s]    J=4 E=30 D=6 predictO:  50%|█████     | 18/36 [00:02<00:02,  6.81it/s]    J=4 E=10 D=8 ISession:  50%|█████     | 18/36 [00:02<00:02,  6.81it/s]    J=4 E=10 D=8 predict1:  50%|█████     | 18/36 [00:02<00:02,  6.81it/s]    J=4 E=10 D=8 predictB:  50%|█████     | 18/36 [00:02<00:02,  6.81it/s]    J=4 E=10 D=8 predictO:  50%|█████     | 18/36 [00:02<00:02,  6.81it/s]    J=4 E=20 D=8 train rf:  50%|█████     | 18/36 [00:02<00:02,  6.81it/s]    J=4 E=20 D=8 ISession:  50%|█████     | 18/36 [00:11<00:02,  6.81it/s]    J=4 E=20 D=8 cvt onnx:  50%|█████     | 18/36 [00:11<00:02,  6.81it/s]    J=4 E=20 D=8 predict1:  50%|█████     | 18/36 [00:11<00:02,  6.81it/s]    J=4 E=20 D=8 predictB:  50%|█████     | 18/36 [00:11<00:02,  6.81it/s]    J=4 E=20 D=8 predictO:  50%|█████     | 18/36 [00:11<00:02,  6.81it/s]    J=4 E=20 D=8 predictO:  56%|█████▌    | 20/36 [00:11<00:29,  1.87s/it]    J=4 E=30 D=8 train rf:  56%|█████▌    | 20/36 [00:11<00:29,  1.87s/it]    J=4 E=30 D=8 ISession:  56%|█████▌    | 20/36 [00:25<00:29,  1.87s/it]    J=4 E=30 D=8 cvt onnx:  56%|█████▌    | 20/36 [00:25<00:29,  1.87s/it]    J=4 E=30 D=8 predict1:  56%|█████▌    | 20/36 [00:25<00:29,  1.87s/it]    J=4 E=30 D=8 predictB:  56%|█████▌    | 20/36 [00:25<00:29,  1.87s/it]    J=4 E=30 D=8 predictO:  56%|█████▌    | 20/36 [00:25<00:29,  1.87s/it]    J=4 E=30 D=8 predictO:  58%|█████▊    | 21/36 [00:25<01:07,  4.53s/it]    J=4 E=10 D=10 train rf:  58%|█████▊    | 21/36 [00:25<01:07,  4.53s/it]    J=4 E=10 D=10 ISession:  58%|█████▊    | 21/36 [00:30<01:07,  4.53s/it]    J=4 E=10 D=10 cvt onnx:  58%|█████▊    | 21/36 [00:30<01:07,  4.53s/it]    J=4 E=10 D=10 predict1:  58%|█████▊    | 21/36 [00:30<01:07,  4.53s/it]    J=4 E=10 D=10 predictB:  58%|█████▊    | 21/36 [00:30<01:07,  4.53s/it]    J=4 E=10 D=10 predictO:  58%|█████▊    | 21/36 [00:30<01:07,  4.53s/it]    J=4 E=10 D=10 predictO:  61%|██████    | 22/36 [00:30<01:04,  4.60s/it]    J=4 E=20 D=10 train rf:  61%|██████    | 22/36 [00:30<01:04,  4.60s/it]    J=4 E=20 D=10 ISession:  61%|██████    | 22/36 [00:42<01:04,  4.60s/it]    J=4 E=20 D=10 cvt onnx:  61%|██████    | 22/36 [00:42<01:04,  4.60s/it]    J=4 E=20 D=10 predict1:  61%|██████    | 22/36 [00:42<01:04,  4.60s/it]    J=4 E=20 D=10 predictB:  61%|██████    | 22/36 [00:42<01:04,  4.60s/it]    J=4 E=20 D=10 predictO:  61%|██████    | 22/36 [00:42<01:04,  4.60s/it]    J=4 E=20 D=10 predictO:  64%|██████▍   | 23/36 [00:42<01:24,  6.47s/it]    J=4 E=30 D=10 train rf:  64%|██████▍   | 23/36 [00:42<01:24,  6.47s/it]    J=4 E=30 D=10 ISession:  64%|██████▍   | 23/36 [00:59<01:24,  6.47s/it]    J=4 E=30 D=10 cvt onnx:  64%|██████▍   | 23/36 [00:59<01:24,  6.47s/it]    J=4 E=30 D=10 predict1:  64%|██████▍   | 23/36 [00:59<01:24,  6.47s/it]    J=4 E=30 D=10 predictB:  64%|██████▍   | 23/36 [00:59<01:24,  6.47s/it]    J=4 E=30 D=10 predictO:  64%|██████▍   | 23/36 [00:59<01:24,  6.47s/it]    J=4 E=30 D=10 predictO:  67%|██████▋   | 24/36 [00:59<01:51,  9.26s/it]    J=1 E=10 D=4 train rf:  67%|██████▋   | 24/36 [00:59<01:51,  9.26s/it]     J=1 E=10 D=4 ISession:  67%|██████▋   | 24/36 [01:11<01:51,  9.26s/it]    J=1 E=10 D=4 cvt onnx:  67%|██████▋   | 24/36 [01:11<01:51,  9.26s/it]    J=1 E=10 D=4 predict1:  67%|██████▋   | 24/36 [01:11<01:51,  9.26s/it]    J=1 E=10 D=4 predictB:  67%|██████▋   | 24/36 [01:11<01:51,  9.26s/it]    J=1 E=10 D=4 predictO:  67%|██████▋   | 24/36 [01:11<01:51,  9.26s/it]    J=1 E=10 D=4 predictO:  69%|██████▉   | 25/36 [01:11<01:50, 10.02s/it]    J=1 E=10 D=6 train rf:  69%|██████▉   | 25/36 [01:11<01:50, 10.02s/it]    J=1 E=10 D=6 ISession:  69%|██████▉   | 25/36 [01:29<01:50, 10.02s/it]    J=1 E=10 D=6 cvt onnx:  69%|██████▉   | 25/36 [01:29<01:50, 10.02s/it]    J=1 E=10 D=6 predict1:  69%|██████▉   | 25/36 [01:29<01:50, 10.02s/it]    J=1 E=10 D=6 predictB:  69%|██████▉   | 25/36 [01:29<01:50, 10.02s/it]    J=1 E=10 D=6 predictO:  69%|██████▉   | 25/36 [01:29<01:50, 10.02s/it]    J=1 E=10 D=6 predictO:  78%|███████▊  | 28/36 [01:29<01:03,  7.89s/it]    J=1 E=10 D=8 train rf:  78%|███████▊  | 28/36 [01:29<01:03,  7.89s/it]    J=1 E=10 D=8 ISession:  78%|███████▊  | 28/36 [01:52<01:03,  7.89s/it]    J=1 E=10 D=8 cvt onnx:  78%|███████▊  | 28/36 [01:52<01:03,  7.89s/it]    J=1 E=10 D=8 predict1:  78%|███████▊  | 28/36 [01:52<01:03,  7.89s/it]    J=1 E=10 D=8 predictB:  78%|███████▊  | 28/36 [01:52<01:03,  7.89s/it]    J=1 E=10 D=8 predictO:  78%|███████▊  | 28/36 [01:52<01:03,  7.89s/it]    J=1 E=10 D=8 predictO:  86%|████████▌ | 31/36 [01:52<00:38,  7.77s/it]    J=1 E=10 D=10 train rf:  86%|████████▌ | 31/36 [01:52<00:38,  7.77s/it]    J=1 E=10 D=10 ISession:  86%|████████▌ | 31/36 [02:20<00:38,  7.77s/it]    J=1 E=10 D=10 cvt onnx:  86%|████████▌ | 31/36 [02:20<00:38,  7.77s/it]    J=1 E=10 D=10 predict1:  86%|████████▌ | 31/36 [02:20<00:38,  7.77s/it]    J=1 E=10 D=10 predictB:  86%|████████▌ | 31/36 [02:20<00:38,  7.77s/it]    J=1 E=10 D=10 predictO:  86%|████████▌ | 31/36 [02:20<00:38,  7.77s/it]    J=1 E=10 D=10 predictO:  94%|█████████▍| 34/36 [02:20<00:16,  8.32s/it]    J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [02:20<00:00,  3.90s/it]
 
 
 
@@ -398,7 +402,7 @@ Saving data
 
 .. GENERATED FROM PYTHON SOURCE LINES 250-259
 
-.. code-block:: default
+.. code-block:: Python
 
 
     name = os.path.join(cache_dir, "plot_beanchmark_rf")
@@ -428,7 +432,7 @@ Printing the data
 
 .. GENERATED FROM PYTHON SOURCE LINES 261-263
 
-.. code-block:: default
+.. code-block:: Python
 
     df
 
@@ -484,11 +488,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>11089</td>
-          <td>0.013271</td>
-          <td>0.013449</td>
+          <td>11454</td>
+          <td>0.010142</td>
+          <td>0.010367</td>
           <td>7</td>
-          <td>0.090108</td>
+          <td>0.091385</td>
         </tr>
         <tr>
           <th>1</th>
@@ -500,11 +504,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>11089</td>
-          <td>0.000161</td>
-          <td>0.000148</td>
+          <td>11454</td>
+          <td>0.000192</td>
+          <td>0.000158</td>
           <td>7</td>
-          <td>0.001510</td>
+          <td>0.001523</td>
         </tr>
         <tr>
           <th>2</th>
@@ -516,11 +520,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>21920</td>
-          <td>0.012371</td>
-          <td>0.012129</td>
+          <td>21993</td>
+          <td>0.014738</td>
+          <td>0.014907</td>
           <td>7</td>
-          <td>0.109870</td>
+          <td>0.123639</td>
         </tr>
         <tr>
           <th>3</th>
@@ -532,11 +536,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>21920</td>
-          <td>0.000163</td>
-          <td>0.000162</td>
+          <td>21993</td>
+          <td>0.000244</td>
+          <td>0.000243</td>
           <td>7</td>
-          <td>0.001428</td>
+          <td>0.002033</td>
         </tr>
         <tr>
           <th>4</th>
@@ -548,11 +552,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>32822</td>
-          <td>0.019804</td>
-          <td>0.019161</td>
+          <td>33406</td>
+          <td>0.021579</td>
+          <td>0.021488</td>
           <td>7</td>
-          <td>0.141788</td>
+          <td>0.171277</td>
         </tr>
         <tr>
           <th>5</th>
@@ -564,11 +568,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>32822</td>
-          <td>0.000877</td>
-          <td>0.000590</td>
+          <td>33406</td>
+          <td>0.000381</td>
+          <td>0.000371</td>
           <td>7</td>
-          <td>0.013612</td>
+          <td>0.002897</td>
         </tr>
         <tr>
           <th>6</th>
@@ -581,10 +585,10 @@ Printing the data
           <td>1000</td>
           <td>10</td>
           <td>34816</td>
-          <td>0.008833</td>
-          <td>0.008909</td>
+          <td>0.008140</td>
+          <td>0.006880</td>
           <td>7</td>
-          <td>0.064498</td>
+          <td>0.057479</td>
         </tr>
         <tr>
           <th>7</th>
@@ -597,10 +601,10 @@ Printing the data
           <td>1000</td>
           <td>10</td>
           <td>34816</td>
-          <td>0.000176</td>
-          <td>0.000172</td>
+          <td>0.000225</td>
+          <td>0.000205</td>
           <td>7</td>
-          <td>0.009211</td>
+          <td>0.001829</td>
         </tr>
         <tr>
           <th>8</th>
@@ -612,11 +616,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>68349</td>
-          <td>0.012703</td>
-          <td>0.012669</td>
+          <td>65501</td>
+          <td>0.017179</td>
+          <td>0.017019</td>
           <td>7</td>
-          <td>0.090856</td>
+          <td>0.127163</td>
         </tr>
         <tr>
           <th>9</th>
@@ -628,11 +632,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>68349</td>
-          <td>0.000267</td>
-          <td>0.000248</td>
+          <td>65501</td>
+          <td>0.000318</td>
+          <td>0.000305</td>
           <td>7</td>
-          <td>0.008172</td>
+          <td>0.014826</td>
         </tr>
         <tr>
           <th>10</th>
@@ -644,11 +648,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>102465</td>
-          <td>0.016200</td>
-          <td>0.016205</td>
+          <td>102100</td>
+          <td>0.021702</td>
+          <td>0.022043</td>
           <td>7</td>
-          <td>0.112334</td>
+          <td>0.147325</td>
         </tr>
         <tr>
           <th>11</th>
@@ -660,11 +664,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>102465</td>
-          <td>0.000350</td>
-          <td>0.000334</td>
+          <td>102100</td>
+          <td>0.000567</td>
+          <td>0.000557</td>
           <td>7</td>
-          <td>0.002725</td>
+          <td>0.018216</td>
         </tr>
         <tr>
           <th>12</th>
@@ -676,11 +680,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>72981</td>
-          <td>0.008978</td>
-          <td>0.008909</td>
+          <td>73993</td>
+          <td>0.012422</td>
+          <td>0.012309</td>
           <td>7</td>
-          <td>0.064398</td>
+          <td>0.109499</td>
         </tr>
         <tr>
           <th>13</th>
@@ -692,11 +696,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>72981</td>
-          <td>0.000190</td>
-          <td>0.000184</td>
+          <td>73993</td>
+          <td>0.000275</td>
+          <td>0.000258</td>
           <td>7</td>
-          <td>0.001647</td>
+          <td>0.023612</td>
         </tr>
         <tr>
           <th>14</th>
@@ -708,11 +712,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>143302</td>
-          <td>0.014107</td>
-          <td>0.014066</td>
+          <td>138467</td>
+          <td>0.017408</td>
+          <td>0.016963</td>
           <td>7</td>
-          <td>0.103939</td>
+          <td>0.141777</td>
         </tr>
         <tr>
           <th>15</th>
@@ -724,11 +728,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>143302</td>
-          <td>0.000301</td>
-          <td>0.000294</td>
+          <td>138467</td>
+          <td>0.000504</td>
+          <td>0.000478</td>
           <td>7</td>
-          <td>0.002321</td>
+          <td>0.019634</td>
         </tr>
         <tr>
           <th>16</th>
@@ -740,11 +744,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>214018</td>
-          <td>0.017487</td>
-          <td>0.017749</td>
+          <td>206329</td>
+          <td>0.023257</td>
+          <td>0.023168</td>
           <td>7</td>
-          <td>0.123962</td>
+          <td>0.163119</td>
         </tr>
         <tr>
           <th>17</th>
@@ -756,11 +760,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>214018</td>
-          <td>0.000425</td>
-          <td>0.000421</td>
+          <td>206329</td>
+          <td>0.000585</td>
+          <td>0.000581</td>
           <td>7</td>
-          <td>0.003134</td>
+          <td>0.004334</td>
         </tr>
         <tr>
           <th>18</th>
@@ -772,11 +776,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>114952</td>
-          <td>0.009929</td>
-          <td>0.009477</td>
+          <td>108945</td>
+          <td>0.008682</td>
+          <td>0.009945</td>
           <td>7</td>
-          <td>0.074473</td>
+          <td>0.068417</td>
         </tr>
         <tr>
           <th>19</th>
@@ -788,11 +792,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>114952</td>
-          <td>0.000218</td>
-          <td>0.000221</td>
+          <td>108945</td>
+          <td>0.000310</td>
+          <td>0.000278</td>
           <td>7</td>
-          <td>0.001768</td>
+          <td>0.016257</td>
         </tr>
         <tr>
           <th>20</th>
@@ -804,11 +808,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>226847</td>
-          <td>0.013402</td>
-          <td>0.013138</td>
+          <td>223495</td>
+          <td>0.014528</td>
+          <td>0.015711</td>
           <td>7</td>
-          <td>0.092491</td>
+          <td>0.100923</td>
         </tr>
         <tr>
           <th>21</th>
@@ -820,11 +824,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>226847</td>
-          <td>0.000377</td>
-          <td>0.000368</td>
+          <td>223495</td>
+          <td>0.000472</td>
+          <td>0.000470</td>
           <td>7</td>
-          <td>0.002925</td>
+          <td>0.003697</td>
         </tr>
         <tr>
           <th>22</th>
@@ -836,11 +840,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>335254</td>
-          <td>0.016574</td>
-          <td>0.017075</td>
+          <td>327137</td>
+          <td>0.023836</td>
+          <td>0.024102</td>
           <td>7</td>
-          <td>0.116400</td>
+          <td>0.187845</td>
         </tr>
         <tr>
           <th>23</th>
@@ -852,11 +856,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>335254</td>
-          <td>0.000426</td>
-          <td>0.000389</td>
+          <td>327137</td>
+          <td>0.000596</td>
+          <td>0.000596</td>
           <td>7</td>
-          <td>0.022789</td>
+          <td>0.004332</td>
         </tr>
         <tr>
           <th>24</th>
@@ -868,11 +872,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>11673</td>
-          <td>0.008325</td>
-          <td>0.008347</td>
+          <td>11235</td>
+          <td>0.010172</td>
+          <td>0.010238</td>
           <td>7</td>
-          <td>0.058635</td>
+          <td>0.070432</td>
         </tr>
         <tr>
           <th>25</th>
@@ -884,11 +888,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>11673</td>
-          <td>0.000169</td>
-          <td>0.000161</td>
+          <td>11235</td>
+          <td>0.000148</td>
+          <td>0.000143</td>
           <td>7</td>
-          <td>0.001344</td>
+          <td>0.001268</td>
         </tr>
         <tr>
           <th>26</th>
@@ -900,11 +904,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>22212</td>
-          <td>0.013365</td>
-          <td>0.013688</td>
+          <td>22358</td>
+          <td>0.015201</td>
+          <td>0.015411</td>
           <td>7</td>
-          <td>0.093536</td>
+          <td>0.107710</td>
         </tr>
         <tr>
           <th>27</th>
@@ -916,11 +920,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>22212</td>
-          <td>0.000228</td>
-          <td>0.000219</td>
+          <td>22358</td>
+          <td>0.000279</td>
+          <td>0.000288</td>
           <td>7</td>
-          <td>0.001773</td>
+          <td>0.002194</td>
         </tr>
         <tr>
           <th>28</th>
@@ -932,11 +936,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>32749</td>
-          <td>0.016798</td>
-          <td>0.016740</td>
+          <td>32968</td>
+          <td>0.020757</td>
+          <td>0.020448</td>
           <td>7</td>
-          <td>0.117199</td>
+          <td>0.146659</td>
         </tr>
         <tr>
           <th>29</th>
@@ -948,11 +952,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>32749</td>
-          <td>0.000335</td>
+          <td>32968</td>
           <td>0.000328</td>
+          <td>0.000319</td>
           <td>7</td>
-          <td>0.002524</td>
+          <td>0.002577</td>
         </tr>
         <tr>
           <th>30</th>
@@ -964,11 +968,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>30290</td>
-          <td>0.007367</td>
-          <td>0.007323</td>
+          <td>33283</td>
+          <td>0.008933</td>
+          <td>0.009139</td>
           <td>7</td>
-          <td>0.052338</td>
+          <td>0.062343</td>
         </tr>
         <tr>
           <th>31</th>
@@ -980,11 +984,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>30290</td>
-          <td>0.000188</td>
-          <td>0.000179</td>
+          <td>33283</td>
+          <td>0.000190</td>
+          <td>0.000183</td>
           <td>7</td>
-          <td>0.001521</td>
+          <td>0.001517</td>
         </tr>
         <tr>
           <th>32</th>
@@ -996,11 +1000,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>67619</td>
-          <td>0.012100</td>
-          <td>0.012238</td>
+          <td>65355</td>
+          <td>0.015167</td>
+          <td>0.014986</td>
           <td>7</td>
-          <td>0.084379</td>
+          <td>0.107656</td>
         </tr>
         <tr>
           <th>33</th>
@@ -1012,11 +1016,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>67619</td>
-          <td>0.000298</td>
-          <td>0.000294</td>
+          <td>65355</td>
+          <td>0.000407</td>
+          <td>0.000397</td>
           <td>7</td>
-          <td>0.002286</td>
+          <td>0.003063</td>
         </tr>
         <tr>
           <th>34</th>
@@ -1028,11 +1032,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>101516</td>
-          <td>0.017729</td>
-          <td>0.016861</td>
+          <td>100202</td>
+          <td>0.020402</td>
+          <td>0.019833</td>
           <td>7</td>
-          <td>0.125102</td>
+          <td>0.142072</td>
         </tr>
         <tr>
           <th>35</th>
@@ -1044,11 +1048,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>101516</td>
-          <td>0.000431</td>
-          <td>0.000431</td>
+          <td>100202</td>
+          <td>0.000518</td>
+          <td>0.000510</td>
           <td>7</td>
-          <td>0.003188</td>
+          <td>0.003922</td>
         </tr>
         <tr>
           <th>36</th>
@@ -1060,11 +1064,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>71504</td>
-          <td>0.008022</td>
-          <td>0.007967</td>
+          <td>73448</td>
+          <td>0.009503</td>
+          <td>0.009579</td>
           <td>7</td>
-          <td>0.056057</td>
+          <td>0.066942</td>
         </tr>
         <tr>
           <th>37</th>
@@ -1076,11 +1080,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>71504</td>
-          <td>0.000186</td>
-          <td>0.000195</td>
+          <td>73448</td>
+          <td>0.000237</td>
+          <td>0.000221</td>
           <td>7</td>
-          <td>0.001497</td>
+          <td>0.001899</td>
         </tr>
         <tr>
           <th>38</th>
@@ -1092,11 +1096,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>144705</td>
-          <td>0.011905</td>
-          <td>0.011980</td>
+          <td>121164</td>
+          <td>0.014151</td>
+          <td>0.014154</td>
           <td>7</td>
-          <td>0.082227</td>
+          <td>0.099080</td>
         </tr>
         <tr>
           <th>39</th>
@@ -1108,11 +1112,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>144705</td>
-          <td>0.000403</td>
-          <td>0.000405</td>
+          <td>121164</td>
+          <td>0.000468</td>
+          <td>0.000460</td>
           <td>7</td>
-          <td>0.002959</td>
+          <td>0.003488</td>
         </tr>
         <tr>
           <th>40</th>
@@ -1124,11 +1128,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>219945</td>
-          <td>0.014526</td>
-          <td>0.014843</td>
+          <td>162802</td>
+          <td>0.018489</td>
+          <td>0.018229</td>
           <td>7</td>
-          <td>0.101083</td>
+          <td>0.130982</td>
         </tr>
         <tr>
           <th>41</th>
@@ -1140,11 +1144,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>219945</td>
-          <td>0.000421</td>
-          <td>0.000416</td>
+          <td>162802</td>
+          <td>0.000618</td>
+          <td>0.000620</td>
           <td>7</td>
-          <td>0.003187</td>
+          <td>0.004555</td>
         </tr>
         <tr>
           <th>42</th>
@@ -1156,11 +1160,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>107465</td>
-          <td>0.007807</td>
-          <td>0.008008</td>
+          <td>85700</td>
+          <td>0.009032</td>
+          <td>0.008620</td>
           <td>7</td>
-          <td>0.054330</td>
+          <td>0.063412</td>
         </tr>
         <tr>
           <th>43</th>
@@ -1172,11 +1176,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>107465</td>
-          <td>0.000289</td>
-          <td>0.000283</td>
+          <td>85700</td>
+          <td>0.000252</td>
+          <td>0.000248</td>
           <td>7</td>
-          <td>0.002224</td>
+          <td>0.001956</td>
         </tr>
         <tr>
           <th>44</th>
@@ -1188,11 +1192,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>221779</td>
-          <td>0.012670</td>
-          <td>0.012907</td>
+          <td>193936</td>
+          <td>0.015249</td>
+          <td>0.014768</td>
           <td>7</td>
-          <td>0.088462</td>
+          <td>0.108218</td>
         </tr>
         <tr>
           <th>45</th>
@@ -1204,11 +1208,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>221779</td>
-          <td>0.000445</td>
-          <td>0.000435</td>
+          <td>193936</td>
+          <td>0.000499</td>
+          <td>0.000497</td>
           <td>7</td>
-          <td>0.003255</td>
+          <td>0.003711</td>
         </tr>
         <tr>
           <th>46</th>
@@ -1220,11 +1224,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>331281</td>
-          <td>0.016064</td>
-          <td>0.015825</td>
+          <td>275579</td>
+          <td>0.018889</td>
+          <td>0.019297</td>
           <td>7</td>
-          <td>0.118449</td>
+          <td>0.132190</td>
         </tr>
         <tr>
           <th>47</th>
@@ -1236,11 +1240,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>331281</td>
-          <td>0.001272</td>
-          <td>0.000856</td>
+          <td>275579</td>
+          <td>0.000793</td>
+          <td>0.000803</td>
           <td>7</td>
-          <td>0.022613</td>
+          <td>0.005702</td>
         </tr>
         <tr>
           <th>48</th>
@@ -1252,11 +1256,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>11600</td>
-          <td>0.001937</td>
-          <td>0.002212</td>
+          <td>10505</td>
+          <td>0.001634</td>
+          <td>0.001638</td>
           <td>7</td>
-          <td>0.013395</td>
+          <td>0.011477</td>
         </tr>
         <tr>
           <th>49</th>
@@ -1268,11 +1272,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>11600</td>
-          <td>0.000523</td>
-          <td>0.000533</td>
+          <td>10505</td>
+          <td>0.000281</td>
+          <td>0.000280</td>
           <td>7</td>
-          <td>0.004870</td>
+          <td>0.002058</td>
         </tr>
         <tr>
           <th>50</th>
@@ -1284,11 +1288,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>34159</td>
-          <td>0.001861</td>
-          <td>0.001879</td>
+          <td>28684</td>
+          <td>0.001857</td>
+          <td>0.001847</td>
           <td>7</td>
-          <td>0.013240</td>
+          <td>0.013000</td>
         </tr>
         <tr>
           <th>51</th>
@@ -1300,11 +1304,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>34159</td>
-          <td>0.000431</td>
-          <td>0.000419</td>
+          <td>28684</td>
+          <td>0.000440</td>
+          <td>0.000430</td>
           <td>7</td>
-          <td>0.003082</td>
+          <td>0.003136</td>
         </tr>
         <tr>
           <th>52</th>
@@ -1316,11 +1320,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>70489</td>
-          <td>0.001608</td>
-          <td>0.001600</td>
+          <td>58388</td>
+          <td>0.002127</td>
+          <td>0.002113</td>
           <td>7</td>
-          <td>0.011164</td>
+          <td>0.014960</td>
         </tr>
         <tr>
           <th>53</th>
@@ -1332,11 +1336,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>70489</td>
-          <td>0.000464</td>
-          <td>0.000464</td>
+          <td>58388</td>
+          <td>0.000612</td>
+          <td>0.000613</td>
           <td>7</td>
-          <td>0.003275</td>
+          <td>0.004403</td>
         </tr>
         <tr>
           <th>54</th>
@@ -1348,11 +1352,11 @@ Printing the data
           <td>base</td>
           <td>1000</td>
           <td>10</td>
-          <td>110428</td>
-          <td>0.001576</td>
-          <td>0.001558</td>
+          <td>90535</td>
+          <td>0.002190</td>
+          <td>0.002203</td>
           <td>7</td>
-          <td>0.011071</td>
+          <td>0.015484</td>
         </tr>
         <tr>
           <th>55</th>
@@ -1364,11 +1368,11 @@ Printing the data
           <td>ort_</td>
           <td>1000</td>
           <td>10</td>
-          <td>110428</td>
-          <td>0.000532</td>
-          <td>0.000524</td>
+          <td>90535</td>
+          <td>0.000719</td>
+          <td>0.000715</td>
           <td>7</td>
-          <td>0.003770</td>
+          <td>0.005091</td>
         </tr>
       </tbody>
     </table>
@@ -1384,7 +1388,7 @@ Plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 266-308
 
-.. code-block:: default
+.. code-block:: Python
 
 
     n_rows = len(n_jobs)
@@ -1441,7 +1445,9 @@ Plot
 
  .. code-block:: none
 
-    0it [00:00, ?it/s]    2it [00:00, 16.56it/s]    5it [00:00, 18.71it/s]    7it [00:00, 19.10it/s]    9it [00:00, 24.01it/s]
+    0it [00:00, ?it/s]    2it [00:00, 14.34it/s]    4it [00:00, 14.67it/s]    7it [00:00, 17.25it/s]    9it [00:00, 21.17it/s]
+    2023-12-28 19:28:07,432 matplotlib.legend [WARNING] - No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+    2023-12-28 19:28:07,433 matplotlib.legend [WARNING] - No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
 
 
 
@@ -1449,7 +1455,7 @@ Plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  7.878 seconds)
+   **Total running time of the script:** (2 minutes 34.581 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_rf.py:
@@ -1458,16 +1464,13 @@ Plot
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_benchmark_rf.ipynb <plot_benchmark_rf.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_benchmark_rf.py <plot_benchmark_rf.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_benchmark_rf.ipynb <plot_benchmark_rf.ipynb>`
 
 
 .. only:: html

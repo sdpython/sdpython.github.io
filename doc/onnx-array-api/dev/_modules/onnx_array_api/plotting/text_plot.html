@@ -166,6 +166,7 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/onnx_api.html">Many ways to implement a custom graph in ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/graph_api.html">GraphBuilder: common API for ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/light_api.html">Light API for ONNX: everything in one line</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/numpy_api.html">Numpy API for ONNX</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Numpy API for ONNX</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
@@ -185,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/npx_array_api.html">onnx_array_api.npx.npx_array_api</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/light_api.html">onnx_array_api.light_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
@@ -442,9 +444,7 @@
             <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
 
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sa">f</span><span class="s2">&quot;Type </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2"> cannot be displayed.&quot;</span>
-    <span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2"> cannot be displayed.&quot;</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_append_succ_pred</span><span class="p">(</span>
@@ -661,7 +661,7 @@
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sequences</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="s2">&quot;Unexpected empty sequence (len(possibles)=</span><span class="si">%d</span><span class="s2">, &quot;</span>
                 <span class="s2">&quot;len(done)=</span><span class="si">%d</span><span class="s2">, len(nodes)=</span><span class="si">%d</span><span class="s2">). This is usually due to &quot;</span>
                 <span class="s2">&quot;a name used both as result name and node node. &quot;</span>
@@ -692,7 +692,7 @@
                         <span class="n">best</span> <span class="o">=</span> <span class="n">k</span>
 
         <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Wrong implementation (len(sequence)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span><span class="si">}</span><span class="s2">).&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -711,7 +711,7 @@
             <span class="n">known</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="s2">&quot;The returned new nodes are different. &quot;</span>
             <span class="s2">&quot;len(nodes=</span><span class="si">%d</span><span class="s2">) != </span><span class="si">%d</span><span class="s2">=len(new_nodes). done=</span><span class="se">\n</span><span class="si">%r</span><span class="s2">&quot;</span>
             <span class="s2">&quot;</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">----------</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span>
@@ -744,7 +744,7 @@
     <span class="n">n0s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">)</span>
     <span class="n">n1s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">new_nodes</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">n0s</span> <span class="o">!=</span> <span class="n">n1s</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="s2">&quot;The returned new nodes are different.</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> !=</span><span class="se">\n</span><span class="si">%r</span><span class="se">\n</span><span class="s2">done=</span><span class="se">\n</span><span class="si">%r</span><span class="s2">&quot;</span>
             <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----------</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">----------</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span>
@@ -1016,7 +1016,7 @@
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">val</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_array</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
                     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                             <span class="s2">&quot;Unable to display tensor type </span><span class="si">%r</span><span class="s2">.</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span>
                             <span class="o">%</span> <span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">att</span><span class="p">))</span>
                         <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
@@ -1111,9 +1111,7 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">att</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;attribute: </span><span class="si">{</span><span class="n">att</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
-                    <span class="s2">&quot;Not yet introduced in onnx.&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not yet introduced in onnx.&quot;</span><span class="p">)</span>
 
     <span class="c1"># initializer</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;initializer&quot;</span><span class="p">):</span>
@@ -1152,7 +1150,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">reorder_nodes_for_display</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">raise_exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">e</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1182,9 +1180,7 @@
                 <span class="n">indent</span> <span class="o">=</span> <span class="n">mi</span>
                 <span class="k">if</span> <span class="n">previous_indent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">indent</span> <span class="o">&lt;</span> <span class="n">previous_indent</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
-                            <span class="sa">f</span><span class="s2">&quot;[onnx_simple_text_plot] break2 </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span>
-                        <span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[onnx_simple_text_plot] break2 </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">add_break</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">add_break</span> <span class="ow">and</span> <span class="n">previous_out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">previous_out</span><span class="p">):</span>

@@ -74,7 +74,8 @@ from onnx_extended.ortops.optim.optimize import (
     optimize_model,
 )
 from onnx_extended.tools.onnx_nodes import multiply_tree
-from onnx_extended.ext_test_case import get_parsed_args, unit_test_going
+from onnx_extended.args import get_parsed_args
+from onnx_extended.ext_test_case import unit_test_going
 from onnx_extended.plotting.benchmark import hhistograms
 
 logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
@@ -148,7 +149,18 @@ n_features = script_args.n_features
 n_trees = script_args.n_trees
 max_depth = script_args.max_depth
 
+print(f"batch_size={batch_size}")
+print(f"n_features={n_features}")
+print(f"n_trees={n_trees}")
+print(f"max_depth={max_depth}")
+
+##############################
+# training
+
 filename, Xb, yb = train_model(batch_size, n_features, n_trees, max_depth)
+
+print(f"Xb.shape={Xb.shape}")
+print(f"yb.shape={yb.shape}")
 
 #######################################
 # Rewrite the onnx file to use a different kernel
@@ -219,8 +231,9 @@ print("done.")
 #######################################
 # Discrepancies?
 
-diff = numpy.abs(base - got).max()
-print(f"Discrepancies: {diff}")
+d = numpy.abs(base - got)
+ya = numpy.abs(base).mean()
+print(f"Discrepancies: max={d.max() / ya}, mean={d.mean() / ya} (A={ya})")
 
 ########################################
 # Simple verification

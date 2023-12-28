@@ -28,7 +28,7 @@ against a :epkg:`cython` binding.
 The time spent in it is not significant when the computation is huge
 but it may be for small matrices.
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-40
+.. GENERATED FROM PYTHON SOURCE LINES 12-41
 
 .. code-block:: Python
 
@@ -47,7 +47,8 @@ but it may be for small matrices.
     from onnx.checker import check_model
     from onnxruntime import InferenceSession
     from onnx_extended.ortcy.wrap.ortinf import OrtSession
-    from onnx_extended.ext_test_case import measure_time, unit_test_going, get_parsed_args
+    from onnx_extended.args import get_parsed_args
+    from onnx_extended.ext_test_case import measure_time, unit_test_going
 
 
     script_args = get_parsed_args(
@@ -67,12 +68,12 @@ but it may be for small matrices.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-43
+.. GENERATED FROM PYTHON SOURCE LINES 42-44
 
 A simple onnx model
 +++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-53
+.. GENERATED FROM PYTHON SOURCE LINES 44-54
 
 .. code-block:: Python
 
@@ -93,12 +94,12 @@ A simple onnx model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
+.. GENERATED FROM PYTHON SOURCE LINES 55-57
 
 Two python bindings on CPU
 ++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-72
+.. GENERATED FROM PYTHON SOURCE LINES 57-73
 
 .. code-block:: Python
 
@@ -131,14 +132,14 @@ Two python bindings on CPU
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-77
+.. GENERATED FROM PYTHON SOURCE LINES 74-78
 
 Time measurement
 ++++++++++++++++
 
 *run_1_1* is a specific implementation when there is only 1 input and output.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-87
+.. GENERATED FROM PYTHON SOURCE LINES 78-88
 
 .. code-block:: Python
 
@@ -160,19 +161,19 @@ Time measurement
 
  .. code-block:: none
 
-    t_ort={'average': 1.647441500001605e-05, 'deviation': 5.344331803574813e-06, 'min_exec': 1.1861499999668012e-05, 'max_exec': 3.656099999943763e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0016474415000016051, 'context_size': 64, 'warmup_time': 0.00011210000002392917}
-    t_ext={'average': 1.7466139999964982e-05, 'deviation': 4.850564093472512e-06, 'min_exec': 1.3953500001662178e-05, 'max_exec': 3.616449999981342e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0017466139999964983, 'context_size': 64, 'warmup_time': 0.00011880000010933145}
-    t_ext2={'average': 1.285467499990318e-05, 'deviation': 1.425481389601043e-06, 'min_exec': 1.1269999999967695e-05, 'max_exec': 1.861649999909787e-05, 'repeat': 100, 'number': 200, 'ttime': 0.001285467499990318, 'context_size': 64, 'warmup_time': 7.890000006227638e-05}
+    t_ort={'average': 2.6590554998801963e-05, 'deviation': 7.770397722978092e-06, 'min_exec': 1.4921999991202028e-05, 'max_exec': 5.017699999370961e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0026590554998801963, 'context_size': 64, 'warmup_time': 9.709999721962959e-05}
+    t_ext={'average': 2.409302999931242e-05, 'deviation': 6.578782712537857e-06, 'min_exec': 1.5358000000560422e-05, 'max_exec': 4.866850000325939e-05, 'repeat': 100, 'number': 200, 'ttime': 0.002409302999931242, 'context_size': 64, 'warmup_time': 0.00015900000289548188}
+    t_ext2={'average': 2.564106000027095e-05, 'deviation': 1.1840474716535416e-05, 'min_exec': 1.5271499996742932e-05, 'max_exec': 9.013349999804632e-05, 'repeat': 100, 'number': 200, 'ttime': 0.002564106000027095, 'context_size': 64, 'warmup_time': 9.100000170292333e-05}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-90
+.. GENERATED FROM PYTHON SOURCE LINES 89-91
 
 Benchmark
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-123
+.. GENERATED FROM PYTHON SOURCE LINES 91-124
 
 .. code-block:: Python
 
@@ -217,7 +218,7 @@ Benchmark
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]    100%|██████████| 4/4 [00:05<00:00,  1.31s/it]    100%|██████████| 4/4 [00:05<00:00,  1.31s/it]
+      0%|          | 0/4 [00:00<?, ?it/s]    100%|██████████| 4/4 [00:07<00:00,  1.76s/it]    100%|██████████| 4/4 [00:07<00:00,  1.76s/it]
 
 
 .. raw:: html
@@ -257,169 +258,169 @@ Benchmark
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.000014</td>
-          <td>3.233750e-06</td>
-          <td>0.000012</td>
-          <td>0.000032</td>
+          <td>0.000018</td>
+          <td>2.986402e-06</td>
+          <td>0.000015</td>
+          <td>0.000030</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000676</td>
+          <td>0.000907</td>
           <td>64</td>
-          <td>0.000101</td>
+          <td>0.000121</td>
           <td>ort</td>
           <td>1</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.000015</td>
-          <td>1.439313e-06</td>
-          <td>0.000014</td>
-          <td>0.000019</td>
+          <td>0.000017</td>
+          <td>1.920457e-06</td>
+          <td>0.000016</td>
+          <td>0.000022</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000145</td>
+          <td>0.000167</td>
           <td>64</td>
-          <td>0.000114</td>
+          <td>0.000089</td>
           <td>ext</td>
           <td>1</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.000012</td>
-          <td>1.190424e-06</td>
-          <td>0.000012</td>
-          <td>0.000016</td>
+          <td>0.000013</td>
+          <td>2.534265e-07</td>
+          <td>0.000013</td>
+          <td>0.000014</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000122</td>
+          <td>0.000133</td>
           <td>64</td>
-          <td>0.000035</td>
+          <td>0.000041</td>
           <td>ext_1_1</td>
           <td>1</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.000013</td>
-          <td>1.489302e-06</td>
-          <td>0.000013</td>
           <td>0.000021</td>
+          <td>8.954311e-06</td>
+          <td>0.000015</td>
+          <td>0.000074</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000666</td>
+          <td>0.001031</td>
           <td>64</td>
-          <td>0.000088</td>
+          <td>0.000074</td>
           <td>ort</td>
           <td>10</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.000014</td>
-          <td>4.583710e-07</td>
-          <td>0.000014</td>
-          <td>0.000015</td>
+          <td>0.000021</td>
+          <td>2.046819e-06</td>
+          <td>0.000018</td>
+          <td>0.000025</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000141</td>
+          <td>0.000214</td>
           <td>64</td>
-          <td>0.000146</td>
+          <td>0.000195</td>
           <td>ext</td>
           <td>10</td>
         </tr>
         <tr>
           <th>5</th>
-          <td>0.000012</td>
-          <td>1.448708e-06</td>
-          <td>0.000012</td>
-          <td>0.000017</td>
+          <td>0.000018</td>
+          <td>2.535214e-06</td>
+          <td>0.000015</td>
+          <td>0.000024</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000123</td>
+          <td>0.000184</td>
           <td>64</td>
-          <td>0.000041</td>
+          <td>0.000056</td>
           <td>ext_1_1</td>
           <td>10</td>
         </tr>
         <tr>
           <th>6</th>
-          <td>0.000018</td>
-          <td>1.398116e-06</td>
-          <td>0.000017</td>
+          <td>0.000030</td>
+          <td>2.498959e-06</td>
           <td>0.000025</td>
+          <td>0.000039</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000891</td>
+          <td>0.001489</td>
           <td>64</td>
-          <td>0.000106</td>
+          <td>0.000091</td>
           <td>ort</td>
           <td>100</td>
         </tr>
         <tr>
           <th>7</th>
-          <td>0.000019</td>
-          <td>3.728015e-07</td>
-          <td>0.000019</td>
-          <td>0.000020</td>
+          <td>0.000041</td>
+          <td>1.537594e-05</td>
+          <td>0.000030</td>
+          <td>0.000081</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000190</td>
+          <td>0.000408</td>
           <td>64</td>
-          <td>0.000135</td>
+          <td>0.000132</td>
           <td>ext</td>
           <td>100</td>
         </tr>
         <tr>
           <th>8</th>
-          <td>0.000017</td>
-          <td>1.960152e-06</td>
-          <td>0.000016</td>
-          <td>0.000022</td>
+          <td>0.000029</td>
+          <td>7.522803e-06</td>
+          <td>0.000026</td>
+          <td>0.000051</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000174</td>
+          <td>0.000288</td>
           <td>64</td>
-          <td>0.000046</td>
+          <td>0.000081</td>
           <td>ext_1_1</td>
           <td>100</td>
         </tr>
         <tr>
           <th>9</th>
-          <td>0.000679</td>
-          <td>2.652265e-04</td>
-          <td>0.000474</td>
-          <td>0.001749</td>
+          <td>0.000967</td>
+          <td>3.926243e-04</td>
+          <td>0.000684</td>
+          <td>0.002299</td>
           <td>50</td>
           <td>50</td>
-          <td>0.033948</td>
+          <td>0.048357</td>
           <td>64</td>
-          <td>0.003059</td>
+          <td>0.007219</td>
           <td>ort</td>
           <td>1000</td>
         </tr>
         <tr>
           <th>10</th>
-          <td>0.000587</td>
-          <td>9.280660e-05</td>
-          <td>0.000481</td>
-          <td>0.000795</td>
+          <td>0.000896</td>
+          <td>1.872507e-04</td>
+          <td>0.000688</td>
+          <td>0.001671</td>
           <td>50</td>
           <td>50</td>
-          <td>0.029354</td>
+          <td>0.044813</td>
           <td>64</td>
-          <td>0.003309</td>
+          <td>0.005662</td>
           <td>ext</td>
           <td>1000</td>
         </tr>
         <tr>
           <th>11</th>
-          <td>0.000797</td>
-          <td>3.949641e-04</td>
-          <td>0.000485</td>
-          <td>0.003286</td>
+          <td>0.000893</td>
+          <td>1.350888e-04</td>
+          <td>0.000750</td>
+          <td>0.001514</td>
           <td>50</td>
           <td>50</td>
-          <td>0.039842</td>
+          <td>0.044639</td>
           <td>64</td>
-          <td>0.000661</td>
+          <td>0.000967</td>
           <td>ext_1_1</td>
           <td>1000</td>
         </tr>
@@ -430,12 +431,12 @@ Benchmark
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-126
+.. GENERATED FROM PYTHON SOURCE LINES 125-127
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-133
+.. GENERATED FROM PYTHON SOURCE LINES 127-134
 
 .. code-block:: Python
 
@@ -461,7 +462,7 @@ Plots
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.137 seconds)
+   **Total running time of the script:** (0 minutes 10.205 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cypy_ort.py:

@@ -18,6 +18,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Parallelization usually means a summation is done with a random order. That may lead to differe...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_check_random_order_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_check_random_order.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Random order for a sum</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t...">
 
 .. only:: html
@@ -90,10 +107,10 @@ Examples Gallery
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_conv_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_conv_py_vs_c_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_conv.py`
+  :ref:`sphx_glr_auto_examples_plot_op_conv_py_vs_c.py`
 
 .. raw:: html
 
@@ -115,6 +132,23 @@ Examples Gallery
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measuring onnxruntime performance against a cython binding</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Whenever computing the prediction of a tree with a sparse tensor, is it faster to density first...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_sparse_access_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_bench_sparse_access.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Evaluating random access for sparse</div>
     </div>
 
 
@@ -192,10 +226,10 @@ Examples Gallery
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_conv_denorm_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_conv_denorm_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_conv_denorm.py`
+  :ref:`sphx_glr_auto_examples_plot_op_conv_denorm.py`
 
 .. raw:: html
 
@@ -273,27 +307,47 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a simplified benchmark to compare TreeEnsemble implementations (see below) Run python p...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_tree_ensemble_implementations_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Evaluate different implementation of TreeEnsemble</div>
+    </div>
+
+
+.. raw:: html
+
     </div>
 
 
 .. toctree::
    :hidden:
 
+   /auto_examples/plot_check_random_order
    /auto_examples/plot_bench_cpu_vector_sum
    /auto_examples/plot_bench_cpu_vector_sum_parallel
    /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
    /auto_examples/plot_bench_cpu
-   /auto_examples/plot_conv
+   /auto_examples/plot_op_conv_py_vs_c
    /auto_examples/plot_bench_cypy_ort
+   /auto_examples/plot_bench_sparse_access
    /auto_examples/plot_bench_gpu_vector_sum_gpu
    /auto_examples/plot_op_tfidfvectorizer_sparse
    /auto_examples/plot_bench_gemm_f8
    /auto_examples/plot_op_einsum
-   /auto_examples/plot_conv_denorm
+   /auto_examples/plot_op_conv_denorm
    /auto_examples/plot_op_tree_ensemble_optim
    /auto_examples/plot_op_tree_ensemble_sparse
    /auto_examples/plot_profile_gemm_ort
    /auto_examples/plot_bench_gemm_ort
+   /auto_examples/plot_op_tree_ensemble_implementations
 
 
 .. only:: html

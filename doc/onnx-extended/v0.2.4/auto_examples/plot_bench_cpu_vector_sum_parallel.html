@@ -170,8 +170,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/cython_binding.html">Cython Binding of onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/custom_ops.html">Custom Kernels for onnxruntime</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/ops.html">Focus on operators optimization</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Focus on operators optimization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
@@ -236,6 +236,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_einsum.html">onnx_extended.tools.einsum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_graph.html">onnx_extended.tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_graph_transformer.html">onnx_extended.tools.graph.onnx_graph_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_inline.html">onnx_extended.tools.onnx_inline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_nodes.html">onnx_extended.tools.onnx_nodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_stats.html">onnx_extended.tools.stats_nodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_other.html">onnx_extended.tools</a></li>
@@ -252,21 +253,24 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">ONNX Benchmarks</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_check_random_order.html">Random order for a sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_sparse_access.html">Evaluating random access for sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_implementations.html">Evaluate different implementation of TreeEnsemble</a></li>
 </ul>
 </li>
 </ul>
@@ -385,37 +389,37 @@ by rows or by columns when the computation is parallelized.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/14 [00:00&lt;?, ?it/s]
-  7%|▋         | 1/14 [00:01&lt;00:23,  1.79s/it]
- 14%|█▍        | 2/14 [00:05&lt;00:38,  3.20s/it]
- 21%|██▏       | 3/14 [00:08&lt;00:32,  2.91s/it]
- 29%|██▊       | 4/14 [00:11&lt;00:28,  2.82s/it]
- 36%|███▌      | 5/14 [00:13&lt;00:24,  2.72s/it]
- 43%|████▎     | 6/14 [00:15&lt;00:20,  2.54s/it]
- 50%|█████     | 7/14 [00:17&lt;00:16,  2.29s/it]
- 57%|█████▋    | 8/14 [00:19&lt;00:13,  2.23s/it]
- 64%|██████▍   | 9/14 [00:21&lt;00:10,  2.13s/it]
- 71%|███████▏  | 10/14 [00:23&lt;00:08,  2.01s/it]
- 79%|███████▊  | 11/14 [00:25&lt;00:06,  2.05s/it]
- 86%|████████▌ | 12/14 [00:27&lt;00:04,  2.02s/it]
- 93%|█████████▎| 13/14 [00:29&lt;00:01,  1.98s/it]
-100%|██████████| 14/14 [00:31&lt;00:00,  1.89s/it]
-100%|██████████| 14/14 [00:31&lt;00:00,  2.23s/it]
+  7%|▋         | 1/14 [00:01&lt;00:25,  1.96s/it]
+ 14%|█▍        | 2/14 [00:03&lt;00:23,  1.99s/it]
+ 21%|██▏       | 3/14 [00:06&lt;00:25,  2.30s/it]
+ 29%|██▊       | 4/14 [00:10&lt;00:28,  2.81s/it]
+ 36%|███▌      | 5/14 [00:12&lt;00:22,  2.51s/it]
+ 43%|████▎     | 6/14 [00:13&lt;00:17,  2.25s/it]
+ 50%|█████     | 7/14 [00:16&lt;00:16,  2.37s/it]
+ 57%|█████▋    | 8/14 [00:18&lt;00:13,  2.26s/it]
+ 64%|██████▍   | 9/14 [00:20&lt;00:10,  2.15s/it]
+ 71%|███████▏  | 10/14 [00:22&lt;00:08,  2.08s/it]
+ 79%|███████▊  | 11/14 [00:24&lt;00:06,  2.00s/it]
+ 86%|████████▌ | 12/14 [00:27&lt;00:05,  2.53s/it]
+ 93%|█████████▎| 13/14 [00:29&lt;00:02,  2.36s/it]
+100%|██████████| 14/14 [00:31&lt;00:00,  2.24s/it]
+100%|██████████| 14/14 [00:31&lt;00:00,  2.28s/it]
 direction        cols//          rows        rows//
 dim
-500        1.509324e-08  1.230796e-09  1.655797e-08
-700        1.159998e-09  1.122447e-09  1.176860e-09
-800        7.792476e-10  1.457489e-09  5.123994e-10
-900        1.839405e-09  1.423705e-09  6.004625e-10
-1000       1.933310e-09  1.470140e-09  1.324988e-09
-1100       6.976809e-09  1.546805e-09  6.641507e-09
-1200       1.240113e-08  1.872574e-09  5.532521e-09
-1300       2.227765e-08  1.974358e-09  1.135675e-08
-1400       8.820904e-09  1.096655e-08  1.539367e-08
-1500       5.059793e-09  2.394131e-09  3.042752e-09
-1600       8.660289e-09  1.980274e-09  1.735109e-09
-1700       3.812879e-09  2.174785e-09  2.059494e-09
-1800       5.070599e-09  1.501974e-09  6.496916e-10
-2000       5.260990e-09  1.400095e-09  1.590519e-09
+500        1.014657e-08  3.650879e-09  2.023807e-09
+700        1.476209e-09  2.795475e-09  1.828266e-09
+800        4.875881e-09  3.742878e-09  1.843398e-09
+900        1.655033e-09  2.913992e-09  3.893312e-09
+1000       4.329287e-09  3.261012e-09  1.999226e-09
+1100       4.539471e-09  2.983565e-09  1.208569e-09
+1200       1.093293e-08  3.148072e-09  4.929801e-09
+1300       4.939237e-09  4.118879e-09  1.685383e-09
+1400       3.840692e-09  2.985613e-09  3.462509e-09
+1500       7.866185e-09  2.926637e-09  1.281963e-09
+1600       4.600516e-09  3.190207e-09  2.047333e-09
+1700       7.564656e-09  3.689509e-09  2.948762e-09
+1800       9.390129e-09  2.763143e-09  2.583572e-09
+2000       9.844992e-09  7.335800e-09  3.432208e-09
 </pre></div>
 </div>
 </section>
@@ -440,7 +444,7 @@ dim
 That explains why it is usually more efficient to
 transpose the first matrix before a matrix multiplication.
 Parallelization is faster.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 32.665 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 38.642 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-bench-cpu-vector-sum-parallel-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/bba401f94a4a34e37b0fd88388b4c998/plot_bench_cpu_vector_sum_parallel.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bench_cpu_vector_sum_parallel.ipynb</span></code></a></p>

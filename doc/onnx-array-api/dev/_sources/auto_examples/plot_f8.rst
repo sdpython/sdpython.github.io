@@ -33,7 +33,7 @@ First E4M3FN.
 
 .. GENERATED FROM PYTHON SOURCE LINES 15-22
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import pprint
@@ -314,7 +314,7 @@ Then E5M2.
 
 .. GENERATED FROM PYTHON SOURCE LINES 24-26
 
-.. code-block:: default
+.. code-block:: Python
 
 
     pprint.pprint(CastFloat8.values_e5m2)
@@ -583,7 +583,7 @@ Then E5M2.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.050 seconds)
+   **Total running time of the script:** (0 minutes 0.049 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_f8.py:
@@ -592,16 +592,13 @@ Then E5M2.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_f8.ipynb <plot_f8.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_f8.py <plot_f8.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_f8.ipynb <plot_f8.ipynb>`
 
 
 .. only:: html

@@ -35,7 +35,7 @@ Optimize a model with onnxruntime
 
 .. GENERATED FROM PYTHON SOURCE LINES 18-39
 
-.. code-block:: default
+.. code-block:: Python
 
     import os
     from pprint import pprint
@@ -78,7 +78,7 @@ Output comparison
 
 .. GENERATED FROM PYTHON SOURCE LINES 42-57
 
-.. code-block:: default
+.. code-block:: Python
 
 
     so = SessionOptions()
@@ -117,7 +117,7 @@ Unoptimized model.
 
 .. GENERATED FROM PYTHON SOURCE LINES 62-69
 
-.. code-block:: default
+.. code-block:: Python
 
 
     with open(filename, "rb") as f:
@@ -177,7 +177,7 @@ Optimized model.
 
 .. GENERATED FROM PYTHON SOURCE LINES 71-79
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -197,9 +197,8 @@ Optimized model.
 
     second model to text...
     opset: domain='' version=11
-    opset: domain='ai.onnx.ml' version=3
+    opset: domain='ai.onnx.ml' version=4
     opset: domain='ai.onnx.training' version=1
-    opset: domain='com.ms.internal.nhwc' version=19
     opset: domain='ai.onnx.preview.training' version=1
     opset: domain='com.microsoft' version=1
     opset: domain='com.microsoft.experimental' version=1
@@ -251,7 +250,7 @@ Differences
 
 .. GENERATED FROM PYTHON SOURCE LINES 81-85
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print("differences...")
@@ -267,9 +266,8 @@ Differences
 
     differences...
       opset: domain='' version=11
-    + opset: domain='ai.onnx.ml' version=3
+    + opset: domain='ai.onnx.ml' version=4
     + opset: domain='ai.onnx.training' version=1
-    + opset: domain='com.ms.internal.nhwc' version=19
     + opset: domain='ai.onnx.preview.training' version=1
     + opset: domain='com.microsoft' version=1
     + opset: domain='com.microsoft.experimental' version=1
@@ -350,7 +348,7 @@ HTML version.
 
 .. GENERATED FROM PYTHON SOURCE LINES 87-94
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print("html differences...")
@@ -380,7 +378,7 @@ Benchmark
 
 .. GENERATED FROM PYTHON SOURCE LINES 97-111
 
-.. code-block:: default
+.. code-block:: Python
 
 
     img = numpy.random.random((1, 3, 112, 112)).astype(numpy.float32)
@@ -405,25 +403,25 @@ Benchmark
  .. code-block:: none
 
     Original model
-    {'average': 0.016876578239980154,
+    {'average': 0.01775290048000461,
      'context_size': 64,
-     'deviation': 0.005713046671202444,
-     'max_exec': 0.03100100800016662,
-     'min_exec': 0.011209283999924081,
+     'deviation': 0.005349540839231858,
+     'max_exec': 0.040033368000003976,
+     'min_exec': 0.013125968000022113,
      'name': 'original',
      'number': 25,
      'repeat': 25,
-     'ttime': 0.42191445599950383}
+     'ttime': 0.44382251200011524}
     Optimized
-    {'average': 0.020320340959983883,
+    {'average': 0.01692187696000328,
      'context_size': 64,
-     'deviation': 0.01018773348011621,
-     'max_exec': 0.0448430680000456,
-     'min_exec': 0.010439400000032038,
+     'deviation': 0.002440905560883147,
+     'max_exec': 0.025821232000016608,
+     'min_exec': 0.014382595999995829,
      'name': 'optimized',
      'number': 25,
      'repeat': 25,
-     'ttime': 0.5080085239995971}
+     'ttime': 0.42304692400008204}
 
 
 
@@ -435,7 +433,7 @@ Plots
 
 .. GENERATED FROM PYTHON SOURCE LINES 114-121
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -499,24 +497,24 @@ Plots
       <tbody>
         <tr>
           <th>original</th>
-          <td>0.016877</td>
-          <td>0.005713</td>
-          <td>0.011209</td>
-          <td>0.031001</td>
+          <td>0.017753</td>
+          <td>0.005350</td>
+          <td>0.013126</td>
+          <td>0.040033</td>
           <td>25</td>
           <td>25</td>
-          <td>0.421914</td>
+          <td>0.443823</td>
           <td>64</td>
         </tr>
         <tr>
           <th>optimized</th>
-          <td>0.020320</td>
-          <td>0.010188</td>
-          <td>0.010439</td>
-          <td>0.044843</td>
+          <td>0.016922</td>
+          <td>0.002441</td>
+          <td>0.014383</td>
+          <td>0.025821</td>
           <td>25</td>
           <td>25</td>
-          <td>0.508009</td>
+          <td>0.423047</td>
           <td>64</td>
         </tr>
       </tbody>
@@ -532,7 +530,7 @@ And the graph is:
 
 .. GENERATED FROM PYTHON SOURCE LINES 123-128
 
-.. code-block:: default
+.. code-block:: Python
 
 
     ax.bar(df.index, df["average"].values, yerr=df["deviation"].values, capsize=6)
@@ -554,7 +552,7 @@ And the graph is:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  23.811 seconds)
+   **Total running time of the script:** (0 minutes 22.105 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimization.py:
@@ -563,16 +561,13 @@ And the graph is:
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_optimization.ipynb <plot_optimization.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_optimization.py <plot_optimization.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_optimization.ipynb <plot_optimization.ipynb>`
 
 
 .. only:: html

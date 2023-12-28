@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Change Logs" href="../CHANGELOGS.html" /><link rel="prev" title="Measuring onnxruntime performance against a cython binding" href="plot_bench_cypy_ort.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Evaluate different implementation of TreeEnsemble" href="plot_op_tree_ensemble_implementations.html" /><link rel="prev" title="Evaluating random access for sparse" href="plot_bench_sparse_access.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
         <title>Measuring performance of TfIdfVectorizer - onnx-extended 0.2.4 documentation</title>
@@ -170,8 +170,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/cython_binding.html">Cython Binding of onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/custom_ops.html">Custom Kernels for onnxruntime</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/ops.html">Focus on operators optimization</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Focus on operators optimization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
@@ -236,6 +236,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_einsum.html">onnx_extended.tools.einsum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_graph.html">onnx_extended.tools.graph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_graph_transformer.html">onnx_extended.tools.graph.onnx_graph_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools_inline.html">onnx_extended.tools.onnx_inline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_nodes.html">onnx_extended.tools.onnx_nodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_stats.html">onnx_extended.tools.stats_nodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/tools_other.html">onnx_extended.tools</a></li>
@@ -252,21 +253,24 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">ONNX Benchmarks</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_check_random_order.html">Random order for a sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_conv.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_bench_sparse_access.html">Evaluating random access for sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_implementations.html">Evaluate different implementation of TreeEnsemble</a></li>
 </ul>
 </li>
 </ul>
@@ -428,7 +432,7 @@ with onnxruntime for different batch size and vocabulary size.</p>
 
 <span class="k">if</span> <span class="n">unit_test_going</span><span class="p">():</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocabulary_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
 <span class="k">else</span><span class="p">:</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vocabulary_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">]</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_sizes</span></a> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]</span>
@@ -493,33 +497,33 @@ with onnxruntime for different batch size and vocabulary size.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/20 [00:00&lt;?, ?it/s]
-  5%|▌         | 1/20 [00:04&lt;01:24,  4.44s/it]
- 10%|█         | 2/20 [00:09&lt;01:23,  4.63s/it]
- 15%|█▌        | 3/20 [00:13&lt;01:15,  4.45s/it]
- 20%|██        | 4/20 [00:17&lt;01:11,  4.45s/it]
- 25%|██▌       | 5/20 [00:22&lt;01:08,  4.56s/it]
- 30%|███       | 6/20 [00:26&lt;01:01,  4.38s/it]
- 35%|███▌      | 7/20 [00:30&lt;00:56,  4.32s/it]
- 40%|████      | 8/20 [00:35&lt;00:52,  4.34s/it]
- 45%|████▌     | 9/20 [00:40&lt;00:50,  4.57s/it]
- 50%|█████     | 10/20 [00:45&lt;00:46,  4.68s/it]
- 55%|█████▌    | 11/20 [00:49&lt;00:40,  4.51s/it]
- 60%|██████    | 12/20 [00:53&lt;00:35,  4.43s/it]
- 65%|██████▌   | 13/20 [00:58&lt;00:31,  4.45s/it]
- 70%|███████   | 14/20 [01:03&lt;00:29,  4.84s/it]
- 75%|███████▌  | 15/20 [01:09&lt;00:26,  5.21s/it]
- 80%|████████  | 16/20 [01:14&lt;00:20,  5.06s/it]
- 85%|████████▌ | 17/20 [01:18&lt;00:14,  4.80s/it]
- 90%|█████████ | 18/20 [01:23&lt;00:09,  4.76s/it]
- 95%|█████████▌| 19/20 [01:28&lt;00:04,  4.81s/it]
-100%|██████████| 20/20 [01:33&lt;00:00,  4.97s/it]
-100%|██████████| 20/20 [01:33&lt;00:00,  4.69s/it]
+  5%|▌         | 1/20 [00:03&lt;01:15,  3.99s/it]
+ 10%|█         | 2/20 [00:08&lt;01:17,  4.29s/it]
+ 15%|█▌        | 3/20 [00:14&lt;01:25,  5.01s/it]
+ 20%|██        | 4/20 [00:19&lt;01:22,  5.13s/it]
+ 25%|██▌       | 5/20 [00:24&lt;01:13,  4.87s/it]
+ 30%|███       | 6/20 [00:28&lt;01:06,  4.72s/it]
+ 35%|███▌      | 7/20 [00:33&lt;01:00,  4.68s/it]
+ 40%|████      | 8/20 [00:37&lt;00:56,  4.71s/it]
+ 45%|████▌     | 9/20 [00:42&lt;00:50,  4.59s/it]
+ 50%|█████     | 10/20 [00:46&lt;00:46,  4.62s/it]
+ 55%|█████▌    | 11/20 [00:51&lt;00:41,  4.61s/it]
+ 60%|██████    | 12/20 [00:55&lt;00:35,  4.48s/it]
+ 65%|██████▌   | 13/20 [01:00&lt;00:31,  4.47s/it]
+ 70%|███████   | 14/20 [01:04&lt;00:27,  4.54s/it]
+ 75%|███████▌  | 15/20 [01:09&lt;00:22,  4.52s/it]
+ 80%|████████  | 16/20 [01:13&lt;00:17,  4.47s/it]
+ 85%|████████▌ | 17/20 [01:17&lt;00:13,  4.37s/it]
+ 90%|█████████ | 18/20 [01:22&lt;00:08,  4.42s/it]
+ 95%|█████████▌| 19/20 [01:26&lt;00:04,  4.44s/it]
+100%|██████████| 20/20 [01:31&lt;00:00,  4.50s/it]
+100%|██████████| 20/20 [01:31&lt;00:00,  4.57s/it]
     average  deviation  min_exec  ...  voc_size  batch_size      time
-0  0.000037   0.000003  0.000033  ...       100           1  0.000037
-1  0.000030   0.000002  0.000028  ...       100           1  0.000030
-2  0.000034   0.000006  0.000026  ...       100           1  0.000034
-3  0.000100   0.000155  0.000046  ...       100          10  0.000100
-4  0.000044   0.000002  0.000041  ...       100          10  0.000044
+0  0.000021   0.000004  0.000016  ...       100           1  0.000021
+1  0.000016   0.000008  0.000011  ...       100           1  0.000016
+2  0.000015   0.000004  0.000012  ...       100           1  0.000015
+3  0.000037   0.000010  0.000027  ...       100          10  0.000037
+4  0.000029   0.000012  0.000020  ...       100          10  0.000029
 
 [5 rows x 14 columns]
 </pre></div>
@@ -535,18 +539,18 @@ with onnxruntime for different batch size and vocabulary size.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size           1         10        500       1000      2000
 voc_size name
-100      custom  0.000034  0.000067  0.000125  0.000207  0.000387
-         ref     0.000030  0.000044  0.000305  0.000357  0.000846
-         sparse  0.000037  0.000100  0.000438  0.000804  0.001493
-1000     custom  0.000012  0.000030  0.000354  0.000648  0.001485
-         ref     0.000012  0.000037  0.001243  0.002575  0.004455
-         sparse  0.000016  0.000027  0.000352  0.000822  0.001070
-5000     custom  0.000016  0.000044  0.002127  0.006494  0.056325
-         ref     0.000017  0.000097  0.005593  0.022416  0.221207
-         sparse  0.000015  0.000028  0.000293  0.001119  0.003109
-10000    custom  0.000016  0.000070  0.003626  0.045449  0.108918
-         ref     0.000020  0.000165  0.010093  0.030373  0.062234
-         sparse  0.000015  0.000042  0.000318  0.000635  0.001105
+100      custom  0.000015  0.000033  0.000391  0.000251  0.000327
+         ref     0.000016  0.000029  0.000331  0.000487  0.000504
+         sparse  0.000021  0.000037  0.000495  0.003560  0.002017
+1000     custom  0.000053  0.000030  0.000289  0.000668  0.001705
+         ref     0.000045  0.000036  0.000545  0.001211  0.002461
+         sparse  0.000037  0.000033  0.000434  0.000875  0.001578
+5000     custom  0.000070  0.000043  0.001845  0.003729  0.019136
+         ref     0.000046  0.000077  0.002734  0.005384  0.014574
+         sparse  0.000021  0.000032  0.000419  0.000680  0.002038
+10000    custom  0.000022  0.000084  0.005428  0.015676  0.024925
+         ref     0.000034  0.000132  0.005989  0.014671  0.043997
+         sparse  0.000019  0.000031  0.000425  0.000783  0.001412
 </pre></div>
 </div>
 </section>
@@ -564,18 +568,18 @@ began.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size           1         10         500        1000        2000
 voc_size name
-100      custom  0.000000  0.136719   0.000000   0.000000    0.089844
-         ref     0.066406  0.000000   0.000000   0.000000    0.000000
-         sparse  0.179688  0.011719   0.000000   0.000000    0.046875
-1000     custom  0.000000  0.000000   0.062500   0.000000    7.253906
-         ref     0.000000  0.000000   0.000000   0.000000    2.585938
-         sparse  0.000000  0.003906   0.000000   0.000000    0.000000
-5000     custom  0.000000  0.000000   2.371094  18.437500   77.914062
-         ref     0.000000  0.000000   9.539062  19.437500   76.242188
-         sparse  0.000000  0.000000   0.285156   0.000000    0.488281
-10000    custom  0.000000  0.277344  19.968750  74.683594  127.746094
-         ref     0.000000  0.000000  20.894531  76.292969  151.890625
+100      custom  0.015625  0.015625   0.000000   0.000000    0.050781
+         ref     0.000000  0.000000   0.000000   0.000000    0.000000
+         sparse  0.062500  0.011719   0.000000   0.000000    0.082031
+1000     custom  0.000000  0.003906   0.000000   0.085938    0.000000
+         ref     0.000000  0.000000   0.000000   0.000000    0.000000
+         sparse  0.000000  0.000000   0.007812   0.000000    0.000000
+5000     custom  0.000000  0.000000   9.542969  20.210938   77.992188
+         ref     0.000000  0.000000   0.707031  20.207031   76.300781
          sparse  0.000000  0.000000   0.000000   0.000000    0.000000
+10000    custom  0.042969  0.222656  20.820312  78.625000  154.179688
+         ref     0.042969  0.636719  39.894531  78.246094  154.257812
+         sparse  0.003906  0.007812   0.046875   0.000000    0.101562
 </pre></div>
 </div>
 </section>
@@ -590,7 +594,7 @@ voc_size name
 <section id="take-away">
 <h2>Take away<a class="headerlink" href="#take-away" title="Permalink to this heading">#</a></h2>
 <p>Sparse works better when the sparsity is big enough and the batch size as well.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 44.262 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 41.333 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-tfidfvectorizer-sparse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9dd5da9d3b69fcd7a1c0ebd41d7a2271/plot_op_tfidfvectorizer_sparse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_tfidfvectorizer_sparse.ipynb</span></code></a></p>
@@ -608,23 +612,23 @@ voc_size name
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../CHANGELOGS.html">
+          <a class="next-page" href="plot_op_tree_ensemble_implementations.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Change Logs</div>
+                <div class="title">Evaluate different implementation of TreeEnsemble</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="plot_bench_cypy_ort.html">
+          <a class="prev-page" href="plot_bench_sparse_access.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Measuring onnxruntime performance against a cython binding</div>
+                <div class="title">Evaluating random access for sparse</div>
                 
               </div>
             </a>

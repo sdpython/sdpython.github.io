@@ -34,7 +34,7 @@ The first example takes a loss function and converts it into ONNX.
 
 .. GENERATED FROM PYTHON SOURCE LINES 17-24
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import numpy as np
@@ -56,7 +56,7 @@ The function looks like a numpy function.
 
 .. GENERATED FROM PYTHON SOURCE LINES 26-30
 
-.. code-block:: default
+.. code-block:: Python
 
     def l1_loss(x, y):
         return absolute(x - y).sum()
@@ -78,7 +78,7 @@ corresponding ONNX graph.
 
 .. GENERATED FROM PYTHON SOURCE LINES 35-37
 
-.. code-block:: default
+.. code-block:: Python
 
     jitted_l1_loss = jit_onnx(l1_loss)
 
@@ -98,7 +98,7 @@ It creates a new one otherwise and keep the old one.
 
 .. GENERATED FROM PYTHON SOURCE LINES 42-49
 
-.. code-block:: default
+.. code-block:: Python
 
 
     x = np.array([[0.1, 0.2], [0.3, 0.4]], dtype=np.float32)
@@ -126,7 +126,7 @@ The ONNX graph can be accessed the following way.
 
 .. GENERATED FROM PYTHON SOURCE LINES 51-53
 
-.. code-block:: default
+.. code-block:: Python
 
     print(onnx_simple_text_plot(jitted_l1_loss.get_onnx()))
 
@@ -156,7 +156,7 @@ the first column and L2 loss on the seconde one.
 
 .. GENERATED FROM PYTHON SOURCE LINES 56-80
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -239,7 +239,7 @@ Eager mode
 
 .. GENERATED FROM PYTHON SOURCE LINES 83-110
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import numpy as np
@@ -287,7 +287,7 @@ selected runtime, here numpy as well through
 
 .. GENERATED FROM PYTHON SOURCE LINES 118-123
 
-.. code-block:: default
+.. code-block:: Python
 
     eager_myloss = eager_onnx(myloss)
 
@@ -312,7 +312,7 @@ It creates a new one otherwise and keep the old ones.
 
 .. GENERATED FROM PYTHON SOURCE LINES 130-133
 
-.. code-block:: default
+.. code-block:: Python
 
     res = eager_myloss(x, y)
     print(res)
@@ -340,7 +340,7 @@ is converted into small ONNX graphs.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.899 seconds)
+   **Total running time of the script:** (0 minutes 0.341 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_first_example.py:
@@ -349,16 +349,13 @@ is converted into small ONNX graphs.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_first_example.ipynb <plot_first_example.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_first_example.py <plot_first_example.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_first_example.ipynb <plot_first_example.ipynb>`
 
 
 .. only:: html
