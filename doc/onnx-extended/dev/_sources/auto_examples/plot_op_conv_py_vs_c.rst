@@ -78,7 +78,7 @@ Creation of a simple model
 
  .. code-block:: none
 
-    [2023-12-28 19:49:38,143] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+    [2023-12-29 23:38:12,287] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 
 
 
@@ -149,9 +149,9 @@ Time measurement
 
  .. code-block:: none
 
-    ReferenceEvaluator: 0.0032621971999978994s
-    CReferenceEvaluator: 0.00012173540000367214s
-    speedup is 26.79744100647384
+    ReferenceEvaluator: 0.0008064220000014756s
+    CReferenceEvaluator: 9.955339999851277e-05s
+    speedup is 8.100396370325099
 
 
 
@@ -182,8 +182,8 @@ Let's add :epkg:`onnxruntime` as well.
 
  .. code-block:: none
 
-    InferenceSession: 7.479980000061914e-05s
-    speedup is 43.61237864233457
+    InferenceSession: 2.9544599999098864e-05s
+    speedup is 27.295072535288078
 
 
 
@@ -225,7 +225,7 @@ Plotting
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:01,  2.81it/s]     50%|█████     | 2/4 [00:00<00:00,  2.36it/s]     75%|███████▌  | 3/4 [00:01<00:00,  2.93it/s]    100%|██████████| 4/4 [00:01<00:00,  1.85it/s]    100%|██████████| 4/4 [00:01<00:00,  2.09it/s]
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:00,  6.82it/s]     50%|█████     | 2/4 [00:00<00:00,  6.77it/s]     75%|███████▌  | 3/4 [00:00<00:00,  6.63it/s]    100%|██████████| 4/4 [00:00<00:00,  3.92it/s]    100%|██████████| 4/4 [00:00<00:00,  4.63it/s]
 
 
 .. raw:: html
@@ -258,26 +258,26 @@ Plotting
         <tr>
           <th>0</th>
           <td>16</td>
-          <td>0.000572</td>
-          <td>0.000131</td>
+          <td>0.000264</td>
+          <td>0.000027</td>
         </tr>
         <tr>
           <th>1</th>
           <td>32</td>
-          <td>0.000879</td>
-          <td>0.000056</td>
+          <td>0.000268</td>
+          <td>0.000026</td>
         </tr>
         <tr>
           <th>2</th>
           <td>48</td>
-          <td>0.000435</td>
-          <td>0.000045</td>
+          <td>0.000279</td>
+          <td>0.000028</td>
         </tr>
         <tr>
           <th>3</th>
           <td>64</td>
-          <td>0.001573</td>
-          <td>0.000105</td>
+          <td>0.000729</td>
+          <td>0.000096</td>
         </tr>
       </tbody>
     </table>
@@ -322,7 +322,7 @@ Finally.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 22.683 seconds)
+   **Total running time of the script:** (0 minutes 10.150 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_conv_py_vs_c.py:

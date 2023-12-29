@@ -13,23 +13,6 @@ Gallerie d'exemples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Parallelization usually means a summation is done with a random order. That may lead to differe...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_check_random_order_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_check_random_order.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Random order for a sum</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t...">
 
 .. only:: html
@@ -42,6 +25,23 @@ Gallerie d'exemples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a vector sum</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Parallelization usually means a summation is done with a random order. That may lead to differe...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_check_random_order_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_check_random_order.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Random order for a sum</div>
     </div>
 
 
@@ -104,8 +104,8 @@ Gallerie d'exemples
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_check_random_order
    /auto_examples/plot_bench_cpu_vector_sum
+   /auto_examples/plot_check_random_order
    /auto_examples/plot_bench_cpu_vector_sum_parallel
    /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
    /auto_examples/plot_serialisation_examples

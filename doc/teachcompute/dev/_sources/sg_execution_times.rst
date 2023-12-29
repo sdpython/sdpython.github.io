@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:42.417** total execution time for 5 files **from all galleries**:
+**00:00.000** total execution time for 5 files **from all galleries**:
 
 .. container::
 
@@ -32,18 +32,18 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``examples/plot_bench_cpu_vector_sum.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py` (``examples/plot_bench_cpu_vector_sum_avx_parallel.py``)
-     - 00:40.989
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py` (``examples/plot_bench_cpu_vector_sum_parallel.py``)
-     - 00:35.501
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``examples/plot_bench_cpu_vector_sum.py``)
-     - 00:21.616
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_check_random_order.py` (``examples/plot_check_random_order.py``)
-     - 00:04.185
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_serialisation_examples.py` (``examples/plot_serialisation_examples.py``)
-     - 00:00.126
+     - 00:00.000
      - 0.0

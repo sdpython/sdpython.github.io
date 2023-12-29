@@ -29,12 +29,13 @@ summation of random permutation of the same array of values.
 Setup
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-31
+.. GENERATED FROM PYTHON SOURCE LINES 13-32
 
 .. code-block:: Python
 
     from tqdm import tqdm
     import numpy as np
+    import pandas
 
     unique_values = np.array(
         [2.1102535724639893, 0.5986238718032837, -0.49545818567276], dtype=np.float32
@@ -59,12 +60,12 @@ Setup
 
  .. code-block:: none
 
-    reduced sum=1468.653564453125, iterative sum=1468.6390380859375, delta=-0.0145263671875
+    reduced sum=1618.072509765625, iterative sum=1618.0577392578125, delta=-0.0147705078125
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-39
+.. GENERATED FROM PYTHON SOURCE LINES 33-40
 
 There are discrepancies.
 
@@ -74,7 +75,7 @@ Random order
 Let's go further and check the sum of random permutation of the same set.
 Let's compare the result with the same sum done with a higher precision (double).
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-66
+.. GENERATED FROM PYTHON SOURCE LINES 40-77
 
 .. code-block:: Python
 
@@ -84,6 +85,7 @@ Let's compare the result with the same sum done with a higher precision (double)
         double_sums = []
         sums = []
         reduced_sums = []
+        reduced_dsums = []
         for i in tqdm(range(n)):
             permuted_values = np.random.permutation(values)
             s = np.array(bias, dtype=np.float32)
@@ -94,16 +96,25 @@ Let's compare the result with the same sum done with a higher precision (double)
             sums.append(s)
             double_sums.append(sd)
             reduced_sums.append(permuted_values.sum() + bias)
+            reduced_dsums.append(permuted_values.astype(np.float64).sum() + bias)
 
+        data = []
         mi, ma = min(sums), max(sums)
+        data.append(dict(name="seq_fp32", min=mi, max=ma, bias=bias))
         print(f"min={mi} max={ma} delta={ma-mi}")
         mi, ma = min(double_sums), max(double_sums)
+        data.append(dict(name="seq_fp64", min=mi, max=ma, bias=bias))
         print(f"min={mi} max={ma} delta={ma-mi} (double)")
         mi, ma = min(reduced_sums), max(reduced_sums)
+        data.append(dict(name="red_f32", min=mi, max=ma, bias=bias))
         print(f"min={mi} max={ma} delta={ma-mi} (reduced)")
+        mi, ma = min(reduced_dsums), max(reduced_dsums)
+        data.append(dict(name="red_f64", min=mi, max=ma, bias=bias))
+        print(f"min={mi} max={ma} delta={ma-mi} (reduced)")
+        return data
 
 
-    check_orders(values)
+    data1 = check_orders(values)
 
 
 
@@ -113,15 +124,16 @@ Let's compare the result with the same sum done with a higher precision (double)
 
  .. code-block:: none
 
-      0%|          | 0/200 [00:00<?, ?it/s]      6%|▌         | 12/200 [00:00<00:01, 115.10it/s]     14%|█▎        | 27/200 [00:00<00:01, 132.08it/s]     22%|██▏       | 44/200 [00:00<00:01, 146.52it/s]     31%|███       | 62/200 [00:00<00:00, 158.05it/s]     39%|███▉      | 78/200 [00:00<00:00, 147.32it/s]     46%|████▋     | 93/200 [00:00<00:00, 138.37it/s]     54%|█████▎    | 107/200 [00:00<00:00, 133.75it/s]     60%|██████    | 121/200 [00:00<00:00, 133.91it/s]     68%|██████▊   | 135/200 [00:01<00:00, 126.05it/s]     74%|███████▍  | 148/200 [00:01<00:00, 124.68it/s]     81%|████████  | 162/200 [00:01<00:00, 120.98it/s]     88%|████████▊ | 175/200 [00:01<00:00, 70.74it/s]      92%|█████████▎| 185/200 [00:01<00:00, 70.67it/s]     97%|█████████▋| 194/200 [00:01<00:00, 71.04it/s]    100%|██████████| 200/200 [00:01<00:00, 102.03it/s]
-    min=1468.6380615234375 max=1468.640869140625 delta=0.0028076171875
-    min=1468.6537116765976 max=1468.6537116765976 delta=0.0 (double)
-    min=1468.653564453125 max=1468.65380859375 delta=0.000244140625 (reduced)
+      0%|          | 0/200 [00:00<?, ?it/s]      4%|▍         | 9/200 [00:00<00:02, 84.39it/s]      9%|▉         | 18/200 [00:00<00:02, 81.55it/s]     14%|█▎        | 27/200 [00:00<00:02, 79.57it/s]     18%|█▊        | 37/200 [00:00<00:01, 86.93it/s]     23%|██▎       | 46/200 [00:00<00:01, 85.55it/s]     28%|██▊       | 56/200 [00:00<00:01, 90.09it/s]     35%|███▌      | 70/200 [00:00<00:01, 105.78it/s]     40%|████      | 81/200 [00:00<00:01, 100.59it/s]     48%|████▊     | 97/200 [00:00<00:00, 117.86it/s]     55%|█████▍    | 109/200 [00:01<00:00, 116.16it/s]     60%|██████    | 121/200 [00:01<00:00, 107.94it/s]     68%|██████▊   | 135/200 [00:01<00:00, 116.24it/s]     74%|███████▎  | 147/200 [00:01<00:00, 116.99it/s]     80%|████████  | 160/200 [00:01<00:00, 118.81it/s]     88%|████████▊ | 175/200 [00:01<00:00, 127.75it/s]     94%|█████████▍| 189/200 [00:01<00:00, 128.88it/s]    100%|██████████| 200/200 [00:01<00:00, 111.11it/s]
+    min=1618.05517578125 max=1618.0579833984375 delta=0.0028076171875
+    min=1618.0725121498108 max=1618.0725121498108 delta=0.0 (double)
+    min=1618.0723876953125 max=1618.072509765625 delta=0.0001220703125 (reduced)
+    min=1618.0725121498108 max=1618.0725121498108 delta=0.0 (reduced)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-79
+.. GENERATED FROM PYTHON SOURCE LINES 78-90
 
 This example clearly shows the order has an impact.
 It is usually unavoidable but it could reduced if the sum
@@ -136,14 +148,14 @@ However if we have an estimator of this average, not necessarily
 the exact value, we would help the summation to keep the same order
 of magnitude than the values it adds.
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-84
+.. GENERATED FROM PYTHON SOURCE LINES 90-95
 
 .. code-block:: Python
 
 
     mean = unique_values.mean()
     values -= mean
-    check_orders(values, bias=len(values) * mean)
+    data2 = check_orders(values, bias=len(values) * mean)
 
 
 
@@ -153,22 +165,76 @@ of magnitude than the values it adds.
 
  .. code-block:: none
 
-      0%|          | 0/200 [00:00<?, ?it/s]      5%|▌         | 10/200 [00:00<00:02, 92.54it/s]     12%|█▏        | 23/200 [00:00<00:01, 111.19it/s]     20%|█▉        | 39/200 [00:00<00:01, 132.70it/s]     28%|██▊       | 55/200 [00:00<00:01, 142.55it/s]     36%|███▌      | 71/200 [00:00<00:00, 145.11it/s]     44%|████▎     | 87/200 [00:00<00:00, 148.63it/s]     52%|█████▏    | 103/200 [00:00<00:00, 151.15it/s]     60%|█████▉    | 119/200 [00:00<00:00, 122.95it/s]     66%|██████▋   | 133/200 [00:01<00:00, 80.10it/s]      72%|███████▏  | 144/200 [00:01<00:00, 78.49it/s]     77%|███████▋  | 154/200 [00:01<00:00, 63.55it/s]     82%|████████▏ | 163/200 [00:01<00:00, 68.30it/s]     86%|████████▌ | 172/200 [00:01<00:00, 68.17it/s]     90%|█████████ | 180/200 [00:01<00:00, 68.99it/s]     95%|█████████▌| 190/200 [00:02<00:00, 74.87it/s]    100%|██████████| 200/200 [00:02<00:00, 80.74it/s]    100%|██████████| 200/200 [00:02<00:00, 91.49it/s]
-    min=1468.655029296875 max=1468.655029296875 delta=0.0
-    min=1468.6536729335785 max=1468.6536729335785 delta=0.0 (double)
-    min=1468.6536769866943 max=1468.6537041664124 delta=2.7179718017578125e-05 (reduced)
+      0%|          | 0/200 [00:00<?, ?it/s]      6%|▋         | 13/200 [00:00<00:01, 121.99it/s]     13%|█▎        | 26/200 [00:00<00:01, 95.88it/s]      20%|██        | 40/200 [00:00<00:01, 110.26it/s]     26%|██▌       | 52/200 [00:00<00:01, 110.35it/s]     33%|███▎      | 66/200 [00:00<00:01, 119.81it/s]     40%|████      | 81/200 [00:00<00:00, 128.05it/s]     48%|████▊     | 96/200 [00:00<00:00, 133.99it/s]     55%|█████▌    | 110/200 [00:00<00:00, 129.82it/s]     62%|██████▏   | 124/200 [00:01<00:00, 107.33it/s]     68%|██████▊   | 136/200 [00:01<00:00, 98.16it/s]      74%|███████▎  | 147/200 [00:01<00:00, 93.10it/s]     78%|███████▊  | 157/200 [00:01<00:00, 71.40it/s]     83%|████████▎ | 166/200 [00:01<00:00, 72.03it/s]     90%|████████▉ | 179/200 [00:01<00:00, 84.76it/s]     94%|█████████▍| 189/200 [00:01<00:00, 85.74it/s]    100%|██████████| 200/200 [00:02<00:00, 90.48it/s]    100%|██████████| 200/200 [00:02<00:00, 98.04it/s]
+    min=1618.0731201171875 max=1618.0731201171875 delta=0.0
+    min=1618.0724694132805 max=1618.0724694132805 delta=0.0 (double)
+    min=1618.072470664978 max=1618.0725011825562 delta=3.0517578125e-05 (reduced)
+    min=1618.0724694132805 max=1618.0724694132805 delta=0.0 (reduced)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-86
+.. GENERATED FROM PYTHON SOURCE LINES 96-97
 
 The differences are clearly lower.
+
+.. GENERATED FROM PYTHON SOURCE LINES 97-103
+
+.. code-block:: Python
+
+
+    df = pandas.DataFrame(data1 + data2)
+    df["delta"] = df["max"] - df["min"]
+    piv = df.pivot(index="name", columns="bias", values="delta")
+    print(piv)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    bias     0.000000    1475.612998
+    name                            
+    red_f32     0.000122    0.000031
+    red_f64          0.0         0.0
+    seq_fp32    0.002808         0.0
+    seq_fp64         0.0         0.0
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 104-105
+
+Plots.
+
+.. GENERATED FROM PYTHON SOURCE LINES 105-110
+
+.. code-block:: Python
+
+
+    ax = piv.plot.barh()
+    ax.set_title("max(sum) - min(sum) over random orders")
+    ax.get_figure().tight_layout()
+    ax.get_figure().savefig("plot_check_random_order.png")
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_check_random_order_001.png
+   :alt: max(sum) - min(sum) over random orders
+   :srcset: /auto_examples/images/sphx_glr_plot_check_random_order_001.png
+   :class: sphx-glr-single-img
+
+
+
+
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.185 seconds)
+   **Total running time of the script:** (0 minutes 4.671 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_check_random_order.py:

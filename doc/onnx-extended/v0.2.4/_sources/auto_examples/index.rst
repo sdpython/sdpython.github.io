@@ -18,74 +18,6 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Parallelization usually means a summation is done with a random order. That may lead to differe...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_check_random_order_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_check_random_order.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Random order for a sum</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cpu_vector_sum_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a vector sum</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cpu_vector_sum_parallel_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a parallelized vector sum</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cpu_vector_sum_avx_parallel_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a parallelized vector sum and AVX</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Processor caches must be taken into account when writing an algorithm, see Memory part 2: CPU c...">
 
 .. only:: html
@@ -149,23 +81,6 @@ Examples Gallery
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Evaluating random access for sparse</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The examples compares multiple versions of a vector sum, CPU, GPU.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_gpu_vector_sum_gpu_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_bench_gpu_vector_sum_gpu.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Measuring CPU/GPU performance with a vector sum</div>
     </div>
 
 
@@ -330,15 +245,10 @@ Examples Gallery
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_check_random_order
-   /auto_examples/plot_bench_cpu_vector_sum
-   /auto_examples/plot_bench_cpu_vector_sum_parallel
-   /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
    /auto_examples/plot_bench_cpu
    /auto_examples/plot_op_conv_py_vs_c
    /auto_examples/plot_bench_cypy_ort
    /auto_examples/plot_bench_sparse_access
-   /auto_examples/plot_bench_gpu_vector_sum_gpu
    /auto_examples/plot_op_tfidfvectorizer_sparse
    /auto_examples/plot_bench_gemm_f8
    /auto_examples/plot_op_einsum

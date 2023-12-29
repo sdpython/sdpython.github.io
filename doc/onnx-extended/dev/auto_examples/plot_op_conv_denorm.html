@@ -201,10 +201,6 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/parallelization.html">Experiments about parallelization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Experiments about parallelization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 </ul>
 </li>
 </ul>
@@ -253,15 +249,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">ONNX Benchmarks</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="plot_check_random_order.html">Random order for a sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_sparse_access.html">Evaluating random access for sparse</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
@@ -433,7 +424,7 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, &#39;&
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;difference: </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>difference: 3.0517578125e-05
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>difference: 3.337860107421875e-05
 </pre></div>
 </div>
 <p>Everything works fine.</p>
@@ -449,8 +440,8 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, &#39;&
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;InferenceSession: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t2</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CReferenceEvaluator: 0.13596081000032428s
-InferenceSession: 0.13545130000020436s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CReferenceEvaluator: 0.13534609999996974s
+InferenceSession: 0.10375600000002123s
 </pre></div>
 </div>
 </section>
@@ -563,23 +554,23 @@ Let’s choose an random input.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/16 [00:00&lt;?, ?it/s]
-  6%|▋         | 1/16 [00:27&lt;06:48, 27.21s/it]
- 12%|█▎        | 2/16 [00:38&lt;04:06, 17.57s/it]
- 19%|█▉        | 3/16 [00:43&lt;02:36, 12.05s/it]
- 25%|██▌       | 4/16 [00:48&lt;01:48,  9.08s/it]
- 31%|███▏      | 5/16 [00:50&lt;01:15,  6.87s/it]
- 38%|███▊      | 6/16 [00:53&lt;00:53,  5.38s/it]
- 44%|████▍     | 7/16 [00:55&lt;00:39,  4.41s/it]
- 50%|█████     | 8/16 [00:57&lt;00:29,  3.63s/it]
- 56%|█████▋    | 9/16 [00:59&lt;00:21,  3.12s/it]
- 62%|██████▎   | 10/16 [01:02&lt;00:17,  2.87s/it]
- 69%|██████▉   | 11/16 [01:04&lt;00:13,  2.73s/it]
- 75%|███████▌  | 12/16 [01:07&lt;00:11,  2.79s/it]
- 81%|████████▏ | 13/16 [01:10&lt;00:08,  2.81s/it]
- 88%|████████▊ | 14/16 [01:13&lt;00:05,  2.86s/it]
- 94%|█████████▍| 15/16 [01:16&lt;00:02,  2.82s/it]
-100%|██████████| 16/16 [01:19&lt;00:00,  2.93s/it]
-100%|██████████| 16/16 [01:19&lt;00:00,  4.95s/it]
+  6%|▋         | 1/16 [00:19&lt;04:56, 19.80s/it]
+ 12%|█▎        | 2/16 [00:24&lt;02:36, 11.16s/it]
+ 19%|█▉        | 3/16 [00:28&lt;01:38,  7.59s/it]
+ 25%|██▌       | 4/16 [00:30&lt;01:04,  5.38s/it]
+ 31%|███▏      | 5/16 [00:31&lt;00:44,  4.01s/it]
+ 38%|███▊      | 6/16 [00:33&lt;00:31,  3.16s/it]
+ 44%|████▍     | 7/16 [00:34&lt;00:23,  2.62s/it]
+ 50%|█████     | 8/16 [00:36&lt;00:18,  2.26s/it]
+ 56%|█████▋    | 9/16 [00:37&lt;00:14,  2.04s/it]
+ 62%|██████▎   | 10/16 [00:39&lt;00:11,  1.92s/it]
+ 69%|██████▉   | 11/16 [00:41&lt;00:08,  1.79s/it]
+ 75%|███████▌  | 12/16 [00:42&lt;00:06,  1.69s/it]
+ 81%|████████▏ | 13/16 [00:43&lt;00:04,  1.63s/it]
+ 88%|████████▊ | 14/16 [00:45&lt;00:03,  1.58s/it]
+ 94%|█████████▍| 15/16 [00:46&lt;00:01,  1.55s/it]
+100%|██████████| 16/16 [00:48&lt;00:00,  1.53s/it]
+100%|██████████| 16/16 [00:48&lt;00:00,  3.03s/it]
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -617,210 +608,210 @@ Let’s choose an random input.</p>
     <tr>
       <th>0</th>
       <td>1</td>
-      <td>0.159537</td>
+      <td>0.101987</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.119446</td>
-      <td>0.501097</td>
-      <td>0.186293</td>
-      <td>0.251691</td>
-      <td>0.005315</td>
-      <td>0.005315</td>
+      <td>0.081702</td>
+      <td>0.499883</td>
+      <td>0.182435</td>
+      <td>0.176498</td>
+      <td>0.000396</td>
+      <td>0.000396</td>
     </tr>
     <tr>
       <th>1</th>
       <td>4</td>
-      <td>0.054632</td>
+      <td>0.027883</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.059063</td>
-      <td>0.161901</td>
-      <td>0.319293</td>
-      <td>0.222216</td>
-      <td>0.003728</td>
-      <td>0.003728</td>
+      <td>0.037461</td>
+      <td>0.160695</td>
+      <td>0.111388</td>
+      <td>0.153469</td>
+      <td>0.000572</td>
+      <td>0.000572</td>
     </tr>
     <tr>
       <th>2</th>
       <td>16</td>
-      <td>0.015054</td>
+      <td>0.012483</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.014846</td>
-      <td>0.044378</td>
-      <td>0.073897</td>
-      <td>0.069289</td>
-      <td>0.002800</td>
-      <td>0.002800</td>
+      <td>0.012862</td>
+      <td>0.043957</td>
+      <td>0.062179</td>
+      <td>0.058447</td>
+      <td>0.000450</td>
+      <td>0.000450</td>
     </tr>
     <tr>
       <th>3</th>
       <td>64</td>
-      <td>0.007361</td>
+      <td>0.004598</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.006169</td>
-      <td>0.011325</td>
-      <td>0.023046</td>
-      <td>0.021244</td>
-      <td>0.002832</td>
-      <td>0.002832</td>
+      <td>0.005722</td>
+      <td>0.011322</td>
+      <td>0.017733</td>
+      <td>0.019304</td>
+      <td>0.000447</td>
+      <td>0.000447</td>
     </tr>
     <tr>
       <th>4</th>
       <td>256</td>
-      <td>0.003959</td>
+      <td>0.002553</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003625</td>
-      <td>0.002752</td>
-      <td>0.007347</td>
-      <td>0.006773</td>
-      <td>0.002677</td>
-      <td>0.002677</td>
+      <td>0.003009</td>
+      <td>0.002826</td>
+      <td>0.005319</td>
+      <td>0.005477</td>
+      <td>0.000449</td>
+      <td>0.000449</td>
     </tr>
     <tr>
       <th>5</th>
       <td>1024</td>
-      <td>0.003649</td>
+      <td>0.001861</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003685</td>
-      <td>0.000663</td>
-      <td>0.003092</td>
-      <td>0.003533</td>
-      <td>0.002462</td>
-      <td>0.002462</td>
+      <td>0.002372</td>
+      <td>0.000715</td>
+      <td>0.002333</td>
+      <td>0.002737</td>
+      <td>0.000428</td>
+      <td>0.000428</td>
     </tr>
     <tr>
       <th>6</th>
       <td>4096</td>
-      <td>0.002624</td>
+      <td>0.003011</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003878</td>
-      <td>0.000161</td>
-      <td>0.002156</td>
-      <td>0.002770</td>
-      <td>0.002779</td>
-      <td>0.002779</td>
+      <td>0.002416</td>
+      <td>0.000164</td>
+      <td>0.001302</td>
+      <td>0.001952</td>
+      <td>0.000571</td>
+      <td>0.000571</td>
     </tr>
     <tr>
       <th>7</th>
       <td>16384</td>
-      <td>0.004044</td>
+      <td>0.002986</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.002838</td>
-      <td>0.000036</td>
-      <td>0.001889</td>
-      <td>0.002543</td>
-      <td>0.002799</td>
-      <td>0.002799</td>
+      <td>0.002535</td>
+      <td>0.000027</td>
+      <td>0.001394</td>
+      <td>0.001706</td>
+      <td>0.000549</td>
+      <td>0.000549</td>
     </tr>
     <tr>
       <th>8</th>
       <td>65536</td>
-      <td>0.004260</td>
+      <td>0.002043</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003124</td>
-      <td>0.000012</td>
-      <td>0.001797</td>
-      <td>0.002507</td>
-      <td>0.002639</td>
-      <td>0.002639</td>
+      <td>0.001993</td>
+      <td>0.000005</td>
+      <td>0.002006</td>
+      <td>0.001905</td>
+      <td>0.000552</td>
+      <td>0.000552</td>
     </tr>
     <tr>
       <th>9</th>
       <td>262144</td>
-      <td>0.002953</td>
+      <td>0.002110</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003240</td>
-      <td>0.000005</td>
-      <td>0.002741</td>
-      <td>0.002386</td>
-      <td>0.002510</td>
-      <td>0.002510</td>
+      <td>0.001923</td>
+      <td>0.000002</td>
+      <td>0.001313</td>
+      <td>0.001818</td>
+      <td>0.000540</td>
+      <td>0.000540</td>
     </tr>
     <tr>
       <th>10</th>
       <td>1048576</td>
-      <td>0.003563</td>
+      <td>0.002019</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003001</td>
-      <td>0.000000</td>
-      <td>0.002042</td>
-      <td>0.002703</td>
-      <td>0.002994</td>
-      <td>0.002994</td>
+      <td>0.002178</td>
+      <td>0.000002</td>
+      <td>0.000986</td>
+      <td>0.002055</td>
+      <td>0.000472</td>
+      <td>0.000472</td>
     </tr>
     <tr>
       <th>11</th>
       <td>4194304</td>
-      <td>0.006029</td>
+      <td>0.002102</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.010022</td>
+      <td>0.002221</td>
       <td>0.000000</td>
-      <td>0.004946</td>
-      <td>0.002863</td>
-      <td>0.003289</td>
-      <td>0.003289</td>
+      <td>0.001284</td>
+      <td>0.001778</td>
+      <td>0.000554</td>
+      <td>0.000554</td>
     </tr>
     <tr>
       <th>12</th>
       <td>16777216</td>
-      <td>0.003597</td>
+      <td>0.002257</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003412</td>
+      <td>0.002113</td>
       <td>0.000000</td>
-      <td>0.002321</td>
-      <td>0.002354</td>
-      <td>0.003969</td>
-      <td>0.003969</td>
+      <td>0.001630</td>
+      <td>0.001798</td>
+      <td>0.000547</td>
+      <td>0.000547</td>
     </tr>
     <tr>
       <th>13</th>
       <td>67108864</td>
-      <td>0.002912</td>
+      <td>0.001455</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.004031</td>
+      <td>0.002237</td>
       <td>0.000000</td>
-      <td>0.001887</td>
-      <td>0.002757</td>
-      <td>0.003462</td>
-      <td>0.003462</td>
+      <td>0.001668</td>
+      <td>0.001815</td>
+      <td>0.000419</td>
+      <td>0.000419</td>
     </tr>
     <tr>
       <th>14</th>
       <td>268435456</td>
-      <td>0.004051</td>
+      <td>0.002979</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003940</td>
+      <td>0.002743</td>
       <td>0.000000</td>
-      <td>0.002479</td>
-      <td>0.002697</td>
-      <td>0.002512</td>
-      <td>0.002512</td>
+      <td>0.001197</td>
+      <td>0.001806</td>
+      <td>0.000425</td>
+      <td>0.000425</td>
     </tr>
     <tr>
       <th>15</th>
       <td>1073741824</td>
-      <td>0.003737</td>
+      <td>0.001634</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.003393</td>
+      <td>0.001785</td>
       <td>0.000000</td>
-      <td>0.002046</td>
-      <td>0.002936</td>
-      <td>0.003949</td>
-      <td>0.003949</td>
+      <td>0.001679</td>
+      <td>0.001747</td>
+      <td>0.000424</td>
+      <td>0.000424</td>
     </tr>
   </tbody>
 </table>
@@ -844,7 +835,7 @@ Let’s choose an random input.</p>
 <section id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
 <p>Denormalized numbers should be avoided.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 27.347 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 54.197 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-conv-denorm-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/53a218ecc93d9b7c1baf77846b67e47f/plot_op_conv_denorm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_conv_denorm.ipynb</span></code></a></p>

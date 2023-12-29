@@ -516,7 +516,7 @@ Let's run the profiles
 
  .. code-block:: none
 
-      0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):   0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  6.64it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  6.64it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  33%|███▎      | 8/24 [00:01<00:02,  6.37it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  33%|███▎      | 8/24 [00:01<00:02,  6.37it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  33%|███▎      | 8/24 [00:01<00:02,  6.37it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:02,  6.07it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:02,  6.07it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:02,  5.77it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:02,  5.77it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  46%|████▌     | 11/24 [00:01<00:02,  5.77it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:02,  4.95it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:02,  4.95it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  58%|█████▊    | 14/24 [00:02<00:01,  5.26it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  58%|█████▊    | 14/24 [00:02<00:01,  5.26it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  58%|█████▊    | 14/24 [00:02<00:01,  5.26it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:03,  2.03it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:03,  2.03it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  2.41it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  2.41it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  71%|███████   | 17/24 [00:04<00:02,  2.41it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  71%|███████   | 17/24 [00:04<00:02,  2.41it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  2.41it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  5.78it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  5.78it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512): 100%|██████████| 24/24 [00:04<00:00,  4.95it/s]
+      0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):   0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.96it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.96it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.96it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  29%|██▉       | 7/24 [00:01<00:02,  5.96it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:01,  7.25it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:01,  7.25it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:01,  7.25it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  42%|████▏     | 10/24 [00:01<00:01,  7.25it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:01<00:01,  8.89it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:01<00:01,  8.89it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:01<00:01,  8.89it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  54%|█████▍    | 13/24 [00:01<00:01,  8.89it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:01<00:00,  9.10it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:01<00:00,  9.10it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:02<00:00,  9.10it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  67%|██████▋   | 16/24 [00:02<00:00,  9.10it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  83%|████████▎ | 20/24 [00:02<00:00, 11.79it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  83%|████████▎ | 20/24 [00:02<00:00, 11.79it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  83%|████████▎ | 20/24 [00:02<00:00, 11.79it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  83%|████████▎ | 20/24 [00:02<00:00, 11.79it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512): 100%|██████████| 24/24 [00:02<00:00, 15.76it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512): 100%|██████████| 24/24 [00:02<00:00, 10.74it/s]
 
 
 
@@ -545,19 +545,17 @@ Results
 
  .. code-block:: none
 
-                               0  ...            4
-    xdim             256x256x256  ...  256x256x256
-    xdomain                  EXT  ...          EXT
-    xdtype                   f32  ...          f32
-    it==0                      0  ...            0
-    cat                     Node  ...      Session
-    args_node_index               ...             
-    args_op_name              CG  ...           CG
-    args_provider                 ...             
-    event_name       fence_after  ...    model_run
-    dur                       37  ...       180590
-
-    [10 rows x 5 columns]
+                               0             1                      2                            3            4
+    xdim             256x256x256   256x256x256            256x256x256                  256x256x256  256x256x256
+    xdomain                  EXT           EXT                    EXT                          EXT          EXT
+    xdtype                   f32           f32                    f32                          f32          f32
+    it==0                      0             0                      0                            0            0
+    cat                     Node          Node                   Node                      Session      Session
+    args_node_index                                                 0                                          
+    args_op_name              CG            CG                     CG                           CG           CG
+    args_provider                               CUDAExecutionProvider                                          
+    event_name       fence_after  fence_before            kernel_time  SequentialExecutor::Execute    model_run
+    dur                        1            17                  79056                        84463       109521
 
 
 
@@ -597,23 +595,21 @@ Summary
 
 
     summary
-                                                         dur  ...          
-    xdtype                                              bf16  ...       f32
-    xdomain                                              ORT  ...       ORT
-    args_op_name                                        Gemm  ...      Gemm
-    xdim        cat     event_name                            ...          
-    256x256x256 Node    fence_after                     10.0  ...      43.0
-                        fence_before                    19.0  ...     101.0
-                        kernel_time                   1313.0  ...    3567.0
-                Session SequentialExecutor::Execute   2139.0  ...   14408.0
-                        model_run                    25315.0  ...   54267.0
-    512x512x512 Node    fence_after                      2.0  ...      22.0
-                        fence_before                    16.0  ...      85.0
-                        kernel_time                   1220.0  ...    4126.0
-                Session SequentialExecutor::Execute   1869.0  ...    5875.0
-                        model_run                    88704.0  ...  124930.0
-
-    [10 rows x 5 columns]
+                                                         dur                                      
+    xdtype                                              bf16       f16                f32         
+    xdomain                                              ORT       EXT      ORT       EXT      ORT
+    args_op_name                                        Gemm        CG     Gemm        CG     Gemm
+    xdim        cat     event_name                                                                
+    256x256x256 Node    fence_after                      1.0       6.0      1.0       1.0      0.0
+                        fence_before                    14.0      18.0     14.0      17.0     14.0
+                        kernel_time                    600.0   63002.0    835.0   79056.0    607.0
+                Session SequentialExecutor::Execute    983.0   67828.0   1269.0   84463.0   1001.0
+                        model_run                     5826.0   76838.0   6174.0  109521.0  28062.0
+    512x512x512 Node    fence_after                     40.0       9.0      1.0       5.0      3.0
+                        fence_before                    21.0      15.0     17.0      22.0     20.0
+                        kernel_time                   1332.0  161134.0    863.0   81974.0    827.0
+                Session SequentialExecutor::Execute   1886.0  172668.0   1348.0   89624.0   1277.0
+                        model_run                    19728.0  189322.0  16486.0  147762.0  26242.0
 
 
 
@@ -697,27 +693,25 @@ plot
 
 
     compact
-    xdtype          bf16        f16               f32        
-    xdomain          ORT        EXT     ORT       EXT     ORT
-    args_op_name    Gemm         CG    Gemm        CG    Gemm
-    xdim                                                     
-    256x256x256   1313.0   306513.0  6777.0  134564.0  3567.0
-    512x512x512   1220.0  1723944.0   803.0  142089.0  4126.0
+    xdtype          bf16       f16             f32       
+    xdomain          ORT       EXT    ORT      EXT    ORT
+    args_op_name    Gemm        CG   Gemm       CG   Gemm
+    xdim                                                 
+    256x256x256    600.0   63002.0  835.0  79056.0  607.0
+    512x512x512   1332.0  161134.0  863.0  81974.0  827.0
 
     not operator
-    xdtype                                      bf16        f16  ...       f32         
-    xdomain                                      ORT        EXT  ...       EXT      ORT
-    xdim        event_name                                       ...                   
-    256x256x256 SequentialExecutor::Execute   1458.5   172523.5  ...  452764.5   7666.5
-                model_loading_array            164.0      353.0  ...     283.0    411.0
-                model_run                    15176.5   187269.0  ...  476666.0  34301.0
-                session_initialization         820.0     1382.0  ...    1174.0   2788.0
-    512x512x512 SequentialExecutor::Execute   1559.0   974911.5  ...   79192.0   4129.0
-                model_loading_array            178.0      170.0  ...     217.0    475.0
-                model_run                    49795.0  1000048.5  ...  124751.0  70596.0
-                session_initialization         979.0      722.0  ...     792.0   2221.0
-
-    [8 rows x 5 columns]
+    xdtype                                      bf16       f16                f32         
+    xdomain                                      ORT       EXT      ORT       EXT      ORT
+    xdim        event_name                                                                
+    256x256x256 SequentialExecutor::Execute   6436.0   36689.5   6120.0  555185.5   2541.0
+                model_loading_array            330.0     180.0    237.0     126.0    131.0
+                model_run                    10603.5   42954.5  10107.0  569608.5  18189.0
+                session_initialization        1290.0     693.0    792.0     552.0    631.0
+    512x512x512 SequentialExecutor::Execute   1310.0   94128.0   1290.5   48321.0   1081.5
+                model_loading_array            163.0     137.0    123.0     121.0    128.0
+                model_run                    11889.0  103992.0  10710.5   81033.0  15467.5
+                session_initialization         800.0     600.0    441.0     532.0    711.0
 
 
 
@@ -725,7 +719,7 @@ plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.685 seconds)
+   **Total running time of the script:** (0 minutes 7.383 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_profile_gemm_ort.py:

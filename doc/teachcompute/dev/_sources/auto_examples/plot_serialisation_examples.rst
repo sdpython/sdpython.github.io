@@ -33,7 +33,7 @@ notemmant via les :epkg:`API REST`.
 Ecriture (json)
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-38
+.. GENERATED FROM PYTHON SOURCE LINES 18-40
 
 .. code-block:: Python
 
@@ -44,6 +44,8 @@ Ecriture (json)
     import ujson
     import cloudpickle
     import pickle
+    import matplotlib.pyplot as plt
+    import pandas
 
 
     data = {
@@ -64,7 +66,7 @@ Ecriture (json)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-47
+.. GENERATED FROM PYTHON SOURCE LINES 42-49
 
 .. code-block:: Python
 
@@ -88,12 +90,12 @@ Ecriture (json)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-50
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 Lecture (json)
 ++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-57
+.. GENERATED FROM PYTHON SOURCE LINES 52-59
 
 .. code-block:: Python
 
@@ -117,14 +119,14 @@ Lecture (json)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-62
+.. GENERATED FROM PYTHON SOURCE LINES 60-64
 
 Limite
 ++++++
 
 Les matrices :epkg:`numpy` ne sont pas sérialisables facilement.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-73
+.. GENERATED FROM PYTHON SOURCE LINES 64-75
 
 .. code-block:: Python
 
@@ -152,11 +154,11 @@ Les matrices :epkg:`numpy` ne sont pas sérialisables facilement.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-75
+.. GENERATED FROM PYTHON SOURCE LINES 76-77
 
 Les classes ne sont pas sérialisables non plus facilement.
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-90
+.. GENERATED FROM PYTHON SOURCE LINES 77-92
 
 .. code-block:: Python
 
@@ -188,13 +190,13 @@ Les classes ne sont pas sérialisables non plus facilement.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-94
+.. GENERATED FROM PYTHON SOURCE LINES 93-96
 
 Pour ce faire, il faut indiquer au module :mod:`json`
 comment convertir la classe en un ensemble de listes et dictionnaires et
 la classe :class:`json.JSONEncoder`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-107
+.. GENERATED FROM PYTHON SOURCE LINES 96-109
 
 .. code-block:: Python
 
@@ -224,11 +226,11 @@ la classe :class:`json.JSONEncoder`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-109
+.. GENERATED FROM PYTHON SOURCE LINES 110-111
 
 Et la relecture avec la classe :class:`json.JSONDecoder`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-125
+.. GENERATED FROM PYTHON SOURCE LINES 111-127
 
 .. code-block:: Python
 
@@ -257,11 +259,11 @@ Et la relecture avec la classe :class:`json.JSONDecoder`.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f554e6ffb20>
+    <__main__.A object at 0x7f5df45e6f80>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-132
+.. GENERATED FROM PYTHON SOURCE LINES 128-134
 
 Sérialisation rapide
 ++++++++++++++++++++
@@ -270,7 +272,7 @@ Le module :mod:`json` est la librairie standard de Python mais comme
 la sérialisation au format *JSON* est un besoin très fréquent,
 il existe des alternative plus rapide comme :epkg:`ujson`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-145
+.. GENERATED FROM PYTHON SOURCE LINES 134-147
 
 .. code-block:: Python
 
@@ -294,13 +296,16 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-152
+.. GENERATED FROM PYTHON SOURCE LINES 149-157
 
 .. code-block:: Python
 
 
-
-    timeit.timeit("json.dump(data, StringIO())", globals=globals(), number=100)
+    data_time = []
+    expression = "json.dump(data, StringIO())"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -312,17 +317,19 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.014640799999142473
+    0.008956199999374803
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 154-159
+.. GENERATED FROM PYTHON SOURCE LINES 159-166
 
 .. code-block:: Python
 
 
-
-    timeit.timeit("ujson.dump(data, StringIO())", globals=globals(), number=100)
+    expression = "ujson.dump(data, StringIO())"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -334,16 +341,16 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.0012076000002707588
+    0.0007222000022011343
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-162
+.. GENERATED FROM PYTHON SOURCE LINES 167-169
 
 Ces deux lignes mesures l'écriture au format JSON
 mais il faut aussi mesurer la lecture.
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-170
+.. GENERATED FROM PYTHON SOURCE LINES 169-180
 
 .. code-block:: Python
 
@@ -352,8 +359,11 @@ mais il faut aussi mesurer la lecture.
     buffer = StringIO()
     ujson.dump(data, buffer)
     res = buffer.getvalue()
-    timeit.timeit("json.load(StringIO(res))", globals=globals(), number=100)
 
+    expression = "json.load(StringIO(res))"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -364,17 +374,19 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0016763000003265915
+    0.003935600001568673
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 172-176
+.. GENERATED FROM PYTHON SOURCE LINES 182-188
 
 .. code-block:: Python
 
 
-    timeit.timeit("ujson.load(StringIO(res))", globals=globals(), number=100)
-
+    expression = "ujson.load(StringIO(res))"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -385,21 +397,23 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0012077000001227134
+    0.001542199999676086
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-178
+.. GENERATED FROM PYTHON SOURCE LINES 189-190
 
 On enlève le temps passé dans la creation du buffer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-183
+.. GENERATED FROM PYTHON SOURCE LINES 190-197
 
 .. code-block:: Python
 
 
-
-    timeit.timeit("StringIO(res)", globals=globals(), number=100)
+    expression = "StringIO(res)"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -411,11 +425,11 @@ On enlève le temps passé dans la creation du buffer.
  .. code-block:: none
 
 
-    0.00020930000027874485
+    0.00012939999942318536
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-193
+.. GENERATED FROM PYTHON SOURCE LINES 198-207
 
 Pickle
 ======
@@ -427,7 +441,7 @@ voire parfois par d'autres versions de *Python*.
 Ecriture (pickle)
 +++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-206
+.. GENERATED FROM PYTHON SOURCE LINES 207-220
 
 .. code-block:: Python
 
@@ -451,7 +465,7 @@ Ecriture (pickle)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-216
+.. GENERATED FROM PYTHON SOURCE LINES 222-230
 
 .. code-block:: Python
 
@@ -476,12 +490,12 @@ Ecriture (pickle)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-219
+.. GENERATED FROM PYTHON SOURCE LINES 231-233
 
 Lecture (pickle)
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 219-226
+.. GENERATED FROM PYTHON SOURCE LINES 233-240
 
 .. code-block:: Python
 
@@ -505,7 +519,7 @@ Lecture (pickle)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 227-233
+.. GENERATED FROM PYTHON SOURCE LINES 241-247
 
 Les classes
 +++++++++++
@@ -514,7 +528,7 @@ A l'inverse du format *JSON*, les classes sont sérialisables avec
 :mod:`pickle` parce que le langage utilise un format très proche
 de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
 
-.. GENERATED FROM PYTHON SOURCE LINES 233-242
+.. GENERATED FROM PYTHON SOURCE LINES 247-256
 
 .. code-block:: Python
 
@@ -540,7 +554,7 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 244-250
+.. GENERATED FROM PYTHON SOURCE LINES 258-264
 
 .. code-block:: Python
 
@@ -559,11 +573,11 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f554f8d1300>
+    <__main__.A object at 0x7f5e0c8def50>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 251-256
+.. GENERATED FROM PYTHON SOURCE LINES 265-270
 
 Réduire la taille
 +++++++++++++++++
@@ -571,7 +585,7 @@ Réduire la taille
 Certaines informations sont duppliquées et il est préférable de ne pas
 les sérialiser deux fois surtout si elles sont voluminueuses.
 
-.. GENERATED FROM PYTHON SOURCE LINES 256-264
+.. GENERATED FROM PYTHON SOURCE LINES 270-278
 
 .. code-block:: Python
 
@@ -590,7 +604,7 @@ les sérialiser deux fois surtout si elles sont voluminueuses.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 266-274
+.. GENERATED FROM PYTHON SOURCE LINES 280-288
 
 .. code-block:: Python
 
@@ -615,11 +629,11 @@ les sérialiser deux fois surtout si elles sont voluminueuses.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 275-276
+.. GENERATED FROM PYTHON SOURCE LINES 289-290
 
 Evitons maintenant de stocker deux fois le même attribut.
 
-.. GENERATED FROM PYTHON SOURCE LINES 276-294
+.. GENERATED FROM PYTHON SOURCE LINES 290-308
 
 .. code-block:: Python
 
@@ -654,11 +668,11 @@ Evitons maintenant de stocker deux fois le même attribut.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 295-296
+.. GENERATED FROM PYTHON SOURCE LINES 309-310
 
 C'est plus court mais il faut inclure maintenant la relecture.
 
-.. GENERATED FROM PYTHON SOURCE LINES 296-316
+.. GENERATED FROM PYTHON SOURCE LINES 310-330
 
 .. code-block:: Python
 
@@ -691,11 +705,11 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    <__main__.B object at 0x7f554f8d3580>
+    <__main__.B object at 0x7f5e0cc392d0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 318-322
+.. GENERATED FROM PYTHON SOURCE LINES 332-336
 
 .. code-block:: Python
 
@@ -716,14 +730,16 @@ C'est plus court mais il faut inclure maintenant la relecture.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 324-329
+.. GENERATED FROM PYTHON SOURCE LINES 338-345
 
 .. code-block:: Python
 
 
     data = B("r")
-    timeit.timeit("pickle.dump(data, BytesIO())", globals=globals(), number=100)
-
+    expression = "pickle.dump(data, BytesIO())"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -734,17 +750,19 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.0010380000003351597
+    0.0008837999994284473
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 331-335
+.. GENERATED FROM PYTHON SOURCE LINES 347-353
 
 .. code-block:: Python
 
 
-    timeit.timeit("pickle.load(BytesIO(seq))", globals=globals(), number=100)
-
+    expression = "pickle.load(BytesIO(seq))"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -755,29 +773,27 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.000856499999827065
+    0.000607599999057129
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 336-340
+.. GENERATED FROM PYTHON SOURCE LINES 354-358
 
 La sérialisation binaire est habituellement plus rapide dans les langages
 bas niveau comme C++. La même comparaison pour un langage haut niveau
 tel que Python n'est pas toujours prévisible.
 Il est possible d'accélérer un peu les choses.
 
-.. GENERATED FROM PYTHON SOURCE LINES 340-349
+.. GENERATED FROM PYTHON SOURCE LINES 358-365
 
 .. code-block:: Python
 
 
 
-    timeit.timeit(
-        "pickle.dump(data, BytesIO(), protocol=pickle.HIGHEST_PROTOCOL)",
-        globals=globals(),
-        number=100,
-    )
-
+    expression = "pickle.dump(data, BytesIO(), protocol=pickle.HIGHEST_PROTOCOL)"
+    d = timeit.timeit(expression, globals=globals(), number=100)
+    data_time.append(dict(expression=expression, time=d))
+    d
 
 
 
@@ -788,11 +804,11 @@ Il est possible d'accélérer un peu les choses.
  .. code-block:: none
 
 
-    0.0009915999999066116
+    0.0020269999986339826
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 350-359
+.. GENERATED FROM PYTHON SOURCE LINES 366-375
 
 Cas des fonctions
 =================
@@ -804,7 +820,7 @@ La sérialisation binaire fonctionne même avec les fonctions.
 Binaire
 +++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 359-373
+.. GENERATED FROM PYTHON SOURCE LINES 375-389
 
 .. code-block:: Python
 
@@ -835,7 +851,7 @@ Binaire
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 375-381
+.. GENERATED FROM PYTHON SOURCE LINES 391-397
 
 .. code-block:: Python
 
@@ -854,11 +870,11 @@ Binaire
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f554f91cc10>}
+    {'x': 5, 'f': <function myfunc at 0x7f5df67a4b80>}
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 383-387
+.. GENERATED FROM PYTHON SOURCE LINES 399-403
 
 .. code-block:: Python
 
@@ -879,13 +895,13 @@ Binaire
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 388-391
+.. GENERATED FROM PYTHON SOURCE LINES 404-407
 
 La sérialisation ne conserve pas le code de la fonction, juste son nom.
 Cela veut dire que si elle n'est pas disponible lorsqu'elle est appelée,
 il sera impossible de s'en servir.
 
-.. GENERATED FROM PYTHON SOURCE LINES 391-402
+.. GENERATED FROM PYTHON SOURCE LINES 407-418
 
 .. code-block:: Python
 
@@ -913,12 +929,12 @@ il sera impossible de s'en servir.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 403-405
+.. GENERATED FROM PYTHON SOURCE LINES 419-421
 
 Il est possible de contourner l'obstacle en utilisant le module
 :epkg:`cloudpickle` qui stocke le code de la fonction.
 
-.. GENERATED FROM PYTHON SOURCE LINES 405-419
+.. GENERATED FROM PYTHON SOURCE LINES 421-435
 
 .. code-block:: Python
 
@@ -945,11 +961,11 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    b'\x80\x05\x95\xff\x01\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02KCC\x08|\x00d\x01\x17\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cN/home/xadupre/github/teachcompute/_doc/examples/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94M\x97\x01C\x02\x08\x01\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94\x8c\x1ccloudpickle.cloudpickle_fast\x94\x8c\x12_function_setstate\x94\x93\x94h\x19}\x94}\x94(h\x16h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x17\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
+    b'\x80\x05\x95\xff\x01\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02KCC\x08|\x00d\x01\x17\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cN/home/xadupre/github/teachcompute/_doc/examples/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94M\xa7\x01C\x02\x08\x01\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94\x8c\x1ccloudpickle.cloudpickle_fast\x94\x8c\x12_function_setstate\x94\x93\x94h\x19}\x94}\x94(h\x16h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x17\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 421-429
+.. GENERATED FROM PYTHON SOURCE LINES 437-445
 
 .. code-block:: Python
 
@@ -970,11 +986,11 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f554f91e170>}
+    {'x': 5, 'f': <function myfunc at 0x7f5e0a0f8e50>}
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 431-435
+.. GENERATED FROM PYTHON SOURCE LINES 447-451
 
 .. code-block:: Python
 
@@ -995,7 +1011,7 @@ Il est possible de contourner l'obstacle en utilisant le module
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 436-441
+.. GENERATED FROM PYTHON SOURCE LINES 452-457
 
 Fonction et JSON
 ++++++++++++++++
@@ -1003,7 +1019,7 @@ Fonction et JSON
 La sérialisation d'une fonction au format JSON ne
 fonctionne pas avec le module standard.
 
-.. GENERATED FROM PYTHON SOURCE LINES 441-450
+.. GENERATED FROM PYTHON SOURCE LINES 457-466
 
 .. code-block:: Python
 
@@ -1029,12 +1045,12 @@ fonctionne pas avec le module standard.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 451-453
+.. GENERATED FROM PYTHON SOURCE LINES 467-469
 
 La sérialisation avec :epkg:`ujson` ne fonctionne pas non plus
 même si elle ne produit pas toujours d'erreur.
 
-.. GENERATED FROM PYTHON SOURCE LINES 453-463
+.. GENERATED FROM PYTHON SOURCE LINES 469-479
 
 .. code-block:: Python
 
@@ -1056,13 +1072,13 @@ même si elle ne produit pas toujours d'erreur.
 
  .. code-block:: none
 
-    <function myfunc at 0x7f554f91f250> is not JSON serializable
+    <function myfunc at 0x7f5e0a0f8d30> is not JSON serializable
 
     ''
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 464-469
+.. GENERATED FROM PYTHON SOURCE LINES 480-485
 
 Cas des itérateurs
 ==================
@@ -1070,7 +1086,7 @@ Cas des itérateurs
 Les itérateurs fonctionnent avec la sérialisation binaire mais ceci
 implique de stocker l'ensemble que l'itérateur parcourt.
 
-.. GENERATED FROM PYTHON SOURCE LINES 469-481
+.. GENERATED FROM PYTHON SOURCE LINES 485-497
 
 .. code-block:: Python
 
@@ -1099,7 +1115,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 483-490
+.. GENERATED FROM PYTHON SOURCE LINES 499-506
 
 .. code-block:: Python
 
@@ -1119,11 +1135,11 @@ implique de stocker l'ensemble que l'itérateur parcourt.
  .. code-block:: none
 
 
-    {'x': 5, 'it': <list_iterator object at 0x7f554f8d26e0>}
+    {'x': 5, 'it': <list_iterator object at 0x7f5e0c8dfe20>}
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 492-496
+.. GENERATED FROM PYTHON SOURCE LINES 508-512
 
 .. code-block:: Python
 
@@ -1144,7 +1160,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 498-502
+.. GENERATED FROM PYTHON SOURCE LINES 514-518
 
 .. code-block:: Python
 
@@ -1165,7 +1181,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 503-509
+.. GENERATED FROM PYTHON SOURCE LINES 519-525
 
 Cas des générateurs
 ===================
@@ -1174,7 +1190,7 @@ Ils ne peuvent être sérialisés car le langage n'a pas accès à l'ensemble
 des éléments que le générateur parcourt. Il n'y a aucun moyen de
 sérialiser un générateur mais on peut sérialiser la fonction qui crée le générateur.
 
-.. GENERATED FROM PYTHON SOURCE LINES 509-524
+.. GENERATED FROM PYTHON SOURCE LINES 525-542
 
 .. code-block:: Python
 
@@ -1197,6 +1213,8 @@ sérialiser un générateur mais on peut sérialiser la fonction qui crée le g�
 
 
 
+
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -1206,10 +1224,69 @@ sérialiser un générateur mais on peut sérialiser la fonction qui crée le g�
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 543-545
+
+Summary
+=======
+
+.. GENERATED FROM PYTHON SOURCE LINES 545-550
+
+.. code-block:: Python
+
+
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
+    df = pandas.DataFrame(data_time)
+    print(df)
+
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_serialisation_examples_001.png
+   :alt: plot serialisation examples
+   :srcset: /auto_examples/images/sphx_glr_plot_serialisation_examples_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+                                              expression      time
+    0                        json.dump(data, StringIO())  0.008956
+    1                       ujson.dump(data, StringIO())  0.000722
+    2                           json.load(StringIO(res))  0.003936
+    3                          ujson.load(StringIO(res))  0.001542
+    4                                      StringIO(res)  0.000129
+    5                       pickle.dump(data, BytesIO())  0.000884
+    6                          pickle.load(BytesIO(seq))  0.000608
+    7  pickle.dump(data, BytesIO(), protocol=pickle.H...  0.002027
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 552-560
+
+.. code-block:: Python
+
+
+    df.set_index("expression").plot.barh(ax=ax[0])
+    df.loc[0, "time"] = numpy.nan
+    df.set_index("expression").plot.barh(ax=ax[1])
+    ax[0].set_title("Time")
+    ax[1].set_title("Time without `json.dump`")
+    fig.tight_layout()
+    fig.savefig("plot_serialisation_examples.png")
+
+
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.126 seconds)
+   **Total running time of the script:** (0 minutes 0.675 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_serialisation_examples.py:

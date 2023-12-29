@@ -201,10 +201,6 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/parallelization.html">Experiments about parallelization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Experiments about parallelization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 </ul>
 </li>
 </ul>
@@ -253,15 +249,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">ONNX Benchmarks</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="plot_check_random_order.html">Random order for a sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_sparse_access.html">Evaluating random access for sparse</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
@@ -521,9 +512,13 @@ max_depth=12
 sparsity=0.99
 warmup=3
 train_all_trees=False - False
+Training to get &#39;plot_op_tree_ensemble_sparse-f512-512-d12-s0.99-0.onnx&#39; with X.shape=(10240, 512)
+[Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 8 concurrent workers.
+building tree 1 of 1
+[Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.7s finished
 Xb.shape=(2048, 512)
 yb.shape=(2048,)
-measured sparsity=0.9900217056274414
+measured sparsity=0.9899501800537109
 </pre></div>
 </div>
 </section>
@@ -826,7 +821,7 @@ measured sparsity=0.9900217056274414
 run &#39;ort&#39; - shape=(2048, 512)
 run &#39;custom&#39; - shape=(2048, 512)
 run &#39;cusopt&#39; - shape=(2048, 512)
-run &#39;sparse&#39; - shape=(20982,)
+run &#39;sparse&#39; - shape=(21132,)
 /home/xadupre/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:345: UserWarning: Unable to find environment variable &#39;TEST_LLC_EXE&#39;.
   warnings.warn(&quot;Unable to find environment variable &#39;TEST_LLC_EXE&#39;.&quot;)
 done.
@@ -885,13 +880,11 @@ run &#39;custom&#39;
 run &#39;cusopt&#39;
 run &#39;sparse&#39;
 done.
-    average  deviation  min_exec  ...  disc_max  err_mean   err_max
-0  0.010936   0.005880  0.006985  ...  0.000000  0.000215  0.000671
-1  0.018598   0.010400  0.009039  ...  0.000519  0.000125  0.000488
-2  0.013246   0.002251  0.011099  ...  0.000427  0.000477  0.000854
-3  0.046132   0.008084  0.039825  ...  0.000427  0.000477  0.000854
-
-[4 rows x 14 columns]
+    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time    name  disc_mean  disc_max  err_mean   err_max
+0  0.005322   0.001205  0.003687  0.007009      10      10  0.053224            64     0.014425     ort   0.000000  0.000000  0.000596  0.000763
+1  0.008599   0.000448  0.007806  0.009277      10      10  0.085989            64     0.027209  custom   0.000253  0.000488  0.000849  0.001129
+2  0.008160   0.001004  0.005535  0.009274      10      10  0.081596            64     0.027325  cusopt   0.000184  0.000366  0.000780  0.001099
+3  0.031239   0.001417  0.028255  0.033099      10      10  0.312390            64     0.097555  sparse   0.000184  0.000366  0.000780  0.001099
 </pre></div>
 </div>
 <p>Plots.</p>
@@ -917,7 +910,7 @@ done.
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_tree_ensemble_implementations.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_op_tree_ensemble_implementations_001.png" srcset="../_images/sphx_glr_plot_op_tree_ensemble_implementations_001.png" alt="Compare implementations of TreeEnsemble lower is better, Average discrepancies with ORT (L1) lower is better, Average discrepancies with SKL (L1) lower is better" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 33.168 seconds)</p>
+<img src="../_images/sphx_glr_plot_op_tree_ensemble_implementations_001.png" srcset="../_images/sphx_glr_plot_op_tree_ensemble_implementations_001.png" alt="Compare implementations of TreeEnsemble lower is better, Average discrepancies with ORT (L1) lower is better, Average discrepancies with SKL (L1) lower is better" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 15.983 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-tree-ensemble-implementations-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/44055e50f992f52f5a3db3017bc928b4/plot_op_tree_ensemble_implementations.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_tree_ensemble_implementations.ipynb</span></code></a></p>

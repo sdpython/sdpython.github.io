@@ -201,10 +201,6 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/parallelization.html">Experiments about parallelization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Experiments about parallelization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 </ul>
 </li>
 </ul>
@@ -253,15 +249,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">ONNX Benchmarks</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="plot_check_random_order.html">Random order for a sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cpu.html">Measuring CPU performance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Evaluating random access for sparse</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_bench_gpu_vector_sum_gpu.html">Measuring CPU/GPU performance with a vector sum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
@@ -386,11 +377,11 @@ warmup=2
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ratio sparse/dense: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ev</span></a><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ev</span></a><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dense:  initialization:0.0163
-                access:6.69e-05
-sparse: initialization:0.0266
-                access:0.00104
-Ratio sparse/dense: 15.46250373468778
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dense:  initialization:0.0115
+                access:7.86e-05
+sparse: initialization:0.0126
+                access:0.000579
+Ratio sparse/dense: 7.363613231552162
 </pre></div>
 </div>
 <p>If &gt; 1, sparse is slower.</p>
@@ -424,52 +415,50 @@ Ratio sparse/dense: 15.46250373468778
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/21 [00:00&lt;?, ?it/s]
-  5%|▍         | 1/21 [00:00&lt;00:13,  1.52it/s]
- 10%|▉         | 2/21 [00:01&lt;00:14,  1.30it/s]
- 14%|█▍        | 3/21 [00:01&lt;00:11,  1.57it/s]
- 19%|█▉        | 4/21 [00:02&lt;00:09,  1.78it/s]
- 24%|██▍       | 5/21 [00:02&lt;00:07,  2.08it/s]
- 29%|██▊       | 6/21 [00:03&lt;00:07,  2.10it/s]
- 33%|███▎      | 7/21 [00:03&lt;00:07,  1.98it/s]
- 38%|███▊      | 8/21 [00:04&lt;00:06,  1.88it/s]
- 43%|████▎     | 9/21 [00:05&lt;00:06,  1.78it/s]
- 48%|████▊     | 10/21 [00:05&lt;00:06,  1.78it/s]
- 52%|█████▏    | 11/21 [00:06&lt;00:05,  1.87it/s]
- 57%|█████▋    | 12/21 [00:06&lt;00:04,  1.83it/s]
- 62%|██████▏   | 13/21 [00:07&lt;00:04,  1.68it/s]
- 67%|██████▋   | 14/21 [00:07&lt;00:03,  1.82it/s]
- 71%|███████▏  | 15/21 [00:08&lt;00:03,  1.59it/s]
- 76%|███████▌  | 16/21 [00:09&lt;00:03,  1.37it/s]
- 81%|████████  | 17/21 [00:10&lt;00:03,  1.20it/s]
- 86%|████████▌ | 18/21 [00:11&lt;00:02,  1.26it/s]
- 90%|█████████ | 19/21 [00:12&lt;00:01,  1.25it/s]
- 95%|█████████▌| 20/21 [00:12&lt;00:00,  1.39it/s]
-100%|██████████| 21/21 [00:13&lt;00:00,  1.59it/s]
-100%|██████████| 21/21 [00:13&lt;00:00,  1.60it/s]
-      dense0    dense1     dense   sparse0  ...    cols  repeat  random  ntimes
-0   0.010190  0.000045  0.010235  0.023130  ...  100000       5      10       2
-1   0.019022  0.000063  0.019085  0.014766  ...  100000       5      10       2
-2   0.010352  0.000051  0.010403  0.009383  ...  100000       5      10       2
-3   0.008298  0.000047  0.008344  0.003384  ...  100000       5      10       2
-4   0.005632  0.000055  0.005687  0.000723  ...  100000       5      10       2
-5   0.006107  0.000049  0.006156  0.000127  ...  100000       5      10       2
-6   0.003996  0.000036  0.004032  0.000011  ...  100000       5      10       2
-7   0.010772  0.000090  0.010862  0.024522  ...  100000       5      10       4
-8   0.012365  0.000131  0.012495  0.018879  ...  100000       5      10       4
-9   0.010908  0.000084  0.010992  0.008892  ...  100000       5      10       4
-10  0.010546  0.000085  0.010631  0.004493  ...  100000       5      10       4
-11  0.006549  0.000083  0.006632  0.000957  ...  100000       5      10       4
-12  0.008608  0.000084  0.008692  0.000098  ...  100000       5      10       4
-13  0.005819  0.000090  0.005909  0.000035  ...  100000       5      10       4
-14  0.013619  0.000194  0.013813  0.024678  ...  100000       5      10       8
-15  0.014456  0.000155  0.014611  0.023138  ...  100000       5      10       8
-16  0.010499  0.000184  0.010683  0.008547  ...  100000       5      10       8
-17  0.011207  0.000163  0.011370  0.005418  ...  100000       5      10       8
-18  0.013967  0.000234  0.014202  0.001887  ...  100000       5      10       8
-19  0.005223  0.000176  0.005399  0.000096  ...  100000       5      10       8
-20  0.008038  0.000192  0.008231  0.000044  ...  100000       5      10       8
-
-[21 rows x 12 columns]
+  5%|▍         | 1/21 [00:00&lt;00:10,  1.97it/s]
+ 10%|▉         | 2/21 [00:00&lt;00:08,  2.29it/s]
+ 14%|█▍        | 3/21 [00:01&lt;00:06,  2.70it/s]
+ 19%|█▉        | 4/21 [00:01&lt;00:05,  3.07it/s]
+ 24%|██▍       | 5/21 [00:01&lt;00:04,  3.36it/s]
+ 29%|██▊       | 6/21 [00:01&lt;00:04,  3.74it/s]
+ 33%|███▎      | 7/21 [00:02&lt;00:03,  4.02it/s]
+ 38%|███▊      | 8/21 [00:02&lt;00:03,  3.60it/s]
+ 43%|████▎     | 9/21 [00:02&lt;00:03,  3.44it/s]
+ 48%|████▊     | 10/21 [00:03&lt;00:03,  3.53it/s]
+ 52%|█████▏    | 11/21 [00:03&lt;00:02,  3.73it/s]
+ 57%|█████▋    | 12/21 [00:03&lt;00:02,  4.03it/s]
+ 62%|██████▏   | 13/21 [00:03&lt;00:01,  4.27it/s]
+ 67%|██████▋   | 14/21 [00:03&lt;00:01,  4.51it/s]
+ 71%|███████▏  | 15/21 [00:04&lt;00:01,  3.92it/s]
+ 76%|███████▌  | 16/21 [00:04&lt;00:01,  3.67it/s]
+ 81%|████████  | 17/21 [00:04&lt;00:01,  3.73it/s]
+ 86%|████████▌ | 18/21 [00:05&lt;00:00,  3.88it/s]
+ 90%|█████████ | 19/21 [00:05&lt;00:00,  4.01it/s]
+ 95%|█████████▌| 20/21 [00:05&lt;00:00,  4.15it/s]
+100%|██████████| 21/21 [00:05&lt;00:00,  4.29it/s]
+100%|██████████| 21/21 [00:05&lt;00:00,  3.70it/s]
+      dense0    dense1     dense   sparse0   sparse1    sparse  sparsity  rows    cols  repeat  random  ntimes
+0   0.007894  0.000033  0.007926  0.011227  0.000422  0.011650    0.7500   100  100000       5      10       2
+1   0.007839  0.000030  0.007869  0.008657  0.000381  0.009038    0.8000   100  100000       5      10       2
+2   0.006501  0.000031  0.006532  0.004088  0.000245  0.004333    0.9000   100  100000       5      10       2
+3   0.005541  0.000037  0.005578  0.002129  0.000188  0.002317    0.9500   100  100000       5      10       2
+4   0.003747  0.000032  0.003779  0.000391  0.000125  0.000516    0.9900   100  100000       5      10       2
+5   0.002479  0.000027  0.002506  0.000043  0.000076  0.000119    0.9990   100  100000       5      10       2
+6   0.002905  0.000027  0.002932  0.000007  0.000041  0.000048    0.9999   100  100000       5      10       2
+7   0.006894  0.000052  0.006946  0.009924  0.000656  0.010580    0.7500   100  100000       5      10       4
+8   0.007062  0.000050  0.007112  0.007804  0.000582  0.008386    0.8000   100  100000       5      10       4
+9   0.006250  0.000052  0.006302  0.003893  0.000447  0.004340    0.9000   100  100000       5      10       4
+10  0.005859  0.000052  0.005911  0.001995  0.000322  0.002316    0.9500   100  100000       5      10       4
+11  0.003394  0.000052  0.003446  0.000397  0.000237  0.000634    0.9900   100  100000       5      10       4
+12  0.002858  0.000056  0.002914  0.000051  0.000141  0.000193    0.9990   100  100000       5      10       4
+13  0.002318  0.000047  0.002365  0.000008  0.000075  0.000083    0.9999   100  100000       5      10       4
+14  0.007497  0.000094  0.007591  0.010031  0.001132  0.011164    0.7500   100  100000       5      10       8
+15  0.006721  0.000091  0.006811  0.007839  0.001005  0.008845    0.8000   100  100000       5      10       8
+16  0.006311  0.000092  0.006403  0.003879  0.000708  0.004587    0.9000   100  100000       5      10       8
+17  0.005430  0.000105  0.005535  0.001929  0.000617  0.002546    0.9500   100  100000       5      10       8
+18  0.004344  0.000117  0.004462  0.000489  0.000527  0.001016    0.9900   100  100000       5      10       8
+19  0.002696  0.000096  0.002792  0.000045  0.000336  0.000381    0.9990   100  100000       5      10       8
+20  0.002998  0.000100  0.003098  0.000008  0.000169  0.000177    0.9999   100  100000       5      10       8
 </pre></div>
 </div>
 <p>Plots</p>
@@ -492,7 +481,7 @@ Ratio sparse/dense: 15.46250373468778
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_bench_sparse_access.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_bench_sparse_access_001.png" srcset="../_images/sphx_glr_plot_bench_sparse_access_001.png" alt="Dense vs Sparsity (access only), Dense vs Sparsity (access only), Dense vs Sparsity (access only)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 18.701 seconds)</p>
+<img src="../_images/sphx_glr_plot_bench_sparse_access_001.png" srcset="../_images/sphx_glr_plot_bench_sparse_access_001.png" alt="Dense vs Sparsity (access only), Dense vs Sparsity (access only), Dense vs Sparsity (access only)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.013 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-bench-sparse-access-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d03ab99a60db9002b3c028cd0daa17ed/plot_bench_sparse_access.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bench_sparse_access.ipynb</span></code></a></p>
