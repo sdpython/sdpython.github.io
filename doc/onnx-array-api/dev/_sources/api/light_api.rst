@@ -11,10 +11,10 @@ start
 
 .. autofunction:: onnx_array_api.light_api.start
 
-translate
-+++++++++
+g
++
 
-.. autofunction:: onnx_array_api.light_api.translate
+.. autofunction:: onnx_array_api.light_api.g
 
 Classes for the Light API
 =========================
@@ -61,39 +61,6 @@ Vars
 .. autoclass:: onnx_array_api.light_api.Vars
     :members:
     :inherited-members:
-
-Classes for the Translater
-==========================
-
-BaseEmitter
-+++++++++++
-
-.. autoclass:: onnx_array_api.light_api.emitter.BaseEmitter
-    :members:
-
-Emitter
-+++++++
-
-.. autoclass:: onnx_array_api.light_api.emitter.Emitter
-    :members:
-
-EventType
-+++++++++
-
-.. autoclass:: onnx_array_api.light_api.translate.EventType
-    :members:
-
-InnerEmitter
-++++++++++++
-
-.. autoclass:: onnx_array_api.light_api.inner_emitter.InnerEmitter
-    :members:
-
-Translater
-++++++++++
-
-.. autoclass:: onnx_array_api.light_api.translate.Translater
-    :members:
 
 Available operators
 ===================

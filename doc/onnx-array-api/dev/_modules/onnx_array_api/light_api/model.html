@@ -8,7 +8,7 @@
         <title>onnx_array_api.light_api.model - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -188,6 +188,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/light_api.html">onnx_array_api.light_api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/translate_api.html">onnx_array_api.translate_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_jit_eager.html">npx_jit_eager</a></li>
@@ -274,7 +275,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">from_array</span>
 <span class="kn">from</span> <span class="nn">..ext_test_case</span> <span class="kn">import</span> <span class="n">is_azure</span><span class="p">,</span> <span class="n">is_windows</span>
-<span class="kn">from</span> <span class="nn">.annotations</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">..annotations</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">elem_type_int</span><span class="p">,</span>
     <span class="n">make_shape</span><span class="p">,</span>
     <span class="n">GRAPH_PROTO</span><span class="p">,</span>
@@ -440,6 +441,8 @@
 <span class="sd">        :param elem_type: element type (the input is assumed to be a tensor)</span>
 <span class="sd">        :param shape: shape</span>
 <span class="sd">        :return: an instance of ValueInfoProto</span>
+
+<span class="sd">        If the checker fails, try `shape=[]`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
@@ -592,7 +595,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">SparseTensorProto</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">]:</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_name_tensor</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">make_shape</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shape</span><span class="p">:</span>
             <span class="n">tensor_type_proto</span> <span class="o">=</span> <span class="n">make_tensor_type_proto</span><span class="p">(</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span><span class="p">,</span> <span class="p">[]</span>
             <span class="p">)</span>
@@ -604,7 +607,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">SparseTensorProto</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">]:</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_name_tensor</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">make_shape</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shape</span><span class="p">:</span>
             <span class="n">tensor_type_proto</span> <span class="o">=</span> <span class="n">make_tensor_type_proto</span><span class="p">(</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span><span class="p">,</span> <span class="p">[]</span>
             <span class="p">)</span>

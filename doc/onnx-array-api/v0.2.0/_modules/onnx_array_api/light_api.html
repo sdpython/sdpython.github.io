@@ -8,7 +8,7 @@
         <title>onnx_array_api.light_api - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -188,6 +188,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/light_api.html">onnx_array_api.light_api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/translate_api.html">onnx_array_api.translate_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/npx_functions.html">npx.npx_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/npx_jit_eager.html">npx_jit_eager</a></li>
@@ -260,11 +261,9 @@
           <h1>Source code for onnx_array_api.light_api</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
-<span class="kn">from</span> <span class="nn">.annotations</span> <span class="kn">import</span> <span class="n">domain</span>
+<span class="kn">from</span> <span class="nn">..annotations</span> <span class="kn">import</span> <span class="n">domain</span>
 <span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">OnnxGraph</span><span class="p">,</span> <span class="n">ProtoType</span>
-<span class="kn">from</span> <span class="nn">.translate</span> <span class="kn">import</span> <span class="n">Translater</span>
 <span class="kn">from</span> <span class="nn">.var</span> <span class="kn">import</span> <span class="n">Var</span><span class="p">,</span> <span class="n">Vars</span>
-<span class="kn">from</span> <span class="nn">.inner_emitter</span> <span class="kn">import</span> <span class="n">InnerEmitter</span>
 
 
 <div class="viewcode-block" id="start"><a class="viewcode-back" href="../../api/light_api.html#onnx_array_api.light_api.start">[docs]</a><span class="k">def</span> <span class="nf">start</span><span class="p">(</span>
@@ -310,71 +309,12 @@
     <span class="k">return</span> <span class="n">OnnxGraph</span><span class="p">(</span><span class="n">opset</span><span class="o">=</span><span class="n">opset</span><span class="p">,</span> <span class="n">opsets</span><span class="o">=</span><span class="n">opsets</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">OnnxGraph</span><span class="p">:</span>
+<div class="viewcode-block" id="g"><a class="viewcode-back" href="../../api/light_api.html#onnx_array_api.light_api.g">[docs]</a><span class="k">def</span> <span class="nf">g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">OnnxGraph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Starts a subgraph.</span>
 <span class="sd">    :return: an instance of :class:`onnx_array_api.light_api.OnnxGraph`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">OnnxGraph</span><span class="p">(</span><span class="n">proto_type</span><span class="o">=</span><span class="n">ProtoType</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="translate"><a class="viewcode-back" href="../../api/light_api.html#onnx_array_api.light_api.translate">[docs]</a><span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">proto</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">single_line</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">api</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;light&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Translates an ONNX proto into a code using :ref:`l-light-api`</span>
-<span class="sd">    to describe the ONNX graph.</span>
-
-<span class="sd">    :param proto: model to translate</span>
-<span class="sd">    :param single_line: as a single line or not</span>
-<span class="sd">    :param api: API to export into,</span>
-<span class="sd">        default is `&quot;light&quot;` and this is handle by class</span>
-<span class="sd">        :class:`onnx_array_api.light_api.emitter.Emitter`,</span>
-<span class="sd">        another value is `&quot;onnx&quot;` which is the inner API implemented</span>
-<span class="sd">        in onnx package.</span>
-<span class="sd">    :return: code</span>
-
-<span class="sd">    .. runpython::</span>
-<span class="sd">        :showcode:</span>
-
-<span class="sd">        from onnx_array_api.light_api import start, translate</span>
-
-<span class="sd">        onx = (</span>
-<span class="sd">            start()</span>
-<span class="sd">            .vin(&quot;X&quot;)</span>
-<span class="sd">            .reshape((-1, 1))</span>
-<span class="sd">            .Transpose(perm=[1, 0])</span>
-<span class="sd">            .rename(&quot;Y&quot;)</span>
-<span class="sd">            .vout()</span>
-<span class="sd">            .to_onnx()</span>
-<span class="sd">        )</span>
-<span class="sd">        code = translate(onx)</span>
-<span class="sd">        print(code)</span>
-
-<span class="sd">    The inner API from onnx packahe is also available.</span>
-
-<span class="sd">    .. runpython::</span>
-<span class="sd">        :showcode:</span>
-
-<span class="sd">        from onnx_array_api.light_api import start, translate</span>
-
-<span class="sd">        onx = (</span>
-<span class="sd">            start()</span>
-<span class="sd">            .vin(&quot;X&quot;)</span>
-<span class="sd">            .reshape((-1, 1))</span>
-<span class="sd">            .Transpose(perm=[1, 0])</span>
-<span class="sd">            .rename(&quot;Y&quot;)</span>
-<span class="sd">            .vout()</span>
-<span class="sd">            .to_onnx()</span>
-<span class="sd">        )</span>
-<span class="sd">        code = translate(onx, api=&quot;onnx&quot;)</span>
-<span class="sd">        print(code)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">api</span> <span class="o">==</span> <span class="s2">&quot;light&quot;</span><span class="p">:</span>
-        <span class="n">tr</span> <span class="o">=</span> <span class="n">Translater</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tr</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">single_line</span><span class="o">=</span><span class="n">single_line</span><span class="p">,</span> <span class="n">as_str</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">api</span> <span class="o">==</span> <span class="s2">&quot;onnx&quot;</span><span class="p">:</span>
-        <span class="n">tr</span> <span class="o">=</span> <span class="n">Translater</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">emitter</span><span class="o">=</span><span class="n">InnerEmitter</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">tr</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">as_str</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value </span><span class="si">{</span><span class="n">api</span><span class="si">!r}</span><span class="s2"> for api.&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">OnnxGraph</span><span class="p">(</span><span class="n">proto_type</span><span class="o">=</span><span class="n">ProtoType</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">)</span></div>
 </pre></div>
         </article>
       </div>

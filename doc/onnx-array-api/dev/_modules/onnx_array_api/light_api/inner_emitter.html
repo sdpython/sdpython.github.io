@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>onnx_array_api.light_api.inner_emitter - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -258,19 +258,23 @@
         </div>
         <article role="main">
           <h1>Source code for onnx_array_api.light_api.inner_emitter</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">AttributeProto</span>
 <span class="kn">from</span> <span class="nn">.annotations</span> <span class="kn">import</span> <span class="n">ELEMENT_TYPE_NAME</span>
-<span class="kn">from</span> <span class="nn">.emitter</span> <span class="kn">import</span> <span class="n">BaseEmitter</span>
+<span class="kn">from</span> <span class="nn">.base_emitter</span> <span class="kn">import</span> <span class="n">BaseEmitter</span>
 <span class="kn">from</span> <span class="nn">.translate</span> <span class="kn">import</span> <span class="n">Translater</span>
 
 
-<div class="viewcode-block" id="InnerEmitter"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.inner_emitter.InnerEmitter">[docs]</a><span class="k">class</span> <span class="nc">InnerEmitter</span><span class="p">(</span><span class="n">BaseEmitter</span><span class="p">):</span>
+<div class="viewcode-block" id="InnerEmitter">
+<a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.inner_emitter.InnerEmitter">[docs]</a>
+<span class="k">class</span> <span class="nc">InnerEmitter</span><span class="p">(</span><span class="n">BaseEmitter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts event into proper code.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="InnerEmitter.render_attribute_value"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.inner_emitter.InnerEmitter.render_attribute_value">[docs]</a>    <span class="k">def</span> <span class="nf">render_attribute_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="InnerEmitter.render_attribute_value">
+<a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.inner_emitter.InnerEmitter.render_attribute_value">[docs]</a>
+    <span class="k">def</span> <span class="nf">render_attribute_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Renders an attribute value into a string.</span>
 
@@ -291,9 +295,22 @@
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render_attribute_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InnerEmitter.join"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.inner_emitter.InnerEmitter.join">[docs]</a>    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">single_line</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">_make_attribute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attr_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ref_attr_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ref_attr_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot create attribute with name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, attr_type=</span><span class="si">{</span><span class="n">attr_type</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;make_ref_attribute(key=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, attr_type=</span><span class="si">{</span><span class="n">attr_type</span><span class="si">}</span><span class="s2">, ref_attr_name=</span><span class="si">{</span><span class="n">ref_attr_name</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+
+<div class="viewcode-block" id="InnerEmitter.join">
+<a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.inner_emitter.InnerEmitter.join">[docs]</a>
+    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">single_line</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns the separators. `single_line` is unused.&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_emit_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;opset_imports = [&quot;</span><span class="p">]</span>
@@ -303,7 +320,7 @@
         <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">lines</span>
 
-    <span class="k">def</span> <span class="nf">_emit_to_onnx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_emit_to_onnx_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;model = make_model(&quot;</span><span class="p">,</span>
             <span class="s2">&quot;    graph,&quot;</span><span class="p">,</span>
@@ -342,11 +359,22 @@
         <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
         <span class="n">repl</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="s2">&quot;bool_&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;object_&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span> <span class="s2">&quot;str_&quot;</span><span class="p">}</span>
-        <span class="n">sdtype</span> <span class="o">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">)))</span>
+        <span class="n">fra</span> <span class="o">=</span> <span class="s2">&quot;from_array&quot;</span>
+        <span class="n">sdtype</span> <span class="o">=</span> <span class="n">repl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">sdtype</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">onnx.reference.custom_element_types</span> <span class="kn">import</span> <span class="n">float8e4m3fn</span>
+
+            <span class="k">if</span> <span class="n">sdtype</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">float8e4m3fn</span><span class="p">):</span>
+                <span class="n">sdtype</span> <span class="o">=</span> <span class="s2">&quot;float8e4m3fn&quot;</span>
+                <span class="n">fra</span> <span class="o">=</span> <span class="s2">&quot;from_array_extended&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected dtype=</span><span class="si">{</span><span class="n">sdtype</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sdtype</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;np.</span><span class="si">{</span><span class="n">sdtype</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="s2">&quot;initializers.append(&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;    from_array(&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;        np.array(</span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">, dtype=np.</span><span class="si">{</span><span class="n">sdtype</span><span class="si">}</span><span class="s2">),&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">fra</span><span class="si">}</span><span class="s2">(&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;        np.array(</span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="n">sdtype</span><span class="si">}</span><span class="s2">),&quot;</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;        name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;    )&quot;</span><span class="p">,</span>
             <span class="s2">&quot;)&quot;</span><span class="p">,</span>
@@ -384,7 +412,7 @@
         <span class="n">before_lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;nodes.append(&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;    make_node(&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    make_node_extended(&quot;</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">,&quot;</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">inputs</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">outputs</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">,</span>
@@ -399,7 +427,51 @@
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
         <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">lines</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;    )&quot;</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">before_lines</span> <span class="o">+</span> <span class="n">lines</span></div>
+        <span class="k">return</span> <span class="n">before_lines</span> <span class="o">+</span> <span class="n">lines</span>
+
+    <span class="k">def</span> <span class="nf">_emit_begin_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;name_f = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;domain_f = </span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nodes = []&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;inputs = []&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;outputs = []&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;atts = []&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">lines</span>
+
+    <span class="k">def</span> <span class="nf">_emit_to_onnx_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_emit_function_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;inputs.append(</span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">)&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_emit_function_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;outputs.append(</span><span class="si">{</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">)&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_emit_function_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">atts</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atts</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="n">atts</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;atts.extend(</span><span class="si">{</span><span class="n">atts</span><span class="si">!r}</span><span class="s2">)&quot;</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to process function attributes </span><span class="si">{</span><span class="n">atts</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_emit_end_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;functions.append(&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;    make_function(&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;        domain_f, &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;        name_f, &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;        inputs, &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;        outputs, &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;        nodes, &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;        attributes=atts, &quot;</span><span class="p">,</span>
+            <span class="s2">&quot;        opset_imports=opset_imports,&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;   )&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;)&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">lines</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -432,9 +504,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../../../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

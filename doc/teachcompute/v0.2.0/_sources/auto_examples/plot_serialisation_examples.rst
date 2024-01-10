@@ -259,7 +259,7 @@ Et la relecture avec la classe :class:`json.JSONDecoder`.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f5df45e6f80>
+    <__main__.A object at 0x7f5068297880>
 
 
 
@@ -317,7 +317,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.008956199999374803
+    0.003245500000048196
 
 
 
@@ -341,7 +341,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.0007222000022011343
+    0.00038890000041647
 
 
 
@@ -374,7 +374,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.003935600001568673
+    0.0006450999999287887
 
 
 
@@ -397,7 +397,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.001542199999676086
+    0.0004648999997698411
 
 
 
@@ -425,7 +425,7 @@ On enlève le temps passé dans la creation du buffer.
  .. code-block:: none
 
 
-    0.00012939999942318536
+    4.2499999835854396e-05
 
 
 
@@ -573,7 +573,7 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f5e0c8def50>
+    <__main__.A object at 0x7f50684cf8e0>
 
 
 
@@ -705,7 +705,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    <__main__.B object at 0x7f5e0cc392d0>
+    <__main__.B object at 0x7f504b672560>
 
 
 
@@ -750,7 +750,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.0008837999994284473
+    0.0004768000003423367
 
 
 
@@ -773,7 +773,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.000607599999057129
+    0.00031349999972007936
 
 
 
@@ -804,7 +804,7 @@ Il est possible d'accélérer un peu les choses.
  .. code-block:: none
 
 
-    0.0020269999986339826
+    0.00044460000026447233
 
 
 
@@ -870,7 +870,7 @@ Binaire
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f5df67a4b80>}
+    {'x': 5, 'f': <function myfunc at 0x7f504b542ef0>}
 
 
 
@@ -986,7 +986,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f5e0a0f8e50>}
+    {'x': 5, 'f': <function myfunc at 0x7f504b542a70>}
 
 
 
@@ -1072,7 +1072,7 @@ même si elle ne produit pas toujours d'erreur.
 
  .. code-block:: none
 
-    <function myfunc at 0x7f5e0a0f8d30> is not JSON serializable
+    <function myfunc at 0x7f504b542c20> is not JSON serializable
 
     ''
 
@@ -1135,7 +1135,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
  .. code-block:: none
 
 
-    {'x': 5, 'it': <list_iterator object at 0x7f5e0c8dfe20>}
+    {'x': 5, 'it': <list_iterator object at 0x7f504b671e70>}
 
 
 
@@ -1229,22 +1229,16 @@ sérialiser un générateur mais on peut sérialiser la fonction qui crée le g�
 Summary
 =======
 
-.. GENERATED FROM PYTHON SOURCE LINES 545-550
+.. GENERATED FROM PYTHON SOURCE LINES 545-549
 
 .. code-block:: Python
 
 
-    fig, ax = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
     df = pandas.DataFrame(data_time)
     print(df)
 
 
 
-
-.. image-sg:: /auto_examples/images/sphx_glr_plot_serialisation_examples_001.png
-   :alt: plot serialisation examples
-   :srcset: /auto_examples/images/sphx_glr_plot_serialisation_examples_001.png
-   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -1252,23 +1246,24 @@ Summary
  .. code-block:: none
 
                                               expression      time
-    0                        json.dump(data, StringIO())  0.008956
-    1                       ujson.dump(data, StringIO())  0.000722
-    2                           json.load(StringIO(res))  0.003936
-    3                          ujson.load(StringIO(res))  0.001542
-    4                                      StringIO(res)  0.000129
-    5                       pickle.dump(data, BytesIO())  0.000884
-    6                          pickle.load(BytesIO(seq))  0.000608
-    7  pickle.dump(data, BytesIO(), protocol=pickle.H...  0.002027
+    0                        json.dump(data, StringIO())  0.003246
+    1                       ujson.dump(data, StringIO())  0.000389
+    2                           json.load(StringIO(res))  0.000645
+    3                          ujson.load(StringIO(res))  0.000465
+    4                                      StringIO(res)  0.000042
+    5                       pickle.dump(data, BytesIO())  0.000477
+    6                          pickle.load(BytesIO(seq))  0.000313
+    7  pickle.dump(data, BytesIO(), protocol=pickle.H...  0.000445
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 552-560
+.. GENERATED FROM PYTHON SOURCE LINES 551-560
 
 .. code-block:: Python
 
 
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
     df.set_index("expression").plot.barh(ax=ax[0])
     df.loc[0, "time"] = numpy.nan
     df.set_index("expression").plot.barh(ax=ax[1])
@@ -1279,6 +1274,11 @@ Summary
 
 
 
+.. image-sg:: /auto_examples/images/sphx_glr_plot_serialisation_examples_001.png
+   :alt: Time, Time without `json.dump`
+   :srcset: /auto_examples/images/sphx_glr_plot_serialisation_examples_001.png
+   :class: sphx-glr-single-img
+
 
 
 
@@ -1286,7 +1286,7 @@ Summary
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.675 seconds)
+   **Total running time of the script:** (0 minutes 0.496 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_serialisation_examples.py:

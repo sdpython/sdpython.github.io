@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>onnx_array_api.light_api.translate - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -262,10 +262,14 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">NodeProto</span>
 <span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">to_array</span>
-<span class="kn">from</span> <span class="nn">.emitter</span> <span class="kn">import</span> <span class="n">EventType</span><span class="p">,</span> <span class="n">Emitter</span>
+<span class="kn">from</span> <span class="nn">..reference</span> <span class="kn">import</span> <span class="n">to_array_extended</span>
+<span class="kn">from</span> <span class="nn">.base_emitter</span> <span class="kn">import</span> <span class="n">EventType</span>
+<span class="kn">from</span> <span class="nn">.light_emitter</span> <span class="kn">import</span> <span class="n">LightEmitter</span>
 
 
-<div class="viewcode-block" id="Translater"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.translate.Translater">[docs]</a><span class="k">class</span> <span class="nc">Translater</span><span class="p">:</span>
+<div class="viewcode-block" id="Translater">
+<a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.translate.Translater">[docs]</a>
+<span class="k">class</span> <span class="nc">Translater</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Translates an ONNX graph into a code following the light API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -273,15 +277,17 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">],</span>
-        <span class="n">emitter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Emitter</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">emitter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LightEmitter</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span> <span class="o">=</span> <span class="n">proto</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span> <span class="o">=</span> <span class="n">emitter</span> <span class="ow">or</span> <span class="n">Emitter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span> <span class="o">=</span> <span class="n">emitter</span> <span class="ow">or</span> <span class="n">LightEmitter</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-<div class="viewcode-block" id="Translater.export"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.translate.Translater.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_str</span><span class="p">,</span> <span class="n">single_line</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<div class="viewcode-block" id="Translater.export">
+<a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.translate.Translater.export">[docs]</a>
+    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_str</span><span class="p">,</span> <span class="n">single_line</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Exports into a code.</span>
 
@@ -290,6 +296,7 @@
 <span class="sd">        :return: list of instructions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">last_event</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">):</span>
             <span class="n">opsets</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">opset_import</span><span class="p">}</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">START</span><span class="p">,</span> <span class="n">opsets</span><span class="o">=</span><span class="n">opsets</span><span class="p">))</span>
@@ -298,6 +305,9 @@
             <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span>
             <span class="n">initializers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span>
             <span class="n">sparse_initializers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">sparse_initializer</span>
+            <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">last_event</span> <span class="o">=</span> <span class="n">EventType</span><span class="o">.</span><span class="n">TO_ONNX_MODEL</span>
+            <span class="n">is_function</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="p">(</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">)):</span>
             <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">input</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">output</span>
@@ -308,30 +318,43 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">initializers</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">sparse_initializers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">attributes</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">attribute</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+            <span class="p">)</span>
+            <span class="n">is_function</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)</span>
+            <span class="n">last_event</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">EventType</span><span class="o">.</span><span class="n">TO_ONNX_FUNCTION</span> <span class="k">if</span> <span class="n">is_function</span> <span class="k">else</span> <span class="n">EventType</span><span class="o">.</span><span class="n">TO_ONNX_MODEL</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">)</span><span class="si">}</span><span class="s2"> for proto.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">sparse_initializers</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Sparse initializer not supported yet.&quot;</span><span class="p">)</span>
 
-        <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span>
-                <span class="n">EventType</span><span class="o">.</span><span class="n">BEGIN_FUNCTION</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)</span>
-                <span class="k">else</span> <span class="n">EventType</span><span class="o">.</span><span class="n">BEGIN_GRAPH</span>
+        <span class="k">if</span> <span class="n">is_function</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span>
+                    <span class="n">EventType</span><span class="o">.</span><span class="n">BEGIN_FUNCTION</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">BEGIN_GRAPH</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">initializers</span><span class="p">:</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span>
-                    <span class="n">EventType</span><span class="o">.</span><span class="n">INITIALIZER</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">to_array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">EventType</span><span class="o">.</span><span class="n">INITIALIZER</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">init</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">to_array_extended</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">is_function</span><span class="p">:</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">FUNCTION_INPUT</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span>
@@ -344,6 +367,11 @@
                         <span class="p">),</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_function</span> <span class="ow">and</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">FUNCTION_ATTRIBUTES</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">attributes</span><span class="p">))</span>
+            <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
             <span class="n">atts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_attributes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
@@ -359,8 +387,8 @@
             <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">o</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">is_function</span><span class="p">:</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">FUNCTION_OUTPUT</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">o</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span>
@@ -377,24 +405,29 @@
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">name</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">name</span>
+
         <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span>
-                <span class="n">EventType</span><span class="o">.</span><span class="n">END_FUNCTION</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">)</span>
-                <span class="k">else</span> <span class="n">EventType</span><span class="o">.</span><span class="n">END_GRAPH</span><span class="p">,</span>
+                <span class="n">EventType</span><span class="o">.</span><span class="n">END_FUNCTION</span> <span class="k">if</span> <span class="n">is_function</span> <span class="k">else</span> <span class="n">EventType</span><span class="o">.</span><span class="n">END_GRAPH</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Local functions are not yet implemented.&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">fu</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto_</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span>
+                <span class="n">cl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">fu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">)</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">single_line</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-        <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">TO_ONNX</span><span class="p">))</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">last_event</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">as_str</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">emitter</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">single_line</span><span class="o">=</span><span class="n">single_line</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rows</span></div>
 
-<div class="viewcode-block" id="Translater.extract_attributes"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.translate.Translater.extract_attributes">[docs]</a>    <span class="k">def</span> <span class="nf">extract_attributes</span><span class="p">(</span>
+
+<div class="viewcode-block" id="Translater.extract_attributes">
+<a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api.translate.Translater.extract_attributes">[docs]</a>
+    <span class="k">def</span> <span class="nf">extract_attributes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AttributeProto</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -451,7 +484,9 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Attribute </span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with type </span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> cannot be extracted yet.&quot;</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">atts</span></div></div>
+        <span class="k">return</span> <span class="n">atts</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -484,9 +519,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../../../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

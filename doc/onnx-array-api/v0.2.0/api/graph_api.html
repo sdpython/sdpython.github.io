@@ -9,7 +9,7 @@
         <title>onnx_array_api.graph_api - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -189,6 +189,7 @@
 </li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="light_api.html">onnx_array_api.light_api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="translate_api.html">onnx_array_api.translate_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="npx_functions.html">npx.npx_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="npx_jit_eager.html">npx_jit_eager</a></li>
@@ -301,6 +302,12 @@ The content stored in ‘builder’ is modified inplace to avoid copying.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_array_api.graph_api.GraphBuilder.np">
+<span class="sig-name descname"><span class="pre">np</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#onnx_array_api.graph_api.NodePattern" title="onnx_array_api.graph_api.graph_builder.NodePattern"><span class="pre">NodePattern</span></a></span></span><a class="reference internal" href="../_modules/onnx_array_api/graph_api/graph_builder.html#GraphBuilder.np"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_array_api.graph_api.GraphBuilder.np" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns an instance of <a class="reference internal" href="#onnx_array_api.graph_api.NodePattern" title="onnx_array_api.graph_api.graph_builder.NodePattern"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodePattern</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_array_api.graph_api.GraphBuilder.remove_identity_nodes">
 <span class="sig-name descname"><span class="pre">remove_identity_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/onnx_array_api/graph_api/graph_builder.html#GraphBuilder.remove_identity_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_array_api.graph_api.GraphBuilder.remove_identity_nodes" title="Permalink to this definition">#</a></dt>
 <dd><p>Removes identity nodes.</p>
@@ -312,6 +319,52 @@ The content stored in ‘builder’ is modified inplace to avoid copying.</p>
 <dd><p>Simple function to remove unused nodes.
 It does not look into subgraphs and assumes there is none.
 Everything is done in one pass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_array_api.graph_api.GraphBuilder.update_attribute">
+<span class="sig-name descname"><span class="pre">update_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_array_api.graph_api.NodePattern" title="onnx_array_api.graph_api.graph_builder.NodePattern"><span class="pre">NodePattern</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/onnx_array_api/graph_api/graph_builder.html#GraphBuilder.update_attribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_array_api.graph_api.GraphBuilder.update_attribute" title="Permalink to this definition">#</a></dt>
+<dd><p>Udates attributes for nodes matching the</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pat</strong> – returned by method <a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.np" title="onnx_array_api.graph_api.GraphBuilder.np"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GraphBuilder.np()</span></code></a></p></li>
+<li><p><strong>recursive</strong> – walk through subgraph</p></li>
+<li><p><strong>kwargs</strong> – attributes to modify</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>number of modified nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_array_api.graph_api.GraphBuilder.update_node">
+<span class="sig-name descname"><span class="pre">update_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.16.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/onnx_array_api/graph_api/graph_builder.html#GraphBuilder.update_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_array_api.graph_api.GraphBuilder.update_node" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates attributes of a node proto.
+Returns True if the node was updated.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="nodepattern">
+<h2>NodePattern<a class="headerlink" href="#nodepattern" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="onnx_array_api.graph_api.NodePattern">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onnx_array_api.graph_api.</span></span><span class="sig-name descname"><span class="pre">NodePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/onnx_array_api/graph_api/graph_builder.html#NodePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_array_api.graph_api.NodePattern" title="Permalink to this definition">#</a></dt>
+<dd><p>Class defining a matching pattern able to find nodes in a set of nodes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_array_api.graph_api.NodePattern.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder" title="onnx_array_api.graph_api.graph_builder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><span class="pre">Iterator</span></a></span></span><a class="reference internal" href="../_modules/onnx_array_api/graph_api/graph_builder.html#NodePattern.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_array_api.graph_api.NodePattern.find" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterates on nodes matching the pattern.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="onnx_array_api.graph_api.NodePattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.16.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/onnx_array_api/graph_api/graph_builder.html#NodePattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_array_api.graph_api.NodePattern.match" title="Permalink to this definition">#</a></dt>
+<dd><p>Tells if a node is matching this pattern.</p>
 </dd></dl>
 
 </dd></dl>
@@ -388,8 +441,19 @@ Everything is done in one pass.</p>
 <li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.constant_folding"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.constant_folding()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.is_constant"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.is_constant()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.make_nodes"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.make_nodes()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.np"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.np()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.remove_identity_nodes"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.remove_identity_nodes()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.remove_unused"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.remove_unused()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.update_attribute"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.update_attribute()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_array_api.graph_api.GraphBuilder.update_node"><code class="docutils literal notranslate"><span class="pre">GraphBuilder.update_node()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nodepattern">NodePattern</a><ul>
+<li><a class="reference internal" href="#onnx_array_api.graph_api.NodePattern"><code class="docutils literal notranslate"><span class="pre">NodePattern</span></code></a><ul>
+<li><a class="reference internal" href="#onnx_array_api.graph_api.NodePattern.find"><code class="docutils literal notranslate"><span class="pre">NodePattern.find()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_array_api.graph_api.NodePattern.match"><code class="docutils literal notranslate"><span class="pre">NodePattern.match()</span></code></a></li>
 </ul>
 </li>
 </ul>

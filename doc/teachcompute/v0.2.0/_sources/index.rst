@@ -24,6 +24,7 @@ introduit ces deux voies.
     introduction
     build
     articles/index
+    api/index
 
 .. toctree::
     :maxdepth: 1
@@ -32,6 +33,9 @@ introduit ces deux voies.
     index_expose
     index_spark
     index_vector_sum
+    index_dot
+    index_filter
+    index_process
 
 .. toctree::
     :maxdepth: 1
@@ -44,7 +48,7 @@ introduit ces deux voies.
 L'intelligence artificielle est entrée dans le quotidien.
 Machine learning, deep learning, la porte d'entrée se fait
 par la programmation et principalement avec le langgage python.
-Le site `Xavier Dupré <http://www.xavierdupre.fr/>`_
+Le site `Xavier Dupré <https://sdpython.github.io/>`_
 contient beaucoup d'exemples sur beaucoup de sujets,
 souvent reliés au machine learning.
 

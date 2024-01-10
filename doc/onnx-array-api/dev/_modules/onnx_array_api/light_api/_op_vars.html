@@ -8,7 +8,7 @@
         <title>onnx_array_api.light_api._op_vars - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -188,6 +188,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/light_api.html">onnx_array_api.light_api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/translate_api.html">onnx_array_api.translate_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_jit_eager.html">npx_jit_eager</a></li>
@@ -270,8 +271,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;BitShift&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">CenterCropPad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;CenterCropPad&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axes</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;CenterCropPad&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">Clip</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -287,12 +290,14 @@
         <span class="n">pads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">strides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">dilations</span> <span class="o">=</span> <span class="n">dilations</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">pads</span> <span class="o">=</span> <span class="n">pads</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;Col2Im&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">dilations</span><span class="o">=</span><span class="n">dilations</span><span class="p">,</span> <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span>
-        <span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">dilations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dilations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dilations</span>
+        <span class="k">if</span> <span class="n">pads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pads</span>
+        <span class="k">if</span> <span class="n">strides</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;strides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strides</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Col2Im&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">Compress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Compress&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
@@ -309,19 +314,17 @@
         <span class="n">pads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">strides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">dilations</span> <span class="o">=</span> <span class="n">dilations</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">pads</span> <span class="o">=</span> <span class="n">pads</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">dilations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dilations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dilations</span>
+        <span class="k">if</span> <span class="n">kernel_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;kernel_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+        <span class="k">if</span> <span class="n">pads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pads</span>
+        <span class="k">if</span> <span class="n">strides</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;strides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strides</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;Conv&quot;</span><span class="p">,</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
-            <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span>
-            <span class="n">dilations</span><span class="o">=</span><span class="n">dilations</span><span class="p">,</span>
-            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
-            <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
-            <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
-            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+            <span class="s2">&quot;Conv&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">ConvInteger</span><span class="p">(</span>
@@ -333,19 +336,17 @@
         <span class="n">pads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">strides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">dilations</span> <span class="o">=</span> <span class="n">dilations</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">pads</span> <span class="o">=</span> <span class="n">pads</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">dilations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dilations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dilations</span>
+        <span class="k">if</span> <span class="n">kernel_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;kernel_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+        <span class="k">if</span> <span class="n">pads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pads</span>
+        <span class="k">if</span> <span class="n">strides</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;strides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strides</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;ConvInteger&quot;</span><span class="p">,</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
-            <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span>
-            <span class="n">dilations</span><span class="o">=</span><span class="n">dilations</span><span class="p">,</span>
-            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
-            <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
-            <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
-            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+            <span class="s2">&quot;ConvInteger&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">ConvTranspose</span><span class="p">(</span>
@@ -359,23 +360,21 @@
         <span class="n">pads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">strides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">dilations</span> <span class="o">=</span> <span class="n">dilations</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">output_padding</span> <span class="o">=</span> <span class="n">output_padding</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">output_shape</span> <span class="o">=</span> <span class="n">output_shape</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">pads</span> <span class="o">=</span> <span class="n">pads</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">dilations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dilations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dilations</span>
+        <span class="k">if</span> <span class="n">kernel_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;kernel_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+        <span class="k">if</span> <span class="n">pads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pads</span>
+        <span class="k">if</span> <span class="n">strides</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;strides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strides</span>
+        <span class="k">if</span> <span class="n">output_padding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;output_padding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_padding</span>
+        <span class="k">if</span> <span class="n">output_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;output_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_shape</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;ConvTranspose&quot;</span><span class="p">,</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
-            <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span>
-            <span class="n">dilations</span><span class="o">=</span><span class="n">dilations</span><span class="p">,</span>
-            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
-            <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
-            <span class="n">output_padding</span><span class="o">=</span><span class="n">output_padding</span><span class="p">,</span>
-            <span class="n">output_shape</span><span class="o">=</span><span class="n">output_shape</span><span class="p">,</span>
-            <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
-            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+            <span class="s2">&quot;ConvTranspose&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">CumSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exclusive</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
@@ -397,19 +396,17 @@
         <span class="n">pads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">strides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">dilations</span> <span class="o">=</span> <span class="n">dilations</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">pads</span> <span class="o">=</span> <span class="n">pads</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">dilations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dilations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dilations</span>
+        <span class="k">if</span> <span class="n">kernel_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;kernel_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+        <span class="k">if</span> <span class="n">pads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pads</span>
+        <span class="k">if</span> <span class="n">strides</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;strides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strides</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;DeformConv&quot;</span><span class="p">,</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
-            <span class="n">dilations</span><span class="o">=</span><span class="n">dilations</span><span class="p">,</span>
-            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
-            <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
-            <span class="n">offset_group</span><span class="o">=</span><span class="n">offset_group</span><span class="p">,</span>
-            <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
-            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+            <span class="s2">&quot;DeformConv&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">offset_group</span><span class="o">=</span><span class="n">offset_group</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">DequantizeLinear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
@@ -466,12 +463,11 @@
     <span class="k">def</span> <span class="nf">MaxRoiPool</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">pooled_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">spatial_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">pooled_shape</span> <span class="o">=</span> <span class="n">pooled_shape</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">pooled_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pooled_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pooled_shape</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;MaxRoiPool&quot;</span><span class="p">,</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
-            <span class="n">pooled_shape</span><span class="o">=</span><span class="n">pooled_shape</span><span class="p">,</span>
-            <span class="n">spatial_scale</span><span class="o">=</span><span class="n">spatial_scale</span><span class="p">,</span>
+            <span class="s2">&quot;MaxRoiPool&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">spatial_scale</span><span class="o">=</span><span class="n">spatial_scale</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">MaxUnpool</span><span class="p">(</span>
@@ -480,16 +476,14 @@
         <span class="n">pads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">strides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">pads</span> <span class="o">=</span> <span class="n">pads</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;MaxUnpool&quot;</span><span class="p">,</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
-            <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
-            <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
-            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">kernel_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;kernel_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+        <span class="k">if</span> <span class="n">pads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pads</span>
+        <span class="k">if</span> <span class="n">strides</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;strides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strides</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;MaxUnpool&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">MelWeightMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_datatype</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -529,19 +523,17 @@
         <span class="n">pads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">strides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">dilations</span> <span class="o">=</span> <span class="n">dilations</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">pads</span> <span class="o">=</span> <span class="n">pads</span> <span class="ow">or</span> <span class="p">[]</span>
-        <span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">kernel_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;kernel_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+        <span class="k">if</span> <span class="n">pads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;pads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pads</span>
+        <span class="k">if</span> <span class="n">strides</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;strides&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">strides</span>
+        <span class="k">if</span> <span class="n">dilations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dilations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dilations</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-            <span class="s2">&quot;QLinearConv&quot;</span><span class="p">,</span>
-            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
-            <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span>
-            <span class="n">dilations</span><span class="o">=</span><span class="n">dilations</span><span class="p">,</span>
-            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
-            <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
-            <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
-            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+            <span class="s2">&quot;QLinearConv&quot;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span> <span class="n">auto_pad</span><span class="o">=</span><span class="n">auto_pad</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">QLinearMatMul</span><span class="p">(</span>
@@ -565,7 +557,9 @@
         <span class="n">seed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;RandomNormal&quot;</span><span class="p">,</span>
             <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
@@ -573,7 +567,7 @@
             <span class="n">mean</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span>
             <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
             <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
-            <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">RandomUniform</span><span class="p">(</span>
@@ -584,7 +578,9 @@
         <span class="n">seed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="n">shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;RandomUniform&quot;</span><span class="p">,</span>
             <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
@@ -592,7 +588,7 @@
             <span class="n">high</span><span class="o">=</span><span class="n">high</span><span class="p">,</span>
             <span class="n">low</span><span class="o">=</span><span class="n">low</span><span class="p">,</span>
             <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
-            <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">Range</span><span class="p">(</span>
@@ -699,12 +695,13 @@
         <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
         <span class="n">nearest_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;round_prefer_floor&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
-        <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axes</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="s2">&quot;Resize&quot;</span><span class="p">,</span>
             <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vars_</span><span class="p">,</span>
             <span class="n">antialias</span><span class="o">=</span><span class="n">antialias</span><span class="p">,</span>
-            <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
             <span class="n">coordinate_transformation_mode</span><span class="o">=</span><span class="n">coordinate_transformation_mode</span><span class="p">,</span>
             <span class="n">cubic_coeff_a</span><span class="o">=</span><span class="n">cubic_coeff_a</span><span class="p">,</span>
             <span class="n">exclude_outside</span><span class="o">=</span><span class="n">exclude_outside</span><span class="p">,</span>
@@ -712,6 +709,7 @@
             <span class="n">keep_aspect_ratio_policy</span><span class="o">=</span><span class="n">keep_aspect_ratio_policy</span><span class="p">,</span>
             <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
             <span class="n">nearest_mode</span><span class="o">=</span><span class="n">nearest_mode</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">RoiAlign</span><span class="p">(</span>

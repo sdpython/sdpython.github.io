@@ -8,7 +8,7 @@
         <title>onnx_array_api.graph_api.graph_builder - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -188,6 +188,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/light_api.html">onnx_array_api.light_api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/translate_api.html">onnx_array_api.translate_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_jit_eager.html">npx_jit_eager</a></li>
@@ -260,7 +261,7 @@
           <h1>Source code for onnx_array_api.graph_api.graph_builder</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx.defs</span> <span class="kn">import</span> <span class="n">onnx_opset_version</span>
 <span class="kn">import</span> <span class="nn">onnx.helper</span> <span class="k">as</span> <span class="nn">oh</span>
@@ -288,6 +289,51 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused</span> <span class="o">=</span> <span class="n">remove_unused</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">constant_folding</span> <span class="o">=</span> <span class="n">constant_folding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">constant_size</span> <span class="o">=</span> <span class="n">constant_size</span></div>
+
+
+<div class="viewcode-block" id="NodePattern"><a class="viewcode-back" href="../../../api/graph_api.html#onnx_array_api.graph_api.NodePattern">[docs]</a><span class="k">class</span> <span class="nc">NodePattern</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class defining a matching pattern able to find nodes in a set of nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="o">=</span> <span class="n">op_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;usual&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;op_type&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">sargs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">:</span>
+                <span class="n">sargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sargs</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+<div class="viewcode-block" id="NodePattern.find"><a class="viewcode-back" href="../../../api/graph_api.html#onnx_array_api.graph_api.NodePattern.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterates on nodes matching the pattern.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">node</span></div>
+
+<div class="viewcode-block" id="NodePattern.match"><a class="viewcode-back" href="../../../api/graph_api.html#onnx_array_api.graph_api.NodePattern.match">[docs]</a>    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells if a node is matching this pattern.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">!=</span> <span class="n">index</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">Opset</span><span class="p">:</span>
@@ -428,7 +474,7 @@
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">target_opset_or_existing_proto</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported.&quot;</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">Opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">Opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache_array</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">_get_tensor_shape</span><span class="p">(</span>
@@ -846,6 +892,9 @@
                     <span class="n">t</span> <span class="o">=</span> <span class="n">onh</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
                 <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                 <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">):</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">continue</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Unable to convert initializer </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> with type &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> into a TensorProto.&quot;</span>
@@ -1009,7 +1058,6 @@
 <span class="sd">        Folds all constants. Constants are marked during the creation of the graph.</span>
 <span class="sd">        There is no need to propagate this information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">updates</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">node_to_remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1099,7 +1147,78 @@
                 <span class="n">new_node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GraphBuilder.np"><a class="viewcode-back" href="../../../api/graph_api.html#onnx_array_api.graph_api.GraphBuilder.np">[docs]</a>    <span class="k">def</span> <span class="nf">np</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodePattern</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an instance of :class:`NodePattern</span>
+<span class="sd">        &lt;onnx_array_api.graph_api.graph_builder.NodePattern&gt;`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">NodePattern</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">op_type</span><span class="o">=</span><span class="n">op_type</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GraphBuilder.update_attribute"><a class="viewcode-back" href="../../../api/graph_api.html#onnx_array_api.graph_api.GraphBuilder.update_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">update_attribute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">pat</span><span class="p">:</span> <span class="n">NodePattern</span><span class="p">,</span>
+        <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Udates attributes for nodes matching the</span>
+
+<span class="sd">        :param pat: returned by method :meth:`GraphBuilder.np`</span>
+<span class="sd">        :param recursive: walk through subgraph</span>
+<span class="sd">        :param kwargs: attributes to modify</span>
+<span class="sd">        :return: number of modified nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">recursive</span><span class="p">,</span> <span class="s2">&quot;recursive=True is not implemented.&quot;</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">pat</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">up</span><span class="p">:</span>
+                <span class="n">modified</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">modified</span></div>
+
+    <span class="n">DELETE</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GraphBuilder.update_node"><a class="viewcode-back" href="../../../api/graph_api.html#onnx_array_api.graph_api.GraphBuilder.update_node">[docs]</a>    <span class="k">def</span> <span class="nf">update_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates attributes of a node proto.</span>
+<span class="sd">        Returns True if the node was updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">processed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">atts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">processed</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="ow">is</span> <span class="n">GraphBuilder</span><span class="o">.</span><span class="n">DELETE</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">new_att</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                <span class="k">assert</span> <span class="n">new_att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Mismatch value for attribute </span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> has type &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> but the new value leads to &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;type=</span><span class="si">{</span><span class="n">new_att</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+                <span class="n">atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_att</span><span class="p">)</span>
+                <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">continue</span>
+            <span class="n">atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">processed</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">is</span> <span class="n">GraphBuilder</span><span class="o">.</span><span class="n">DELETE</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">new_att</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="n">atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_att</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">modified</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">[:]</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">modified</span></div></div>
 </pre></div>
         </article>
       </div>
