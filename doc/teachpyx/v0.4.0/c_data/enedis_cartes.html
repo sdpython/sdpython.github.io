@@ -1,0 +1,1439 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Machine Learning" href="../c_ml/index.html" /><link rel="prev" title="Graphes" href="graphes.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>Tracer une carte en Python - Documentation teachpyx 0.4.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Documentation teachpyx 0.4.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.4.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_regex/index.html">Expressions régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expressions régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Matrices et DataFrames</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nb_numpy.html">Calcul matriciel avec numpy (exercices)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numpy_broadcast.html">Numpy et tableau de contingence</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nb_pandas.html">Manipulation de données avec pandas (exercices)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="graphes.html">Graphes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Graphes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Tracer une carte en Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_ml/index.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_ml/rappel.html">Quelques rappels</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_resume/cheat_sheet.html">Cheat Sheets</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Cheat Sheets</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/git.html">Cheat Sheet on Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/linux.html">Cheat Sheet on Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/jenkins.html">Cheat Sheet on Jenkins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-11-31-route2023.html">2023-11-31 : rappel feuille de route 2023</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-09-06-ensae.html">2023-09-06 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022-11-31-route2022.html">2022-11-31 : rappel feuille de route 2022</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022-01-01-assurance.html">Assurance auto</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_python.html">Exercices sur le langage python</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Exercices sur le langage python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_hash.html">Répartition, table de hashage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classes_metro.html">Un bref aperçu des classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classes_2048.html">2048 et les classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_de.html">Jeu de dé, rotation sur un circuit (classes)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_permutation.html">Classe Permutation et décomposition en transitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_tree.html">Une classe pour représenter un arbre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_iterateur.html">Itérateur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_user_p.html">Classe, Héritage, calcule d’une distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profile_gini.html">Profiling la fonction Gini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_conv.html">Profiling, application à la convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_regex.html">Expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_json_xml.html">JSON - XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_serialisation_json.html">Sérialisation avec JSON, XML, pickle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tests_unitaires.html">Tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/scrapping.html">Web-Scraping - pokemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/premiers_pas.html">Premiers pas en Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/variable_boucle_tests.html">Variables, boucles, tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/dictionnaire_vigenere.html">Dictionnaires, fonctions, code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/module_file_regex.html">Modules, fichiers, expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/integrale_rectangle.html">Intégrale et la méthode des rectangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/j2048.html">2048 - stratégie gagnante</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/texte_langue.html">Deviner la langue d’un texte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/pyramide_bigarree.html">Tracer une pyramide bigarrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_carre_magique.html">Classes, méthodes, attributs, opérateurs et carré magique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_heritage.html">Classes, héritage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/trie.html">Arbre et Trie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/premiers_pas_correction.html">Premiers pas en Python (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/variable_boucle_tests_correction.html">Variables, boucles, tests (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/dictionnaire_vigenere_correction.html">Dictionnaires, fonctions, code de Vigenère (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/module_file_regex_correction.html">Modules, fichiers, expressions régulières (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/integrale_rectangle_correction.html">Intégrale et la méthode des rectangles - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/j2048_correction.html">2048 - stratégie gagnante - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/texte_langue_correction.html">Deviner la langue d’un texte (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/pyramide_bigarree_correction.html">Tracer une pyramide bigarrée - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_carre_magique_correction.html">Classes, méthodes, attributs, opérateurs et carré magique (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_heritage_correction.html">Classes, héritage (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/trie_correction.html">Arbre et Trie (correction)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_algo.html">Algorithmes</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Algorithmes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/matrix_dictionary.html">Produit matriciel avec une matrice creuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_topk.html">Les k premiers éléments (top k)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_suffix.html">Jeux de dictionnaires, plus grand suffixe commun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_editdist.html">Distance entre deux mots de même longueur et tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_edit_distance.html">Distance d’édition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_ordonnancement.html">Problème d’ordonnancement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_tsp.html">TSP - Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/tsp_simplifie.html">Plus court chemin passant par tous les noeuds d’un graphe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/tsp_aparte.html">Aparté sur le voyageur de commerce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_compose_connexe.html">Graphe et Composantes connexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_random_graph.html">Graphes aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid_simple.html">Modèle épidémiologique (SIRD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/gentry_integer_encryption.html">Cryptage homomorphic de Craig Gentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/knn_high_dimension.html">Plus proches voisins en grande dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_1.html">Puzzles algorithmiques (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_2.html">Puzzles algorithmiques (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/plus_court_chemin.html">Programmation dynamique et plus court chemin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/decorrelation.html">Décorrélation de variables aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/graph_spectral_clustering.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/gentry_integer_encryption_correction.html">Cryptage homomorphic de Craig Gentry - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/knn_high_dimension_correction.html">Plus proches voisins en grande dimension - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_1_correction.html">Puzzles algorithmes (1) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_2_correction.html">Puzzles algorithmes (2) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/plus_court_chemin_correction.html">Programmation dynamique et plus court chemin (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/decorrelation_correction.html">Décorrélation de variables aléatoires - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/graph_spectral_clustering_correction.html">Spectral Clustering - correction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_exam.html">Séances minutées</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Séances minutées</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023-2024.html">1A - Enoncé 8 novembre 2023-2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_data.html">Numpy / Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Numpy / Pandas</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_ml.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_reg.html">Prédiction de la note des vins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_color.html">Régression logistique et courbe ROC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/years/index.html">Notebooks écrits durant les séances</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of Notebooks écrits durant les séances</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/years/2023/index.html">2023</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of 2023</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/editdist.html">Distance d’édition (4 octobre)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/pivot_gauss.html">Pivot de Gauss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/prefix_search.html">Recherche de préfixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/bareme_note_optimisation.html">Optimiser la note moyenne</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_expose/index.html">Exposés</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Exposés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/finance/finance_autostrat.html">Stratégie automatique de trading en finance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/tsp/tsp_kohonen.html">Circuit hamiltonien et Kohonen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/tsp/tsp_kruskal.html">Circuit hamiltonien et Kruskal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../i_index.html">En diagonal</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of En diagonal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebook_gallery.html">Tous les notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/index.html">Gallerie d’exemples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/index.html#gallerie-d-exemples-sur-le-machine-learning">Gallerie d’exemples sur le machine learning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../auto_examples/index.html#gallerie-d-exemples-sur-la-programmation">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../auto_examples/ml/index.html">Gallerie d’exemples sur le machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur le machine learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../auto_examples/prog/index.html">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/classique.html">examples.construction_classique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets.html">Jeux de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools.html">tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/tsp_kruskal.html">teachpyx.practice.tsp_kruskal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/video/tsp_kohonen.html">teachpyx.video.tsp_kohonen_pygame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/video/tsp_kruskal.html">teachpyx.video.tsp_kruskal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/numpysex.html">examples.numpysex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/faqs.html">faq</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i_faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Tracer-une-carte-en-Python">
+<h1>Tracer une carte en Python<a class="headerlink" href="#Tracer-une-carte-en-Python" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Le notebook propose plusieurs façons de tracer une carte en Python.</p>
+<p>Il y a principalement trois façons de tracer une carte. La première est statique avec des modules comme <a class="reference external" href="https://matplotlib.org/basemap/">basemap</a> ou <a class="reference external" href="http://scitools.org.uk/cartopy/">cartopy</a> qui sont des surcouches de <a class="reference external" href="https://matplotlib.org/">matplotlib</a>. Le second moyen est une carte animée ou non dans un notebook avec des modules comme <a class="reference external" href="http://www.pygal.org/en/stable/documentation/types/maps/pygal_maps_world.html">pygal</a>, <a class="reference external" href="https://plot.ly/python/choropleth-maps/">plotly</a>. La
+dernière consiste à insérer des éléments sur une carte en ligne telle que <a class="reference external" href="https://www.openstreetmap.org/">OpenStreetMap</a> et le module <a class="reference external" href="https://github.com/python-visualization/folium">folium</a> ou <a class="reference external" href="https://github.com/ellisonbg/ipyleaflet">ipyleaflet</a>.</p>
+<p>Il y a souvent trois problèmes avec les cartes. Le premier sont avec les coordonnées. Les plus utilisées sont les coordonnées <a class="reference external" href="https://fr.wikipedia.org/wiki/Coordonn%C3%A9es_g%C3%A9ographiques">longitude / latitude</a>. Le problème est que chaque pays a son propre système adapté à sa position géographique. Il faut souvent convertir (voir <a class="reference external" href="https://sdpython.github.io/doc/teachpyx/dev/i_faq.html#geo">lambert93_to_WGPS</a>, <a class="reference external" href="https://pyproj4.github.io/pyproj/stable/">pyproj</a>). Le second problème
+est l’ajout de repères géographiques (frontières, fleuves, …). Certains modules contiennent certaines informations, souvent pour les Etats-Unis. Mais souvent, il faut récupérer ces informations sur les sites open data de chaque pays : <a class="reference external" href="http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/notebooks/td1a_cenonce_session_12.html?highlight=basemap#cartes-avec-les-departements">départements français</a>. La troisième difficulté est qu’on veut tracer des cartes très chargées et cela prend un
+temps fou pour construire une carte lisible.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+</pre></div>
+</div>
+</div>
+<section id="données">
+<h2>données<a class="headerlink" href="#données" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from teachpyx.datasets import load_enedis_dataset
+
+df = load_enedis_dataset()
+df.head(n=2).T
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Année</th>
+      <td>2016</td>
+      <td>2016</td>
+    </tr>
+    <tr>
+      <th>Nom commune</th>
+      <td>Ponteilla</td>
+      <td>Varreddes</td>
+    </tr>
+    <tr>
+      <th>Code commune</th>
+      <td>66145</td>
+      <td>77483</td>
+    </tr>
+    <tr>
+      <th>Nom EPCI</th>
+      <td>CU Perpignan Méditerranée   (Pmcu)</td>
+      <td>CA Pays de Meaux</td>
+    </tr>
+    <tr>
+      <th>Code EPCI</th>
+      <td>200027183</td>
+      <td>247700628</td>
+    </tr>
+    <tr>
+      <th>Type EPCI</th>
+      <td>CU</td>
+      <td>CA</td>
+    </tr>
+    <tr>
+      <th>Nom département</th>
+      <td>Pyrénées-Orientales</td>
+      <td>Seine-et-Marne</td>
+    </tr>
+    <tr>
+      <th>Code département</th>
+      <td>66</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <th>Nom région</th>
+      <td>Occitanie</td>
+      <td>Île-de-France</td>
+    </tr>
+    <tr>
+      <th>Code région</th>
+      <td>76</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>Domaine de tension</th>
+      <td>BT &gt; 36 kVA</td>
+      <td>BT &lt;= 36 kVA</td>
+    </tr>
+    <tr>
+      <th>Nb sites Photovoltaïque Enedis</th>
+      <td>73.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>Energie produite annuelle Photovoltaïque Enedis (MWh)</th>
+      <td>10728.620366</td>
+      <td>21.41684</td>
+    </tr>
+    <tr>
+      <th>Nb sites Eolien Enedis</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Energie produite annuelle Eolien Enedis (MWh)</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Nb sites Hydraulique Enedis</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Energie produite annuelle Hydraulique Enedis (MWh)</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Nb sites Bio Energie Enedis</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Energie produite annuelle Bio Energie Enedis (MWh)</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Nb sites Cogénération Enedis</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Energie produite annuelle Cogénération Enedis (MWh)</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Nb sites Autres filières Enedis</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Energie produite annuelle Autres filières Enedis (MWh)</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>Geo Point 2D</th>
+      <td>42.6323626522, 2.82631103755</td>
+      <td>49.0059497861, 2.92725176893</td>
+    </tr>
+    <tr>
+      <th>long</th>
+      <td>2.826311</td>
+      <td>2.927252</td>
+    </tr>
+    <tr>
+      <th>lat</th>
+      <td>42.632363</td>
+      <td>49.00595</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="cartopy">
+<h2>cartopy<a class="headerlink" href="#cartopy" title="Lien permanent vers cette rubrique">#</a></h2>
+<p><a class="reference external" href="https://matplotlib.org/basemap/stable/">basemap</a> est l’ancêtre des modules de tracé de cartes sous Python. Ce notebook utilise <a class="reference external" href="http://scitools.org.uk/cartopy/">cartopy</a>. Contrairement à <em>basemap</em>, <em>cartopy</em> n’installe pas toutes les données dont il a besoin mais télécharge celle dont il a besoin pour tracer une carte. La <a class="reference external" href="https://scitools.org.uk/cartopy/docs/v0.15/crs/projections.html">projection</a> indique comment la surface de la terre, sphérique, sera projetée dans le plan. Ensuite,
+il faut un système de coordonnées pour localiser un point sur la surface. Le plus utilisée est <a class="reference external" href="https://fr.wikipedia.org/wiki/WGS_84">WGS_84</a> ou longitude, latitude. En France, l”<a class="reference external" href="https://www.insee.fr/fr/accueil">INSEE</a> utilise aussi le système <a class="reference external" href="https://epsg.io/2154">Lambert 93</a> ou <em>EPSG 2154</em>. Source : <a class="reference external" href="https://medium.com/&#64;_FrancoisM/introduction-%C3%A0-la-manipulation-de-donn%C3%A9es-cartographiques-23b4e38d8f0f">Introduction à la manipulation de données cartographiques</a>. Tout
+n’est pas parfait dans Cartopy comme ce problème <a class="reference external" href="https://github.com/SciTools/cartopy/issues/813">Create Cartopy projection from pyproj.Proj</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import matplotlib.pyplot as plt
+
+fig = plt.figure(figsize=(7, 7))
+ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+ax.set_extent([-5, 10, 42, 52])
+
+ax.add_feature(cfeature.OCEAN)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.BORDERS, linestyle=&quot;:&quot;)
+ax.plot(df.long, df.lat, &quot;.&quot;)
+ax.set_title(&quot;France&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/xadupre/.local/lib/python3.10/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_ocean.zip
+  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
+/home/xadupre/.local/lib/python3.10/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_coastline.zip
+  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
+/home/xadupre/.local/lib/python3.10/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/10m_cultural/ne_10m_admin_0_boundary_lines_land.zip
+  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_enedis_cartes_6_1.png" src="../_images/c_data_enedis_cartes_6_1.png" />
+</div>
+</div>
+<p>On peut obtenir une carte un peu plus détaillée mais le module <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/">cartopy</a> télécharge des données pour ce faire. Cela se faire avec l’instruction <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/feature_interface.html?highlight=with_scale#cartopy.feature.NaturalEarthFeature.with_scale">with_scale</a> qui propose trois résolutions :10m, 50m, 110m.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import matplotlib.pyplot as plt
+
+fig = plt.figure(figsize=(7, 7))
+ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+ax.set_extent([-5, 10, 42, 52])
+
+ax.add_feature(cfeature.OCEAN.with_scale(&quot;50m&quot;))
+ax.add_feature(cfeature.COASTLINE.with_scale(&quot;50m&quot;))
+ax.add_feature(cfeature.RIVERS.with_scale(&quot;50m&quot;))
+ax.add_feature(cfeature.BORDERS.with_scale(&quot;50m&quot;), linestyle=&quot;:&quot;)
+ax.plot(df.long, df.lat, &quot;.&quot;)
+ax.set_title(&quot;France&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/xadupre/.local/lib/python3.10/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_ocean.zip
+  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
+/home/xadupre/.local/lib/python3.10/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_coastline.zip
+  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
+/home/xadupre/.local/lib/python3.10/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_rivers_lake_centerlines.zip
+  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
+/home/xadupre/.local/lib/python3.10/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_cultural/ne_50m_admin_0_boundary_lines_land.zip
+  warnings.warn(f&#39;Downloading: {url}&#39;, DownloadWarning)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_enedis_cartes_8_1.png" src="../_images/c_data_enedis_cartes_8_1.png" />
+</div>
+</div>
+<p>On ajoute un système de coordonnées français particulièrement intéressant pour la France. On convertit d’abord longitude, latitude en Lambert 93.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from pyproj import Proj, Transformer
+
+transform = Transformer.from_crs(
+    &quot;EPSG:4326&quot;, &quot;EPSG:2154&quot;  # longitude / latidude  # Lambert 93
+)
+transform.transform(-5, 42)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(6634541.621546051, 1633374.3871915536)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>transform.transform(10, 52)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(6723037.367738617, 4228679.19768552)
+</pre></div></div>
+</div>
+<p>On convertit toutes les coordonnées.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lamb_x, lamb_y = transform.transform(df.long.values, df.lat.values)
+</pre></div>
+</div>
+</div>
+<p>Et on dessine deux cartes, la première en longitude, latitude, la seconde en Lambert 93.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import cartopy.crs as ccrs
+from cartopy.crs import CRS, Globe
+import cartopy.feature as cfeature
+import matplotlib.pyplot as plt
+
+
+def parse_option_pyproj(s):
+    r = s.strip(&quot;+&quot;).split(&quot;=&quot;)
+    if len(r) == 2:
+        if &quot;,&quot; in r[1]:
+            return r[0], tuple(int(_) for _ in r[1].split(&quot;,&quot;))
+        try:
+            return r[0], float(r[1])
+        except ValueError:
+            return r[0], r[1]
+    else:
+        return r[0], True
+
+
+class MyCRS(CRS):
+    def __init__(self, proj4_params, globe=None):
+        super(MyCRS, self).__init__(proj4_params, globe or Globe())
+
+
+# voir https://epsg.io/2154, cliquer sur proj.4
+proj4_params = (
+    &quot;+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 &quot;
+    + &quot;+y_0=6600000 +ellps=GRS80 +units=m +no_defs&quot;
+)
+
+# Ne sert à rien si ce n&#39;est à vérifier que le format est correct.
+import pyproj
+
+lambert93 = pyproj.Proj(proj4_params)
+
+# Système de coordonnées de cartopy.
+proj4_list = [(k, v) for k, v in map(parse_option_pyproj, proj4_params.split())]
+crs_lambert93 = MyCRS(proj4_list, globe=None)
+
+fig = plt.figure(figsize=(14, 7))
+ax = fig.add_subplot(1, 2, 1, projection=ccrs.PlateCarree())
+ax.set_extent([-5, 10, 42, 52])
+
+ax.add_feature(cfeature.OCEAN)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.BORDERS, linestyle=&quot;:&quot;)
+ax.plot(df.long, df.lat, &quot;.&quot;)  #
+ax.set_title(&quot;France - Long/Lat&quot;)
+
+df = df.copy()
+
+
+ax = fig.add_subplot(1, 2, 2, projection=ccrs.PlateCarree())
+ax.set_extent([36954, 1181938, 6133555, 7233428], crs_lambert93)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.BORDERS, linestyle=&quot;:&quot;)
+ax.plot(
+    lamb_x, lamb_y, &quot;.&quot;, transform=crs_lambert93
+)  # ne pas oublier transform=crs_lambert93
+ax.set_title(&quot;France - Lambert93&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_enedis_cartes_15_0.png" src="../_images/c_data_enedis_cartes_15_0.png" />
+</div>
+</div>
+</section>
+<section id="plotly,-gmaps,-bingmaps">
+<h2>plotly, gmaps, bingmaps<a class="headerlink" href="#plotly,-gmaps,-bingmaps" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Il faut s’authentifier. Voir <a class="reference external" href="https://github.com/pbugnion/gmaps">gmaps</a>, <a class="reference external" href="http://bharadwajyarlagadda.github.io/bingmaps/index.html">bingmaps</a>, <a class="reference external" href="https://plot.ly/python/maps/">plotly</a>.</p>
+</section>
+<section id="geopandas">
+<h2>geopandas<a class="headerlink" href="#geopandas" title="Lien permanent vers cette rubrique">#</a></h2>
+<p><a class="reference external" href="http://geopandas.org/">geopandas</a> est l’outil qui devient populaire. La partie cartes est accessible via l”<a class="reference external" href="http://geopandas.org/mapping.html">API de geopandas</a>. Il n’inclut moins de données que <em>basemap</em>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import geopandas as gpd
+
+cities = gpd.read_file(gpd.datasets.get_path(&quot;naturalearth_cities&quot;))
+cities.head()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_25365/1282256058.py:2: FutureWarning: The geopandas.dataset module is deprecated and will be removed in GeoPandas 1.0. You can get the original &#39;naturalearth_cities&#39; data from https://www.naturalearthdata.com/downloads/110m-cultural-vectors/.
+  cities = gpd.read_file(gpd.datasets.get_path(&#39;naturalearth_cities&#39;))
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Vatican City</td>
+      <td>POINT (12.45339 41.90328)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>San Marino</td>
+      <td>POINT (12.44177 43.93610)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Vaduz</td>
+      <td>POINT (9.51667 47.13372)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lobamba</td>
+      <td>POINT (31.20000 -26.46667)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Luxembourg</td>
+      <td>POINT (6.13000 49.61166)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>world = gpd.read_file(gpd.datasets.get_path(&quot;naturalearth_lowres&quot;))
+world.head()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_25365/913829029.py:1: FutureWarning: The geopandas.dataset module is deprecated and will be removed in GeoPandas 1.0. You can get the original &#39;naturalearth_lowres&#39; data from https://www.naturalearthdata.com/downloads/110m-cultural-vectors/.
+  world = gpd.read_file(gpd.datasets.get_path(&#39;naturalearth_lowres&#39;))
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pop_est</th>
+      <th>continent</th>
+      <th>name</th>
+      <th>iso_a3</th>
+      <th>gdp_md_est</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>889953.0</td>
+      <td>Oceania</td>
+      <td>Fiji</td>
+      <td>FJI</td>
+      <td>5496</td>
+      <td>MULTIPOLYGON (((180.00000 -16.06713, 180.00000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>58005463.0</td>
+      <td>Africa</td>
+      <td>Tanzania</td>
+      <td>TZA</td>
+      <td>63177</td>
+      <td>POLYGON ((33.90371 -0.95000, 34.07262 -1.05982...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>603253.0</td>
+      <td>Africa</td>
+      <td>W. Sahara</td>
+      <td>ESH</td>
+      <td>907</td>
+      <td>POLYGON ((-8.66559 27.65643, -8.66512 27.58948...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>37589262.0</td>
+      <td>North America</td>
+      <td>Canada</td>
+      <td>CAN</td>
+      <td>1736425</td>
+      <td>MULTIPOLYGON (((-122.84000 49.00000, -122.9742...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>328239523.0</td>
+      <td>North America</td>
+      <td>United States of America</td>
+      <td>USA</td>
+      <td>21433226</td>
+      <td>MULTIPOLYGON (((-122.84000 49.00000, -120.0000...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+ax.set_aspect(&quot;equal&quot;)
+world.plot(ax=ax, color=&quot;white&quot;, edgecolor=&quot;black&quot;)
+cities.plot(ax=ax, marker=&quot;o&quot;, color=&quot;red&quot;, markersize=5)
+ax.set_title(&quot;Carte avec geopandas&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_enedis_cartes_20_0.png" src="../_images/c_data_enedis_cartes_20_0.png" />
+</div>
+</div>
+<p>On restreint à l’Europe et pas trop loin de la France métropole.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from shapely.geometry import Polygon
+
+europe = world[world.continent == &quot;Europe&quot;].copy()
+europe[&quot;geometry&quot;] = europe.geometry.intersection(
+    Polygon([(-10, 35), (50, 35), (50, 70), (-10, 70)])
+)
+europe.head()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pop_est</th>
+      <th>continent</th>
+      <th>name</th>
+      <th>iso_a3</th>
+      <th>gdp_md_est</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>18</th>
+      <td>144373535.0</td>
+      <td>Europe</td>
+      <td>Russia</td>
+      <td>RUS</td>
+      <td>1699876</td>
+      <td>MULTIPOLYGON (((47.67591 45.64149, 46.68201 44...</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>5347896.0</td>
+      <td>Europe</td>
+      <td>Norway</td>
+      <td>NOR</td>
+      <td>403336</td>
+      <td>MULTIPOLYGON (((29.39955 69.15692, 28.59193 69...</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>67059887.0</td>
+      <td>Europe</td>
+      <td>France</td>
+      <td>FRA</td>
+      <td>2715518</td>
+      <td>MULTIPOLYGON (((6.65823 49.20196, 8.09928 49.0...</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>10285453.0</td>
+      <td>Europe</td>
+      <td>Sweden</td>
+      <td>SWE</td>
+      <td>530883</td>
+      <td>POLYGON ((11.46827 59.43239, 12.30037 60.11793...</td>
+    </tr>
+    <tr>
+      <th>111</th>
+      <td>9466856.0</td>
+      <td>Europe</td>
+      <td>Belarus</td>
+      <td>BLR</td>
+      <td>63080</td>
+      <td>POLYGON ((29.22951 55.91834, 29.37157 55.67009...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from shapely.geometry import Point
+
+points = [Point(lon, lat) for ind, lat, lon in df[[&quot;lat&quot;, &quot;long&quot;]][:1000].itertuples()]
+enedis = gpd.GeoDataFrame(data=dict(geometry=points))
+enedis.head()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>POINT (2.82631 42.63236)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>POINT (2.92725 49.00595)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>POINT (4.21389 44.46046)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>POINT (0.97421 47.12047)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>POINT (5.08532 48.61706)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(1, 1, figsize=(5, 4))
+europe.plot(ax=ax, color=&quot;white&quot;, edgecolor=&quot;black&quot;)
+enedis.plot(ax=ax, marker=&quot;o&quot;, color=&quot;red&quot;, markersize=2)
+ax.set_title(&quot;Carte de l&#39;Europe avec geopandas&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_enedis_cartes_24_0.png" src="../_images/c_data_enedis_cartes_24_0.png" />
+</div>
+</div>
+</section>
+<section id="folium">
+<h2>folium<a class="headerlink" href="#folium" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import folium
+
+map_osm = folium.Map(location=[48.85, 2.34])
+
+for ind, lat, lon, com in df[[&quot;lat&quot;, &quot;long&quot;, &quot;Nom commune&quot;]][:50].itertuples():
+    map_osm.add_child(
+        folium.RegularPolygonMarker(
+            location=[lat, lon], popup=com, fill_color=&quot;#132b5e&quot;, radius=5
+        )
+    )
+
+map_osm
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIGh0bWw+CjxoZWFkPiAgICAKICAgIDxtZXRhIGh0dHAtZXF1aXY9ImNvbnRlbnQtdHlwZSIgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PVVURi04IiAvPgogICAgPHNjcmlwdD5MX1BSRUZFUl9DQU5WQVM9ZmFsc2U7IExfTk9fVE9VQ0g9ZmFsc2U7IExfRElTQUJMRV8zRD1mYWxzZTs8L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL2xlYWZsZXRAMS4yLjAvZGlzdC9sZWFmbGV0LmpzIj48L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2FqYXguZ29vZ2xlYXBpcy5jb20vYWpheC9saWJzL2pxdWVyeS8xLjExLjEvanF1ZXJ5Lm1pbi5qcyI+PC9zY3JpcHQ+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9tYXhjZG4uYm9vdHN0cmFwY2RuLmNvbS9ib290c3RyYXAvMy4yLjAvanMvYm9vdHN0cmFwLm1pbi5qcyI+PC9zY3JpcHQ+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG5qcy5jbG91ZGZsYXJlLmNvbS9hamF4L2xpYnMvTGVhZmxldC5hd2Vzb21lLW1hcmtlcnMvMi4wLjIvbGVhZmxldC5hd2Vzb21lLW1hcmtlcnMuanMiPjwvc2NyaXB0PgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL2xlYWZsZXRAMS4yLjAvZGlzdC9sZWFmbGV0LmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9jc3MvYm9vdHN0cmFwLm1pbi5jc3MiLz4KICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9tYXhjZG4uYm9vdHN0cmFwY2RuLmNvbS9ib290c3RyYXAvMy4yLjAvY3NzL2Jvb3RzdHJhcC10aGVtZS5taW4uY3NzIi8+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vbWF4Y2RuLmJvb3RzdHJhcGNkbi5jb20vZm9udC1hd2Vzb21lLzQuNi4zL2Nzcy9mb250LWF3ZXNvbWUubWluLmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9MZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy8yLjAuMi9sZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy5jc3MiLz4KICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9yYXdnaXQuY29tL3B5dGhvbi12aXN1YWxpemF0aW9uL2ZvbGl1bS9tYXN0ZXIvZm9saXVtL3RlbXBsYXRlcy9sZWFmbGV0LmF3ZXNvbWUucm90YXRlLmNzcyIvPgogICAgPHN0eWxlPmh0bWwsIGJvZHkge3dpZHRoOiAxMDAlO2hlaWdodDogMTAwJTttYXJnaW46IDA7cGFkZGluZzogMDt9PC9zdHlsZT4KICAgIDxzdHlsZT4jbWFwIHtwb3NpdGlvbjphYnNvbHV0ZTt0b3A6MDtib3R0b206MDtyaWdodDowO2xlZnQ6MDt9PC9zdHlsZT4KICAgIAogICAgPHN0eWxlPiNtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIgewogICAgICAgIHBvc2l0aW9uOiByZWxhdGl2ZTsKICAgICAgICB3aWR0aDogMTAwLjAlOwogICAgICAgIGhlaWdodDogMTAwLjAlOwogICAgICAgIGxlZnQ6IDAuMCU7CiAgICAgICAgdG9wOiAwLjAlOwogICAgICAgIH0KICAgIDwvc3R5bGU+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG5qcy5jbG91ZGZsYXJlLmNvbS9hamF4L2xpYnMvbGVhZmxldC1kdmYvMC4zLjAvbGVhZmxldC1kdmYubWFya2Vycy5taW4uanMiPjwvc2NyaXB0Pgo8L2hlYWQ+Cjxib2R5PiAgICAKICAgIAogICAgPGRpdiBjbGFzcz0iZm9saXVtLW1hcCIgaWQ9Im1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4YiIgPjwvZGl2Pgo8L2JvZHk+CjxzY3JpcHQ+ICAgIAogICAgCiAgICAKICAgICAgICB2YXIgYm91bmRzID0gbnVsbDsKICAgIAoKICAgIHZhciBtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIgPSBMLm1hcCgKICAgICAgICAnbWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiJywgewogICAgICAgIGNlbnRlcjogWzQ4Ljg1LCAyLjM0XSwKICAgICAgICB6b29tOiAxMCwKICAgICAgICBtYXhCb3VuZHM6IGJvdW5kcywKICAgICAgICBsYXllcnM6IFtdLAogICAgICAgIHdvcmxkQ29weUp1bXA6IGZhbHNlLAogICAgICAgIGNyczogTC5DUlMuRVBTRzM4NTcsCiAgICAgICAgem9vbUNvbnRyb2w6IHRydWUsCiAgICAgICAgfSk7CgogICAgCiAgICAKICAgIHZhciB0aWxlX2xheWVyXzEyMzE0MzBjZmJlYzRmOWNhZDU1ZTFjM2I5ODI0YTNmID0gTC50aWxlTGF5ZXIoCiAgICAgICAgJ2h0dHBzOi8ve3N9LnRpbGUub3BlbnN0cmVldG1hcC5vcmcve3p9L3t4fS97eX0ucG5nJywKICAgICAgICB7CiAgICAgICAgImF0dHJpYnV0aW9uIjogbnVsbCwKICAgICAgICAiZGV0ZWN0UmV0aW5hIjogZmFsc2UsCiAgICAgICAgIm1heE5hdGl2ZVpvb20iOiAxOCwKICAgICAgICAibWF4Wm9vbSI6IDE4LAogICAgICAgICJtaW5ab29tIjogMCwKICAgICAgICAibm9XcmFwIjogZmFsc2UsCiAgICAgICAgInN1YmRvbWFpbnMiOiAiYWJjIgp9KS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzhhMzVmZDM0NjJjMzRlMDhhYzNiY2RmZTU2YTJiN2U3ID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDIuNjMyMzYyNjUyMiwyLjgyNjMxMTAzNzU1KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF8zNTVkZjc4ZTVkNTI0NWQ3YTlkYTBmOTgxNmMzY2FiZCA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sX2I2ZDljZTQxMGZiYTQyNjk4OTk2M2FkYjUwOTYyOGFkID0gJCgnPGRpdiBpZD0iaHRtbF9iNmQ5Y2U0MTBmYmE0MjY5ODk5NjNhZGI1MDk2MjhhZCIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+UG9udGVpbGxhPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF8zNTVkZjc4ZTVkNTI0NWQ3YTlkYTBmOTgxNmMzY2FiZC5zZXRDb250ZW50KGh0bWxfYjZkOWNlNDEwZmJhNDI2OTg5OTYzYWRiNTA5NjI4YWQpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfOGEzNWZkMzQ2MmMzNGUwOGFjM2JjZGZlNTZhMmI3ZTcuYmluZFBvcHVwKHBvcHVwXzM1NWRmNzhlNWQ1MjQ1ZDdhOWRhMGY5ODE2YzNjYWJkKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8yYzg1NDU4N2NmMDM0MTdlYTI5MDM2NDRiNGUyYTAwNSA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ5LjAwNTk0OTc4NjEsMi45MjcyNTE3Njg5MyksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfMDgyZTM0YzYyODc5NDg4NmE1NzlhNjZmNGEwMDFjZDcgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF9jOTkxMmYwMzQ2NTc0NmRjOGMwYjE4ZmM0ZGRhNzliMiA9ICQoJzxkaXYgaWQ9Imh0bWxfYzk5MTJmMDM0NjU3NDZkYzhjMGIxOGZjNGRkYTc5YjIiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlZhcnJlZGRlczwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfMDgyZTM0YzYyODc5NDg4NmE1NzlhNjZmNGEwMDFjZDcuc2V0Q29udGVudChodG1sX2M5OTEyZjAzNDY1NzQ2ZGM4YzBiMThmYzRkZGE3OWIyKTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzJjODU0NTg3Y2YwMzQxN2VhMjkwMzY0NGI0ZTJhMDA1LmJpbmRQb3B1cChwb3B1cF8wODJlMzRjNjI4Nzk0ODg2YTU3OWE2NmY0YTAwMWNkNykKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfNzJkNThiOTcyYjE3NGRkZGFkNDI4NDFhMTlmODQyNjIgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0NC40NjA0NjQ4MTk2LDQuMjEzODkwNDQyNDYpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwX2ZmZjc4NTg0ODcxZDRjZmNhZTVjZmE4NTVmMWIzZTA1ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMDljYTA5MTA0ZmYyNDJiNjlhZGVlZmIyMzExODUzMGUgPSAkKCc8ZGl2IGlkPSJodG1sXzA5Y2EwOTEwNGZmMjQyYjY5YWRlZWZiMjMxMTg1MzBlIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5MYWJsYWNow6hyZTwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfZmZmNzg1ODQ4NzFkNGNmY2FlNWNmYTg1NWYxYjNlMDUuc2V0Q29udGVudChodG1sXzA5Y2EwOTEwNGZmMjQyYjY5YWRlZWZiMjMxMTg1MzBlKTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzcyZDU4Yjk3MmIxNzRkZGRhZDQyODQxYTE5Zjg0MjYyLmJpbmRQb3B1cChwb3B1cF9mZmY3ODU4NDg3MWQ0Y2ZjYWU1Y2ZhODU1ZjFiM2UwNSkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfNDk0YzE2YTMyZmYzNDdkNThjNWY1ZTU5NzRlZDFjMmUgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0Ny4xMjA0NjY0NjczLDAuOTc0MjE0ODY2MTE1KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF83Yzg3ODlhN2NlZDg0NmQ5OWYyYWE3MjNjOWM1ODRhMyA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzMwZTdiMGI2NDkzYTQ0OTFiMTcyMmM3YmQ4NTAxMjBjID0gJCgnPGRpdiBpZD0iaHRtbF8zMGU3YjBiNjQ5M2E0NDkxYjE3MjJjN2JkODUwMTIwYyIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+TG9jaGVzPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF83Yzg3ODlhN2NlZDg0NmQ5OWYyYWE3MjNjOWM1ODRhMy5zZXRDb250ZW50KGh0bWxfMzBlN2IwYjY0OTNhNDQ5MWIxNzIyYzdiZDg1MDEyMGMpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfNDk0YzE2YTMyZmYzNDdkNThjNWY1ZTU5NzRlZDFjMmUuYmluZFBvcHVwKHBvcHVwXzdjODc4OWE3Y2VkODQ2ZDk5ZjJhYTcyM2M5YzU4NGEzKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl81YzJkYmQ5YTY2OWI0NmJiYWVmMTU0ZjU4ZDA5ODAxYiA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ4LjYxNzA1NTgzNTYsNS4wODUzMTYxMjIwNSksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfN2FhNzI2Y2VlOGYxNDM2ODgwMTlkMTZhMmJlODNmOWIgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8wODAxNWIyODBiZTE0NmRiYTk0MWQ5YjMzMWFmMzRjZCA9ICQoJzxkaXYgaWQ9Imh0bWxfMDgwMTViMjgwYmUxNDZkYmE5NDFkOWIzMzFhZjM0Y2QiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkNvdXNhbmNlcy1sZXMtRm9yZ2VzPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF83YWE3MjZjZWU4ZjE0MzY4ODAxOWQxNmEyYmU4M2Y5Yi5zZXRDb250ZW50KGh0bWxfMDgwMTViMjgwYmUxNDZkYmE5NDFkOWIzMzFhZjM0Y2QpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfNWMyZGJkOWE2NjliNDZiYmFlZjE1NGY1OGQwOTgwMWIuYmluZFBvcHVwKHBvcHVwXzdhYTcyNmNlZThmMTQzNjg4MDE5ZDE2YTJiZTgzZjliKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9kNGVkNzA1N2NlMjY0ZjdmYTkyMjk1ODVkYjAzNDI4MiA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ4Ljk4MDk0MDI3NDMsNi43NDA0OTU4NDExMyksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfOTQ3NWRmZTcxOTJiNDgxM2JmODlmZGExMjJhNjU3ZjIgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF84M2VlOTEzYzI5YTg0ZTZmYjIwMTRjM2QwNmI3ODU0MyA9ICQoJzxkaXYgaWQ9Imh0bWxfODNlZTkxM2MyOWE4NGU2ZmIyMDE0YzNkMDZiNzg1NDMiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkdyb3N0ZW5xdWluPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF85NDc1ZGZlNzE5MmI0ODEzYmY4OWZkYTEyMmE2NTdmMi5zZXRDb250ZW50KGh0bWxfODNlZTkxM2MyOWE4NGU2ZmIyMDE0YzNkMDZiNzg1NDMpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfZDRlZDcwNTdjZTI2NGY3ZmE5MjI5NTg1ZGIwMzQyODIuYmluZFBvcHVwKHBvcHVwXzk0NzVkZmU3MTkyYjQ4MTNiZjg5ZmRhMTIyYTY1N2YyKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl85NDM5ZjdkMjViYzY0YThiOGE0MjMyZTU3YWNkOThkNiA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQzLjc3ODM0Mjc4OTIsMS41MjY5OTUzOTE3NSksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfZTU3ODY0YmVjYzRiNDgxNGE2NjEwODUxNDVlZTNmOWUgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8xNjNhYjAzYzBlOWM0OTlhYjc4NzQwZGNhNjg1NTE1OSA9ICQoJzxkaXYgaWQ9Imh0bWxfMTYzYWIwM2MwZTljNDk5YWI3ODc0MGRjYTY4NTUxNTkiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPk1vbnRqb2lyZTwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfZTU3ODY0YmVjYzRiNDgxNGE2NjEwODUxNDVlZTNmOWUuc2V0Q29udGVudChodG1sXzE2M2FiMDNjMGU5YzQ5OWFiNzg3NDBkY2E2ODU1MTU5KTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzk0MzlmN2QyNWJjNjRhOGI4YTQyMzJlNTdhY2Q5OGQ2LmJpbmRQb3B1cChwb3B1cF9lNTc4NjRiZWNjNGI0ODE0YTY2MTA4NTE0NWVlM2Y5ZSkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfZjhhMTU1ZmY3YzkwNDg2MzhhZTg2NzkxN2NlOTRjYTggPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0My40NzQ4NjE5ODIsMy41MDk4NDk5MTgwNSksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfN2YwZDk3NTJmZmM5NGFkZTgyNjY3MjFhZDQ0YWM5OWIgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8yYWMyMmJhZmU1N2I0Y2M3OWQ4ZTBjZmRjYWNjNjM2NSA9ICQoJzxkaXYgaWQ9Imh0bWxfMmFjMjJiYWZlNTdiNGNjNzlkOGUwY2ZkY2FjYzYzNjUiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPk1vbnRhZ25hYzwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfN2YwZDk3NTJmZmM5NGFkZTgyNjY3MjFhZDQ0YWM5OWIuc2V0Q29udGVudChodG1sXzJhYzIyYmFmZTU3YjRjYzc5ZDhlMGNmZGNhY2M2MzY1KTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyX2Y4YTE1NWZmN2M5MDQ4NjM4YWU4Njc5MTdjZTk0Y2E4LmJpbmRQb3B1cChwb3B1cF83ZjBkOTc1MmZmYzk0YWRlODI2NjcyMWFkNDRhYzk5YikKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfYzliZjY0NmMxOWE2NDc2MmI0OTA3MjAzMDExM2MxZTcgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0NC41NDg5MTk3Njg5LDQuNTAzMjU4MDIyNjQpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzk2MjZhY2FjZDk2MjQ1ZjNiZTA3YTRjZmFkZjM3YjJkID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfNWM0MmVhYjkwZDM3NDU4MDk0MzIzOWUyY2U3NzFjMzAgPSAkKCc8ZGl2IGlkPSJodG1sXzVjNDJlYWI5MGQzNzQ1ODA5NDMyMzllMmNlNzcxYzMwIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5WaWxsZW5ldXZlLWRlLUJlcmc8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzk2MjZhY2FjZDk2MjQ1ZjNiZTA3YTRjZmFkZjM3YjJkLnNldENvbnRlbnQoaHRtbF81YzQyZWFiOTBkMzc0NTgwOTQzMjM5ZTJjZTc3MWMzMCk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9jOWJmNjQ2YzE5YTY0NzYyYjQ5MDcyMDMwMTEzYzFlNy5iaW5kUG9wdXAocG9wdXBfOTYyNmFjYWNkOTYyNDVmM2JlMDdhNGNmYWRmMzdiMmQpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyX2M1YWQzOWY0ODA3NDQ3M2RhMjU4ZmViNTBiZDg0OWRkID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDMuNTg2NTczMjAzMiwwLjEwNjQxMjU4NDEyOCksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfZTM2ZDQxMjhjNzUyNDQ3M2IzY2FlZjU3YmU5YWRhOGYgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8xNjI0NzBmYmRjY2Q0NTE5ODlkZDRhZGQyY2FiYzA5NSA9ICQoJzxkaXYgaWQ9Imh0bWxfMTYyNDcwZmJkY2NkNDUxOTg5ZGQ0YWRkMmNhYmMwOTUiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkJlYXVtYXJjaMOpczwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfZTM2ZDQxMjhjNzUyNDQ3M2IzY2FlZjU3YmU5YWRhOGYuc2V0Q29udGVudChodG1sXzE2MjQ3MGZiZGNjZDQ1MTk4OWRkNGFkZDJjYWJjMDk1KTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyX2M1YWQzOWY0ODA3NDQ3M2RhMjU4ZmViNTBiZDg0OWRkLmJpbmRQb3B1cChwb3B1cF9lMzZkNDEyOGM3NTI0NDczYjNjYWVmNTdiZTlhZGE4ZikKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfOTM1MzI2Y2YxMzJiNGViMzk1ZTc1YTY2NThhM2Q1YzUgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0OS41NTkyMzYyMzQxLDAuMTE3ODQ4NTM3MzMpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzFiZTY1OTI5MDRiNTRmZjA4MTI1NTkyYmZhN2QwOTY5ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfYWZlOWU5OGZiN2M5NGMwMThhMDJlZGQ1NTQzOTk0ZjYgPSAkKCc8ZGl2IGlkPSJodG1sX2FmZTllOThmYjdjOTRjMDE4YTAyZWRkNTU0Mzk5NGY2IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5PY3RldmlsbGUtc3VyLU1lcjwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfMWJlNjU5MjkwNGI1NGZmMDgxMjU1OTJiZmE3ZDA5Njkuc2V0Q29udGVudChodG1sX2FmZTllOThmYjdjOTRjMDE4YTAyZWRkNTU0Mzk5NGY2KTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzkzNTMyNmNmMTMyYjRlYjM5NWU3NWE2NjU4YTNkNWM1LmJpbmRQb3B1cChwb3B1cF8xYmU2NTkyOTA0YjU0ZmYwODEyNTU5MmJmYTdkMDk2OSkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMzYyZTRkNjU5YjhmNGI1YTgyMmYxODUxMzg2MTY5YjIgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0OC41NTM4MzQyNDI4LC00LjA3Mzc4MzA4NzkzKSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9mN2FmMzYwY2YyZTk0ZjRjYTkyYjUyZGM0MDljZDcxZSA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sX2MxZWY5MTNlYTM2YjRhZDdiOTczZTk3NTI3NWY1NzM2ID0gJCgnPGRpdiBpZD0iaHRtbF9jMWVmOTEzZWEzNmI0YWQ3Yjk3M2U5NzUyNzVmNTczNiIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+UGxvdWdvdXJ2ZXN0PC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF9mN2FmMzYwY2YyZTk0ZjRjYTkyYjUyZGM0MDljZDcxZS5zZXRDb250ZW50KGh0bWxfYzFlZjkxM2VhMzZiNGFkN2I5NzNlOTc1Mjc1ZjU3MzYpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMzYyZTRkNjU5YjhmNGI1YTgyMmYxODUxMzg2MTY5YjIuYmluZFBvcHVwKHBvcHVwX2Y3YWYzNjBjZjJlOTRmNGNhOTJiNTJkYzQwOWNkNzFlKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9hYzg1MDcwNDNlNGU0YTU4OGUwNDE2MGYyN2Y1ZDNkMiA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ0LjEwNTcwNTQzNTIsMi41MzYzODQ1NzgyOCksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfMTFkZjgzZTEwZTM5NGVkYWIxMjhkZTZjZmIzYTRlZGUgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8wNTY2MGMxNjgwMjg0Yjk0OWUzMzAyOTIwMTQ5OWY0YSA9ICQoJzxkaXYgaWQ9Imh0bWxfMDU2NjBjMTY4MDI4NGI5NDllMzMwMjkyMDE0OTlmNGEiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkxhIFNlbHZlPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF8xMWRmODNlMTBlMzk0ZWRhYjEyOGRlNmNmYjNhNGVkZS5zZXRDb250ZW50KGh0bWxfMDU2NjBjMTY4MDI4NGI5NDllMzMwMjkyMDE0OTlmNGEpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfYWM4NTA3MDQzZTRlNGE1ODhlMDQxNjBmMjdmNWQzZDIuYmluZFBvcHVwKHBvcHVwXzExZGY4M2UxMGUzOTRlZGFiMTI4ZGU2Y2ZiM2E0ZWRlKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8zYjMyZTY1NWU4YTE0NDFlYmY2OGYwZjA2MmMwNzM1NSA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ2LjQ3MzIzODgyMDQsLTEuMTExMDMwMDQyNzcpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzM4ZjdjMjU1MDRlMDRkZmM5N2M3NzFlNWQ1MTU5ZTE0ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfYWQ3YjcwOTNhMWJlNDJmNDg0MDYwYzBkZjI0ZDBmY2EgPSAkKCc8ZGl2IGlkPSJodG1sX2FkN2I3MDkzYTFiZTQyZjQ4NDA2MGMwZGYyNGQwZmNhIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5TYWludGUtR2VtbWUtbGEtUGxhaW5lPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF8zOGY3YzI1NTA0ZTA0ZGZjOTdjNzcxZTVkNTE1OWUxNC5zZXRDb250ZW50KGh0bWxfYWQ3YjcwOTNhMWJlNDJmNDg0MDYwYzBkZjI0ZDBmY2EpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfM2IzMmU2NTVlOGExNDQxZWJmNjhmMGYwNjJjMDczNTUuYmluZFBvcHVwKHBvcHVwXzM4ZjdjMjU1MDRlMDRkZmM5N2M3NzFlNWQ1MTU5ZTE0KQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9lY2RjYmJjZDQ4M2Q0YjYyOWExNWJjMWEwMzNkMDI1NiA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ3LjY3ODQ2ODQ3ODYsLTAuMjU0MTUzNjI3NTg5KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF82NmVkYzg0ZjMwZDU0MGQwOGE4NDU1OGIxNjQ5NDFlNSA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sX2Q1OWNlYTYzNjA3YTQ0YTRiZDE3ZGNiYWU2ODIzMGEzID0gJCgnPGRpdiBpZD0iaHRtbF9kNTljZWE2MzYwN2E0NGE0YmQxN2RjYmFlNjgyMzBhMyIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+RHVydGFsPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF82NmVkYzg0ZjMwZDU0MGQwOGE4NDU1OGIxNjQ5NDFlNS5zZXRDb250ZW50KGh0bWxfZDU5Y2VhNjM2MDdhNDRhNGJkMTdkY2JhZTY4MjMwYTMpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfZWNkY2JiY2Q0ODNkNGI2MjlhMTViYzFhMDMzZDAyNTYuYmluZFBvcHVwKHBvcHVwXzY2ZWRjODRmMzBkNTQwZDA4YTg0NTU4YjE2NDk0MWU1KQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl83MGZlNjYzZjk3ZTQ0M2ZiODg2NWJkYTIzMzY4NjM0OCA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ4LjAyNDI5OTg3Miw2LjY1MzIyODEzMzE1KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9kOWY4MGU4MmRmZGY0YTVmOGQyYTU5YmU5NTQ4N2E0MCA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sX2I1YTUyOWEyZGZkNDQ4M2U4MzM4NzFjNmFhNDk5ZTY1ID0gJCgnPGRpdiBpZD0iaHRtbF9iNWE1MjlhMmRmZDQ0ODNlODMzODcxYzZhYTQ5OWU2NSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+U2FpbnQtQW3DqTwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfZDlmODBlODJkZmRmNGE1ZjhkMmE1OWJlOTU0ODdhNDAuc2V0Q29udGVudChodG1sX2I1YTUyOWEyZGZkNDQ4M2U4MzM4NzFjNmFhNDk5ZTY1KTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzcwZmU2NjNmOTdlNDQzZmI4ODY1YmRhMjMzNjg2MzQ4LmJpbmRQb3B1cChwb3B1cF9kOWY4MGU4MmRmZGY0YTVmOGQyYTU5YmU5NTQ4N2E0MCkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMWZkMjcwZThiOTZkNGZlNzg3NjFjZTUxMzU0YTczMDUgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0Ni45ODc2MTU1ODY0LDYuNTQwODk0ODY1MjIpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzZhMzgxMzk5NjA0MTQ1ZGRhMGM2MWIzYzk3OTM2NjE4ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfYjhmZGI5MzQ1ZDQ3NDU1MDhlYzc2MDc2YjllN2I3YzQgPSAkKCc8ZGl2IGlkPSJodG1sX2I4ZmRiOTM0NWQ0NzQ1NTA4ZWM3NjA3NmI5ZTdiN2M0IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5MZXMgR3JhczwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfNmEzODEzOTk2MDQxNDVkZGEwYzYxYjNjOTc5MzY2MTguc2V0Q29udGVudChodG1sX2I4ZmRiOTM0NWQ0NzQ1NTA4ZWM3NjA3NmI5ZTdiN2M0KTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzFmZDI3MGU4Yjk2ZDRmZTc4NzYxY2U1MTM1NGE3MzA1LmJpbmRQb3B1cChwb3B1cF82YTM4MTM5OTYwNDE0NWRkYTBjNjFiM2M5NzkzNjYxOCkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfOWM3MmU2MDViMDExNGY2Y2JhOGM5NzgwZjNkN2EzYjcgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0Ny44NzcyOTkxMTQsLTIuNzU5MjE4MDUzMzMpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzZmN2RhMzczYThkZDRlMDQ5OTM4NTA3N2E2OTdiMDY5ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMWYwY2RhMTY2YjM5NGM3YWE5ZjMwNTVlMGJjNWQ0YzcgPSAkKCc8ZGl2IGlkPSJodG1sXzFmMGNkYTE2NmIzOTRjN2FhOWYzMDU1ZTBiYzVkNGM3IiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5CaWduYW48L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzZmN2RhMzczYThkZDRlMDQ5OTM4NTA3N2E2OTdiMDY5LnNldENvbnRlbnQoaHRtbF8xZjBjZGExNjZiMzk0YzdhYTlmMzA1NWUwYmM1ZDRjNyk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl85YzcyZTYwNWIwMTE0ZjZjYmE4Yzk3ODBmM2Q3YTNiNy5iaW5kUG9wdXAocG9wdXBfNmY3ZGEzNzNhOGRkNGUwNDk5Mzg1MDc3YTY5N2IwNjkpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzc1ZWJlMTdiZGQwZDRhNWRiODcxODk2ZmMwNWMxYWFjID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguNTI0MzQ4Njc1NSwyLjY5Nzg5MDgwNjkpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwX2FlMzNhMTFiZThmNDQzYjI4YzIxZDk5MmYzZDUyYjRmID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfNWRiMGFmNzIwYjhhNDI2YTgxMGVlNTFmOWY5NzBhODAgPSAkKCc8ZGl2IGlkPSJodG1sXzVkYjBhZjcyMGI4YTQyNmE4MTBlZTUxZjlmOTcwYTgwIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5WYXV4LWxlLVDDqW5pbDwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfYWUzM2ExMWJlOGY0NDNiMjhjMjFkOTkyZjNkNTJiNGYuc2V0Q29udGVudChodG1sXzVkYjBhZjcyMGI4YTQyNmE4MTBlZTUxZjlmOTcwYTgwKTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzc1ZWJlMTdiZGQwZDRhNWRiODcxODk2ZmMwNWMxYWFjLmJpbmRQb3B1cChwb3B1cF9hZTMzYTExYmU4ZjQ0M2IyOGMyMWQ5OTJmM2Q1MmI0ZikKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfZTdmNTVjZmU4NjkwNDAyNmJkZmFiNjE1MWUyYjI3ZDAgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0My4wMTMwMzUxMjIxLDEuNjMyMjQ0NzQxNjgpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzMxNDEyNzAxM2UxYTQyYjNiYWZjNjNmMzNkOGMwNjc0ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMmFlZDA2ODNmOGE2NDI3ZWEyYTFiNDU1Yzc1ODUwMmMgPSAkKCc8ZGl2IGlkPSJodG1sXzJhZWQwNjgzZjhhNjQyN2VhMmExYjQ1NWM3NTg1MDJjIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5TYWludC1KZWFuLWRlLVZlcmdlczwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfMzE0MTI3MDEzZTFhNDJiM2JhZmM2M2YzM2Q4YzA2NzQuc2V0Q29udGVudChodG1sXzJhZWQwNjgzZjhhNjQyN2VhMmExYjQ1NWM3NTg1MDJjKTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyX2U3ZjU1Y2ZlODY5MDQwMjZiZGZhYjYxNTFlMmIyN2QwLmJpbmRQb3B1cChwb3B1cF8zMTQxMjcwMTNlMWE0MmIzYmFmYzYzZjMzZDhjMDY3NCkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMDg0MDU2NDBlZjVlNDEyM2I4N2RkMGEzNTFhZTEzNzQgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0Ny43NDEzODMwMjA4LDYuODIzMDgwMjM5NDgpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzczMTc1NmFjYzQzMjRhNjk5MWIzOWRiM2JlYmNlMjE2ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfY2ZlZjA1YTZjMGFkNDJhYWIzYmIzZmM5N2E2ZjVkMDAgPSAkKCc8ZGl2IGlkPSJodG1sX2NmZWYwNWE2YzBhZDQyYWFiM2JiM2ZjOTdhNmY1ZDAwIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5HaXJvbWFnbnk8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzczMTc1NmFjYzQzMjRhNjk5MWIzOWRiM2JlYmNlMjE2LnNldENvbnRlbnQoaHRtbF9jZmVmMDVhNmMwYWQ0MmFhYjNiYjNmYzk3YTZmNWQwMCk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8wODQwNTY0MGVmNWU0MTIzYjg3ZGQwYTM1MWFlMTM3NC5iaW5kUG9wdXAocG9wdXBfNzMxNzU2YWNjNDMyNGE2OTkxYjM5ZGIzYmViY2UyMTYpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzllY2IxZGZlZjRmNDRmMjdiNWE5MWM0MDU2Y2M5M2I2ID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDkuNDY1NTI0NzE2Nyw1LjYzMTM0NTY3MzU3KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF85YTA0NTM2NDY4OWI0YTk0OGVjOTBmMTdjNWQ0ZmFhNCA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzE0NTJjNzhhNWIwNzQ5NmZiZjU0NTNjNDFhODE4Njc5ID0gJCgnPGRpdiBpZD0iaHRtbF8xNDUyYzc4YTViMDc0OTZmYmY1NDUzYzQxYTgxODY3OSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+Vml2aWVycy1zdXItQ2hpZXJzPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF85YTA0NTM2NDY4OWI0YTk0OGVjOTBmMTdjNWQ0ZmFhNC5zZXRDb250ZW50KGh0bWxfMTQ1MmM3OGE1YjA3NDk2ZmJmNTQ1M2M0MWE4MTg2NzkpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfOWVjYjFkZmVmNGY0NGYyN2I1YTkxYzQwNTZjYzkzYjYuYmluZFBvcHVwKHBvcHVwXzlhMDQ1MzY0Njg5YjRhOTQ4ZWM5MGYxN2M1ZDRmYWE0KQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9iNzIzYWI3MTA5ZjE0YWI2YTM1NTU5MDlkYzRiNTM2NSA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ0LjA5OTMwNTA1MDMsNC45NTcwMzU3ODUxNSksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfN2EyM2ZjMmU3NTcwNDg2YzhiNzE2YmM5NDliZDViMDEgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8wMGY3YTA1ZTcxMjI0MTc0YTg2MDFlYmM0Yzc2ZDM3NyA9ICQoJzxkaXYgaWQ9Imh0bWxfMDBmN2EwNWU3MTIyNDE3NGE4NjAxZWJjNGM3NmQzNzciIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlNhcnJpYW5zPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF83YTIzZmMyZTc1NzA0ODZjOGI3MTZiYzk0OWJkNWIwMS5zZXRDb250ZW50KGh0bWxfMDBmN2EwNWU3MTIyNDE3NGE4NjAxZWJjNGM3NmQzNzcpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfYjcyM2FiNzEwOWYxNGFiNmEzNTU1OTA5ZGM0YjUzNjUuYmluZFBvcHVwKHBvcHVwXzdhMjNmYzJlNzU3MDQ4NmM4YjcxNmJjOTQ5YmQ1YjAxKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8wMmVkOTE0ZDBkYjQ0NDkxYTk0ZWEwZjNmNzg5YTk3YSA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ2Ljk5MTU2NjQ5NjgsMS4xNzQ1NjIzMjY3NSksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfN2UwMGFlNjJmZThiNGI2YmE5NWNhY2QwNTNiZTNiMDggPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF84NzI2OTBiODMwODc0N2QwYTY0YTFmNjUzODFkNmI4NSA9ICQoJzxkaXYgaWQ9Imh0bWxfODcyNjkwYjgzMDg3NDdkMGE2NGExZjY1MzgxZDZiODUiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkNow6J0aWxsb24tc3VyLUluZHJlPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF83ZTAwYWU2MmZlOGI0YjZiYTk1Y2FjZDA1M2JlM2IwOC5zZXRDb250ZW50KGh0bWxfODcyNjkwYjgzMDg3NDdkMGE2NGExZjY1MzgxZDZiODUpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMDJlZDkxNGQwZGI0NDQ5MWE5NGVhMGYzZjc4OWE5N2EuYmluZFBvcHVwKHBvcHVwXzdlMDBhZTYyZmU4YjRiNmJhOTVjYWNkMDUzYmUzYjA4KQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9mMDc4NWE3NGQxODM0NmQzYTI0M2VhNDk1Y2YxYmUyYSA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ2LjkwNjYxMTE5NTYsLTEuNjc5MjUyMDk3MDkpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzZmOGZiOTI5ODA1NjQxYzc5NjY5ZDk5YTZkYjI2MWMyID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMDk4M2M3MDk3OGMzNDhjMDhkMzVjMTE2OTE3ZWMxMGQgPSAkKCc8ZGl2IGlkPSJodG1sXzA5ODNjNzA5NzhjMzQ4YzA4ZDM1YzExNjkxN2VjMTBkIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5Ub3V2b2lzPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF82ZjhmYjkyOTgwNTY0MWM3OTY2OWQ5OWE2ZGIyNjFjMi5zZXRDb250ZW50KGh0bWxfMDk4M2M3MDk3OGMzNDhjMDhkMzVjMTE2OTE3ZWMxMGQpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfZjA3ODVhNzRkMTgzNDZkM2EyNDNlYTQ5NWNmMWJlMmEuYmluZFBvcHVwKHBvcHVwXzZmOGZiOTI5ODA1NjQxYzc5NjY5ZDk5YTZkYjI2MWMyKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8xN2I3ZWFiNjA3YWY0ZWU1OTNkOWYyODQ3Mjg5NTg0MyA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ5LjE0NTc2MzcwNDcsNS45MzEyNzg4Njk3MyksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfMzU0YzQ3NDdlOGFmNDJjMzhmNDMxNzI1ZGJmYjU1ODMgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF9hZDg1ODVlNzljYWM0ZThjYTZmN2UzMzk5MDdjYzA5OCA9ICQoJzxkaXYgaWQ9Imh0bWxfYWQ4NTg1ZTc5Y2FjNGU4Y2E2ZjdlMzM5OTA3Y2MwOTgiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkRvbmNvdXJ0LWzDqHMtQ29uZmxhbnM8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzM1NGM0NzQ3ZThhZjQyYzM4ZjQzMTcyNWRiZmI1NTgzLnNldENvbnRlbnQoaHRtbF9hZDg1ODVlNzljYWM0ZThjYTZmN2UzMzk5MDdjYzA5OCk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8xN2I3ZWFiNjA3YWY0ZWU1OTNkOWYyODQ3Mjg5NTg0My5iaW5kUG9wdXAocG9wdXBfMzU0YzQ3NDdlOGFmNDJjMzhmNDMxNzI1ZGJmYjU1ODMpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzNhMGY1M2RkZTQzODQyOGNhNzFmNTY4NWQ3NDliOTAxID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDMuNDA5MjA4ODE2NiwzLjUxMjc2ODc3OTQ0KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9jNDVhOTcxYjVkZmU0ZDIzYjI0MWI5ZWIxNmJmZmYzYyA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzYxN2FhMGY0MjE0NzRkMmJhYTJhMTgxNTRmMjFjNjhlID0gJCgnPGRpdiBpZD0iaHRtbF82MTdhYTBmNDIxNDc0ZDJiYWEyYTE4MTU0ZjIxYzY4ZSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+UGluZXQ8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2M0NWE5NzFiNWRmZTRkMjNiMjQxYjllYjE2YmZmZjNjLnNldENvbnRlbnQoaHRtbF82MTdhYTBmNDIxNDc0ZDJiYWEyYTE4MTU0ZjIxYzY4ZSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8zYTBmNTNkZGU0Mzg0MjhjYTcxZjU2ODVkNzQ5YjkwMS5iaW5kUG9wdXAocG9wdXBfYzQ1YTk3MWI1ZGZlNGQyM2IyNDFiOWViMTZiZmZmM2MpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzY4MTgyMjc1OThmODQxODM4NzEzMzhkZWZjNzE2NWM0ID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDUuNDA5ODQ2Nzc2MSw0Ljg3ODE0NTc1OTA3KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF8xOGQwMzJhOGJjYjA0MWRkOWEyMGVlYTMzNjliMTE2MSA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzE1NzEzNDliZTU2NjRkODdhZTE5YjE1ODJlNmRjODhiID0gJCgnPGRpdiBpZD0iaHRtbF8xNTcxMzQ5YmU1NjY0ZDg3YWUxOWIxNTgyZTZkYzg4YiIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+QXNzaWV1PC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF8xOGQwMzJhOGJjYjA0MWRkOWEyMGVlYTMzNjliMTE2MS5zZXRDb250ZW50KGh0bWxfMTU3MTM0OWJlNTY2NGQ4N2FlMTliMTU4MmU2ZGM4OGIpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfNjgxODIyNzU5OGY4NDE4Mzg3MTMzOGRlZmM3MTY1YzQuYmluZFBvcHVwKHBvcHVwXzE4ZDAzMmE4YmNiMDQxZGQ5YTIwZWVhMzM2OWIxMTYxKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl84YTAwODdmMGQ5ZDQ0NzY1YTE0NjRlYjg4ZmYxNDc5MiA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ5Ljk1NTE2MzIzNTcsMS4yNTQ0NjQ5ODM0NyksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfNDE0OWZkODlmZmE0NGNjNmIwOGYzMWVlZjMxODFmOTMgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8wYzE0MDliOWRkZTc0NmM5OTY1YTRlMDA3NmYzYWZiZSA9ICQoJzxkaXYgaWQ9Imh0bWxfMGMxNDA5YjlkZGU3NDZjOTk2NWE0ZTAwNzZmM2FmYmUiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlBldGl0LUNhdXg8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzQxNDlmZDg5ZmZhNDRjYzZiMDhmMzFlZWYzMTgxZjkzLnNldENvbnRlbnQoaHRtbF8wYzE0MDliOWRkZTc0NmM5OTY1YTRlMDA3NmYzYWZiZSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl84YTAwODdmMGQ5ZDQ0NzY1YTE0NjRlYjg4ZmYxNDc5Mi5iaW5kUG9wdXAocG9wdXBfNDE0OWZkODlmZmE0NGNjNmIwOGYzMWVlZjMxODFmOTMpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzVjNjc0Y2FhZWVhNDRjNjBhMjYzNDc5NTZiMzcyZDkzID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguMjA2NDQ2NTMyOCwxLjY4MTk5MTg2NTAxKSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9kMjJjMTc4Y2EwY2M0ZDJjODJiZDM0ZTcxZmM1NjgwZCA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzNhYjliMThkYTQ3MzRlMmY5ZTE3YjhjYjcwNjNiOTYxID0gJCgnPGRpdiBpZD0iaHRtbF8zYWI5YjE4ZGE0NzM0ZTJmOWUxN2I4Y2I3MDYzYjk2MSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+RW9sZS1lbi1CZWF1Y2U8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2QyMmMxNzhjYTBjYzRkMmM4MmJkMzRlNzFmYzU2ODBkLnNldENvbnRlbnQoaHRtbF8zYWI5YjE4ZGE0NzM0ZTJmOWUxN2I4Y2I3MDYzYjk2MSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl81YzY3NGNhYWVlYTQ0YzYwYTI2MzQ3OTU2YjM3MmQ5My5iaW5kUG9wdXAocG9wdXBfZDIyYzE3OGNhMGNjNGQyYzgyYmQzNGU3MWZjNTY4MGQpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzc3MzYwOTczZmFiNTQzN2RhYzUxMTYyNGE2MDQ4OTk3ID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguMjM1Mjc3NDc5NSwtMC42MjA0ODQ3ODMxNyksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfNzEyM2ZiNjg3NTY4NDYyMGEzNWVkY2ZlMjA0YjIzNTUgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF9kYzEwNjNhMmQ3ZTg0MDFhYjI4NjZjNWJjYWFjNTRiZiA9ICQoJzxkaXYgaWQ9Imh0bWxfZGMxMDYzYTJkN2U4NDAxYWIyODY2YzViY2FhYzU0YmYiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkNvbW1lcjwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfNzEyM2ZiNjg3NTY4NDYyMGEzNWVkY2ZlMjA0YjIzNTUuc2V0Q29udGVudChodG1sX2RjMTA2M2EyZDdlODQwMWFiMjg2NmM1YmNhYWM1NGJmKTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzc3MzYwOTczZmFiNTQzN2RhYzUxMTYyNGE2MDQ4OTk3LmJpbmRQb3B1cChwb3B1cF83MTIzZmI2ODc1Njg0NjIwYTM1ZWRjZmUyMDRiMjM1NSkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfNDYxOTRhYzUwZTE5NDVkZjhkNmU1OTg4NzMxOTE0ODQgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0NC4wMzE4NTAyMzkxLDIuNTQ5MDA2MDA0MDgpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwX2VkODBlZmU2NmJlOTQxOWNhZWFlMmQ1MmE1MmVhNTg4ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMjk5YmVkNmU2YzhlNDBmOTkxM2MzNmUwMjg3ZWEzMGQgPSAkKCc8ZGl2IGlkPSJodG1sXzI5OWJlZDZlNmM4ZTQwZjk5MTNjMzZlMDI4N2VhMzBkIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5Sw6lxdWlzdGE8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2VkODBlZmU2NmJlOTQxOWNhZWFlMmQ1MmE1MmVhNTg4LnNldENvbnRlbnQoaHRtbF8yOTliZWQ2ZTZjOGU0MGY5OTEzYzM2ZTAyODdlYTMwZCk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl80NjE5NGFjNTBlMTk0NWRmOGQ2ZTU5ODg3MzE5MTQ4NC5iaW5kUG9wdXAocG9wdXBfZWQ4MGVmZTY2YmU5NDE5Y2FlYWUyZDUyYTUyZWE1ODgpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyX2ViNDk2Zjg0NGYyODQzOGVhMGRhM2M2YzIwMTI3NGVhID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDYuNzIzODI0NDgwMSwtMS4yMDM1NDE3OTc2MiksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfYTg5Yjg3MmU5NGRlNDc0OWJiMzMyMTM0N2JjOTAxMGUgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF82YzBhMDZlZTM3MGQ0YTBmODAyNTZmOGJiNmQ2Yjg1YSA9ICQoJzxkaXYgaWQ9Imh0bWxfNmMwYTA2ZWUzNzBkNGEwZjgwMjU2ZjhiYjZkNmI4NWEiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPlNhaW50LU1hcnRpbi1kZXMtTm95ZXJzPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF9hODliODcyZTk0ZGU0NzQ5YmIzMzIxMzQ3YmM5MDEwZS5zZXRDb250ZW50KGh0bWxfNmMwYTA2ZWUzNzBkNGEwZjgwMjU2ZjhiYjZkNmI4NWEpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfZWI0OTZmODQ0ZjI4NDM4ZWEwZGEzYzZjMjAxMjc0ZWEuYmluZFBvcHVwKHBvcHVwX2E4OWI4NzJlOTRkZTQ3NDliYjMzMjEzNDdiYzkwMTBlKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9hOGQ1ODJiMzEyOTI0ZjFhYTRkZDRmZThiNGQ4ZThlOCA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ1Ljc3MjEzNjI2NTgsLTAuMDI1NDI2OTM5OTEyKSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF8wMDY2NjA2MjNkOGY0N2ZjYTc3ZmY1NTU1MmY4MDBhOSA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzA4ZmYxMzBiOTI4NTQ2Nzc5NjQ2OTE2MmY0NWJmOTk5ID0gJCgnPGRpdiBpZD0iaHRtbF8wOGZmMTMwYjkyODU0Njc3OTY0NjkxNjJmNDViZjk5OSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+U2FpbnQtQ3liYXJkZWF1eDwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfMDA2NjYwNjIzZDhmNDdmY2E3N2ZmNTU1NTJmODAwYTkuc2V0Q29udGVudChodG1sXzA4ZmYxMzBiOTI4NTQ2Nzc5NjQ2OTE2MmY0NWJmOTk5KTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyX2E4ZDU4MmIzMTI5MjRmMWFhNGRkNGZlOGI0ZDhlOGU4LmJpbmRQb3B1cChwb3B1cF8wMDY2NjA2MjNkOGY0N2ZjYTc3ZmY1NTU1MmY4MDBhOSkKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMmFiYmFmYTNkMDUwNGNhMmJkOWQ0NjlhYzc5NGI5ZmMgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0NS4xOTE0MDMxNDk2LDQuNzQzNDg3OTc5OTUpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzQyZTE2MDE5MTczZTQ1MDZhZGQ4MDQ2MGE1YzdlYzk2ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMTJjNWY1YzQ5NjAxNDBiNzllNWI0YTE5ZDZhMTFjMmQgPSAkKCc8ZGl2IGlkPSJodG1sXzEyYzVmNWM0OTYwMTQwYjc5ZTViNGExOWQ2YTExYzJkIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5BcmRvaXg8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzQyZTE2MDE5MTczZTQ1MDZhZGQ4MDQ2MGE1YzdlYzk2LnNldENvbnRlbnQoaHRtbF8xMmM1ZjVjNDk2MDE0MGI3OWU1YjRhMTlkNmExMWMyZCk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8yYWJiYWZhM2QwNTA0Y2EyYmQ5ZDQ2OWFjNzk0YjlmYy5iaW5kUG9wdXAocG9wdXBfNDJlMTYwMTkxNzNlNDUwNmFkZDgwNDYwYTVjN2VjOTYpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyX2RiNjM3ZGI3ZGQxZDRhNjc4NDdkMDA2N2UyOGNjOGM3ID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguMTAwMjI4NTY3NSw3LjQ2OTcyNTU0NDE1KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9lMTEyZGExOWM4ZmY0ZWExOTY2MTRmY2QzMGVlM2U2YiA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sX2QwMzEwODAxN2NhNDQ1YTQ5NDJjODE0NGM3NTBmOWE0ID0gJCgnPGRpdiBpZD0iaHRtbF9kMDMxMDgwMTdjYTQ0NWE0OTQyYzgxNDRjNzUwZjlhNCIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+TXVudHplbmhlaW08L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2UxMTJkYTE5YzhmZjRlYTE5NjYxNGZjZDMwZWUzZTZiLnNldENvbnRlbnQoaHRtbF9kMDMxMDgwMTdjYTQ0NWE0OTQyYzgxNDRjNzUwZjlhNCk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9kYjYzN2RiN2RkMWQ0YTY3ODQ3ZDAwNjdlMjhjYzhjNy5iaW5kUG9wdXAocG9wdXBfZTExMmRhMTljOGZmNGVhMTk2NjE0ZmNkMzBlZTNlNmIpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzJiMmRkOWRiYmVkODQyOGVhMWU2ZDgyZTU1YWM2MDkzID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDUuNjYxNDI1OTcyNyw1LjA3NzE4MDU2MDA0KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9jODhmOTJjMGUxMzc0ZDZjODJiYzE2M2I0YzRlZjVhNyA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sX2Y1MDZjYTIxOGFlOTRiMzJiYWM1ZjRiYTllMjkzYWU5ID0gJCgnPGRpdiBpZD0iaHRtbF9mNTA2Y2EyMThhZTk0YjMyYmFjNWY0YmE5ZTI5M2FlOSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+R3JlbmF5PC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF9jODhmOTJjMGUxMzc0ZDZjODJiYzE2M2I0YzRlZjVhNy5zZXRDb250ZW50KGh0bWxfZjUwNmNhMjE4YWU5NGIzMmJhYzVmNGJhOWUyOTNhZTkpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMmIyZGQ5ZGJiZWQ4NDI4ZWExZTZkODJlNTVhYzYwOTMuYmluZFBvcHVwKHBvcHVwX2M4OGY5MmMwZTEzNzRkNmM4MmJjMTYzYjRjNGVmNWE3KQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8yOGZjMmM0ZWYyODA0Mzk1YWI5ZWY1MjdhNGEzM2E2YyA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQzLjYzMDQ5MzM3MjQsLTAuNDkxNjY1NjkxNDQ4KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF81NmU5ZmRhMDllMGY0YmVmODljYjliZGE2YWZlNDhlMiA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzYzZDM2ODViNzBhYzQyNmZiNDZkMDQyZDNlNWU2NjBhID0gJCgnPGRpdiBpZD0iaHRtbF82M2QzNjg1YjcwYWM0MjZmYjQ2ZDA0MmQzZTVlNjYwYSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+U2FtYWRldDwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfNTZlOWZkYTA5ZTBmNGJlZjg5Y2I5YmRhNmFmZTQ4ZTIuc2V0Q29udGVudChodG1sXzYzZDM2ODViNzBhYzQyNmZiNDZkMDQyZDNlNWU2NjBhKTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyXzI4ZmMyYzRlZjI4MDQzOTVhYjllZjUyN2E0YTMzYTZjLmJpbmRQb3B1cChwb3B1cF81NmU5ZmRhMDllMGY0YmVmODljYjliZGE2YWZlNDhlMikKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfZGY5ZGRhYWEzYTQ2NDdkMGI3YTZiOWZhMWNjOGI1YTkgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0Ny43OTQyMzY1NzA0LC0zLjQ5MjAwNzEyNzIpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwX2Q0ZWRkZmM0MmM5YzRhNGRiY2YxYmEwNDMyN2Q0MmI2ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMWE0ZTMyYThjMDNiNDRlMmI4MDRmOTYxOWU2ZTYxZDEgPSAkKCc8ZGl2IGlkPSJodG1sXzFhNGUzMmE4YzAzYjQ0ZTJiODA0Zjk2MTllNmU2MWQxIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5HdWlkZWw8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2Q0ZWRkZmM0MmM5YzRhNGRiY2YxYmEwNDMyN2Q0MmI2LnNldENvbnRlbnQoaHRtbF8xYTRlMzJhOGMwM2I0NGUyYjgwNGY5NjE5ZTZlNjFkMSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9kZjlkZGFhYTNhNDY0N2QwYjdhNmI5ZmExY2M4YjVhOS5iaW5kUG9wdXAocG9wdXBfZDRlZGRmYzQyYzljNGE0ZGJjZjFiYTA0MzI3ZDQyYjYpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyX2I1NmM2MTE1ZTNjZjQ2Mzg5ODRjYTZmNWI3Y2VmNWYwID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNTAuNTM2MzkyMTc3NiwyLjgzNjg0NDEzODMxKSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9kNjBkNzhkNzQyMWE0MDYwYTAzNzZmZWMzNWZjYjM1YiA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzcyYzdkOWM1NWRmNzRjOTk5ZTczYTdhYzFkM2EwY2YzID0gJCgnPGRpdiBpZD0iaHRtbF83MmM3ZDljNTVkZjc0Yzk5OWU3M2E3YWMxZDNhMGNmMyIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+U2Fsb23DqTwvZGl2PicpWzBdOwogICAgICAgICAgICAgICAgcG9wdXBfZDYwZDc4ZDc0MjFhNDA2MGEwMzc2ZmVjMzVmY2IzNWIuc2V0Q29udGVudChodG1sXzcyYzdkOWM1NWRmNzRjOTk5ZTczYTdhYzFkM2EwY2YzKTsKICAgICAgICAgICAgCgogICAgICAgICAgICByZWd1bGFyX3BvbHlnb25fbWFya2VyX2I1NmM2MTE1ZTNjZjQ2Mzg5ODRjYTZmNWI3Y2VmNWYwLmJpbmRQb3B1cChwb3B1cF9kNjBkNzhkNzQyMWE0MDYwYTAzNzZmZWMzNWZjYjM1YikKICAgICAgICAgICAgOwoKICAgICAgICAgICAgCiAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMzZhMmY4MGY2ZGE5NDc0YTk5NTg5Yjk1MDJmOWMzN2EgPSBuZXcgTC5SZWd1bGFyUG9seWdvbk1hcmtlcigKICAgICAgICAgICAgICAgIG5ldyBMLkxhdExuZyg0Ni4wODYzODQ4NDUzLDIuMDI0NDUwNjUwNjYpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwXzk3Yjg0ODRmMDM1YjQ1MmNhYjM5YmJhNmZlMzA1NjgyID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfMTAzODgxOTdiNGNjNDU4ZTg2MjVmNDM5MWFiM2ZiYmYgPSAkKCc8ZGl2IGlkPSJodG1sXzEwMzg4MTk3YjRjYzQ1OGU4NjI1ZjQzOTFhYjNmYmJmIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5BaHVuPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF85N2I4NDg0ZjAzNWI0NTJjYWIzOWJiYTZmZTMwNTY4Mi5zZXRDb250ZW50KGh0bWxfMTAzODgxOTdiNGNjNDU4ZTg2MjVmNDM5MWFiM2ZiYmYpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMzZhMmY4MGY2ZGE5NDc0YTk5NTg5Yjk1MDJmOWMzN2EuYmluZFBvcHVwKHBvcHVwXzk3Yjg0ODRmMDM1YjQ1MmNhYjM5YmJhNmZlMzA1NjgyKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8wOWQ5NzgxYzZiZWI0ZDU3YWY1YWE2ZTNlMGIzNWUzNyA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDUwLjQ0OTQ4NDkxNjIsMi40MDcyNzA5NDM4OSksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfOWFjYjU1YWY0YTZjNGVlN2JiM2ZmMGI2MmI0NGViMTUgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF9iYzY0YTBiM2FhYmQ0MTQ1YWE5NzE3YzllMmNmNmQ4ZSA9ICQoJzxkaXYgaWQ9Imh0bWxfYmM2NGEwYjNhYWJkNDE0NWFhOTcxN2M5ZTJjZjZkOGUiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkJvdXJzPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF85YWNiNTVhZjRhNmM0ZWU3YmIzZmYwYjYyYjQ0ZWIxNS5zZXRDb250ZW50KGh0bWxfYmM2NGEwYjNhYWJkNDE0NWFhOTcxN2M5ZTJjZjZkOGUpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfMDlkOTc4MWM2YmViNGQ1N2FmNWFhNmUzZTBiMzVlMzcuYmluZFBvcHVwKHBvcHVwXzlhY2I1NWFmNGE2YzRlZTdiYjNmZjBiNjJiNDRlYjE1KQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8zZmU2NTk2ZGYwZGM0ODhjODk0OTFmMzhiYzY0MWExMCA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQyLjU1MzAyNDEwMDcsMi45ODEwOTMzNTc2KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF81OTY2OGIyYzBlMDU0MTVhYjUyNjNiMDc5MDQwZGFlMCA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzBkZjM1OTMwOWJmZDRlYjFhNjU5YmNkY2E3YzQ3M2RhID0gJCgnPGRpdiBpZD0iaHRtbF8wZGYzNTkzMDliZmQ0ZWIxYTY1OWJjZGNhN2M0NzNkYSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+U2FpbnQtQW5kcsOpPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF81OTY2OGIyYzBlMDU0MTVhYjUyNjNiMDc5MDQwZGFlMC5zZXRDb250ZW50KGh0bWxfMGRmMzU5MzA5YmZkNGViMWE2NTliY2RjYTdjNDczZGEpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfM2ZlNjU5NmRmMGRjNDg4Yzg5NDkxZjM4YmM2NDFhMTAuYmluZFBvcHVwKHBvcHVwXzU5NjY4YjJjMGUwNTQxNWFiNTI2M2IwNzkwNDBkYWUwKQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl85NzFmMTExODZjOWI0NDNjOTJjNmMwYWU3ZGIyNWI1OCA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQ3LjM2MzEzMzY3MTksLTAuMDUzNDk4OTM2NjU0NCksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfMzg3ZTI3MjAwZDI0NDA1OGFkMmI1MzFlNDA4OGRiZmQgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF81M2RjMzExNjQzMmI0YTE3ODBiM2E5MjU5NWQ1NmU5OSA9ICQoJzxkaXYgaWQ9Imh0bWxfNTNkYzMxMTY0MzJiNGExNzgwYjNhOTI1OTVkNTZlOTkiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkJsb3U8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzM4N2UyNzIwMGQyNDQwNThhZDJiNTMxZTQwODhkYmZkLnNldENvbnRlbnQoaHRtbF81M2RjMzExNjQzMmI0YTE3ODBiM2E5MjU5NWQ1NmU5OSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl85NzFmMTExODZjOWI0NDNjOTJjNmMwYWU3ZGIyNWI1OC5iaW5kUG9wdXAocG9wdXBfMzg3ZTI3MjAwZDI0NDA1OGFkMmI1MzFlNDA4OGRiZmQpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzhhZGMyNWVkYWZjMTQ5NTNhMzM0NzI2ODk5YzJlZjE2ID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguNTExNjQ1MTcsLTIuMTMzNDk4NDIyNzEpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwX2NjZjdhOGU2MGEwYzQ3MDNhNzBmMjI0MzFjOTdlY2I5ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfZGMzMTUzMTdiYjEzNGZkY2E4OGYzYWY1MWM3OWFkYzIgPSAkKCc8ZGl2IGlkPSJodG1sX2RjMzE1MzE3YmIxMzRmZGNhODhmM2FmNTFjNzlhZGMyIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5MYW5ndWVuYW48L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2NjZjdhOGU2MGEwYzQ3MDNhNzBmMjI0MzFjOTdlY2I5LnNldENvbnRlbnQoaHRtbF9kYzMxNTMxN2JiMTM0ZmRjYTg4ZjNhZjUxYzc5YWRjMik7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl84YWRjMjVlZGFmYzE0OTUzYTMzNDcyNjg5OWMyZWYxNi5iaW5kUG9wdXAocG9wdXBfY2NmN2E4ZTYwYTBjNDcwM2E3MGYyMjQzMWM5N2VjYjkpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzQ3ZGMzNjEwYmRiYTQ3YjQ4NDdiMTZiMDgyYjFjMzY1ID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguNzY4MjEzNzQ2NCwyLjI2Mzc1Njg3OTk0KSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9mZWUxYmYwMTI4OTM0ZmU2OWQ3NjM5OTNmMTgxZTlhMCA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzA1ZDI5YTIyZDU4ZjQ3YzliZDc3YTBkZjAyYzY3MjVhID0gJCgnPGRpdiBpZD0iaHRtbF8wNWQyOWEyMmQ1OGY0N2M5YmQ3N2EwZGYwMmM2NzI1YSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+Q2jDonRlbmF5LU1hbGFicnk8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2ZlZTFiZjAxMjg5MzRmZTY5ZDc2Mzk5M2YxODFlOWEwLnNldENvbnRlbnQoaHRtbF8wNWQyOWEyMmQ1OGY0N2M5YmQ3N2EwZGYwMmM2NzI1YSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl80N2RjMzYxMGJkYmE0N2I0ODQ3YjE2YjA4MmIxYzM2NS5iaW5kUG9wdXAocG9wdXBfZmVlMWJmMDEyODkzNGZlNjlkNzYzOTkzZjE4MWU5YTApCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzYwNzJhZDhlY2Q4ZTQxOWE5ZTIxYmZhNWY5YmIxNTkzID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguNjk1OTU3NDQyLDIuMjM0Nzc0OTI5MDgpLAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgICAgIGljb24gOiBuZXcgTC5JY29uLkRlZmF1bHQoKSwKICAgICAgICAgICAgICAgICAgICBjb2xvcjogJ2JsYWNrJywKICAgICAgICAgICAgICAgICAgICBvcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIHdlaWdodDogMiwKICAgICAgICAgICAgICAgICAgICBmaWxsQ29sb3I6ICcjMTMyYjVlJywKICAgICAgICAgICAgICAgICAgICBmaWxsT3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICBudW1iZXJPZlNpZGVzOiA0LAogICAgICAgICAgICAgICAgICAgIHJvdGF0aW9uOiAwLAogICAgICAgICAgICAgICAgICAgIHJhZGl1czogNQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICkuYWRkVG8obWFwX2IxODUzOTY2YWRmYjRlZjhhNmY3M2YyZTMwM2RlYzhiKTsKICAgICAgICAgICAgCiAgICAKICAgICAgICAgICAgdmFyIHBvcHVwX2Y5NDMzZWFmODc0MDQ1YzRiZjkyNmNkYjQ4ZDliYmE1ID0gTC5wb3B1cCh7bWF4V2lkdGg6ICczMDAnCiAgICAgICAgICAgIAogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgdmFyIGh0bWxfNGQ3NzQyOTUxZDEwNDU2ZDg2MGFlN2MzODY0ZGM5ZDMgPSAkKCc8ZGl2IGlkPSJodG1sXzRkNzc0Mjk1MWQxMDQ1NmQ4NjBhZTdjMzg2NGRjOWQzIiBzdHlsZT0id2lkdGg6IDEwMC4wJTsgaGVpZ2h0OiAxMDAuMCU7Ij5WaWxsZWJvbi1zdXItWXZldHRlPC9kaXY+JylbMF07CiAgICAgICAgICAgICAgICBwb3B1cF9mOTQzM2VhZjg3NDA0NWM0YmY5MjZjZGI0OGQ5YmJhNS5zZXRDb250ZW50KGh0bWxfNGQ3NzQyOTUxZDEwNDU2ZDg2MGFlN2MzODY0ZGM5ZDMpOwogICAgICAgICAgICAKCiAgICAgICAgICAgIHJlZ3VsYXJfcG9seWdvbl9tYXJrZXJfNjA3MmFkOGVjZDhlNDE5YTllMjFiZmE1ZjliYjE1OTMuYmluZFBvcHVwKHBvcHVwX2Y5NDMzZWFmODc0MDQ1YzRiZjkyNmNkYjQ4ZDliYmE1KQogICAgICAgICAgICA7CgogICAgICAgICAgICAKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9hZGU5YWQ1NTM0MzI0OGIwOTMyM2I1YWJkMmJmYTFmMSA9IG5ldyBMLlJlZ3VsYXJQb2x5Z29uTWFya2VyKAogICAgICAgICAgICAgICAgbmV3IEwuTGF0TG5nKDQzLjU1MjY3MjY0NzEsNS45ODc3NjQ4MjM0OCksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfZTE5YzE4MDZlY2I2NDU5YjkxOWZhNGUzNGIxYzE4Y2YgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF9jYjUyY2E3MmNhMWM0NDkzYWU4ZjlkMTdhNGI1YjdiZCA9ICQoJzxkaXYgaWQ9Imh0bWxfY2I1MmNhNzJjYTFjNDQ5M2FlOGY5ZDE3YTRiNWI3YmQiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkJhcmpvbHM8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2UxOWMxODA2ZWNiNjQ1OWI5MTlmYTRlMzRiMWMxOGNmLnNldENvbnRlbnQoaHRtbF9jYjUyY2E3MmNhMWM0NDkzYWU4ZjlkMTdhNGI1YjdiZCk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl9hZGU5YWQ1NTM0MzI0OGIwOTMyM2I1YWJkMmJmYTFmMS5iaW5kUG9wdXAocG9wdXBfZTE5YzE4MDZlY2I2NDU5YjkxOWZhNGUzNGIxYzE4Y2YpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzVkNDA2Y2JkZWQ3ODQ4MjJhMzMwZGM1MGNhNjlhNmYwID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDguNTQ0NjkwODQ4NSwtMy4xODIyODYwMjE4MyksCiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgaWNvbiA6IG5ldyBMLkljb24uRGVmYXVsdCgpLAogICAgICAgICAgICAgICAgICAgIGNvbG9yOiAnYmxhY2snLAogICAgICAgICAgICAgICAgICAgIG9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgd2VpZ2h0OiAyLAogICAgICAgICAgICAgICAgICAgIGZpbGxDb2xvcjogJyMxMzJiNWUnLAogICAgICAgICAgICAgICAgICAgIGZpbGxPcGFjaXR5OiAxLAogICAgICAgICAgICAgICAgICAgIG51bWJlck9mU2lkZXM6IDQsCiAgICAgICAgICAgICAgICAgICAgcm90YXRpb246IDAsCiAgICAgICAgICAgICAgICAgICAgcmFkaXVzOiA1CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgKS5hZGRUbyhtYXBfYjE4NTM5NjZhZGZiNGVmOGE2ZjczZjJlMzAzZGVjOGIpOwogICAgICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgcG9wdXBfNDU2ODVlMDU1NTA5NGNmNGFmMjdhOWZmMzM4MDRjMmMgPSBMLnBvcHVwKHttYXhXaWR0aDogJzMwMCcKICAgICAgICAgICAgCiAgICAgICAgICAgIH0pOwoKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICB2YXIgaHRtbF8xZTg1ODJiZDkwOTQ0ODExYmFkM2M1YTc5NDdiOWQzYyA9ICQoJzxkaXYgaWQ9Imh0bWxfMWU4NTgyYmQ5MDk0NDgxMWJhZDNjNWE3OTQ3YjlkM2MiIHN0eWxlPSJ3aWR0aDogMTAwLjAlOyBoZWlnaHQ6IDEwMC4wJTsiPkdyw6JjZXM8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwXzQ1Njg1ZTA1NTUwOTRjZjRhZjI3YTlmZjMzODA0YzJjLnNldENvbnRlbnQoaHRtbF8xZTg1ODJiZDkwOTQ0ODExYmFkM2M1YTc5NDdiOWQzYyk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl81ZDQwNmNiZGVkNzg0ODIyYTMzMGRjNTBjYTY5YTZmMC5iaW5kUG9wdXAocG9wdXBfNDU2ODVlMDU1NTA5NGNmNGFmMjdhOWZmMzM4MDRjMmMpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciByZWd1bGFyX3BvbHlnb25fbWFya2VyXzAwOGI5Yjc0ZTVmYTQ1NzVhZGEzNDM0ZGUzOGNiODQwID0gbmV3IEwuUmVndWxhclBvbHlnb25NYXJrZXIoCiAgICAgICAgICAgICAgICBuZXcgTC5MYXRMbmcoNDMuNTI3NjQyNDYxMiw1LjkzNzE1NDcxNTkzKSwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBpY29uIDogbmV3IEwuSWNvbi5EZWZhdWx0KCksCiAgICAgICAgICAgICAgICAgICAgY29sb3I6ICdibGFjaycsCiAgICAgICAgICAgICAgICAgICAgb3BhY2l0eTogMSwKICAgICAgICAgICAgICAgICAgICB3ZWlnaHQ6IDIsCiAgICAgICAgICAgICAgICAgICAgZmlsbENvbG9yOiAnIzEzMmI1ZScsCiAgICAgICAgICAgICAgICAgICAgZmlsbE9wYWNpdHk6IDEsCiAgICAgICAgICAgICAgICAgICAgbnVtYmVyT2ZTaWRlczogNCwKICAgICAgICAgICAgICAgICAgICByb3RhdGlvbjogMCwKICAgICAgICAgICAgICAgICAgICByYWRpdXM6IDUKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICApLmFkZFRvKG1hcF9iMTg1Mzk2NmFkZmI0ZWY4YTZmNzNmMmUzMDNkZWM4Yik7CiAgICAgICAgICAgIAogICAgCiAgICAgICAgICAgIHZhciBwb3B1cF9hZjA0ZjEzZmIyYzY0MTMwOTg0YTk0ZjJlNDk0MTA0MiA9IEwucG9wdXAoe21heFdpZHRoOiAnMzAwJwogICAgICAgICAgICAKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICAKICAgICAgICAgICAgICAgIHZhciBodG1sXzYwNjUyMDM2NWViZTQ4NzhiM2RmMWJiODkzZjAzNWI5ID0gJCgnPGRpdiBpZD0iaHRtbF82MDY1MjAzNjVlYmU0ODc4YjNkZjFiYjg5M2YwMzViOSIgc3R5bGU9IndpZHRoOiAxMDAuMCU7IGhlaWdodDogMTAwLjAlOyI+QnJ1ZS1BdXJpYWM8L2Rpdj4nKVswXTsKICAgICAgICAgICAgICAgIHBvcHVwX2FmMDRmMTNmYjJjNjQxMzA5ODRhOTRmMmU0OTQxMDQyLnNldENvbnRlbnQoaHRtbF82MDY1MjAzNjVlYmU0ODc4YjNkZjFiYjg5M2YwMzViOSk7CiAgICAgICAgICAgIAoKICAgICAgICAgICAgcmVndWxhcl9wb2x5Z29uX21hcmtlcl8wMDhiOWI3NGU1ZmE0NTc1YWRhMzQzNGRlMzhjYjg0MC5iaW5kUG9wdXAocG9wdXBfYWYwNGYxM2ZiMmM2NDEzMDk4NGE5NGYyZTQ5NDEwNDIpCiAgICAgICAgICAgIDsKCiAgICAgICAgICAgIAogICAgICAgIAo8L3NjcmlwdD4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div>
+</div>
+</section>
+<section id="cartopy-avec-les-données-d'OpenStreetMap">
+<h2>cartopy avec les données d’OpenStreetMap<a class="headerlink" href="#cartopy-avec-les-données-d'OpenStreetMap" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On peut choisir également d’inclure ces détails dans une image fixe si l’image va dans un rapport écrit. On utilise les données d”<a class="reference external" href="http://openstreetmap.fr/">OpenStreetMap</a> avec un certain <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Zoom_levels">niveau de détail</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import matplotlib.pyplot as plt
+from cartopy.io.img_tiles import OSM
+
+fig = plt.figure(figsize=(8, 8))
+ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+ax.set_extent([-5, 10, 42, 52])
+
+imagery = OSM()
+ax.add_image(imagery, 5)
+# plus c&#39;est grand, plus c&#39;est précis, plus ça prend du temps
+
+ax.plot(df.long[:5], df.lat[:5], &quot;.&quot;)
+ax.set_title(&quot;France&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/c_data_enedis_cartes_29_0.png" src="../_images/c_data_enedis_cartes_29_0.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<p><a class="reference external" href="https://github.com/sdpython/teachpyx/tree/main/_doc/c_data/enedis_cartes.ipynb">Notebook on github</a></p>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../c_ml/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Machine Learning</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="graphes.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Graphes</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tracer une carte en Python</a><ul>
+<li><a class="reference internal" href="#données">données</a></li>
+<li><a class="reference internal" href="#cartopy">cartopy</a></li>
+<li><a class="reference internal" href="#plotly,-gmaps,-bingmaps">plotly, gmaps, bingmaps</a></li>
+<li><a class="reference internal" href="#geopandas">geopandas</a></li>
+<li><a class="reference internal" href="#folium">folium</a></li>
+<li><a class="reference internal" href="#cartopy-avec-les-données-d'OpenStreetMap">cartopy avec les données d’OpenStreetMap</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=9db00da4"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

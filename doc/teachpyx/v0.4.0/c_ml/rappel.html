@@ -1,0 +1,1051 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Précis" href="../c_resume/index.html" /><link rel="prev" title="Machine Learning" href="index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>Quelques rappels - Documentation teachpyx 0.4.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Documentation teachpyx 0.4.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.4.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_regex/index.html">Expressions régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expressions régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_data/index.html">Matrices et DataFrames</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_data/matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_data/nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_data/nb_numpy.html">Calcul matriciel avec numpy (exercices)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_data/numpy_broadcast.html">Numpy et tableau de contingence</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_data/dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_data/nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_data/nb_pandas.html">Manipulation de données avec pandas (exercices)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_data/graphes.html">Graphes</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Graphes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_data/enedis_cartes.html">Tracer une carte en Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Machine Learning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Quelques rappels</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_resume/cheat_sheet.html">Cheat Sheets</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Cheat Sheets</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/git.html">Cheat Sheet on Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/linux.html">Cheat Sheet on Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/jenkins.html">Cheat Sheet on Jenkins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-11-31-route2023.html">2023-11-31 : rappel feuille de route 2023</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-09-06-ensae.html">2023-09-06 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022-11-31-route2022.html">2022-11-31 : rappel feuille de route 2022</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022-01-01-assurance.html">Assurance auto</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_python.html">Exercices sur le langage python</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Exercices sur le langage python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_hash.html">Répartition, table de hashage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classes_metro.html">Un bref aperçu des classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classes_2048.html">2048 et les classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_de.html">Jeu de dé, rotation sur un circuit (classes)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_permutation.html">Classe Permutation et décomposition en transitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_tree.html">Une classe pour représenter un arbre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_iterateur.html">Itérateur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_user_p.html">Classe, Héritage, calcule d’une distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profile_gini.html">Profiling la fonction Gini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_conv.html">Profiling, application à la convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_regex.html">Expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_json_xml.html">JSON - XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_serialisation_json.html">Sérialisation avec JSON, XML, pickle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tests_unitaires.html">Tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/scrapping.html">Web-Scraping - pokemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/premiers_pas.html">Premiers pas en Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/variable_boucle_tests.html">Variables, boucles, tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/dictionnaire_vigenere.html">Dictionnaires, fonctions, code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/module_file_regex.html">Modules, fichiers, expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/integrale_rectangle.html">Intégrale et la méthode des rectangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/j2048.html">2048 - stratégie gagnante</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/texte_langue.html">Deviner la langue d’un texte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/pyramide_bigarree.html">Tracer une pyramide bigarrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_carre_magique.html">Classes, méthodes, attributs, opérateurs et carré magique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_heritage.html">Classes, héritage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/trie.html">Arbre et Trie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/premiers_pas_correction.html">Premiers pas en Python (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/variable_boucle_tests_correction.html">Variables, boucles, tests (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/dictionnaire_vigenere_correction.html">Dictionnaires, fonctions, code de Vigenère (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/module_file_regex_correction.html">Modules, fichiers, expressions régulières (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/integrale_rectangle_correction.html">Intégrale et la méthode des rectangles - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/j2048_correction.html">2048 - stratégie gagnante - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/texte_langue_correction.html">Deviner la langue d’un texte (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/pyramide_bigarree_correction.html">Tracer une pyramide bigarrée - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_carre_magique_correction.html">Classes, méthodes, attributs, opérateurs et carré magique (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_heritage_correction.html">Classes, héritage (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/trie_correction.html">Arbre et Trie (correction)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_algo.html">Algorithmes</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Algorithmes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/matrix_dictionary.html">Produit matriciel avec une matrice creuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_topk.html">Les k premiers éléments (top k)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_suffix.html">Jeux de dictionnaires, plus grand suffixe commun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_editdist.html">Distance entre deux mots de même longueur et tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_edit_distance.html">Distance d’édition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_ordonnancement.html">Problème d’ordonnancement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_tsp.html">TSP - Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/tsp_simplifie.html">Plus court chemin passant par tous les noeuds d’un graphe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/tsp_aparte.html">Aparté sur le voyageur de commerce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_compose_connexe.html">Graphe et Composantes connexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_random_graph.html">Graphes aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid_simple.html">Modèle épidémiologique (SIRD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/gentry_integer_encryption.html">Cryptage homomorphic de Craig Gentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/knn_high_dimension.html">Plus proches voisins en grande dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_1.html">Puzzles algorithmiques (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_2.html">Puzzles algorithmiques (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/plus_court_chemin.html">Programmation dynamique et plus court chemin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/decorrelation.html">Décorrélation de variables aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/graph_spectral_clustering.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/gentry_integer_encryption_correction.html">Cryptage homomorphic de Craig Gentry - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/knn_high_dimension_correction.html">Plus proches voisins en grande dimension - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_1_correction.html">Puzzles algorithmes (1) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_2_correction.html">Puzzles algorithmes (2) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/plus_court_chemin_correction.html">Programmation dynamique et plus court chemin (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/decorrelation_correction.html">Décorrélation de variables aléatoires - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/graph_spectral_clustering_correction.html">Spectral Clustering - correction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_exam.html">Séances minutées</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Séances minutées</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023-2024.html">1A - Enoncé 8 novembre 2023-2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_data.html">Numpy / Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Numpy / Pandas</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_ml.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_reg.html">Prédiction de la note des vins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_color.html">Régression logistique et courbe ROC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/years/index.html">Notebooks écrits durant les séances</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of Notebooks écrits durant les séances</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/years/2023/index.html">2023</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of 2023</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/editdist.html">Distance d’édition (4 octobre)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/pivot_gauss.html">Pivot de Gauss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/prefix_search.html">Recherche de préfixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/bareme_note_optimisation.html">Optimiser la note moyenne</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_expose/index.html">Exposés</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Exposés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/finance/finance_autostrat.html">Stratégie automatique de trading en finance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/tsp/tsp_kohonen.html">Circuit hamiltonien et Kohonen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/tsp/tsp_kruskal.html">Circuit hamiltonien et Kruskal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../i_index.html">En diagonal</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of En diagonal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebook_gallery.html">Tous les notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/index.html">Gallerie d’exemples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/index.html#gallerie-d-exemples-sur-le-machine-learning">Gallerie d’exemples sur le machine learning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../auto_examples/index.html#gallerie-d-exemples-sur-la-programmation">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../auto_examples/ml/index.html">Gallerie d’exemples sur le machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur le machine learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../auto_examples/prog/index.html">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/classique.html">examples.construction_classique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets.html">Jeux de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/tools.html">tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/practice/tsp_kruskal.html">teachpyx.practice.tsp_kruskal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/video/tsp_kohonen.html">teachpyx.video.tsp_kohonen_pygame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/video/tsp_kruskal.html">teachpyx.video.tsp_kruskal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/numpysex.html">examples.numpysex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/faqs.html">faq</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i_faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="quelques-rappels">
+<span id="l-rappel"></span><h1>Quelques rappels<a class="headerlink" href="#quelques-rappels" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>Sans rentrer véritablement dans le détail,
+cette partie rappelle quelques notions qui apparaissent à
+de nombreux endroits. Ces éléments mathématiques et informatiques
+sont nécessaires afin de comprendre comment fonctionnent les
+modèles de machine learning exposés.</p>
+<p><em>Les illustrations sont soit faites maisons soit extraites de Wikipedia.</em></p>
+<section id="rappels-mathematiques">
+<h2>Rappels mathématiques<a class="headerlink" href="#rappels-mathematiques" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="fonction">
+<span id="index-0"></span><h3>Fonction<a class="headerlink" href="#fonction" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Une <a class="reference external" href="https://fr.wikipedia.org/wiki/Fonction_(math%C3%A9matiques)">fonction</a> <img class="math" src="../_images/math/bd1e0600a66dbe0f8deddbd57953774419ba4e4f.svg" alt="f"/> symbolise le lien entre deux grandeurs
+<img class="math" src="../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> et <img class="math" src="../_images/math/0b4f4beda448620bb22665eb4665595c9220599d.svg" alt="f(x)"/> qu’on note
+<img class="math" src="../_images/math/aa28d06ae5588ef036a3381bc2e4294a01e298c5.svg" alt="x \rightarrow f(x)"/> ou <img class="math" src="../_images/math/4d8823c8ce60ccb84e0bb053696d89360c471dbe.svg" alt="y=f(x)"/>.
+Par exemple, <img class="math" src="../_images/math/c6b8672ee4da9bf71a5463a17519b14a1430fe7e.svg" alt="x \rightarrow f(x)=x^2"/> est la fonction
+qui associe à un nombre son carré.
+Le graphe suivant représente ce lien :</p>
+<a class="reference internal image-reference" href="../_images/fonction.png"><img alt="../_images/fonction.png" src="../_images/fonction.png" style="width: 150px;" /></a>
+</section>
+<section id="fonction-continue">
+<span id="index-1"></span><h3>Fonction continue<a class="headerlink" href="#fonction-continue" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Une <a class="reference external" href="https://fr.wikipedia.org/wiki/Continuit%C3%A9_(math%C3%A9matiques)">fonction continue</a>
+signifie en gros que si <img class="math" src="../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> varie un petit peu, <img class="math" src="../_images/math/0b4f4beda448620bb22665eb4665595c9220599d.svg" alt="f(x)"/> varie aussi un petit peu.
+On exprime cette propriété comme suit en terme mathématique.</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/512e75ba8171eb882ef1e9698cdb1a9192a92856.svg" alt="\forall \epsilon &gt;0, \exists \eta, \forall x,y \in I, \; \abs{x-y} &lt; \eta \Rightarrow \abs{f(x) -f(y)} &lt; \epsilon"/></p>
+</div></div>
+<p>On résume visuellement cette propriété comme suit.
+La fonction de gauche est continue, celle de droite ne l’est pas.</p>
+<a class="reference internal image-reference" href="../_images/fonctionc.png"><img alt="../_images/fonctionc.png" src="../_images/fonctionc.png" style="width: 300px;" /></a>
+<p>Les puristes vous diront qu’il existe quelques cas intéressants
+qui sont trompeurs visuellement mais cela suffira pour comprendre
+les notions de machine learning.</p>
+</section>
+<section id="fonction-derivable">
+<span id="index-2"></span><h3>Fonction dérivable<a class="headerlink" href="#fonction-derivable" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Beaucoup de fonctions continues sont dérivables mais ce qui est sûr,
+c’est la fonction qui n’est pas continue en un point <img class="math" src="../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/>
+ne peut pas être dérivable en ce point mais elle peut l’être ailleurs.
+Et pour être plus précis, une fonction dérivable en un point <img class="math" src="../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/>
+signifie, quand on y regarde de près, qu’elle n’est pas très loin de
+ressembler à une droite.</p>
+<a class="reference internal image-reference" href="../_images/fonctiond.png"><img alt="../_images/fonctiond.png" src="../_images/fonctiond.png" style="width: 300px;" /></a>
+<p>Et comme elle y ressemble fortement, on n’a pas besoin de la connaître
+très bien pour savoir si on monte ou on descend quand on va à gauche
+ou à droite. Il existe des fonctions <img class="math" src="../_images/math/bd1e0600a66dbe0f8deddbd57953774419ba4e4f.svg" alt="f"/> qui sont si compliquées
+à écrire que les connaître se révèle un défi. Quand elles sont dérivables,
+on peut les confondre localement à une droite qu’on sait le plus souvent
+calculer. C’est une information très précieuse quand on cherche à
+trouver le minimum. Sans hésiter, sur ce dessin, vous iriez à gauche,
+et tout ça grâce au fait que la fonction est dérivable.
+Mathématiquement, cela signifie que la fonction <img class="math" src="../_images/math/3a8d8bad8d0f9dcf76fdcc134f09a2a698f2d77f.svg" alt="g"/> admet une
+limite lorsque <img class="math" src="../_images/math/777afd6041e6d265ef21483c121300e1c7aa565a.svg" alt="h"/> tend vers 0.</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/3586fbf1ee0728d2cfb125d8103e0ef63f476868.svg" alt="g(x, h) = \frac{f(x+h) - f(x)}{h}"/></p>
+</div></div>
+</section>
+<section id="espace-vectoriel">
+<span id="index-3"></span><h3>Espace vectoriel<a class="headerlink" href="#espace-vectoriel" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Jusqu’à présent, <img class="math" src="../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> avait plutôt la tête d’un nombre
+et c’était pratique à dessiner mais notre poisson rouge était
+décrit par sa position, soit un couple <img class="math" src="../_images/math/53a3bf375aebc4ab1adef90edcb9e0cb765b966c.svg" alt="(x,y)"/>.
+Beaucoup de fonctions en machine learning s’écrivent
+<img class="math" src="../_images/math/fe2d2164e5916befdd1b95f3ca25ed6ba560adb0.svg" alt="f(X)"/> où <img class="math" src="../_images/math/626c2b834569a2c85d63386822b3f4b4cd7edaf3.svg" alt="X=(x_1, ..., x_n)"/> est un vecteur
+de <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> coordonnées. Ca ne change pas grand-chose sauf
+que c’est plus compliqué à dessiner voire impossible.
+Il faudra faire avec.</p>
+</section>
+<section id="produit-scalaire">
+<span id="index-4"></span><h3>Produit scalaire<a class="headerlink" href="#produit-scalaire" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Le produit scalaire est un
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Application_bilin%C3%A9aire">opérateur bilinéaire</a>,
+il est utilisé pour définir la norme d’un vecteur, il est relié aussi à
+l’angle qui les sépare.</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/e79b2e7fee7b91a1ebe6117b36dfad308d52d1c1.svg" alt="&lt;X,Y&gt; = \sum_{i=1}^n x_i y_i = \norm{X}\norm{Y} \cos(X,Y)"/></p>
+</div></div>
+</section>
+<section id="norme">
+<span id="index-5"></span><h3>Norme<a class="headerlink" href="#norme" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>La norme est pour simplifier une distance entre deux
+vecteurs. La distance euclidienne est nommé <em>norme L2</em> :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/66c58c5f1dc96c28bd2662192d4c506c584888ba.svg" alt="\norm{X}_2 = \sqrt{&lt;X,X&gt;}"/></p>
+</div></div>
+<p>La norme L1 utilise les valeurs absolues :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/482386e430832c6ed55e8cc3fdec76f5aba2f018.svg" alt="\norm{X}_1 = \sum_{i=1}^n \abs{x_i}"/></p>
+</div></div>
+<p>Ce sont les deux principales normes utilisées en
+<a class="reference external" href="https://en.wikipedia.org/wiki/Machine_learning">machine learning</a>.</p>
+</section>
+<section id="matrice">
+<span id="index-6"></span><h3>Matrice<a class="headerlink" href="#matrice" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Les <a class="reference external" href="https://fr.wikipedia.org/wiki/Matrice">matrices</a> sont
+incontournables. Ces simples tableaux de nombres viennent
+avec les opérations comme la multiplication, l’addition,
+la <a class="reference external" href="https://fr.wikipedia.org/wiki/Matrice_transpos%C3%A9e">transposée</a>…
+Elles simplifient beaoucoup l’écriture des calculs et interviennent
+dans tous les modèles linéaires.</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/7d89eee579ccf5e219b57e7af9bbbe0e33aad185.svg" alt="M = \pa{\begin{array}{ccc} m_{11} &amp; ... &amp; m_{1k} \\ ... &amp; ... &amp; ... \\ m_{l1} &amp; ... &amp; m_{kl} \end{array}}"/></p>
+</div></div>
+<p>Les notations mathématiques utilisent le plus souvent
+les minuscules pour représenter un nombre, les majuscules
+pour représenter un vecteur ou une matrice, les lettres grecques
+pour des nombres très petits utilisés comme intermédiaires de
+calcul.</p>
+</section>
+<section id="probleme-d-optimisation">
+<span id="index-7"></span><h3>Problème d’optimisation<a class="headerlink" href="#probleme-d-optimisation" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>C’est le vif du sujet. Le <a class="reference external" href="https://en.wikipedia.org/wiki/Machine_learning">machine learning</a> commence par
+exprimer de façon mathématique un problème à résoudre,
+et le plus souvent cette réflexion à un problème
+d’optimisation comme le suivant :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/e8c5e7ac8af65002c5f0199ab01589ccc9c63e1e.svg" alt="\min_W \frac{1}{n} \sum_{i=1}^n (f(W, X_i) - y_i)^2"/></p>
+</div></div>
+<p>Le problème se résoud avec une méthode à base de gradient
+lorsque la fonction <img class="math" src="../_images/math/bd1e0600a66dbe0f8deddbd57953774419ba4e4f.svg" alt="f"/> est dérivable comme la méthode
+de <a class="reference external" href="https://fr.wikipedia.org/wiki/M%C3%A9thode_de_Newton">Newton</a>,
+l’algorithme du <a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_du_gradient">gradient</a>.</p>
+<a class="reference internal image-reference" href="../_images/Gradient_descent.png"><img alt="../_images/Gradient_descent.png" src="../_images/Gradient_descent.png" style="width: 200px;" /></a>
+</section>
+<section id="variable-aleatoire">
+<h3>Variable aléatoire<a class="headerlink" href="#variable-aleatoire" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>C’est un concept qui permet de synthétiser une information,
+de saisir la variabilité d’une donnée en peu de termes.
+Un biologiste a mesuré la taille d’une centaine de poissons rouges,
+voici quelques exemples :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">10.2</span> <span class="mf">10.1</span> <span class="mf">9.9</span> <span class="mf">13.5</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Il raconte sa journée à son ami et se met en tête de réciter
+tous les nombres qu’il a observés. Voyant son ami qui s’endort,
+il finit par lui dire que la taille des poissons rouges est
+comprise entre 9.5 cm et 14.1 cm. Son ami paresseux lui retourne :
+« Donc si je prends un nombre au hasard entre ces deux extrémités,
+j’aurai une taille de poissons rouges. »</p>
+<p>C’est l’idée d’une
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Variable_al%C3%A9atoire">variable aléatoire</a>
+Cela résume la façon dont une chose peut varier. Un nombre aléatoire
+choisi dans un intervalle est appelé
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Loi_uniforme_continue">loi uniforme</a>.
+La loi la plus connue est la <a class="reference external" href="https://fr.wikipedia.org/wiki/Loi_normale">loi normale</a>
+qu’on connaît aussi sous la forme d’un chapeau.</p>
+<a class="reference internal image-reference" href="../_images/gauss.png"><img alt="../_images/gauss.png" src="../_images/gauss.png" style="width: 200px;" /></a>
+<p>Ce graphique représente une fonction <img class="math" src="../_images/math/0b4f4beda448620bb22665eb4665595c9220599d.svg" alt="f(x)"/> et celle-ci indique la probabilité
+de tirer un nombre égale à <img class="math" src="../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> selon une loi normale. Ce dessine nous dit
+que ce nombre aléatoire a plus de chance d’être petit que grand. On peut même dire
+que ce nombre aléatoire a 95% de chance d’être entre -2 et 2.</p>
+<a class="reference internal image-reference" href="../_images/gauss2.png"><img alt="../_images/gauss2.png" src="../_images/gauss2.png" style="width: 200px;" /></a>
+<p>Une variable aléatoire résume une dizaine, une centaine, un millier,
+une infinité de nombres fabriqués de la même manière, la taille d’une personne,
+la durée de vie d’une ampoule, l’efficacité d’un traitement médical…</p>
+</section>
+<section id="histogramme">
+<span id="index-8"></span><h3>Histogramme<a class="headerlink" href="#histogramme" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’histogramme est un graphique très utilisé pour se faire une idée
+d’une variable aléatoire. C’est humainement très difficile de comprendre
+une série de longue surtout si elle est très longue. Une idée consiste à
+compter le nombre de nombres qui sont tombés dans une dizaine d’intervalles
+définis à l’avance.</p>
+<a class="reference internal image-reference" href="../_images/hist.png"><img alt="../_images/hist.png" src="../_images/hist.png" style="width: 200px;" /></a>
+<p>C’est une vision plus fine de la taille de nos poissons rouges,
+plutôt que de déterminer une taille minimale et maximale,
+on donne une indication de ce qu’il se passe au milieu.</p>
+</section>
+<section id="correlation">
+<span id="index-9"></span><h3>Corrélation<a class="headerlink" href="#correlation" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Il est très facile de comparer deux nombres, surtout de dire s’ils sont
+loin de l’un de l’autre. Mais après avoir
+inventé les variables aléatoires, il fallait pouvoir dire la même chose
+de deux variables aléatoires et des milliers de nombres qu’elles représentent.
+On considère deux ensembles de nombres <img class="math" src="../_images/math/bfe5330a47312509984b1f7abf71fd221d3d8dc1.svg" alt="(X_1, ..., X_n)"/> et
+<img class="math" src="../_images/math/a6b948a2d228962d4ff2f6e89f8f64e735b100ea.svg" alt="(Y_1, ..., Y_n)"/> qui vont de pair, c’est-à-dire que
+<img class="math" src="../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> et <img class="math" src="../_images/math/e63ad1df0bd53729398b2396d31657f135c528dc.svg" alt="Y_i"/> sont liés, comme la taille du poisson rouge
+et son poids, leur deux vont ensemble. La corrélation mesure le fait que
+<img class="math" src="../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> et <img class="math" src="../_images/math/e63ad1df0bd53729398b2396d31657f135c528dc.svg" alt="Y_i"/> varient dans le même sens. Si <img class="math" src="../_images/math/c15b262677ad7177c2e37298a2eb382d712b3a52.svg" alt="X_i"/> est grand,
+alors <img class="math" src="../_images/math/e63ad1df0bd53729398b2396d31657f135c528dc.svg" alt="Y_i"/> est grand, si <img class="math" src="../_images/math/e63ad1df0bd53729398b2396d31657f135c528dc.svg" alt="Y_i"/> est petit alors <img class="math" src="../_images/math/e63ad1df0bd53729398b2396d31657f135c528dc.svg" alt="Y_i"/> est petit.
+On dit alors que les variables aléatoires <img class="math" src="../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> et <img class="math" src="../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/>
+qui résument les deux ensembles de points sont corrélées.
+Il y a plusieurs façons de mesurer la corrélation mais le plus connu
+est la <a class="reference external" href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">corrélation de Pearson</a> :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/1efa3068b6c24ddd893848d52ad3f216ca446a3b.svg" alt="\begin{array}{rcl} \bar{X} &amp;=&amp; \frac{1}{n} \sum_{i=1}^n X_i \\ \bar{Y} &amp;=&amp; \frac{1}{n} \sum_{i=1}^n Y_i \\
+cor(X,Y) &amp;=&amp; \frac{ \sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{  \sqrt{\pa{\sum_{i=1}^n X_i - \bar{X}} \pa{\sum_{i=1}^n Y_i - \bar{Y}} }}
+\end{array}"/></p>
+</div></div>
+<p>Une autre très connue est la corrélation de
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Corr%C3%A9lation_de_Spearman">Spearman</a>
+est est définie comme la corrélation des rangs des variables <em>X</em>, <em>Y</em>.
+On convertit la séquence <img class="math" src="../_images/math/1694ea2dd2b8ef2b567244ec4cf39e7192b1b7c7.svg" alt="(X_i, Y_i)"/> en <img class="math" src="../_images/math/27738be20a1ba0b5d2f202fdbc38e67a8f83a35a.svg" alt="rg_X(i), rg_Y(i)"/>
+qui vérifie <img class="math" src="../_images/math/271ee1f4538aba13c52124d98df00455d23b4b37.svg" alt="X_{rg_X(1)} \leqslant X_{rg_X(2)} \leqslant ..."/> et
+<img class="math" src="../_images/math/066b85e506f5b5e3686d694c50997f5405cc9f74.svg" alt="Y_{rg_Y(1)} \leqslant Y_{rg_Y(2)} \leqslant ..."/> Les deux suites
+<img class="math" src="../_images/math/9fb3a42ec15ba92b7ea7dc31507d31faa203e875.svg" alt="(X_{rg_X(i)})"/> et <img class="math" src="../_images/math/ff386f37dec005a997a8900e560d9a6b0b2cd8de.svg" alt="(Y_{rg_Y(i)})"/> sont triées. La corrélation
+de <em>Spearman</em> est définie comme :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../_images/math/f1d8fb94aabd82b4c0d4c1d13e80774db83344dd.svg" alt="\rho(X,Y) = cor(rg_X, rg_Y)"/></p>
+</div></div>
+<p>Cette corrélation est moins sensibles aux valeurs extrêmes puisqu’elle
+s’intéresse à l’ordre des valeurs et non aux valeurs elles-mêmes.</p>
+</section>
+<section id="nuage-de-points">
+<h3>Nuage de points<a class="headerlink" href="#nuage-de-points" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>C’est la traduction visuel de la corrélation. On dessine
+plutôt que de calculer un indicateur de la proximité de deux variables.
+On ne dessine jamais assez. Voici le
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Nuage_de_points_(statistique)">nuage de points</a>.</p>
+<a class="reference internal image-reference" href="../_images/nuage.png"><img alt="../_images/nuage.png" src="../_images/nuage.png" style="width: 200px;" /></a>
+<p>En dessinant chaque point du nuage, on observe que ceux-ci s’agence
+selon une droite. Elle n’est pas parfaite mais elle décrit
+assez bien ce qu’on observe. Les variables sont clairement liées
+et donc corrélées.</p>
+</section>
+</section>
+<section id="rappels-informatiques">
+<h2>Rappels informatiques<a class="headerlink" href="#rappels-informatiques" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Il vaut mieux savoir programmer avant de lire la suite
+à moins de n’être intéressé que par les concepts sans
+avoir la volonté de pratiquer. Tous les exemples sont
+proposés en langage <a class="reference external" href="https://www.python.org/">Python</a>.
+Vous devriez comprendre les gammes proposées par
+<a class="reference internal" href="../practice/py-base/structures_donnees_conversion.html#nbl-practice-py-base-structures-donnees-conversion"><span class="std std-ref">Structures de données</span></a>,
+et savoir choisir quel objet est le plus approprié :
+<a class="reference internal" href="../practice/py-base/code_liste_tuple.html#nbl-practice-py-base-code-liste-tuple"><span class="std std-ref">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</span></a>.
+La programmation a pris beaucoup d’ampleur aujourd’hui.
+Il faut imaginer que les mathématiciens ont fait tous leur calculs
+sans machine jusqu’à la seconde guerre mondiale alors qu’il est
+très simple maintenant de vérifier une intuition mathématique
+en créant un programme qui la vérifie. Si ça ne marche, il est clair
+que le théorème est faux, si l’ordinateur dit que cela marche,
+c’est une bonne indication que le théorème peut être démontré.
+Une fois qu’il l’est, il peut être appliqué à l’infini sur quantité de
+problèmes.</p>
+<section id="le-fichier-csv">
+<h3>Le fichier csv<a class="headerlink" href="#le-fichier-csv" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>C’est un format de fichier qui structure l’information de telle sorte
+qu’il est très facile de la reconstruire. Nous aimons les tableaux,
+simples à visualiser, simples à manipuler. L’ordinateur ne connaît pas
+grand chose et tout se résume peu ou prou à une séquence de caractères.
+Le format <a class="reference external" href="https://fr.wikipedia.org/wiki/Comma-separated_values">csv</a>
+est une convention pour retrouver l’information qui était à telle ligne
+et telle colonne. Un caractère indique qu’on passe à la colonne suivante,
+le plus souvent <code class="docutils literal notranslate"><span class="pre">,</span></code>, un autre indique qu’on passe à la ligne suivante
+<code class="docutils literal notranslate"><span class="pre">\n</span></code>.</p>
+</section>
+<section id="dataframe">
+<span id="index-10"></span><h3>DataFrame<a class="headerlink" href="#dataframe" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>La traduction est littéralement <em>tableau de données</em>,
+il a un nombre fixé de colonnes et de lignes.
+On suppose en plus que chaque colonne contient le même
+type d’information, nombre ou texte le plus souvent.
+Le module <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/">pandas</a> a considérablement
+facilité leur utilisation en <a class="reference external" href="https://www.python.org/">Python</a>.
+Pour vous exercez
+<a class="reference internal" href="../c_data/nb_pandas.html#nbl-c-data-nb-pandas"><span class="std std-ref">DataFrame et Graphes</span></a>.</p>
+</section>
+<section id="array">
+<span id="index-11"></span><h3>Array<a class="headerlink" href="#array" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>C’est la représentation informatique d’une matrice
+et des opérations qui lui sont associées.
+Pour vous exercez :
+<a class="reference internal" href="../c_data/nb_array.html#nbl-c-data-nb-array"><span class="std std-ref">Calcul Matriciel, Optimisation</span></a>.</p>
+</section>
+<section id="fonction-de-hash">
+<span id="index-12"></span><h3>Fonction de hash<a class="headerlink" href="#fonction-de-hash" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Les <a class="reference external" href="https://fr.wikipedia.org/wiki/Fonction_de_hachage">fonctions de hashing</a>
+sont principalement dans deux cas. La fonction crypte les informations, il est impossible
+de retrouver la donnée originale à moins d’essayer toutes les possibilités. Elle ne crypte
+pas nécessairement de façon unique d’ailleurs puisque deux données peuvent être identiques
+une fois <em>hashées</em>. Cette fonction est aussi une façon d’uniformiser une distribution.
+Cette propriété est utilisée pour optimiser le coût de nombreux algorithmes. Elle
+garantit la construction d’arbres équilibrés et améliore la répartition des calculs.
+Pour en savoir plus à ce sujet :
+<a class="reference external" href="https://sdpython.github.io/doc/teachcompute/dev/practice/expose/hash_distribution.html">Hash et distribution</a>.</p>
+</section>
+<section id="arbre">
+<span id="index-13"></span><h3>Arbre<a class="headerlink" href="#arbre" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Les <a class="reference external" href="https://fr.wikipedia.org/wiki/Arbre_(th%C3%A9orie_des_graphes)">arbres</a>
+ou graphes sont des structures de données très utilisées en <a class="reference external" href="https://en.wikipedia.org/wiki/Machine_learning">machine learning</a>.
+Le modèle le plus connu est l”<a class="reference external" href="https://fr.wikipedia.org/wiki/Arbre_de_d%C3%A9cision">arbre de décision</a>.
+Les deux examens suivant illustrent en quoi les arbres de décision
+sont intéressants :
+<a class="reference external" href="https://sdpython.github.io/doc/teachpyx/dev/practice/exams.html#seances-notees">ENSAE TD noté, mardi 12 décembre 2017</a>.
+Les exercices suivant vous montre un cas concret d’utilisation :
+<a class="reference internal" href="../practice/tds-base/trie.html#nbl-practice-tds-base-trie"><span class="std std-ref">Arbre et Trie</span></a>.</p>
+</section>
+</section>
+<section id="rappels-algorithmiques">
+<h2>Rappels algorithmiques<a class="headerlink" href="#rappels-algorithmiques" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>C’est un domaine que l’école française a trop longtemps laissé
+de côté et une connaissance incontournable pour qui
+veut écrire un programme efficace. C’est un enseignement qui est
+dispensé au lycée dans les pays de l’Est, souvent après 20 ans
+et pas dans toutes les écoles en France.
+Pour avoir un aperçu de tout ce que vous avez raté :
+<a class="reference internal" href="../algorithm_culture.html#l-survol-algorithmique"><span class="std std-ref">Culture Algorithmique</span></a>.
+En accéléré, très accéléré, il faut absolument connaître l’algorithme
+du <a class="reference external" href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_de_plus_court_chemin">plus court chemin</a>,
+celui du <a class="reference external" href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce">voyageur de commerce</a>
+et la <a class="reference external" href="https://fr.wikipedia.org/wiki/Recherche_dichotomique">recherche dichotomique</a>.
+Le premier a un <a class="reference external" href="https://fr.wikipedia.org/wiki/Analyse_de_la_complexit%C3%A9_des_algorithmes">coût algorithmique</a>
+en <img class="math" src="../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/>, le coût suivant est exponentiel, le dernier est en <img class="math" src="../_images/math/06d30cbc6bc6bfa537fdc86e28128bbdf13a584c.svg" alt="O(\ln n)"/>.
+<img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> est en quelque sorte la taille du problème, le nombre d’informations auxquelles
+l’algorithme s’applique. Il indique que le temps passé va quadrupler
+si la quantité d’information double. <em>x2</em> d’un côté, <em>x4</em> de l’autre.
+Ces trois algorithmes donnent trois exemples de temps différents,
+temps quadratique pour la recherche du plus court chemin,
+temps exponentiel et quasiment infini pour le voyageur
+du commerce, temps logarithmique pour la recherche  dichotomique.
+Pour vous exercer : <a class="reference internal" href="../practice/index_algo.html#l-algo"><span class="std std-ref">Algorithmes</span></a>.</p>
+<section id="le-plus-court-chemin-dans-un-graphe">
+<span id="index-14"></span><h3>Le plus court chemin dans un graphe<a class="headerlink" href="#le-plus-court-chemin-dans-un-graphe" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Il existe plusieurs versions de cet algorithme sans pour autant
+changer l’idée principale. Le plus connu est sans doute
+la version de <a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_de_Dijkstra">Dijkstra</a>.
+On retrouve la même idée lorsqu’il s’agit de déterminer la séquence
+d’états la plus probable dans une
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Cha%C3%AEne_de_Markov">chaîne de Markov</a> avec
+l”<a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_de_Viterbi">algorithme de Viterbi</a>
+On le retrouve également dans la distance d’édition ou de
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Distance_de_Levenshtein">Levenstein</a>.
+Quelques exerices pour vous exercer :
+<a class="reference internal" href="../practice/tds-algo/plus_court_chemin.html#nbl-practice-tds-algo-plus-court-chemin"><span class="std std-ref">Programmation dynamique et plus court chemin</span></a>,
+<a class="reference internal" href="../practice/algo-base/exercice_edit_distance.html#nbl-practice-algo-base-exercice-edit-distance"><span class="std std-ref">La distance d’édition</span></a>.
+La page suivante <a class="reference external" href="https://sdpython.github.io/doc/mlstatpy/dev/c_algo/edit_distance.html">Distance d’édition</a>
+se propose d’aller un peu plus loin.</p>
+</section>
+<section id="la-recherche-dichotomique">
+<span id="index-15"></span><h3>La recherche dichotomique<a class="headerlink" href="#la-recherche-dichotomique" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>C’est en général le premier qu’on apprend dans un court d’algorithmie.
+Il consiste à optimiser la recherche d’un élément dans un tableau trié.
+La <a class="reference external" href="https://fr.wikipedia.org/wiki/Recherche_dichotomique">recherche dichotomique</a>
+est une des petites choses qu’on teste lors d’un entretien d’embauche.
+Quelques exercices pour vous exercer :
+<a class="reference internal" href="../practice/py-base/recherche_dichotomique.html#nbl-practice-py-base-recherche-dichotomique"><span class="std std-ref">Recherche dichotomique</span></a>.
+La recherche dichotomique en plusieurs dimensions
+est utilisée via des structures telles que
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Arbre_kd">k-d tree</a>.
+Ce besoin intervient dès qu’il faut accélérer la recherche des voisins
+d’un point <img class="math" src="../_images/math/b66c7d6c52c7b12bee7fb24d76c38fc70cfc0a2f.svg" alt="X"/> dans un espace vectoriel de dimension <img class="math" src="../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/>
+(<img class="math" src="../_images/math/74dde314b5e2ddef6a182dc3287464620ace44dd.svg" alt="\R^d"/>).</p>
+</section>
+<section id="le-voyageur-du-commerce">
+<span id="index-16"></span><h3>Le voyageur du commerce<a class="headerlink" href="#le-voyageur-du-commerce" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Le problème du <a class="reference external" href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce">voyageur de commerce</a>
+consiste à parcourir une série de villes le plus rapidement possibles.
+C’est un des problèmes qu’on cite en premier pour illustrer
+les problèmes <a class="reference external" href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_NP-complet">NP-complet</a> :
+la solution de ceux-ci ne peut pas être trouvé avec un algorithme
+au coût polynômial. Il n’y a pas d’autres options que de tester toutes les
+permutations des villes pour déterminer le chemin le plus court.
+Et comme c’est rapidement très long, il faut rapidement proposer une solution approchée.
+La dénomination anglaise est parfois plus connue :
+<a class="reference external" href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">Travelling Salesman Problem (TSP)</a>.</p>
+</section>
+</section>
+<section id="modules-incourtournables-en-python">
+<h2>Modules incourtournables en Python<a class="headerlink" href="#modules-incourtournables-en-python" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Le langage <a class="reference external" href="https://www.python.org/">Python</a> est le langage le plus utilisé depuis
+quelques après que le modules qui suivent sont devenus matures.</p>
+<section id="numpy">
+<span id="index-17"></span><h3>numpy<a class="headerlink" href="#numpy" title="Lien permanent vers cette rubrique">#</a></h3>
+<p><a class="reference external" href="https://www.numpy.org/">numpy</a> gère tout ce qui est calcul matriciel.
+Le langage <a class="reference external" href="https://www.python.org/">Python</a> est un des langages les plus lents
+qui soient. Tous les calculs rapides ne sont pas écrits
+en <a class="reference external" href="https://www.python.org/">Python</a> mais en <a class="reference external" href="https://fr.wikipedia.org/wiki/C%2B%2B">C++</a>, voire <a class="reference external" href="https://en.wikipedia.org/wiki/Fortran">fortran</a>.
+C’est le cas du module <a class="reference external" href="https://www.numpy.org/">numpy</a>, il est incontournable dès
+qu’on veut être rapide.
+Le module <a class="reference external" href="https://scipy.org/">scipy</a> est une extension où l’on peut trouver
+des fonctions statistiques, d’optimisation.</p>
+</section>
+<section id="pandas">
+<span id="index-18"></span><h3>pandas<a class="headerlink" href="#pandas" title="Lien permanent vers cette rubrique">#</a></h3>
+<p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/">pandas</a> est incontournable dès qu’on veut manipuler des données.
+Il gère la plupart des formats de données. Il est lui aussi implémenté
+en <a class="reference external" href="https://fr.wikipedia.org/wiki/C%2B%2B">C++</a>. Il est rapide mais pas tant que ça, il utilise en règle
+générale trois fois plus d’espace en mémoire que les données n’en
+prennent sur le disque.</p>
+</section>
+<section id="matplotlib">
+<span id="index-19"></span><h3>matplotlib<a class="headerlink" href="#matplotlib" title="Lien permanent vers cette rubrique">#</a></h3>
+<p><a class="reference external" href="https://matplotlib.org/">matplotlib</a> s’occupe de tout ce qui est graphique.
+Il faut également connaître <a class="reference external" href="https://seaborn.pydata.org/">seaborn</a> qui propose
+des graphiques étudiés pour un usage statistique.</p>
+</section>
+<section id="scikit-learn">
+<span id="index-20"></span><h3>scikit-learn<a class="headerlink" href="#scikit-learn" title="Lien permanent vers cette rubrique">#</a></h3>
+<p><a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a> est le module le plus populaire
+pour deux raisons. Son design a été pensé pour être simple
+avec deux méthodes <em>fit</em> et <em>predict</em> pour apprendre
+et prédire. Sa documentation est un modèle à suivre.</p>
+</section>
+<section id="statsmodels">
+<span id="index-21"></span><h3>statsmodels<a class="headerlink" href="#statsmodels" title="Lien permanent vers cette rubrique">#</a></h3>
+<p><a class="reference external" href="http://www.statsmodels.org/stable/index.html">statsmodels</a> plaira plus aux statisticiens,
+il implémente des modèles similaires à <a class="reference external" href="https://scikit-learn.org/stable/index.html">scikit-learn</a>,
+il est meilleur pour tout ce qui est linéaire avec
+une présentation des résultats très proche de ce qu’on trouve
+en <a class="reference external" href="https://www.r-project.org/">R</a>.</p>
+</section>
+</section>
+<section id="dessiner-des-cartes">
+<h2>Dessiner des cartes<a class="headerlink" href="#dessiner-des-cartes" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Voir <a class="reference internal" href="../c_data/enedis_cartes.html#nbl-c-data-enedis-cartes"><span class="std std-ref">Tracer une carte</span></a>.</p>
+</section>
+<section id="exercices">
+<h2>Exercices<a class="headerlink" href="#exercices" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Si tous ces rappels vous sont connus, vous devriez être prêt
+à résoudre quelques exercices et énigmes :</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../practice/tds-base/pyramide_bigarree.html#nbl-practice-tds-base-pyramide-bigarree"><span class="std std-ref">Tracer une pyramide bigarrée</span></a></p></li>
+<li><p><a class="reference internal" href="../practice/py-base/classes_2048.html#nbl-practice-py-base-classes-2048"><span class="std std-ref">2048 - stratégie gagnante</span></a></p></li>
+<li><p><a class="reference internal" href="../practice/tds-algo/plus_court_chemin.html#nbl-practice-tds-algo-plus-court-chemin"><span class="std std-ref">Programmation dynamique et plus court chemin</span></a></p></li>
+<li><p><a class="reference internal" href="../practice/tds-base/trie.html#nbl-practice-tds-base-trie"><span class="std std-ref">Arbre et Trie</span></a></p></li>
+<li><p><a class="reference internal" href="../practice/tds-algo/graph_spectral_clustering.html#nbl-practice-tds-algo-graph-spectral-clustering"><span class="std std-ref">Spectral Clustering</span></a></p></li>
+<li><p><a class="reference internal" href="../practice/tds-algo/decorrelation.html#nbl-practice-tds-algo-decorrelation"><span class="std std-ref">Décorrélation de variables aléatoires</span></a></p></li>
+</ul>
+<p>Un dernier lien vers des exercices dont les questions sont plus détaillées et
+corrigées <a class="reference internal" href="../practice/exams.html#l-examens-notes"><span class="std std-ref">Séances notées</span></a>.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../c_resume/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Précis</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Machine Learning</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Quelques rappels</a><ul>
+<li><a class="reference internal" href="#rappels-mathematiques">Rappels mathématiques</a><ul>
+<li><a class="reference internal" href="#fonction">Fonction</a></li>
+<li><a class="reference internal" href="#fonction-continue">Fonction continue</a></li>
+<li><a class="reference internal" href="#fonction-derivable">Fonction dérivable</a></li>
+<li><a class="reference internal" href="#espace-vectoriel">Espace vectoriel</a></li>
+<li><a class="reference internal" href="#produit-scalaire">Produit scalaire</a></li>
+<li><a class="reference internal" href="#norme">Norme</a></li>
+<li><a class="reference internal" href="#matrice">Matrice</a></li>
+<li><a class="reference internal" href="#probleme-d-optimisation">Problème d’optimisation</a></li>
+<li><a class="reference internal" href="#variable-aleatoire">Variable aléatoire</a></li>
+<li><a class="reference internal" href="#histogramme">Histogramme</a></li>
+<li><a class="reference internal" href="#correlation">Corrélation</a></li>
+<li><a class="reference internal" href="#nuage-de-points">Nuage de points</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rappels-informatiques">Rappels informatiques</a><ul>
+<li><a class="reference internal" href="#le-fichier-csv">Le fichier csv</a></li>
+<li><a class="reference internal" href="#dataframe">DataFrame</a></li>
+<li><a class="reference internal" href="#array">Array</a></li>
+<li><a class="reference internal" href="#fonction-de-hash">Fonction de hash</a></li>
+<li><a class="reference internal" href="#arbre">Arbre</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rappels-algorithmiques">Rappels algorithmiques</a><ul>
+<li><a class="reference internal" href="#le-plus-court-chemin-dans-un-graphe">Le plus court chemin dans un graphe</a></li>
+<li><a class="reference internal" href="#la-recherche-dichotomique">La recherche dichotomique</a></li>
+<li><a class="reference internal" href="#le-voyageur-du-commerce">Le voyageur du commerce</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modules-incourtournables-en-python">Modules incourtournables en Python</a><ul>
+<li><a class="reference internal" href="#numpy">numpy</a></li>
+<li><a class="reference internal" href="#pandas">pandas</a></li>
+<li><a class="reference internal" href="#matplotlib">matplotlib</a></li>
+<li><a class="reference internal" href="#scikit-learn">scikit-learn</a></li>
+<li><a class="reference internal" href="#statsmodels">statsmodels</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dessiner-des-cartes">Dessiner des cartes</a></li>
+<li><a class="reference internal" href="#exercices">Exercices</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=9db00da4"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

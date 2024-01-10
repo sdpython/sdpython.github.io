@@ -1,0 +1,1277 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Séances minutées" href="../index_exam.html" /><link rel="prev" title="Décorrélation de variables aléatoires - correction" href="decorrelation_correction.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+        <title>Spectral Clustering - correction - Documentation teachpyx 0.4.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Documentation teachpyx 0.4.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.4.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_regex/index.html">Expressions régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expressions régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_data/index.html">Matrices et DataFrames</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_numpy.html">Calcul matriciel avec numpy (exercices)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/numpy_broadcast.html">Numpy et tableau de contingence</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/dataframes.html">Dataframes</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/nb_pandas.html">Manipulation de données avec pandas (exercices)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_data/graphes.html">Graphes</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Graphes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_data/enedis_cartes.html">Tracer une carte en Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_ml/index.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_ml/rappel.html">Quelques rappels</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../c_resume/cheat_sheet.html">Cheat Sheets</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Cheat Sheets</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../c_resume/git.html">Cheat Sheet on Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_resume/linux.html">Cheat Sheet on Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../c_resume/jenkins.html">Cheat Sheet on Jenkins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-11-31-route2023.html">2023-11-31 : rappel feuille de route 2023</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-09-06-ensae.html">2023-09-06 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2022-11-31-route2022.html">2022-11-31 : rappel feuille de route 2022</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2022-01-01-assurance.html">Assurance auto</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_python.html">Exercices sur le langage python</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Exercices sur le langage python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_hash.html">Répartition, table de hashage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/classes_metro.html">Un bref aperçu des classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/classes_2048.html">2048 et les classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/classe_de.html">Jeu de dé, rotation sur un circuit (classes)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/classe_permutation.html">Classe Permutation et décomposition en transitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/classe_tree.html">Une classe pour représenter un arbre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/classe_iterateur.html">Itérateur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/classe_user_p.html">Classe, Héritage, calcule d’une distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/profile_gini.html">Profiling la fonction Gini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_conv.html">Profiling, application à la convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_regex.html">Expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_json_xml.html">JSON - XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_serialisation_json.html">Sérialisation avec JSON, XML, pickle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/tests_unitaires.html">Tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/scrapping.html">Web-Scraping - pokemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/premiers_pas.html">Premiers pas en Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/variable_boucle_tests.html">Variables, boucles, tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/dictionnaire_vigenere.html">Dictionnaires, fonctions, code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/module_file_regex.html">Modules, fichiers, expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/integrale_rectangle.html">Intégrale et la méthode des rectangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/j2048.html">2048 - stratégie gagnante</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/texte_langue.html">Deviner la langue d’un texte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/pyramide_bigarree.html">Tracer une pyramide bigarrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_carre_magique.html">Classes, méthodes, attributs, opérateurs et carré magique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_heritage.html">Classes, héritage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/trie.html">Arbre et Trie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/premiers_pas_correction.html">Premiers pas en Python (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/variable_boucle_tests_correction.html">Variables, boucles, tests (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/dictionnaire_vigenere_correction.html">Dictionnaires, fonctions, code de Vigenère (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/module_file_regex_correction.html">Modules, fichiers, expressions régulières (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/integrale_rectangle_correction.html">Intégrale et la méthode des rectangles - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/j2048_correction.html">2048 - stratégie gagnante - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/texte_langue_correction.html">Deviner la langue d’un texte (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/pyramide_bigarree_correction.html">Tracer une pyramide bigarrée - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_carre_magique_correction.html">Classes, méthodes, attributs, opérateurs et carré magique (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/classes_heritage_correction.html">Classes, héritage (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tds-base/trie_correction.html">Arbre et Trie (correction)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index_algo.html">Algorithmes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Algorithmes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/matrix_dictionary.html">Produit matriciel avec une matrice creuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_topk.html">Les k premiers éléments (top k)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_suffix.html">Jeux de dictionnaires, plus grand suffixe commun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_editdist.html">Distance entre deux mots de même longueur et tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_edit_distance.html">Distance d’édition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_ordonnancement.html">Problème d’ordonnancement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_tsp.html">TSP - Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/tsp_simplifie.html">Plus court chemin passant par tous les noeuds d’un graphe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/tsp_aparte.html">Aparté sur le voyageur de commerce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_compose_connexe.html">Graphe et Composantes connexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_random_graph.html">Graphes aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid_simple.html">Modèle épidémiologique (SIRD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gentry_integer_encryption.html">Cryptage homomorphic de Craig Gentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn_high_dimension.html">Plus proches voisins en grande dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="puzzle_algo_1.html">Puzzles algorithmiques (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="puzzle_algo_2.html">Puzzles algorithmiques (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plus_court_chemin.html">Programmation dynamique et plus court chemin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decorrelation.html">Décorrélation de variables aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_spectral_clustering.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gentry_integer_encryption_correction.html">Cryptage homomorphic de Craig Gentry - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn_high_dimension_correction.html">Plus proches voisins en grande dimension - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="puzzle_algo_1_correction.html">Puzzles algorithmes (1) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="puzzle_algo_2_correction.html">Puzzles algorithmes (2) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plus_court_chemin_correction.html">Programmation dynamique et plus court chemin (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decorrelation_correction.html">Décorrélation de variables aléatoires - correction</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Spectral Clustering - correction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_exam.html">Séances minutées</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Séances minutées</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/td_note_2023-2024.html">1A - Enoncé 8 novembre 2023-2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_data.html">Numpy / Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Numpy / Pandas</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_ml.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/winesr_reg.html">Prédiction de la note des vins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/winesc_color.html">Régression logistique et courbe ROC</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../years/index.html">Notebooks écrits durant les séances</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of Notebooks écrits durant les séances</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../years/2023/index.html">2023</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of 2023</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../years/2023/editdist.html">Distance d’édition (4 octobre)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../years/2023/pivot_gauss.html">Pivot de Gauss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../years/2023/prefix_search.html">Recherche de préfixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../years/2023/bareme_note_optimisation.html">Optimiser la note moyenne</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../c_expose/index.html">Exposés</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Exposés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../c_expose/finance/finance_autostrat.html">Stratégie automatique de trading en finance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_expose/tsp/tsp_kohonen.html">Circuit hamiltonien et Kohonen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c_expose/tsp/tsp_kruskal.html">Circuit hamiltonien et Kruskal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../i_index.html">En diagonal</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of En diagonal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebook_gallery.html">Tous les notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/index.html#gallerie-d-exemples-sur-le-machine-learning">Gallerie d’exemples sur le machine learning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html#gallerie-d-exemples-sur-la-programmation">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../auto_examples/ml/index.html">Gallerie d’exemples sur le machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur le machine learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../auto_examples/prog/index.html">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/index.html">Code inclus dans cette librairie</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Code inclus dans cette librairie</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/classique.html">examples.construction_classique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets.html">Jeux de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/tools.html">tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/practice/tsp_kruskal.html">teachpyx.practice.tsp_kruskal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/video/tsp_kohonen.html">teachpyx.video.tsp_kohonen_pygame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/video/tsp_kruskal.html">teachpyx.video.tsp_kruskal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/numpysex.html">examples.numpysex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/faqs.html">faq</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="Spectral-Clustering---correction">
+<h1>Spectral Clustering - correction<a class="headerlink" href="#Spectral-Clustering---correction" title="Lien permanent vers cette rubrique">#</a></h1>
+<p>On veut couper un graphe en deux en coupant le moindre d’arcs possible. C’est un algorithme de <a class="reference external" href="https://en.wikipedia.org/wiki/Cluster_analysis">clustering</a>. Correction du notebook qui contient l’énoncé.</p>
+<section id="Un-graphe">
+<h2>Un graphe<a class="headerlink" href="#Un-graphe" title="Lien permanent vers cette rubrique">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tutoriel_graphe</span>
+<span class="n">noeuds</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;le&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;silences&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;quelques&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\xe9</span><span class="s2">crit&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;non-dits.&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Et&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;risque&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\xe0</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;qu&#39;elle,&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;parfois&quot;</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;aim</span><span class="se">\xe9</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;lorsque&quot;</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="s2">&quot;que&quot;</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="s2">&quot;plus&quot;</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="s2">&quot;les&quot;</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="s2">&quot;Minelli,&quot;</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="s2">&quot;n&#39;oublierai&quot;</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="s2">&quot;je&quot;</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="s2">&quot;prises&quot;</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="s2">&quot;sa&quot;</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="s2">&quot;la&quot;</span><span class="p">,</span>
+    <span class="mi">21</span><span class="p">:</span> <span class="s2">&quot;jeune,&quot;</span><span class="p">,</span>
+    <span class="mi">22</span><span class="p">:</span> <span class="s2">&quot;qu&#39;elle,&quot;</span><span class="p">,</span>
+    <span class="mi">23</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\xe0</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">24</span><span class="p">:</span> <span class="s2">&quot;ont&quot;</span><span class="p">,</span>
+    <span class="mi">25</span><span class="p">:</span> <span class="s2">&quot;j&#39;ai&quot;</span><span class="p">,</span>
+    <span class="mi">26</span><span class="p">:</span> <span class="s2">&quot;chemin&quot;</span><span class="p">,</span>
+    <span class="mi">27</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\xe9</span><span class="s2">tranger&quot;</span><span class="p">,</span>
+    <span class="mi">28</span><span class="p">:</span> <span class="s2">&quot;lente&quot;</span><span class="p">,</span>
+    <span class="mi">29</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="mi">30</span><span class="p">:</span> <span class="s2">&quot;voir&quot;</span><span class="p">,</span>
+    <span class="mi">31</span><span class="p">:</span> <span class="s2">&quot;quand&quot;</span><span class="p">,</span>
+    <span class="mi">32</span><span class="p">:</span> <span class="s2">&quot;la&quot;</span><span class="p">,</span>
+    <span class="mi">33</span><span class="p">:</span> <span class="s2">&quot;recul,&quot;</span><span class="p">,</span>
+    <span class="mi">34</span><span class="p">:</span> <span class="s2">&quot;de&quot;</span><span class="p">,</span>
+    <span class="mi">35</span><span class="p">:</span> <span class="s2">&quot;trop&quot;</span><span class="p">,</span>
+    <span class="mi">36</span><span class="p">:</span> <span class="s2">&quot;ce&quot;</span><span class="p">,</span>
+    <span class="mi">37</span><span class="p">:</span> <span class="s2">&quot;Je&quot;</span><span class="p">,</span>
+    <span class="mi">38</span><span class="p">:</span> <span class="s2">&quot;Il&quot;</span><span class="p">,</span>
+    <span class="mi">39</span><span class="p">:</span> <span class="s2">&quot;l&#39;extr</span><span class="se">\xea</span><span class="s2">me&quot;</span><span class="p">,</span>
+    <span class="mi">40</span><span class="p">:</span> <span class="s2">&quot;J&#39;ai&quot;</span><span class="p">,</span>
+    <span class="mi">41</span><span class="p">:</span> <span class="s2">&quot;silences,&quot;</span><span class="p">,</span>
+    <span class="mi">42</span><span class="p">:</span> <span class="s2">&quot;qu&#39;elle,&quot;</span><span class="p">,</span>
+    <span class="mi">43</span><span class="p">:</span> <span class="s2">&quot;le&quot;</span><span class="p">,</span>
+    <span class="mi">44</span><span class="p">:</span> <span class="s2">&quot;trace,&quot;</span><span class="p">,</span>
+    <span class="mi">45</span><span class="p">:</span> <span class="s2">&quot;avec&quot;</span><span class="p">,</span>
+    <span class="mi">46</span><span class="p">:</span> <span class="s2">&quot;seras&quot;</span><span class="p">,</span>
+    <span class="mi">47</span><span class="p">:</span> <span class="s2">&quot;dire,&quot;</span><span class="p">,</span>
+    <span class="mi">48</span><span class="p">:</span> <span class="s2">&quot;femme&quot;</span><span class="p">,</span>
+    <span class="mi">49</span><span class="p">:</span> <span class="s2">&quot;soit&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">arcs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">46</span><span class="p">,</span> <span class="mi">47</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">33</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">45</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">26</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mi">28</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">43</span><span class="p">,</span> <span class="mi">29</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">41</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">44</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">37</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">19</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">46</span><span class="p">,</span> <span class="mi">34</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">19</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">49</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">48</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">32</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">39</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">26</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="mi">45</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">47</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">31</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">47</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">21</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">16</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="mi">35</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">49</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">49</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">23</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">45</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="mi">32</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">41</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">24</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">14</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">47</span><span class="p">,</span> <span class="mi">36</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">39</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">43</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">14</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">17</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">44</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="mi">38</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">18</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">33</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">48</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mi">48</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mi">38</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">teachpyx.tools.graphviz_helper</span> <span class="kn">import</span> <span class="n">draw_graph_graphviz</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">draw_graph_graphviz</span><span class="p">(</span><span class="n">noeuds</span><span class="p">,</span> <span class="n">arcs</span><span class="p">,</span> <span class="s2">&quot;image.png&quot;</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="s2">&quot;image.png&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_tds-algo_graph_spectral_clustering_correction_3_0.png" class="no-scaled-link" src="../../_images/practice_tds-algo_graph_spectral_clustering_correction_3_0.png" style="width: 400px;" />
+</div>
+</div>
+</section>
+<section id="Partie-1-:-clustering-en-pratique">
+<h2>Partie 1 : clustering en pratique<a class="headerlink" href="#Partie-1-:-clustering-en-pratique" title="Lien permanent vers cette rubrique">#</a></h2>
+<section id="Q1">
+<h3>Q1<a class="headerlink" href="#Q1" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>L’algorithme <a class="reference external" href="https://fr.wikipedia.org/wiki/Arbre_couvrant_de_poids_minimal">Minimum Spanning Tree</a> supprime le plus d’arcs possible tout en gardant une seule composante connexe.</p>
+</section>
+<section id="Q2">
+<h3>Q2<a class="headerlink" href="#Q2" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Q3">
+<h3>Q3<a class="headerlink" href="#Q3" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Soit <img class="math" src="../../_images/math/8238a702c12f033ac30d4d4d5f17c7aae479fe0f.svg" alt="M=(m_{ij})"/> ce laplacien :</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../../_images/math/f03d5dcf894885b8a99fb2086a4a25e067356fd4.svg" alt="m_{ij} = \left \{ \begin{array}{ll} d_i &amp; \text{ si } i = j \\ -1  &amp; \text{ s'il existe un arc reliant } i \text{ et } j \\ 0 &amp; \text{ sinon}  \end{array} \right ."/></p>
+</div></div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="k">def</span> <span class="nf">Laplacien</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+            <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">mat</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">:</span>
+                <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">:</span>
+                <span class="n">mat</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">mat</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">maxi</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">nmat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">maxi</span><span class="p">,</span> <span class="n">maxi</span><span class="p">))</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">nmat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">nmat</span>
+
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">Laplacien</span><span class="p">(</span><span class="n">arcs</span><span class="p">)</span>
+<span class="n">mat</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[ 2.,  0., -1., ...,  0.,  0.,  0.],
+       [ 0.,  3.,  0., ...,  0.,  0.,  0.],
+       [-1.,  0.,  6., ...,  0.,  0.,  0.],
+       ...,
+       [ 0.,  0.,  0., ...,  4.,  0.,  0.],
+       [ 0.,  0.,  0., ...,  0.,  4.,  0.],
+       [ 0.,  0.,  0., ...,  0.,  0.,  3.]])
+</pre></div></div>
+</div>
+</section>
+<section id="Q4">
+<h3>Q4<a class="headerlink" href="#Q4" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Par construction, le vecteur <img class="math" src="../../_images/math/65a86db12aa00904a6626b023f3f3a0c1734f8d6.svg" alt="(1, ..., 1)"/> est le vecteur propre associé à la valeur propre 0.</p>
+</section>
+<section id="Q5">
+<h3>Q5<a class="headerlink" href="#Q5" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">eigen</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">l</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
+        <span class="n">li</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">li</span> <span class="o">=</span> <span class="p">[(</span><span class="n">_</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">li</span><span class="p">)]</span>
+        <span class="n">li</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">li</span><span class="p">]</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">li</span><span class="p">])</span>
+
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)):</span>
+            <span class="n">mat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+
+        <span class="k">return</span> <span class="n">l</span><span class="p">,</span> <span class="n">mat</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">l</span><span class="p">,</span> <span class="n">v</span>
+
+
+<span class="n">val</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">eigen</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+<span class="n">val</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([1.29862811e-15, 2.97516377e-02, 2.10328629e-01, 2.90790022e-01,
+       3.11774822e-01, 3.71706160e-01, 4.10657750e-01, 6.06987653e-01,
+       6.47893457e-01, 6.95288785e-01, 9.17873789e-01, 9.62159368e-01,
+       1.00171710e+00, 1.22716812e+00, 1.43721861e+00, 1.46689480e+00,
+       1.50739404e+00, 1.65758626e+00, 1.67080933e+00, 2.01271960e+00,
+       2.06246640e+00, 2.12023335e+00, 2.15823780e+00, 2.40007127e+00,
+       2.42330441e+00, 2.44200543e+00, 2.48046940e+00, 2.83472417e+00,
+       2.88760137e+00, 2.98652806e+00, 3.05062459e+00, 3.45716799e+00,
+       3.55952462e+00, 3.72589427e+00, 3.86383519e+00, 3.98776759e+00,
+       4.24048853e+00, 4.51749090e+00, 4.76260241e+00, 5.09890091e+00,
+       5.16973825e+00, 5.38422915e+00, 5.54406301e+00, 5.82908856e+00,
+       6.06195525e+00, 6.21987207e+00, 6.51026374e+00, 7.31385944e+00,
+       7.36832387e+00, 8.10194808e+00])
+</pre></div></div>
+</div>
+</section>
+<section id="Q6">
+<h3>Q6<a class="headerlink" href="#Q6" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vec</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ 0.12706645,  0.1471807 ,  0.11300729,  0.1497489 ,  0.15689742,
+        0.15497599,  0.15887778,  0.15239956,  0.1541509 ,  0.15434079,
+        0.15308929,  0.14778115,  0.14353765,  0.14642567,  0.13629278,
+        0.13739056,  0.1202737 ,  0.15177162,  0.1510202 ,  0.14927889,
+        0.15778361,  0.13734517,  0.00981551,  0.12396176,  0.14384261,
+       -0.14991691, -0.0936683 , -0.10998677, -0.11870976, -0.16228832,
+       -0.15880678, -0.17617328, -0.12965455, -0.13772134, -0.14785981,
+       -0.13627598, -0.17093183, -0.1189228 , -0.10336518, -0.12629383,
+       -0.14222274, -0.13799138, -0.12981884, -0.16297189, -0.15845984,
+       -0.13077619, -0.15656133, -0.16060489, -0.11805402, -0.14021942])
+</pre></div></div>
+</div>
+</section>
+<section id="Q7">
+<h3>Q7<a class="headerlink" href="#Q7" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>On classe les noeuds en deux classes selon qu’ils sont associés à une valeur positive ou négative d’après ce vecteur propre. On peut maintenant déterminer quel noeud appartient à la première composante, quel noeud appartient à la seconde. Ecrire une fonction qui calcule le nombre d’arcs qui relient un noeud de la première composante à un noeud de la seconde. Quel est le résultat ?</p>
+</section>
+</section>
+<section id="Partie-3-:-un-peu-plus-loin">
+<h2>Partie 3 : un peu plus loin<a class="headerlink" href="#Partie-3-:-un-peu-plus-loin" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>On applique cette méthode à un problème de clusterisation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">points</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mf">0.84737386691659533</span><span class="p">,</span> <span class="mf">0.95848816613228727</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.28893525107454354</span><span class="p">,</span> <span class="mf">0.66073249195336492</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.60382037086559148</span><span class="p">,</span> <span class="mf">0.13747945088383384</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.21951613156582261</span><span class="p">,</span> <span class="mf">0.040905525433785228</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.21613062123493632</span><span class="p">,</span> <span class="mf">0.096875623632852625</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.99787588721497178</span><span class="p">,</span> <span class="mf">0.79337171783327132</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.18576957348508683</span><span class="p">,</span> <span class="mf">0.78396225027633837</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.23875443625588322</span><span class="p">,</span> <span class="mf">0.35497638429086975</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.8713637939628045</span><span class="p">,</span> <span class="mf">0.22983756618811024</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.28301724069085921</span><span class="p">,</span> <span class="mf">0.99408996134013161</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.39792684083973429</span><span class="p">,</span> <span class="mf">0.77105362865540716</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.75452041353842147</span><span class="p">,</span> <span class="mf">0.330325155167562</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.24824845436118537</span><span class="p">,</span> <span class="mf">0.95998690078041737</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.92318434139996397</span><span class="p">,</span> <span class="mf">0.38115765401571988</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.54660304309415886</span><span class="p">,</span> <span class="mf">0.62093667623480242</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.58899996464290505</span><span class="p">,</span> <span class="mf">0.9017292023892568</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.60541336358687847</span><span class="p">,</span> <span class="mf">0.28929082523865812</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.87925379747840293</span><span class="p">,</span> <span class="mf">0.94834058131858756</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.61449632813730748</span><span class="p">,</span> <span class="mf">0.94264237081849722</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.13119804743502139</span><span class="p">,</span> <span class="mf">0.44158556198130949</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.20660796942108339</span><span class="p">,</span> <span class="mf">0.915599021810789</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.3097131996826511</span><span class="p">,</span> <span class="mf">0.81979953110332837</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.89711055197298928</span><span class="p">,</span> <span class="mf">0.7298496710091944</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.22499060312661545</span><span class="p">,</span> <span class="mf">0.072786594549671291</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.012604758185058018</span><span class="p">,</span> <span class="mf">0.36199484670070914</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.92050750708863993</span><span class="p">,</span> <span class="mf">0.91447248587261709</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.26304069827339327</span><span class="p">,</span> <span class="mf">0.026058147250910935</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.59289937178711172</span><span class="p">,</span> <span class="mf">0.86673111722782969</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.70640070176443837</span><span class="p">,</span> <span class="mf">0.64096733852134291</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.049399266565914535</span><span class="p">,</span> <span class="mf">0.54027723332288746</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.26450585597978316</span><span class="p">,</span> <span class="mf">0.50883097182669357</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.91987410679455195</span><span class="p">,</span> <span class="mf">0.97753050553942622</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.5618293073273094</span><span class="p">,</span> <span class="mf">0.27688371997865069</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.91241761244784847</span><span class="p">,</span> <span class="mf">0.090310675429991605</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.90925789663628509</span><span class="p">,</span> <span class="mf">0.40628594240956295</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.3832814495252409</span><span class="p">,</span> <span class="mf">0.66221025722485627</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.74928785967005418</span><span class="p">,</span> <span class="mf">0.32840192750838815</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.25478832731446643</span><span class="p">,</span> <span class="mf">0.70269825611412617</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.54293534537395793</span><span class="p">,</span> <span class="mf">0.87800254191632932</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.89603330911109724</span><span class="p">,</span> <span class="mf">0.77106655965183546</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.29830084404349644</span><span class="p">,</span> <span class="mf">0.97117954065316903</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.075137754060910056</span><span class="p">,</span> <span class="mf">0.086473140735377596</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.120307047737505</span><span class="p">,</span> <span class="mf">0.073651360408690802</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.87835916829742444</span><span class="p">,</span> <span class="mf">0.34622147871872355</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.20567119579830373</span><span class="p">,</span> <span class="mf">0.42658381934346423</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.27715586337053655</span><span class="p">,</span> <span class="mf">0.87999487046170488</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.16364186693234739</span><span class="p">,</span> <span class="mf">0.98604111274325335</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.31830209002283116</span><span class="p">,</span> <span class="mf">0.36372930495109934</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.73434680601907532</span><span class="p">,</span> <span class="mf">0.65926820980026724</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.9830474686174655</span><span class="p">,</span> <span class="mf">0.12246834322318068</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.0293130665095358</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0529459366329164</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.7755737603387041</span><span class="p">,</span> <span class="mf">2.2685053357046323</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.1926920625846602</span><span class="p">,</span> <span class="mf">2.4857321786911326</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.1445647965531025</span><span class="p">,</span> <span class="mf">4.8943143876324848</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.87403644639763023</span><span class="p">,</span> <span class="mf">5.6464000746270226</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.5545355219233219</span><span class="p">,</span> <span class="mf">3.8988261206085766</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.0785612031685732</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.2948920530351256</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.4682717483474708</span><span class="p">,</span> <span class="mf">2.2364561845005868</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.0695530720860349</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.9439062757612424</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.9563571060210054</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0678946581365616</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.2485209278176157</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.6386418932454814</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.4800728241977779</span><span class="p">,</span> <span class="mf">0.72646452125011518</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.8341241854718167</span><span class="p">,</span> <span class="mf">3.3482541467971951</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.5558692651012178</span><span class="p">,</span> <span class="mf">3.5624030818263908</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.6768285328272157</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0106699901361971</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.9175303893386597</span><span class="p">,</span> <span class="mf">0.1087117017596031</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.9111941479785823</span><span class="p">,</span> <span class="mf">2.70001353796486</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.5501953466420737</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.8544512068951891</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.9246058344257151</span><span class="p">,</span> <span class="mf">4.123740240481137</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.110657752575519</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0774760107085393</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.6547967574269418</span><span class="p">,</span> <span class="mf">4.6868873425221045</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.9308254017076039</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.9448006865754279</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.0788555249744247</span><span class="p">,</span> <span class="mf">3.396205767032443</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.0516249434348621</span><span class="p">,</span> <span class="mf">0.42035392996461629</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.2989465364173602</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.2706795830191275</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.651698949077459</span><span class="p">,</span> <span class="mf">1.1364194264447973</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.3637257964296152</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5082040184760555</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.2502121678035314</span><span class="p">,</span> <span class="mf">4.5383631321594571</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.5274668721202556</span><span class="p">,</span> <span class="mf">4.473426056956777</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.400114365788911</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0434200740148363</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.513062501300436</span><span class="p">,</span> <span class="mf">2.718209259961025</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.3986743034356737</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0590996420222467</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.6632346815268289</span><span class="p">,</span> <span class="mf">4.8894243587379433</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.2802341564965607</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.4921791441653762</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.5297912885016269</span><span class="p">,</span> <span class="mf">5.5780900056883569</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.0634598983096293</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.2904478604819776</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.0857595813036722</span><span class="p">,</span> <span class="mf">5.6366192967000295</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.5596385297232223</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.3177709282351766</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.1361714943468244</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.9107871995830976</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.7240531749202161</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.8033709892679886</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.1017624989859351</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.54374796617700816</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.3715344477591818</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.2387553898801391</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.8187172884547076</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.1522284671097314</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.0454193728074506</span><span class="p">,</span> <span class="mf">3.1688190599740418</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.9848808505730315</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5176013894081675</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.1965918931505275</span><span class="p">,</span> <span class="mf">2.0248869962483522</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.4535361867324776</span><span class="p">,</span> <span class="mf">3.4437155145638751</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.2171776428648808</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0867326734388021</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.5763512667620065</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.785293447306691</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.2489915323631275</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.6589505137265448</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.2817385669950028</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0553290947191964</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.5481507299407191</span><span class="p">,</span> <span class="mf">5.2080477057573553</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.2817876881965624</span><span class="p">,</span> <span class="mf">0.12512408298772948</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.4831125975271719</span><span class="p">,</span> <span class="mf">1.7834950195462245</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.2064606598908139</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.2421411165648886</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.3461204499811092</span><span class="p">,</span> <span class="mf">0.65966593807378215</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.36559473517464181</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.9248327086099932</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.4223418217602317</span><span class="p">,</span> <span class="mf">4.790875007038224</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.9026572243192548</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.21621909226838504</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.16100173690141428</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.8875278273011942</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.2792213808538602</span><span class="p">,</span> <span class="mf">1.9041297697847308</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.4298318748123444</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.8717874765920124</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.2660121035644738</span><span class="p">,</span> <span class="mf">3.8922848961161609</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.4724681658043082</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.8875314666371643</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.1337207059785208</span><span class="p">,</span> <span class="mf">7.2290596706950154</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.0970619686963916</span><span class="p">,</span> <span class="mf">2.4188864705446997</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.824501293502089</span><span class="p">,</span> <span class="mf">0.87811217547665232</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.6141377553638456</span><span class="p">,</span> <span class="mf">2.4736768016729647</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.9646033676482686</span><span class="p">,</span> <span class="mf">1.7291507868196327</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.6494860793108481</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1744278681124489</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.3291564189715617</span><span class="p">,</span> <span class="mf">3.1892910878432268</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.6260111359196396</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.8029748349762125</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.1110554486386404</span><span class="p">,</span> <span class="mf">0.0087017311510849682</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.812034605848817</span><span class="p">,</span> <span class="mf">1.8310006567642712</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.0643824785110239</span><span class="p">,</span> <span class="mf">4.7806635726760689</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.8724397920934015</span><span class="p">,</span> <span class="mf">0.65927045141188367</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.6202135060380289</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.18281430910806151</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.8134764145891591</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0328054369849538</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.0315824591034124</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5339867923196042</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.0906912982614791</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.8390710019489158</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.77019164393866146</span><span class="p">,</span> <span class="mf">4.0099320163703895</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.2239134319849398</span><span class="p">,</span> <span class="mf">2.5227757084315567</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.5342615497190861</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5402720724503229</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.52313297572359074</span><span class="p">,</span> <span class="mf">5.8268409663350287</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.0896974241486603</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.83931337455192145</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.9824769771009292</span><span class="p">,</span> <span class="mf">1.8062615072223389</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.7151819974072808</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.6553638508191835</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.94296691141453703</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.3332773280899097</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.9080659785364102</span><span class="p">,</span> <span class="mf">3.8017876981653527</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.146797854411842</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.4943345068020939</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.6135304662636716</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5968234340599352</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.2240732422979015</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.40050907128273239</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.0003615064702411</span><span class="p">,</span> <span class="mf">4.3564534485947091</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.5251603471425388</span><span class="p">,</span> <span class="mf">5.3602495377614252</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.70829180528117897</span><span class="p">,</span> <span class="mf">4.8705912438690024</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.9857439387875215</span><span class="p">,</span> <span class="mf">4.3495410597763557</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.7415118623160484</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.8482449535792851</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.1227029816875906</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.943690794192229</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.5533372938495322</span><span class="p">,</span> <span class="mf">0.23654193364300019</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.9320538122814632</span><span class="p">,</span> <span class="mf">0.27398085527961841</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.5379571426787906</span><span class="p">,</span> <span class="mf">3.5479478416595258</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.9952197756192462</span><span class="p">,</span> <span class="mf">0.9519866242123729</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.63418929807710789</span><span class="p">,</span> <span class="mf">4.9714021509147459</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.7514419719026835</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.7952656655539831</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.8168652955867248</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.8059389896821614</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.86083201462211</span><span class="p">,</span> <span class="mf">1.6763339473293351</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.2346287443442741</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0049022214331869</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.0159172780756807</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.6747832401686313</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.9625789720275502</span><span class="p">,</span> <span class="mf">0.21332969214064601</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.4459656516053521</span><span class="p">,</span> <span class="mf">1.8490131071943328</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.4887755131556295</span><span class="p">,</span> <span class="mf">1.0537691340713213</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.1214658457920255</span><span class="p">,</span> <span class="mf">1.8180419262808878</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.0417225435808637</span><span class="p">,</span> <span class="mf">6.4876076903545457</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.2056831059665383</span><span class="p">,</span> <span class="mf">3.4403227294912879</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.29183542445509</span><span class="p">,</span> <span class="mf">1.1299087065549616</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.6894950904308068</span><span class="p">,</span> <span class="mf">0.67877427899602139</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.2334935303450196</span><span class="p">,</span> <span class="mf">0.66692066781151726</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">6.918359229911677</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.43825691963852248</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.0912552685819197</span><span class="p">,</span> <span class="mf">5.9256467457380193</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.9995400634925016</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.2633779062253305</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.3270510253578853</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.8998811026998816</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.4372749748248483</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.800876689538256</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.5720483206059228</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5479241832525954</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.5107697954439923</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.6063323885377114</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.45355690226015</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.3924594206301864</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.8170391803389006</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.3343907023480963</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.1592191821861308</span><span class="p">,</span> <span class="mf">4.551692003143347</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.2147820707711716</span><span class="p">,</span> <span class="mf">0.55930561729387951</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.2364813901253862</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.7059292544869302</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.5980046177747229</span><span class="p">,</span> <span class="mf">3.0606302788023871</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.0235041652892747</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.27015781708378661</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.4303330714757383</span><span class="p">,</span> <span class="mf">3.3989583334332432</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.4649562148782955</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.3524552397826168</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.3322237797463616</span><span class="p">,</span> <span class="mf">1.6813558717119386</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.3359544685337736</span><span class="p">,</span> <span class="mf">2.7104894884469877</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.350410042767797</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.8412188670946792</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.8993273426849919</span><span class="p">,</span> <span class="mf">5.5101185505218293</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.3563537615645282</span><span class="p">,</span> <span class="mf">5.0439247587050282</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.3738404946436238</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.43277784903448813</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.6236691719193734</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.8192122194763103</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.3000303214498619</span><span class="p">,</span> <span class="mf">2.7045156595962521</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.2036876689968699</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.22379027409222038</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.0078193725337679</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.33061456656172339</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.3173753727230917</span><span class="p">,</span> <span class="mf">2.3292728936983247</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.17305051546078376</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.3708524146324814</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.18920570140751003</span><span class="p">,</span> <span class="mf">2.7288547711089577</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.5559793038807355</span><span class="p">,</span> <span class="mf">2.4460955268542377</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.65537111745445098</span><span class="p">,</span> <span class="mf">4.3024274811626642</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.32733974310015845</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.6653194005399481</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.3495524342659682</span><span class="p">,</span> <span class="mf">0.50620561077402126</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.6859406925109957</span><span class="p">,</span> <span class="mf">1.0042337939426813</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.4168309661540643</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.3784247121303279</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.0873449293614152</span><span class="p">,</span> <span class="mf">3.8206900404120345</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.3397623772131446</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.2347446764630474</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.8720948774765485</span><span class="p">,</span> <span class="mf">2.6955132035521556</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.9472576652843694</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.3542922693748149</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.030233796538444</span><span class="p">,</span> <span class="mf">1.6199282129862145</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.7351581782776853</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.5709314373179808</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.14607908112131446</span><span class="p">,</span> <span class="mf">2.79251837326064</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.37002429983216167</span><span class="p">,</span> <span class="mf">4.3653059393186942</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.8616789948811956</span><span class="p">,</span> <span class="mf">3.6100436336617339</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.8019087210485418</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5911421188072357</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.6953052292111459</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.3928959775316905</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.049532260408768</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.9169000088107522</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.8042700374731648</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.6636201843555991</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.2856117402115821</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.497386564362329</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.1085015582769402</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.1635806015318408</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.51764720743541925</span><span class="p">,</span> <span class="mf">3.3207617687324866</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.6552485122750968</span><span class="p">,</span> <span class="mf">1.9457154950840061</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.4574030967957459</span><span class="p">,</span> <span class="mf">0.13220998701481373</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.1064026703010086</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.6992062016898437</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.6218017958370492</span><span class="p">,</span> <span class="mf">2.4171784152426357</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.1893570148164336</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.53987360896641756</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.62289304323418893</span><span class="p">,</span> <span class="mf">5.6377915319211773</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.95656595366184183</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5482370903224183</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.6552715153624238</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.42419842122106877</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.9138981541477369</span><span class="p">,</span> <span class="mf">1.5211086418661788</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.7643908686171743</span><span class="p">,</span> <span class="mf">3.3462875243179644</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.4001664954474204</span><span class="p">,</span> <span class="mf">1.8715548148469952</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.7209034976257116</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.3132712976844925</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.0077653108424371</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.8044349295045858</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.7004396541700451</span><span class="p">,</span> <span class="mf">3.6313151291578776</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.7805282578575432</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.3496033840422226</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.5149407509344646</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.4491799573779538</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.4969549443875327</span><span class="p">,</span> <span class="mf">0.59052341158001964</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">2.5871839418980924</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.8626995345211439</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.530084220131168</span><span class="p">,</span> <span class="mf">0.73947783901217035</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">4.2278934560638541</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.4480933790189707</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">3.6638968948801822</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.8603129450393652</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">1.0034748779660814</span><span class="p">,</span> <span class="mf">4.3783603559660618</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.24711046251746965</span><span class="p">,</span> <span class="mf">5.0245225170472958</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.75233017871629115</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.4003624728787472</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">5.3204808270534789</span><span class="p">,</span> <span class="mf">0.8530050107548528</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">0.66555456366565435</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.210607962975542</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.4312598575388913</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.8510534338146063</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">1.0579141292803367</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.8599892658343156</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">5.1580465239922022</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.6376354853614972</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mf">2.6525127599513731</span><span class="p">,</span> <span class="mf">2.9406618825179196</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">3.3353268107001339</span><span class="p">,</span> <span class="mf">4.5193520805659642</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">4.9838132614191322</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5937246171656669</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: xlabel=&#39;x&#39;, ylabel=&#39;y&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/practice_tds-algo_graph_spectral_clustering_correction_17_1.png" src="../../_images/practice_tds-algo_graph_spectral_clustering_correction_17_1.png" />
+</div>
+</div>
+<p>On note <img class="math" src="../../_images/math/718651a83060c39e7f1738f6eae5c00a10177f53.svg" alt="d(X_1,X_2)"/> la distance euclidienne entre deux points <img class="math" src="../../_images/math/4bd4cb3c78851a33f8380b338de7ef126fb3c74d.svg" alt="X_1"/> et <img class="math" src="../../_images/math/67272339af25058949d56a3a223501543e900227.svg" alt="X_2"/>. On construit le Laplacien suivant à partir d’un ensemble de points du plan <img class="math" src="../../_images/math/6cba74bdce3a6f91d99d7701293b0aa6c9400f0c.svg" alt="(X_i)_i"/>.</p>
+<div class="math-wrapper docutils container">
+<div class="math">
+<p><img src="../../_images/math/95bf306a04a4e5f9cb40d8130a4e7f22473d26e4.svg" alt="m_{ij} = \left \{ \begin{array}{ll} -e^{-d(X_i,X_j)^2}  &amp; \text{ si } i \neq j \\ \sum_{i \neq j} e^{-d(X_i,X_j)^2} &amp; \text{ si } i = j \end{array} \right ."/></p>
+</div></div>
+<section id="id1">
+<h3>Q1<a class="headerlink" href="#id1" title="Lien permanent vers cette rubrique">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+
+<span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">CreateProximityMatrix</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">distance</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">CreateProximityMatrix</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="n">mat</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+matrix([[ 3.33607823e+01, -6.69976843e-01, -4.80285954e-01, ...,
+         -9.41648335e-08, -6.38278275e-09, -1.51753802e-21],
+        [-6.69976843e-01,  3.90919719e+01, -6.88702158e-01, ...,
+         -9.65910722e-07, -3.18671103e-11, -2.73374647e-22],
+        [-4.80285954e-01, -6.88702158e-01,  3.45881912e+01, ...,
+         -9.59966914e-09, -2.63553433e-12, -8.85061645e-19],
+        ...,
+        [-9.41648335e-08, -9.65910722e-07, -9.59966914e-09, ...,
+          5.08380506e+00, -2.21989770e-17, -1.05000993e-50],
+        [-6.38278275e-09, -3.18671103e-11, -2.63553433e-12, ...,
+         -2.21989770e-17,  5.56991352e+00, -5.65510715e-38],
+        [-1.51753802e-21, -2.73374647e-22, -8.85061645e-19, ...,
+         -1.05000993e-50, -5.65510715e-38,  2.18345495e+00]])
+</pre></div></div>
+</div>
+</section>
+<section id="id2">
+<h3>Q2<a class="headerlink" href="#id2" title="Lien permanent vers cette rubrique">#</a></h3>
+<p>Implémentez la méthode suggérée et dessinez le résultat.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<p><a class="reference external" href="https://github.com/sdpython/teachpyx/tree/main/_doc/practice/tds-algo/graph_spectral_clustering_correction.ipynb">Notebook on github</a></p>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../index_exam.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Séances minutées</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="decorrelation_correction.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Décorrélation de variables aléatoires - correction</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2023, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Spectral Clustering - correction</a><ul>
+<li><a class="reference internal" href="#Un-graphe">Un graphe</a></li>
+<li><a class="reference internal" href="#Partie-1-:-clustering-en-pratique">Partie 1 : clustering en pratique</a><ul>
+<li><a class="reference internal" href="#Q1">Q1</a></li>
+<li><a class="reference internal" href="#Q2">Q2</a></li>
+<li><a class="reference internal" href="#Q3">Q3</a></li>
+<li><a class="reference internal" href="#Q4">Q4</a></li>
+<li><a class="reference internal" href="#Q5">Q5</a></li>
+<li><a class="reference internal" href="#Q6">Q6</a></li>
+<li><a class="reference internal" href="#Q7">Q7</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Partie-3-:-un-peu-plus-loin">Partie 3 : un peu plus loin</a><ul>
+<li><a class="reference internal" href="#id1">Q1</a></li>
+<li><a class="reference internal" href="#id2">Q2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9db00da4"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
