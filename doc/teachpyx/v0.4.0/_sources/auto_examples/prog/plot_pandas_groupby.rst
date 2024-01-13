@@ -226,7 +226,7 @@ Il est possible de corriger le tir avec l'argument `dropna`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.020 seconds)
+   **Total running time of the script:** (0 minutes 0.013 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_pandas_groupby.py:

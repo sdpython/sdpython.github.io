@@ -28,7 +28,7 @@ pandas to pandas_streaming
 
 .. GENERATED FROM PYTHON SOURCE LINES 10-19
 
-.. code-block:: default
+.. code-block:: Python
 
     import glob
     from pandas import DataFrame
@@ -46,7 +46,7 @@ We create a streaming dataframe:
 
 .. GENERATED FROM PYTHON SOURCE LINES 21-27
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -57,7 +57,7 @@ We create a streaming dataframe:
 
 .. GENERATED FROM PYTHON SOURCE LINES 29-33
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sdf.to_dataframe()
@@ -73,7 +73,7 @@ manipulate data without loading everything into memory.
 
 .. GENERATED FROM PYTHON SOURCE LINES 38-44
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -84,7 +84,7 @@ manipulate data without loading everything into memory.
 
 .. GENERATED FROM PYTHON SOURCE LINES 46-51
 
-.. code-block:: default
+.. code-block:: Python
 
 
     m = DataFrame(dict(Y=["a", "b"], Z=[10, 20]))
@@ -94,7 +94,7 @@ manipulate data without loading everything into memory.
 
 .. GENERATED FROM PYTHON SOURCE LINES 53-58
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sdf3 = sdf2.merge(m, left_on="Y", right_on="Y", how="outer")
@@ -104,7 +104,7 @@ manipulate data without loading everything into memory.
 
 .. GENERATED FROM PYTHON SOURCE LINES 60-64
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sdf2.to_dataframe().merge(m, left_on="Y", right_on="Y", how="outer")
@@ -117,7 +117,7 @@ The order might be different.
 
 .. GENERATED FROM PYTHON SOURCE LINES 66-72
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -128,7 +128,7 @@ The order might be different.
 
 .. GENERATED FROM PYTHON SOURCE LINES 74-79
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -143,7 +143,7 @@ split a big file
 
 .. GENERATED FROM PYTHON SOURCE LINES 82-87
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -153,7 +153,7 @@ split a big file
 
 .. GENERATED FROM PYTHON SOURCE LINES 89-95
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -164,15 +164,10 @@ split a big file
 
 .. GENERATED FROM PYTHON SOURCE LINES 97-99
 
-.. code-block:: default
+.. code-block:: Python
 
 
     glob.glob("ex*.txt")
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** (0 minutes 0.000 seconds)
 
 
 .. _sphx_glr_download_auto_examples_first_step.py:
@@ -181,16 +176,13 @@ split a big file
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: first_step.ipynb <first_step.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: first_step.py <first_step.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: first_step.ipynb <first_step.ipynb>`
 
 
 .. only:: html

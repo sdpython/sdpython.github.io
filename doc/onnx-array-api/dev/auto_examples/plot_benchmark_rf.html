@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="API" href="../api/index.html" /><link rel="prev" title="Benchmarks" href="../tutorial/benchmarks.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Benchmark of TreeEnsemble implementation - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -266,13 +266,13 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="benchmark-of-treeensemble-implementation">
-<span id="l-example-benchmark-tree-implementation"></span><span id="sphx-glr-auto-examples-plot-benchmark-rf-py"></span><h1>Benchmark of TreeEnsemble implementation<a class="headerlink" href="#benchmark-of-treeensemble-implementation" title="Permalink to this heading">#</a></h1>
+<span id="l-example-benchmark-tree-implementation"></span><span id="sphx-glr-auto-examples-plot-benchmark-rf-py"></span><h1>Benchmark of TreeEnsemble implementation<a class="headerlink" href="#benchmark-of-treeensemble-implementation" title="Link to this heading">#</a></h1>
 <p>The following example compares the inference time between
 <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> and <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.RandomForestRegressor</span></code></a>,
 fow different number of estimators, max depth, and parallelization.
 It does it for a fixed number of rows and features.</p>
 <section id="import-and-registration-of-necessary-converters">
-<h2>import and registration of necessary converters<a class="headerlink" href="#import-and-registration-of-necessary-converters" title="Permalink to this heading">#</a></h2>
+<h2>import and registration of necessary converters<a class="headerlink" href="#import-and-registration-of-necessary-converters" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -328,7 +328,7 @@ It does it for a fixed number of rows and features.</p>
 </div>
 </section>
 <section id="machine-details">
-<h2>Machine details<a class="headerlink" href="#machine-details" title="Permalink to this heading">#</a></h2>
+<h2>Machine details<a class="headerlink" href="#machine-details" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of cores: </span><span class="si">{</span><span class="n">cpu_count</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -357,7 +357,7 @@ Let’s extract the cache information.</p>
 </div>
 </section>
 <section id="fonction-to-measure-inference-time">
-<h2>Fonction to measure inference time<a class="headerlink" href="#fonction-to-measure-inference-time" title="Permalink to this heading">#</a></h2>
+<h2>Fonction to measure inference time<a class="headerlink" href="#fonction-to-measure-inference-time" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">measure_inference</span><span class="p">(</span><span class="n">fct</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">repeat</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_time</span></a><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">quantile</span></a><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run *repeat* times the same function on data *X*.</span>
@@ -389,7 +389,7 @@ Let’s extract the cache information.</p>
 </div>
 </section>
 <section id="benchmark">
-<h2>Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this heading">#</a></h2>
+<h2>Benchmark<a class="headerlink" href="#benchmark" title="Link to this heading">#</a></h2>
 <p>The following script benchmarks the inference for the same
 model for a random forest and onnxruntime after it was converted
 into ONNX and for the following configurations.</p>
@@ -670,7 +670,7 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [02:20&lt;00:
 </div>
 </section>
 <section id="saving-data">
-<h2>Saving data<a class="headerlink" href="#saving-data" title="Permalink to this heading">#</a></h2>
+<h2>Saving data<a class="headerlink" href="#saving-data" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_dir</span></a><span class="p">,</span> <span class="s2">&quot;plot_beanchmark_rf&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving data into </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -1625,7 +1625,7 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [02:20&lt;00:
 <br />
 <br /></section>
 <section id="plot">
-<h2>Plot<a class="headerlink" href="#plot" title="Permalink to this heading">#</a></h2>
+<h2>Plot<a class="headerlink" href="#plot" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_rows</span></a> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_jobs</span></a><span class="p">)</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_cols</span></a> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_ests</span></a><span class="p">)</span>
 
@@ -1720,7 +1720,7 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [02:20&lt;00:
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1764,9 +1764,9 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [02:20&lt;00:
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

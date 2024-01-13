@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>mlinsights.mlmodel.kmeans_l1 - mlinsights 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -348,10 +348,7 @@
         <span class="n">best_candidate</span> <span class="o">=</span> <span class="n">candidate_ids</span><span class="p">[</span><span class="n">best_candidate</span><span class="p">]</span>
 
         <span class="c1"># Permanently add best center candidate found in local tries</span>
-        <span class="k">if</span> <span class="n">issparse</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-            <span class="n">centers</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">best_candidate</span><span class="p">]</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">centers</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">best_candidate</span><span class="p">]</span>
+        <span class="n">centers</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">best_candidate</span><span class="p">]</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="n">issparse</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="k">else</span> <span class="n">X</span><span class="p">[</span><span class="n">best_candidate</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">centers</span>
 
@@ -417,16 +414,14 @@
 
     <span class="k">def</span> <span class="nf">_validate_center_shape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">centers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if centers is compatible with X and n_clusters&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">k</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The shape of the initial centers </span><span class="si">{</span><span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> does not &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;match the number of clusters </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The shape of the initial centers </span><span class="si">{</span><span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> does not &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;match the number of features of the data </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
-            <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The shape of the initial centers </span><span class="si">{</span><span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> does not &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;match the number of clusters </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The shape of the initial centers </span><span class="si">{</span><span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> does not &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;match the number of features of the data </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">_validate_center_shape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">centers</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">centers</span>
@@ -655,7 +650,9 @@
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not implemented for norm &#39;</span><span class="si">{</span><span class="n">norm</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>  <span class="c1"># pragma no cover</span>
 
 
-<div class="viewcode-block" id="KMeansL1L2"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2">[docs]</a><span class="k">class</span> <span class="nc">KMeansL1L2</span><span class="p">(</span><span class="n">KMeans</span><span class="p">):</span>
+<div class="viewcode-block" id="KMeansL1L2">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2">[docs]</a>
+<span class="k">class</span> <span class="nc">KMeansL1L2</span><span class="p">(</span><span class="n">KMeans</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    K-Means clustering with either norm L1 or L2.</span>
 <span class="sd">    See notebook :ref:`l-kmeans-l1-example` for an example.</span>
@@ -757,7 +754,9 @@
                 <span class="s2">&quot;Only algorithm &#39;lloyd&#39; is implemented with norm &#39;l1&#39;.&quot;</span>
             <span class="p">)</span>
 
-<div class="viewcode-block" id="KMeansL1L2.fit"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="KMeansL1L2.fit">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes k-means clustering.</span>
 
@@ -782,6 +781,7 @@
                 <span class="sa">f</span><span class="s2">&quot;Norm is not &#39;L1&#39; or &#39;L2&#39; but &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
+
 
     <span class="k">def</span> <span class="nf">_fit_l1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -900,7 +900,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_</span> <span class="o">=</span> <span class="n">best_n_iter</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-<div class="viewcode-block" id="KMeansL1L2.transform"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="KMeansL1L2.transform">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms *X* to a cluster-distance space.</span>
 
@@ -921,6 +923,7 @@
             <span class="sa">f</span><span class="s2">&quot;Norm is not L1 or L2 but &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
         <span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_transform_l1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the distance of each point in *X* to</span>
@@ -930,7 +933,9 @@
         <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_test_data</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">manhattan_distances</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">)</span>
 
-<div class="viewcode-block" id="KMeansL1L2.predict"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="KMeansL1L2.predict">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.kmeans_l1.KMeansL1L2.predict">[docs]</a>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predicts the closest cluster each sample in X belongs to.</span>
 
@@ -954,6 +959,7 @@
             <span class="sa">f</span><span class="s2">&quot;Norm is not L1 or L2 but &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
         <span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="nf">_predict_l1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_distances</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the distance of each point in *X* to</span>
@@ -971,6 +977,7 @@
         <span class="k">if</span> <span class="n">return_distances</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">labels</span><span class="p">,</span> <span class="n">mindist</span>
         <span class="k">return</span> <span class="n">labels</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -983,7 +990,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1003,9 +1010,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../../../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

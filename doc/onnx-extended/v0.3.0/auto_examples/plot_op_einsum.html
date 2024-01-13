@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="TreeEnsemble optimization" href="plot_op_tree_ensemble_optim.html" /><link rel="prev" title="Profiles a simple onnx graph including a singleGemm" href="plot_profile_gemm_ort.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Compares implementations of Einsum - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -309,7 +309,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="compares-implementations-of-einsum">
-<span id="l-plot-op-einsum"></span><span id="sphx-glr-auto-examples-plot-op-einsum-py"></span><h1>Compares implementations of Einsum<a class="headerlink" href="#compares-implementations-of-einsum" title="Permalink to this heading">#</a></h1>
+<span id="l-plot-op-einsum"></span><span id="sphx-glr-auto-examples-plot-op-einsum-py"></span><h1>Compares implementations of Einsum<a class="headerlink" href="#compares-implementations-of-einsum" title="Link to this heading">#</a></h1>
 <p>This example compares different equations for function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.einsum.html#numpy.einsum" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.einsum()</span></code></a>.
 It compares <em>numpy</em> implementation to a custom implementation,
 <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> implementation and <a class="reference external" href="https://optimized-einsum.readthedocs.io/en/stable/">opt-einsum</a> optimisation.
@@ -320,7 +320,7 @@ happens on the last axis of both matrices. It only implements
 matrix multiplication. We also measure the improvment made with
 function <a class="reference internal" href="../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.einsum" title="onnx_extended.tools.einsum.einsum_fct.einsum"><code class="xref py py-func docutils literal notranslate"><span class="pre">einsum</span></code></a>.</p>
 <section id="available-optimisation">
-<h2>Available optimisation<a class="headerlink" href="#available-optimisation" title="Permalink to this heading">#</a></h2>
+<h2>Available optimisation<a class="headerlink" href="#available-optimisation" title="Link to this heading">#</a></h2>
 <p>The code shows which optimisation is used for the custom
 implementation, <em>AVX</em> or <em>SSE</em> and the number of available processors,
 equal to the default number of used threads to parallelize.</p>
@@ -350,7 +350,7 @@ equal to the default number of used threads to parallelize.</p>
 </div>
 </section>
 <section id="einsum-common-code">
-<h2>Einsum: common code<a class="headerlink" href="#einsum-common-code" title="Permalink to this heading">#</a></h2>
+<h2>Einsum: common code<a class="headerlink" href="#einsum-common-code" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">einsum</span> <span class="k">as</span> <span class="n">tf_einsum</span><span class="p">,</span> <span class="n">convert_to_tensor</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -514,11 +514,11 @@ equal to the default number of used threads to parallelize.</p>
 </div>
 </section>
 <section id="first-equation-bsnh-btnh-bnts">
-<h2>First equation: bsnh,btnh-&gt;bnts<a class="headerlink" href="#first-equation-bsnh-btnh-bnts" title="Permalink to this heading">#</a></h2>
+<h2>First equation: bsnh,btnh-&gt;bnts<a class="headerlink" href="#first-equation-bsnh-btnh-bnts" title="Link to this heading">#</a></h2>
 <p>The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-7c7c1e4f97f1d3c8c1085ab0c09ef9cbf3db8fd4.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-ff78650d0843bdc2733a9d2c2d4e30dfb5e5848b.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -527,28 +527,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbsnh\\n[ 0  3  2  1 -1]&quot;];
-140438789934768 [label=&quot;id\\nNone&quot;];
-0 -&gt; 140438789934768;
-140438795045664 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-140438789934768 -&gt; 140438795045664;
+140518412378432 [label=&quot;id\\nNone&quot;];
+0 -&gt; 140518412378432;
+140518412378528 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+140518412378432 -&gt; 140518412378528;
 1 [label=&quot;input 1\\nbtnh\\n[ 0  3  2 -1  1]&quot;];
-140438795049456 [label=&quot;id\\nNone&quot;];
-1 -&gt; 140438795049456;
-140438795053728 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-140438795049456 -&gt; 140438795053728;
-140438307679408 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-140438307668896 -&gt; 140438307679408;
-140438795050416 -&gt; 140438307679408;
-140438245847968 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-140438247477728 -&gt; 140438245847968;
-140438247480512 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-140438245847968 -&gt; 140438247480512;
-140438307668896 [label=&quot;transpose - I0\\nperm=(0, 2, 1, 4, 3)None&quot; style=filled fillcolor=red];
-140438795045664 -&gt; 140438307668896;
-140438795050416 [label=&quot;transpose\\nperm=(0, 2, 3, 1, 4)None&quot;];
-140438795053728 -&gt; 140438795050416;
-140438247477728 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-140438307679408 -&gt; 140438247477728;
+140518412379968 [label=&quot;id\\nNone&quot;];
+1 -&gt; 140518412379968;
+140518412380160 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+140518412379968 -&gt; 140518412380160;
+140518412379152 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+140518412379296 -&gt; 140518412379152;
+140518412379392 -&gt; 140518412379152;
+140518412374592 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+140518412379488 -&gt; 140518412374592;
+140518412379680 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+140518412374592 -&gt; 140518412379680;
+140518412379296 [label=&quot;transpose - I0\\nperm=(0, 2, 1, 4, 3)None&quot; style=filled fillcolor=red];
+140518412378528 -&gt; 140518412379296;
+140518412379392 [label=&quot;transpose\\nperm=(0, 2, 3, 1, 4)None&quot;];
+140518412380160 -&gt; 140518412379392;
+140518412379488 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+140518412379152 -&gt; 140518412379488;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dfs</span></a> <span class="o">=</span> <span class="p">[]</span>
@@ -614,14 +614,14 @@ node [shape=record];
 </div>
 </section>
 <section id="second-equation-bshn-bthn-bnts">
-<h2>Second equation: bshn,bthn-&gt;bnts<a class="headerlink" href="#second-equation-bshn-bthn-bnts" title="Permalink to this heading">#</a></h2>
+<h2>Second equation: bshn,bthn-&gt;bnts<a class="headerlink" href="#second-equation-bshn-bthn-bnts" title="Link to this heading">#</a></h2>
 <p>The summation does not happen on the last axis but
 on the previous one.
 Is it worth transposing before doing the summation…
 The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-e996d0710d1bbcf91c1d3b2ffed5aa7422f14fe0.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-1fb5eba9edcc8e8818df7ae255e7961a14d027ee.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -630,28 +630,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbshn\\n[ 0  2  3  1 -1]&quot;];
-140438283310016 [label=&quot;id\\nNone&quot;];
-0 -&gt; 140438283310016;
-140438283310448 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-140438283310016 -&gt; 140438283310448;
+140518412381888 [label=&quot;id\\nNone&quot;];
+0 -&gt; 140518412381888;
+140518412381984 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+140518412381888 -&gt; 140518412381984;
 1 [label=&quot;input 1\\nbthn\\n[ 0  2  3 -1  1]&quot;];
-140438283310928 [label=&quot;id\\nNone&quot;];
-1 -&gt; 140438283310928;
-140438283307136 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-140438283310928 -&gt; 140438283307136;
-140438249943968 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-140438283318992 -&gt; 140438249943968;
-140438283311696 -&gt; 140438249943968;
-140438249934176 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-140438283309440 -&gt; 140438249934176;
-140438249942576 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-140438249934176 -&gt; 140438249942576;
-140438283318992 [label=&quot;transpose - I0\\nperm=(0, 3, 1, 4, 2)None&quot; style=filled fillcolor=red];
-140438283310448 -&gt; 140438283318992;
-140438283311696 [label=&quot;transpose\\nperm=(0, 4, 3, 1, 2)None&quot;];
-140438283307136 -&gt; 140438283311696;
-140438283309440 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-140438249943968 -&gt; 140438283309440;
+140518412383424 [label=&quot;id\\nNone&quot;];
+1 -&gt; 140518412383424;
+140518412383616 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+140518412383424 -&gt; 140518412383616;
+140518412382608 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+140518412382752 -&gt; 140518412382608;
+140518412382848 -&gt; 140518412382608;
+140518412374880 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+140518412382944 -&gt; 140518412374880;
+140518412383136 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+140518412374880 -&gt; 140518412383136;
+140518412382752 [label=&quot;transpose - I0\\nperm=(0, 3, 1, 4, 2)None&quot; style=filled fillcolor=red];
+140518412381984 -&gt; 140518412382752;
+140518412382848 [label=&quot;transpose\\nperm=(0, 4, 3, 1, 2)None&quot;];
+140518412383616 -&gt; 140518412382848;
+140518412382944 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+140518412382608 -&gt; 140518412382944;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">equation</span></a> <span class="o">=</span> <span class="s2">&quot;bshn,bthn-&gt;bnts&quot;</span>
@@ -699,13 +699,13 @@ node [shape=record];
 </div>
 </section>
 <section id="third-equation-bhsn-bhtn-bnts">
-<h2>Third equation: bhsn,bhtn-&gt;bnts<a class="headerlink" href="#third-equation-bhsn-bhtn-bnts" title="Permalink to this heading">#</a></h2>
+<h2>Third equation: bhsn,bhtn-&gt;bnts<a class="headerlink" href="#third-equation-bhsn-bhtn-bnts" title="Link to this heading">#</a></h2>
 <p>The summation does not happen on the last axis but
 on the second one. It is worth transposing before multiplying.
 The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-a1dcbc56bb9cbae8216a5fd4df47c17eb8d1cb42.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-6c4d4875d079faaa738a225832008448ec91f8ee.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -714,28 +714,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbhsn\\n[ 0  1  3  2 -1]&quot;];
-140438307676768 [label=&quot;id\\nNone&quot;];
-0 -&gt; 140438307676768;
-140438307683680 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-140438307676768 -&gt; 140438307683680;
+140518412385584 [label=&quot;id\\nNone&quot;];
+0 -&gt; 140518412385584;
+140518412385680 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+140518412385584 -&gt; 140518412385680;
 1 [label=&quot;input 1\\nbhtn\\n[ 0  1  3 -1  2]&quot;];
-140438307676672 [label=&quot;id\\nNone&quot;];
-1 -&gt; 140438307676672;
-140438307669376 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-140438307676672 -&gt; 140438307669376;
-140438307678256 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-140438307676624 -&gt; 140438307678256;
-140438307682960 -&gt; 140438307678256;
-140438307681184 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-140438307678496 -&gt; 140438307681184;
-140438307677440 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-140438307681184 -&gt; 140438307677440;
-140438307676624 [label=&quot;transpose - I0\\nperm=(0, 3, 2, 4, 1)None&quot; style=filled fillcolor=red];
-140438307683680 -&gt; 140438307676624;
-140438307682960 [label=&quot;transpose\\nperm=(0, 4, 3, 2, 1)None&quot;];
-140438307669376 -&gt; 140438307682960;
-140438307678496 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-140438307678256 -&gt; 140438307678496;
+140518412386016 [label=&quot;id\\nNone&quot;];
+1 -&gt; 140518412386016;
+140518412386208 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+140518412386016 -&gt; 140518412386208;
+140518412384912 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+140518412385056 -&gt; 140518412384912;
+140518412385152 -&gt; 140518412384912;
+140518412384768 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+140518412385248 -&gt; 140518412384768;
+140518412385440 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+140518412384768 -&gt; 140518412385440;
+140518412385056 [label=&quot;transpose - I0\\nperm=(0, 3, 2, 4, 1)None&quot; style=filled fillcolor=red];
+140518412385680 -&gt; 140518412385056;
+140518412385152 [label=&quot;transpose\\nperm=(0, 4, 3, 2, 1)None&quot;];
+140518412386208 -&gt; 140518412385152;
+140518412385248 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+140518412384912 -&gt; 140518412385248;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">equation</span></a> <span class="o">=</span> <span class="s2">&quot;bhsn,bhtn-&gt;bnts&quot;</span>
@@ -780,7 +780,7 @@ node [shape=record];
 </div>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
 <p>pytorch seems quite efficient on these examples.
 The custom implementation was a way to investigate
 the implementation of einsum and find some ways to optimize it.</p>
@@ -835,7 +835,7 @@ the implementation of einsum and find some ways to optimize it.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -879,9 +879,9 @@ the implementation of einsum and find some ways to optimize it.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../_static/documentation_options.js?v=83a61292"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>mlinsights.mlmodel.sklearn_transform_inv_fct - mlinsights 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -247,7 +247,9 @@
 <span class="kn">from</span> <span class="nn">.sklearn_transform_inv</span> <span class="kn">import</span> <span class="n">BaseReciprocalTransformer</span>
 
 
-<div class="viewcode-block" id="FunctionReciprocalTransformer"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer">[docs]</a><span class="k">class</span> <span class="nc">FunctionReciprocalTransformer</span><span class="p">(</span><span class="n">BaseReciprocalTransformer</span><span class="p">):</span>
+<div class="viewcode-block" id="FunctionReciprocalTransformer">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer">[docs]</a>
+<span class="k">class</span> <span class="nc">FunctionReciprocalTransformer</span><span class="p">(</span><span class="n">BaseReciprocalTransformer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The transform is used to apply a function on a the target,</span>
 <span class="sd">    predict, then transform the target back before scoring.</span>
@@ -267,7 +269,9 @@
 <span class="sd">        pprint.pprint(FunctionReciprocalTransformer.available_fcts())</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="FunctionReciprocalTransformer.available_fcts"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.available_fcts">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="FunctionReciprocalTransformer.available_fcts">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.available_fcts">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">available_fcts</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the list of predefined functions.</span>
@@ -280,6 +284,7 @@
             <span class="s2">&quot;exp(x)-1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">),</span>
             <span class="s2">&quot;expm1&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">expm1</span><span class="p">,</span> <span class="s2">&quot;log1p&quot;</span><span class="p">),</span>
         <span class="p">}</span></div>
+
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">,</span> <span class="n">fct_inv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">BaseReciprocalTransformer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -294,12 +299,13 @@
                     <span class="sa">f</span><span class="s2">&quot;Unknown fct &#39;</span><span class="si">{</span><span class="n">fct</span><span class="si">}</span><span class="s2">&#39;, it should in </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">opts</span><span class="p">))</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">fct_inv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If fct is callable, fct_inv must be specified.&quot;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">fct_inv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;If fct is callable, fct_inv must be specified.&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fct</span> <span class="o">=</span> <span class="n">fct</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fct_inv</span> <span class="o">=</span> <span class="n">fct_inv</span>
 
-<div class="viewcode-block" id="FunctionReciprocalTransformer.fit"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="FunctionReciprocalTransformer.fit">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Just defines *fct* and *fct_inv*.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -311,7 +317,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">fct_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fct_inv_</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fct</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="FunctionReciprocalTransformer.get_fct_inv"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.get_fct_inv">[docs]</a>    <span class="k">def</span> <span class="nf">get_fct_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FunctionReciprocalTransformer.get_fct_inv">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.get_fct_inv">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_fct_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a trained transform which reverse the target</span>
 <span class="sd">        after a predictor.</span>
@@ -322,7 +331,10 @@
             <span class="n">res</span> <span class="o">=</span> <span class="n">FunctionReciprocalTransformer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fct_inv_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fct_</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="FunctionReciprocalTransformer.transform"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FunctionReciprocalTransformer.transform">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.FunctionReciprocalTransformer.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms *X* and *y*.</span>
 <span class="sd">        Returns transformed *X* and *y*.</span>
@@ -331,10 +343,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fct_</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fct_</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="PermutationReciprocalTransformer"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer">[docs]</a><span class="k">class</span> <span class="nc">PermutationReciprocalTransformer</span><span class="p">(</span><span class="n">BaseReciprocalTransformer</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PermutationReciprocalTransformer">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer">[docs]</a>
+<span class="k">class</span> <span class="nc">PermutationReciprocalTransformer</span><span class="p">(</span><span class="n">BaseReciprocalTransformer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The transform is used to permute targets,</span>
 <span class="sd">    predict, then permute the target back before scoring.</span>
@@ -351,12 +367,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">closest</span> <span class="o">=</span> <span class="n">closest</span>
 
-<div class="viewcode-block" id="PermutationReciprocalTransformer.fit"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PermutationReciprocalTransformer.fit">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Defines a random permutation over the targets.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;targets cannot be empty.&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;targets cannot be empty.&quot;</span>
         <span class="n">num</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floating</span><span class="p">)</span>
         <span class="n">perm</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
@@ -378,6 +395,7 @@
             <span class="n">perm</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">lin</span><span class="p">[</span><span class="n">perm</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">permutation_</span> <span class="o">=</span> <span class="n">perm</span></div>
 
+
     <span class="k">def</span> <span class="nf">_check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;permutation_&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span>
@@ -385,7 +403,9 @@
                 <span class="sa">f</span><span class="s2">&quot;appropriate arguments before using this method.&quot;</span>
             <span class="p">)</span>
 
-<div class="viewcode-block" id="PermutationReciprocalTransformer.get_fct_inv"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.get_fct_inv">[docs]</a>    <span class="k">def</span> <span class="nf">get_fct_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PermutationReciprocalTransformer.get_fct_inv">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.get_fct_inv">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_fct_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a trained transform which reverse the target</span>
 <span class="sd">        after a predictor.</span>
@@ -394,6 +414,7 @@
         <span class="n">res</span> <span class="o">=</span> <span class="n">PermutationReciprocalTransformer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span> <span class="n">closest</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">closest</span><span class="p">)</span>
         <span class="n">res</span><span class="o">.</span><span class="n">permutation_</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">permutation_</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">return</span> <span class="n">res</span></div>
+
 
     <span class="k">def</span> <span class="nf">_find_closest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cl</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;knn_&quot;</span><span class="p">):</span>
@@ -411,7 +432,9 @@
             <span class="sa">f</span><span class="s2">&quot;The function does not work for type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">knn_perm_</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="PermutationReciprocalTransformer.transform"><a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="PermutationReciprocalTransformer.transform">
+<a class="viewcode-back" href="../../../api/mlmodel.html#mlinsights.mlmodel.sklearn_transform_inv_fct.PermutationReciprocalTransformer.transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms *X* and *y*.</span>
 <span class="sd">        Returns transformed *X* and *y*.</span>
@@ -442,8 +465,7 @@
             <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">yp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># y is probababilies or raw score</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;yp should be a matrix but has shape </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;yp should be a matrix but has shape </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="n">cl</span> <span class="o">=</span> <span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">permutation_</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
             <span class="n">cl</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
             <span class="n">new_perm</span> <span class="o">=</span> <span class="p">{}</span>
@@ -452,7 +474,9 @@
             <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="n">yp</span><span class="p">[:,</span> <span class="n">new_perm</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
-            <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">yp</span></div></div>
+            <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">yp</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -465,7 +489,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -485,9 +509,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../../../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

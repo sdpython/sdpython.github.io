@@ -6,40 +6,40 @@
 
 Computation times
 =================
-**01:16.763** total execution time for **auto_examples** files:
+**00:14.396** total execution time for **auto_examples** files:
 
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_digitize.py` (``plot_digitize.py``)                                                           | 00:21.778 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_search_images_torch.py` (``plot_search_images_torch.py``)                                     | 00:14.396 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_predictable_tsne.py` (``plot_predictable_tsne.py``)                                           | 00:12.744 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_constraint_kmeans.py` (``plot_constraint_kmeans.py``)                                         | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_decision_tree_logreg.py` (``plot_decision_tree_logreg.py``)                                   | 00:08.649 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_decision_tree_logreg.py` (``plot_decision_tree_logreg.py``)                                   | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_piecewise_classification.py` (``plot_piecewise_classification.py``)                           | 00:05.798 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_digitize.py` (``plot_digitize.py``)                                                           | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_piecewise_linear_regression_criterion.py` (``plot_piecewise_linear_regression_criterion.py``) | 00:04.769 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_kmeans_l1.py` (``plot_kmeans_l1.py``)                                                         | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_sklearn_transformed_target.py` (``plot_sklearn_transformed_target.py``)                       | 00:04.521 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_leave_neighbors.py` (``plot_leave_neighbors.py``)                                             | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_search_images_torch.py` (``plot_search_images_torch.py``)                                     | 00:03.893 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_logistic_regression_clustering.py` (``plot_logistic_regression_clustering.py``)               | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_kmeans_l1.py` (``plot_kmeans_l1.py``)                                                         | 00:03.709 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_piecewise_classification.py` (``plot_piecewise_classification.py``)                           | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_regression_confidence_interval.py` (``plot_regression_confidence_interval.py``)               | 00:02.894 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_piecewise_linear_regression.py` (``plot_piecewise_linear_regression.py``)                     | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_logistic_regression_clustering.py` (``plot_logistic_regression_clustering.py``)               | 00:02.105 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_piecewise_linear_regression_criterion.py` (``plot_piecewise_linear_regression_criterion.py``) | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_constraint_kmeans.py` (``plot_constraint_kmeans.py``)                                         | 00:01.667 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_predictable_tsne.py` (``plot_predictable_tsne.py``)                                           | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_quantile_mlpregression.py` (``plot_quantile_mlpregression.py``)                               | 00:01.451 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_quantile_mlpregression.py` (``plot_quantile_mlpregression.py``)                               | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_leave_neighbors.py` (``plot_leave_neighbors.py``)                                             | 00:01.237 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_quantile_regression.py` (``plot_quantile_regression.py``)                                     | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_piecewise_linear_regression.py` (``plot_piecewise_linear_regression.py``)                     | 00:00.934 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_regression_confidence_interval.py` (``plot_regression_confidence_interval.py``)               | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_quantile_regression.py` (``plot_quantile_regression.py``)                                     | 00:00.382 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_sklearn_transformed_target.py` (``plot_sklearn_transformed_target.py``)                       | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_visualize_pipeline.py` (``plot_visualize_pipeline.py``)                                       | 00:00.203 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_traceable_ngrams_tfidf.py` (``plot_traceable_ngrams_tfidf.py``)                               | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_traceable_ngrams_tfidf.py` (``plot_traceable_ngrams_tfidf.py``)                               | 00:00.028 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_visualize_pipeline.py` (``plot_visualize_pipeline.py``)                                       | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------------------------------------+-----------+--------+

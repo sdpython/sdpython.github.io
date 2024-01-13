@@ -1,21 +1,21 @@
 <!doctype html>
-<html class="no-js" lang="fr" data-content_root="">
+<html class="no-js" lang="fr" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Expressions régulières" href="exercice_regex.html" /><link rel="prev" title="Profiling la fonction Gini" href="profile_gini.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Profiling, application à la convolution - Documentation teachpyx 0.4.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
@@ -503,7 +503,7 @@
         </div>
         <article role="main">
           <section id="Profiling,-application-à-la-convolution">
-<h1>Profiling, application à la convolution<a class="headerlink" href="#Profiling,-application-à-la-convolution" title="Lien permanent vers cette rubrique">#</a></h1>
+<h1>Profiling, application à la convolution<a class="headerlink" href="#Profiling,-application-à-la-convolution" title="Link to this heading">#</a></h1>
 <p>Une <a class="reference external" href="https://fr.wikipedia.org/wiki/Noyau_(traitement_d%27image)">convolution</a> est une opération très fréquente en deep learning lorsqu’il s’agit d’interpréter des images. Elle est aussi coûteuse et c’est pour ça que beaucoup essayent d’accélérer son calcul à défaut de s’en passer.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -523,7 +523,7 @@ SVG(&quot;https://upload.wikimedia.org/wikipedia/commons/9/9f/ConvolutionAndPool
 <img alt="../../_images/practice_py-base_profiling_conv_1_0.svg" src="../../_images/practice_py-base_profiling_conv_1_0.svg" /></div>
 </div>
 <section id="Implémentation-naïve">
-<h2>Implémentation naïve<a class="headerlink" href="#Implémentation-naïve" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Implémentation naïve<a class="headerlink" href="#Implémentation-naïve" title="Link to this heading">#</a></h2>
 <p>On implémente l’algorithme dans sa version naïve et on compare les résultats à la version implémentée dans <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.convolve2d.html">scipy.signal.convolve2d</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -636,11 +636,11 @@ array([[ 0.       ,  0.       ,  0.       ,  0.       ,  0.       ,
 </pre></div></div>
 </div>
 <section id="Q1:-comparer-les-temps-d'exécution">
-<h3>Q1: comparer les temps d’exécution<a class="headerlink" href="#Q1:-comparer-les-temps-d'exécution" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q1: comparer les temps d’exécution<a class="headerlink" href="#Q1:-comparer-les-temps-d'exécution" title="Link to this heading">#</a></h3>
 <p>Avec la fonction <a class="reference external" href="https://docs.python.org/3/library/timeit.html#timeit.repeat">timeit.repeat</a>. Essayer avec des matrices plus grandes.</p>
 </section>
 <section id="Q2:-comparer-avec-une-seconde-implémentation">
-<h3>Q2: comparer avec une seconde implémentation<a class="headerlink" href="#Q2:-comparer-avec-une-seconde-implémentation" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q2: comparer avec une seconde implémentation<a class="headerlink" href="#Q2:-comparer-avec-une-seconde-implémentation" title="Link to this heading">#</a></h3>
 <p>La fonction suivante fait exactement la même chose. Est-elle plus rapide ?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -709,7 +709,7 @@ test_unitaire()
 </section>
 </section>
 <section id="im2col">
-<h2>im2col<a class="headerlink" href="#im2col" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>im2col<a class="headerlink" href="#im2col" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">im2col</span></code> est une transformation de l’image <code class="docutils literal notranslate"><span class="pre">img</span></code> de sorte que la convolution devienne un produit matriciel. Comme un produit matriciel est un algorithme très utilisé, il existe de nombreuses implémentation optimisée. L’idée est que, même si on perd du temps à transformer la matrice initiale, on en gagne par la suite. Maintenant, comment faire pour que :</p>
 <p><code class="docutils literal notranslate"><span class="pre">convolve2d(img,</span> <span class="pre">kernel)</span> <span class="pre">=</span> <span class="pre">im2col(img)</span> <span class="pre">&#64;</span> <span class="pre">kernel.flatten()</span></code></p>
 <p>ou quelque chose de pas loin.</p>
@@ -812,7 +812,7 @@ test_unitaire2()
 </div>
 </div>
 <section id="Q3:-comparer-à-nouveau-les-temps-d'éxecution">
-<h3>Q3: comparer à nouveau les temps d’éxecution<a class="headerlink" href="#Q3:-comparer-à-nouveau-les-temps-d'éxecution" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q3: comparer à nouveau les temps d’éxecution<a class="headerlink" href="#Q3:-comparer-à-nouveau-les-temps-d'éxecution" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -824,7 +824,7 @@ test_unitaire2()
 </section>
 </section>
 <section id="Profiling">
-<h2>Profiling<a class="headerlink" href="#Profiling" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Profiling<a class="headerlink" href="#Profiling" title="Link to this heading">#</a></h2>
 <p>La fonction <code class="docutils literal notranslate"><span class="pre">convolve_im2col_naive</span></code> est en fait composées de quatre fonctions. On sait mesurer le temps global mais cela n’aide pas à savoir dans quelle direction partir pour l’accélérer. Le profiling et justement l’outil qu’il nous faut. Il mesure le temps d’exécution passé dans chaque fonction.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -910,7 +910,7 @@ print(clean(s.getvalue()))
 </pre></div></div>
 </div>
 <section id="Q4:-que-peut-on-en-déduire-?">
-<h3>Q4: que peut-on en déduire ?<a class="headerlink" href="#Q4:-que-peut-on-en-déduire-?" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q4: que peut-on en déduire ?<a class="headerlink" href="#Q4:-que-peut-on-en-déduire-?" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -921,7 +921,7 @@ print(clean(s.getvalue()))
 </div>
 </section>
 <section id="Profilage-:-événements-ou-échantillonnage">
-<h3>Profilage : événements ou échantillonnage<a class="headerlink" href="#Profilage-:-événements-ou-échantillonnage" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Profilage : événements ou échantillonnage<a class="headerlink" href="#Profilage-:-événements-ou-échantillonnage" title="Link to this heading">#</a></h3>
 <p>Le profileur de python enregistre les événements du programme, il note chaque temps auquel il rentre et sort de chaque fonction. Cela lui permet de construire un graphe d’appel des fonctions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
@@ -981,7 +981,7 @@ informations de débuggage. Si le processeur sait quelle instruction il exécute
 </section>
 </section>
 <section id="Une-dernière-implémentation">
-<h2>Une dernière implémentation<a class="headerlink" href="#Une-dernière-implémentation" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Une dernière implémentation<a class="headerlink" href="#Une-dernière-implémentation" title="Link to this heading">#</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
@@ -1053,7 +1053,7 @@ test_unitaire3()
 </div>
 <p>Elle donne le même résultat.</p>
 <section id="Q5:-Que-pouvez-vous-dire-de-cette-dernière-implémentation-?">
-<h3>Q5: Que pouvez-vous dire de cette dernière implémentation ?<a class="headerlink" href="#Q5:-Que-pouvez-vous-dire-de-cette-dernière-implémentation-?" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q5: Que pouvez-vous dire de cette dernière implémentation ?<a class="headerlink" href="#Q5:-Que-pouvez-vous-dire-de-cette-dernière-implémentation-?" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1097,7 +1097,7 @@ test_unitaire3()
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2016-2023, Xavier Dupré
+                Copyright &#169; 2016-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1153,9 +1153,9 @@ test_unitaire3()
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9db00da4"></script>
+</div><script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

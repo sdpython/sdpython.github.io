@@ -1,21 +1,21 @@
 <!doctype html>
-<html class="no-js" lang="fr" data-content_root="">
+<html class="no-js" lang="fr" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Calculer x**n le plus rapidement possible" href="exercice_xn.html" /><link rel="prev" title="Calculer le nombre de façons de monter une échelle." href="exercice_echelle.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>La sous-séquence de plus grande somme - Documentation teachpyx 0.4.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
@@ -503,7 +503,7 @@
         </div>
         <article role="main">
           <section id="La-sous-séquence-de-plus-grande-somme">
-<h1>La sous-séquence de plus grande somme<a class="headerlink" href="#La-sous-séquence-de-plus-grande-somme" title="Lien permanent vers cette rubrique">#</a></h1>
+<h1>La sous-séquence de plus grande somme<a class="headerlink" href="#La-sous-séquence-de-plus-grande-somme" title="Link to this heading">#</a></h1>
 <p>Ce problème est connu sur le nom de <a class="reference external" href="http://en.wikipedia.org/wiki/Maximum_subarray_problem">Maximum subarray problem</a>. Notion abordée : programmation dynamique.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -514,12 +514,12 @@
 </div>
 </div>
 <section id="Enoncé">
-<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Link to this heading">#</a></h2>
 <p>On suppose qu’on a une liste <img class="math" src="../../_images/math/d23a489c6baec1ab2b6fa678fcdca3eb93d1bfc0.svg" alt="L=( l_1, l_2, ..., l_n)"/>. On souhaite trouver la sous-séquence de plus grande somme. En d’autres termes, on veut trouver <img class="math" src="../../_images/math/a97c88583e36e1eb902462579e0684a9da8f7b65.svg" alt="(i^*,j^*)"/> tels que :</p>
 <p><img class="math" src="../../_images/math/d5f823459cf716c6ac8df7236b43e91d2121d48e.svg" alt="\sum_{k=i^*}^{j^*} l_k = \max_{i,j} \sum_{k=i}^{j} l_k"/></p>
 </section>
 <section id="Solution-naïve">
-<h2>Solution naïve<a class="headerlink" href="#Solution-naïve" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Solution naïve<a class="headerlink" href="#Solution-naïve" title="Link to this heading">#</a></h2>
 <p>La première solution consiste à calculer les sommes de toutes les sous-séquences et de garder les <img class="math" src="../../_images/math/9e31aabef52bf96d45f7221587a670cd7fdf3231.svg" alt="i,j"/> qui ont permis d’obtenir la meilleure sous-séquence. On divise le programme en deux fonctions :</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">somme_partielle</span></code> : calcule la somme de la sous-séquence <code class="docutils literal notranslate"><span class="pre">l[i:j]</span></code> (coût de la fonction : <img class="math" src="../../_images/math/81b0a9fa49c0ad4095f564b409e94423ea3a174f.svg" alt="O(n)"/>)</p></li>
@@ -573,7 +573,7 @@
 <p><img class="math" src="../../_images/math/f7d7ed8e83d62854d5f4c482923f46ce21ca1ec5.svg" alt="cout(n) = \sum_{i=0}^n \sum_{j=i+1}^n j-i = \sum_{i=0}^n \sum_{j=0}^i j = \sum_{i=0}^n \frac{i(i+1)}{2} \sim O(n^3)"/></p>
 </section>
 <section id="Solution-plus-rapide">
-<h2>Solution plus rapide<a class="headerlink" href="#Solution-plus-rapide" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Solution plus rapide<a class="headerlink" href="#Solution-plus-rapide" title="Link to this heading">#</a></h2>
 <p>Il est possible de modifier cette fonction de telle sorte que le coût soit en <img class="math" src="../../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/> car on évite la répétition de certains calculs lors du calcul de la somme des sous-séquences. On peut écrire :</p>
 <p><img class="math" src="../../_images/math/30bee9f1f92f4e4358ca235c28e4dd1108638858.svg" alt="\sum_{k=i}^{j+1} l_k = l_j + \sum_{k=i}^{j} l_k"/></p>
 <p>Dans la seconde boucle, il suffit d’ajouter l’élément <code class="docutils literal notranslate"><span class="pre">li[j]</span></code> à la somme précédente.</p>
@@ -628,7 +628,7 @@
 </div>
 </section>
 <section id="Solution-dichotomique">
-<h2>Solution dichotomique<a class="headerlink" href="#Solution-dichotomique" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Solution dichotomique<a class="headerlink" href="#Solution-dichotomique" title="Link to this heading">#</a></h2>
 <p>Il existe une dernière version plus rapide encore. Si on considère la liste <img class="math" src="../../_images/math/bc50bc6dd24325cb62ba94ec04c33dc4314d0802.svg" alt="L=(l_1, ..., l_n)"/> dont on cherche à extraire la sous-séquence de somme maximale. Supposons que <img class="math" src="../../_images/math/679e1ea8ca5f80c1dc0f4aae37fe3ba0c55cc4e2.svg" alt="l_a"/> appartienne à cette sous-séquence. On construit la fonction suivante :</p>
 <p><img class="math" src="../../_images/math/d6ddc9b3964c83c164110f67c0da9583be9cddc2.svg" alt="f(a,k) =\left \{ \begin{array}{ll} \sum_{i=a}^{k} l_i &amp;si \; k &gt; a \\ \sum_{i=k}^{a} l_i &amp;si \; k &lt; a \end{array} \right ."/></p>
 <p>On cherche alors les valeurs <img class="math" src="../../_images/math/96d51463cc39e3f8cd58ad9a8fcb4cf53832f96d.svg" alt="k_1"/> et <img class="math" src="../../_images/math/eb773f1198deb96cbd23c277ccc71474500093fa.svg" alt="k_2"/> telles que :</p>
@@ -773,7 +773,7 @@ f(512)=4608 --&gt; f(512)/512 = 9.0
 <p>Par conséquent, le coût est en <img class="math" src="../../_images/math/e8c52b180a3fdb95dc9b16a831620d07f59275f3.svg" alt="C(n) \sim O(n \ln^2 n)"/>.</p>
 </section>
 <section id="Solution-linéaire">
-<h2>Solution linéaire<a class="headerlink" href="#Solution-linéaire" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Solution linéaire<a class="headerlink" href="#Solution-linéaire" title="Link to this heading">#</a></h2>
 <p>La dernière solution est la plus rapide. Elle consiste à parcourir la liste dans le sens croissant des indices et à construire la série cumulée.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -887,7 +887,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
 </div>
 </section>
 <section id="Comparaison-des-temps-de-calcul">
-<h2>Comparaison des temps de calcul<a class="headerlink" href="#Comparaison-des-temps-de-calcul" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Comparaison des temps de calcul<a class="headerlink" href="#Comparaison-des-temps-de-calcul" title="Link to this heading">#</a></h2>
 <p>On effectue cela sur une liste de nombres aléatoire négatifs et positifs.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -969,7 +969,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
 </div>
 </section>
 <section id="Application">
-<h2>Application<a class="headerlink" href="#Application" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Application<a class="headerlink" href="#Application" title="Link to this heading">#</a></h2>
 <p>Le <a class="reference external" href="http://en.wikipedia.org/wiki/Drawdown_%28economics%29">drawdown</a> est un indicateur de performance pour les systèmes de trading. Il mesure la perte maximale enregistrée sur une période. En d’autres, il correspond à la sous-séquence de somme minimale. On vient de montrer qu’il n’est pas plus long à calculer qu’une moyenne.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1013,7 +1013,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2016-2023, Xavier Dupré
+                Copyright &#169; 2016-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1058,9 +1058,9 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9db00da4"></script>
+</div><script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Evaluate different ways to export a torch model to ONNX" href="plot_torch_export.html" /><link rel="prev" title="API" href="../api/index.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="To ignore" href="bug_dort.html" /><link rel="prev" title="aten_functions" href="../api/aten_function.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Example gallery - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -166,8 +166,20 @@
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/gradient.html">gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/interpreter.html">interpreter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="bug_dort.html">To ignore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_profile_existing_onnx.html">Profile an existing model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_dort.html">Evaluate DORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_aot.html">Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_export.html">Evaluate different ways to export a torch model to ONNX</a></li>
 </ul>
 </li>
@@ -211,11 +223,11 @@
         </div>
         <article role="main">
           <section id="example-gallery">
-<h1>Example gallery<a class="headerlink" href="#example-gallery" title="Permalink to this heading">#</a></h1>
+<h1>Example gallery<a class="headerlink" href="#example-gallery" title="Link to this heading">#</a></h1>
 <p>A couple of examples to illustrate different implementation
 of dot product (see also <a class="reference external" href="https://github.com/sphinx-gallery/sphinx-gallery">sphinx-gallery</a>).</p>
 <section id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h2>
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
 <p>pytorch nightly build should be installed, see
 <a class="reference external" href="https://pytorch.org/get-started/locally/">Start Locally</a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/xadupre/experimental-experiment.git
@@ -227,7 +239,7 @@ export PYTHONPATH=$PYTHONPATH:&lt;this folder&gt;
 <p>Then install <em>onnx-rewriter</em>.</p>
 </section>
 <section id="compare-torch-exporters">
-<h2>Compare torch exporters<a class="headerlink" href="#compare-torch-exporters" title="Permalink to this heading">#</a></h2>
+<h2>Compare torch exporters<a class="headerlink" href="#compare-torch-exporters" title="Link to this heading">#</a></h2>
 <p>The script evaluates the memory peak, the computation time of the exporters.
 It also compares the exported models when run through onnxruntime.
 The full script takes around 20 minutes to complete. It stores on disk
@@ -235,7 +247,22 @@ all the graphs, the data used to draw them, and the models.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">_doc</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">plot_torch_export</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">s</span> <span class="n">large</span>
 </pre></div>
 </div>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was conve..."><img alt="" src="../_images/sphx_glr_plot_torch_export_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="To ignore"><img alt="" src="../_images/sphx_glr_bug_dort_thumb.png" />
+<p><a class="reference internal" href="bug_dort.html#sphx-glr-auto-examples-bug-dort-py"><span class="std std-ref">To ignore</span></a></p>
+  <div class="sphx-glr-thumbnail-title">To ignore</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Profiles any onnx model on CPU."><img alt="" src="../_images/sphx_glr_plot_profile_existing_onnx_thumb.png" />
+<p><a class="reference internal" href="plot_profile_existing_onnx.html#sphx-glr-auto-examples-plot-profile-existing-onnx-py"><span class="std std-ref">Profile an existing model</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Profile an existing model</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The convolution is a well known image transformation used to transform an image. It can be used..."><img alt="" src="../_images/sphx_glr_plot_convolutation_matmul_thumb.png" />
+<p><a class="reference internal" href="plot_convolutation_matmul.html#sphx-glr-auto-examples-plot-convolutation-matmul-py"><span class="std std-ref">Convolution and Matrix Multiplication</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Convolution and Matrix Multiplication</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and the default backend."><img alt="" src="../_images/sphx_glr_plot_torch_dort_thumb.png" />
+<p><a class="reference internal" href="plot_torch_dort.html#sphx-glr-auto-examples-plot-torch-dort-py"><span class="std std-ref">Evaluate DORT</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Evaluate DORT</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and the default backend."><img alt="" src="../_images/sphx_glr_plot_torch_aot_thumb.png" />
+<p><a class="reference internal" href="plot_torch_aot.html#sphx-glr-auto-examples-plot-torch-aot-py"><span class="std std-ref">Evaluate DORT Training</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Evaluate DORT Training</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was conve..."><img alt="" src="../_images/sphx_glr_plot_torch_export_thumb.png" />
 <p><a class="reference internal" href="plot_torch_export.html#sphx-glr-auto-examples-plot-torch-export-py"><span class="std std-ref">Evaluate different ways to export a torch model to ONNX</span></a></p>
   <div class="sphx-glr-thumbnail-title">Evaluate different ways to export a torch model to ONNX</div>
 </div></div><div class="toctree-wrapper compound">
@@ -257,23 +284,23 @@ all the graphs, the data used to draw them, and the models.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="plot_torch_export.html">
+          <a class="next-page" href="bug_dort.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Evaluate different ways to export a torch model to ONNX</div>
+                <div class="title">To ignore</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../api/index.html">
+          <a class="prev-page" href="../api/aten_function.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">API</div>
+                <div class="title">aten_functions</div>
                 
               </div>
             </a>
@@ -281,7 +308,7 @@ all the graphs, the data used to draw them, and the models.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023
+                Copyright &#169; 2023-2024
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -321,9 +348,9 @@ all the graphs, the data used to draw them, and the models.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c88f2e48"></script>
+</div><script src="../_static/documentation_options.js?v=a1637f0b"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

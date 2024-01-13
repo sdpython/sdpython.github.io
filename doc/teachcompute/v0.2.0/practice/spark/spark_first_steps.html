@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="fr" data-content_root="">
+<html class="no-js" lang="fr" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Matrices en 3 colonnes" href="spark_matrix_3_columns.html" /><link rel="prev" title="Mapper, Reducers customisés avec SQL" href="../mapreduce/sql_map_reduce.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Premiers pas avec Spark - Documentation teachcompute 0.2.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -301,7 +301,7 @@
         </div>
         <article role="main">
           <section id="Premiers-pas-avec-Spark">
-<h1>Premiers pas avec Spark<a class="headerlink" href="#Premiers-pas-avec-Spark" title="Lien permanent vers cette rubrique">#</a></h1>
+<h1>Premiers pas avec Spark<a class="headerlink" href="#Premiers-pas-avec-Spark" title="Link to this heading">#</a></h1>
 <p>Introduction à <a class="reference external" href="https://spark.apache.org/">Spark</a> et aux <a class="reference external" href="https://www.cs.cmu.edu/~pavlo/courses/fall2013/static/slides/spark.pdf">RDD</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -312,9 +312,9 @@
 </div>
 </div>
 <section id="Deux-ou-trois-petites-choses-à-ne-pas-oublier">
-<h2>Deux ou trois petites choses à ne pas oublier<a class="headerlink" href="#Deux-ou-trois-petites-choses-à-ne-pas-oublier" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Deux ou trois petites choses à ne pas oublier<a class="headerlink" href="#Deux-ou-trois-petites-choses-à-ne-pas-oublier" title="Link to this heading">#</a></h2>
 <section id="Local-et-cluster">
-<h3>Local et cluster<a class="headerlink" href="#Local-et-cluster" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Local et cluster<a class="headerlink" href="#Local-et-cluster" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://spark.apache.org/">Spark</a> n’est pas un langage de programmation mais un environnement de calcul distribué. L’installation en locale reproduit ce que <a class="reference external" href="https://spark.apache.org/">Spark</a> donnerait à grande échelle sur un cluster mais ce n’est pas rigoureusement identique. En particulier cela veut dire que si votre script tourne en local sur un petit jeu de données, il est possible qu’il échoue sur le cluster :</p>
 <ul class="simple">
 <li><p>Les dépendances du script sont installées en local mais pas sur chaque machine du cluster <a class="reference external" href="https://spark.apache.org/">Spark</a>. Cela peut se faire à l’installation du cluster pour des dépendances conséquentes ou juste avant l’exécution d’un <em>job</em> pour des dépendances ponctuelles.</p></li>
@@ -326,7 +326,7 @@
 contournante.</p>
 </section>
 <section id="Spark-et-RDD">
-<h3>Spark et RDD<a class="headerlink" href="#Spark-et-RDD" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Spark et RDD<a class="headerlink" href="#Spark-et-RDD" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://spark.apache.org/">Spark</a> ne manipule pas des fichiers mais des <a class="reference external" href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">Resilient Distributed Dataset</a> ou <em>RDD</em>. En particulier :</p>
 <ol class="arabic simple">
 <li><p>Les <em>RDD</em> sont organisés en ligne : ce sont des blocs qui ne seront jamais <em>cassés</em> ni <em>modifié</em>. Ces lignes ne peuvent pas excéder 2 Go (voir <a class="reference external" href="https://issues.apache.org/jira/browse/SPARK-6235">SPARK-6235</a>) mais il est conseillé de ne pas aller au-delà de quelques Mo.</p></li>
@@ -337,12 +337,12 @@ contournante.</p>
 </ol>
 </section>
 <section id="Les-partitions">
-<h3>Les partitions<a class="headerlink" href="#Les-partitions" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Les partitions<a class="headerlink" href="#Les-partitions" title="Link to this heading">#</a></h3>
 <p>Il existe une exception au point 2 : les <strong>partitions</strong>. Une partition est un ensemble de lignes traitées par le même processus. La parallélisation ne peut excéder le nombre de partitions. Par défaut, c’est aléatoire (hash hash). Mais on peut tout-à-fait partionner selon une colonne, deux colonnes. D’ailleurs, c’est là-dessus qu’on joue pour optimiser la distribution. Si on réduit (ou grouper) selon une colonne, c’est d’autant plus rapide si le stream est déjà partitionnée sur cette colonne.
 Voir également <a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.RDD.repartition.html?highlight=repartition#pyspark.RDD.repartition">pyspark.RDD.repartition</a>.</p>
 </section>
 <section id="Spark-et-Python">
-<h3>Spark et Python<a class="headerlink" href="#Spark-et-Python" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Spark et Python<a class="headerlink" href="#Spark-et-Python" title="Link to this heading">#</a></h3>
 <p>Spark est implémenté en Java. L’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">Python</a> permet de faire beaucoup de choses mais :</p>
 <ul class="simple">
 <li><p>Elle ne sera jamais aussi complète que l’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>.</p></li>
@@ -350,11 +350,11 @@ Voir également <a class="reference external" href="https://spark.apache.org/doc
 </ul>
 </section>
 <section id="Librairies-sur-Spark">
-<h3>Librairies sur Spark<a class="headerlink" href="#Librairies-sur-Spark" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Librairies sur Spark<a class="headerlink" href="#Librairies-sur-Spark" title="Link to this heading">#</a></h3>
 <p>Un des succès de Spark est de proposer des extensions dédiées à certains usages comme <a class="reference external" href="https://spark.apache.org/mllib/">MLlib</a> qui implémente des algorihmes de machine learning distribués, <a class="reference external" href="https://spark.apache.org/graphx/">GraphX</a> pour des algorithmes sur des graphes. <a class="reference external" href="https://spark.apache.org/mllib/">MLlib</a> sera bientôt remplacé par ML qui s’appuie sur les <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html#datasets-and-dataframes">DataFrame</a>.</p>
 </section>
 <section id="Vérifier-que-Spark-en-local-fonctionne">
-<h3>Vérifier que Spark en local fonctionne<a class="headerlink" href="#Vérifier-que-Spark-en-local-fonctionne" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Vérifier que Spark en local fonctionne<a class="headerlink" href="#Vérifier-que-Spark-en-local-fonctionne" title="Link to this heading">#</a></h3>
 <p>On essaye le <em>« hello world »</em> en <em>Spark</em> qui consiste à compter les mots dans un fichier. On prend le fichier du notebook.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -429,12 +429,12 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </section>
 <section id="Sortie-en-plusieurs-fichiers">
-<h3>Sortie en plusieurs fichiers<a class="headerlink" href="#Sortie-en-plusieurs-fichiers" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Sortie en plusieurs fichiers<a class="headerlink" href="#Sortie-en-plusieurs-fichiers" title="Link to this heading">#</a></h3>
 <p>Un <em>job</em> <em>Spark</em> est distribué. La sortie d’un <em>job</em> <em>Spark</em> s’effectue sous la forme de plusieurs stream dans un répertoire, un stream par processus. Cela explique la présence de <em>part-00000</em>, <em>part-00001</em>. Le fichier <code class="docutils literal notranslate"><span class="pre">_SUCCESS</span></code> indique le statut du job.</p>
 </section>
 </section>
 <section id="Les-opérations-de-bases">
-<h2>Les opérations de bases<a class="headerlink" href="#Les-opérations-de-bases" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Les opérations de bases<a class="headerlink" href="#Les-opérations-de-bases" title="Link to this heading">#</a></h2>
 <p>Documentation : <a class="reference external" href="https://spark.apache.org/docs/latest/programming-guide.html#transformations">programming-guide.html - transformations</a>.</p>
 <p>Dans cette section, on considère les données comme un ensemble de lignes de texte. Rien de plus. Donc, pas d’information de type, des conversions quasiment tout le temps. Bref, c’est utile pour comprendre. On y revient quand le reste ne marche pas. En général, on commence par <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a>. Ah oui j’oubliais, on s’en sert beaucoup quand les données ne sont pas structurées et sont décrites par du JSON, genre des logs d’un site
 internet. Chaque ligne est en fait un gros JSON.</p>
@@ -640,7 +640,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </pre></div></div>
 </div>
 <section id="déclaration-d'un-RDD">
-<h3>déclaration d’un RDD<a class="headerlink" href="#déclaration-d'un-RDD" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>déclaration d’un RDD<a class="headerlink" href="#déclaration-d'un-RDD" title="Link to this heading">#</a></h3>
 <p>La déclaration déclare l’existence d’un <em>RDD</em> comme on déclare un fichier. Pour l’instant aucune manipulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -652,7 +652,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </section>
 <section id="enregistrement-d'un-RDD">
-<h3>enregistrement d’un RDD<a class="headerlink" href="#enregistrement-d'un-RDD" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>enregistrement d’un RDD<a class="headerlink" href="#enregistrement-d'un-RDD" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -725,7 +725,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="lecture-locale-d'un-RDD-avec-pandas">
-<h3>lecture locale d’un RDD avec pandas<a class="headerlink" href="#lecture-locale-d'un-RDD-avec-pandas" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>lecture locale d’un RDD avec pandas<a class="headerlink" href="#lecture-locale-d'un-RDD-avec-pandas" title="Link to this heading">#</a></h3>
 <p>On lit chaque morceaux avant de les concaténer.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -841,7 +841,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="collect">
-<h3>collect<a class="headerlink" href="#collect" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>collect<a class="headerlink" href="#collect" title="Link to this heading">#</a></h3>
 <p>Cette opération regroupe les deux précédentes en une seule. Il faut toute de même faire attention de ne pas l’exécuter sur un grand fichier sous peine de faire exploser la mémoire.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -971,7 +971,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="map">
-<h3>map<a class="headerlink" href="#map" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>map<a class="headerlink" href="#map" title="Link to this heading">#</a></h3>
 <p>Transformer une ligne en une autre ligne. Chaque ligne est traitée indépendemment des autres.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -998,7 +998,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="filter">
-<h3>filter<a class="headerlink" href="#filter" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>filter<a class="headerlink" href="#filter" title="Link to this heading">#</a></h3>
 <p>Garder ou jeter une ligne. Chaque ligne est traitée indépendemment des autres.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
@@ -1052,7 +1052,7 @@ _SUCCESS  part-00000  part-00001
 <p>Il faut faire attention aux transformations successives des lignes.</p>
 </section>
 <section id="flatMap">
-<h3>flatMap<a class="headerlink" href="#flatMap" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>flatMap<a class="headerlink" href="#flatMap" title="Link to this heading">#</a></h3>
 <p>C’est la principale différence avec SQL. Une ligne peut devenir un nombre variable de lignes.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
@@ -1131,7 +1131,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="group-/-reduce-+-mapValues">
-<h3>group / reduce + mapValues<a class="headerlink" href="#group-/-reduce-+-mapValues" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>group / reduce + mapValues<a class="headerlink" href="#group-/-reduce-+-mapValues" title="Link to this heading">#</a></h3>
 <p>Petite moyenne ?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
@@ -1166,11 +1166,11 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="sort">
-<h3>sort<a class="headerlink" href="#sort" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>sort<a class="headerlink" href="#sort" title="Link to this heading">#</a></h3>
 <p>Je n’en parle pas. Trier un gros jeu de données est à proscrire. On peut trier au sein d’un groupe mais <strong>jamais</strong> un stream entier. Ca fait presque dix ans que j’écris des jobs map/reduce, je n’ai jamais écrit un <em>sort</em> sur tout un jeu de données. Ca s’appelle flinguer de la CPU pour rien.</p>
 </section>
 <section id="join">
-<h3>join<a class="headerlink" href="#join" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>join<a class="headerlink" href="#join" title="Link to this heading">#</a></h3>
 <p>Et on remet la moyenne dans le stream initial. Il vaut mieux regarder la documentation de la méthode <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.join">join</a> avant de commencer à lire le code qui suit.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
@@ -1235,7 +1235,7 @@ _SUCCESS  part-00000  part-00001
 <p>On commence à comprendre pourquoi <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a>, ça risque d’être pas mal.</p>
 </section>
 <section id="le-choix-existentiel-du-join-:-le-petit-join">
-<h3>le choix existentiel du join : le petit join<a class="headerlink" href="#le-choix-existentiel-du-join-:-le-petit-join" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>le choix existentiel du join : le petit join<a class="headerlink" href="#le-choix-existentiel-du-join-:-le-petit-join" title="Link to this heading">#</a></h3>
 <p>On fait souvent une opération qui consiste à garder les lignes pour lesquelles une certaine valeur appartient à un ensemble. On peut faire un join classique ou alors l’ensemble est petit, traiter ce join comme un map. On broadcaste l’ensemble à chaque processus exécutant le map.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
@@ -1276,7 +1276,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert">
-<h3>les trucs qui servent parfois parce que … à l’usage ça sert<a class="headerlink" href="#les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>les trucs qui servent parfois parce que … à l’usage ça sert<a class="headerlink" href="#les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert" title="Link to this heading">#</a></h3>
 <p>Ce que font les méthodes associées aux <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">RDD</a>, un peu comme les itérateurs, n’est pas toujours intuitif, mais il est à peu près sûr qu’elles vous serviront un jour (peut-être après avoir googlé ou bingé comme des fous).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
@@ -1316,7 +1316,7 @@ _SUCCESS  part-00000  part-00001
 <p><a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.histogram">histogram</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.groupByKey">groupByKey</a></p>
 </section>
 <section id="le-truc-à-retenir">
-<h3>le truc à retenir<a class="headerlink" href="#le-truc-à-retenir" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>le truc à retenir<a class="headerlink" href="#le-truc-à-retenir" title="Link to this heading">#</a></h3>
 <p>collect, collect… qu’est-ce que je voulais dire déjà… Ah oui… Un job map/reduce c’est :</p>
 <ol class="arabic simple">
 <li><p>La déclaration des flux d’entrées.</p></li>
@@ -1327,7 +1327,7 @@ _SUCCESS  part-00000  part-00001
 </section>
 </section>
 <section id="Spark-DataFrame">
-<h2>Spark DataFrame<a class="headerlink" href="#Spark-DataFrame" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Spark DataFrame<a class="headerlink" href="#Spark-DataFrame" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a></p>
 <p>Au début, ça commence par… créer un dataframe. Et comme pour pandas, ces objets retienennt les noms et les types.</p>
 <div class="nbinput docutils container">
@@ -1473,7 +1473,7 @@ only showing top 20 rows
 </pre></div></div>
 </div>
 <section id="Conversion-à-pandas">
-<h3>Conversion à pandas<a class="headerlink" href="#Conversion-à-pandas" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Conversion à pandas<a class="headerlink" href="#Conversion-à-pandas" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
@@ -1635,7 +1635,7 @@ only showing top 20 rows
 </div>
 </section>
 <section id="Retour-aux-RDD">
-<h3>Retour aux RDD<a class="headerlink" href="#Retour-aux-RDD" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Retour aux RDD<a class="headerlink" href="#Retour-aux-RDD" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
@@ -1655,7 +1655,7 @@ MapPartitionsRDD[54] at javaToPython at NativeMethodAccessorImpl.java:0
 </div>
 </section>
 <section id="Récuperer-le-schéma">
-<h3>Récuperer le schéma<a class="headerlink" href="#Récuperer-le-schéma" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Récuperer le schéma<a class="headerlink" href="#Récuperer-le-schéma" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
@@ -1707,7 +1707,7 @@ root
 </div>
 </section>
 <section id="Utiliser-pandas-pour-spécifer-le-format">
-<h3>Utiliser pandas pour spécifer le format<a class="headerlink" href="#Utiliser-pandas-pour-spécifer-le-format" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Utiliser pandas pour spécifer le format<a class="headerlink" href="#Utiliser-pandas-pour-spécifer-le-format" title="Link to this heading">#</a></h3>
 <p>On utilise pandas sur une partie du stream.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
@@ -1892,7 +1892,7 @@ root
 </div>
 </section>
 <section id="Enregistrement-au-format-parquet">
-<h3>Enregistrement au format parquet<a class="headerlink" href="#Enregistrement-au-format-parquet" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Enregistrement au format parquet<a class="headerlink" href="#Enregistrement-au-format-parquet" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
@@ -1913,7 +1913,7 @@ Scaling row group sizes to 95.00% for 8 writers
 </div>
 </section>
 <section id="Relecture-du-format-parquet">
-<h3>Relecture du format parquet<a class="headerlink" href="#Relecture-du-format-parquet" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Relecture du format parquet<a class="headerlink" href="#Relecture-du-format-parquet" title="Link to this heading">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
@@ -1956,7 +1956,7 @@ root
 </div>
 </section>
 <section id="Dataframe-Spark-VS-Dataframe-pandas">
-<h3>Dataframe Spark VS Dataframe pandas<a class="headerlink" href="#Dataframe-Spark-VS-Dataframe-pandas" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Dataframe Spark VS Dataframe pandas<a class="headerlink" href="#Dataframe-Spark-VS-Dataframe-pandas" title="Link to this heading">#</a></h3>
 <p>Spark a reproduit la même interface que pandas pour ses dataframes excepté que le résultat n’est pas calculé tant qu’on ne choisit pas de sauvegarder le résultat.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
@@ -2010,7 +2010,7 @@ only showing top 20 rows
 </section>
 </section>
 <section id="Fin">
-<h2>Fin<a class="headerlink" href="#Fin" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Fin<a class="headerlink" href="#Fin" title="Link to this heading">#</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
@@ -2053,7 +2053,7 @@ only showing top 20 rows
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -2128,9 +2128,9 @@ only showing top 20 rows
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=faffbb0f"></script>
+</div><script src="../../_static/documentation_options.js?v=9313ea4c"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

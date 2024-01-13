@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.08.19 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>pandas_streaming.df.dataframe - pandas-streaming 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -242,7 +242,9 @@
 <span class="kn">from</span> <span class="nn">.dataframe_io_helpers</span> <span class="kn">import</span> <span class="n">enumerate_json_items</span><span class="p">,</span> <span class="n">JsonIterator2Stream</span>
 
 
-<div class="viewcode-block" id="StreamingDataFrameSchemaError"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrameSchemaError">[docs]</a><span class="k">class</span> <span class="nc">StreamingDataFrameSchemaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamingDataFrameSchemaError">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrameSchemaError">[docs]</a>
+<span class="k">class</span> <span class="nc">StreamingDataFrameSchemaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reveals an issue with inconsistant schemas.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -250,7 +252,10 @@
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="StreamingDataFrame"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame">[docs]</a><span class="k">class</span> <span class="nc">StreamingDataFrame</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame">[docs]</a>
+<span class="k">class</span> <span class="nc">StreamingDataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a streaming dataframe.</span>
 <span class="sd">    The goal is to reduce the memory footprint.</span>
@@ -296,7 +301,9 @@
 <span class="sd">        whenever it is walked through</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="StreamingDataFrame.__init__"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iter_creation</span><span class="p">,</span> <span class="n">check_schema</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamingDataFrame.__init__">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iter_creation</span><span class="p">,</span> <span class="n">check_schema</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_delete_</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iter_creation</span><span class="p">,</span> <span class="p">(</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
@@ -311,7 +318,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">stable</span> <span class="o">=</span> <span class="n">stable</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">check_schema</span> <span class="o">=</span> <span class="n">check_schema</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.is_stable"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.is_stable">[docs]</a>    <span class="k">def</span> <span class="nf">is_stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">do_check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.is_stable">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.is_stable">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">do_check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tells if the :epkg:`dataframe` is supposed to be stable.</span>
 
@@ -335,13 +345,19 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.get_kwargs"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.get_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">get_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.get_kwargs">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.get_kwargs">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the parameters used to call the constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">check_schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">check_schema</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.train_test_split"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.train_test_split">[docs]</a>    <span class="k">def</span> <span class="nf">train_test_split</span><span class="p">(</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.train_test_split">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.train_test_split">[docs]</a>
+    <span class="k">def</span> <span class="nf">train_test_split</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">path_or_buf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">export_method</span><span class="o">=</span><span class="s2">&quot;to_csv&quot;</span><span class="p">,</span>
@@ -397,6 +413,7 @@
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span></div>
 
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_process_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -409,7 +426,9 @@
                 <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">kw</span>
 
-<div class="viewcode-block" id="StreamingDataFrame.read_json"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_json">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="StreamingDataFrame.read_json">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_json">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
@@ -552,7 +571,10 @@
 
         <span class="k">return</span> <span class="n">StreamingDataFrame</span><span class="p">(</span><span class="n">fct3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs_create</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.read_csv"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_csv">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.read_csv">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_csv">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">read_csv</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reads a :epkg:`csv` file or buffer</span>
@@ -574,7 +596,10 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs_create</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.read_str"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_str">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.read_str">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_str">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">read_str</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reads a :epkg:`DataFrame` as an iterator on :epkg:`DataFrame`.</span>
@@ -598,7 +623,10 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs_create</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.read_df"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_df">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.read_df">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.read_df">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">read_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check_schema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Splits a :epkg:`DataFrame` into small chunks mostly for</span>
@@ -633,7 +661,10 @@
 
         <span class="k">return</span> <span class="n">StreamingDataFrame</span><span class="p">(</span><span class="n">local_iterator</span><span class="p">,</span> <span class="n">check_schema</span><span class="o">=</span><span class="n">check_schema</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.__iter__"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__iter__">[docs]</a>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.__iter__">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__iter__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterator on a large file with a sliding window.</span>
 <span class="sd">        Each windows is a :epkg:`DataFrame`.</span>
@@ -686,6 +717,7 @@
             <span class="n">rows</span> <span class="o">+=</span> <span class="n">it</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">yield</span> <span class="n">it</span></div>
 
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -717,7 +749,9 @@
         <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">dtypes</span>
 
-<div class="viewcode-block" id="StreamingDataFrame.to_csv"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.to_csv">[docs]</a>    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_or_buf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamingDataFrame.to_csv">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.to_csv">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_or_buf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves the :epkg:`DataFrame` into string.</span>
 <span class="sd">        See :epkg:`pandas:DataFrame.to_csv`.</span>
@@ -744,19 +778,28 @@
             <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">path_or_buf</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.to_dataframe"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.to_dataframe">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.to_dataframe">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts everything into a single :epkg:`DataFrame`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.to_df"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.to_df">[docs]</a>    <span class="k">def</span> <span class="nf">to_df</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.to_df">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.to_df">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_df</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts everything into a single :epkg:`DataFrame`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.iterrows"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.iterrows">[docs]</a>    <span class="k">def</span> <span class="nf">iterrows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.iterrows">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.iterrows">[docs]</a>
+    <span class="k">def</span> <span class="nf">iterrows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        See :epkg:`pandas:DataFrame:iterrows`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -764,7 +807,10 @@
             <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
                 <span class="k">yield</span> <span class="n">it</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.head"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.head">[docs]</a>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.head">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.head">[docs]</a>
+    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the first rows as a :epkg:`DataFrame`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -783,7 +829,10 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.tail"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.tail">[docs]</a>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.tail">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.tail">[docs]</a>
+    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the last rows as a :epkg:`DataFrame`.</span>
 <span class="sd">        The size of chunks must be greater than ``n`` to</span>
@@ -794,7 +843,10 @@
             <span class="n">h</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">h</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.where"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.where">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.where">[docs]</a>
+    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies :epkg:`pandas:DataFrame:where`.</span>
 <span class="sd">        *inplace* must be False.</span>
@@ -806,7 +858,10 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="bp">self</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">()</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.sample"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reservoir</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.sample">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.sample">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reservoir</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        See :meth:`pandas.DataFrame.sample`.</span>
 <span class="sd">        Only *frac* is available, otherwise choose :meth`reservoir_sampling`.</span>
@@ -836,6 +891,7 @@
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(),</span>
             <span class="n">stable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_reservoir_sampling</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span>
@@ -887,7 +943,9 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">reservoir_iterate</span><span class="p">(</span><span class="n">sdf</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="n">indices</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="StreamingDataFrame.drop"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span>
+<div class="viewcode-block" id="StreamingDataFrame.drop">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.drop">[docs]</a>
+    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -923,7 +981,10 @@
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(),</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.apply"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.apply">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies :epkg:`pandas:DataFrame:apply`.</span>
 <span class="sd">        This function returns a see :class:`StreamingDataFrame</span>
@@ -933,7 +994,10 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="bp">self</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">()</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.applymap"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.applymap">[docs]</a>    <span class="k">def</span> <span class="nf">applymap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.applymap">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.applymap">[docs]</a>
+    <span class="k">def</span> <span class="nf">applymap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies :epkg:`pandas:DataFrame:applymap`.</span>
 <span class="sd">        This function returns a see :class:`StreamingDataFrame</span>
@@ -944,7 +1008,10 @@
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(),</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.merge"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.merge">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.merge">[docs]</a>
+    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Merges two see :class:`StreamingDataFrame</span>
 <span class="sd">        &lt;pandas_streaming.df.dataframe.StreamingDataFrame&gt;`</span>
@@ -971,7 +1038,10 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">iterator_merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">()</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.concat"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.concat">[docs]</a>    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">others</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.concat">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.concat">[docs]</a>
+    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">others</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Concatenates :epkg:`dataframes`.</span>
 <span class="sd">        The function ensures all :epkg:`pandas:DataFrame`</span>
@@ -991,6 +1061,7 @@
         <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_concatv</span><span class="p">(</span><span class="n">others</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;axis must be 0 or 1&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
+
 
     <span class="k">def</span> <span class="nf">_concath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">others</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">others</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -1052,7 +1123,9 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">iterator_concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">others</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">()</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="StreamingDataFrame.groupby"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.groupby">[docs]</a>    <span class="k">def</span> <span class="nf">groupby</span><span class="p">(</span>
+<div class="viewcode-block" id="StreamingDataFrame.groupby">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.groupby">[docs]</a>
+    <span class="k">def</span> <span class="nf">groupby</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lambda_agg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lambda_agg_agg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1132,7 +1205,10 @@
         <span class="n">conc</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">lambda_agg_agg</span><span class="p">(</span><span class="n">conc</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.groupby_streaming"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.groupby_streaming">[docs]</a>    <span class="k">def</span> <span class="nf">groupby_streaming</span><span class="p">(</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.groupby_streaming">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.groupby_streaming">[docs]</a>
+    <span class="k">def</span> <span class="nf">groupby_streaming</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">lambda_agg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1254,7 +1330,10 @@
 
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown strategy &#39;</span><span class="si">{</span><span class="n">strategy</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.ensure_dtype"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.ensure_dtype">[docs]</a>    <span class="k">def</span> <span class="nf">ensure_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.ensure_dtype">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.ensure_dtype">[docs]</a>
+    <span class="k">def</span> <span class="nf">ensure_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Ensures the :epkg:`dataframe` *df* has types indicated in dtypes.</span>
 <span class="sd">        Changes it if not.</span>
@@ -1272,7 +1351,10 @@
                 <span class="n">ch</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">ch</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.__getitem__"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__getitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.__getitem__">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__getitem__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implements some of the functionalities :epkg:`pandas`</span>
 <span class="sd">        offers for the operator ``[]``.</span>
@@ -1304,7 +1386,10 @@
 
         <span class="k">return</span> <span class="n">StreamingDataFrame</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">iterate_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.__setitem__"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__setitem__">[docs]</a>    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.__setitem__">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__setitem__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Limited set of operators are supported.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1348,7 +1433,10 @@
                 <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">index</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.add_column"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.add_column">[docs]</a>    <span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.add_column">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.add_column">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implements some of the functionalities :epkg:`pandas`</span>
 <span class="sd">        offers for the operator ``[]``.</span>
@@ -1416,7 +1504,10 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">iterate_cst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">()</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.fillna"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.fillna">[docs]</a>    <span class="k">def</span> <span class="nf">fillna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.fillna">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.fillna">[docs]</a>
+    <span class="k">def</span> <span class="nf">fillna</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Replaces the missing values, calls</span>
 <span class="sd">        :epkg:`pandas:DataFrame:fillna`.</span>
@@ -1446,7 +1537,10 @@
             <span class="k">lambda</span><span class="p">:</span> <span class="n">iterate_na</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">()</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.describe"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">percentiles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.describe">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.describe">[docs]</a>
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">percentiles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calls :epkg:`pandas:DataFrame:describe` on every piece</span>
 <span class="sd">        of the datasets. *percentiles* are not really accurate</span>
@@ -1501,7 +1595,10 @@
         <span class="n">summary</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">merged</span><span class="p">,</span> <span class="n">summary</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.sort_values"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.sort_values">[docs]</a>    <span class="k">def</span> <span class="nf">sort_values</span><span class="p">(</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.sort_values">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.sort_values">[docs]</a>
+    <span class="k">def</span> <span class="nf">sort_values</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">by</span><span class="p">,</span>
         <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -1586,15 +1683,22 @@
         <span class="n">res</span><span class="o">.</span><span class="n">_delete_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">temp_file</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="StreamingDataFrame.__del__"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__del__">[docs]</a>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingDataFrame.__del__">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingDataFrame.__del__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calls every function in `_delete_`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delete_</span><span class="p">:</span>
-            <span class="n">f</span><span class="p">()</span></div></div>
+            <span class="n">f</span><span class="p">()</span></div>
+</div>
 
 
-<div class="viewcode-block" id="StreamingSeries"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingSeries">[docs]</a><span class="k">class</span> <span class="nc">StreamingSeries</span><span class="p">(</span><span class="n">StreamingDataFrame</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StreamingSeries">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingSeries">[docs]</a>
+<span class="k">class</span> <span class="nc">StreamingSeries</span><span class="p">(</span><span class="n">StreamingDataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Seens as a see :class:`StreamingDataFrame</span>
 <span class="sd">    &lt;pandas_streaming.df.dataframe.StreamingDataFrame&gt;` of one column.</span>
@@ -1609,7 +1713,9 @@
                 <span class="sa">f</span><span class="s2">&quot;A series can contain only one column not &quot;</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">!r}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
-<div class="viewcode-block" id="StreamingSeries.apply"><a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingSeries.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamingSeries.apply">
+<a class="viewcode-back" href="../../../api/dataframe.html#pandas_streaming.df.dataframe.StreamingSeries.apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StreamingDataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies :epkg:`pandas:Series:apply`.</span>
 <span class="sd">        This function returns a @see cl StreamingSeries.</span>
@@ -1617,6 +1723,7 @@
         <span class="k">return</span> <span class="n">StreamingSeries</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="bp">self</span><span class="p">),</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">()</span>
         <span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1631,6 +1738,7 @@
                 <span class="k">yield</span> <span class="n">df</span> <span class="o">+</span> <span class="n">value</span>
 
         <span class="k">return</span> <span class="n">StreamingSeries</span><span class="p">(</span><span class="n">iterate</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">())</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -1643,7 +1751,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2016-2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1663,9 +1771,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../../../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

@@ -62,6 +62,7 @@ size <https://arxiv.org/abs/1602.07360>`_.
 
  .. code-block:: none
 
+    [2023-11-17 16:11:37,145] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 
     SqueezeNet(
       (features): Sequential(
@@ -232,7 +233,7 @@ Raw images
 
     url = "https://github.com/sdpython/mlinsights/raw/ref/_doc/examples/data/dog-cat-pixabay.zip"
     files = unzip_files(url, where_to="simages/category")
-    if len(files) == 0:
+    if not files:
         raise FileNotFoundError(f"No images where unzipped from {url!r}.")
     len(files), files[0]
 
@@ -303,7 +304,7 @@ Raw images
         Root location: simages
         StandardTransform
     Transform: Compose(
-                   Resize(size=(224, 224), interpolation=bilinear, max_size=None, antialias=warn)
+                   Resize(size=(224, 224), interpolation=bilinear, max_size=None, antialias=True)
                    CenterCrop(size=(224, 224))
                    ToTensor()
                )
@@ -328,7 +329,7 @@ Raw images
  .. code-block:: none
 
 
-    <torch.utils.data.dataloader.DataLoader object at 0x7fed7a75fca0>
+    <torch.utils.data.dataloader.DataLoader object at 0x7f7fd1783d90>
 
 
 
@@ -757,7 +758,7 @@ each image in the training datasets.
 .. raw:: html
 
     <div class="output_subarea output_html rendered_html output_result">
-    <style>#sk-container-id-34 {
+    <style>#sk-container-id-1 {
       /* Definition of color scheme common for light and dark mode */
       --sklearn-color-text: black;
       --sklearn-color-line: gray;
@@ -787,15 +788,15 @@ each image in the training datasets.
       }
     }
 
-    #sk-container-id-34 {
+    #sk-container-id-1 {
       color: var(--sklearn-color-text);
     }
 
-    #sk-container-id-34 pre {
+    #sk-container-id-1 pre {
       padding: 0;
     }
 
-    #sk-container-id-34 input.sk-hidden--visually {
+    #sk-container-id-1 input.sk-hidden--visually {
       border: 0;
       clip: rect(1px 1px 1px 1px);
       clip: rect(1px, 1px, 1px, 1px);
@@ -807,7 +808,7 @@ each image in the training datasets.
       width: 1px;
     }
 
-    #sk-container-id-34 div.sk-dashed-wrapped {
+    #sk-container-id-1 div.sk-dashed-wrapped {
       border: 1px dashed var(--sklearn-color-line);
       margin: 0 0.4em 0.5em 0.4em;
       box-sizing: border-box;
@@ -815,7 +816,7 @@ each image in the training datasets.
       background-color: var(--sklearn-color-background);
     }
 
-    #sk-container-id-34 div.sk-container {
+    #sk-container-id-1 div.sk-container {
       /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
          but bootstrap.min.css set `[hidden] { display: none !important; }`
          so we also need the `!important` here to be able to override the
@@ -825,7 +826,7 @@ each image in the training datasets.
       position: relative;
     }
 
-    #sk-container-id-34 div.sk-text-repr-fallback {
+    #sk-container-id-1 div.sk-text-repr-fallback {
       display: none;
     }
 
@@ -841,14 +842,14 @@ each image in the training datasets.
 
     /* Parallel-specific style estimator block */
 
-    #sk-container-id-34 div.sk-parallel-item::after {
+    #sk-container-id-1 div.sk-parallel-item::after {
       content: "";
       width: 100%;
       border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
       flex-grow: 1;
     }
 
-    #sk-container-id-34 div.sk-parallel {
+    #sk-container-id-1 div.sk-parallel {
       display: flex;
       align-items: stretch;
       justify-content: center;
@@ -856,28 +857,28 @@ each image in the training datasets.
       position: relative;
     }
 
-    #sk-container-id-34 div.sk-parallel-item {
+    #sk-container-id-1 div.sk-parallel-item {
       display: flex;
       flex-direction: column;
     }
 
-    #sk-container-id-34 div.sk-parallel-item:first-child::after {
+    #sk-container-id-1 div.sk-parallel-item:first-child::after {
       align-self: flex-end;
       width: 50%;
     }
 
-    #sk-container-id-34 div.sk-parallel-item:last-child::after {
+    #sk-container-id-1 div.sk-parallel-item:last-child::after {
       align-self: flex-start;
       width: 50%;
     }
 
-    #sk-container-id-34 div.sk-parallel-item:only-child::after {
+    #sk-container-id-1 div.sk-parallel-item:only-child::after {
       width: 0;
     }
 
     /* Serial-specific style estimator block */
 
-    #sk-container-id-34 div.sk-serial {
+    #sk-container-id-1 div.sk-serial {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -895,14 +896,14 @@ each image in the training datasets.
 
     /* Pipeline and ColumnTransformer style (default) */
 
-    #sk-container-id-34 div.sk-toggleable {
+    #sk-container-id-1 div.sk-toggleable {
       /* Default theme specific background. It is overwritten whether we have a
       specific estimator or a Pipeline/ColumnTransformer */
       background-color: var(--sklearn-color-background);
     }
 
     /* Toggleable label */
-    #sk-container-id-34 label.sk-toggleable__label {
+    #sk-container-id-1 label.sk-toggleable__label {
       cursor: pointer;
       display: block;
       width: 100%;
@@ -912,7 +913,7 @@ each image in the training datasets.
       text-align: center;
     }
 
-    #sk-container-id-34 label.sk-toggleable__label-arrow:before {
+    #sk-container-id-1 label.sk-toggleable__label-arrow:before {
       /* Arrow on the left of the label */
       content: "▸";
       float: left;
@@ -920,13 +921,13 @@ each image in the training datasets.
       color: var(--sklearn-color-icon);
     }
 
-    #sk-container-id-34 label.sk-toggleable__label-arrow:hover:before {
+    #sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
       color: var(--sklearn-color-text);
     }
 
     /* Toggleable content - dropdown */
 
-    #sk-container-id-34 div.sk-toggleable__content {
+    #sk-container-id-1 div.sk-toggleable__content {
       max-height: 0;
       max-width: 0;
       overflow: hidden;
@@ -935,12 +936,12 @@ each image in the training datasets.
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-34 div.sk-toggleable__content.fitted {
+    #sk-container-id-1 div.sk-toggleable__content.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-34 div.sk-toggleable__content pre {
+    #sk-container-id-1 div.sk-toggleable__content pre {
       margin: 0.2em;
       border-radius: 0.25em;
       color: var(--sklearn-color-text);
@@ -948,79 +949,79 @@ each image in the training datasets.
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-34 div.sk-toggleable__content.fitted pre {
+    #sk-container-id-1 div.sk-toggleable__content.fitted pre {
       /* unfitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-34 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+    #sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
       /* Expand drop-down */
       max-height: 200px;
       max-width: 100%;
       overflow: auto;
     }
 
-    #sk-container-id-34 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+    #sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
       content: "▾";
     }
 
     /* Pipeline/ColumnTransformer-specific style */
 
-    #sk-container-id-34 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    #sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-34 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    #sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator-specific style */
 
     /* Colorize estimator box */
-    #sk-container-id-34 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    #sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-34 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    #sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
-    #sk-container-id-34 div.sk-label label.sk-toggleable__label,
-    #sk-container-id-34 div.sk-label label {
+    #sk-container-id-1 div.sk-label label.sk-toggleable__label,
+    #sk-container-id-1 div.sk-label label {
       /* The background is the default theme color */
       color: var(--sklearn-color-text-on-default-background);
     }
 
     /* On hover, darken the color of the background */
-    #sk-container-id-34 div.sk-label:hover label.sk-toggleable__label {
+    #sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
     /* Label box, darken color on hover, fitted */
-    #sk-container-id-34 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+    #sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator label */
 
-    #sk-container-id-34 div.sk-label label {
+    #sk-container-id-1 div.sk-label label {
       font-family: monospace;
       font-weight: bold;
       display: inline-block;
       line-height: 1.2em;
     }
 
-    #sk-container-id-34 div.sk-label-container {
+    #sk-container-id-1 div.sk-label-container {
       text-align: center;
     }
 
     /* Estimator-specific */
-    #sk-container-id-34 div.sk-estimator {
+    #sk-container-id-1 div.sk-estimator {
       font-family: monospace;
       border: 1px dotted var(--sklearn-color-border-box);
       border-radius: 0.25em;
@@ -1030,18 +1031,18 @@ each image in the training datasets.
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-34 div.sk-estimator.fitted {
+    #sk-container-id-1 div.sk-estimator.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
     /* on hover */
-    #sk-container-id-34 div.sk-estimator:hover {
+    #sk-container-id-1 div.sk-estimator:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-34 div.sk-estimator.fitted:hover {
+    #sk-container-id-1 div.sk-estimator.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
@@ -1128,7 +1129,7 @@ each image in the training datasets.
 
     /* "?"-specific style due to the `<a>` HTML tag */
 
-    #sk-container-id-34 a.estimator_doc_link {
+    #sk-container-id-1 a.estimator_doc_link {
       float: right;
       font-size: 1rem;
       line-height: 1em;
@@ -1143,25 +1144,25 @@ each image in the training datasets.
       border: var(--sklearn-color-unfitted-level-1) 1pt solid;
     }
 
-    #sk-container-id-34 a.estimator_doc_link.fitted {
+    #sk-container-id-1 a.estimator_doc_link.fitted {
       /* fitted */
       border: var(--sklearn-color-fitted-level-1) 1pt solid;
       color: var(--sklearn-color-fitted-level-1);
     }
 
     /* On hover */
-    #sk-container-id-34 a.estimator_doc_link:hover {
+    #sk-container-id-1 a.estimator_doc_link:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-3);
       color: var(--sklearn-color-background);
       text-decoration: none;
     }
 
-    #sk-container-id-34 a.estimator_doc_link.fitted:hover {
+    #sk-container-id-1 a.estimator_doc_link.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
     }
-    </style><div id="sk-container-id-34" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>NearestNeighbors()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-89" type="checkbox" checked><label for="sk-estimator-id-89" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;NearestNeighbors<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/dev/modules/generated/sklearn.neighbors.NearestNeighbors.html">?<span>Documentation for NearestNeighbors</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>NearestNeighbors()</pre></div> </div></div></div></div>
+    </style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>NearestNeighbors()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;NearestNeighbors<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/dev/modules/generated/sklearn.neighbors.NearestNeighbors.html">?<span>Documentation for NearestNeighbors</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>NearestNeighbors()</pre></div> </div></div></div></div>
     </div>
     <br />
     <br />
@@ -1299,7 +1300,7 @@ A training algorithm based on a gradient will have to propagate the gradient:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.893 seconds)
+   **Total running time of the script:** (0 minutes 14.396 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_search_images_torch.py:

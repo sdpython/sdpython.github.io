@@ -94,7 +94,7 @@ On représente ces données.
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7fc282a263b0>]
+    [<matplotlib.lines.Line2D object at 0x7f88864f7670>]
 
 
 
@@ -581,8 +581,8 @@ On calcule la :epkg:`matrice de confusion`.
 
  .. code-block:: none
 
-    [[ 9  1]
-     [ 1 14]]
+    [[ 7  0]
+     [ 2 16]]
 
 
 
@@ -676,7 +676,7 @@ Et on les représente.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fc282af0520>
+    <matplotlib.legend.Legend object at 0x7f8886317430>
 
 
 
@@ -742,7 +742,7 @@ On recommence avec la seconde fonction.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fc2829633a0>
+    <matplotlib.legend.Legend object at 0x7f88861ca020>
 
 
 
@@ -809,7 +809,7 @@ sklearn.metrics.precision_recall_curve>`_.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fc28280c550>
+    <matplotlib.legend.Legend object at 0x7f8886237460>
 
 
 
@@ -873,7 +873,7 @@ propose une pondération entre les deux :
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fc2828ce740>
+    <matplotlib.legend.Legend object at 0x7f8886135690>
 
 
 
@@ -931,7 +931,7 @@ et :math:`S_T` la variable aléatoire
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fc28266d8d0>
+    <matplotlib.legend.Legend object at 0x7f8885ec2440>
 
 
 
@@ -952,7 +952,7 @@ lorsque le seuil *s* varie.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.923 seconds)
+   **Total running time of the script:** (0 minutes 1.046 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ml_plot_roc.py:

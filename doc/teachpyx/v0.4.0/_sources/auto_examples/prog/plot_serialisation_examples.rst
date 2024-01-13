@@ -257,7 +257,7 @@ Et la relecture avec la classe :class:`json.JSONDecoder`.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7fd9f245ac80>
+    <__main__.A object at 0x7f87ddae8340>
 
 
 
@@ -312,7 +312,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.003328999999212101
+    0.002849399999831803
 
 
 
@@ -334,7 +334,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.00041649999911896884
+    0.00033690000054775737
 
 
 
@@ -364,7 +364,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0006865000032121316
+    0.0005795999986730749
 
 
 
@@ -385,7 +385,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0003828000008070376
+    0.0003201000017725164
 
 
 
@@ -411,7 +411,7 @@ On enlève le temps passé dans la creation du buffer.
  .. code-block:: none
 
 
-    4.4299998990027234e-05
+    3.570000080799218e-05
 
 
 
@@ -559,7 +559,7 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7fd9f2575870>
+    <__main__.A object at 0x7f8889b4b940>
 
 
 
@@ -691,7 +691,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    <__main__.B object at 0x7fd9f2575690>
+    <__main__.B object at 0x7f88877b2dd0>
 
 
 
@@ -734,7 +734,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.00041340000097989105
+    0.000416300001234049
 
 
 
@@ -755,7 +755,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.00031010000020614825
+    0.00032219999957305845
 
 
 
@@ -788,7 +788,7 @@ Il est possible d'accélérer un peu les choses.
  .. code-block:: none
 
 
-    0.00042749999920488335
+    0.0003802999999606982
 
 
 
@@ -854,7 +854,7 @@ Binaire
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7fda9990caf0>}
+    {'x': 5, 'f': <function myfunc at 0x7f8885f8b130>}
 
 
 
@@ -970,7 +970,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7fda9990dab0>}
+    {'x': 5, 'f': <function myfunc at 0x7f8885f895a0>}
 
 
 
@@ -1056,7 +1056,7 @@ même si elle ne produit pas toujours d'erreur.
 
  .. code-block:: none
 
-    <function myfunc at 0x7fda9990d630> is not JSON serializable
+    <function myfunc at 0x7f8885f8a560> is not JSON serializable
 
     ''
 
@@ -1119,7 +1119,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
  .. code-block:: none
 
 
-    {'x': 5, 'it': <list_iterator object at 0x7fd9f2574fa0>}
+    {'x': 5, 'it': <list_iterator object at 0x7f8889b4b7c0>}
 
 
 
@@ -1209,7 +1209,7 @@ sérialiser un générateur mais on peut sérialiser la fonction qui crée le g�
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.033 seconds)
+   **Total running time of the script:** (0 minutes 0.030 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_serialisation_examples.py:

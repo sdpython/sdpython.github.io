@@ -42,6 +42,91 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="To ignore">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_bug_dort_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_bug_dort.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">To ignore</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Profiles any onnx model on CPU.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_profile_existing_onnx_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Profile an existing model</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The convolution is a well known image transformation used to transform an image. It can be used...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_convolutation_matmul_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_convolutation_matmul.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Convolution and Matrix Multiplication</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and the default backend.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_dort_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_dort.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Evaluate DORT</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and the default backend.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_aot_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_aot.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Evaluate DORT Training</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was conve...">
 
 .. only:: html
@@ -65,6 +150,11 @@ all the graphs, the data used to draw them, and the models.
 .. toctree::
    :hidden:
 
+   /auto_examples/bug_dort
+   /auto_examples/plot_profile_existing_onnx
+   /auto_examples/plot_convolutation_matmul
+   /auto_examples/plot_torch_dort
+   /auto_examples/plot_torch_aot
    /auto_examples/plot_torch_export
 
 

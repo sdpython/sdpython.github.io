@@ -1,21 +1,21 @@
 <!doctype html>
-<html class="no-js" lang="fr" data-content_root="">
+<html class="no-js" lang="fr" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Décorrélation de variables aléatoires" href="decorrelation.html" /><link rel="prev" title="Puzzles algorithmiques (2)" href="puzzle_algo_2.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Programmation dynamique et plus court chemin - Documentation teachpyx 0.4.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
@@ -503,14 +503,14 @@
         </div>
         <article role="main">
           <section id="Programmation-dynamique-et-plus-court-chemin">
-<h1>Programmation dynamique et plus court chemin<a class="headerlink" href="#Programmation-dynamique-et-plus-court-chemin" title="Lien permanent vers cette rubrique">#</a></h1>
+<h1>Programmation dynamique et plus court chemin<a class="headerlink" href="#Programmation-dynamique-et-plus-court-chemin" title="Link to this heading">#</a></h1>
 <p>La programmation dynamique est une façon des calculs qui revient dans beaucoup d’algorithmes. Elle s’applique dès que ceux-ci peuvent s’écrire de façon récurrente.</p>
 <p>La <a class="reference external" href="https://fr.wikipedia.org/wiki/Programmation_dynamique">programmation dynamique</a> est une façon de résoudre de manière similaire une classe de problèmes d’optimisation qui vérifie la même propriété. On suppose qu’il est possible de découper le problème <img class="math" src="../../_images/math/2f2a105c289b01c226ad6e0f506d96386c48d440.svg" alt="P"/> en plusieurs parties <img class="math" src="../../_images/math/be7d9a330f5f0c6df62ce87923b1d2e81b2590e0.svg" alt="P_1"/>, <img class="math" src="../../_images/math/a5ec9c491cae3ee2d3e258f1105fd874c699552f.svg" alt="P_2"/>, … Si <img class="math" src="../../_images/math/02d33d8a2d2c23238f1631066f0ced17db9634b2.svg" alt="S"/> est la solution optimale du problème <img class="math" src="../../_images/math/2f2a105c289b01c226ad6e0f506d96386c48d440.svg" alt="P"/>, alors chaque partie <img class="math" src="../../_images/math/69f81b2fcad13c1c87e10ac2620aab2df0f57b2b.svg" alt="S_1"/>, <img class="math" src="../../_images/math/40ea1b76a312a613f4a71ddb77815b79a1b898ef.svg" alt="S_2"/>, … de cette solution appliquée aux sous-problèmes est aussi optimale.</p>
 <p>Par exemple, on cherche le plus court chemin <img class="math" src="../../_images/math/f38f4559eb09b667bb635c8ba72a6d774dec3c0f.svg" alt="c(A,B)"/> entre les villes <img class="math" src="../../_images/math/5fdb7ef407cf673109e4443028c7e8898ee8c89e.svg" alt="A"/> et <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/>. Si celui-ci passe par la ville <img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> alors les chemins <img class="math" src="../../_images/math/8970c72d996eeb09b05434abbcb1c48f62f62e18.svg" alt="c(A,M)+c(M,B) = c(A,B)"/> sont aussi les plus courts chemins entre les villes <img class="math" src="../../_images/math/a71c653ae9a867ac01dfa81cc804f6c69f2096bf.svg" alt="A,M"/> et <img class="math" src="../../_images/math/58bdc5be155208e8d9543f2ba57b24356f45d919.svg" alt="M,B"/>. La démonstration se fait simplement par l’absurde : si la distance <img class="math" src="../../_images/math/e70d2ac30b1822efa10b4f3973e73cd3bf0c6c62.svg" alt="c(A,M)"/> n’est pas optimale alors il est possible de constuire un chemin plus court entre les villes <img class="math" src="../../_images/math/5fdb7ef407cf673109e4443028c7e8898ee8c89e.svg" alt="A"/> et <img class="math" src="../../_images/math/3fba415f1647be3b47dae3f8a76087fd88af90a9.svg" alt="B"/>. Cela contredit l’hypothèse de
 départ.</p>
 <p>Ces problèmes ont en règle générale une expression simple sous forme de récurrence : si on sait résoudre le problème pour un échantillon de taille <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/>, on appelle cette solution <img class="math" src="../../_images/math/d80c8d197070cf022934d3454631d06e9dba3984.svg" alt="S(n)"/> alors on peut facilement la solution <img class="math" src="../../_images/math/bf2f2f8a29c77c78ccbed1a4af830f03e9fe66c3.svg" alt="S(n+1)"/> en fonction de <img class="math" src="../../_images/math/d80c8d197070cf022934d3454631d06e9dba3984.svg" alt="S(n)"/>. Parfois cette récurrence va au delà : <img class="math" src="../../_images/math/229178a2e7323b16b86e1f3dd61bd24ff9b6432f.svg" alt="S(n+1) = f(S(n), S(n-1), ..., S(0))"/>.</p>
 <section id="Les-données">
-<h2>Les données<a class="headerlink" href="#Les-données" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Les données<a class="headerlink" href="#Les-données" title="Link to this heading">#</a></h2>
 <p>On récupère le fichier <code class="docutils literal notranslate"><span class="pre">matrix_distance_7398.txt</span></code> depuis <a class="reference external" href="https://github.com/sdpython/teachpyx/raw/main/_data/matrix_distance_7398.zip">matrix_distance_7398.zip</a> qui contient des distances entre différentes villes (pas toutes).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -657,7 +657,7 @@ array([[&#39;Boulogne-Billancourt&#39;, &#39;Beauvais&#39;, 85597],
 <p>Chaque ligne définit un voyage entre deux villes effectué d’une traite, sans étape. Les accents ont été supprimés du fichier.</p>
 </section>
 <section id="Exercice-1">
-<h2>Exercice 1<a class="headerlink" href="#Exercice-1" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 1<a class="headerlink" href="#Exercice-1" title="Link to this heading">#</a></h2>
 <p>Construire la liste des villes sans doublons.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -669,7 +669,7 @@ array([[&#39;Boulogne-Billancourt&#39;, &#39;Beauvais&#39;, 85597],
 </div>
 </section>
 <section id="Exercice-2">
-<h2>Exercice 2<a class="headerlink" href="#Exercice-2" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 2<a class="headerlink" href="#Exercice-2" title="Link to this heading">#</a></h2>
 <p>Constuire un dictionnaire <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">(a,b)</span> <span class="pre">:</span> <span class="pre">d,</span> <span class="pre">(b,a)</span> <span class="pre">:</span> <span class="pre">d</span> <span class="pre">}</span></code> où <code class="docutils literal notranslate"><span class="pre">a,b</span></code> sont des villes et <code class="docutils literal notranslate"><span class="pre">d</span></code> la distance qui les sépare ?</p>
 <p>On veut calculer la distance entre la ville de <code class="docutils literal notranslate"><span class="pre">Charleville-Mezieres</span></code> et <code class="docutils literal notranslate"><span class="pre">Bordeaux</span></code> ? Est-ce que cette distance existe dans la liste des distances dont on dispose ?</p>
 <div class="nbinput nblast docutils container">
@@ -682,7 +682,7 @@ array([[&#39;Boulogne-Billancourt&#39;, &#39;Beauvais&#39;, 85597],
 </div>
 </section>
 <section id="Algorithme-du-plus-court-chemin">
-<h2>Algorithme du plus court chemin<a class="headerlink" href="#Algorithme-du-plus-court-chemin" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Algorithme du plus court chemin<a class="headerlink" href="#Algorithme-du-plus-court-chemin" title="Link to this heading">#</a></h2>
 <p>On créé un tableau <code class="docutils literal notranslate"><span class="pre">d[v]</span></code> qui contient ou contiendra la distance optimale entre les villes <code class="docutils literal notranslate"><span class="pre">v</span></code> et <code class="docutils literal notranslate"><span class="pre">Charleville-Mezieres</span></code>. La valeur qu’on cherche est <code class="docutils literal notranslate"><span class="pre">d['Bordeaux']</span></code>. On initialise le tableau comme suit :</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">d['Charleville-Mezieres']</span> <span class="pre">=</span> <span class="pre">0</span></code></p></li>
@@ -690,7 +690,7 @@ array([[&#39;Boulogne-Billancourt&#39;, &#39;Beauvais&#39;, 85597],
 </ul>
 </section>
 <section id="Exercice-3">
-<h2>Exercice 3<a class="headerlink" href="#Exercice-3" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 3<a class="headerlink" href="#Exercice-3" title="Link to this heading">#</a></h2>
 <p>Quelles sont les premières cases qu’on peut remplir facilement ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -702,7 +702,7 @@ array([[&#39;Boulogne-Billancourt&#39;, &#39;Beauvais&#39;, 85597],
 </div>
 </section>
 <section id="Exercice-4">
-<h2>Exercice 4<a class="headerlink" href="#Exercice-4" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 4<a class="headerlink" href="#Exercice-4" title="Link to this heading">#</a></h2>
 <p>Soit une ville <img class="math" src="../../_images/math/7d2fc793c4dfee8e99a9eafde2d5d1589845552f.svg" alt="v"/> et une autre <img class="math" src="../../_images/math/c43b263f4cf0cb143b4ab0c37fb828bcde629b5b.svg" alt="w"/>, on s’aperçoit que <img class="math" src="../../_images/math/dacab69419db321f3f0ef58b5e7eddd67252b3d7.svg" alt="d[w] &gt; d[v] + dist[w,v]"/>. Que proposez-vous de faire ? En déduire un algorithme qui permet de déterminer la distance la plus courte entre Charleville-Mezieres et Bordeaux.</p>
 <p>Si la solution vous échappe encore, vous pouvez vous inspirer de l”<a class="reference external" href="http://fr.wikipedia.org/wiki/Algorithme_de_Dijkstra">Algorithme de Djikstra</a>.</p>
 <div class="nbinput nblast docutils container">
@@ -715,7 +715,7 @@ array([[&#39;Boulogne-Billancourt&#39;, &#39;Beauvais&#39;, 85597],
 </div>
 </section>
 <section id="La-répartition-des-skis">
-<h2>La répartition des skis<a class="headerlink" href="#La-répartition-des-skis" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>La répartition des skis<a class="headerlink" href="#La-répartition-des-skis" title="Link to this heading">#</a></h2>
 <p>Ce problème est un exemple pour lequel il faut d’abord prouver que la solution vérifie une certaine propriété avant de pouvoir lui appliquer une solution issue de la programmation dynamique.</p>
 <p><img class="math" src="../../_images/math/1df3d5602a937d73d01847619917c4fc673ca000.svg" alt="N=10"/> skieurs rentrent dans un magasins pour louer 10 paires de skis (parmi <img class="math" src="../../_images/math/c81b9286d83939f37700f5712afae0de1052135e.svg" alt="M&gt;N"/>). On souhaite leur donner à tous une paire qui leur convient (on suppose que la taille de la paire de skis doit être au plus proche de la taille du skieurs. On cherche donc à minimiser :</p>
 <p><img class="math" src="../../_images/math/df8d2fbdda01bf02c96ae90ce21f7304096a21bd.svg" alt="\arg \min_\sigma \sum_{i=1}^{N} \left| t_i - s_{\sigma(i)} \right|"/></p>
@@ -733,11 +733,11 @@ comme si on insérait des espaces dans la séquence des skieurs sans changer l�
 </div>
 </section>
 <section id="Exercice-facultatif">
-<h2>Exercice facultatif<a class="headerlink" href="#Exercice-facultatif" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice facultatif<a class="headerlink" href="#Exercice-facultatif" title="Link to this heading">#</a></h2>
 <p>Il faut d’abord prouver que l’algorithme suggéré ci-dessus permet bien d’obtenir la solution optimale.</p>
 </section>
 <section id="Exercice-5">
-<h2>Exercice 5<a class="headerlink" href="#Exercice-5" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 5<a class="headerlink" href="#Exercice-5" title="Link to this heading">#</a></h2>
 <p>Après avoir avoir trié les skieurs et les paires par tailles croissantes. On définit :</p>
 <p><img class="math" src="../../_images/math/e3d33d1225fca3ca320706d3e2b8a913b34d765a.svg" alt="p(n,m) = \sum_{i=1}^{n} \left| t_i - s_{\sigma_m^*(i)} \right|"/></p>
 <p>Où <img class="math" src="../../_images/math/591baa467df8ede9cae9bc525f64cbdad19de85a.svg" alt="\sigma_m^*"/> est le meilleur choix possible de <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> paires de skis parmi les <img class="math" src="../../_images/math/435b11e0dbea2eaa16cbb0b93b9266e88b4a5b4c.svg" alt="m"/> premières. Exprimer <img class="math" src="../../_images/math/5d599dcc717bcb18e0c9b2e05030cf596cb5832f.svg" alt="p(n,m)"/> par récurrence (en fonction de <img class="math" src="../../_images/math/ca1dd1c4070a8deca0534bc8867a7f76420e446b.svg" alt="p(n,m-1)"/> et <img class="math" src="../../_images/math/5b3390652542bbf51c6555b2f45756f20191da04.svg" alt="p(n-1,m-1)"/>. On suppose qu’un skieur sans paire de ski correspond au cas où la paire est de taille nulle.</p>
@@ -751,7 +751,7 @@ comme si on insérait des espaces dans la séquence des skieurs sans changer l�
 </div>
 </section>
 <section id="Exercice-6">
-<h2>Exercice 6<a class="headerlink" href="#Exercice-6" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 6<a class="headerlink" href="#Exercice-6" title="Link to this heading">#</a></h2>
 <p>Ecrire une fonction qui calcule l’erreur pour la distribution optimale ? On pourra choisir des skieurs et des paires de tailles aléatoires par exemple.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -779,7 +779,7 @@ comme si on insérait des espaces dans la séquence des skieurs sans changer l�
 </div>
 </section>
 <section id="Exercice-7">
-<h2>Exercice 7<a class="headerlink" href="#Exercice-7" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 7<a class="headerlink" href="#Exercice-7" title="Link to this heading">#</a></h2>
 <p>Quelle est la meilleure distribution des skis aux skieurs ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -791,7 +791,7 @@ comme si on insérait des espaces dans la séquence des skieurs sans changer l�
 </div>
 </section>
 <section id="Exercice-8">
-<h2>Exercice 8<a class="headerlink" href="#Exercice-8" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Exercice 8<a class="headerlink" href="#Exercice-8" title="Link to this heading">#</a></h2>
 <p>Quels sont les coûts des deux algorithmes (plus court chemin et ski) ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -803,7 +803,7 @@ comme si on insérait des espaces dans la séquence des skieurs sans changer l�
 </div>
 </section>
 <section id="Prolongements-:-degré-de-séparation-sur-Facebook">
-<h2>Prolongements : degré de séparation sur Facebook<a class="headerlink" href="#Prolongements-:-degré-de-séparation-sur-Facebook" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Prolongements : degré de séparation sur Facebook<a class="headerlink" href="#Prolongements-:-degré-de-séparation-sur-Facebook" title="Link to this heading">#</a></h2>
 <p>Le plus court chemin dans un graphe est un des algorithmes les plus connus en programmation. Il permet de déterminer la solution en un coût <strong>polynômial</strong> - chaque itération est en <img class="math" src="../../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/>. La programmation dynamique caractèrise le passage d’une vision combinatoire à une compréhension récursif du même problème. Dans le cas du plus court chemin, l’approche combinatoire consiste à énumérer tous les chemins du graphe. L’approche dynamique consiste à démontrer que la première approche
 combinatoire aboutit à un calcul très redondant. On note <img class="math" src="../../_images/math/e3a71f150c46544dbdefdff2eac6be236e6dfa40.svg" alt="e(v,w)"/> la matrice des longueurs des routes, <img class="math" src="../../_images/math/add7443cdc7105c0fa1d3d4c27cd8da8f3b3381d.svg" alt="e(v,w) = \infty"/> s’il n’existe aucune route entre les villes <img class="math" src="../../_images/math/7d2fc793c4dfee8e99a9eafde2d5d1589845552f.svg" alt="v"/> et <img class="math" src="../../_images/math/c43b263f4cf0cb143b4ab0c37fb828bcde629b5b.svg" alt="w"/>. On suppose que <img class="math" src="../../_images/math/65dca8b218b644c27c4199a7bfb0f42b414900e4.svg" alt="e(v,w)=e(w,v)"/>. La construction du tableau <code class="docutils literal notranslate"><span class="pre">d</span></code> se définit de manière itérative et récursive comme suit :</p>
 <p><strong>Etape 0</strong></p>
@@ -962,7 +962,7 @@ tester vos idées sur cet exemple de graphe <a class="reference external" href="
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2016-2023, Xavier Dupré
+                Copyright &#169; 2016-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1013,9 +1013,9 @@ tester vos idées sur cet exemple de graphe <a class="reference external" href="
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9db00da4"></script>
+</div><script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

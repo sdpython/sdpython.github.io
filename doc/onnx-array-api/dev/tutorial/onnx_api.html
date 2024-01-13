@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="GraphBuilder: common API for ONNX" href="graph_api.html" /><link rel="prev" title="Tutorial" href="index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Many ways to implement a custom graph in ONNX - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -261,7 +261,7 @@
         </div>
         <article role="main">
           <section id="many-ways-to-implement-a-custom-graph-in-onnx">
-<h1>Many ways to implement a custom graph in ONNX<a class="headerlink" href="#many-ways-to-implement-a-custom-graph-in-onnx" title="Permalink to this heading">#</a></h1>
+<h1>Many ways to implement a custom graph in ONNX<a class="headerlink" href="#many-ways-to-implement-a-custom-graph-in-onnx" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://onnx.ai/">ONNX</a> defines a long list of operators used in machine learning models.
 They are used to implement functions. This step is usually taken care of
 by converting libraries: <a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a> for <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>,
@@ -276,7 +276,7 @@ an existing onnx models or to merge models coming from different packages.
 Sometimes, they are just not available, only onnx is.
 Let’s see how it looks like with a very simply example.</p>
 <section id="euclidian-distance">
-<h2>Euclidian distance<a class="headerlink" href="#euclidian-distance" title="Permalink to this heading">#</a></h2>
+<h2>Euclidian distance<a class="headerlink" href="#euclidian-distance" title="Link to this heading">#</a></h2>
 <p>For example, the well known Euclidian distance
 <img class="math" src="../_images/math/7bf0fb1c4ccff5eb925241f664ba47f60b75de41.svg" alt="f(X,Y)=\sum_{i=1}^n (X_i - Y_i)^2"/> can be expressed with numpy as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -550,7 +550,7 @@ API is not difficult, many times, the decision was made to create a new one
 rather than using an existing one.</p>
 </section>
 <section id="existing-api">
-<h2>Existing API<a class="headerlink" href="#existing-api" title="Permalink to this heading">#</a></h2>
+<h2>Existing API<a class="headerlink" href="#existing-api" title="Link to this heading">#</a></h2>
 <p>Many existing options are available to write custom onnx graphs.
 The development is usually driven by what they are used for. Each of them
 may not fully support all your needs and it is not always easy to understand
@@ -572,7 +572,7 @@ based on the same version</p></li>
 <li><p>is it actively maintained?</p></li>
 </ul>
 <section id="use-torch-or-tensorflow">
-<h3>Use torch or tensorflow<a class="headerlink" href="#use-torch-or-tensorflow" title="Permalink to this heading">#</a></h3>
+<h3>Use torch or tensorflow<a class="headerlink" href="#use-torch-or-tensorflow" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://pytorch.org/">pytorch</a> offers the possibility to convert any function
 implemented with pytorch function into onnx with <a class="reference external" href="https://pytorch.org/docs/stable/onnx.html">torch.onnx</a>.
 A couple of examples.</p>
@@ -627,7 +627,7 @@ A couple of examples.</p>
 </div>
 </section>
 <section id="onnxscript">
-<h3>onnxscript<a class="headerlink" href="#onnxscript" title="Permalink to this heading">#</a></h3>
+<h3>onnxscript<a class="headerlink" href="#onnxscript" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://github.com/microsoft/onnxscript">onnxscript</a> is used in <a class="reference external" href="https://pytorch.org/tutorials//beginner/onnx/export_simple_model_to_onnx_tutorial.html">Torch Export to ONNX</a>.
 It converts python code to onnx code by analyzing the python code
 (through <a class="reference external" href="https://docs.python.org/3/library/ast.html">ast</a>). The package makes it very easy to use loops and tests in onnx.
@@ -699,7 +699,7 @@ implementation depending on the opset version required by the user.</p>
 </div>
 </section>
 <section id="spox">
-<h3>spox<a class="headerlink" href="#spox" title="Permalink to this heading">#</a></h3>
+<h3>spox<a class="headerlink" href="#spox" title="Link to this heading">#</a></h3>
 <p>The syntax of <a class="reference external" href="https://github.com/Quantco/spox">spox</a> is similar but it does not use <a class="reference external" href="https://docs.python.org/3/library/ast.html">ast</a>.
 Therefore, <a class="reference external" href="https://spox.readthedocs.io/en/latest/guides/advanced.html#Control-flow">loops and tests</a>
 are expressed in a very different way. The tricky part with it is to handle
@@ -732,7 +732,7 @@ of its subgraphs.</p>
 <a class="reference external" href="https://spox.readthedocs.io/en/latest/guides/inference.html#Value-propagation">value propagation</a>.</p>
 </section>
 <section id="sklearn-onnx">
-<h3>sklearn-onnx<a class="headerlink" href="#sklearn-onnx" title="Permalink to this heading">#</a></h3>
+<h3>sklearn-onnx<a class="headerlink" href="#sklearn-onnx" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://onnx.ai/sklearn-onnx/">sklearn-onnx</a> also implements its own API to add custom graphs.
 It was designed to shorten the time spent in reimplementing <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>
 code into <a class="reference external" href="https://onnx.ai/onnx/">onnx</a> code. It can be used to implement a new converter
@@ -783,7 +783,7 @@ But it can also be used to build standalone models.</p>
 </div>
 </section>
 <section id="onnxblocks">
-<h3>onnxblocks<a class="headerlink" href="#onnxblocks" title="Permalink to this heading">#</a></h3>
+<h3>onnxblocks<a class="headerlink" href="#onnxblocks" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://onnxruntime.ai/docs/api/python/on_device_training/training_artifacts.html#prepare-for-training">onnxblocks</a>
 was introduced in onnxruntime to define custom losses in order to train
 a model with <a class="reference external" href="https://onnxruntime.ai/docs/get-started/training-on-device.html">onnxruntime-training</a>. It is mostly used for this usage.
@@ -833,7 +833,7 @@ The syntax is similar to pytorch.</p>
 </div>
 </section>
 <section id="onnx-graphsurgeon">
-<h3>ONNX GraphSurgeon<a class="headerlink" href="#onnx-graphsurgeon" title="Permalink to this heading">#</a></h3>
+<h3>ONNX GraphSurgeon<a class="headerlink" href="#onnx-graphsurgeon" title="Link to this heading">#</a></h3>
 <p><a class="reference external" href="https://docs.nvidia.com/deeplearning/tensorrt/onnx-graphsurgeon/docs/index.html">onnx-graphsurgeon</a> implements main class <cite>Graph</cite> which provides
 all the necessary method to add nodes, import existing onnx files.
 The following example is taken from <a class="reference external" href="https://github.com/NVIDIA/TensorRT/tree/master/tools/onnx-graphsurgeon/examples">onnx-graphsurgeon/examples</a>.
@@ -906,7 +906,7 @@ The first part generates a graph.</p>
 </div>
 </section>
 <section id="graph-builder-api">
-<h3>Graph Builder API<a class="headerlink" href="#graph-builder-api" title="Permalink to this heading">#</a></h3>
+<h3>Graph Builder API<a class="headerlink" href="#graph-builder-api" title="Link to this heading">#</a></h3>
 <p>See <a class="reference internal" href="graph_api.html#l-graph-api"><span class="std std-ref">GraphBuilder: common API for ONNX</span></a>. This API is very similar to what <em>skl2onnx</em> implements.
 It is still about adding nodes to a graph but some tasks are automated such as
 naming the results or converting constants to onnx classes.</p>
@@ -941,7 +941,7 @@ naming the results or converting constants to onnx classes.</p>
 </div>
 </section>
 <section id="light-api">
-<h3>Light API<a class="headerlink" href="#light-api" title="Permalink to this heading">#</a></h3>
+<h3>Light API<a class="headerlink" href="#light-api" title="Link to this heading">#</a></h3>
 <p>See <a class="reference internal" href="light_api.html#l-light-api"><span class="std std-ref">Light API for ONNX: everything in one line</span></a>. This API was created to be able to write an onnx graph
 in one instruction. It is inspired from the <a class="reference external" href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">reverse Polish notation</a>.
 There is no eager mode.</p>
@@ -982,7 +982,7 @@ There is no eager mode.</p>
 </div>
 </section>
 <section id="numpy-api-for-onnx">
-<h3>numpy API for onnx<a class="headerlink" href="#numpy-api-for-onnx" title="Permalink to this heading">#</a></h3>
+<h3>numpy API for onnx<a class="headerlink" href="#numpy-api-for-onnx" title="Link to this heading">#</a></h3>
 <p>See <a class="reference internal" href="numpy_api.html#l-numpy-api-onnx"><span class="std std-ref">Numpy API for ONNX</span></a>. This API was introduced to create graphs
 by using numpy API. If a function is defined only with numpy,
 it should be possible to use the exact same code to create the
@@ -1057,7 +1057,7 @@ produces different onnx graphs depending on the execution path.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1108,9 +1108,9 @@ produces different onnx graphs depending on the execution path.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

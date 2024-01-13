@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>mlinsights.timeseries.plotting - mlinsights 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -245,7 +245,9 @@
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 
-<div class="viewcode-block" id="plot_week_timeseries"><a class="viewcode-back" href="../../../api/timeseries.html#mlinsights.timeseries.plotting.plot_week_timeseries">[docs]</a><span class="k">def</span> <span class="nf">plot_week_timeseries</span><span class="p">(</span>
+<div class="viewcode-block" id="plot_week_timeseries">
+<a class="viewcode-back" href="../../../api/timeseries.html#mlinsights.timeseries.plotting.plot_week_timeseries">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_week_timeseries</span><span class="p">(</span>
     <span class="n">time</span><span class="p">,</span>
     <span class="n">value</span><span class="p">,</span>
     <span class="n">normalise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -291,8 +293,7 @@
 <span class="sd">            value2=agg[&#39;y&#39;]/2, label2=&quot;y/2&quot;, normalise=False)</span>
 <span class="sd">        plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;Dimension mismatch&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;Dimension mismatch&quot;</span>
 
     <span class="k">def</span> <span class="nf">coor</span><span class="p">(</span><span class="n">ti</span><span class="p">):</span>
         <span class="n">days</span> <span class="o">=</span> <span class="n">ti</span><span class="o">.</span><span class="n">days</span>
@@ -323,8 +324,7 @@
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">ti1</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
             <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">ti1</span> <span class="o">-</span> <span class="n">ti</span><span class="p">)</span> <span class="k">if</span> <span class="n">delta</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">ti1</span> <span class="o">-</span> <span class="n">ti</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The timeseries contains duplicated time values.&quot;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;The timeseries contains duplicated time values.&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ti1</span> <span class="o">=</span> <span class="n">ti</span> <span class="o">+</span> <span class="n">delta</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">coor</span><span class="p">(</span><span class="n">ti</span><span class="p">)</span>
@@ -439,7 +439,7 @@
 
             <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">value</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">h</span>
 
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">y2</span> <span class="o">&lt;</span> <span class="n">ys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">ys</span> <span class="ow">and</span> <span class="n">y2</span> <span class="o">&lt;</span> <span class="n">ys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">first</span> <span class="ow">and</span> <span class="n">label2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label2</span><span class="p">)</span>
                     <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
@@ -450,10 +450,11 @@
             <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
             <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">xs</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ax</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -466,7 +467,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -486,9 +487,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../../../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

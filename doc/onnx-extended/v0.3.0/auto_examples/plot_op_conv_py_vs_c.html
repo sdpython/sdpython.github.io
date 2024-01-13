@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How float format has an impact on speed computation" href="plot_op_conv_denorm.html" /><link rel="prev" title="Focus on operators optimization" href="../tutorial/ops.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Using C implementation of operator Conv - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -309,7 +309,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="using-c-implementation-of-operator-conv">
-<span id="l-example-conv"></span><span id="sphx-glr-auto-examples-plot-op-conv-py-vs-c-py"></span><h1>Using C implementation of operator Conv<a class="headerlink" href="#using-c-implementation-of-operator-conv" title="Permalink to this heading">#</a></h1>
+<span id="l-example-conv"></span><span id="sphx-glr-auto-examples-plot-op-conv-py-vs-c-py"></span><h1>Using C implementation of operator Conv<a class="headerlink" href="#using-c-implementation-of-operator-conv" title="Link to this heading">#</a></h1>
 <p><em>onnx-extended</em> includes an implementation of operator Conv
 in language C++ must faster than the python implementation
 available in package <a class="reference external" href="https://onnx.ai/onnx/">onnx</a>. These implementations
@@ -317,7 +317,7 @@ are automatically available through class
 <a class="reference internal" href="../api/reference.html#onnx_extended.reference.CReferenceEvaluator" title="onnx_extended.reference.CReferenceEvaluator"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx_extended.reference.CReferenceEvaluator</span></code></a>.
 The following example compares the processing time for three runtimes.</p>
 <section id="creation-of-a-simple-model">
-<h2>Creation of a simple model<a class="headerlink" href="#creation-of-a-simple-model" title="Permalink to this heading">#</a></h2>
+<h2>Creation of a simple model<a class="headerlink" href="#creation-of-a-simple-model" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a>
@@ -357,7 +357,7 @@ The following example compares the processing time for three runtimes.</p>
 </div>
 </section>
 <section id="referenceevaluator-and-creferenceevaluator">
-<h2>ReferenceEvaluator and CReferenceEvaluator<a class="headerlink" href="#referenceevaluator-and-creferenceevaluator" title="Permalink to this heading">#</a></h2>
+<h2>ReferenceEvaluator and CReferenceEvaluator<a class="headerlink" href="#referenceevaluator-and-creferenceevaluator" title="Link to this heading">#</a></h2>
 <p>Let’s first compare the outputs are the same.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sH</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sW</span></a><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
@@ -379,7 +379,7 @@ The following example compares the processing time for three runtimes.</p>
 <p>Everything works fine.</p>
 </section>
 <section id="time-measurement">
-<h2>Time measurement<a class="headerlink" href="#time-measurement" title="Permalink to this heading">#</a></h2>
+<h2>Time measurement<a class="headerlink" href="#time-measurement" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">W</span></a><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">B</span></a><span class="p">}</span>
 
 <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator.run" title="onnx.reference.ReferenceEvaluator.run" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-method"><span class="n">sess1</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">))</span>
@@ -411,7 +411,7 @@ speedup is 27.295072535288078
 </div>
 </section>
 <section id="plotting">
-<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">#</a></h2>
+<h2>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">([</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">64</span><span class="p">]):</span>
@@ -550,7 +550,7 @@ speedup is 27.295072535288078
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -592,9 +592,9 @@ speedup is 27.295072535288078
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../_static/documentation_options.js?v=83a61292"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

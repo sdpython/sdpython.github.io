@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Example gallery" href="../auto_examples/index.html" /><link rel="prev" title="Technical Details" href="index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Difficulty to implement an Array API for ONNX - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -261,7 +261,7 @@
         </div>
         <article role="main">
           <section id="difficulty-to-implement-an-array-api-for-onnx">
-<span id="l-array-api-painpoint"></span><h1>Difficulty to implement an Array API for ONNX<a class="headerlink" href="#difficulty-to-implement-an-array-api-for-onnx" title="Permalink to this heading">#</a></h1>
+<span id="l-array-api-painpoint"></span><h1>Difficulty to implement an Array API for ONNX<a class="headerlink" href="#difficulty-to-implement-an-array-api-for-onnx" title="Link to this heading">#</a></h1>
 <p>Implementing the full array API is not always easy with <a class="reference external" href="https://onnx.ai/onnx/">onnx</a>.
 Python is not strongly typed and many different types can be used
 to represent a value. Argument <em>axis</em> can be an integer or a tuple
@@ -269,7 +269,7 @@ to represent a value. Argument <em>axis</em> can be an integer or a tuple
 for example). On the other side, <a class="reference external" href="https://onnx.ai/onnx/operators/onnx__ReduceMin.html">ReduceMin from ONNX</a>
 is considered as a tensor.</p>
 <section id="performance">
-<h2>Performance<a class="headerlink" href="#performance" title="Permalink to this heading">#</a></h2>
+<h2>Performance<a class="headerlink" href="#performance" title="Link to this heading">#</a></h2>
 <p>The Array API must work in eager mode and for every operation,
 it generates an ONNX graph and executes it with a specific
 backend. It can be <a class="reference external" href="https://numpy.org/">numpy</a>, <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> or any other
@@ -286,7 +286,7 @@ to merge every needed operation into a bigger graph.
 Bigger graphs can be more easily optimized by the backend.</p>
 </section>
 <section id="input-vs-parameter">
-<h2>Input vs parameter<a class="headerlink" href="#input-vs-parameter" title="Permalink to this heading">#</a></h2>
+<h2>Input vs parameter<a class="headerlink" href="#input-vs-parameter" title="Link to this heading">#</a></h2>
 <p>An input is a tensor or array, a parameter is any other type.
 Following onnx semantic, an input is variable, a parameter is frozen
 cannot be changed. It is a constant. A good design would be
@@ -304,7 +304,7 @@ There may be ambiguities from time to time.
 Beside, from onnx point of view, argument dtype should be named.</p>
 </section>
 <section id="tensor-type">
-<h2>Tensor type<a class="headerlink" href="#tensor-type" title="Permalink to this heading">#</a></h2>
+<h2>Tensor type<a class="headerlink" href="#tensor-type" title="Link to this heading">#</a></h2>
 <p>An <a class="reference internal" href="../api/npx_tensors.html#onnx_array_api.npx.npx_tensors.EagerTensor" title="onnx_array_api.npx.npx_tensors.EagerTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">EagerTensor</span></code></a>
 must be used to represent any tensor.
 This class defines the backend to use as well.
@@ -315,7 +315,7 @@ existing packages do not fully support the API if they support it
 (<a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>). Some numpy array may still be used.</p>
 </section>
 <section id="inplace">
-<h2>Inplace<a class="headerlink" href="#inplace" title="Permalink to this heading">#</a></h2>
+<h2>Inplace<a class="headerlink" href="#inplace" title="Link to this heading">#</a></h2>
 <p>ONNX has no notion of inplace computation. Therefore something
 like <cite>coefs[:, 1] = 1</cite> is not valid unless some code is written
 to create another tensor. The current design supports some of these
@@ -329,7 +329,7 @@ A function such as <a class="reference external" href="https://data-apis.org/arr
 has to be followed by calls to <cite>__setitem__</cite>.</p>
 </section>
 <section id="eager-or-compilation">
-<h2>Eager or compilation<a class="headerlink" href="#eager-or-compilation" title="Permalink to this heading">#</a></h2>
+<h2>Eager or compilation<a class="headerlink" href="#eager-or-compilation" title="Link to this heading">#</a></h2>
 <p>Eager mode is what the Array API implies.
 Every function is converted into an ONNX graph based
 on its inputs without any knownledge of how these inputs
@@ -341,7 +341,7 @@ into a graph. It means using a mode that records all the function
 calls to compile every tiny onnx graph into a unique graph.</p>
 </section>
 <section id="iterators-and-reduction">
-<h2>Iterators and Reduction<a class="headerlink" href="#iterators-and-reduction" title="Permalink to this heading">#</a></h2>
+<h2>Iterators and Reduction<a class="headerlink" href="#iterators-and-reduction" title="Link to this heading">#</a></h2>
 <p>An efficient implementation of function
 <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.any.html#numpy.any" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.any()</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.all.html#numpy.all" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.all()</span></code></a> returns
 as soon as the result is known. <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.all.html#numpy.all" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.all()</span></code></a> is
@@ -356,7 +356,7 @@ not efficient due to that reason but it only impacts
 the unit tests.</p>
 </section>
 <section id="types">
-<h2>Types<a class="headerlink" href="#types" title="Permalink to this heading">#</a></h2>
+<h2>Types<a class="headerlink" href="#types" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://onnx.ai/onnx/">onnx</a> supports more types than <a class="reference external" href="https://numpy.org/">numpy</a> does.
 It is not always easy to deal with bfloat16 or float8 types.</p>
 </section>
@@ -391,7 +391,7 @@ It is not always easy to deal with bfloat16 or float8 types.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -436,9 +436,9 @@ It is not always easy to deal with bfloat16 or float8 types.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

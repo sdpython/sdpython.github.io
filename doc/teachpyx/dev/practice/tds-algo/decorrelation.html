@@ -1,21 +1,21 @@
 <!doctype html>
-<html class="no-js" lang="fr" data-content_root="">
+<html class="no-js" lang="fr" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Spectral Clustering" href="graph_spectral_clustering.html" /><link rel="prev" title="Programmation dynamique et plus court chemin" href="plus_court_chemin.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Décorrélation de variables aléatoires - Documentation teachpyx 0.4.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
@@ -503,13 +503,13 @@
         </div>
         <article role="main">
           <section id="Décorrélation-de-variables-aléatoires">
-<h1>Décorrélation de variables aléatoires<a class="headerlink" href="#Décorrélation-de-variables-aléatoires" title="Lien permanent vers cette rubrique">#</a></h1>
+<h1>Décorrélation de variables aléatoires<a class="headerlink" href="#Décorrélation-de-variables-aléatoires" title="Link to this heading">#</a></h1>
 <p>On construit des variables corrélées gaussiennes et on cherche à construire des variables décorrélées en utilisant le calcul matriciel.</p>
 <p>Ce TD appliquera le calcul matriciel aux vecteurs de variables normales <a class="reference external" href="https://fr.wikipedia.org/wiki/Covariance">corrélées</a> ou aussi <a class="reference external" href="https://fr.wikipedia.org/wiki/D%C3%A9composition_en_valeurs_singuli%C3%A8res">décomposition en valeurs singulières</a>.</p>
 <section id="Création-d'un-jeu-de-données">
-<h2>Création d’un jeu de données<a class="headerlink" href="#Création-d'un-jeu-de-données" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Création d’un jeu de données<a class="headerlink" href="#Création-d'un-jeu-de-données" title="Link to this heading">#</a></h2>
 <section id="Q1">
-<h3>Q1<a class="headerlink" href="#Q1" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q1<a class="headerlink" href="#Q1" title="Link to this heading">#</a></h3>
 <p>La première étape consiste à construire des variables aléatoires normales corrélées dans une matrice <img class="math" src="../../_images/math/c55b4d5885c309f2157cf1f6136a5bc94b9716c9.svg" alt="N \times 3"/>. On cherche à construire cette matrice au format <a class="reference external" href="https://numpy.org/">numpy</a>. Le programme suivant est un moyen de construire un tel ensemble à l’aide de combinaisons linéaires. Complétez les lignes contenant des <code class="docutils literal notranslate"><span class="pre">....</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -536,7 +536,7 @@
 </div>
 </section>
 <section id="Q2">
-<h3>Q2<a class="headerlink" href="#Q2" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q2<a class="headerlink" href="#Q2" title="Link to this heading">#</a></h3>
 <p>A partir de la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code>, on veut construire la matrice des corrélations.</p>
 npm = ...               # voir question précédente
 t   = npm.transpose ()
@@ -544,10 +544,10 @@ a   = t * npm
 a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal notranslate"><span class="pre">a</span></code> ?</p>
 </section>
 <section id="Corrélation-de-matrices">
-<h3>Corrélation de matrices<a class="headerlink" href="#Corrélation-de-matrices" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Corrélation de matrices<a class="headerlink" href="#Corrélation-de-matrices" title="Link to this heading">#</a></h3>
 </section>
 <section id="Q3">
-<h3>Q3<a class="headerlink" href="#Q3" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q3<a class="headerlink" href="#Q3" title="Link to this heading">#</a></h3>
 <p>Construire la matrice des corrélations à partir de la matrice <code class="docutils literal notranslate"><span class="pre">a</span></code>. L’exemple suivant vous évitera peut-être quelques erreurs.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -591,7 +591,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 </div>
 </section>
 <section id="Q4">
-<h3>Q4<a class="headerlink" href="#Q4" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q4<a class="headerlink" href="#Q4" title="Link to this heading">#</a></h3>
 <p>Construire une fonction qui prend comme argument la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code> et qui retourne la matrice de corrélation. Cette fonction servira plus pour vérifier que nous avons bien réussi à décorréler.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -606,7 +606,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 </section>
 </section>
 <section id="Un-peu-de-mathématiques">
-<h2>Un peu de mathématiques<a class="headerlink" href="#Un-peu-de-mathématiques" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Un peu de mathématiques<a class="headerlink" href="#Un-peu-de-mathématiques" title="Link to this heading">#</a></h2>
 <p>Pour la suite, un peu de mathématique. On note <img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code>. <img class="math" src="../../_images/math/3fe2f0f039729f674e5f560dc20a04e012adacdb.svg" alt="V=\frac{1}{n}M'M"/> correspond à la matrice des <em>covariances</em> et elle est nécessairement symétrique. C’est une matrice diagonale si et seulement si les variables normales sont indépendantes. Comme toute matrice symétrique, elle est diagonalisable. On peut écrire :</p>
 <div class="math-wrapper docutils container">
 <div class="math">
@@ -626,9 +626,9 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 <p>On vérifie que <img class="math" src="../../_images/math/843e8541e47dbc61b50d1776e2b0a7db143451cd.svg" alt="\left(V^{\frac{1}{2}}\right)^2 = P \Lambda^{\frac{1}{2}} P' P \Lambda^{\frac{1}{2}} P' = P \Lambda^{\frac{1}{2}}\Lambda^{\frac{1}{2}} P' = V = P \Lambda P' = V"/>.</p>
 </section>
 <section id="Calcul-de-la-racine-carrée">
-<h2>Calcul de la racine carrée<a class="headerlink" href="#Calcul-de-la-racine-carrée" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Calcul de la racine carrée<a class="headerlink" href="#Calcul-de-la-racine-carrée" title="Link to this heading">#</a></h2>
 <section id="Q6">
-<h3>Q6<a class="headerlink" href="#Q6" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q6<a class="headerlink" href="#Q6" title="Link to this heading">#</a></h3>
 <p>Le module <a class="reference external" href="https://numpy.org/">numpy</a> propose une fonction qui retourne la matrice <img class="math" src="../../_images/math/2f2a105c289b01c226ad6e0f506d96386c48d440.svg" alt="P"/> et le vecteur des valeurs propres <img class="math" src="../../_images/math/7056772e5bdb6f5a322dc20ea2669bbc5dc5d6bb.svg" alt="L"/> :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>L,P = np.linalg.eig(a)
 </pre></div>
@@ -636,34 +636,34 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 <p>Vérifier que <img class="math" src="../../_images/math/2d52c454a507ddbc882d1d8d3b61d240dcb181be.svg" alt="P'P=I"/>. Est-ce rigoureusement égal à la matrice identité ?</p>
 </section>
 <section id="Q7">
-<h3>Q7<a class="headerlink" href="#Q7" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q7<a class="headerlink" href="#Q7" title="Link to this heading">#</a></h3>
 <p>Que fait l’instruction suivante : <code class="docutils literal notranslate"><span class="pre">np.diag(L)</span></code> ?</p>
 </section>
 <section id="Q8">
-<h3>Q8<a class="headerlink" href="#Q8" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q8<a class="headerlink" href="#Q8" title="Link to this heading">#</a></h3>
 <p>Ecrire une fonction qui calcule la racine carrée de la matrice <img class="math" src="../../_images/math/a3894bb698526a6eac42b405799d7208a94fcba4.svg" alt="\frac{1}{n}M'M"/> (on rappelle que <img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> est la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code>). Voir aussi <a class="reference external" href="https://fr.wikipedia.org/wiki/Racine_carr%C3%A9e_d%27une_matrice">Racine carrée d’une matrice</a>.</p>
 </section>
 </section>
 <section id="Décorrélation">
-<h2>Décorrélation<a class="headerlink" href="#Décorrélation" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Décorrélation<a class="headerlink" href="#Décorrélation" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">np.linalg.inv(a)</span></code> permet d’obtenir l’inverse de la matrice <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
 <section id="Q9">
-<h3>Q9<a class="headerlink" href="#Q9" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q9<a class="headerlink" href="#Q9" title="Link to this heading">#</a></h3>
 <p>Chaque ligne de la matrice <img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> représente un vecteur de trois variables corrélées. La matrice de covariance est <img class="math" src="../../_images/math/3fe2f0f039729f674e5f560dc20a04e012adacdb.svg" alt="V=\frac{1}{n}M'M"/>. Calculer la matrice de covariance de la matrice <img class="math" src="../../_images/math/c8f2416d73d165c8c22db6ca32ad0d50f405a7f5.svg" alt="N=M V^{-\frac{1}{2}}"/> (mathématiquement).</p>
 </section>
 <section id="Q10">
-<h3>Q10<a class="headerlink" href="#Q10" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q10<a class="headerlink" href="#Q10" title="Link to this heading">#</a></h3>
 <p>Vérifier numériquement.</p>
 </section>
 </section>
 <section id="Simulation-de-variables-corrélées">
-<h2>Simulation de variables corrélées<a class="headerlink" href="#Simulation-de-variables-corrélées" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Simulation de variables corrélées<a class="headerlink" href="#Simulation-de-variables-corrélées" title="Link to this heading">#</a></h2>
 <section id="Q11">
-<h3>Q11<a class="headerlink" href="#Q11" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q11<a class="headerlink" href="#Q11" title="Link to this heading">#</a></h3>
 <p>A partir du résultat précédent, proposer une méthode pour simuler un vecteur de variables corrélées selon une matrice de covariance <img class="math" src="../../_images/math/3f07e082745e744a189091767318aa64a01add9c.svg" alt="V"/> à partir d’un vecteur de lois normales indépendantes.</p>
 </section>
 <section id="Q12">
-<h3>Q12<a class="headerlink" href="#Q12" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q12<a class="headerlink" href="#Q12" title="Link to this heading">#</a></h3>
 <p>Proposer une fonction qui crée cet échantillon :</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -680,7 +680,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 </div>
 </section>
 <section id="Q13">
-<h3>Q13<a class="headerlink" href="#Q13" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Q13<a class="headerlink" href="#Q13" title="Link to this heading">#</a></h3>
 <p>Vérifier que votre échantillon a une matrice de corrélations proche de celle choisie pour simuler l’échantillon.</p>
 </section>
 </section>
@@ -717,7 +717,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2016-2023, Xavier Dupré
+                Copyright &#169; 2016-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -781,9 +781,9 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9db00da4"></script>
+</div><script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**06:13.886** total execution time for 1 file **from all galleries**:
+**02:48.563** total execution time for 6 files **from all galleries**:
 
 .. container::
 
@@ -32,6 +32,21 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_plot_torch_dort.py` (``examples/plot_torch_dort.py``)
+     - 01:00.009
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export.py` (``examples/plot_torch_export.py``)
-     - 06:13.886
+     - 00:56.485
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_aot.py` (``examples/plot_torch_aot.py``)
+     - 00:41.495
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx.py` (``examples/plot_profile_existing_onnx.py``)
+     - 00:10.574
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_bug_dort.py` (``examples/bug_dort.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul.py` (``examples/plot_convolutation_matmul.py``)
+     - 00:00.000
      - 0.0

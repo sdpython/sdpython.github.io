@@ -98,7 +98,7 @@ accéder à un élément en particulier
  .. code-block:: none
 
 
-    2.170000152545981e-05
+    2.1400001060101204e-05
 
 
 
@@ -119,7 +119,7 @@ accéder à un élément en particulier
  .. code-block:: none
 
 
-    3.97000003431458e-05
+    3.9200000173877925e-05
 
 
 

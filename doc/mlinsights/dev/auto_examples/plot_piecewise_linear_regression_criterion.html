@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Visualize a scikit-learn pipeline" href="plot_visualize_pipeline.html" /><link rel="prev" title="Constraint KMeans" href="plot_constraint_kmeans.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Custom DecisionTreeRegressor adapted to a linear regression - mlinsights 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -248,7 +248,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="custom-decisiontreeregressor-adapted-to-a-linear-regression">
-<span id="sphx-glr-auto-examples-plot-piecewise-linear-regression-criterion-py"></span><h1>Custom DecisionTreeRegressor adapted to a linear regression<a class="headerlink" href="#custom-decisiontreeregressor-adapted-to-a-linear-regression" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-auto-examples-plot-piecewise-linear-regression-criterion-py"></span><h1>Custom DecisionTreeRegressor adapted to a linear regression<a class="headerlink" href="#custom-decisiontreeregressor-adapted-to-a-linear-regression" title="Link to this heading">#</a></h1>
 <p>A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.tree.DecisionTreeRegressor</span></code></a>
 can be trained with a couple of possible criterions but it is possible
 to implement a custom one (see <a class="reference external" href="https://github.com/EvgeniDubov/hellinger-distance-criterion/blob/master/hellinger_distance_criterion.pyx">hellinger_distance_criterion</a>).
@@ -256,7 +256,7 @@ See also tutorial
 <a class="reference external" href="http://gael-varoquaux.info/programming/cython-example-of-exposing-c-computed-arrays-in-python-without-data-copies.html">Cython example of exposing C-computed arrays in Python without data copies</a>
 which describes a way to implement fast <a class="reference external" href="https://cython.org/">Cython</a> extensions.</p>
 <section id="piecewise-data">
-<h2>Piecewise data<a class="headerlink" href="#piecewise-data" title="Permalink to this heading">#</a></h2>
+<h2>Piecewise data<a class="headerlink" href="#piecewise-data" title="Link to this heading">#</a></h2>
 <p>Let’s build a toy problem based on two linear models.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -290,7 +290,7 @@ which describes a way to implement fast <a class="reference external" href="http
 </div>
 </section>
 <section id="decisiontreeregressor">
-<h2>DecisionTreeRegressor<a class="headerlink" href="#decisiontreeregressor" title="Permalink to this heading">#</a></h2>
+<h2>DecisionTreeRegressor<a class="headerlink" href="#decisiontreeregressor" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_test</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y_train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y_test</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="sklearn.model_selection.train_test_split" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-function"><span class="n">train_test_split</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
 </pre></div>
 </div>
@@ -726,7 +726,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </section>
 </section>
 <section id="decisiontreeregressor-with-custom-implementation">
-<h1>DecisionTreeRegressor with custom implementation<a class="headerlink" href="#decisiontreeregressor-with-custom-implementation" title="Permalink to this heading">#</a></h1>
+<h1>DecisionTreeRegressor with custom implementation<a class="headerlink" href="#decisiontreeregressor-with-custom-implementation" title="Link to this heading">#</a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="sklearn.tree.DecisionTreeRegressor" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model2</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="sklearn.tree.DecisionTreeRegressor" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class"><span class="n">DecisionTreeRegressor</span></a><span class="p">(</span>
     <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="n">SimpleRegressorCriterion</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="p">)</span>
@@ -1161,7 +1161,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </pre></div>
 </div>
 <section id="computation-time">
-<h2>Computation time<a class="headerlink" href="#computation-time" title="Permalink to this heading">#</a></h2>
+<h2>Computation time<a class="headerlink" href="#computation-time" title="Link to this heading">#</a></h2>
 <p>The custom criterion is not really efficient but it was meant that way.
 The code can be found in <a class="reference external" href="https://github.com/sdpython/mlinsights/blob/main/src/mlinsights/mlmodel/piecewise_tree_regression_criterion.pyx">piecewise_tree_regression_criterion</a>.
 Bascially, it is slow because each time the algorithm optimizing the
@@ -1215,7 +1215,7 @@ to evaluate a cut, one cut involves elements betwee, position
 </div>
 </section>
 <section id="better-implementation">
-<h2>Better implementation<a class="headerlink" href="#better-implementation" title="Permalink to this heading">#</a></h2>
+<h2>Better implementation<a class="headerlink" href="#better-implementation" title="Link to this heading">#</a></h2>
 <p>I rewrote my first implementation to be closer to what
 <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> is doing. The criterion is computed once
 for all possible cut and then retrieved on demand.
@@ -1321,7 +1321,7 @@ criterion which optimizes a piecewise linear regression instead of a
 stepwise regression.</p>
 </section>
 <section id="criterion-adapted-for-a-linear-regression">
-<h2>Criterion adapted for a linear regression<a class="headerlink" href="#criterion-adapted-for-a-linear-regression" title="Permalink to this heading">#</a></h2>
+<h2>Criterion adapted for a linear regression<a class="headerlink" href="#criterion-adapted-for-a-linear-regression" title="Link to this heading">#</a></h2>
 <p>The previous examples are all about decision trees which approximates a
 function by a stepwise function. On every interval <img class="math" src="../_images/math/16fc3bff728e06c00880a27b523444a6d4077632.svg" alt="[r_1, r_2]"/>,
 the model optimizes
@@ -1383,7 +1383,7 @@ linear regressions each time a split is evaluated.</p>
 of the standard criterion for decision tree regression.</p>
 </section>
 <section id="next">
-<h2>Next<a class="headerlink" href="#next" title="Permalink to this heading">#</a></h2>
+<h2>Next<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
 <p>PR <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/13106">Model trees (M5P and co)</a>
 and issue <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13732">Model trees (M5P)</a>
 propose an implementation a piecewise regression with any kind of regression model.
@@ -1433,7 +1433,7 @@ associated with linear regressions.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1480,9 +1480,9 @@ associated with linear regressions.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

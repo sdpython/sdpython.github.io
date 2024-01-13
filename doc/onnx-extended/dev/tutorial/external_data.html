@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Onnx Manipulations" href="onnx_manipulations.html" /><link rel="prev" title="Many Tools to help investigating issues" href="many_tools.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>External Data and Big Models - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -304,14 +304,14 @@
         </div>
         <article role="main">
           <section id="external-data-and-big-models">
-<h1>External Data and Big Models<a class="headerlink" href="#external-data-and-big-models" title="Permalink to this heading">#</a></h1>
+<h1>External Data and Big Models<a class="headerlink" href="#external-data-and-big-models" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://github.com/protocolbuffers/protobuf">protobuf</a> does not support files bigfer than 2 Gb
 and that limit is usually exceeded for language models
 such as <a class="reference external" href="https://ai.meta.com/blog/large-language-model-llama-meta-ai/">Llama</a>. <a class="reference external" href="https://onnx.ai/onnx/">onnx</a> overcomes that limit
 by saving the weights outside the model. The main file only
 keeps the filename the weights the model are stored in.</p>
 <section id="save-a-big-model">
-<h2>Save a big model<a class="headerlink" href="#save-a-big-model" title="Permalink to this heading">#</a></h2>
+<h2>Save a big model<a class="headerlink" href="#save-a-big-model" title="Link to this heading">#</a></h2>
 <p>Let’s assume the model is in memory. It needs to be saved
 with the weights outside the onnx file. Here is a short example
 on how to do it. It relies on function
@@ -412,7 +412,7 @@ on how to do it. It relies on function
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;offset&quot;</span>
-          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;384&quot;</span>
+          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;512&quot;</span>
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;length&quot;</span>
@@ -431,7 +431,7 @@ on how to do it. It relies on function
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;offset&quot;</span>
-          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;448&quot;</span>
+          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;576&quot;</span>
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;length&quot;</span>
@@ -484,7 +484,7 @@ It needs an extra parameter to indicate the location of the weights.</p>
 </div>
 </section>
 <section id="load-a-big-model">
-<h2>Load a big model<a class="headerlink" href="#load-a-big-model" title="Permalink to this heading">#</a></h2>
+<h2>Load a big model<a class="headerlink" href="#load-a-big-model" title="Link to this heading">#</a></h2>
 <p>When loading the model back, two options are possible.
 The first is load everything including the external data.
 <a class="reference internal" href="../api/tools_io.html#onnx_extended.tools.load_external" title="onnx_extended.tools.load_external"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_external</span></code></a>
@@ -545,7 +545,7 @@ structure of the model and leaves the weights on the disk
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;offset&quot;</span>
-          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;384&quot;</span>
+          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;512&quot;</span>
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;length&quot;</span>
@@ -564,7 +564,7 @@ structure of the model and leaves the weights on the disk
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;offset&quot;</span>
-          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;448&quot;</span>
+          <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;576&quot;</span>
         <span class="p">}</span>
         <span class="n">external_data</span> <span class="p">{</span>
           <span class="n">key</span><span class="p">:</span> <span class="s2">&quot;length&quot;</span>
@@ -605,7 +605,7 @@ structure of the model and leaves the weights on the disk
 </div>
 </section>
 <section id="example-with-llama">
-<h2>Example with Llama<a class="headerlink" href="#example-with-llama" title="Permalink to this heading">#</a></h2>
+<h2>Example with Llama<a class="headerlink" href="#example-with-llama" title="Link to this heading">#</a></h2>
 <p>The <a class="reference external" href="https://ai.meta.com/blog/large-language-model-llama-meta-ai/">Llama</a> model is big. An onnx version can be retrieved from
 this github repository <a class="reference external" href="https://github.com/microsoft/Llama-2-Onnx">microsoft/Llama-2-Onnx</a>.
 As it takes time to play with the whole, it can be interested
@@ -674,7 +674,7 @@ results in a dataframe.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -715,9 +715,9 @@ results in a dataframe.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../_static/documentation_options.js?v=83a61292"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

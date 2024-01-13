@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Profiling with onnxruntime" href="plot_profiling.html" /><link rel="prev" title="About float 8" href="plot_f8.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Optimization with onnxruntime - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -266,14 +266,14 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="optimization-with-onnxruntime">
-<span id="l-onnx-array-onnxruntime-optimization"></span><span id="sphx-glr-auto-examples-plot-optimization-py"></span><h1>Optimization with onnxruntime<a class="headerlink" href="#optimization-with-onnxruntime" title="Permalink to this heading">#</a></h1>
+<span id="l-onnx-array-onnxruntime-optimization"></span><span id="sphx-glr-auto-examples-plot-optimization-py"></span><h1>Optimization with onnxruntime<a class="headerlink" href="#optimization-with-onnxruntime" title="Link to this heading">#</a></h1>
 <p><em>onnxruntime</em> optimizes the onnx graph by default before running
 the inference. It modifies, fuses or add new operators.
 Some of them are standard onnx operators, some of them
 are implemented in onnxruntime (see <a class="reference external" href="https://github.com/microsoft/onnxruntime/blob/main/docs/OperatorKernels.md">Supported Operators</a>).
 This example looks into the differences of two models.</p>
 <section id="optimize-a-model-with-onnxruntime">
-<h2>Optimize a model with onnxruntime<a class="headerlink" href="#optimize-a-model-with-onnxruntime" title="Permalink to this heading">#</a></h2>
+<h2>Optimize a model with onnxruntime<a class="headerlink" href="#optimize-a-model-with-onnxruntime" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><span class="n">pprint</span></a>
 <span class="kn">import</span> <span class="nn">numpy</span>
@@ -301,7 +301,7 @@ This example looks into the differences of two models.</p>
 </div>
 </section>
 <section id="output-comparison">
-<h2>Output comparison<a class="headerlink" href="#output-comparison" title="Permalink to this heading">#</a></h2>
+<h2>Output comparison<a class="headerlink" href="#output-comparison" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">so</span> <span class="o">=</span> <span class="n">SessionOptions</span><span class="p">()</span>
 <span class="n">so</span><span class="o">.</span><span class="n">graph_optimization_level</span> <span class="o">=</span> <span class="n">GraphOptimizationLevel</span><span class="o">.</span><span class="n">ORT_ENABLE_ALL</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.random.html#numpy.random.random" title="numpy.random.random" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">112</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
@@ -322,7 +322,7 @@ This example looks into the differences of two models.</p>
 </div>
 </section>
 <section id="difference">
-<h2>Difference<a class="headerlink" href="#difference" title="Permalink to this heading">#</a></h2>
+<h2>Difference<a class="headerlink" href="#difference" title="Link to this heading">#</a></h2>
 <p>Unoptimized model.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.TextIOWrapper" title="io.TextIOWrapper" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
     <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.load" title="onnx.load" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-function"><span class="n">load</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.TextIOWrapper" title="io.TextIOWrapper" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">)</span>
@@ -516,7 +516,7 @@ done.
 </div>
 </section>
 <section id="benchmark">
-<h2>Benchmark<a class="headerlink" href="#benchmark" title="Permalink to this heading">#</a></h2>
+<h2>Benchmark<a class="headerlink" href="#benchmark" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.random.html#numpy.random.random" title="numpy.random.random" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span></a><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">112</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
 
 <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a> <span class="o">=</span> <span class="n">measure_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">input_name</span></a><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img</span></a><span class="p">}),</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
@@ -554,7 +554,7 @@ Optimized
 </div>
 </section>
 <section id="plots">
-<h2>Plots<a class="headerlink" href="#plots" title="Permalink to this heading">#</a></h2>
+<h2>Plots<a class="headerlink" href="#plots" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a><span class="p">([</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t2</span></a><span class="p">])</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
@@ -678,7 +678,7 @@ Optimized
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -721,9 +721,9 @@ Optimized
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

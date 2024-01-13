@@ -1,21 +1,21 @@
 <!doctype html>
-<html class="no-js" lang="fr" data-content_root="">
+<html class="no-js" lang="fr" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Distance d’édition" href="exercice_edit_distance.html" /><link rel="prev" title="Algorithmes de streaming, BJKST" href="BJKST.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Distance entre deux mots de même longueur et tests unitaires - Documentation teachpyx 0.4.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
@@ -503,13 +503,13 @@
         </div>
         <article role="main">
           <section id="Distance-entre-deux-mots-de-même-longueur-et-tests-unitaires">
-<h1>Distance entre deux mots de même longueur et tests unitaires<a class="headerlink" href="#Distance-entre-deux-mots-de-même-longueur-et-tests-unitaires" title="Lien permanent vers cette rubrique">#</a></h1>
+<h1>Distance entre deux mots de même longueur et tests unitaires<a class="headerlink" href="#Distance-entre-deux-mots-de-même-longueur-et-tests-unitaires" title="Link to this heading">#</a></h1>
 <p>Calculer une distance entre deux mots n’est pas le plus intuitif des problèmes. Dans ce notebook, on se permet de tâtonner pour faire évoluer quelques idées autour du sujet. C’est l’occasion aussi de montrer à quoi servent les tests unitaires et pourquoi ils sont utiles lorsqu’on tâtonne.</p>
 <section id="Distance-naïve">
-<h2>Distance naïve<a class="headerlink" href="#Distance-naïve" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Distance naïve<a class="headerlink" href="#Distance-naïve" title="Link to this heading">#</a></h2>
 <p>Naïf… mais beaucoup d’idées naïves finissent par aboutir à des pyramides complexes.</p>
 <section id="Distance-très-naïve">
-<h3>Distance très naïve<a class="headerlink" href="#Distance-très-naïve" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Distance très naïve<a class="headerlink" href="#Distance-très-naïve" title="Link to this heading">#</a></h3>
 <p>On se restraint au cas où les deux mots à comparer ont la même longueur. Et dans ce cas, le plus simple est de compter le nombre de caractères différents à chaque position.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -538,7 +538,7 @@
 </div>
 </section>
 <section id="Distance-entre-deux-mots-de-longueur-différente-mais-pas-si-différente">
-<h3>Distance entre deux mots de longueur différente mais pas si différente<a class="headerlink" href="#Distance-entre-deux-mots-de-longueur-différente-mais-pas-si-différente" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Distance entre deux mots de longueur différente mais pas si différente<a class="headerlink" href="#Distance-entre-deux-mots-de-longueur-différente-mais-pas-si-différente" title="Link to this heading">#</a></h3>
 <p>On considère le cas où les deux mots ont des longueurs égales ou différentes de un caractères. Dans le premier cas, on utilise la distance précédente, dans le second cas, on ajoute un espace au mot le plus court et on appelle la distance précédente. Mais où insérer cet espace ? A toutes les positions bien sûr, la distance sera le minimum de toutes les distances calculées.</p>
 <p>Pour simplifier, on commence par décider que le premier mot doit être le plus court des deux. Si ce n’est pas le cas, on les permute.</p>
 <div class="nbinput docutils container">
@@ -636,7 +636,7 @@ i=2 m1_e=&#39;ab &#39; m2=&#39;cab&#39; d=3 meilleur=1
 <p>Le paramètre <strong>verbose</strong> est une sorte de règle communément partagée, une convention… C’est ce que qu’en disent les <a class="reference external" href="https://www.youtube.com/watch?v=WJVBvvS57j0">pirates</a>.</p>
 </section>
 <section id="Distance-entre-deux-mots-de-longueur-différente">
-<h3>Distance entre deux mots de longueur différente<a class="headerlink" href="#Distance-entre-deux-mots-de-longueur-différente" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Distance entre deux mots de longueur différente<a class="headerlink" href="#Distance-entre-deux-mots-de-longueur-différente" title="Link to this heading">#</a></h3>
 <p>On suit la même idée et on insère des espaces dans le mot le plus petit de façon récursive jusqu’à pouvoir utiliser la distance précédente. Le code ressemble beaucoup à la fonction précédente.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -672,7 +672,7 @@ i=2 m1_e=&#39;ab &#39; m2=&#39;cab&#39; d=3 meilleur=1
 </section>
 </section>
 <section id="Test-unitaires">
-<h2>Test unitaires<a class="headerlink" href="#Test-unitaires" title="Lien permanent vers cette rubrique">#</a></h2>
+<h2>Test unitaires<a class="headerlink" href="#Test-unitaires" title="Link to this heading">#</a></h2>
 <p>Quand on développe un algorithme, on l’applique sur quelques exemples pour vérifier qu’il marche… Puis, on l’améliore et on vérifie qu’il fonctionne sur de nouveaux exemples plus complexes… Vérifie-t-on que cela marche fonctionne encore pour les premiers cas… Le plus souvent non… car c’est fastideux… J’en conviens… Alors pourquoi ne pas noter tous ces cas dans une fonction qui les vérifie… La fonction ne prend aucun paramètres, elle réussit si la fonction retourne tous les
 résultats désirés, elle échoue dans le cas contraire.</p>
 <div class="nbinput nblast docutils container">
@@ -751,7 +751,7 @@ résultats désirés, elle échoue dans le cas contraire.</p>
 </ul>
 <p>Je vous laisse quelques minutes pour vérifier. J’interprète : c’est beaucoup trop.</p>
 <section id="Distance-d'édition">
-<h3>Distance d’édition<a class="headerlink" href="#Distance-d'édition" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>Distance d’édition<a class="headerlink" href="#Distance-d'édition" title="Link to this heading">#</a></h3>
 <p>On implémente l’algorithme de la distance de <a class="reference external" href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenstein</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -809,7 +809,7 @@ edit 1.0
 <p>Ca marche…</p>
 </section>
 <section id="m-et-n-sont-très-proches,-et-alors-?">
-<h3>m et n sont très proches, et alors ?<a class="headerlink" href="#m-et-n-sont-très-proches,-et-alors-?" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>m et n sont très proches, et alors ?<a class="headerlink" href="#m-et-n-sont-très-proches,-et-alors-?" title="Link to this heading">#</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -896,7 +896,7 @@ edit 1.0
 </div>
 </section>
 <section id="ff,-f,-ph,-f...-plus-personne-ne-sait-écrire">
-<h3>ff, f, ph, f… plus personne ne sait écrire<a class="headerlink" href="#ff,-f,-ph,-f...-plus-personne-ne-sait-écrire" title="Lien permanent vers cette rubrique">#</a></h3>
+<h3>ff, f, ph, f… plus personne ne sait écrire<a class="headerlink" href="#ff,-f,-ph,-f...-plus-personne-ne-sait-écrire" title="Link to this heading">#</a></h3>
 <p>Tout marche. Et maintenant on aimerait que :</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">distance('agraffe',</span> <span class="pre">'agrafe')</span> <span class="pre">==</span> <span class="pre">0.5</span></code></p></li>
@@ -1025,7 +1025,7 @@ edit 1.0
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2016-2023, Xavier Dupré
+                Copyright &#169; 2016-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1075,9 +1075,9 @@ edit 1.0
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9db00da4"></script>
+</div><script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

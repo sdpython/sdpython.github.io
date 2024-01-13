@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Custom DecisionTreeRegressor adapted to a linear regression" href="plot_piecewise_linear_regression_criterion.html" /><link rel="prev" title="Predictable t-SNE" href="plot_predictable_tsne.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Constraint KMeans - mlinsights 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -248,12 +248,12 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="constraint-kmeans">
-<span id="sphx-glr-auto-examples-plot-constraint-kmeans-py"></span><h1>Constraint KMeans<a class="headerlink" href="#constraint-kmeans" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-auto-examples-plot-constraint-kmeans-py"></span><h1>Constraint KMeans<a class="headerlink" href="#constraint-kmeans" title="Link to this heading">#</a></h1>
 <p>Simple example to show how to cluster keeping
 approximatively the same number of points in every
 cluster.</p>
 <section id="data">
-<h2>Data<a class="headerlink" href="#data" title="Permalink to this heading">#</a></h2>
+<h2>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/collections.html#collections.Counter" title="collections.Counter" class="sphx-glr-backref-module-collections sphx-glr-backref-type-py-class"><span class="n">Counter</span></a>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -302,7 +302,7 @@ cluster.</p>
 </div>
 </section>
 <section id="standard-kmeans">
-<h2>Standard KMeans<a class="headerlink" href="#standard-kmeans" title="Permalink to this heading">#</a></h2>
+<h2>Standard KMeans<a class="headerlink" href="#standard-kmeans" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">km</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="sklearn.cluster.KMeans" class="sphx-glr-backref-module-sklearn-cluster sphx-glr-backref-type-py-class"><span class="n">KMeans</span></a><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans.fit" title="sklearn.cluster.KMeans.fit" class="sphx-glr-backref-module-sklearn-cluster sphx-glr-backref-type-py-method"><span class="n">km</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cl</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans.predict" title="sklearn.cluster.KMeans.predict" class="sphx-glr-backref-module-sklearn-cluster sphx-glr-backref-type-py-method"><span class="n">km</span><span class="o">.</span><span class="n">predict</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">)</span>
@@ -327,7 +327,7 @@ cluster.</p>
 </div>
 </section>
 <section id="id1">
-<h2>Constraint KMeans<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<h2>Constraint KMeans<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">km1</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="sklearn.cluster.KMeans" class="sphx-glr-backref-module-sklearn-cluster sphx-glr-backref-type-py-class"><span class="n">ConstraintKMeans</span></a><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;gain&quot;</span><span class="p">,</span> <span class="n">balanced_predictions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans.fit" title="sklearn.cluster.KMeans.fit" class="sphx-glr-backref-module-sklearn-cluster sphx-glr-backref-type-py-method"><span class="n">km1</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">)</span>
 
@@ -853,7 +853,7 @@ each cluster.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -894,9 +894,9 @@ each cluster.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

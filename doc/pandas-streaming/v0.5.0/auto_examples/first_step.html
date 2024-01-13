@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="API" href="../api/index.html" /><link rel="prev" title="Gallery of Examples" href="index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>First steps with pandas_streaming - pandas-streaming 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -229,11 +229,11 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="first-steps-with-pandas-streaming">
-<span id="sphx-glr-auto-examples-first-step-py"></span><h1>First steps with pandas_streaming<a class="headerlink" href="#first-steps-with-pandas-streaming" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-auto-examples-first-step-py"></span><h1>First steps with pandas_streaming<a class="headerlink" href="#first-steps-with-pandas-streaming" title="Link to this heading">#</a></h1>
 <p>A few difference between <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/">pandas</a> and <em>pandas_streaming</em>.</p>
 <section id="pandas-to-pandas-streaming">
-<h2>pandas to pandas_streaming<a class="headerlink" href="#pandas-to-pandas-streaming" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<h2>pandas to pandas_streaming<a class="headerlink" href="#pandas-to-pandas-streaming" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DataFrame</span></a>
 <span class="kn">from</span> <span class="nn">pandas_streaming.df</span> <span class="kn">import</span> <span class="n">StreamingDataFrame</span>
 
@@ -243,60 +243,59 @@ to download the full example code</p>
 </pre></div>
 </div>
 <p>We create a streaming dataframe:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span> <span class="o">=</span> <span class="n">StreamingDataFrame</span><span class="o">.</span><span class="n">read_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span> <span class="o">=</span> <span class="n">StreamingDataFrame</span><span class="o">.</span><span class="n">read_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">sdf</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Internally, StreamingDataFrame implements an iterator on
 dataframes and then tries to replicate the same interface as
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> possibly wherever it is possible to
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> possibly wherever it is possible to
 manipulate data without loading everything into memory.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdf2</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sdf</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdf2</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">sdf</span><span class="p">)</span>
 <span class="n">sdf2</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DataFrame</span></a><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">Y</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">Z</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DataFrame</span></a><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">Y</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">Z</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]))</span>
 <span class="n">m</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdf3</span> <span class="o">=</span> <span class="n">sdf2</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdf3</span> <span class="o">=</span> <span class="n">sdf2</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
 <span class="n">sdf3</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdf2</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdf2</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The order might be different.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdftr</span><span class="p">,</span> <span class="n">sdfte</span> <span class="o">=</span> <span class="n">sdf2</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdftr</span><span class="p">,</span> <span class="n">sdfte</span> <span class="o">=</span> <span class="n">sdf2</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">sdfte</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdftr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdftr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="split-a-big-file">
-<h2>split a big file<a class="headerlink" href="#split-a-big-file" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sdf2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;example.txt&quot;</span><span class="p">)</span>
+<h2>split a big file<a class="headerlink" href="#split-a-big-file" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sdf2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;example.txt&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">new_sdf</span> <span class="o">=</span> <span class="n">StreamingDataFrame</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;example.txt&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">new_sdf</span> <span class="o">=</span> <span class="n">StreamingDataFrame</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;example.txt&quot;</span><span class="p">)</span>
 <span class="n">new_sdf</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="s2">&quot;example.</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/glob.html#glob.glob" title="glob.glob" class="sphx-glr-backref-module-glob sphx-glr-backref-type-py-function"><span class="n">glob</span><span class="o">.</span><span class="n">glob</span></a><span class="p">(</span><span class="s2">&quot;ex*.txt&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/glob.html#glob.glob" title="glob.glob" class="sphx-glr-backref-module-glob sphx-glr-backref-type-py-function"><span class="n">glob</span><span class="o">.</span><span class="n">glob</span></a><span class="p">(</span><span class="s2">&quot;ex*.txt&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.000 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-first-step-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/f7473205e5b22e2bdb7d007535379b1c/first_step.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">first_step.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/987e678cbbd9df40df9d93c9e8764165/first_step.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">first_step.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/f7473205e5b22e2bdb7d007535379b1c/first_step.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">first_step.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -332,7 +331,7 @@ manipulate data without loading everything into memory.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2016-2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -372,9 +371,9 @@ manipulate data without loading everything into memory.</p>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

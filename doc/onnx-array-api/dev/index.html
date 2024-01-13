@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorial" href="tutorial/index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -261,7 +261,7 @@
         </div>
         <article role="main">
           <section id="onnx-array-api-apis-to-create-onnx-graphs">
-<h1>onnx-array-api: APIs to create ONNX Graphs<a class="headerlink" href="#onnx-array-api-apis-to-create-onnx-graphs" title="Permalink to this heading">#</a></h1>
+<h1>onnx-array-api: APIs to create ONNX Graphs<a class="headerlink" href="#onnx-array-api-apis-to-create-onnx-graphs" title="Link to this heading">#</a></h1>
 <a class="reference external image-reference" href="https://dev.azure.com/xavierdupre3/onnx-array-api/"><img alt="https://dev.azure.com/xavierdupre3/onnx-array-api/_apis/build/status/sdpython.onnx-array-api" src="https://dev.azure.com/xavierdupre3/onnx-array-api/_apis/build/status/sdpython.onnx-array-api" /></a>
 <a class="reference external image-reference" href="http://badge.fury.io/py/onnx-array-api"><img alt="https://badge.fury.io/py/onnx-array-api.svg" src="https://badge.fury.io/py/onnx-array-api.svg" /></a>
 <a class="reference external image-reference" href="https://github.com/sdpython/onnx-array-api/issues"><img alt="GitHub Issues" src="http://img.shields.io/github/issues/sdpython/onnx-array-api.png" /></a>
@@ -287,10 +287,101 @@ The objective is to speed up the implementation of converter libraries.</p>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 </div>
-<section id="numpy-api">
-<h2>Numpy API<a class="headerlink" href="#numpy-api" title="Permalink to this heading">#</a></h2>
 <p>Sources available on
 <a class="reference external" href="https://github.com/sdpython/onnx-array-api">github/onnx-array-api</a>.</p>
+<section id="graphbuilder-api">
+<h2>GraphBuilder API<a class="headerlink" href="#graphbuilder-api" title="Link to this heading">#</a></h2>
+<p>Almost every converting library (converting a machine learned model to ONNX) is implementing
+its own graph builder and customizes it for its needs.
+It handles some frequent tasks such as giving names to intermediate
+results, loading, saving onnx models. It can be used as well to extend an existing graph.
+See <a class="reference internal" href="tutorial/graph_api.html#l-graph-api"><span class="std std-ref">GraphBuilder: common API for ONNX</span></a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.graph_api</span> <span class="kn">import</span> <span class="n">GraphBuilder</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">GraphBuilder</span><span class="p">()</span>
+<span class="n">g</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">g</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+    <span class="s2">&quot;Sub&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">]</span>
+<span class="p">)</span>  <span class="c1"># the name given to the output is given by the class,</span>
+<span class="c1"># it ensures the name is unique</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>  <span class="c1"># the class automatically</span>
+<span class="c1"># converts the array to a tensor</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Pow&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">init</span><span class="p">])</span>
+<span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;ReduceSum&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">r2</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">])</span>  <span class="c1"># the output name is given because</span>
+<span class="c1"># the user wants to choose the name</span>
+<span class="n">g</span><span class="o">.</span><span class="n">make_tensor_output</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+<span class="n">onx</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>  <span class="c1"># final conversion to onnx</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;cst&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_sub0</span>
+      <span class="n">Pow</span><span class="p">(</span><span class="n">_onx_sub0</span><span class="p">,</span> <span class="n">cst</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_onx_pow0</span>
+        <span class="n">ReduceSum</span><span class="p">(</span><span class="n">_onx_pow0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Z</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="light-api">
+<h2>Light API<a class="headerlink" href="#light-api" title="Link to this heading">#</a></h2>
+<p>The syntax is inspired from the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation</a>.
+This kind of API is easy to use to build new graphs,
+less easy to extend an existing graph. See <a class="reference internal" href="tutorial/light_api.html#l-light-api"><span class="std std-ref">Light API for ONNX: everything in one line</span></a>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.light_api</span> <span class="kn">import</span> <span class="n">start</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">start</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">bring</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">Sub</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;dxy&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">cst</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="s2">&quot;two&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">bring</span><span class="p">(</span><span class="s2">&quot;dxy&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">Pow</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">ReduceSum</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">vout</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;two&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dxy</span>
+      <span class="n">Pow</span><span class="p">(</span><span class="n">dxy</span><span class="p">,</span> <span class="n">two</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r1_0</span>
+        <span class="n">ReduceSum</span><span class="p">(</span><span class="n">r1_0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">noop_with_empty_axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Z</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
+</pre></div>
+</div>
+</section>
+<section id="numpy-api">
+<h2>Numpy API<a class="headerlink" href="#numpy-api" title="Link to this heading">#</a></h2>
+<p>Writing ONNX graphs requires to know ONNX syntax unless
+it is possible to reuse an existing syntax such as <a class="reference external" href="https://numpy.org/">numpy</a>.
+This is what this API is doing.
+This kind of API is easy to use to build new graphs,
+almost impossible to use to extend new graphs as it usually requires
+to know onnx for that. See <a class="reference internal" href="tutorial/numpy_api.html#l-numpy-api-onnx"><span class="std std-ref">Numpy API for ONNX</span></a>.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  <span class="c1"># A</span>
 <span class="kn">from</span> <span class="nn">onnx_array_api.npx</span> <span class="kn">import</span> <span class="n">absolute</span><span class="p">,</span> <span class="n">jit_onnx</span>
@@ -360,11 +451,11 @@ The objective is to speed up the implementation of converter libraries.</p>
     <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;r__32&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
 </pre></div>
 </div>
-<div class="graphviz"><img src="_images/graphviz-8aae71c054187835c6bebb725974c370d7109aab.png" alt="digraph{
+<div class="graphviz"><img src="_images/graphviz-12499894e100aca4f7478793bf48ee3211dd55be.png" alt="digraph{
   orientation=portrait;
+  size=7;
   ranksep=0.25;
   nodesep=0.05;
-  size=7;
 
   x0 [shape=box color=red label=&quot;x0\nTensorProto.FLOAT\nshape=['', '']&quot; fontsize=10];
   x1 [shape=box color=red label=&quot;x1\nTensorProto.FLOAT\nshape=['', '']&quot; fontsize=10];
@@ -541,46 +632,8 @@ The objective is to speed up the implementation of converter libraries.</p>
   Add -&gt; r__32;
 }" class="graphviz" /></div>
 </section>
-<section id="light-api">
-<h2>Light API<a class="headerlink" href="#light-api" title="Permalink to this heading">#</a></h2>
-<p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx_array_api.light_api</span> <span class="kn">import</span> <span class="n">start</span>
-<span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">start</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">bring</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">Sub</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;dxy&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">cst</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="s2">&quot;two&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">bring</span><span class="p">(</span><span class="s2">&quot;dxy&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">Pow</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">ReduceSum</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">vout</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">20</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;two&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">Sub</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dxy</span>
-      <span class="n">Pow</span><span class="p">(</span><span class="n">dxy</span><span class="p">,</span> <span class="n">two</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r1_0</span>
-        <span class="n">ReduceSum</span><span class="p">(</span><span class="n">r1_0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">noop_with_empty_axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Z</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span>
-</pre></div>
-</div>
-</section>
 <section id="older-versions">
-<h2>Older versions<a class="headerlink" href="#older-versions" title="Permalink to this heading">#</a></h2>
+<h2>Older versions<a class="headerlink" href="#older-versions" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="../v0.1.3/index.html">0.1.3</a></p></li>
 <li><p><a class="reference external" href="../v0.1.2/index.html">0.1.2</a></p></li>
@@ -607,7 +660,7 @@ The objective is to speed up the implementation of converter libraries.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -634,8 +687,9 @@ The objective is to speed up the implementation of converter libraries.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">onnx-array-api: APIs to create ONNX Graphs</a><ul>
-<li><a class="reference internal" href="#numpy-api">Numpy API</a></li>
+<li><a class="reference internal" href="#graphbuilder-api">GraphBuilder API</a></li>
 <li><a class="reference internal" href="#light-api">Light API</a></li>
+<li><a class="reference internal" href="#numpy-api">Numpy API</a></li>
 <li><a class="reference internal" href="#older-versions">Older versions</a></li>
 </ul>
 </li>
@@ -648,9 +702,9 @@ The objective is to speed up the implementation of converter libraries.</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=1690763d"></script>
+</div><script src="_static/documentation_options.js?v=7f7c277e"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

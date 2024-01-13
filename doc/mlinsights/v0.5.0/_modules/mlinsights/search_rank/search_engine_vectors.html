@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>mlinsights.search_rank.search_engine_vectors - mlinsights 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -250,7 +250,9 @@
 <span class="kn">from</span> <span class="nn">..helpers.parameters</span> <span class="kn">import</span> <span class="n">format_function_call</span>
 
 
-<div class="viewcode-block" id="SearchEngineVectors"><a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors">[docs]</a><span class="k">class</span> <span class="nc">SearchEngineVectors</span><span class="p">:</span>
+<div class="viewcode-block" id="SearchEngineVectors">
+<a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors">[docs]</a>
+<span class="k">class</span> <span class="nc">SearchEngineVectors</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements a kind of local search engine which</span>
 <span class="sd">    looks for similar results assuming they are vectors.</span>
@@ -356,7 +358,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">features_</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">metadata_</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">metadata</span><span class="p">]</span> <span class="k">if</span> <span class="n">metadata</span> <span class="k">else</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="SearchEngineVectors.fit"><a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SearchEngineVectors.fit">
+<a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.fit">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Every vector comes with a list of metadata.</span>
 
@@ -368,6 +372,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_fit</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_knn</span><span class="p">()</span></div>
+
 
     <span class="k">def</span> <span class="nf">_fit_knn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -390,7 +395,7 @@
 <span class="sd">        *ind* contains the indices of the nearest points in the population matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">X</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;X must be a list or a vector (1)&quot;</span><span class="p">)</span>
             <span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
@@ -416,7 +421,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">ind</span>
 
-<div class="viewcode-block" id="SearchEngineVectors.kneighbors"><a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.kneighbors">[docs]</a>    <span class="k">def</span> <span class="nf">kneighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SearchEngineVectors.kneighbors">
+<a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.kneighbors">[docs]</a>
+    <span class="k">def</span> <span class="nf">kneighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Searches for neighbors close to *X*.</span>
 
@@ -440,7 +447,10 @@
             <span class="n">rmeta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="n">score</span><span class="p">,</span> <span class="n">rind</span><span class="p">,</span> <span class="n">rmeta</span></div>
 
-<div class="viewcode-block" id="SearchEngineVectors.to_zip"><a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.to_zip">[docs]</a>    <span class="k">def</span> <span class="nf">to_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zipfilename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SearchEngineVectors.to_zip">
+<a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.to_zip">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zipfilename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Saves the features and the metadata into a zipfile.</span>
 <span class="sd">        The function does not save the *k-nn*.</span>
@@ -468,7 +478,10 @@
         <span class="k">if</span> <span class="n">close</span><span class="p">:</span>
             <span class="n">zf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="SearchEngineVectors.read_zip"><a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.read_zip">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="SearchEngineVectors.read_zip">
+<a class="viewcode-back" href="../../../api/search_rank.html#mlinsights.search_rank.search_engine_vectors.SearchEngineVectors.read_zip">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">read_zip</span><span class="p">(</span><span class="n">zipfilename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Restores the features, the metadata to a :class:`SearchEngineVectors</span>
@@ -494,7 +507,9 @@
 
         <span class="n">obj</span> <span class="o">=</span> <span class="n">SearchEngineVectors</span><span class="p">(</span><span class="o">**</span><span class="n">knn</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">feat</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span></div></div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -507,7 +522,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2017-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -527,9 +542,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8d05f57a"></script>
+</div><script src="../../../_static/documentation_options.js?v=e4e9a439"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
