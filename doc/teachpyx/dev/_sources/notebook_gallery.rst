@@ -120,6 +120,7 @@ Data
     c_data/nb_dataframe
     c_data/nb_numpy
     c_data/nb_pandas
+    c_data/nb_dataframe_matrix_speed
     c_data/enedis_cartes
 
 Correction d'examens
@@ -158,5 +159,20 @@ Machine Learning
 .. nblinkgallery::
     :caption: machine learning
 
-    practice/ml/winesc_color
+    practice/ml/wines_acp
     practice/ml/winesr_reg
+    practice/ml/winesr_reg_poly
+    practice/ml/winesr_knn_eval
+    practice/ml/winesr_knn_split
+    practice/ml/winesr_knn_split_strat
+    practice/ml/winesr_knn_cross_val
+    practice/ml/winesr_knn_hyper
+    practice/ml/winesc_color
+    practice/ml/winesc_color_line
+    practice/ml/winesc_color_linear
+    practice/ml/winesc_color_roc
+    practice/ml/winesc_multi
+    practice/ml/winesc_multi_stacking
+    practice/ml/artificiel_multiclass
+    practice/ml/ml_features_model
+    practice/ml/timeseries_ssa

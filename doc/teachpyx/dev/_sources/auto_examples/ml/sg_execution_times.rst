@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.551** total execution time for 2 files **from auto_examples/ml**:
+**00:02.107** total execution time for 2 files **from auto_examples/ml**:
 
 .. container::
 
@@ -32,9 +32,9 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_ml_plot_correlations.py` (``plot_correlations.py``)
-     - 00:01.505
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_ml_plot_roc.py` (``plot_roc.py``)
-     - 00:01.046
+     - 00:02.107
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_ml_plot_correlations.py` (``plot_correlations.py``)
+     - 00:00.000
      - 0.0

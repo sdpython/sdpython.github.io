@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_ml_plot_roc.py:
 
 
+.. _l-ml-plot-roc:
+
 Receiver Operating Characteristic (ROC)
 =======================================
 
@@ -33,7 +35,7 @@ Classification binaire
 
 On commence par générer un nuage de points artificiel.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-40
+.. GENERATED FROM PYTHON SOURCE LINES 20-42
 
 .. code-block:: Python
 
@@ -66,11 +68,11 @@ On commence par générer un nuage de points artificiel.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-42
+.. GENERATED FROM PYTHON SOURCE LINES 43-44
 
 On représente ces données.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-48
+.. GENERATED FROM PYTHON SOURCE LINES 44-50
 
 .. code-block:: Python
 
@@ -94,15 +96,15 @@ On représente ces données.
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f88864f7670>]
+    [<matplotlib.lines.Line2D object at 0x7fad63981360>]
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
+.. GENERATED FROM PYTHON SOURCE LINES 51-52
 
 On découpe en train / test.
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 52-54
 
 .. code-block:: Python
 
@@ -115,11 +117,11 @@ On découpe en train / test.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-54
+.. GENERATED FROM PYTHON SOURCE LINES 55-56
 
 On apprend sur la base d'apprentissage.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-58
+.. GENERATED FROM PYTHON SOURCE LINES 56-60
 
 .. code-block:: Python
 
@@ -544,11 +546,11 @@ On apprend sur la base d'apprentissage.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-60
+.. GENERATED FROM PYTHON SOURCE LINES 61-62
 
 Et on prédit sur la base de test.
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-62
+.. GENERATED FROM PYTHON SOURCE LINES 62-64
 
 .. code-block:: Python
 
@@ -561,11 +563,11 @@ Et on prédit sur la base de test.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-64
+.. GENERATED FROM PYTHON SOURCE LINES 65-66
 
 On calcule la :epkg:`matrice de confusion`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-68
+.. GENERATED FROM PYTHON SOURCE LINES 66-70
 
 .. code-block:: Python
 
@@ -581,13 +583,13 @@ On calcule la :epkg:`matrice de confusion`.
 
  .. code-block:: none
 
-    [[ 7  0]
-     [ 2 16]]
+    [[15  1]
+     [ 3  6]]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-91
+.. GENERATED FROM PYTHON SOURCE LINES 71-93
 
 Trois courbes
 -------------
@@ -612,7 +614,7 @@ Si les réponses sont liées, le modèle peut répondre de manière
 plus ou moins efficace à ces trois questions.
 On calcule les courbes :epkg:`ROC` à ces trois questions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-109
+.. GENERATED FROM PYTHON SOURCE LINES 93-111
 
 .. code-block:: Python
 
@@ -641,11 +643,11 @@ On calcule les courbes :epkg:`ROC` à ces trois questions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-111
+.. GENERATED FROM PYTHON SOURCE LINES 112-113
 
 Et on les représente.
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-124
+.. GENERATED FROM PYTHON SOURCE LINES 113-126
 
 .. code-block:: Python
 
@@ -676,11 +678,11 @@ Et on les représente.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f8886317430>
+    <matplotlib.legend.Legend object at 0x7fad63684040>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-139
+.. GENERATED FROM PYTHON SOURCE LINES 127-141
 
 predict_proba ou decision_function
 ----------------------------------
@@ -697,7 +699,7 @@ car ces deux scores
 sont liés par une fonction monotone.
 On recommence avec la seconde fonction.
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-166
+.. GENERATED FROM PYTHON SOURCE LINES 141-168
 
 .. code-block:: Python
 
@@ -742,11 +744,11 @@ On recommence avec la seconde fonction.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f88861ca020>
+    <matplotlib.legend.Legend object at 0x7fad633e70a0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 167-179
+.. GENERATED FROM PYTHON SOURCE LINES 169-181
 
 Precision Rappel
 ----------------
@@ -761,7 +763,7 @@ On utilise la fonction
 `precision_recall_curve <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_recall_curve.html#
 sklearn.metrics.precision_recall_curve>`_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 179-209
+.. GENERATED FROM PYTHON SOURCE LINES 181-211
 
 .. code-block:: Python
 
@@ -809,11 +811,11 @@ sklearn.metrics.precision_recall_curve>`_.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f8886237460>
+    <matplotlib.legend.Legend object at 0x7fad630fc610>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 210-220
+.. GENERATED FROM PYTHON SOURCE LINES 212-222
 
 Métrique F1
 -----------
@@ -826,7 +828,7 @@ La métrique `F1 <https://scikit-learn.org/stable/modules/generated/sklearn.metr
 propose une pondération entre les deux :
 :math:`F1 = 2 \frac{precision * rappel}{precision + rappel}`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 220-249
+.. GENERATED FROM PYTHON SOURCE LINES 222-251
 
 .. code-block:: Python
 
@@ -873,11 +875,11 @@ propose une pondération entre les deux :
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f8886135690>
+    <matplotlib.legend.Legend object at 0x7fad62b0c220>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 250-265
+.. GENERATED FROM PYTHON SOURCE LINES 252-267
 
 Pourquoi ROC alors ?
 --------------------
@@ -895,7 +897,7 @@ et :math:`S_T` la variable aléatoire
 *score pour une observation bien classée*
 (voir `ROC <https://sdpython.github.io/doc/mlstatpy/dev/c_metric/roc.html>`_).
 
-.. GENERATED FROM PYTHON SOURCE LINES 265-283
+.. GENERATED FROM PYTHON SOURCE LINES 267-285
 
 .. code-block:: Python
 
@@ -931,11 +933,11 @@ et :math:`S_T` la variable aléatoire
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f8885ec2440>
+    <matplotlib.legend.Legend object at 0x7fad5ff94100>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 284-295
+.. GENERATED FROM PYTHON SOURCE LINES 286-297
 
 La ligne en pointillés délimité la zone à partir de laquelle le modèle
 est sûr de sa décision. Elle est ajusté en fonction des besoins
@@ -952,7 +954,7 @@ lorsque le seuil *s* varie.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.046 seconds)
+   **Total running time of the script:** (0 minutes 2.107 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ml_plot_roc.py:
