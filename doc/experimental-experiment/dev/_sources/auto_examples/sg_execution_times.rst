@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:14.091** total execution time for 7 files **from auto_examples**:
+**00:13.611** total execution time for 7 files **from auto_examples**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg.py` (``plot_torch_linreg.py``)
-     - 00:14.091
+     - 00:13.611
      - 0.0
    * - :ref:`sphx_glr_auto_examples_bug_dort.py` (``bug_dort.py``)
      - 00:00.000

@@ -33,7 +33,7 @@ data
 
 
     from sklearn.datasets import make_regression
-    from sklearn.linear_model import LinearRegression
+    from sklearn.linear_model import LinearRegression, SGDRegressor
     from sklearn.metrics import mean_squared_error, r2_score
     from sklearn.model_selection import train_test_split
     import torch
@@ -56,12 +56,16 @@ data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-26
+.. GENERATED FROM PYTHON SOURCE LINES 24-30
 
-sciit-learn
-===========
+scikit-learn: the simple regression
+===================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-33
+.. math::
+
+      A^* = (X'X)^{-1}X'Y
+
+.. GENERATED FROM PYTHON SOURCE LINES 30-37
 
 .. code-block:: Python
 
@@ -80,17 +84,17 @@ sciit-learn
 
  .. code-block:: none
 
-    coefficients: [54.65581376  1.16848455 65.12449476  0.19401403  0.08584105], -0.06575405489847608
+    coefficients: [ 0.16862047  0.27719019  0.25621964  8.81117422 52.49860566], -0.31509127574197215
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-36
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 Evaluation
 ==========
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-42
+.. GENERATED FROM PYTHON SOURCE LINES 40-46
 
 .. code-block:: Python
 
@@ -108,17 +112,93 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=93.35139238975735, r2=0.9870757965660628
+    LinearRegression: l2=110.26346117873129, r2=0.9634330427887183
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 47-51
+
+scikit-learn: SGD algorithm
+===================================
+
+SGD = Stochastic Gradient Descent
+
+.. GENERATED FROM PYTHON SOURCE LINES 51-57
+
+.. code-block:: Python
+
+
+    clr = SGDRegressor(max_iter=5, verbose=1)
+    clr.fit(X_train, y_train)
+
+    print(f"coefficients: {clr.coef_}, {clr.intercept_}")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    -- Epoch 1
+    Norm: 44.95, NNZs: 5, Bias: -0.358127, T: 750, Avg. loss: 320.771073
+    Total training time: 0.00 seconds.
+    -- Epoch 2
+    Norm: 50.73, NNZs: 5, Bias: -0.435342, T: 1500, Avg. loss: 64.636716
+    Total training time: 0.00 seconds.
+    -- Epoch 3
+    Norm: 52.36, NNZs: 5, Bias: -0.423154, T: 2250, Avg. loss: 53.754539
+    Total training time: 0.00 seconds.
+    -- Epoch 4
+    Norm: 52.86, NNZs: 5, Bias: -0.363326, T: 3000, Avg. loss: 52.624321
+    Total training time: 0.00 seconds.
+    -- Epoch 5
+    Norm: 53.09, NNZs: 5, Bias: -0.358911, T: 3750, Avg. loss: 52.454007
+    Total training time: 0.00 seconds.
+    /home/xadupre/install/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1575: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
+      warnings.warn(
+    coefficients: [ 0.15517763  0.3750597   0.31082611  8.85499387 52.33987051], [-0.35891068]
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-59
+
+Evaluation
+
+.. GENERATED FROM PYTHON SOURCE LINES 59-67
+
+.. code-block:: Python
+
+
+    y_pred = clr.predict(X_test)
+    sl2 = mean_squared_error(y_test, y_pred)
+    sr2 = r2_score(y_test, y_pred)
+    print(f"SGDRegressor: sl2={sl2}, sr2={sr2}")
+
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    SGDRegressor: sl2=110.68165371581833, sr2=0.9632943565145322
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-70
 
 torch
 =====
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-94
+.. GENERATED FROM PYTHON SOURCE LINES 70-119
 
 .. code-block:: Python
 
@@ -181,23 +261,23 @@ torch
 
     /home/xadupre/.local/lib/python3.10/site-packages/transformers/utils/generic.py:441: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
       _torch_pytree._register_pytree_node(
-    [2024-01-25 18:33:38,609] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+    [2024-01-26 00:12:27,274] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
     /home/xadupre/.local/lib/python3.10/site-packages/transformers/utils/generic.py:309: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
       _torch_pytree._register_pytree_node(
-    iteration 0, loss=1793051.125
-    iteration 1, loss=145955.765625
-    iteration 2, loss=76050.2578125
-    iteration 3, loss=72604.3125
-    iteration 4, loss=72414.859375
+    iteration 0, loss=742280.4375
+    iteration 1, loss=116097.8203125
+    iteration 2, loss=80855.5625
+    iteration 3, loss=78952.6484375
+    iteration 4, loss=78879.921875
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-96
+.. GENERATED FROM PYTHON SOURCE LINES 120-121
 
 Let's check the error
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-102
+.. GENERATED FROM PYTHON SOURCE LINES 121-127
 
 .. code-block:: Python
 
@@ -215,16 +295,16 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=92.81309545521783, tr2=0.987150322064952
+    TorchLinearRegression: tl2=110.64094822810304, tr2=0.9633078557808498
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-104
+.. GENERATED FROM PYTHON SOURCE LINES 128-129
 
 And the coefficients.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-108
+.. GENERATED FROM PYTHON SOURCE LINES 129-133
 
 .. code-block:: Python
 
@@ -242,10 +322,9 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[ 5.4835e+01,  1.1025e+00,  6.5195e+01, -6.2436e-02, -3.3755e-02]],
-           requires_grad=True)
+    tensor([[ 0.3342,  0.3307,  0.4485,  8.7304, 52.6217]], requires_grad=True)
     Parameter containing:
-    tensor([-0.0245], requires_grad=True)
+    tensor([-0.2749], requires_grad=True)
 
 
 
@@ -253,7 +332,7 @@ And the coefficients.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 14.091 seconds)
+   **Total running time of the script:** (0 minutes 13.611 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg.py:
