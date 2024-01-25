@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:48.563** total execution time for 6 files **from auto_examples**:
+**00:14.091** total execution time for 7 files **from auto_examples**:
 
 .. container::
 
@@ -32,21 +32,24 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_torch_dort.py` (``plot_torch_dort.py``)
-     - 01:00.009
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export.py` (``plot_torch_export.py``)
-     - 00:56.485
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_aot.py` (``plot_torch_aot.py``)
-     - 00:41.495
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx.py` (``plot_profile_existing_onnx.py``)
-     - 00:10.574
+   * - :ref:`sphx_glr_auto_examples_plot_torch_linreg.py` (``plot_torch_linreg.py``)
+     - 00:14.091
      - 0.0
    * - :ref:`sphx_glr_auto_examples_bug_dort.py` (``bug_dort.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul.py` (``plot_convolutation_matmul.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx.py` (``plot_profile_existing_onnx.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_aot.py` (``plot_torch_aot.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_dort.py` (``plot_torch_dort.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export.py` (``plot_torch_export.py``)
      - 00:00.000
      - 0.0

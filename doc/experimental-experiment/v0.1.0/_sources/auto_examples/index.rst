@@ -76,6 +76,23 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="scikit-learn and torch to train a linear regression.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_linreg_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_linreg.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Linear Regression</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The convolution is a well known image transformation used to transform an image. It can be used...">
 
 .. only:: html
@@ -152,6 +169,7 @@ all the graphs, the data used to draw them, and the models.
 
    /auto_examples/bug_dort
    /auto_examples/plot_profile_existing_onnx
+   /auto_examples/plot_torch_linreg
    /auto_examples/plot_convolutation_matmul
    /auto_examples/plot_torch_dort
    /auto_examples/plot_torch_aot

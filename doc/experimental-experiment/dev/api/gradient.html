@@ -177,6 +177,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_aot.html">Evaluate DORT Training</a></li>
@@ -228,21 +229,692 @@
 <h2>gradient.grad_helper<a class="headerlink" href="#gradient-grad-helper" title="Link to this heading">#</a></h2>
 <section id="derivativeoptions">
 <h3>DerivativeOptions<a class="headerlink" href="#derivativeoptions" title="Link to this heading">#</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="experimental_experiment.gradient.grad_helper.DerivativeOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.gradient.grad_helper.</span></span><span class="sig-name descname"><span class="pre">DerivativeOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/gradient/grad_helper.html#DerivativeOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.gradient.grad_helper.DerivativeOptions" title="Link to this definition">#</a></dt>
+<dd><p>Options defining how to build the onnx graph of the
+gradients.</p>
+<ul class="simple">
+<li><p><cite>Zero</cite>: default option, all options are disabled</p></li>
+<li><p><cite>KeepYieldOp</cite>: keeps the operator <em>YieldOp</em> in the graph,
+see &#64;see fn onnx_derivative</p></li>
+<li><p><cite>KeepOutputs</cite>: keeps the output of the original graph</p></li>
+<li><p><cite>FillGrad</cite>: does not add any output to specify the gradient
+of the output but assumes it is one</p></li>
+<li><p><cite>Loss</cite>: the function assumes the loss was added to the graph</p></li>
+</ul>
+</dd></dl>
+
 </section>
 <section id="onnx-derivative">
 <h3>onnx_derivative<a class="headerlink" href="#onnx-derivative" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.gradient.grad_helper.onnx_derivative">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.gradient.grad_helper.</span></span><span class="sig-name descname"><span class="pre">onnx_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.16.0)"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#experimental_experiment.gradient.grad_helper.DerivativeOptions" title="experimental_experiment.gradient.grad_helper.DerivativeOptions"><span class="pre">DerivativeOptions</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DerivativeOptions.Zero</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.16.0)"><span class="pre">ModelProto</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/gradient/grad_helper.html#onnx_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.gradient.grad_helper.onnx_derivative" title="Link to this definition">#</a></dt>
+<dd><p>Builds the gradient for an onnx graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onx</strong> – onnx graph</p></li>
+<li><p><strong>weights</strong> – gradient against those weights, None for all real weights</p></li>
+<li><p><strong>inputs</strong> – gradient against inputs, None for all real inputs</p></li>
+<li><p><strong>options</strong> – options of type &#64;see cl DerivativeOptions</p></li>
+<li><p><strong>loss</strong> – loss output in case a loss was added in the graph,
+<em>options</em> must be equal to <cite>DerivativeOptions.Loss</cite></p></li>
+<li><p><strong>label</strong> – if <em>loss</em> is specified, then the label must be
+specified as well</p></li>
+<li><p><strong>path_name</strong> – if <em>options</em> equal to <cite>DerivativeOptions.Loss</cite>,
+the gradient is saved to that path</p></li>
+<li><p><strong>verbose</strong> – verbosity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>onnx graph</p>
+</dd>
+</dl>
+<p>The function calls <em>OrtModuleGraphBuilderConfiguration</em>
+from <a class="reference external" href="https://onnxruntime.ai/docs/get-started/training-on-device.html">onnxruntime-training</a>. This graph is meant to be used
+with &#64;see cl OrtGradientForwardBackward and includes
+operator <cite>YieldOp</cite>. That’s the graph looks this way:</p>
+<div class="graphviz"><img src="../_images/graphviz-d25be8ffa580f2b0c93f0ac6c7afc782957be54d.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst [shape=box color=red label=&quot;Ad_Addcst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+
+  X_grad [shape=box color=green label=&quot;X_grad\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst_grad [shape=box color=green label=&quot;Ad_Addcst_grad\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+
+
+  Y [shape=box label=&quot;Y&quot; fontsize=10];
+  Ad_Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  X -&gt; Ad_Add;
+  Ad_Addcst -&gt; Ad_Add;
+  Ad_Add -&gt; Y;
+
+  Y_grad [shape=box label=&quot;Y_grad&quot; fontsize=10];
+  YieldOp [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;YieldOp\nfull_shape_outputs=[0]&quot; fontsize=10];
+  Y -&gt; YieldOp;
+  YieldOp -&gt; Y_grad;
+
+  Ad_Add_Grad_Shape_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_Shape_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  Ad_Addcst -&gt; Ad_Add_Grad_Shape_Ad_Addcst_rhs;
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs -&gt; Ad_Add_Grad_Shape_Ad_Addcst;
+
+  Ad_Add_Grad_Shape_X [shape=box label=&quot;Ad_Add_Grad_Shape_X&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X_lhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  X -&gt; Ad_Add_Grad_Shape_X_lhs;
+  Ad_Add_Grad_Shape_X_lhs -&gt; Ad_Add_Grad_Shape_X;
+
+  Ad_Add_Grad_ReduceAxes_X [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_BroadcastGradientArgs_2 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;BroadcastGradientArgs&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_X;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_Ad_Addcst;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_5 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceSum_5 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst;
+
+  Ad_Add_Grad_Reshape_6 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Reshape_6 -&gt; Ad_Addcst_grad;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_3 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceAxes_X -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceSum_3 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_X;
+
+  Ad_Add_Grad_Reshape_4 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Reshape_4 -&gt; X_grad;
+}" class="graphviz" /></div>
+<p>These operators are the outputs of the
+initial graph and must be replaced by the gradient of these
+outputs to compute the gradient of the weights and the inputs.
+After they are replaced, it looks this way:</p>
+<div class="graphviz"><img src="../_images/graphviz-19e78f635957eca91b2df6644636f9cb6d1618cb.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst [shape=box color=red label=&quot;Ad_Addcst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+  Y_grad [shape=box color=red label=&quot;Y_grad\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+
+  X_grad [shape=box color=green label=&quot;X_grad\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst_grad [shape=box color=green label=&quot;Ad_Addcst_grad\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+
+
+  Ad_Add_Grad_Shape_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_Shape_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  Ad_Addcst -&gt; Ad_Add_Grad_Shape_Ad_Addcst_rhs;
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs -&gt; Ad_Add_Grad_Shape_Ad_Addcst;
+
+  Ad_Add_Grad_Shape_X [shape=box label=&quot;Ad_Add_Grad_Shape_X&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X_lhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  X -&gt; Ad_Add_Grad_Shape_X_lhs;
+  Ad_Add_Grad_Shape_X_lhs -&gt; Ad_Add_Grad_Shape_X;
+
+  Ad_Add_Grad_ReduceAxes_X [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_BroadcastGradientArgs_2 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;BroadcastGradientArgs&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_X;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_Ad_Addcst;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_5 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceSum_5 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst;
+
+  Ad_Add_Grad_Reshape_6 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Reshape_6 -&gt; Ad_Addcst_grad;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_3 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceAxes_X -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceSum_3 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_X;
+
+  Ad_Add_Grad_Reshape_4 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Reshape_4 -&gt; X_grad;
+}" class="graphviz" /></div>
+<p>The user can still compute the outputs.</p>
+<div class="graphviz"><img src="../_images/graphviz-a9293691961b48c9f1f545c7867af9402407523c.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst [shape=box color=red label=&quot;Ad_Addcst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+  Y_grad [shape=box color=red label=&quot;Y_grad\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+
+  X_grad [shape=box color=green label=&quot;X_grad\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst_grad [shape=box color=green label=&quot;Ad_Addcst_grad\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+
+
+  Ad_Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  X -&gt; Ad_Add;
+  Ad_Addcst -&gt; Ad_Add;
+  Ad_Add -&gt; Y;
+
+  Ad_Add_Grad_Shape_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_Shape_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  Ad_Addcst -&gt; Ad_Add_Grad_Shape_Ad_Addcst_rhs;
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs -&gt; Ad_Add_Grad_Shape_Ad_Addcst;
+
+  Ad_Add_Grad_Shape_X [shape=box label=&quot;Ad_Add_Grad_Shape_X&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X_lhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  X -&gt; Ad_Add_Grad_Shape_X_lhs;
+  Ad_Add_Grad_Shape_X_lhs -&gt; Ad_Add_Grad_Shape_X;
+
+  Ad_Add_Grad_ReduceAxes_X [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_BroadcastGradientArgs_2 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;BroadcastGradientArgs&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_X;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_Ad_Addcst;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_5 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceSum_5 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst;
+
+  Ad_Add_Grad_Reshape_6 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Reshape_6 -&gt; Ad_Addcst_grad;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_3 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceAxes_X -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceSum_3 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_X;
+
+  Ad_Add_Grad_Reshape_4 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Reshape_4 -&gt; X_grad;
+}" class="graphviz" /></div>
+<p>The input gradient can be filled with a constant matrix
+filled with one and with the expected shape.</p>
+<div class="graphviz"><img src="../_images/graphviz-419f2c62ba14a460991ca3e3962d00b7d1b43fc4.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst [shape=box color=red label=&quot;Ad_Addcst\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+
+  X_grad [shape=box color=green label=&quot;X_grad\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  Ad_Addcst_grad [shape=box color=green label=&quot;Ad_Addcst_grad\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+
+
+  Ad_Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  X -&gt; Ad_Add;
+  Ad_Addcst -&gt; Ad_Add;
+  Ad_Add -&gt; Y;
+
+  Y_shape [shape=box label=&quot;Y_shape&quot; fontsize=10];
+  Shape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  Y -&gt; Shape;
+  Shape -&gt; Y_shape;
+
+  Y_grad [shape=box label=&quot;Y_grad&quot; fontsize=10];
+  ConstantOfShape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape\nvalue=[1.]&quot; fontsize=10];
+  Y_shape -&gt; ConstantOfShape;
+  ConstantOfShape -&gt; Y_grad;
+
+  Ad_Add_Grad_Shape_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_Shape_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  Ad_Addcst -&gt; Ad_Add_Grad_Shape_Ad_Addcst_rhs;
+  Ad_Add_Grad_Shape_Ad_Addcst_rhs -&gt; Ad_Add_Grad_Shape_Ad_Addcst;
+
+  Ad_Add_Grad_Shape_X [shape=box label=&quot;Ad_Add_Grad_Shape_X&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X_lhs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape&quot; fontsize=10];
+  X -&gt; Ad_Add_Grad_Shape_X_lhs;
+  Ad_Add_Grad_Shape_X_lhs -&gt; Ad_Add_Grad_Shape_X;
+
+  Ad_Add_Grad_ReduceAxes_X [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceAxes_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_BroadcastGradientArgs_2 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;BroadcastGradientArgs&quot; fontsize=10];
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_BroadcastGradientArgs_2;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_X;
+  Ad_Add_Grad_BroadcastGradientArgs_2 -&gt; Ad_Add_Grad_ReduceAxes_Ad_Addcst;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_5 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceAxes_Ad_Addcst -&gt; Ad_Add_Grad_ReduceSum_5;
+  Ad_Add_Grad_ReduceSum_5 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst;
+
+  Ad_Add_Grad_Reshape_6 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Shape_Ad_Addcst -&gt; Ad_Add_Grad_Reshape_6;
+  Ad_Add_Grad_Reshape_6 -&gt; Ad_Addcst_grad;
+
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X [shape=box label=&quot;Ad_Add_Grad_ReduceSum_Y_grad_for_X&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_3 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1\nnoop_with_empty_axes=1&quot; fontsize=10];
+  Y_grad -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceAxes_X -&gt; Ad_Add_Grad_ReduceSum_3;
+  Ad_Add_Grad_ReduceSum_3 -&gt; Ad_Add_Grad_ReduceSum_Y_grad_for_X;
+
+  Ad_Add_Grad_Reshape_4 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape\nallowzero=0&quot; fontsize=10];
+  Ad_Add_Grad_ReduceSum_Y_grad_for_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Shape_X -&gt; Ad_Add_Grad_Reshape_4;
+  Ad_Add_Grad_Reshape_4 -&gt; X_grad;
+}" class="graphviz" /></div>
+</dd></dl>
+
 </section>
 </section>
 <section id="gradient-loss-helper">
 <h2>gradient.loss_helper<a class="headerlink" href="#gradient-loss-helper" title="Link to this heading">#</a></h2>
 <section id="add-loss-output">
 <h3>add_loss_output<a class="headerlink" href="#add-loss-output" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.gradient.loss_helper.add_loss_output">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.gradient.loss_helper.</span></span><span class="sig-name descname"><span class="pre">add_loss_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.16.0)"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">score_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'squared_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'loss'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'label'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.16.0)"><span class="pre">ModelProto</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/gradient/loss_helper.html#add_loss_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.gradient.loss_helper.add_loss_output" title="Link to this definition">#</a></dt>
+<dd><p>Modifies an ONNX graph to add operators to score and allow training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onx</strong> – onx graph</p></li>
+<li><p><strong>score_name</strong> – name of the score</p></li>
+<li><p><strong>loss_name</strong> – name of the output loss</p></li>
+<li><p><strong>label_name</strong> – name of the label input</p></li>
+<li><p><strong>weight_name</strong> – None or any value to consider weight
+while computing loss</p></li>
+<li><p><strong>penalty</strong> – dictionary similar to the
+following one <cite>{ weight_name: {‘l1’: alpha, ‘l2’: beta} }</cite>
+or <cite>{ weight_name: beta}</cite>,
+it adds a L1 and/or L2 penalty to one input or initializer,
+penalty = <img class="math" src="../_images/math/a207af79dec28e31235f24b863f4b517d14e1b72.svg" alt="|w| \alpha + w^2 \beta"/></p></li>
+<li><p><strong>output_index</strong> – the output used to compute the loss,
+if None, the function assumes there is only one output,
+it must be specified if there are more than 1,
+it can be an integer or a string (output name)</p></li>
+<li><p><strong>kwargs</strong> – additional arguments for losses (see below)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>modified graph</p>
+</dd>
+</dl>
+<p>Possible values for <em>score_name</em>:</p>
+<ul class="simple">
+<li><p><cite>‘squared_error’</cite> or <cite>‘l2</cite>’: <img class="math" src="../_images/math/fda83dd62e67baf9cc305a5f94d4bcbb6de7a0c5.svg" alt="\sum_i{(f(x_i)-y_i)^2}"/> or
+<img class="math" src="../_images/math/ad78d5ce2e8a9a5edf7c4be8b5f2b234752749c1.svg" alt="\sum_i{w_i (f(x_i)-y_i)^2}"/> if <em>weight_name</em>
+is not None</p></li>
+<li><p><cite>‘absolute_error’</cite> or <cite>‘l1</cite>’: <img class="math" src="../_images/math/fdce38550afa91537ebfb2ec1111df9c2e12c6d0.svg" alt="\sum_i{|f(x_i)-y_i|}"/> or
+<img class="math" src="../_images/math/83d12e4a04ce5ccd515ea0d42dbc81c047098d8d.svg" alt="\sum_i{w_i |f(x_i)-y_i|}"/> if <em>weight_name</em>
+is not None</p></li>
+<li><p><cite>‘elastic’</cite>: mixture of losses, kwargs must define
+<em>l1_weight</em> and <em>l2_weight</em>, undefined, default value are 0.5</p></li>
+<li><dl class="simple">
+<dt><cite>‘log’</cite>: log loss <img class="math" src="../_images/math/87c56cacefc81b3c51cbc2dda8f9a2ac6002f83e.svg" alt="(1-yt)\log(1-yp) - yt\log(yp)"/>,</dt><dd><p>this only works for a binary classification where <em>yp</em> is the
+predicted probability, <em>yt</em> is the expected probability.
+<em>yt</em> is expected to be binary, <em>yp</em> is a matrix with two
+columns, the sum on every line is 1.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Next example shows the loss with L1 and L2 loss.</p>
+<div class="graphviz"><img src="../_images/graphviz-94894a368b203b518d66a497cf5bc68990e8c0e5.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
+  weight [shape=box color=red label=&quot;weight\nTensorProto.FLOAT\nshape=['']&quot; fontsize=10];
+
+  loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
+  variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
+
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47477  ]\n [ 1.4251194]\n [34.21046  ]\n [61.476...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.000019]&quot; fontsize=10];
+  l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.1]&quot; fontsize=10];
+  l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.9]&quot; fontsize=10];
+  shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
+
+  multiplied [shape=box label=&quot;multiplied&quot; fontsize=10];
+  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
+  X -&gt; MatMul;
+  coef -&gt; MatMul;
+  MatMul -&gt; multiplied;
+
+  resh [shape=box label=&quot;resh&quot; fontsize=10];
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  multiplied -&gt; Add;
+  intercept -&gt; Add;
+  Add -&gt; resh;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  resh -&gt; Reshape;
+  shape_tensor -&gt; Reshape;
+  Reshape -&gt; variable;
+
+  loss_diff [shape=box label=&quot;loss_diff&quot; fontsize=10];
+  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
+  variable -&gt; Sub;
+  label -&gt; Sub;
+  Sub -&gt; loss_diff;
+
+  loss_l2 [shape=box label=&quot;loss_l2&quot; fontsize=10];
+  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  loss_diff -&gt; Mul;
+  loss_diff -&gt; Mul;
+  Mul -&gt; loss_l2;
+
+  loss_l1 [shape=box label=&quot;loss_l1&quot; fontsize=10];
+  Abs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
+  loss_diff -&gt; Abs;
+  Abs -&gt; loss_l1;
+
+  loss_l1_2 [shape=box label=&quot;loss_l1_2&quot; fontsize=10];
+  Mul1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  loss_l1 -&gt; Mul1;
+  l1_name -&gt; Mul1;
+  Mul1 -&gt; loss_l1_2;
+
+  loss_l2_2 [shape=box label=&quot;loss_l2_2&quot; fontsize=10];
+  Mul12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  loss_l2 -&gt; Mul12;
+  l2_name -&gt; Mul12;
+  Mul12 -&gt; loss_l2_2;
+
+  final_loss [shape=box label=&quot;final_loss&quot; fontsize=10];
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  loss_l1_2 -&gt; Add;
+  loss_l2_2 -&gt; Add;
+  Add -&gt; final_loss;
+
+  loss_diff_weight [shape=box label=&quot;loss_diff_weight&quot; fontsize=10];
+  Mul123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  final_loss -&gt; Mul123;
+  weight -&gt; Mul123;
+  Mul123 -&gt; loss_diff_weight;
+
+  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
+  loss_diff_weight -&gt; ReduceSum;
+  ReduceSum -&gt; loss;
+}" class="graphviz" /></div>
+<p>Next example shows how to add a L2 loss with L1 and L2 penalties
+on the coefficients.</p>
+<div class="graphviz"><img src="../_images/graphviz-081f4dc958f26cbdb39285282a16c104845e78eb.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
+  label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
+  weight [shape=box color=red label=&quot;weight\nTensorProto.FLOAT\nshape=['']&quot; fontsize=10];
+
+  loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
+  variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
+
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47472  ]\n [ 1.4252148]\n [34.210358 ]\n [61.476...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.0000134]&quot; fontsize=10];
+  l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
+  l1_weight_coef [shape=box label=&quot;l1_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];
+  l1_weight_intercept [shape=box label=&quot;l1_weight_intercept\nfloat32((1,))\n[0.5]&quot; fontsize=10];
+  l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
+  l2_weight_coef [shape=box label=&quot;l2_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];
+  l2_weight_intercept [shape=box label=&quot;l2_weight_intercept\nfloat32((1,))\n[0.5]&quot; fontsize=10];
+  shape_coef [shape=box label=&quot;shape_coef\nint64((1,))\n[-1]&quot; fontsize=10];
+  shape_intercept [shape=box label=&quot;shape_intercept\nint64((1,))\n[-1]&quot; fontsize=10];
+  shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
+  shapevect [shape=box label=&quot;shapevect\nint64((2,))\n[-1  1]&quot; fontsize=10];
+
+  multiplied [shape=box label=&quot;multiplied&quot; fontsize=10];
+  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
+  X -&gt; MatMul;
+  coef -&gt; MatMul;
+  MatMul -&gt; multiplied;
+
+  resh [shape=box label=&quot;resh&quot; fontsize=10];
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  multiplied -&gt; Add;
+  intercept -&gt; Add;
+  Add -&gt; resh;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  resh -&gt; Reshape;
+  shape_tensor -&gt; Reshape;
+  Reshape -&gt; variable;
+
+  loss_diff [shape=box label=&quot;loss_diff&quot; fontsize=10];
+  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
+  variable -&gt; Sub;
+  label -&gt; Sub;
+  Sub -&gt; loss_diff;
+
+  loss_l2 [shape=box label=&quot;loss_l2&quot; fontsize=10];
+  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  loss_diff -&gt; Mul;
+  loss_diff -&gt; Mul;
+  Mul -&gt; loss_l2;
+
+  loss_l1 [shape=box label=&quot;loss_l1&quot; fontsize=10];
+  Abs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
+  loss_diff -&gt; Abs;
+  Abs -&gt; loss_l1;
+
+  loss_l1_2 [shape=box label=&quot;loss_l1_2&quot; fontsize=10];
+  Mul1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  loss_l1 -&gt; Mul1;
+  l1_name -&gt; Mul1;
+  Mul1 -&gt; loss_l1_2;
+
+  loss_l2_2 [shape=box label=&quot;loss_l2_2&quot; fontsize=10];
+  Mul12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  loss_l2 -&gt; Mul12;
+  l2_name -&gt; Mul12;
+  Mul12 -&gt; loss_l2_2;
+
+  final_loss [shape=box label=&quot;final_loss&quot; fontsize=10];
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  loss_l1_2 -&gt; Add;
+  loss_l2_2 -&gt; Add;
+  Add -&gt; final_loss;
+
+  loss_diff_weight [shape=box label=&quot;loss_diff_weight&quot; fontsize=10];
+  Mul123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  final_loss -&gt; Mul123;
+  weight -&gt; Mul123;
+  Mul123 -&gt; loss_diff_weight;
+
+  loss_diff_2 [shape=box label=&quot;loss_diff_2&quot; fontsize=10];
+  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
+  loss_diff_weight -&gt; ReduceSum;
+  ReduceSum -&gt; loss_diff_2;
+
+  reshaped_coef [shape=box label=&quot;reshaped_coef&quot; fontsize=10];
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  coef -&gt; Reshape;
+  shape_coef -&gt; Reshape;
+  Reshape -&gt; reshaped_coef;
+
+  reducedm_coef [shape=box label=&quot;reducedm_coef&quot; fontsize=10];
+  Mul1234 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  reshaped_coef -&gt; Mul1234;
+  reshaped_coef -&gt; Mul1234;
+  Mul1234 -&gt; reducedm_coef;
+
+  reduced2_coef [shape=box label=&quot;reduced2_coef&quot; fontsize=10];
+  ReduceSum1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
+  reducedm_coef -&gt; ReduceSum1;
+  ReduceSum1 -&gt; reduced2_coef;
+
+  penalty2_coef [shape=box label=&quot;penalty2_coef&quot; fontsize=10];
+  Mul12345 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  reduced2_coef -&gt; Mul12345;
+  l2_weight_coef -&gt; Mul12345;
+  Mul12345 -&gt; penalty2_coef;
+
+  absolute_coef [shape=box label=&quot;absolute_coef&quot; fontsize=10];
+  Abs1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
+  reshaped_coef -&gt; Abs1;
+  Abs1 -&gt; absolute_coef;
+
+  reduced1_coef [shape=box label=&quot;reduced1_coef&quot; fontsize=10];
+  ReduceSum12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
+  absolute_coef -&gt; ReduceSum12;
+  ReduceSum12 -&gt; reduced1_coef;
+
+  penalty1_coef [shape=box label=&quot;penalty1_coef&quot; fontsize=10];
+  Mul123456 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  reduced1_coef -&gt; Mul123456;
+  l1_weight_coef -&gt; Mul123456;
+  Mul123456 -&gt; penalty1_coef;
+
+  penalty_coef [shape=box label=&quot;penalty_coef&quot; fontsize=10];
+  Add1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  penalty1_coef -&gt; Add1;
+  penalty2_coef -&gt; Add1;
+  Add1 -&gt; penalty_coef;
+
+  reshaped_intercept [shape=box label=&quot;reshaped_intercept&quot; fontsize=10];
+  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  intercept -&gt; Reshape1;
+  shape_intercept -&gt; Reshape1;
+  Reshape1 -&gt; reshaped_intercept;
+
+  reducedm_intercept [shape=box label=&quot;reducedm_intercept&quot; fontsize=10];
+  Mul1234567 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  reshaped_intercept -&gt; Mul1234567;
+  reshaped_intercept -&gt; Mul1234567;
+  Mul1234567 -&gt; reducedm_intercept;
+
+  reduced2_intercept [shape=box label=&quot;reduced2_intercept&quot; fontsize=10];
+  ReduceSum123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
+  reducedm_intercept -&gt; ReduceSum123;
+  ReduceSum123 -&gt; reduced2_intercept;
+
+  penalty2_intercept [shape=box label=&quot;penalty2_intercept&quot; fontsize=10];
+  Mul12345678 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  reduced2_intercept -&gt; Mul12345678;
+  l2_weight_intercept -&gt; Mul12345678;
+  Mul12345678 -&gt; penalty2_intercept;
+
+  absolute_intercept [shape=box label=&quot;absolute_intercept&quot; fontsize=10];
+  Abs12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
+  reshaped_intercept -&gt; Abs12;
+  Abs12 -&gt; absolute_intercept;
+
+  reduced1_intercept [shape=box label=&quot;reduced1_intercept&quot; fontsize=10];
+  ReduceSum1234 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
+  absolute_intercept -&gt; ReduceSum1234;
+  ReduceSum1234 -&gt; reduced1_intercept;
+
+  penalty1_intercept [shape=box label=&quot;penalty1_intercept&quot; fontsize=10];
+  Mul123456789 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  reduced1_intercept -&gt; Mul123456789;
+  l1_weight_intercept -&gt; Mul123456789;
+  Mul123456789 -&gt; penalty1_intercept;
+
+  penalty_intercept [shape=box label=&quot;penalty_intercept&quot; fontsize=10];
+  Add12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  penalty1_intercept -&gt; Add12;
+  penalty2_intercept -&gt; Add12;
+  Add12 -&gt; penalty_intercept;
+
+  sumop [shape=box label=&quot;sumop&quot; fontsize=10];
+  Add123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  penalty_coef -&gt; Add123;
+  penalty_intercept -&gt; Add123;
+  Add123 -&gt; sumop;
+
+  penalty_reshape [shape=box label=&quot;penalty_reshape&quot; fontsize=10];
+  Reshape12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  sumop -&gt; Reshape12;
+  shapevect -&gt; Reshape12;
+  Reshape12 -&gt; penalty_reshape;
+
+  loss_reshape [shape=box label=&quot;loss_reshape&quot; fontsize=10];
+  Reshape123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  loss_diff_2 -&gt; Reshape123;
+  shapevect -&gt; Reshape123;
+  Reshape123 -&gt; loss_reshape;
+
+  Add1234 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  penalty_reshape -&gt; Add1234;
+  loss_reshape -&gt; Add1234;
+  Add1234 -&gt; loss;
+}" class="graphviz" /></div>
+</dd></dl>
+
 </section>
 <section id="get-train-initializer">
 <h3>get_train_initializer<a class="headerlink" href="#get-train-initializer" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.gradient.loss_helper.get_train_initializer">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.gradient.loss_helper.</span></span><span class="sig-name descname"><span class="pre">get_train_initializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.16.0)"><span class="pre">ModelProto</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/gradient/loss_helper.html#get_train_initializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.gradient.loss_helper.get_train_initializer" title="Link to this definition">#</a></dt>
+<dd><p>Returns the list of initializers to train.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary <cite>{name: (value, tensor)}</cite></p>
+</dd>
+</dl>
+<p>The function walk through the list of initializers and
+returns all tensors with elements from types float or double.</p>
+</dd></dl>
+
 </section>
 <section id="penalty-loss-onnx">
 <h3>penalty_loss_onnx<a class="headerlink" href="#penalty-loss-onnx" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.gradient.loss_helper.penalty_loss_onnx">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.gradient.loss_helper.</span></span><span class="sig-name descname"><span class="pre">penalty_loss_onnx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">existing_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/gradient/loss_helper.html#penalty_loss_onnx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.gradient.loss_helper.penalty_loss_onnx" title="Link to this definition">#</a></dt>
+<dd><p>Returns onnx nodes to compute
+<img class="math" src="../_images/math/a207af79dec28e31235f24b863f4b517d14e1b72.svg" alt="|w| \alpha + w^2 \beta"/>
+where <img class="math" src="../_images/math/ed9deb51f7d00a7daa384b2f0be9f2e17f72b2f4.svg" alt="\alpha=l1"/> and <img class="math" src="../_images/math/8ce705d3bcac00e5740e35c4825a3aff91de85b0.svg" alt="\beta=l2"/>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – name of weights</p></li>
+<li><p><strong>dtype</strong> – numpy dtype</p></li>
+<li><p><strong>l1</strong> – coefficient for L1 norm</p></li>
+<li><p><strong>l2</strong> – coefficient for L2 norm</p></li>
+<li><p><strong>existing_names</strong> – names already taken in the ONNX graph</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>initializer, nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 </section>
@@ -304,14 +976,29 @@
             <ul>
 <li><a class="reference internal" href="#">gradient</a><ul>
 <li><a class="reference internal" href="#gradient-grad-helper">gradient.grad_helper</a><ul>
-<li><a class="reference internal" href="#derivativeoptions">DerivativeOptions</a></li>
-<li><a class="reference internal" href="#onnx-derivative">onnx_derivative</a></li>
+<li><a class="reference internal" href="#derivativeoptions">DerivativeOptions</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.gradient.grad_helper.DerivativeOptions"><code class="docutils literal notranslate"><span class="pre">DerivativeOptions</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#onnx-derivative">onnx_derivative</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.gradient.grad_helper.onnx_derivative"><code class="docutils literal notranslate"><span class="pre">onnx_derivative()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#gradient-loss-helper">gradient.loss_helper</a><ul>
-<li><a class="reference internal" href="#add-loss-output">add_loss_output</a></li>
-<li><a class="reference internal" href="#get-train-initializer">get_train_initializer</a></li>
-<li><a class="reference internal" href="#penalty-loss-onnx">penalty_loss_onnx</a></li>
+<li><a class="reference internal" href="#add-loss-output">add_loss_output</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.gradient.loss_helper.add_loss_output"><code class="docutils literal notranslate"><span class="pre">add_loss_output()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#get-train-initializer">get_train_initializer</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.gradient.loss_helper.get_train_initializer"><code class="docutils literal notranslate"><span class="pre">get_train_initializer()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#penalty-loss-onnx">penalty_loss_onnx</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.gradient.loss_helper.penalty_loss_onnx"><code class="docutils literal notranslate"><span class="pre">penalty_loss_onnx()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
