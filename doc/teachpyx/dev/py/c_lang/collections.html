@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Dates" href="dates.html" /><link rel="prev" title="Constructions classiques" href="constructions.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Constructions classiques - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -408,6 +408,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_knn_cross_val.html">Validation croisée (cross-validation)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_knn_hyper.html">Sélection des hyper-paramètres</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/ml_a_tree_overfitting.html">Tree, hyperparamètres, overfitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/gradient_boosting.html">Gradient Boosting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/ridge_lasso.html">Régression Ridge, Lasso et nouvel estimateur</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_reg.html">Prédiction de la note des vins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_reg_poly.html">Régression polynômiale et pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_knn.html">Plus proches voisins</a></li>
@@ -559,10 +561,10 @@ depuis cette version, le type standard <cite>dict</cite> conserve
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
-    <span class="p">[(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
-    <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
-    <span class="p">[(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+    <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+    <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
 </pre></div>
 </div>
 <p>Néanmoins, cette distinctions est importante à connaître pour des
@@ -680,8 +682,8 @@ plus bas niveau.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="nb">list</span> <span class="mf">0.07087049999972805</span>
-    <span class="n">deque</span> <span class="mf">0.06322000000000116</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="nb">list</span> <span class="mf">0.047326999999768304</span>
+    <span class="n">deque</span> <span class="mf">0.04616130000022167</span>
 </pre></div>
 </div>
 </section>

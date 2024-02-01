@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Exceptions" href="../c_exception/index.html" /><link rel="prev" title="Classes" href="classes.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Questions - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -408,6 +408,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_knn_cross_val.html">Validation croisée (cross-validation)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_knn_hyper.html">Sélection des hyper-paramètres</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/ml_a_tree_overfitting.html">Tree, hyperparamètres, overfitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/gradient_boosting.html">Gradient Boosting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/ridge_lasso.html">Régression Ridge, Lasso et nouvel estimateur</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_reg.html">Prédiction de la note des vins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_reg_poly.html">Régression polynômiale et pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesr_knn.html">Plus proches voisins</a></li>
@@ -566,6 +568,7 @@ Les classes permettent de regrouper formellement
 ces deux fonctions.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DeuxEntiers</span><span class="p">:</span>
+
     <span class="k">def</span> <span class="nf">somme</span><span class="p">(</span><span class="n">de</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">de</span><span class="p">[</span><span class="s2">&quot;i1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">de</span><span class="p">[</span><span class="s2">&quot;i2&quot;</span><span class="p">]</span>
 
@@ -590,6 +593,7 @@ aux fonctions qui les manipulent, il paraît normal de les
 inclure dans la classe.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DeuxEntiers</span><span class="p">:</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">de</span><span class="p">):</span>  <span class="c1"># on accroche les données à la classe</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">de</span> <span class="o">=</span> <span class="n">de</span>
 
@@ -615,6 +619,7 @@ ils ont cherché à simplifier l’appel aux fonctions qu’ils
 ont appelé des <em>méthodes</em> :</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DeuxEntiers</span><span class="p">:</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">de</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">de</span> <span class="o">=</span> <span class="n">de</span>
 
@@ -640,6 +645,7 @@ des deux entiers <code class="docutils literal notranslate"><span class="pre">{'
 des variables de la classe qui ont été renommés en <em>attributs</em>.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DeuxEntiers</span><span class="p">:</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">i1</span> <span class="o">=</span> <span class="n">i1</span>  <span class="c1"># plus de dictionnaire</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">i2</span> <span class="o">=</span> <span class="n">i2</span>
@@ -669,6 +675,7 @@ permet de réutiliser certaines fonctions, d’en remplacer
 d’autres et d’en ajouter pour une autre situation.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DeuxEntiers</span><span class="p">:</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">i1</span> <span class="o">=</span> <span class="n">i1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">i2</span> <span class="o">=</span> <span class="n">i2</span>
@@ -681,6 +688,7 @@ d’autres et d’en ajouter pour une autre situation.</p>
 
 
 <span class="k">class</span> <span class="nc">DeuxEntiersModifies</span><span class="p">(</span><span class="n">DeuxEntiers</span><span class="p">):</span>  <span class="c1"># héritage</span>
+
     <span class="k">def</span> <span class="nf">multiplication</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">i2</span><span class="p">)</span>  <span class="c1"># modifié</span>
 

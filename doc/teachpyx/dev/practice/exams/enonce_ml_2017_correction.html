@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Numpy / Pandas" href="../index_data.html" /><link rel="prev" title="Evaluation Python / Machine Learning année 2017 - énoncé" href="enonce_ml_2017.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Evaluation Python / Machine Learning année 2017 - solution - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -409,6 +409,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../ml/winesr_knn_cross_val.html">Validation croisée (cross-validation)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ml/winesr_knn_hyper.html">Sélection des hyper-paramètres</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ml/ml_a_tree_overfitting.html">Tree, hyperparamètres, overfitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/gradient_boosting.html">Gradient Boosting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/ridge_lasso.html">Régression Ridge, Lasso et nouvel estimateur</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ml/winesr_reg.html">Prédiction de la note des vins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ml/winesr_reg_poly.html">Régression polynômiale et pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ml/winesr_knn.html">Plus proches voisins</a></li>
@@ -532,7 +534,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
 </pre></div>
 </div>
 </div>
@@ -543,13 +545,13 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import pandas
 
-<span class="n">persons</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-    <span class="s2">&quot;https://raw.githubusercontent.com/sdpython/teachpyx/main/_data/2017/persons.txt&quot;</span><span class="p">,</span>
-    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">persons</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+persons = pandas.read_csv(
+    &quot;https://raw.githubusercontent.com/sdpython/teachpyx/main/_data/2017/persons.txt&quot;,
+    sep=&quot;\t&quot;,
+)
+persons.head()
 </pre></div>
 </div>
 </div>
@@ -626,11 +628,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rend</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-    <span class="s2">&quot;https://raw.githubusercontent.com/sdpython/teachpyx/main/_data/2017/rendezvous.txt&quot;</span><span class="p">,</span>
-    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">rend</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rend = pandas.read_csv(
+    &quot;https://raw.githubusercontent.com/sdpython/teachpyx/main/_data/2017/rendezvous.txt&quot;,
+    sep=&quot;\t&quot;,
+)
+rend.head()
 </pre></div>
 </div>
 </div>
@@ -707,7 +709,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">persons</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">rend</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>persons.shape, rend.shape
 </pre></div>
 </div>
 </div>
@@ -730,8 +732,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gr</span> <span class="o">=</span> <span class="n">rend</span><span class="p">[[</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;idc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">gr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>gr = rend[[&quot;idc&quot;, &quot;price&quot;]].groupby(&quot;idc&quot;).mean()
+gr.head()
 </pre></div>
 </div>
 </div>
@@ -798,8 +800,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">join</span> <span class="o">=</span> <span class="n">persons</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;idc&quot;</span><span class="p">)</span>
-<span class="n">join</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>join = persons.merge(gr.reset_index(), on=&quot;idc&quot;)
+join.head()
 </pre></div>
 </div>
 </div>
@@ -883,7 +885,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">join</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>join.shape
 </pre></div>
 </div>
 </div>
@@ -900,8 +902,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">join</span> <span class="o">=</span> <span class="n">persons</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
-<span class="n">join</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>join = persons.merge(gr.reset_index(), on=&quot;idc&quot;, how=&quot;outer&quot;)
+join.shape
 </pre></div>
 </div>
 </div>
@@ -923,7 +925,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">join</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;age / price&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>join.plot(x=&quot;age&quot;, y=&quot;price&quot;, kind=&quot;scatter&quot;, title=&quot;age / price&quot;)
 </pre></div>
 </div>
 </div>
@@ -948,9 +950,9 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import seaborn
 
-<span class="n">g</span> <span class="o">=</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">join</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;reg&quot;</span><span class="p">,</span> <span class="n">scatter_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+g = seaborn.jointplot(join, x=&quot;age&quot;, y=&quot;price&quot;, kind=&quot;reg&quot;, scatter_kws={&quot;s&quot;: 10})
 </pre></div>
 </div>
 </div>
@@ -976,7 +978,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">join</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>join.plot(x=&quot;gender&quot;, y=&quot;price&quot;, kind=&quot;scatter&quot;)
 </pre></div>
 </div>
 </div>
@@ -1001,11 +1003,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import numpy
 
-<span class="n">bruit</span> <span class="o">=</span> <span class="n">join</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">bruit</span><span class="p">[</span><span class="s2">&quot;gx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bruit</span><span class="o">.</span><span class="n">gender</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">bruit</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">3</span>
-<span class="n">bruit</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;gx&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+bruit = join.copy()
+bruit[&quot;gx&quot;] = bruit.gender + numpy.random.random(bruit.shape[0]) / 3
+bruit.plot(x=&quot;gx&quot;, y=&quot;price&quot;, kind=&quot;scatter&quot;)
 </pre></div>
 </div>
 </div>
@@ -1030,7 +1032,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">join</span><span class="p">[[</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;gender&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>join[[&quot;price&quot;, &quot;gender&quot;]].boxplot(by=&quot;gender&quot;)
 </pre></div>
 </div>
 </div>
@@ -1055,7 +1057,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seaborn</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">join</span><span class="p">,</span> <span class="n">inner</span><span class="o">=</span><span class="s2">&quot;quart&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>seaborn.violinplot(x=&quot;gender&quot;, y=&quot;price&quot;, data=join, inner=&quot;quart&quot;)
 </pre></div>
 </div>
 </div>
@@ -1084,10 +1086,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from sklearn.linear_model import LinearRegression
 
-<span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">join</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">]],</span> <span class="n">join</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">])</span>
+lr = LinearRegression()
+lr.fit(join[[&quot;age&quot;, &quot;gender&quot;]], join[&quot;price&quot;])
 </pre></div>
 </div>
 </div>
@@ -1506,7 +1508,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span><span class="o">.</span><span class="n">coef_</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr.coef_
 </pre></div>
 </div>
 </div>
@@ -1523,7 +1525,7 @@ array([ 0.52440734, -4.36373925])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span><span class="o">.</span><span class="n">intercept_</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr.intercept_
 </pre></div>
 </div>
 </div>
@@ -1536,16 +1538,16 @@ array([ 0.52440734, -4.36373925])
 61.05057671902867
 </pre></div></div>
 </div>
-<p>On utilise maintenant <a class="reference external" href="http://statsmodels.sourceforge.net/">statsmodels</a> qui est plus complet pour toute ce qui est un modèle linéaire.</p>
+<p>On utilise maintenant <a class="reference external" href="https://www.statsmodels.org/stable/index.html">statsmodels</a> qui est plus complet pour toute ce qui est un modèle linéaire.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from statsmodels.formula.api import ols
 
-<span class="n">lr</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;price ~ age + gender&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">join</span><span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+lr = ols(&quot;price ~ age + gender&quot;, data=join)
+res = lr.fit()
+res.summary()
 </pre></div>
 </div>
 </div>
@@ -1618,13 +1620,13 @@ array([ 0.52440734, -4.36373925])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.api</span> <span class="kn">import</span> <span class="n">OLS</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from statsmodels.api import OLS
 
-<span class="n">join2</span> <span class="o">=</span> <span class="n">join</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">join2</span><span class="p">[</span><span class="s2">&quot;cst&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">lr</span> <span class="o">=</span> <span class="n">OLS</span><span class="p">(</span><span class="n">join2</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span> <span class="n">join2</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;cst&quot;</span><span class="p">]])</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+join2 = join.copy()
+join2[&quot;cst&quot;] = 1
+lr = OLS(join2[&quot;price&quot;], join2[[&quot;age&quot;, &quot;gender&quot;, &quot;cst&quot;]])
+res = lr.fit()
+res.summary()
 </pre></div>
 </div>
 </div>
@@ -1697,12 +1699,12 @@ array([ 0.52440734, -4.36373925])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">patsy</span> <span class="kn">import</span> <span class="n">dmatrices</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from patsy import dmatrices
 
-<span class="n">y</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">dmatrices</span><span class="p">(</span><span class="s2">&quot;price ~ age + gender&quot;</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;matrix&quot;</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+y, X = dmatrices(&quot;price ~ age + gender&quot;, join, return_type=&quot;matrix&quot;)
+y = numpy.ravel(y)
+lr = LinearRegression(fit_intercept=False)
+lr.fit(X, y)
 </pre></div>
 </div>
 </div>
@@ -2121,7 +2123,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">intercept_</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr.coef_, lr.intercept_
 </pre></div>
 </div>
 </div>
@@ -2138,7 +2140,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>X[:2]
 </pre></div>
 </div>
 </div>
@@ -2161,8 +2163,8 @@ array([[ 1., 37.,  0.],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rend</span><span class="p">[</span><span class="s2">&quot;date2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">rend</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-<span class="n">rend</span><span class="o">.</span><span class="n">dtypes</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rend[&quot;date2&quot;] = pandas.to_datetime(rend.date)
+rend.dtypes
 </pre></div>
 </div>
 </div>
@@ -2185,8 +2187,8 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rend</span><span class="p">[</span><span class="s2">&quot;weekday&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rend</span><span class="o">.</span><span class="n">date2</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">weekday</span>
-<span class="n">rend</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rend[&quot;weekday&quot;] = rend.date2.dt.weekday
+rend.head()
 </pre></div>
 </div>
 </div>
@@ -2280,7 +2282,7 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rend</span><span class="p">[[</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;weekday&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rend[[&quot;price&quot;, &quot;weekday&quot;]].boxplot(by=&quot;weekday&quot;)
 </pre></div>
 </div>
 </div>
@@ -2310,9 +2312,9 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rend</span><span class="p">[</span><span class="s2">&quot;constant&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rend</span><span class="p">[</span><span class="s2">&quot;date2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-<span class="n">rend</span><span class="p">[</span><span class="s2">&quot;jour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rend</span><span class="p">[</span><span class="s2">&quot;date2&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">rend</span><span class="p">[</span><span class="s2">&quot;constant&quot;</span><span class="p">]</span>
-<span class="n">rend</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rend[&quot;constant&quot;] = rend[&quot;date2&quot;].min()
+rend[&quot;jour&quot;] = rend[&quot;date2&quot;] - rend[&quot;constant&quot;]
+rend.head(n=2)
 </pre></div>
 </div>
 </div>
@@ -2381,8 +2383,8 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rend</span><span class="p">[</span><span class="s2">&quot;jouri&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rend</span><span class="o">.</span><span class="n">jour</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
-<span class="n">rend</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rend[&quot;jouri&quot;] = rend.jour.apply(lambda d: d.days)
+rend.head(n=2)
 </pre></div>
 </div>
 </div>
@@ -2454,9 +2456,9 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">rend</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;jouri&quot;</span><span class="p">])[</span><span class="s2">&quot;jouri&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
-<span class="n">rend</span><span class="p">[</span><span class="s2">&quot;diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff</span>
-<span class="n">rend</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>diff = rend.sort_values([&quot;idc&quot;, &quot;jouri&quot;])[&quot;jouri&quot;].diff()
+rend[&quot;diff&quot;] = diff
+rend.head(n=2)
 </pre></div>
 </div>
 </div>
@@ -2531,9 +2533,9 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first</span> <span class="o">=</span> <span class="n">rend</span><span class="p">[[</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-<span class="n">first</span><span class="p">[</span><span class="s2">&quot;j365&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">365</span>
-<span class="n">first</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>first = rend[[&quot;idc&quot;, &quot;date&quot;]].groupby(&quot;idc&quot;, as_index=False).min()
+first[&quot;j365&quot;] = 365
+first.head(n=2)
 </pre></div>
 </div>
 </div>
@@ -2587,8 +2589,8 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tout</span> <span class="o">=</span> <span class="n">rend</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
-<span class="n">tout</span><span class="p">[[</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;jouri&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;j365&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>tout = rend.merge(first, on=[&quot;idc&quot;, &quot;date&quot;], how=&quot;outer&quot;)
+tout[[&quot;idc&quot;, &quot;jouri&quot;, &quot;date&quot;, &quot;j365&quot;]].head(n=5)
 </pre></div>
 </div>
 </div>
@@ -2666,8 +2668,8 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tout</span><span class="p">[</span><span class="s2">&quot;delay&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tout</span><span class="o">.</span><span class="n">j365</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">tout</span><span class="o">.</span><span class="n">jouri</span><span class="p">)</span>
-<span class="n">tout</span><span class="p">[[</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;jouri&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;j365&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>tout[&quot;delay&quot;] = tout.j365.fillna(tout.jouri)
+tout[[&quot;idc&quot;, &quot;jouri&quot;, &quot;date&quot;, &quot;j365&quot;, &quot;delay&quot;]].head(n=8)
 </pre></div>
 </div>
 </div>
@@ -2775,8 +2777,8 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tout</span><span class="p">[</span><span class="s2">&quot;delay1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">tout</span><span class="p">[</span><span class="s2">&quot;delay&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">tout</span><span class="p">[[</span><span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>tout[&quot;delay1&quot;] = 1 / (tout[&quot;delay&quot;] + 1)
+tout[[&quot;delay&quot;, &quot;delay1&quot;]].head()
 </pre></div>
 </div>
 </div>
@@ -2845,10 +2847,10 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rend2</span> <span class="o">=</span> <span class="n">rend</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;jouri&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">rend2</span><span class="p">[</span><span class="s2">&quot;diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rend2</span><span class="p">[</span><span class="s2">&quot;jouri&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
-<span class="n">rend2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rend2</span><span class="o">.</span><span class="n">idc</span> <span class="o">!=</span> <span class="n">rend2</span><span class="o">.</span><span class="n">idc</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">365</span>
-<span class="n">rend2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rend2 = rend.sort_values([&quot;idc&quot;, &quot;jouri&quot;]).reset_index(drop=True).copy()
+rend2[&quot;diff&quot;] = rend2[&quot;jouri&quot;].diff()
+rend2.loc[rend2.idc != rend2.idc.shift(1), &quot;diff&quot;] = 365
+rend2.head()
 </pre></div>
 </div>
 </div>
@@ -2966,16 +2968,16 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">tout</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">persons</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;idc&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat = tout.merge(persons, on=&quot;idc&quot;)
 </pre></div>
 </div>
 </div>
-<p>Ensuite retour à <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> et plutôt le second <a class="reference external" href="http://statsmodels.sourceforge.net/">statsmodels</a> pour effectuer des tests sur les coefficients du modèle. On regarde d’abord les corrélations.</p>
+<p>Ensuite retour à <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> et plutôt le second <a class="reference external" href="https://www.statsmodels.org/stable/index.html">statsmodels</a> pour effectuer des tests sur les coefficients du modèle. On regarde d’abord les corrélations.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;, &quot;price&quot;]].corr()
 </pre></div>
 </div>
 </div>
@@ -3073,9 +3075,9 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seaborn</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span>
-    <span class="n">mat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">(),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>seaborn.clustermap(
+    mat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;, &quot;price&quot;]].corr(), figsize=(5, 5)
+)
 </pre></div>
 </div>
 </div>
@@ -3100,9 +3102,9 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
-    <span class="n">mat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]],</span> <span class="n">plot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
-<span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>seaborn.pairplot(
+    mat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;, &quot;price&quot;]], plot_kws={&quot;s&quot;: 10}
+)
 </pre></div>
 </div>
 </div>
@@ -3146,13 +3148,13 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]]</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">PairGrid</span><span class="p">(</span>
-    <span class="n">feat</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-    <span class="n">x_vars</span><span class="o">=</span><span class="n">feat</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-    <span class="n">y_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span>
-<span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">seaborn</span><span class="o">.</span><span class="n">stripplot</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;Reds_r&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>feat = mat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;, &quot;price&quot;]]
+g = seaborn.PairGrid(
+    feat.sort_values(&quot;price&quot;, ascending=False),
+    x_vars=feat.columns[:-1],
+    y_vars=[&quot;price&quot;],
+)
+g.map(seaborn.stripplot, size=3, orient=&quot;h&quot;, palette=&quot;Reds_r&quot;, edgecolor=&quot;gray&quot;)
 </pre></div>
 </div>
 </div>
@@ -3204,9 +3206,9 @@ dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">mat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">]],</span> <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">])</span>
-<span class="n">lr</span><span class="o">.</span><span class="n">coef_</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr = LinearRegression()
+lr.fit(mat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;]], mat[&quot;price&quot;])
+lr.coef_
 </pre></div>
 </div>
 </div>
@@ -3224,11 +3226,11 @@ array([ 5.08109837e-01, -4.41245429e+00,  5.42852787e-04, -1.60797483e+01,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">import</span> <span class="n">ols</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from statsmodels.formula.api import ols
 
-<span class="n">lr</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;price ~ age + gender + delay + delay1 + weekday&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">mat</span><span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+lr = ols(&quot;price ~ age + gender + delay + delay1 + weekday&quot;, data=mat)
+res = lr.fit()
+res.summary()
 </pre></div>
 </div>
 </div>
@@ -3315,9 +3317,9 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr_moy</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">lr_moy</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">join</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">]],</span> <span class="n">join</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">])</span>
-<span class="n">lr_moy</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">lr_moy</span><span class="o">.</span><span class="n">intercept_</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr_moy = LinearRegression()
+lr_moy.fit(join[[&quot;age&quot;, &quot;gender&quot;]], join[&quot;price&quot;])
+lr_moy.coef_, lr_moy.intercept_
 </pre></div>
 </div>
 </div>
@@ -3334,9 +3336,9 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred_moy</span> <span class="o">=</span> <span class="n">lr_moy</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">join</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">]])</span>
-<span class="n">join</span><span class="p">[</span><span class="s2">&quot;pred_moy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_moy</span>
-<span class="n">join</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>pred_moy = lr_moy.predict(join[[&quot;age&quot;, &quot;gender&quot;]])
+join[&quot;pred_moy&quot;] = pred_moy
+join.head()
 </pre></div>
 </div>
 </div>
@@ -3426,8 +3428,8 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">err1</span> <span class="o">=</span> <span class="p">((</span><span class="n">join</span><span class="o">.</span><span class="n">pred_moy</span> <span class="o">-</span> <span class="n">join</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">join</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">err1</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>err1 = ((join.pred_moy - join.price) ** 2).sum() / join.shape[0]
+err1
 </pre></div>
 </div>
 </div>
@@ -3444,7 +3446,7 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">join</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pred_moy&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>join.plot(x=&quot;price&quot;, y=&quot;pred_moy&quot;, kind=&quot;scatter&quot;)
 </pre></div>
 </div>
 </div>
@@ -3468,10 +3470,10 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lrc</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">feat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;idc&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">lrc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">feat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">]],</span> <span class="n">feat</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">])</span>
-<span class="n">lrc</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">lrc</span><span class="o">.</span><span class="n">intercept_</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lrc = LinearRegression()
+feat = mat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;, &quot;price&quot;, &quot;idc&quot;]].copy()
+lrc.fit(feat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;]], feat[&quot;price&quot;])
+lrc.coef_, lrc.intercept_
 </pre></div>
 </div>
 </div>
@@ -3490,9 +3492,9 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predc</span> <span class="o">=</span> <span class="n">lrc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">feat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">]])</span>
-<span class="n">feat</span><span class="p">[</span><span class="s2">&quot;predc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predc</span>
-<span class="n">feat</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>predc = lrc.predict(feat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;weekday&quot;]])
+feat[&quot;predc&quot;] = predc
+feat.head()
 </pre></div>
 </div>
 </div>
@@ -3594,8 +3596,8 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg</span> <span class="o">=</span> <span class="n">feat</span><span class="p">[[</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;predc&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;idc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">agg</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>agg = feat[[&quot;idc&quot;, &quot;predc&quot;, &quot;price&quot;]].groupby(&quot;idc&quot;).mean()
+agg.head()
 </pre></div>
 </div>
 </div>
@@ -3665,8 +3667,8 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">err2</span> <span class="o">=</span> <span class="p">((</span><span class="n">agg</span><span class="o">.</span><span class="n">predc</span> <span class="o">-</span> <span class="n">agg</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">agg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">err2</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>err2 = ((agg.predc - agg.price) ** 2).sum() / agg.shape[0]
+err2
 </pre></div>
 </div>
 </div>
@@ -3684,7 +3686,7 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;predc&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>agg.plot(x=&quot;price&quot;, y=&quot;predc&quot;, kind=&quot;scatter&quot;)
 </pre></div>
 </div>
 </div>
@@ -3709,8 +3711,8 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">join</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">temp</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>temp = join.sort_values(&quot;price&quot;).reset_index(drop=True).reset_index(drop=False)
+temp.head(n=1)
 </pre></div>
 </div>
 </div>
@@ -3765,7 +3767,7 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;pred_moy&quot;</span><span class="p">])</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>temp.plot(x=&quot;index&quot;, y=[&quot;price&quot;, &quot;pred_moy&quot;])
 </pre></div>
 </div>
 </div>
@@ -3789,8 +3791,8 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp2</span> <span class="o">=</span> <span class="n">agg</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">temp2</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>temp2 = agg.sort_values(&quot;price&quot;).reset_index(drop=True).reset_index(drop=False)
+temp2.head(n=1)
 </pre></div>
 </div>
 </div>
@@ -3837,9 +3839,9 @@ patient et de comparer les erreurs de prédiction du prix moyen. D’un côté, 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">])</span>
-<span class="n">temp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pred_moy&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">])</span>
-<span class="n">temp2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;predc&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">])</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>ax = temp.plot(x=&quot;index&quot;, y=&quot;price&quot;, figsize=(14, 4), ylim=[60, 120])
+temp.plot(x=&quot;index&quot;, y=&quot;pred_moy&quot;, linewidth=1, ax=ax, ylim=[60, 120])
+temp2.plot(x=&quot;index&quot;, y=&quot;predc&quot;, ax=ax, linewidth=0.6, ylim=[60, 120])
 </pre></div>
 </div>
 </div>
@@ -3866,11 +3868,11 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;erreur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">pred_moy</span> <span class="o">-</span> <span class="n">temp</span><span class="o">.</span><span class="n">price</span>
-<span class="n">temp2</span><span class="p">[</span><span class="s2">&quot;erreur2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp2</span><span class="o">.</span><span class="n">predc</span> <span class="o">-</span> <span class="n">temp2</span><span class="o">.</span><span class="n">price</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[[</span><span class="s2">&quot;erreur&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;erreur&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">temp2</span><span class="p">[[</span><span class="s2">&quot;erreur2&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;erreur2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;r--&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>temp[&quot;erreur&quot;] = temp.pred_moy - temp.price
+temp2[&quot;erreur2&quot;] = temp2.predc - temp2.price
+ax = temp[[&quot;erreur&quot;]].sort_values(&quot;erreur&quot;).reset_index(drop=True).plot()
+temp2[[&quot;erreur2&quot;]].sort_values(&quot;erreur2&quot;).reset_index(drop=True).plot(ax=ax)
+ax.plot([0, 1000], [0, 0], &quot;r--&quot;)
 </pre></div>
 </div>
 </div>
@@ -3899,9 +3901,9 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dummies</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">weekday</span><span class="p">)</span>
-<span class="n">dummies</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lu&quot;</span><span class="p">,</span> <span class="s2">&quot;ma&quot;</span><span class="p">,</span> <span class="s2">&quot;me&quot;</span><span class="p">,</span> <span class="s2">&quot;je&quot;</span><span class="p">,</span> <span class="s2">&quot;ve&quot;</span><span class="p">,</span> <span class="s2">&quot;sa&quot;</span><span class="p">,</span> <span class="s2">&quot;di&quot;</span><span class="p">]</span>
-<span class="n">dummies</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>dummies = pandas.get_dummies(mat.weekday)
+dummies.columns = [&quot;lu&quot;, &quot;ma&quot;, &quot;me&quot;, &quot;je&quot;, &quot;ve&quot;, &quot;sa&quot;, &quot;di&quot;]
+dummies.head()
 </pre></div>
 </div>
 </div>
@@ -3997,8 +3999,8 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat2</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mat</span><span class="p">,</span> <span class="n">dummies</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;lu&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">mat2</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat2 = pandas.concat([mat, dummies.drop(&quot;lu&quot;, axis=1)], axis=1)
+mat2.head(n=1)
 </pre></div>
 </div>
 </div>
@@ -4082,11 +4084,11 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span>
-    <span class="s2">&quot;price ~ age + gender + delay + delay1 + ma + me + je + ve + sa + di&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">mat2</span>
-<span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr = ols(
+    &quot;price ~ age + gender + delay + delay1 + ma + me + je + ve + sa + di&quot;, data=mat2
+)
+res = lr.fit()
+res.summary()
 </pre></div>
 </div>
 </div>
@@ -4183,10 +4185,10 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lrc</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">feat2</span> <span class="o">=</span> <span class="n">mat2</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;di&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">lrc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">feat2</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;di&quot;</span><span class="p">]],</span> <span class="n">feat2</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">])</span>
-<span class="n">lrc</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">lrc</span><span class="o">.</span><span class="n">intercept_</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lrc = LinearRegression()
+feat2 = mat2[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;price&quot;, &quot;idc&quot;, &quot;di&quot;]].copy()
+lrc.fit(feat2[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;di&quot;]], feat2[&quot;price&quot;])
+lrc.coef_, lrc.intercept_
 </pre></div>
 </div>
 </div>
@@ -4205,9 +4207,9 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predc</span> <span class="o">=</span> <span class="n">lrc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">feat2</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;di&quot;</span><span class="p">]])</span>
-<span class="n">feat2</span><span class="p">[</span><span class="s2">&quot;predc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predc</span>
-<span class="n">feat2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>predc = lrc.predict(feat2[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;di&quot;]])
+feat2[&quot;predc&quot;] = predc
+feat2.head()
 </pre></div>
 </div>
 </div>
@@ -4308,8 +4310,8 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg2</span> <span class="o">=</span> <span class="n">feat2</span><span class="p">[[</span><span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;predc&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;idc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">agg2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>agg2 = feat2[[&quot;idc&quot;, &quot;predc&quot;, &quot;price&quot;]].groupby(&quot;idc&quot;).mean()
+agg2.head()
 </pre></div>
 </div>
 </div>
@@ -4379,8 +4381,8 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">err2d</span> <span class="o">=</span> <span class="p">((</span><span class="n">agg2</span><span class="o">.</span><span class="n">predc</span> <span class="o">-</span> <span class="n">agg2</span><span class="o">.</span><span class="n">price</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">agg2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">err2d</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>err2d = ((agg2.predc - agg2.price) ** 2).sum() / agg2.shape[0]
+err2d
 </pre></div>
 </div>
 </div>
@@ -4398,7 +4400,7 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agg2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;predc&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>agg2.plot(x=&quot;price&quot;, y=&quot;predc&quot;, kind=&quot;scatter&quot;)
 </pre></div>
 </div>
 </div>
@@ -4422,9 +4424,9 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp2</span> <span class="o">=</span> <span class="n">agg2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">temp2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">])</span>
-<span class="n">temp2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;predc&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">])</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>temp2 = agg2.sort_values(&quot;price&quot;).reset_index(drop=True).reset_index(drop=False)
+ax = temp2.plot(x=&quot;index&quot;, y=&quot;price&quot;, figsize=(14, 4), ylim=[60, 120])
+temp2.plot(x=&quot;index&quot;, y=&quot;predc&quot;, linewidth=1, ax=ax, ylim=[60, 120])
 </pre></div>
 </div>
 </div>
@@ -4447,18 +4449,18 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 </section>
 <section id="Une-variable-catégorielle-en-une-seule-colonne-?">
 <h2>Une variable catégorielle en une seule colonne ?<a class="headerlink" href="#Une-variable-catégorielle-en-une-seule-colonne-?" title="Link to this heading">#</a></h2>
-<p>Un jeu de données peut rapidement croître s’il est étendu pour chaque variable catégorielle. On peut utiliser le module <a class="reference external" href="https://github.com/scikit-learn-contrib/categorical-encoding/tree/master/category_encoders">category_encoders</a> ou <a class="reference external" href="http://statsmodels.sourceforge.net/devel/contrasts.html">statsmodels</a>.</p>
+<p>Un jeu de données peut rapidement croître s’il est étendu pour chaque variable catégorielle. On peut utiliser le module <a class="reference external" href="https://github.com/scikit-learn-contrib/categorical-encoding/tree/master/category_encoders">category_encoders</a> ou <a class="reference external" href="https://www.statsmodels.org/stable/index.html">statsmodels</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">category_encoders</span> <span class="kn">import</span> <span class="n">PolynomialEncoder</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from category_encoders import PolynomialEncoder
 
-<span class="n">encoder</span> <span class="o">=</span> <span class="n">PolynomialEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weekday&quot;</span><span class="p">])</span>
-<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">rend</span><span class="p">[[</span><span class="s2">&quot;weekday&quot;</span><span class="p">]],</span> <span class="n">rend</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">])</span>
-<span class="n">pred</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">rend</span><span class="p">[[</span><span class="s2">&quot;weekday&quot;</span><span class="p">]])</span>
-<span class="n">conc</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">rend</span><span class="p">[[</span><span class="s2">&quot;weekday&quot;</span><span class="p">]],</span> <span class="n">pred</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">conc</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+encoder = PolynomialEncoder(cols=[&quot;weekday&quot;])
+encoder.fit(rend[[&quot;weekday&quot;]], rend[&quot;price&quot;])
+pred = encoder.transform(rend[[&quot;weekday&quot;]])
+conc = pandas.concat([rend[[&quot;weekday&quot;]], pred], axis=1)
+conc.head()
 </pre></div>
 </div>
 </div>
@@ -4571,9 +4573,9 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">copy</span> <span class="o">=</span> <span class="n">rend</span><span class="p">[[</span><span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">gr</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">gr</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>copy = rend[[&quot;weekday&quot;, &quot;price&quot;]].copy()
+gr = copy.groupby(&quot;weekday&quot;, as_index=False).mean()
+gr
 </pre></div>
 </div>
 </div>
@@ -4648,9 +4650,9 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feat3</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;delay&quot;</span><span class="p">,</span> <span class="s2">&quot;delay1&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;idc&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">]]</span>
-<span class="n">feat3</span> <span class="o">=</span> <span class="n">feat3</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;_label&quot;</span><span class="p">))</span>
-<span class="n">feat3</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>feat3 = mat[[&quot;age&quot;, &quot;gender&quot;, &quot;delay&quot;, &quot;delay1&quot;, &quot;price&quot;, &quot;idc&quot;, &quot;weekday&quot;]]
+feat3 = feat3.merge(gr, on=&quot;weekday&quot;, suffixes=(&quot;&quot;, &quot;_label&quot;))
+feat3.head()
 </pre></div>
 </div>
 </div>
@@ -4752,9 +4754,9 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;price ~ age + gender + delay + delay1 + weekday&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">feat3</span><span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr = ols(&quot;price ~ age + gender + delay + delay1 + weekday&quot;, data=feat3)
+res = lr.fit()
+res.summary()
 </pre></div>
 </div>
 </div>
@@ -4836,9 +4838,9 @@ ce que l’on fait lorsqu’on compare deux coefficients <img class="math" src="
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">ols</span><span class="p">(</span><span class="s2">&quot;price ~ age + gender + delay + delay1 + price_label&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">feat3</span><span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>lr = ols(&quot;price ~ age + gender + delay + delay1 + price_label&quot;, data=feat3)
+res = lr.fit()
+res.summary()
 </pre></div>
 </div>
 </div>
