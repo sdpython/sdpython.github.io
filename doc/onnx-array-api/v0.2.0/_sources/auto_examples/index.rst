@@ -38,6 +38,23 @@ of dot product (see also :epkg:`sphinx-gallery`).
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The script compares two onnx models obtained with the same trained scikit-learn models but conv...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_onnx_diff_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_onnx_diff.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compares the conversions of the same model with different options</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This demonstrates an easy case with onnx-array-api. It shows how a function can be easily conve...">
 
 .. only:: html
@@ -130,6 +147,7 @@ of dot product (see also :epkg:`sphinx-gallery`).
    :hidden:
 
    /auto_examples/plot_f8
+   /auto_examples/plot_onnx_diff
    /auto_examples/plot_first_example
    /auto_examples/plot_onnxruntime
    /auto_examples/plot_optimization

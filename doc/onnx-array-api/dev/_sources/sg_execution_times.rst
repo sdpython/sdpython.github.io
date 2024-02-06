@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:34.581** total execution time for 6 files **from all galleries**:
+**00:42.714** total execution time for 7 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,17 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_plot_optimization.py` (``examples/plot_optimization.py``)
+     - 00:22.346
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_profiling.py` (``examples/plot_profiling.py``)
+     - 00:14.188
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_benchmark_rf.py` (``examples/plot_benchmark_rf.py``)
-     - 02:34.581
+     - 00:04.821
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_onnx_diff.py` (``examples/plot_onnx_diff.py``)
+     - 00:01.359
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_f8.py` (``examples/plot_f8.py``)
      - 00:00.000
@@ -42,11 +51,5 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_onnxruntime.py` (``examples/plot_onnxruntime.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_optimization.py` (``examples/plot_optimization.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_profiling.py` (``examples/plot_profiling.py``)
      - 00:00.000
      - 0.0

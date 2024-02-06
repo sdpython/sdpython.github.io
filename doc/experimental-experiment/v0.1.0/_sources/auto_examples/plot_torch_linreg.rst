@@ -84,7 +84,8 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [ 0.16862047  0.27719019  0.25621964  8.81117422 52.49860566], -0.31509127574197215
+    coefficients: [4.72672678e-01 7.03844335e-02 9.06282303e+01 1.15530338e+01
+     3.71053180e-01], 0.4638772302750729
 
 
 
@@ -112,7 +113,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=110.26346117873129, r2=0.9634330427887183
+    LinearRegression: l2=99.19831867715722, r2=0.9864253590111406
 
 
 
@@ -143,23 +144,24 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 44.95, NNZs: 5, Bias: -0.358127, T: 750, Avg. loss: 320.771073
+    Norm: 78.27, NNZs: 5, Bias: -1.318162, T: 750, Avg. loss: 891.117342
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 50.73, NNZs: 5, Bias: -0.435342, T: 1500, Avg. loss: 64.636716
+    Norm: 87.82, NNZs: 5, Bias: -0.049682, T: 1500, Avg. loss: 82.342900
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 52.36, NNZs: 5, Bias: -0.423154, T: 2250, Avg. loss: 53.754539
+    Norm: 90.34, NNZs: 5, Bias: 0.256443, T: 2250, Avg. loss: 54.121802
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 52.86, NNZs: 5, Bias: -0.363326, T: 3000, Avg. loss: 52.624321
+    Norm: 91.00, NNZs: 5, Bias: 0.272999, T: 3000, Avg. loss: 51.822423
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 53.09, NNZs: 5, Bias: -0.358911, T: 3750, Avg. loss: 52.454007
+    Norm: 91.20, NNZs: 5, Bias: 0.477331, T: 3750, Avg. loss: 51.600215
     Total training time: 0.00 seconds.
     /home/xadupre/install/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1575: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [ 0.15517763  0.3750597   0.31082611  8.85499387 52.33987051], [-0.35891068]
+    coefficients: [ 4.15863351e-01 -3.87689716e-02  9.04703105e+01  1.15081875e+01
+      3.98394443e-01], [0.47733139]
 
 
 
@@ -168,7 +170,7 @@ SGD = Stochastic Gradient Descent
 
 Evaluation
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-67
+.. GENERATED FROM PYTHON SOURCE LINES 59-66
 
 .. code-block:: Python
 
@@ -183,22 +185,21 @@ Evaluation
 
 
 
-
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
 
-    SGDRegressor: sl2=110.68165371581833, sr2=0.9632943565145322
+    SGDRegressor: sl2=99.2919226893567, sr2=0.9864125499143972
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-70
+.. GENERATED FROM PYTHON SOURCE LINES 67-69
 
 torch
 =====
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-119
+.. GENERATED FROM PYTHON SOURCE LINES 69-118
 
 .. code-block:: Python
 
@@ -259,25 +260,20 @@ torch
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/transformers/utils/generic.py:441: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
-      _torch_pytree._register_pytree_node(
-    [2024-01-26 00:12:27,274] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-    /home/xadupre/.local/lib/python3.10/site-packages/transformers/utils/generic.py:309: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
-      _torch_pytree._register_pytree_node(
-    iteration 0, loss=742280.4375
-    iteration 1, loss=116097.8203125
-    iteration 2, loss=80855.5625
-    iteration 3, loss=78952.6484375
-    iteration 4, loss=78879.921875
+    iteration 0, loss=2092490.25
+    iteration 1, loss=172047.9375
+    iteration 2, loss=82327.5
+    iteration 3, loss=77851.609375
+    iteration 4, loss=77598.7890625
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-121
+.. GENERATED FROM PYTHON SOURCE LINES 119-120
 
 Let's check the error
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-127
+.. GENERATED FROM PYTHON SOURCE LINES 120-126
 
 .. code-block:: Python
 
@@ -295,16 +291,16 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=110.64094822810304, tr2=0.9633078557808498
+    TorchLinearRegression: tl2=100.04025290168235, tr2=0.9863101458201655
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-129
+.. GENERATED FROM PYTHON SOURCE LINES 127-128
 
 And the coefficients.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-133
+.. GENERATED FROM PYTHON SOURCE LINES 128-132
 
 .. code-block:: Python
 
@@ -322,9 +318,10 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[ 0.3342,  0.3307,  0.4485,  8.7304, 52.6217]], requires_grad=True)
+    tensor([[ 3.5176e-01, -1.8243e-02,  9.0487e+01,  1.1685e+01,  5.0601e-01]],
+           requires_grad=True)
     Parameter containing:
-    tensor([-0.2749], requires_grad=True)
+    tensor([0.6508], requires_grad=True)
 
 
 
@@ -332,7 +329,7 @@ And the coefficients.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 13.611 seconds)
+   **Total running time of the script:** (0 minutes 2.346 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg.py:

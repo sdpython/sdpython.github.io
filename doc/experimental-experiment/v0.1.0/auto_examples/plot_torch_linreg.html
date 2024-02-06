@@ -3,9 +3,9 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Convolution and Matrix Multiplication" href="plot_convolutation_matmul.html" /><link rel="prev" title="Profile an existing model" href="plot_profile_existing_onnx.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Compares LLAMA exporters" href="plot_llama_diff_export.html" /><link rel="prev" title="Profile an existing model" href="plot_profile_existing_onnx.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Linear Regression - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -172,12 +172,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/convert.html">convert</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_aot.html">Evaluate DORT Training</a></li>
@@ -261,7 +263,8 @@ to download the full example code</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;coefficients: </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clr</span><span class="o">.</span><span class="n">coef_</span></a><span class="si">}</span><span class="s2">, </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clr</span><span class="o">.</span><span class="n">intercept_</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>coefficients: [ 0.16862047  0.27719019  0.25621964  8.81117422 52.49860566], -0.31509127574197215
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>coefficients: [4.72672678e-01 7.03844335e-02 9.06282303e+01 1.15530338e+01
+ 3.71053180e-01], 0.4638772302750729
 </pre></div>
 </div>
 </section>
@@ -273,7 +276,7 @@ to download the full example code</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LinearRegression: l2=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">l2</span></a><span class="si">}</span><span class="s2">, r2=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">r2</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>LinearRegression: l2=110.26346117873129, r2=0.9634330427887183
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>LinearRegression: l2=99.19831867715722, r2=0.9864253590111406
 </pre></div>
 </div>
 </section>
@@ -287,23 +290,24 @@ to download the full example code</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>-- Epoch 1
-Norm: 44.95, NNZs: 5, Bias: -0.358127, T: 750, Avg. loss: 320.771073
+Norm: 78.27, NNZs: 5, Bias: -1.318162, T: 750, Avg. loss: 891.117342
 Total training time: 0.00 seconds.
 -- Epoch 2
-Norm: 50.73, NNZs: 5, Bias: -0.435342, T: 1500, Avg. loss: 64.636716
+Norm: 87.82, NNZs: 5, Bias: -0.049682, T: 1500, Avg. loss: 82.342900
 Total training time: 0.00 seconds.
 -- Epoch 3
-Norm: 52.36, NNZs: 5, Bias: -0.423154, T: 2250, Avg. loss: 53.754539
+Norm: 90.34, NNZs: 5, Bias: 0.256443, T: 2250, Avg. loss: 54.121802
 Total training time: 0.00 seconds.
 -- Epoch 4
-Norm: 52.86, NNZs: 5, Bias: -0.363326, T: 3000, Avg. loss: 52.624321
+Norm: 91.00, NNZs: 5, Bias: 0.272999, T: 3000, Avg. loss: 51.822423
 Total training time: 0.00 seconds.
 -- Epoch 5
-Norm: 53.09, NNZs: 5, Bias: -0.358911, T: 3750, Avg. loss: 52.454007
+Norm: 91.20, NNZs: 5, Bias: 0.477331, T: 3750, Avg. loss: 51.600215
 Total training time: 0.00 seconds.
 /home/xadupre/install/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1575: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
   warnings.warn(
-coefficients: [ 0.15517763  0.3750597   0.31082611  8.85499387 52.33987051], [-0.35891068]
+coefficients: [ 4.15863351e-01 -3.87689716e-02  9.04703105e+01  1.15081875e+01
+  3.98394443e-01], [0.47733139]
 </pre></div>
 </div>
 <p>Evaluation</p>
@@ -313,7 +317,7 @@ coefficients: [ 0.15517763  0.3750597   0.31082611  8.85499387 52.33987051], [-0
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SGDRegressor: sl2=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sl2</span></a><span class="si">}</span><span class="s2">, sr2=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sr2</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SGDRegressor: sl2=110.68165371581833, sr2=0.9632943565145322
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SGDRegressor: sl2=99.2919226893567, sr2=0.9864125499143972
 </pre></div>
 </div>
 </section>
@@ -367,16 +371,11 @@ coefficients: [ 0.15517763  0.3750597   0.31082611  8.85499387 52.33987051], [-0
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;iteration </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="si">}</span><span class="s2">, loss=</span><span class="si">{</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loss</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/.local/lib/python3.10/site-packages/transformers/utils/generic.py:441: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
-  _torch_pytree._register_pytree_node(
-[2024-01-26 00:12:27,274] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-/home/xadupre/.local/lib/python3.10/site-packages/transformers/utils/generic.py:309: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
-  _torch_pytree._register_pytree_node(
-iteration 0, loss=742280.4375
-iteration 1, loss=116097.8203125
-iteration 2, loss=80855.5625
-iteration 3, loss=78952.6484375
-iteration 4, loss=78879.921875
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>iteration 0, loss=2092490.25
+iteration 1, loss=172047.9375
+iteration 2, loss=82327.5
+iteration 3, loss=77851.609375
+iteration 4, loss=77598.7890625
 </pre></div>
 </div>
 <p>Let’s check the error</p>
@@ -386,7 +385,7 @@ iteration 4, loss=78879.921875
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TorchLinearRegression: tl2=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">tl2</span></a><span class="si">}</span><span class="s2">, tr2=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">tr2</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TorchLinearRegression: tl2=110.64094822810304, tr2=0.9633078557808498
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TorchLinearRegression: tl2=100.04025290168235, tr2=0.9863101458201655
 </pre></div>
 </div>
 <p>And the coefficients.</p>
@@ -397,12 +396,13 @@ iteration 4, loss=78879.921875
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>coefficients:
 Parameter containing:
-tensor([[ 0.3342,  0.3307,  0.4485,  8.7304, 52.6217]], requires_grad=True)
+tensor([[ 3.5176e-01, -1.8243e-02,  9.0487e+01,  1.1685e+01,  5.0601e-01]],
+       requires_grad=True)
 Parameter containing:
-tensor([-0.2749], requires_grad=True)
+tensor([0.6508], requires_grad=True)
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 13.611 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.346 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-torch-linreg-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/720721d3adb76afd17105976de48533c/plot_torch_linreg.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_torch_linreg.ipynb</span></code></a></p>
@@ -420,12 +420,12 @@ tensor([-0.2749], requires_grad=True)
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="plot_convolutation_matmul.html">
+          <a class="next-page" href="plot_llama_diff_export.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Convolution and Matrix Multiplication</div>
+                <div class="title">Compares LLAMA exporters</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

@@ -3,9 +3,9 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Profiling with onnxruntime" href="plot_profiling.html" /><link rel="prev" title="About float 8" href="plot_f8.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Profiling with onnxruntime" href="plot_profiling.html" /><link rel="prev" title="Compares the conversions of the same model with different options" href="plot_onnx_diff.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Optimization with onnxruntime - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -174,6 +174,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_onnxruntime.html">First examples with onnxruntime</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/tools.html">Tools</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Benchmarks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
 </ul>
@@ -212,8 +213,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../tech/aapi.html">Difficulty to implement an Array API for ONNX</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../command_lines.html">command lines</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_f8.html">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_onnx_diff.html">Compares the conversions of the same model with different options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_first_example.html">First examples with onnx-array-api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_onnxruntime.html">First examples with onnxruntime</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Optimization with onnxruntime</a></li>
@@ -296,7 +299,8 @@ This example looks into the differences of two models.</p>
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">optimized</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>data/small.onnx.optimized.onnx
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2024-02-06 01:23:11,292] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+data/small.onnx.optimized.onnx
 </pre></div>
 </div>
 </section>
@@ -531,25 +535,25 @@ done.
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Original model
-{&#39;average&#39;: 0.01775290048000461,
+{&#39;average&#39;: 0.009105379839993839,
  &#39;context_size&#39;: 64,
- &#39;deviation&#39;: 0.005349540839231858,
- &#39;max_exec&#39;: 0.040033368000003976,
- &#39;min_exec&#39;: 0.013125968000022113,
+ &#39;deviation&#39;: 0.0017918229518347475,
+ &#39;max_exec&#39;: 0.01237498799997411,
+ &#39;min_exec&#39;: 0.006067287999976543,
  &#39;name&#39;: &#39;original&#39;,
  &#39;number&#39;: 25,
  &#39;repeat&#39;: 25,
- &#39;ttime&#39;: 0.44382251200011524}
+ &#39;ttime&#39;: 0.22763449599984598}
 Optimized
-{&#39;average&#39;: 0.01692187696000328,
+{&#39;average&#39;: 0.008868003679998218,
  &#39;context_size&#39;: 64,
- &#39;deviation&#39;: 0.002440905560883147,
- &#39;max_exec&#39;: 0.025821232000016608,
- &#39;min_exec&#39;: 0.014382595999995829,
+ &#39;deviation&#39;: 0.0007391392419665521,
+ &#39;max_exec&#39;: 0.009707923999994818,
+ &#39;min_exec&#39;: 0.006505247999994026,
  &#39;name&#39;: &#39;optimized&#39;,
  &#39;number&#39;: 25,
  &#39;repeat&#39;: 25,
- &#39;ttime&#39;: 0.42304692400008204}
+ &#39;ttime&#39;: 0.22170009199995547}
 </pre></div>
 </div>
 </section>
@@ -604,24 +608,24 @@ Optimized
   <tbody>
     <tr>
       <th>original</th>
-      <td>0.017753</td>
-      <td>0.005350</td>
-      <td>0.013126</td>
-      <td>0.040033</td>
+      <td>0.009105</td>
+      <td>0.001792</td>
+      <td>0.006067</td>
+      <td>0.012375</td>
       <td>25</td>
       <td>25</td>
-      <td>0.443823</td>
+      <td>0.227634</td>
       <td>64</td>
     </tr>
     <tr>
       <th>optimized</th>
-      <td>0.016922</td>
-      <td>0.002441</td>
-      <td>0.014383</td>
-      <td>0.025821</td>
+      <td>0.008868</td>
+      <td>0.000739</td>
+      <td>0.006505</td>
+      <td>0.009708</td>
       <td>25</td>
       <td>25</td>
-      <td>0.423047</td>
+      <td>0.221700</td>
       <td>64</td>
     </tr>
   </tbody>
@@ -636,7 +640,7 @@ Optimized
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_optimization.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_optimization_002.png" srcset="../_images/sphx_glr_plot_optimization_002.png" alt="plot optimization" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 22.105 seconds)</p>
+<img src="../_images/sphx_glr_plot_optimization_002.png" srcset="../_images/sphx_glr_plot_optimization_002.png" alt="plot optimization" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 22.346 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-optimization-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c904e08661cba7e7a98771d3652f4356/plot_optimization.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_optimization.ipynb</span></code></a></p>
@@ -663,14 +667,14 @@ Optimized
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="plot_f8.html">
+          <a class="prev-page" href="plot_onnx_diff.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">About float 8</div>
+                <div class="title">Compares the conversions of the same model with different options</div>
                 
               </div>
             </a>

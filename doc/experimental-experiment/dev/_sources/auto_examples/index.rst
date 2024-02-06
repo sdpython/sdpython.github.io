@@ -93,6 +93,23 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The script compares the two exporters implemented in pytorch for a part of llama model. The mod...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_diff_export_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_llama_diff_export.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compares LLAMA exporters</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The convolution is a well known image transformation used to transform an image. It can be used...">
 
 .. only:: html
@@ -170,6 +187,7 @@ all the graphs, the data used to draw them, and the models.
    /auto_examples/bug_dort
    /auto_examples/plot_profile_existing_onnx
    /auto_examples/plot_torch_linreg
+   /auto_examples/plot_llama_diff_export
    /auto_examples/plot_convolutation_matmul
    /auto_examples/plot_torch_dort
    /auto_examples/plot_torch_aot

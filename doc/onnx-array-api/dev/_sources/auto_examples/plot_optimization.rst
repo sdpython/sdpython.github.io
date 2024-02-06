@@ -33,9 +33,10 @@ This example looks into the differences of two models.
 Optimize a model with onnxruntime
 +++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-39
+.. GENERATED FROM PYTHON SOURCE LINES 18-40
 
 .. code-block:: Python
+
 
     import os
     from pprint import pprint
@@ -66,17 +67,18 @@ Optimize a model with onnxruntime
 
  .. code-block:: none
 
+    [2024-02-06 01:23:11,292] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
     data/small.onnx.optimized.onnx
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 41-43
 
 Output comparison
 +++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-57
+.. GENERATED FROM PYTHON SOURCE LINES 43-58
 
 .. code-block:: Python
 
@@ -108,14 +110,14 @@ Output comparison
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-62
+.. GENERATED FROM PYTHON SOURCE LINES 59-63
 
 Difference
 ++++++++++
 
 Unoptimized model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-69
+.. GENERATED FROM PYTHON SOURCE LINES 63-70
 
 .. code-block:: Python
 
@@ -171,11 +173,11 @@ Unoptimized model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-71
+.. GENERATED FROM PYTHON SOURCE LINES 71-72
 
 Optimized model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-79
+.. GENERATED FROM PYTHON SOURCE LINES 72-80
 
 .. code-block:: Python
 
@@ -244,11 +246,11 @@ Optimized model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-81
+.. GENERATED FROM PYTHON SOURCE LINES 81-82
 
 Differences
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-85
+.. GENERATED FROM PYTHON SOURCE LINES 82-86
 
 .. code-block:: Python
 
@@ -342,11 +344,11 @@ Differences
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-87
+.. GENERATED FROM PYTHON SOURCE LINES 87-88
 
 HTML version.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-94
+.. GENERATED FROM PYTHON SOURCE LINES 88-95
 
 .. code-block:: Python
 
@@ -371,12 +373,12 @@ HTML version.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-97
+.. GENERATED FROM PYTHON SOURCE LINES 96-98
 
 Benchmark
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-111
+.. GENERATED FROM PYTHON SOURCE LINES 98-112
 
 .. code-block:: Python
 
@@ -403,35 +405,35 @@ Benchmark
  .. code-block:: none
 
     Original model
-    {'average': 0.01775290048000461,
+    {'average': 0.009105379839993839,
      'context_size': 64,
-     'deviation': 0.005349540839231858,
-     'max_exec': 0.040033368000003976,
-     'min_exec': 0.013125968000022113,
+     'deviation': 0.0017918229518347475,
+     'max_exec': 0.01237498799997411,
+     'min_exec': 0.006067287999976543,
      'name': 'original',
      'number': 25,
      'repeat': 25,
-     'ttime': 0.44382251200011524}
+     'ttime': 0.22763449599984598}
     Optimized
-    {'average': 0.01692187696000328,
+    {'average': 0.008868003679998218,
      'context_size': 64,
-     'deviation': 0.002440905560883147,
-     'max_exec': 0.025821232000016608,
-     'min_exec': 0.014382595999995829,
+     'deviation': 0.0007391392419665521,
+     'max_exec': 0.009707923999994818,
+     'min_exec': 0.006505247999994026,
      'name': 'optimized',
      'number': 25,
      'repeat': 25,
-     'ttime': 0.42304692400008204}
+     'ttime': 0.22170009199995547}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-114
+.. GENERATED FROM PYTHON SOURCE LINES 113-115
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-121
+.. GENERATED FROM PYTHON SOURCE LINES 115-122
 
 .. code-block:: Python
 
@@ -497,24 +499,24 @@ Plots
       <tbody>
         <tr>
           <th>original</th>
-          <td>0.017753</td>
-          <td>0.005350</td>
-          <td>0.013126</td>
-          <td>0.040033</td>
+          <td>0.009105</td>
+          <td>0.001792</td>
+          <td>0.006067</td>
+          <td>0.012375</td>
           <td>25</td>
           <td>25</td>
-          <td>0.443823</td>
+          <td>0.227634</td>
           <td>64</td>
         </tr>
         <tr>
           <th>optimized</th>
-          <td>0.016922</td>
-          <td>0.002441</td>
-          <td>0.014383</td>
-          <td>0.025821</td>
+          <td>0.008868</td>
+          <td>0.000739</td>
+          <td>0.006505</td>
+          <td>0.009708</td>
           <td>25</td>
           <td>25</td>
-          <td>0.423047</td>
+          <td>0.221700</td>
           <td>64</td>
         </tr>
       </tbody>
@@ -524,11 +526,11 @@ Plots
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-123
+.. GENERATED FROM PYTHON SOURCE LINES 123-124
 
 And the graph is:
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-128
+.. GENERATED FROM PYTHON SOURCE LINES 124-129
 
 .. code-block:: Python
 
@@ -552,7 +554,7 @@ And the graph is:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 22.105 seconds)
+   **Total running time of the script:** (0 minutes 22.346 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimization.py:

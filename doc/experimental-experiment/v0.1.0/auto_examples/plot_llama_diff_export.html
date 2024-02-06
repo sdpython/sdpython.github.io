@@ -1,0 +1,636 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Convolution and Matrix Multiplication" href="plot_convolutation_matmul.html" /><link rel="prev" title="Linear Regression" href="plot_torch_linreg.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>Compares LLAMA exporters - experimental-experiment 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">experimental-experiment 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">experimental-experiment 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/gradient.html">gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/interpreter.html">interpreter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/convert.html">convert</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bug_dort.html">To ignore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_profile_existing_onnx.html">Profile an existing model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_linreg.html">Linear Regression</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_dort.html">Evaluate DORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_aot.html">Evaluate DORT Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_export.html">Evaluate different ways to export a torch model to ONNX</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-llama-diff-export-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="compares-llama-exporters">
+<span id="sphx-glr-auto-examples-plot-llama-diff-export-py"></span><h1>Compares LLAMA exporters<a class="headerlink" href="#compares-llama-exporters" title="Link to this heading">#</a></h1>
+<p>The script compares the two exporters implemented in <a class="reference external" href="https://pytorch.org/">pytorch</a>
+for a part of llama model. The model are compared after all optimizations
+were made with <a href="#id1"><span class="problematic" id="id2">:epkg:`onnx-rewriter`</span></a> and <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pytorch.org/docs/stable/onnx.html#torchscript-based-onnx-exporter">TorchScript-based ONNX Exporter</a>,
+let’s call it <strong>script</strong></p></li>
+<li><p><a class="reference external" href="https://pytorch.org/docs/stable/onnx.html#torchdynamo-based-onnx-exporter">TorchDynamo-based ONNX Exporter</a>,
+let’s call it <strong>dynamo</strong></p></li>
+</ul>
+<p>To run the script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">_doc</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">plot_llama_diff_export</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<section id="some-helpers">
+<h2>Some helpers<a class="headerlink" href="#some-helpers" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <a href="https://docs.python.org/3/library/warnings.html#warnings.catch_warnings" title="warnings.catch_warnings" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-class"><span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span></a><span class="p">():</span>
+        <a href="https://docs.python.org/3/library/warnings.html#warnings.simplefilter" title="warnings.simplefilter" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-function"><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span></a><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">onnxruntime</span>
+
+        <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">has_cuda</span></a> <span class="o">=</span> <span class="s2">&quot;CUDAExecutionProvider&quot;</span> <span class="ow">in</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">get_available_providers</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;onnxruntime not available.&quot;</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+
+    <a href="https://docs.python.org/3/library/sys.html#sys.exit" title="sys.exit" class="sphx-glr-backref-module-sys sphx-glr-backref-type-py-function"><span class="n">sys</span><span class="o">.</span><span class="n">exit</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">onnx</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.reference</span> <span class="kn">import</span> <span class="n">compare_onnx_execution</span><span class="p">,</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator" title="onnx.reference.ReferenceEvaluator" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-class"><span class="n">ExtendedReferenceEvaluator</span></a>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.ext_test_case</span> <span class="kn">import</span> <span class="n">get_parsed_args</span><span class="p">,</span> <span class="n">unit_test_going</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.convert.convert_helper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">optimize_model_proto</span><span class="p">,</span>
+    <span class="n">ort_optimize</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.torch_helper.llama_helper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_llama_model</span><span class="p">,</span>
+    <span class="n">get_llama_attention</span><span class="p">,</span>
+    <span class="n">get_llama_decoder</span><span class="p">,</span>
+<span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">has_cuda</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">has_cuda</span></a> <span class="ow">and</span> <a href="https://pytorch.org/docs/stable/generated/torch.cuda.is_available.html#torch.cuda.is_available" title="torch.cuda.is_available" class="sphx-glr-backref-module-torch-cuda sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/logging.html#logging.disable" title="logging.disable" class="sphx-glr-backref-module-logging sphx-glr-backref-type-py-function"><span class="n">logging</span><span class="o">.</span><span class="n">disable</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">provider</span></a> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">has_cuda</span></a> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="the-exporting-functions">
+<h2>The exporting functions<a class="headerlink" href="#the-exporting-functions" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span></a> <span class="o">=</span> <span class="n">get_parsed_args</span><span class="p">(</span>
+    <span class="s2">&quot;plot_llama_diff_export&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
+    <span class="n">part</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;attention&quot;</span><span class="p">,</span> <span class="s2">&quot;one value among attention, decoder, model&quot;</span><span class="p">),</span>
+    <span class="n">expose</span><span class="o">=</span><span class="s2">&quot;part&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;part=</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">opt_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.splitext" title="os.path.splitext" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span></a><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.opt</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">export_script</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">with</span> <a href="https://docs.python.org/3/library/contextlib.html#contextlib.redirect_stdout" title="contextlib.redirect_stdout" class="sphx-glr-backref-module-contextlib sphx-glr-backref-type-py-function"><span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.StringIO" title="io.StringIO" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class"><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span></a><span class="p">()):</span>
+        <span class="k">with</span> <a href="https://docs.python.org/3/library/warnings.html#warnings.catch_warnings" title="warnings.catch_warnings" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-class"><span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span></a><span class="p">():</span>
+            <a href="https://docs.python.org/3/library/warnings.html#warnings.simplefilter" title="warnings.simplefilter" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-function"><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span></a><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <a href="https://pytorch.org/docs/stable/onnx_torchscript.html#torch.onnx.export" title="torch.onnx.export" class="sphx-glr-backref-module-torch-onnx sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">])</span>
+    <span class="n">onx</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.load" title="onnx.load" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-function"><span class="n">onnx</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">ort_optimize</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">opt_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">providers</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">provider</span></a><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">export_dynamo</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">with</span> <a href="https://docs.python.org/3/library/contextlib.html#contextlib.redirect_stdout" title="contextlib.redirect_stdout" class="sphx-glr-backref-module-contextlib sphx-glr-backref-type-py-function"><span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.StringIO" title="io.StringIO" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class"><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span></a><span class="p">()):</span>
+        <span class="k">with</span> <a href="https://docs.python.org/3/library/warnings.html#warnings.catch_warnings" title="warnings.catch_warnings" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-class"><span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span></a><span class="p">():</span>
+            <a href="https://docs.python.org/3/library/warnings.html#warnings.simplefilter" title="warnings.simplefilter" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-function"><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span></a><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="n">export_output</span> <span class="o">=</span> <a href="https://pytorch.org/docs/stable/onnx_dynamo.html#torch.onnx.dynamo_export" title="torch.onnx.dynamo_export" class="sphx-glr-backref-module-torch-onnx sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">dynamo_export</span></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">export_output</span><span class="o">.</span><span class="n">model_proto</span>
+    <span class="n">new_model</span> <span class="o">=</span> <span class="n">optimize_model_proto</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+    <span class="n">ort_optimize</span><span class="p">(</span><span class="n">new_model</span><span class="p">,</span> <span class="n">opt_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">providers</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">provider</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>part=attention
+</pre></div>
+</div>
+<p>Model and data</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">unit_test_going</span><span class="p">():</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">kwargs</span></a> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">input_dims</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">kwargs</span></a> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">input_dims</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">_attn_implementation</span><span class="o">=</span><span class="s2">&quot;eager&quot;</span><span class="p">,</span>
+        <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
+        <span class="n">vocab_size</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span>
+        <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+        <span class="n">max_position_embeddings</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>
+        <span class="n">num_attention_heads</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="k">if</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a> <span class="o">==</span> <span class="s2">&quot;attention&quot;</span><span class="p">:</span>
+    <span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a> <span class="o">=</span> <span class="n">get_llama_attention</span><span class="p">(</span><span class="o">**</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">kwargs</span></a><span class="p">)</span>
+<span class="k">elif</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a> <span class="o">==</span> <span class="s2">&quot;decoder&quot;</span><span class="p">:</span>
+    <span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a> <span class="o">=</span> <span class="n">get_llama_decoder</span><span class="p">(</span><span class="o">**</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">kwargs</span></a><span class="p">)</span>
+<span class="k">elif</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
+    <span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a> <span class="o">=</span> <span class="n">get_llama_model</span><span class="p">(</span><span class="o">**</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">kwargs</span></a><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value for part=</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;simple run with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> inputs&quot;</span><span class="p">)</span>
+<a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span></a> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;eager mode worked </span><span class="si">{</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span></a><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><a href="https://pytorch.org/docs/stable/tensor_attributes.html#torch.dtype" title="torch.dtype" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span><span class="o">.</span><span class="n">dtype</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>simple run with 2 inputs
+eager mode worked torch.Size([2, 1024, 512]), torch.float32
+</pre></div>
+</div>
+<p>Export</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file1</span></a> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;llama.</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a><span class="si">}</span><span class="s2">.script.onnx&quot;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file2</span></a> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;llama.</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a><span class="si">}</span><span class="s2">.dynamo.onnx&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;torch script exporter&quot;</span><span class="p">)</span>
+<span class="n">export_script</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file1</span></a><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;torch dynamo exporter&quot;</span><span class="p">)</span>
+<span class="n">export_dynamo</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file2</span></a><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>torch script exporter
+torch dynamo exporter
+</pre></div>
+</div>
+<p>Verification</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file1</span></a> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;llama.</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a><span class="si">}</span><span class="s2">.script.opt.onnx&quot;</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file2</span></a> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;llama.</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">part</span></a><span class="si">}</span><span class="s2">.dynamo.opt.onnx&quot;</span>
+
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">providers</span></a> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">provider</span></a> <span class="o">==</span> <span class="s2">&quot;cpu&quot;</span>
+    <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;CUDAExecutionProvider&quot;</span><span class="p">,</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">sess1</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file1</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">providers</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">providers</span></a><span class="p">)</span>
+<span class="n">sess2</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file2</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">providers</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">providers</span></a><span class="p">)</span>
+
+
+<a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model1</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.load" title="onnx.load" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-function"><span class="n">onnx</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file1</span></a><span class="p">)</span>
+<a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model2</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.load" title="onnx.load" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-function"><span class="n">onnx</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file2</span></a><span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds1</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds2</span></a> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">][</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds1</span></a><span class="p">[</span><span class="n">sess1</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds2</span></a><span class="p">[</span><span class="n">sess2</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got1</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator.run" title="onnx.reference.ReferenceEvaluator.run" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-method"><span class="n">sess1</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds1</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got2</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator.run" title="onnx.reference.ReferenceEvaluator.run" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-method"><span class="n">sess2</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds2</span></a><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff1</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span></a><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">-</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got1</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff2</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span></a><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">-</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got2</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error with the eager model: </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff1</span></a><span class="si">}</span><span class="s2">, </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff2</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Error with the eager model: 6.705522537231445e-08, 6.705522537231445e-08
+</pre></div>
+</div>
+<p>With the reference evaluator</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sess1</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator" title="onnx.reference.ReferenceEvaluator" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-class"><span class="n">ExtendedReferenceEvaluator</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file1</span></a><span class="p">)</span>
+<span class="n">sess2</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator" title="onnx.reference.ReferenceEvaluator" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-class"><span class="n">ExtendedReferenceEvaluator</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">file2</span></a><span class="p">)</span>
+
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got1</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator.run" title="onnx.reference.ReferenceEvaluator.run" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-method"><span class="n">sess1</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds1</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got2</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator.run" title="onnx.reference.ReferenceEvaluator.run" class="sphx-glr-backref-module-onnx-reference sphx-glr-backref-type-py-method"><span class="n">sess2</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds2</span></a><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff1</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span></a><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">-</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got1</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff2</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span></a><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">-</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got2</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error with the eager model: </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff1</span></a><span class="si">}</span><span class="s2">, </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">diff2</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Error with the eager model: 4.0978193283081055e-08, 4.0978193283081055e-08
+</pre></div>
+</div>
+</section>
+<section id="comparison-and-execution">
+<h2>Comparison and execution<a class="headerlink" href="#comparison-and-execution" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">clean_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="s2">&quot;_inlfunc_transformers_models_llama_modeling_llama_LlamaAttention&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_inlfunc_torch_nn_modules_linear_Linear&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np_inputs</span></a> <span class="o">=</span> <span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span><span class="o">.</span><span class="n">detach</span></a><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res1</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res2</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">align</span></a><span class="p">,</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">compare_onnx_execution</span><span class="p">(</span>
+    <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model1</span></a><span class="p">,</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model2</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np_inputs</span></a><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res2</span></a><span class="p">:</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">r</span><span class="o">.</span><span class="n">name</span></a> <span class="o">=</span> <span class="n">clean_name</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">r</span><span class="o">.</span><span class="n">name</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">text</span></a> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res1</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res2</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">align</span></a><span class="p">,</span> <span class="n">column_size</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">text</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[compare_onnx_execution] generate inputs
+[compare_onnx_execution] got 3 inputs
+[compare_onnx_execution] execute first model
+/home/xadupre/github/onnx-array-api/onnx_array_api/reference/evaluator_yield.py:92: RuntimeWarning: invalid value encountered in cast
+  value4i = value4.astype(np.int64) % modulo
+[compare_onnx_execution] got 53 results
+[compare_onnx_execution] execute second model
+[compare_onnx_execution] got 83 results
+[compare_onnx_execution] compute edit distance
+[compare_onnx_execution] got 86 pairs
+[compare_onnx_execution] done
+~ | INITIA float32  512x512         YAAL            onnx::MatMul_131                           | INITIA float32                  BAAA            ortshared_1_0_1_1_token_164
++ |                                                                                            | INITIA int64    3               CKSA            ortshared_7_1_3_2_token_162
+- | INITIA float32  512x512         WBPW            onnx::MatMul_132                           |
+- | INITIA float32  512x512         CZXP            onnx::MatMul_133                           |
+= | INITIA float32  512x512         DWEZ            onnx::MatMul_169                           | INITIA float32  512x512         DWEZ            _attention_o_proj_1_t_3
++ |                                                                                            | INITIA float32                  IAAA            ortshared_1_0_1_0_token_163
+~ | INITIA int64    4               CKIM            ortshared_7_1_4_0_token_76                 | INITIA int64    4               CIKM            ortshared_7_1_4_1_token_159
++ |                                                                                            | INITIA int64    2               USAA            ortshared_7_1_2_1_token_167
+~ | INITIA int64    1               AAAA            ortshared_7_1_1_2_token_75                 | INITIA int64    4               CIKK            ortshared_7_1_4_0_token_154
+~ | INITIA int64    1               DAAA            ortshared_7_1_1_1_token_74                 | INITIA int64    4               CKIM            ortshared_7_1_4_2_token_165
++ |                                                                                            | INITIA int64    3               QKMA            ortshared_7_1_3_1_token_158
+= | INITIA float32  1024x64         CJYF            /attention/rotary_emb/Constant_output_0    | INITIA float32  1024x64         CJYF            _attention_1__val_22
++ |                                                                                            | INITIA int64                    ZAAA            ortshared_7_0_1_1_token_171
++ |                                                                                            | INITIA int64                    BAAA            ortshared_7_0_1_0_token_156
+= | INITIA float32  1024x64         GSEC            /attention/rotary_emb/Constant_1_output_0  | INITIA float32  1024x64         GSEC            _attention_1__val_32
+~ | INITIA int64    1               SAAA            ortshared_7_1_1_0_token_73                 | INITIA int64    1               GAAA            ortshared_7_1_1_2_token_166
++ |                                                                                            | INITIA float32  512x512         WBPW            _attention_k_proj_1_t_1
++ |                                                                                            | INITIA int64    1               AAAA            ortshared_7_1_1_0_token_155
++ |                                                                                            | INITIA float32  512x512         CZXP            _attention_v_proj_1_t_2
++ |                                                                                            | INITIA float32  512x512         YAAL            _attention_q_proj_1_t
++ |                                                                                            | INITIA int64    1               DAAA            ortshared_7_1_1_4_token_170
+= | INITIA int64    1               BAAA            ortshared_7_1_1_3_token_78                 | INITIA int64    1               BAAA            ortshared_7_1_1_3_token_169
++ |                                                                                            | INITIA int64    1               SAAA            ortshared_7_1_1_1_token_160
+~ | INITIA int64    3               CKSA            ortshared_7_1_3_0_token_80                 | INITIA int64    3               QKKA            ortshared_7_1_3_0_token_157
++ |                                                                                            | INITIA int64    3               QMKA            ortshared_7_1_3_3_token_168
+~ | INITIA int64    1               GAAA            ortshared_7_1_1_4_token_79                 | INITIA int64    2               BKAA            ortshared_7_1_2_0_token_161
+= | INPUT  float32  2x1024x512      PLME            input                                      | INPUT  float32  2x1024x512      PLME            l_hidden_states_
+= | INPUT  float32  2x1x1024x1024   AAAA            onnx::Add_1                                | INPUT  float32  2x1x1024x1024   AAAA            l_attention_mask_
+= | INPUT  int64    1x1024          KAQG            position_ids                               | INPUT  int64    1x1024          KAQG            l_position_ids_
++ |                                                                                            | RESULT float32  2048x512        PLME Reshape    _attention_v_proj_1_view_4
++ |                                                                                            | RESULT float32  2048x512        JYYU MatMul     _attention_v_proj_1_mm_2
++ |                                                                                            | RESULT float32  2x1024x512      JYYU Reshape    _attention_1_attention_v_proj_1
++ |                                                                                            | RESULT float32  2x1024x8x64     JYYU Reshape    _attention_1_view_8
++ |                                                                                            | RESULT float32  2x8x1024x64     RQVY Transpose  _attention_1_transpose_2
++ |                                                                                            | RESULT float32  16x1024x64      RQVY Reshape    _attention_1_view_13
++ |                                                                                            | RESULT float32  2x1x1024x1024   AAAA Mul        _inlfunc_aten_add|folded_2_other_1
++ |                                                                                            | RESULT int64    1x1024          KAQG Expand     _attention_1__val_35
++ |                                                                                            | RESULT int64    1x1024x1        KAQG Unsqueeze  _attention_1__val_37
++ |                                                                                            | RESULT int64    1x1024x1        KAQG Concat     _attention_1__val_38
+~ | RESULT float32  1x1024x64       GSEC Gather     /attention/Gather_1_output_0               | RESULT float32  1x1024x64       GSEC GatherND   _attention_1__val_39
+= | RESULT float32  1x1x1024x64     GSEC Unsqueeze  /attention/Unsqueeze_1_output_0            | RESULT float32  1x1x1024x64     GSEC Unsqueeze  _attention_1_aten_unsqueeze_65_n2
+= | RESULT float32  1x1024x1x64     GSEC Transpose  Transpose_token_4_out0                     | RESULT float32  1x1024x1x64     GSEC Transpose  Transpose_token_5_out0
++ |                                                                                            | RESULT float32  2048x512        RSWD MatMul     _attention_k_proj_1_mm_1
+~ | RESULT float32  2x1024x512      RSWD MatMul     /attention/k_proj/MatMul_output_0          | RESULT float32  2x1024x512      RSWD Reshape    _attention_1_attention_k_proj_1
+= | RESULT float32  2x1024x8x64     RSWD Reshape    /attention/Reshape_1_output_0              | RESULT float32  2x1024x8x64     RSWD Reshape    _attention_1_view_7
+= | RESULT float32  2x1024x8x32     BRSK Slice      /attention/Slice_3                         | RESULT float32  2x1024x8x32     BRSK Slice      _attention_1_Slice_140
+= | RESULT float32  2x1024x8x32     ZJIQ Neg        /attention/Neg_1                           | RESULT float32  2x1024x8x32     ZJIQ Neg        _attention_1_aten_neg_141_n0
+= | RESULT float32  2x1024x8x32     QBFT Slice      /attention/Slice_2                         | RESULT float32  2x1024x8x32     QBFT Slice      _attention_1_Slice_123
+= | RESULT float32  2x1024x8x64     PLNJ Concat     /attention/Concat_1                        | RESULT float32  2x1024x8x64     PLNJ Concat     _attention_1_aten_cat_143_n0
+= | RESULT float32  2x1024x8x64     HHXU Mul        /attention/Mul_3                           | RESULT float32  2x1024x8x64     HHXU Mul        _attention_1_aten_mul_144_n0
+~ | RESULT float32  1x1024x64       CJYF Gather     /attention/Gather_output_0                 | RESULT float32  1x1024x64       CJYF GatherND   _attention_1__val_29
+= | RESULT float32  1x1x1024x64     CJYF Unsqueeze  /attention/Unsqueeze_output_0              | RESULT float32  1x1x1024x64     CJYF Unsqueeze  _attention_1_aten_unsqueeze_55_n2
+= | RESULT float32  1x1024x1x64     CJYF Transpose  Transpose_token_6_out0                     | RESULT float32  1x1024x1x64     CJYF Transpose  Transpose_token_8_out0
+= | RESULT float32  2x1024x8x64     PMON Mul        /attention/Mul_2                           | RESULT float32  2x1024x8x64     PMON Mul        _attention_1_aten_mul_106_n0
+= | RESULT float32  2x1024x8x64     VSLI Add        /attention/Add_1                           | RESULT float32  2x1024x8x64     VSLI Add        _inlfunc_aten_add|folded_1_n3
+= | RESULT float32  2x8x64x1024     RVJK Transpose  /attention/Transpose_3_output_0            | RESULT float32  2x8x64x1024     RVJK Transpose  _attention_1_transpose_3
++ |                                                                                            | RESULT float32  16x64x1024      RVJK Reshape    _attention_1_view_10
++ |                                                                                            | RESULT float32  1x1x1024x64     GSEC Transpose  _attention_1_unsqueeze_1
++ |                                                                                            | RESULT float32  2048x512        PWWA MatMul     _attention_q_proj_1_mm
+~ | RESULT float32  2x1024x512      PWWA MatMul     /attention/q_proj/MatMul_output_0          | RESULT float32  2x1024x512      PWWA Reshape    _attention_1_attention_q_proj_1
+= | RESULT float32  2x1024x8x64     PWWA Reshape    /attention/Reshape_output_0                | RESULT float32  2x1024x8x64     PWWA Reshape    _attention_1_view_6
+= | RESULT float32  2x8x1024x64     URLK Transpose  /attention/Transpose_output_0              | RESULT float32  2x8x1024x64     URLK Transpose  _attention_1_transpose
+= | RESULT float32  2x8x1024x32     UQCB Slice      /attention/Slice_1_output_0                | RESULT float32  2x8x1024x32     UQCB Slice      _attention_1_slice_4
+= | RESULT float32  2x8x1024x32     GKYZ Neg        /attention/Neg_output_0                    | RESULT float32  2x8x1024x32     GKYZ Neg        _attention_1_neg
+= | RESULT float32  2x8x1024x32     ACJJ Slice      /attention/Slice_output_0                  | RESULT float32  2x8x1024x32     ACJJ Slice      _attention_1_slice_3
+= | RESULT float32  2x8x1024x64     GNII Concat     /attention/Concat_output_0                 | RESULT float32  2x8x1024x64     GNII Concat     _attention_1_cat
+= | RESULT float32  2x8x1024x64     VUGZ Mul        /attention/Mul_1_output_0                  | RESULT float32  2x8x1024x64     VUGZ Mul        _attention_1_mul_1
++ |                                                                                            | RESULT float32  1x1x1024x64     CJYF Transpose  _attention_1_unsqueeze
+= | RESULT float32  2x8x1024x64     EDAD Mul        /attention/Mul_output_0                    | RESULT float32  2x8x1024x64     EDAD Mul        _attention_1_mul
+= | RESULT float32  2x8x1024x64     ZXHC Add        /attention/Add_output_0                    | RESULT float32  2x8x1024x64     ZXHC Add        _attention_1_add
++ |                                                                                            | RESULT float32  16x1024x64      ZXHC Reshape    _attention_1_view_9
++ |                                                                                            | RESULT float32  16x1024x1024    ZHSF MatMul     _attention_1_bmm
++ |                                                                                            | RESULT float32  2x8x1024x1024   ZHSF Reshape    _attention_1_view_11
+~ | RESULT float32  2x8x1024x1024   MIIL FusedMatMu /attention/Div_output_0                    | RESULT float32  2x8x1024x1024   MIIL Div        _attention_1_div
+= | RESULT float32  2x8x1024x1024   MIIL Add        /attention/Add_2_output_0                  | RESULT float32  2x8x1024x1024   MIIL Add        _attention_1_add_2
+= | RESULT float32  2x8x1024x1024   NNOO Softmax    /attention/Softmax_output_0                | RESULT float32  2x8x1024x1024   NNOO Softmax    _attention_1_aten_softmax_no_dtype_163_res
++ |                                                                                            | RESULT float32  16x1024x1024    NNOO Reshape    _attention_1_view_12
+- | RESULT float32  2x1024x512      JYYU MatMul     /attention/v_proj/MatMul_output_0          |
+~ | RESULT float32  2x1024x8x64     JYYU Reshape    /attention/Reshape_2_output_0              | RESULT float32  16x1024x64      UOUY MatMul     _attention_1_bmm_1
+~ | RESULT float32  2x8x1024x64     RQVY Transpose  /attention/Transpose_2_output_0            | RESULT float32  2x8x1024x64     UOUY Reshape    _attention_1_view_14
++ |                                                                                            | RESULT float32  2x1024x8x64     RSHL Transpose  _attention_1_transpose_4
+~ | RESULT float32  2x8x1024x64     UOUY MatMul     /attention/MatMul_1_output_0               | RESULT float32  2x1024x512      RSHL Reshape    _attention_1_view_15
+~ | RESULT float32  2x1024x8x64     RSHL Transpose  /attention/Transpose_4_output_0            | RESULT float32  2048x512        RSHL Reshape    _attention_o_proj_1_view_16
+~ | RESULT float32  2x1024x512      RSHL Reshape    /attention/Reshape_3_output_0              | RESULT float32  2048x512        EFIK MatMul     _attention_o_proj_1_mm_3
+~ | RESULT float32  2x1024x512      EFIK MatMul     130                                        | RESULT float32  2x1024x512      EFIK Reshape    attention_1
+= | OUTPUT float32  2x1024x512      EFIK            130                                        | OUTPUT float32  2x1024x512      EFIK            attention_1
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 9.699 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-llama-diff-export-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/aa9c49f83c0d611fc6c14e099ca57fef/plot_llama_diff_export.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_llama_diff_export.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/75bd17bac7ceac665a3b3bac624047da/plot_llama_diff_export.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_llama_diff_export.py</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="plot_convolutation_matmul.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Convolution and Matrix Multiplication</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="plot_torch_linreg.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Linear Regression</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023-2024
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Compares LLAMA exporters</a><ul>
+<li><a class="reference internal" href="#some-helpers">Some helpers</a></li>
+<li><a class="reference internal" href="#the-exporting-functions">The exporting functions</a></li>
+<li><a class="reference internal" href="#comparison-and-execution">Comparison and execution</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>
