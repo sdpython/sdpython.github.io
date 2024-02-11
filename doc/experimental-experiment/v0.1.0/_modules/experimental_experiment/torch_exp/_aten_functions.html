@@ -172,14 +172,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort.html">Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot.html">Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export.html">Evaluate different ways to export a torch model to ONNX</a></li>
@@ -190,6 +192,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../long_outputs.html">Long Outputs uneasy to read</a></li>
 </ul>
 
 </div>
@@ -270,8 +273,9 @@
 <span class="k">def</span> <span class="nf">aten_add</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prepare_inputs_homogeneous_operator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prepare_inputs_homogeneous_operator</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">set_shape_type_binary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
@@ -322,6 +326,15 @@
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gemm</span><span class="p">(</span>
         <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">beta</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;addmm&quot;</span>
     <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">aten_alias</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;alias&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_all</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
@@ -477,6 +490,39 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
+<span class="k">def</span> <span class="nf">aten_as_strided</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">storage_offset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">from</span> <span class="nn">torch.fx.experimental.proxy_tensor</span> <span class="kn">import</span> <span class="n">maybe_disable_fake_tensor_mode</span>
+
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span>
+        <span class="n">x</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when shape of x is not known</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">maybe_disable_fake_tensor_mode</span><span class="p">():</span>
+        <span class="n">tindices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="n">strided</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_strided</span><span class="p">(</span><span class="n">tindices</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">storage_offset</span><span class="p">)</span>
+        <span class="n">np_strided</span> <span class="o">=</span> <span class="n">strided</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="n">flat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+    <span class="n">xflat</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">np_strided</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">xflat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
 <span class="k">def</span> <span class="nf">aten_asin</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Asin&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
@@ -535,13 +581,16 @@
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
     <span class="n">memory_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;clone&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">torch</span>
 
     <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">memory_format</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">memory_format</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">contiguous_format</span>
+        <span class="n">memory_format</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="ow">or</span> <span class="n">memory_format</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">contiguous_format</span>
+        <span class="ow">or</span> <span class="n">memory_format</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">preserve_format</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for memory_format=</span><span class="si">{</span><span class="n">memory_format</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;clone&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_convolution</span><span class="p">(</span>
@@ -645,6 +694,20 @@
     <span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">aten_copy</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">src</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">non_blocking</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">non_blocking</span><span class="p">,</span> <span class="s2">&quot;copy implemented when non_blocking is True&quot;</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">src</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">CastLike</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;copy&quot;</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">aten_cos</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cos&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
@@ -664,13 +727,20 @@
 
 
 <span class="k">def</span> <span class="nf">aten_div</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;div&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prepare_inputs_homogeneous_operator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prepare_inputs_homogeneous_operator</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">set_shape_type_binary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">aten_div_Scalar</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">aten_div</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;div_Scalar&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_div_Tensor</span><span class="p">(</span>
@@ -714,8 +784,8 @@
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">indices</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
     <span class="n">weight</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">indices</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
     <span class="n">padding_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_norm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">norm_type</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
@@ -734,11 +804,119 @@
             <span class="sa">f</span><span class="s2">&quot;or max_norm=</span><span class="si">{</span><span class="n">max_norm</span><span class="si">}</span><span class="s2"> or norm_type=</span><span class="si">{</span><span class="n">norm_type</span><span class="si">}</span><span class="s2"> &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;are different from the default values.&quot;</span>
         <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;indices be integer not </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;weight is </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
     <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">weight</span><span class="p">))</span>
         <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span> <span class="o">+</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">aten_embedding_dense_backward</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">grad_output</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">indices</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">num_weights</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">padding_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">scale_grad_by_freq</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">scale_grad_by_freq</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;scale_grad_by_freq=True not implemented</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">grad_output</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;missing shape for grad_output</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">grad_output</span><span class="p">))</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unknown shape for grad_output</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># if scale_grad_by_freq:</span>
+    <span class="c1">#     counts = indices.new_zeros((num_weights,))</span>
+    <span class="c1">#     ones = torch.ones_like(indices)</span>
+    <span class="c1">#     counts = aten._unsafe_index_put(counts, [indices], ones, accumulate=True)</span>
+    <span class="c1">#     grad_weights_scale = counts[indices]</span>
+    <span class="c1">#     grad_output = grad_output / grad_weights_scale.unsqueeze(-1)</span>
+
+    <span class="c1"># mask = _unsqueeze_to_dim(indices == padding_idx, grad_output.ndim)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">grad_output</span><span class="p">)</span>
+    <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Equal</span><span class="p">(</span>
+            <span class="n">indices</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">padding_idx</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding_dense_backward&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding_dense_backward&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="c1"># grad = grad_output.masked_fill(mask, 0)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">aten_masked_fill_Scalar</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding_dense_backward&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">num_weights</span><span class="p">,)</span> <span class="o">+</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">grad_output</span><span class="p">)[</span><span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="p">:]</span>
+    <span class="n">grad_weight</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding_dense_backward&quot;</span>
+    <span class="p">)</span>
+    <span class="n">indices_reshaped</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span>
+        <span class="n">indices</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding_dense_backward&quot;</span>
+    <span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ScatterElements</span><span class="p">(</span>
+        <span class="n">grad_weight</span><span class="p">,</span>
+        <span class="n">indices_reshaped</span><span class="p">,</span>
+        <span class="n">grad</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding_dense_backward&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">grad_output</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">aten_empty_like</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pin_memory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">memory_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">torch</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">layout</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;empty_like not implemented for layout=</span><span class="si">{</span><span class="n">layout</span><span class="si">!r}</span><span class="s2"> is not None&quot;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">pin_memory</span><span class="p">,</span> <span class="s2">&quot;empty_like not implemented for pin_memory=True&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">memory_format</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">memory_format</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">preserve_format</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;empty_like not implemented for memory_format=</span><span class="si">{</span><span class="n">memory_format</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">))):</span>
+        <span class="c1"># simple case</span>
+        <span class="k">return</span> <span class="n">aten_full</span><span class="p">(</span>
+            <span class="n">g</span><span class="p">,</span>
+            <span class="n">set_shape_type</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="p">,</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;empty_like&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;empty_like is not implemented when shape is not fully known</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_eq</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
@@ -749,6 +927,12 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
+<span class="k">def</span> <span class="nf">aten_eq_Scalar</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">aten_eq</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">aten_expand</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -756,13 +940,69 @@
     <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
     <span class="n">sizes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">implicit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;expand&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">implicit</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for implicit=</span><span class="si">{</span><span class="n">implicit</span><span class="si">!r}</span><span class="s2">&quot;</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sizes</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">sizes</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> for x as sizes=</span><span class="si">{</span><span class="n">sizes</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">sizes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Not implemented when the shape is not fullu known, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> for x as sizes=</span><span class="si">{</span><span class="n">sizes</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">new_shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_neg&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)),</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_neg2&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sizes</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">aten_fill_Scalar</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">T</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">))):</span>
+        <span class="k">return</span> <span class="n">aten_full</span><span class="p">(</span>
+            <span class="n">g</span><span class="p">,</span>
+            <span class="n">set_shape_type</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="p">,</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+            <span class="n">v</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fill_Scalar&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;fill is not implemented when shape is not fully known</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_flatten</span><span class="p">(</span>
@@ -808,12 +1048,19 @@
     <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">pin_memory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="n">layout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;full not implemented for layout=</span><span class="si">{</span><span class="n">layout</span><span class="si">!r}</span><span class="s2"> is not None&quot;</span>
+    <span class="kn">import</span> <span class="nn">torch</span>
+
+    <span class="k">assert</span> <span class="n">layout</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">strided</span><span class="p">),</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;full not implemented for layout=</span><span class="si">{</span><span class="n">layout</span><span class="si">!r}</span><span class="s2"> is not None, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;size=</span><span class="si">{</span><span class="n">size</span><span class="si">!r}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="n">dtype</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">pin_memory</span><span class="p">,</span> <span class="s2">&quot;full not implemented for pin_memory=True&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+    <span class="k">assert</span> <span class="n">fill_value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
         <span class="n">fill_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">fill_value</span><span class="p">)</span><span class="si">}</span><span class="s2"> for fill_value.&quot;</span>
+
     <span class="n">new_shape</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
@@ -832,23 +1079,23 @@
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="si">}</span><span class="s2"> for size.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
-            <span class="n">itype</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fill_value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
             <span class="n">itype</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
+            <span class="n">itype</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">itype</span> <span class="o">=</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">fill_value</span><span class="p">))</span>
             <span class="n">ntype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">ntype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">itype</span> <span class="o">=</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">itype</span> <span class="o">=</span> <span class="n">dtype</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
         <span class="n">ntype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fill_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">ntype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fill_value</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">ntype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
-        <span class="n">tsize</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">from_array</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;full&quot;</span>
+        <span class="n">tsize</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">from_array</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;name&quot;</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">itype</span><span class="p">)</span>
@@ -883,30 +1130,25 @@
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
         <span class="n">indices</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> for indices&quot;</span>
-    <span class="n">indices_rank</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">indices_last</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">new_indices</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span>
-            <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;index&quot;</span>
+        <span class="k">return</span> <span class="n">aten_index_select</span><span class="p">(</span>
+            <span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;index_Tensor&quot;</span>
         <span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">GatherND</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">new_indices</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
-        <span class="n">indices_rank</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">indices_last</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;aten_indices implemented yet for indices=</span><span class="si">{</span><span class="n">indices</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">indices_rank</span> <span class="o">+</span> <span class="n">indices_last</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">res</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;aten_indices implemented yet for indices=</span><span class="si">{</span><span class="n">indices</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_index_select</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">T</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;index_select&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
@@ -1030,16 +1272,22 @@
 
 
 <span class="k">def</span> <span class="nf">aten_masked_fill_Scalar</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">value</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">mask</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;masked_fill_Scalar&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">dt</span> <span class="o">!=</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span>
-        <span class="n">cmask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;masked_fill_Scalar&quot;</span><span class="p">)</span>
+        <span class="n">cmask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cmask</span> <span class="o">=</span> <span class="n">mask</span>
     <span class="n">dtx</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">avalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">value</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">dtx</span><span class="p">))</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span><span class="n">cmask</span><span class="p">,</span> <span class="n">avalue</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span><span class="n">cmask</span><span class="p">,</span> <span class="n">avalue</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">dtx</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
@@ -1249,29 +1497,32 @@
 
 
 <span class="k">def</span> <span class="nf">aten_mul</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mul&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prepare_inputs_homogeneous_operator</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mul&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">set_shape_type_binary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">aten_mul_Scalar</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prepare_inputs_homogeneous_operator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
-        <span class="n">set_shape_type_binary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">res</span>
+    <span class="k">return</span> <span class="n">aten_mul</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mul_Scalar&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_mul_Tensor</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mul_Tensor&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
-        <span class="n">set_shape_type_binary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">res</span>
+    <span class="k">return</span> <span class="n">aten_mul</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mul_Tensor&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_neg</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Neg&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">set_shape_type_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
 
 
@@ -1347,6 +1598,40 @@
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">aten_repeat</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">repeats</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;repeat&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repeats</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">repeats</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">irep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">repeats</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">repeats</span><span class="p">):</span>
+            <span class="n">expanded</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">repeats</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">expanded</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Tile</span><span class="p">(</span><span class="n">expanded</span><span class="p">,</span> <span class="n">irep</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">repeats</span><span class="p">):</span>
+                    <span class="n">new_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">irep</span>
+                    <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">repeats</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">repeats</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not implemented when repeats=</span><span class="si">{</span><span class="n">repeats</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">aten_rsqrt</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -1382,6 +1667,46 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="k">assert</span> <span class="n">alpha</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Not implemented with alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">aten_sub</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">aten_setitem</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">indices</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="ow">and</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">Ellipsis</span>
+        <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">slice</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">aten_slice_scatter</span><span class="p">(</span>
+            <span class="n">g</span><span class="p">,</span>
+            <span class="n">set_shape_type</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">values</span><span class="p">,</span>
+            <span class="n">dim</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span>
+            <span class="n">step</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">step</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;setitem&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># if set_shape_type:</span>
+    <span class="c1">#    g.set_type(res, g.get_type(x))</span>
+    <span class="c1">#    if g.has_shape(x):</span>
+    <span class="c1">#        g.set_shape(res, g.get_shape(x))</span>
+    <span class="c1">#    else:</span>
+    <span class="c1">#        g.set_rank(res, g.get_rank(x))</span>
+    <span class="c1"># return res</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;setitem not implemented for indices=</span><span class="si">{</span><span class="n">indices</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_sigmoid</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
@@ -1483,6 +1808,119 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
+<span class="k">def</span> <span class="nf">aten_slice_backward</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">grad_output</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">input_sizes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">step</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;slice_backward not implemented for step=</span><span class="si">{</span><span class="n">step</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span>
+        <span class="n">grad_output</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;slice_backward not implemented when grad_output has not shape</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">grad_output</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">shape</span><span class="p">)</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;slice_backward not implemented when shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">grad_output</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)))</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">cst_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">cst_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cst_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slice_backward&quot;</span>
+        <span class="p">)</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
+
+    <span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grad_output</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="mi">9223372036854775807</span><span class="p">:</span>
+        <span class="n">cst_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">cst_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_sizes</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">-</span> <span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">-</span> <span class="n">start</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cst_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slice_backward&quot;</span>
+        <span class="p">)</span>
+        <span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slice_backward&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">grad_output</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">input_sizes</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">aten_slice_scatter</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">src</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slice_scatter&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="c1"># step 1</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">dim_shape</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">dim_shape</span><span class="p">,</span> <span class="nb">int</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;slice_scatter not implemented when shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">index_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">index_2</span> <span class="o">=</span> <span class="n">index_1</span><span class="p">[</span><span class="n">start</span><span class="p">::</span><span class="n">step</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">index_2</span> <span class="o">=</span> <span class="n">index_1</span><span class="p">[</span><span class="n">start</span> <span class="ow">or</span> <span class="mi">0</span> <span class="p">:</span> <span class="n">end</span> <span class="p">:</span> <span class="n">step</span><span class="p">]</span>
+        <span class="n">index_2</span> <span class="o">=</span> <span class="n">index_2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># step 2</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="k">if</span> <span class="n">dim</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span> <span class="o">-</span> <span class="n">dim</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">index_base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">index_2</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">index_base</span> <span class="o">=</span> <span class="n">index_2</span>
+
+        <span class="c1"># Step 3: Expand the indices.</span>
+        <span class="n">shape_expand</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ScatterElements</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span><span class="n">index_base</span><span class="p">,</span> <span class="n">shape_expand</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># Step 4: final ScatterElements.</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ScatterElements</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;slice_scatter not implement when shape of </span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;is not known.</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">aten_softmax</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -1518,14 +1956,55 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
+<span class="k">def</span> <span class="nf">aten__softmax_backward_data</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">grad_output</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">input_dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">input_dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">itype</span> <span class="o">=</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">input_dtype</span><span class="p">)</span>
+        <span class="n">grad_outputc</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span>
+            <span class="n">grad_output</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;log_softmax_backward_data&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">itype</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">grad_outputc</span> <span class="o">=</span> <span class="n">grad_output</span>
+
+    <span class="n">new_grad_output</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">grad_outputc</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">sums</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceSum</span><span class="p">(</span>
+        <span class="n">new_grad_output</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;softmax_backward_data&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sums</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;softmax_backward_data&quot;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">new_grad_output</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;softmax_backward_data&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">set_shape_type_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">grad_outputc</span><span class="p">,</span> <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
 <span class="k">def</span> <span class="nf">aten_sub</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sub&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prepare_inputs_homogeneous_operator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">set_shape_type_binary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">aten_sub_Tensor</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">alpha</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;sub_Tensor not implemented for alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">aten_sub</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sub_Tensor&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">aten_sum</span><span class="p">(</span>
@@ -1599,11 +2078,26 @@
     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_to_copy&quot;</span><span class="p">)</span>
     <span class="n">itype</span> <span class="o">=</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_to_copy&quot;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_to_copy&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">set_shape_type_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
 
 
-<span class="k">def</span> <span class="nf">aten_t</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">aten_t</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;t&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">, should be 2D&quot;</span>
+            <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
 
 
 <span class="k">def</span> <span class="nf">_aten_tensor_int1</span><span class="p">(</span>
@@ -1744,7 +2238,7 @@
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Not implemented for dim=</span><span class="si">{</span><span class="n">dim</span><span class="si">!r}</span><span class="s2">&quot;</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">UnsqueezeAnyOpset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -1786,6 +2280,119 @@
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">aten_view</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">node_name</span><span class="o">=</span><span class="s2">&quot;_unsafe_view&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">aten_zeros</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pin_memory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;seros&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">aten_full</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span>
+        <span class="n">set_shape_type</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">,</span>
+        <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">pin_memory</span><span class="o">=</span><span class="n">pin_memory</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="prims_broadcast_in_dim">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_exp._aten_functions.prims_broadcast_in_dim">[docs]</a>
+<span class="k">def</span> <span class="nf">prims_broadcast_in_dim</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">broadcast_dimensions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        s = list(shape)</span>
+<span class="sd">        for broadcast_dimension in broadcast_dimensions:</span>
+<span class="sd">            s[broadcast_dimension] = -1</span>
+
+<span class="sd">        v = a</span>
+<span class="sd">        for idx, x in enumerate(s):</span>
+<span class="sd">            if x != -1:</span>
+<span class="sd">                v = unsqueeze(v, idx)</span>
+
+<span class="sd">        return expand(v, shape)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">max</span><span class="p">(</span><span class="n">broadcast_dimensions</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Index out of boundary, shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;broadcast_dimensions=</span><span class="si">{</span><span class="n">broadcast_dimensions</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">broadcast_dimension</span> <span class="ow">in</span> <span class="n">broadcast_dimensions</span><span class="p">:</span>
+        <span class="n">s</span><span class="p">[</span><span class="n">broadcast_dimension</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">uns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">uns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">uns</span><span class="p">))</span>
+
+    <span class="n">unsqueezed</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">uns</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;broadcast_in_dim&quot;</span>
+    <span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
+        <span class="n">unsqueezed</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;broadcast_in_dim&quot;</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">prims_clone</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">memory_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">aten_clone</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">set_shape_type</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">memory_format</span><span class="o">=</span><span class="n">memory_format</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_clone&quot;</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">prims_transpose</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">input_name</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">perm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Transpose&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">input_name</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">perm</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">input_name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">input_name</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">input_name</span><span class="p">))</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+                <span class="n">new_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_shape</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">input_name</span><span class="p">):</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">input_name</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
 </pre></div>
         </article>
       </div>

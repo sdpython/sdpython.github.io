@@ -172,14 +172,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort.html">Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot.html">Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export.html">Evaluate different ways to export a torch model to ONNX</a></li>
@@ -190,6 +192,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../long_outputs.html">Long Outputs uneasy to read</a></li>
 </ul>
 
 </div>
@@ -260,7 +263,7 @@
 <span class="sd">            opset_version=self._resolved_onnx_exporter_options.onnx_registry.opset_version</span>
 <span class="sd">        )</span>
 
-<span class="sd">        from onnxrt_backend_dev.convert_helper import optimize_model_proto</span>
+<span class="sd">        from experimental_experiment.convert.convert_helper import optimize_model_proto</span>
 <span class="sd">        onnx_model = optimize_model_proto(onnx_model)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">onnxrewriter.optimizer</span> <span class="kn">import</span> <span class="n">optimize</span>
@@ -301,12 +304,15 @@
     <span class="k">elif</span> <span class="n">providers</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span><span class="p">:</span>
         <span class="n">providers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CUDAExecutionProvider&quot;</span><span class="p">,</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">providers</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for providers=</span><span class="si">{</span><span class="n">providers</span><span class="si">!r}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">):</span>
-        <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
-            <span class="n">onnx_model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">)</span></div>
+    <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">onnx_model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">onnx_model</span>
+        <span class="p">),</span>
+        <span class="n">opts</span><span class="p">,</span>
+        <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
 </pre></div>
         </article>

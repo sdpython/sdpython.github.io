@@ -173,14 +173,16 @@
 <li class="toctree-l2"><a class="reference internal" href="onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="convert.html">convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_dort.html">Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_aot.html">Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_export.html">Evaluate different ways to export a torch model to ONNX</a></li>
@@ -191,6 +193,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../long_outputs.html">Long Outputs uneasy to read</a></li>
 </ul>
 
 </div>
@@ -233,6 +236,23 @@
 <dd><p>See <a class="reference external" href="https://github.com/pytorch/pytorch/blob/main/torch/_decomp/decompositions.py#L108">https://github.com/pytorch/pytorch/blob/main/torch/_decomp/decompositions.py#L108</a>.
 conj_physical = identity for real number.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">out_grad</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">conj_physical</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.torch_exp._aten_functions.prims_broadcast_in_dim">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.torch_exp._aten_functions.</span></span><span class="sig-name descname"><span class="pre">prims_broadcast_in_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="graph_builder.html#experimental_experiment.torch_exp.graph_builder.GraphBuilder" title="experimental_experiment.torch_exp.graph_builder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_shape_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">broadcast_dimensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/torch_exp/_aten_functions.html#prims_broadcast_in_dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_exp._aten_functions.prims_broadcast_in_dim" title="Link to this definition">#</a></dt>
+<dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">broadcast_dimension</span> <span class="ow">in</span> <span class="n">broadcast_dimensions</span><span class="p">:</span>
+    <span class="n">s</span><span class="p">[</span><span class="n">broadcast_dimension</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">a</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">unsqueeze</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="n">expand</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -296,6 +316,7 @@ conj_physical = identity for real number.</p>
             <ul>
 <li><a class="reference internal" href="#">aten_functions</a><ul>
 <li><a class="reference internal" href="#experimental_experiment.torch_exp._aten_functions.aten_sigmoid_backward"><code class="docutils literal notranslate"><span class="pre">aten_sigmoid_backward()</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.torch_exp._aten_functions.prims_broadcast_in_dim"><code class="docutils literal notranslate"><span class="pre">prims_broadcast_in_dim()</span></code></a></li>
 </ul>
 </li>
 </ul>
