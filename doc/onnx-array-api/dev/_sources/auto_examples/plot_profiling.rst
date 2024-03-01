@@ -145,9 +145,9 @@ Profiling
         <tr>
           <th>0</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>617</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>694</td>
           <td>4</td>
           <td>X</td>
           <td>model_loading_uri</td>
@@ -167,10 +167,10 @@ Profiling
         <tr>
           <th>1</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>626</td>
-          <td>656</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>629</td>
+          <td>731</td>
           <td>X</td>
           <td>session_initialization</td>
           <td>NaN</td>
@@ -189,10 +189,10 @@ Profiling
         <tr>
           <th>2</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
+          <td>3980</td>
+          <td>3980</td>
           <td>1</td>
-          <td>1453</td>
+          <td>1512</td>
           <td>X</td>
           <td>n0_fence_before</td>
           <td>Conv</td>
@@ -211,10 +211,10 @@ Profiling
         <tr>
           <th>3</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>2610</td>
-          <td>1459</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>520</td>
+          <td>1518</td>
           <td>X</td>
           <td>n0_kernel_time</td>
           <td>Conv</td>
@@ -233,10 +233,10 @@ Profiling
         <tr>
           <th>4</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>1</td>
-          <td>4180</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>0</td>
+          <td>2048</td>
           <td>X</td>
           <td>n0_fence_after</td>
           <td>Conv</td>
@@ -277,10 +277,10 @@ Profiling
         <tr>
           <th>261</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
+          <td>3980</td>
+          <td>3980</td>
           <td>0</td>
-          <td>55178</td>
+          <td>51733</td>
           <td>X</td>
           <td>n13_fence_before</td>
           <td>Add</td>
@@ -299,10 +299,10 @@ Profiling
         <tr>
           <th>262</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>112</td>
-          <td>55180</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>119</td>
+          <td>51735</td>
           <td>X</td>
           <td>n13_kernel_time</td>
           <td>Add</td>
@@ -321,10 +321,10 @@ Profiling
         <tr>
           <th>263</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
+          <td>3980</td>
+          <td>3980</td>
           <td>0</td>
-          <td>55297</td>
+          <td>51860</td>
           <td>X</td>
           <td>n13_fence_after</td>
           <td>Add</td>
@@ -343,10 +343,10 @@ Profiling
         <tr>
           <th>264</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>7007</td>
-          <td>48293</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>6891</td>
+          <td>44974</td>
           <td>X</td>
           <td>SequentialExecutor::Execute</td>
           <td>NaN</td>
@@ -365,10 +365,10 @@ Profiling
         <tr>
           <th>265</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>7028</td>
-          <td>48282</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>6916</td>
+          <td>44960</td>
           <td>X</td>
           <td>model_run</td>
           <td>NaN</td>
@@ -462,9 +462,9 @@ And the optimized model.
         <tr>
           <th>0</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>691</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>506</td>
           <td>3</td>
           <td>X</td>
           <td>model_loading_uri</td>
@@ -484,10 +484,10 @@ And the optimized model.
         <tr>
           <th>1</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>445</td>
-          <td>721</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>344</td>
+          <td>530</td>
           <td>X</td>
           <td>session_initialization</td>
           <td>NaN</td>
@@ -506,10 +506,10 @@ And the optimized model.
         <tr>
           <th>2</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
+          <td>3980</td>
+          <td>3980</td>
           <td>1</td>
-          <td>1282</td>
+          <td>966</td>
           <td>X</td>
           <td>r0_nchwc_fence_before</td>
           <td>Conv</td>
@@ -528,10 +528,10 @@ And the optimized model.
         <tr>
           <th>3</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>394</td>
-          <td>1286</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>302</td>
+          <td>969</td>
           <td>X</td>
           <td>r0_nchwc_kernel_time</td>
           <td>Conv</td>
@@ -550,10 +550,10 @@ And the optimized model.
         <tr>
           <th>4</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
+          <td>3980</td>
+          <td>3980</td>
           <td>0</td>
-          <td>1688</td>
+          <td>1277</td>
           <td>X</td>
           <td>r0_nchwc_fence_after</td>
           <td>Conv</td>
@@ -594,10 +594,10 @@ And the optimized model.
         <tr>
           <th>351</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
+          <td>3980</td>
+          <td>3980</td>
           <td>0</td>
-          <td>56501</td>
+          <td>39661</td>
           <td>X</td>
           <td>ReorderOutput_token_16_fence_before</td>
           <td>ReorderOutput</td>
@@ -616,10 +616,10 @@ And the optimized model.
         <tr>
           <th>352</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>77</td>
-          <td>56504</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>134</td>
+          <td>39664</td>
           <td>X</td>
           <td>ReorderOutput_token_16_kernel_time</td>
           <td>ReorderOutput</td>
@@ -638,10 +638,10 @@ And the optimized model.
         <tr>
           <th>353</th>
           <td>Node</td>
-          <td>10242</td>
-          <td>10242</td>
+          <td>3980</td>
+          <td>3980</td>
           <td>0</td>
-          <td>56586</td>
+          <td>39803</td>
           <td>X</td>
           <td>ReorderOutput_token_16_fence_after</td>
           <td>ReorderOutput</td>
@@ -660,10 +660,10 @@ And the optimized model.
         <tr>
           <th>354</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>8868</td>
-          <td>47722</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>5947</td>
+          <td>33860</td>
           <td>X</td>
           <td>SequentialExecutor::Execute</td>
           <td>NaN</td>
@@ -682,10 +682,10 @@ And the optimized model.
         <tr>
           <th>355</th>
           <td>Session</td>
-          <td>10242</td>
-          <td>10242</td>
-          <td>8897</td>
-          <td>47705</td>
+          <td>3980</td>
+          <td>3980</td>
+          <td>5974</td>
+          <td>33846</td>
           <td>X</td>
           <td>model_run</td>
           <td>NaN</td>
@@ -763,9 +763,9 @@ same at every iteration.
 
  .. code-block:: none
 
-    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f4a0911fd00> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
+    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f49a2a040d0> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
       .agg(
-    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f4a0911fd00> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
+    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f49a2a040d0> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
       .agg(
 
 
@@ -809,7 +809,7 @@ same at every iteration.
           <td>[{'float': [1, 64, 56, 56]}, {'float': [1, 64,...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>1703.0</td>
+          <td>822.0</td>
           <td>6.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -821,9 +821,9 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}, {'float': [64]}...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>2077.0</td>
+          <td>2105.0</td>
           <td>6.0</td>
-          <td>1833.0</td>
+          <td>1665.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -833,9 +833,9 @@ same at every iteration.
           <td>[{'float': [1, 1, 112, 112]}, {'float': [1, 1,...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>638.0</td>
+          <td>134.0</td>
           <td>6.0</td>
-          <td>156.0</td>
+          <td>100.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -845,7 +845,7 @@ same at every iteration.
           <td>[{'float': [1, 2, 112, 112]}, {'float': [1, 2,...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>821.0</td>
+          <td>867.0</td>
           <td>6.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -857,9 +857,9 @@ same at every iteration.
           <td>[{'float': [1, 3, 112, 112]}, {'float': [64, 3...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>5087.0</td>
+          <td>2045.0</td>
           <td>6.0</td>
-          <td>1954.0</td>
+          <td>1315.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -869,9 +869,9 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>24559.0</td>
+          <td>25256.0</td>
           <td>6.0</td>
-          <td>28124.0</td>
+          <td>16708.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -881,9 +881,9 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>1694.0</td>
+          <td>1488.0</td>
           <td>6.0</td>
-          <td>964.0</td>
+          <td>716.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -895,7 +895,7 @@ same at every iteration.
           <td>0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>6808.0</td>
+          <td>4202.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -905,7 +905,7 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>8036.0</td>
+          <td>8014.0</td>
           <td>6.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -919,7 +919,7 @@ same at every iteration.
           <td>0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>1953.0</td>
+          <td>1308.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -929,9 +929,9 @@ same at every iteration.
           <td>[{'float': [1, 1, 112, 112]}, {'float': [1, 64...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>1001.0</td>
+          <td>891.0</td>
           <td>6.0</td>
-          <td>750.0</td>
+          <td>745.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -941,9 +941,9 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>1919.0</td>
+          <td>1470.0</td>
           <td>6.0</td>
-          <td>1130.0</td>
+          <td>1057.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -953,9 +953,9 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}, {'float': [64, ...</td>
           <td>CPUExecutionProvider</td>
           <td>1</td>
-          <td>916.0</td>
+          <td>920.0</td>
           <td>6.0</td>
-          <td>791.0</td>
+          <td>767.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -965,9 +965,9 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}]</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>1666.0</td>
+          <td>2083.0</td>
           <td>6.0</td>
-          <td>1483.0</td>
+          <td>1244.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -977,9 +977,9 @@ same at every iteration.
           <td>[{'float': [1, 64, 112, 112]}]</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>1493.0</td>
+          <td>1622.0</td>
           <td>6.0</td>
-          <td>1482.0</td>
+          <td>1396.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -991,7 +991,7 @@ same at every iteration.
           <td>0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>730.0</td>
+          <td>591.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -1003,7 +1003,7 @@ same at every iteration.
           <td>1</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>637.0</td>
+          <td>547.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -1015,7 +1015,7 @@ same at every iteration.
           <td>2</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>609.0</td>
+          <td>510.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -1027,7 +1027,7 @@ same at every iteration.
           <td>0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>156.0</td>
+          <td>144.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -1039,7 +1039,7 @@ same at every iteration.
           <td>0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>1655.0</td>
+          <td>1422.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -1051,7 +1051,7 @@ same at every iteration.
           <td>1</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>744.0</td>
+          <td>737.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -1063,7 +1063,7 @@ same at every iteration.
           <td>0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>565.0</td>
+          <td>539.0</td>
           <td>6.0</td>
         </tr>
         <tr>
@@ -1073,7 +1073,7 @@ same at every iteration.
           <td>[{'float': [1, 1, 112, 112]}]</td>
           <td>CPUExecutionProvider</td>
           <td>0</td>
-          <td>96.0</td>
+          <td>98.0</td>
           <td>6.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1140,133 +1140,133 @@ More detailed
         <tr>
           <th>[+CPU]Conv(f-1x2x112x112,f-8x2x7x7)-&gt;f-1x8x112x112</th>
           <td>0.0</td>
-          <td>1953.0</td>
+          <td>1308.0</td>
           <td>0.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[+CPU]Conv(f-1x64x112x112,f-64x64x3x3,f-64,f-1x64x56x56)-&gt;f-1x64x56x56</th>
           <td>0.0</td>
-          <td>6808.0</td>
+          <td>4202.0</td>
           <td>0.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[+CPU]ReorderInput(f-1x64x112x112)-&gt;f-1x64x112x112</th>
           <td>0.0</td>
-          <td>1976.0</td>
+          <td>1648.0</td>
           <td>0.0</td>
           <td>18.0</td>
         </tr>
         <tr>
           <th>[+CPU]ReorderOutput(f-1x64x112x112)-&gt;f-1x64x112x112</th>
           <td>0.0</td>
-          <td>2399.0</td>
+          <td>2159.0</td>
           <td>0.0</td>
           <td>12.0</td>
         </tr>
         <tr>
           <th>[+CPU]ReorderOutput(f-1x64x56x56)-&gt;f-1x64x56x56</th>
           <td>0.0</td>
-          <td>565.0</td>
+          <td>539.0</td>
           <td>0.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[+CPU]ReorderOutput(f-1x8x112x112)-&gt;f-1x1x112x112</th>
           <td>0.0</td>
-          <td>156.0</td>
+          <td>144.0</td>
           <td>0.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[-CPU]Add(f-1x64x56x56,f-1x64x56x56)-&gt;f-1x64x56x56</th>
-          <td>1703.0</td>
+          <td>822.0</td>
           <td>0.0</td>
           <td>6.0</td>
           <td>0.0</td>
         </tr>
         <tr>
           <th>[-CPU]Conv(f-1x2x112x112,f-1x2x7x7)-&gt;f-1x1x112x112</th>
-          <td>821.0</td>
+          <td>867.0</td>
           <td>0.0</td>
           <td>6.0</td>
           <td>0.0</td>
         </tr>
         <tr>
           <th>[-CPU]Conv(f-1x64x112x112,f-64x64x3x3,f-64)-&gt;f-1x64x56x56</th>
-          <td>8036.0</td>
+          <td>8014.0</td>
           <td>0.0</td>
           <td>6.0</td>
           <td>0.0</td>
         </tr>
         <tr>
           <th>[-CPU]Sigmoid(f-1x1x112x112)-&gt;f-1x1x112x112</th>
-          <td>96.0</td>
+          <td>98.0</td>
           <td>0.0</td>
           <td>6.0</td>
           <td>0.0</td>
         </tr>
         <tr>
           <th>[=CPU]BatchNormalization(f-1x64x112x112,f-64,f-64,f-64,f-64)-&gt;f-1x64x112x112</th>
-          <td>2077.0</td>
-          <td>1833.0</td>
+          <td>2105.0</td>
+          <td>1665.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[=CPU]Concat(f-1x1x112x112,f-1x1x112x112)-&gt;f-1x2x112x112</th>
-          <td>638.0</td>
-          <td>156.0</td>
+          <td>134.0</td>
+          <td>100.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[=CPU]Conv(f-1x3x112x112,f-64x3x3x3,f-64)-&gt;f-1x64x112x112</th>
-          <td>5087.0</td>
-          <td>1954.0</td>
+          <td>2045.0</td>
+          <td>1315.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[=CPU]Conv(f-1x64x112x112,f-64x64x1x1,f-64)-&gt;f-1x64x56x56</th>
-          <td>1694.0</td>
-          <td>964.0</td>
+          <td>1488.0</td>
+          <td>716.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[=CPU]Conv(f-1x64x112x112,f-64x64x3x3,f-64)-&gt;f-1x64x112x112</th>
-          <td>24559.0</td>
-          <td>28124.0</td>
+          <td>25256.0</td>
+          <td>16708.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[=CPU]Mul(f-1x1x112x112,f-1x64x112x112)-&gt;f-1x64x112x112</th>
-          <td>1001.0</td>
-          <td>750.0</td>
+          <td>891.0</td>
+          <td>745.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[=CPU]PRelu(f-1x64x112x112,f-64x1x1)-&gt;f-1x64x112x112</th>
-          <td>2835.0</td>
-          <td>1921.0</td>
+          <td>2390.0</td>
+          <td>1824.0</td>
           <td>12.0</td>
           <td>12.0</td>
         </tr>
         <tr>
           <th>[=CPU]ReduceMax(f-1x64x112x112)-&gt;f-1x1x112x112</th>
-          <td>1666.0</td>
-          <td>1483.0</td>
+          <td>2083.0</td>
+          <td>1244.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
         <tr>
           <th>[=CPU]ReduceMean(f-1x64x112x112)-&gt;f-1x1x112x112</th>
-          <td>1493.0</td>
-          <td>1482.0</td>
+          <td>1622.0</td>
+          <td>1396.0</td>
           <td>6.0</td>
           <td>6.0</td>
         </tr>
@@ -1403,9 +1403,9 @@ On CUDA
  .. code-block:: none
 
     Profiling on CUDA
-    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f4a0911fd00> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
+    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f49a2a040d0> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
       .agg(
-    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f4a0911fd00> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
+    /home/xadupre/github/onnx-array-api/onnx_array_api/ort/ort_profile.py:256: FutureWarning: The provided callable <function sum at 0x7f49a2a040d0> is currently using SeriesGroupBy.sum. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "sum" instead.
       .agg(
 
     array([<Axes: title={'center': 'Side by side duration'}, ylabel='label'>,
@@ -1417,7 +1417,7 @@ On CUDA
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 14.188 seconds)
+   **Total running time of the script:** (0 minutes 5.023 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_profiling.py:

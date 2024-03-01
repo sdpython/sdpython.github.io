@@ -492,9 +492,9 @@ Conversion to onnx
     input: name='X' type=dtype('float64') shape=['', 4]
     init: name='Ad_Addcst' type=dtype('float64') shape=(1,) -- array([7.35150827])
     init: name='Ge_Gemmcst' type=dtype('float64') shape=(4, 4)
-    init: name='Ge_Gemmcst1' type=dtype('float64') shape=(4,) -- array([-7.08931319, -7.46339003,  4.58550566,  1.40808016])
+    init: name='Ge_Gemmcst1' type=dtype('float64') shape=(4,) -- array([-7.05890183, -7.78812023,  5.41461403,  0.37703043])
     init: name='Mu_Mulcst' type=dtype('float64') shape=(1,) -- array([-0.5])
-    init: name='Ad_Addcst1' type=dtype('float64') shape=(1,) -- array([3.04969924])
+    init: name='Ad_Addcst1' type=dtype('float64') shape=(1,) -- array([3.20369698])
     init: name='Ad_Addcst2' type=dtype('float64') shape=(1,) -- array([0.])
     Gemm(X, Ge_Gemmcst, Ge_Gemmcst1, alpha=1.00, beta=1.00) -> Ge_Y0
       ReduceSumSquare(Ge_Y0, axes=[1], keepdims=1) -> Re_reduced0
@@ -547,9 +547,9 @@ Conversion to onnx without ReduceLogSumExp
     input: name='X' type=dtype('float64') shape=['', 4]
     init: name='Ad_Addcst' type=dtype('float64') shape=(1,) -- array([7.35150827])
     init: name='Ge_Gemmcst' type=dtype('float64') shape=(4, 4)
-    init: name='Ge_Gemmcst1' type=dtype('float64') shape=(4,) -- array([-7.08931319, -7.46339003,  4.58550566,  1.40808016])
+    init: name='Ge_Gemmcst1' type=dtype('float64') shape=(4,) -- array([-7.05890183, -7.78812023,  5.41461403,  0.37703043])
     init: name='Mu_Mulcst' type=dtype('float64') shape=(1,) -- array([-0.5])
-    init: name='Ad_Addcst1' type=dtype('float64') shape=(1,) -- array([3.04969924])
+    init: name='Ad_Addcst1' type=dtype('float64') shape=(1,) -- array([3.20369698])
     init: name='Ad_Addcst2' type=dtype('float64') shape=(1,) -- array([0.])
     Gemm(X, Ge_Gemmcst, Ge_Gemmcst1, alpha=1.00, beta=1.00) -> Ge_Y0
       Mul(Ge_Y0, Ge_Y0) -> Mu_C01
@@ -603,7 +603,7 @@ the best alignmet between the two models using an edit distance.
  .. code-block:: none
 
     [compare_onnx_execution] generate inputs
-    [compare_onnx_execution] got 1 inputs
+    [compare_onnx_execution] execute with 1 inputs
     [compare_onnx_execution] execute first model
     [compare_onnx_execution] got 21 results
     [compare_onnx_execution] execute second model
@@ -612,33 +612,33 @@ the best alignmet between the two models using an edit distance.
     [compare_onnx_execution] got 27 pairs
     [compare_onnx_execution] done
     ------------
-      1 = | INITIA float64  1               HAAA            Ad_Addcst    | INITIA float64  1               HAAA            Ad_Addcst   
-      2 = | INITIA float64  4x4             ADZF            Ge_Gemmcst   | INITIA float64  4x4             ADZF            Ge_Gemmcst  
-      3 = | INITIA float64  4               TTEB            Ge_Gemmcst1  | INITIA float64  4               TTEB            Ge_Gemmcst1 
-      4 = | INITIA float64  1               AAAA            Mu_Mulcst    | INITIA float64  1               AAAA            Mu_Mulcst   
-      5 = | INITIA float64  1               DAAA            Ad_Addcst1   | INITIA float64  1               DAAA            Ad_Addcst1  
-      6 = | INITIA float64  1               AAAA            Ad_Addcst2   | INITIA float64  1               AAAA            Ad_Addcst2  
-      7 = | INPUT  float64  1x4             AAAA            X            | INPUT  float64  1x4             AAAA            X           
-      8 = | RESULT float64  1x4             TUFD Gemm       Ge_Y0        | RESULT float64  1x4             TUFD Gemm       Ge_Y0       
-      9 + |                                                              | RESULT float64  1x4             YVHN Mul        Mu_C01       
-     10 ~ | RESULT float64  1x1             PAAA ReduceSumS Re_reduced0  | RESULT float64  1x1             PAAA ReduceSum  Re_reduced0 
-     11 = | RESULT float64  1x1             PAAA Concat     Co_concat_re | RESULT float64  1x1             PAAA Concat     Co_concat_re
-     12 = | RESULT float64  1x1             WAAA Add        Ad_C02       | RESULT float64  1x1             WAAA Add        Ad_C02      
-     13 = | RESULT float64  1x1             CAAA Mul        Mu_C0        | RESULT float64  1x1             CAAA Mul        Mu_C0       
-     14 = | RESULT float64  1x1             FAAA Add        Ad_C01       | RESULT float64  1x1             FAAA Add        Ad_C01      
-     15 = | RESULT float64  1x1             FAAA Add        Ad_C0        | RESULT float64  1x1             FAAA Add        Ad_C0       
-     16 = | RESULT int64    1x1             AAAA ArgMax     label        | RESULT int64    1x1             AAAA ArgMax     label       
-     17 + |                                                              | RESULT float64  1x1             FAAA ReduceMax  Re_reduced03 
-     18 + |                                                              | RESULT float64  1x1             AAAA Sub        Su_C01       
-     19 + |                                                              | RESULT float64  1x1             BAAA Exp        Ex_output0   
-     20 + |                                                              | RESULT float64  1x1             BAAA ReduceSum  Re_reduced02 
-     21 + |                                                              | RESULT float64  1x1             AAAA Log        Lo_output0   
-     22 ~ | RESULT float64  1x1             FAAA ReduceLogS score_sample | RESULT float64  1x1             FAAA Add        score_sample
-     23 = | RESULT float64  1x1             AAAA Sub        Su_C0        | RESULT float64  1x1             AAAA Sub        Su_C0       
-     24 = | RESULT float64  1x1             BAAA Exp        probabilitie | RESULT float64  1x1             BAAA Exp        probabilitie
-     25 = | OUTPUT int64    1x1             AAAA            label        | OUTPUT int64    1x1             AAAA            label       
-     26 = | OUTPUT float64  1x1             BAAA            probabilitie | OUTPUT float64  1x1             BAAA            probabilitie
-     27 = | OUTPUT float64  1x1             FAAA            score_sample | OUTPUT float64  1x1             FAAA            score_sample
+    001 = | INITIA float64  1:1                  HAAA                 Ad | INITIA float64  1:1                  HAAA                 Ad
+    002 = | INITIA float64  2:4x4                ACZF                 Ge | INITIA float64  2:4x4                ACZF                 Ge
+    003 = | INITIA float64  1:4                  TTFA                 Ge | INITIA float64  1:4                  TTFA                 Ge
+    004 = | INITIA float64  1:1                  AAAA                 Mu | INITIA float64  1:1                  AAAA                 Mu
+    005 = | INITIA float64  1:1                  DAAA                 Ad | INITIA float64  1:1                  DAAA                 Ad
+    006 = | INITIA float64  1:1                  AAAA                 Ad | INITIA float64  1:1                  AAAA                 Ad
+    007 = | INPUT  float64  2:1x4                AAAA                 X  | INPUT  float64  2:1x4                AAAA                 X 
+    008 = | RESULT float64  2:1x4                TTGC Gemm            Ge | RESULT float64  2:1x4                TTGC Gemm            Ge
+    009 + |                                                              | RESULT float64  2:1x4                XZSG Mul             Mu 
+    010 ~ | RESULT float64  2:1x1                VAAA ReduceSumSquare Re | RESULT float64  2:1x1                VAAA ReduceSum       Re
+    011 = | RESULT float64  2:1x1                VAAA Concat          Co | RESULT float64  2:1x1                VAAA Concat          Co
+    012 = | RESULT float64  2:1x1                DAAA Add             Ad | RESULT float64  2:1x1                DAAA Add             Ad
+    013 = | RESULT float64  2:1x1                ZAAA Mul             Mu | RESULT float64  2:1x1                ZAAA Mul             Mu
+    014 = | RESULT float64  2:1x1                CAAA Add             Ad | RESULT float64  2:1x1                CAAA Add             Ad
+    015 = | RESULT float64  2:1x1                CAAA Add             Ad | RESULT float64  2:1x1                CAAA Add             Ad
+    016 = | RESULT int64    2:1x1                AAAA ArgMax          la | RESULT int64    2:1x1                AAAA ArgMax          la
+    017 + |                                                              | RESULT float64  2:1x1                CAAA ReduceMax       Re 
+    018 + |                                                              | RESULT float64  2:1x1                AAAA Sub             Su 
+    019 + |                                                              | RESULT float64  2:1x1                BAAA Exp             Ex 
+    020 + |                                                              | RESULT float64  2:1x1                BAAA ReduceSum       Re 
+    021 + |                                                              | RESULT float64  2:1x1                AAAA Log             Lo 
+    022 ~ | RESULT float64  2:1x1                CAAA ReduceLogSumExp sc | RESULT float64  2:1x1                CAAA Add             sc
+    023 = | RESULT float64  2:1x1                AAAA Sub             Su | RESULT float64  2:1x1                AAAA Sub             Su
+    024 = | RESULT float64  2:1x1                BAAA Exp             pr | RESULT float64  2:1x1                BAAA Exp             pr
+    025 = | OUTPUT int64    2:1x1                AAAA                 la | OUTPUT int64    2:1x1                AAAA                 la
+    026 = | OUTPUT float64  2:1x1                BAAA                 pr | OUTPUT float64  2:1x1                BAAA                 pr
+    027 = | OUTPUT float64  2:1x1                CAAA                 sc | OUTPUT float64  2:1x1                CAAA                 sc
 
 
 
@@ -652,7 +652,7 @@ and ReduceLogSumExp by ReduceMax + Sub + Exp + Log + Add.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.657 seconds)
+   **Total running time of the script:** (0 minutes 1.189 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_onnx_diff.py:

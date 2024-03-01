@@ -70,7 +70,6 @@ Let's first start with a 2D image.
 
  .. code-block:: none
 
-    [2024-01-10 11:54:26,806] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 
     (5, 7)
 
@@ -553,7 +552,7 @@ Conv
 
 
     model = (
-        start()
+        start(ir_version=9, opset=18)
         .vin("X", shape=[1, 1, None, None])
         .cst(kernel[np.newaxis, np.newaxis, ...])
         .rename("W")
@@ -715,7 +714,7 @@ ConvTranspose
 
 
     model = (
-        start()
+        start(ir_version=9, opset=18)
         .vin("X", shape=[1, 1, None, None])
         .cst(kernel[np.newaxis, np.newaxis, ...])
         .rename("W")
@@ -960,7 +959,7 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.216 seconds)
+   **Total running time of the script:** (0 minutes 0.531 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_convolutation_matmul.py:

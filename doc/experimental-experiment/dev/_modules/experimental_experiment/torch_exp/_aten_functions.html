@@ -8,7 +8,7 @@
         <title>experimental_experiment.torch_exp._aten_functions - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -179,6 +179,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimize.html">Graph Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
@@ -953,38 +954,40 @@
     <span class="n">scale_grad_by_freq</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    def _unsqueeze_to_dim(x: Tensor, dim: int) -&gt; Tensor:</span>
-<span class="sd">        for _ in range(dim - x.dim()):</span>
-<span class="sd">            x = x.unsqueeze(-1)</span>
-<span class="sd">        return x</span>
+<span class="sd">    ::</span>
 
-<span class="sd">    def embedding_dense_backward(</span>
-<span class="sd">        grad_output: Tensor,</span>
-<span class="sd">        indices: Tensor,</span>
-<span class="sd">        num_weights: int,</span>
-<span class="sd">        padding_idx: int,</span>
-<span class="sd">        scale_grad_by_freq: bool,</span>
-<span class="sd">    ):</span>
-<span class="sd">        computation_dtype, result_dtype = utils.elementwise_dtypes(</span>
-<span class="sd">            grad_output, type_promotion_kind=utils.ELEMENTWISE_TYPE_PROMOTION_KIND.DEFAULT</span>
-<span class="sd">        )</span>
-<span class="sd">        grad_output = grad_output.to(computation_dtype)</span>
-<span class="sd">        indices = _maybe_convert_to_dtype(indices, torch.long)  # type: ignore[assignment]</span>
-<span class="sd">        if scale_grad_by_freq:</span>
-<span class="sd">            counts = indices.new_zeros((num_weights,))</span>
-<span class="sd">            ones = torch.ones_like(indices)</span>
-<span class="sd">            counts = aten._unsafe_index_put(counts, [indices], ones, accumulate=True)</span>
-<span class="sd">            grad_weights_scale = counts[indices]</span>
-<span class="sd">            grad_output = grad_output / grad_weights_scale.unsqueeze(-1)</span>
+<span class="sd">        def _unsqueeze_to_dim(x: Tensor, dim: int) -&gt; Tensor:</span>
+<span class="sd">            for _ in range(dim - x.dim()):</span>
+<span class="sd">                x = x.unsqueeze(-1)</span>
+<span class="sd">            return x</span>
 
-<span class="sd">        mask = _unsqueeze_to_dim(indices == padding_idx, grad_output.ndim)</span>
-<span class="sd">        grad = grad_output.masked_fill(mask, 0)</span>
-<span class="sd">        grad_weight = grad_output.new_zeros(</span>
-<span class="sd">            (num_weights,) + grad_output.shape[indices.ndim :]</span>
-<span class="sd">        )</span>
-<span class="sd">        return aten._unsafe_index_put(grad_weight, [indices], grad, accumulate=True).to(</span>
-<span class="sd">            result_dtype</span>
-<span class="sd">        )</span>
+<span class="sd">        def embedding_dense_backward(</span>
+<span class="sd">            grad_output: Tensor,</span>
+<span class="sd">            indices: Tensor,</span>
+<span class="sd">            num_weights: int,</span>
+<span class="sd">            padding_idx: int,</span>
+<span class="sd">            scale_grad_by_freq: bool,</span>
+<span class="sd">        ):</span>
+<span class="sd">            computation_dtype, result_dtype = utils.elementwise_dtypes(</span>
+<span class="sd">                grad_output, type_promotion_kind=utils.ELEMENTWISE_TYPE_PROMOTION_KIND.DEFAULT</span>
+<span class="sd">            )</span>
+<span class="sd">            grad_output = grad_output.to(computation_dtype)</span>
+<span class="sd">            indices = _maybe_convert_to_dtype(indices, torch.long)  # type: ignore[assignment]</span>
+<span class="sd">            if scale_grad_by_freq:</span>
+<span class="sd">                counts = indices.new_zeros((num_weights,))</span>
+<span class="sd">                ones = torch.ones_like(indices)</span>
+<span class="sd">                counts = aten._unsafe_index_put(counts, [indices], ones, accumulate=True)</span>
+<span class="sd">                grad_weights_scale = counts[indices]</span>
+<span class="sd">                grad_output = grad_output / grad_weights_scale.unsqueeze(-1)</span>
+
+<span class="sd">            mask = _unsqueeze_to_dim(indices == padding_idx, grad_output.ndim)</span>
+<span class="sd">            grad = grad_output.masked_fill(mask, 0)</span>
+<span class="sd">            grad_weight = grad_output.new_zeros(</span>
+<span class="sd">                (num_weights,) + grad_output.shape[indices.ndim :]</span>
+<span class="sd">            )</span>
+<span class="sd">            return aten._unsafe_index_put(grad_weight, [indices], grad, accumulate=True).to(</span>
+<span class="sd">                result_dtype</span>
+<span class="sd">            )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="ow">not</span> <span class="n">scale_grad_by_freq</span>

@@ -8,7 +8,7 @@
         <title>experimental_experiment.torch_exp.graph_builder - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -179,6 +179,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimize.html">Graph Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
@@ -2020,7 +2021,14 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GraphBuilder.optimize">
+<a class="viewcode-back" href="../../../api/graph_builder.html#experimental_experiment.torch_exp.graph_builder.GraphBuilder.optimize">[docs]</a>
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Optimizes a graph.</span>
+<span class="sd">        Returns the list of applied processed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">def</span> <span class="nf">_check</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -2036,31 +2044,47 @@
             <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">known</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown output </span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, step </span><span class="si">{</span><span class="n">step</span><span class="si">!r}</span><span class="s2"> &quot;</span>
 
+        <span class="n">statistics</span> <span class="o">=</span> <span class="p">[]</span>
+
         <span class="n">_check</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">remove_identity</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">remove_identity_nodes</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_identity_nodes</span><span class="p">()</span>
             <span class="n">_check</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;remove_identity_nodes&quot;</span><span class="p">,</span> <span class="n">removed</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">()</span>
             <span class="n">_check</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;remove_unused&quot;</span><span class="p">,</span> <span class="n">removed</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">constant_folding</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">constant_folding</span><span class="p">()</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constant_folding</span><span class="p">()</span>
             <span class="n">_check</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;constant_folding&quot;</span><span class="p">,</span> <span class="n">removed</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">()</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">()</span>
                 <span class="n">_check</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+                    <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;remove_unused&quot;</span><span class="p">,</span> <span class="n">removed</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">patterns</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">remove_unused</span>
             <span class="p">),</span> <span class="s2">&quot;remove_unused must be positive for pattern optimizations&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">optimize_with_patterns</span><span class="p">()</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_with_patterns</span><span class="p">()</span>
             <span class="n">_check</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">()</span>
+            <span class="n">statistics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused</span><span class="p">()</span>
             <span class="n">_check</span><span class="p">(</span><span class="s2">&quot;G&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;remove_unused&quot;</span><span class="p">,</span> <span class="n">removed</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">statistics</span></div>
+
 
 <div class="viewcode-block" id="GraphBuilder.optimize_with_patterns">
 <a class="viewcode-back" href="../../../api/graph_builder.html#experimental_experiment.torch_exp.graph_builder.GraphBuilder.optimize_with_patterns">[docs]</a>
-    <span class="k">def</span> <span class="nf">optimize_with_patterns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">optimize_with_patterns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Optimizes this graph with patterns.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2070,7 +2094,7 @@
             <span class="n">patterns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">patterns</span><span class="p">,</span>
             <span class="n">recursive</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">recursive</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">gro</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">gro</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
             <span class="n">max_iter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">max_iter</span><span class="p">,</span>
             <span class="n">remove_identity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimization_options</span><span class="o">.</span><span class="n">remove_identity</span><span class="p">,</span>
         <span class="p">)</span></div>
@@ -2078,12 +2102,14 @@
 
 <div class="viewcode-block" id="GraphBuilder.remove_unused">
 <a class="viewcode-back" href="../../../api/graph_builder.html#experimental_experiment.torch_exp.graph_builder.GraphBuilder.remove_unused">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_unused</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">remove_unused</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Simple function to remove unused nodes.</span>
 <span class="sd">        It does not look into subgraphs and assumes there is none.</span>
 <span class="sd">        Everything is done in one pass.</span>
+<span class="sd">        Returns the number of removed nodes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
         <span class="c1"># mark outputs</span>
         <span class="n">marked</span> <span class="o">=</span> <span class="p">{</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">}</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">):</span>
@@ -2127,7 +2153,8 @@
                     <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.remove_unused_node] remove </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">removed</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">removed</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">start</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_apply_transpose</span><span class="p">(</span>
@@ -2169,14 +2196,16 @@
 
 <div class="viewcode-block" id="GraphBuilder.constant_folding">
 <a class="viewcode-back" href="../../../api/graph_builder.html#experimental_experiment.torch_exp.graph_builder.GraphBuilder.constant_folding">[docs]</a>
-    <span class="k">def</span> <span class="nf">constant_folding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convert_into_initializer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">constant_folding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">convert_into_initializer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Folds all constants. Constants are marked during the creation of the graph.</span>
 <span class="sd">        There is no need to propagate this information.</span>
 
 <span class="sd">        :param convert_into_initializer: moves the constant as an initializer,</span>
 <span class="sd">            otherwise, just evaluates it</span>
+<span class="sd">        :return: number of removed nodes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
         <span class="n">updates</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">node_to_remove</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2208,16 +2237,18 @@
             <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="ow">in</span> <span class="n">node_to_remove</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">new_nodes</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">new_nodes</span>
+        <span class="k">return</span> <span class="n">start</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilder.remove_identity_nodes">
 <a class="viewcode-back" href="../../../api/graph_builder.html#experimental_experiment.torch_exp.graph_builder.GraphBuilder.remove_identity_nodes">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_identity_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">remove_identity_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Removes identity nodes.</span>
+<span class="sd">        Removes identity nodes. Returns the number of removed nodes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># first pass: detect replacements</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
         <span class="n">new_nodes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">input_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
         <span class="n">output_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
@@ -2310,7 +2341,9 @@
                 <span class="n">new_node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">start</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilder.insert_and_remove_nodes">

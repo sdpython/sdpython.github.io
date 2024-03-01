@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.657** total execution time for 7 files **from all galleries**:
+**00:42.553** total execution time for 7 files **from all galleries**:
 
 .. container::
 
@@ -32,24 +32,24 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_onnx_diff.py` (``examples/plot_onnx_diff.py``)
-     - 00:01.657
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_benchmark_rf.py` (``examples/plot_benchmark_rf.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_f8.py` (``examples/plot_f8.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_first_example.py` (``examples/plot_first_example.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_onnxruntime.py` (``examples/plot_onnxruntime.py``)
-     - 00:00.000
+     - 00:16.864
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_optimization.py` (``examples/plot_optimization.py``)
-     - 00:00.000
+     - 00:11.208
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_benchmark_rf.py` (``examples/plot_benchmark_rf.py``)
+     - 00:08.198
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profiling.py` (``examples/plot_profiling.py``)
-     - 00:00.000
+     - 00:05.023
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_onnx_diff.py` (``examples/plot_onnx_diff.py``)
+     - 00:01.189
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_first_example.py` (``examples/plot_first_example.py``)
+     - 00:00.041
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_f8.py` (``examples/plot_f8.py``)
+     - 00:00.030
      - 0.0

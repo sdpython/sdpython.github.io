@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_array_api.validation.f8 - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -173,6 +173,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/tools.html">Tools</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Benchmarks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
 </ul>
@@ -188,6 +189,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/light_api.html">onnx_array_api.light_api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/translate_api.html">onnx_array_api.translate_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_jit_eager.html">npx_jit_eager</a></li>
@@ -210,8 +212,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../tech/aapi.html">Difficulty to implement an Array API for ONNX</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../command_lines.html">command lines</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_f8.html">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnx_diff.html">Compares the conversions of the same model with different options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimization.html">Optimization with onnxruntime</a></li>
@@ -224,6 +228,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../long_outputs.html">Long outputs uneasy to see</a></li>
 </ul>
 
 </div>
@@ -264,7 +269,9 @@
 <span class="c1"># display functions</span>
 
 
-<div class="viewcode-block" id="UndefinedCastError"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.UndefinedCastError">[docs]</a><span class="k">class</span> <span class="nc">UndefinedCastError</span><span class="p">(</span><span class="ne">FloatingPointError</span><span class="p">):</span>
+<div class="viewcode-block" id="UndefinedCastError">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.UndefinedCastError">[docs]</a>
+<span class="k">class</span> <span class="nc">UndefinedCastError</span><span class="p">(</span><span class="ne">FloatingPointError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Unable to case a number.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -272,7 +279,10 @@
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="display_int"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_int">[docs]</a><span class="k">def</span> <span class="nf">display_int</span><span class="p">(</span><span class="n">ival</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">23</span><span class="p">):</span>
+
+<div class="viewcode-block" id="display_int">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_int">[docs]</a>
+<span class="k">def</span> <span class="nf">display_int</span><span class="p">(</span><span class="n">ival</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">23</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Displays an integer as bits.</span>
 
@@ -291,7 +301,10 @@
     <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">])</span></div>
 
 
-<div class="viewcode-block" id="display_float32"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_float32">[docs]</a><span class="k">def</span> <span class="nf">display_float32</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">23</span><span class="p">):</span>
+
+<div class="viewcode-block" id="display_float32">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_float32">[docs]</a>
+<span class="k">def</span> <span class="nf">display_float32</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">23</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Displays a float32 into b.</span>
 
@@ -309,7 +322,10 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="display_float16"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_float16">[docs]</a><span class="k">def</span> <span class="nf">display_float16</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+
+<div class="viewcode-block" id="display_float16">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_float16">[docs]</a>
+<span class="k">def</span> <span class="nf">display_float16</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Displays a float32 into b.</span>
 
@@ -324,7 +340,10 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="display_fexmx"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_fexmx">[docs]</a><span class="k">def</span> <span class="nf">display_fexmx</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">exponent</span><span class="p">,</span> <span class="n">mantissa</span><span class="p">):</span>
+
+<div class="viewcode-block" id="display_fexmx">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_fexmx">[docs]</a>
+<span class="k">def</span> <span class="nf">display_fexmx</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">exponent</span><span class="p">,</span> <span class="n">mantissa</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Displays any float encoded with 1 bit for the sign,</span>
 <span class="sd">    *exponent* bit for the exponent and *mantissa* bit for the</span>
@@ -339,7 +358,10 @@
     <span class="k">return</span> <span class="n">display_int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="n">sign</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="n">exponent</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="n">mantissa</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="display_fe4m3"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_fe4m3">[docs]</a><span class="k">def</span> <span class="nf">display_fe4m3</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+
+<div class="viewcode-block" id="display_fe4m3">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_fe4m3">[docs]</a>
+<span class="k">def</span> <span class="nf">display_fe4m3</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Displays a float 8 E4M3 into b.</span>
 
@@ -352,7 +374,10 @@
     <span class="k">return</span> <span class="n">display_fexmx</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="display_fe5m2"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_fe5m2">[docs]</a><span class="k">def</span> <span class="nf">display_fe5m2</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+
+<div class="viewcode-block" id="display_fe5m2">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.display_fe5m2">[docs]</a>
+<span class="k">def</span> <span class="nf">display_fe5m2</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Displays a float 8 E5M2 into binary format.</span>
 
@@ -365,10 +390,13 @@
     <span class="k">return</span> <span class="n">display_fexmx</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mantissa</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
 
 
+
 <span class="c1"># cast from float 8 to float 32</span>
 
 
-<div class="viewcode-block" id="fe4m3_to_float32_float"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe4m3_to_float32_float">[docs]</a><span class="k">def</span> <span class="nf">fe4m3_to_float32_float</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="fe4m3_to_float32_float">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe4m3_to_float32_float">[docs]</a>
+<span class="k">def</span> <span class="nf">fe4m3_to_float32_float</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Casts a float 8 encoded as an integer into a float.</span>
 
@@ -426,7 +454,10 @@
         <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">fval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="fe5m2_to_float32_float"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe5m2_to_float32_float">[docs]</a><span class="k">def</span> <span class="nf">fe5m2_to_float32_float</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+<div class="viewcode-block" id="fe5m2_to_float32_float">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe5m2_to_float32_float">[docs]</a>
+<span class="k">def</span> <span class="nf">fe5m2_to_float32_float</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Casts a float 8 encoded as an integer into a float.</span>
 
@@ -473,7 +504,10 @@
     <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">fval</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="fe4m3_to_float32"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe4m3_to_float32">[docs]</a><span class="k">def</span> <span class="nf">fe4m3_to_float32</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+<div class="viewcode-block" id="fe4m3_to_float32">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe4m3_to_float32">[docs]</a>
+<span class="k">def</span> <span class="nf">fe4m3_to_float32</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Casts a float E4M3 encoded as an integer into a float.</span>
 
@@ -522,7 +556,10 @@
     <span class="k">return</span> <span class="n">f</span></div>
 
 
-<div class="viewcode-block" id="fe5m2_to_float32"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe5m2_to_float32">[docs]</a><span class="k">def</span> <span class="nf">fe5m2_to_float32</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+<div class="viewcode-block" id="fe5m2_to_float32">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.fe5m2_to_float32">[docs]</a>
+<span class="k">def</span> <span class="nf">fe5m2_to_float32</span><span class="p">(</span><span class="n">ival</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Casts a float E5M2 encoded as an integer into a float.</span>
 
@@ -571,6 +608,7 @@
     <span class="k">return</span> <span class="n">f</span></div>
 
 
+
 <span class="c1"># cast from float32 to float 8</span>
 
 
@@ -601,7 +639,9 @@
     <span class="p">)</span>
 
 
-<div class="viewcode-block" id="CastFloat8"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.CastFloat8">[docs]</a><span class="k">class</span> <span class="nc">CastFloat8</span><span class="p">(</span><span class="n">CastFloat8Sets</span><span class="p">):</span>
+<div class="viewcode-block" id="CastFloat8">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.CastFloat8">[docs]</a>
+<span class="k">class</span> <span class="nc">CastFloat8</span><span class="p">(</span><span class="n">CastFloat8Sets</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helpers to cast float8 into float32 or the other way around.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -627,7 +667,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="p">)</span>
 
-<div class="viewcode-block" id="CastFloat8.find_closest_value"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.CastFloat8.find_closest_value">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CastFloat8.find_closest_value">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.CastFloat8.find_closest_value">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">find_closest_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">sorted_values</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Search a value into a sorted array of values.</span>
@@ -663,10 +705,14 @@
                 <span class="n">ca</span><span class="p">,</span> <span class="n">cb</span> <span class="o">=</span> <span class="n">sorted_values</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">sorted_values</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
                 <span class="k">return</span> <span class="n">cb</span> <span class="k">if</span> <span class="n">ca</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">ca</span>
             <span class="k">return</span> <span class="n">sorted_values</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">sorted_values</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span></div></div>
+        <span class="k">return</span> <span class="n">sorted_values</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span></div>
+</div>
 
 
-<div class="viewcode-block" id="search_float32_into_fe4m3"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.search_float32_into_fe4m3">[docs]</a><span class="k">def</span> <span class="nf">search_float32_into_fe4m3</span><span class="p">(</span>
+
+<div class="viewcode-block" id="search_float32_into_fe4m3">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.search_float32_into_fe4m3">[docs]</a>
+<span class="k">def</span> <span class="nf">search_float32_into_fe4m3</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">saturate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -713,7 +759,10 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0x7F</span><span class="p">)</span> <span class="o">|</span> <span class="n">ret</span></div>
 
 
-<div class="viewcode-block" id="search_float32_into_fe5m2"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.search_float32_into_fe5m2">[docs]</a><span class="k">def</span> <span class="nf">search_float32_into_fe5m2</span><span class="p">(</span>
+
+<div class="viewcode-block" id="search_float32_into_fe5m2">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.search_float32_into_fe5m2">[docs]</a>
+<span class="k">def</span> <span class="nf">search_float32_into_fe5m2</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">saturate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -761,7 +810,10 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mh">0x7F</span><span class="p">)</span> <span class="o">|</span> <span class="n">ret</span></div>
 
 
-<div class="viewcode-block" id="float32_to_fe4m3"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.float32_to_fe4m3">[docs]</a><span class="k">def</span> <span class="nf">float32_to_fe4m3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">saturate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="float32_to_fe4m3">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.float32_to_fe4m3">[docs]</a>
+<span class="k">def</span> <span class="nf">float32_to_fe4m3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">saturate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a float32 into a float E4M3.</span>
 
@@ -883,7 +935,10 @@
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="float32_to_fe5m2"><a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.float32_to_fe5m2">[docs]</a><span class="k">def</span> <span class="nf">float32_to_fe5m2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">saturate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="float32_to_fe5m2">
+<a class="viewcode-back" href="../../../api/f8.html#onnx_array_api.validation.f8.float32_to_fe5m2">[docs]</a>
+<span class="k">def</span> <span class="nf">float32_to_fe5m2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">uz</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">saturate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a float32 into a float E5M2.</span>
 
@@ -997,6 +1052,7 @@
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;fn and uz must be both False or True.&quot;</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -1009,7 +1065,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1029,9 +1085,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../../../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

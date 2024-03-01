@@ -8,7 +8,7 @@
         <title>experimental_experiment.torch_dynamo.debug_backend - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -179,12 +179,14 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimize.html">Graph Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench.html">Measure LLAMA speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend.html">A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench.html">Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort.html">Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot.html">Evaluate DORT Training</a></li>
@@ -288,6 +290,9 @@
     <span class="n">raise_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">enable_pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]]]]</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
     <span class="n">disable_pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pre_ort_model_transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">]]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom backend to export torch models into onnx</span>
@@ -304,7 +309,7 @@
 <span class="sd">        it must be a value among `&#39;ort&#39;`, `&#39;ref&#39;` or a class</span>
 <span class="sd">    :param verbose: adjust verbosity, if tuple, if gives different verbosity level</span>
 <span class="sd">        to the exporter and the runtime</span>
-<span class="sd">    :param dump_prefix</span>
+<span class="sd">    :param dump_prefix: prefix used to dump the model generated by the backend</span>
 <span class="sd">    :param providers: where to run the model, by default</span>
 <span class="sd">    :param raise_exc: raise an exception whenever something goes wrong</span>
 <span class="sd">    :param storage: to store any interesting objects during the process</span>
@@ -312,6 +317,7 @@
 <span class="sd">        this is a debbuging tool</span>
 <span class="sd">    :param enable_pattern: optimization patterns to enable</span>
 <span class="sd">    :param disable_pattern: optimization patterns to disable</span>
+<span class="sd">    :param pre_ort_model_transforms: list of transformations applied on the final ModelProto</span>
 <span class="sd">    :return: Callable</span>
 
 <span class="sd">    See :ref:`l-plot-onnxrt-diff` for an example.</span>
@@ -344,6 +350,12 @@
         <span class="n">return_builder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">raise_list</span><span class="o">=</span><span class="n">raise_list</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pre_ort_model_transforms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pre_ort_model_transforms</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">pre_ort_model_transforms</span> <span class="o">=</span> <span class="p">[</span><span class="n">pre_ort_model_transforms</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">pre_ort_model_transforms</span><span class="p">:</span>
+            <span class="n">onx</span> <span class="o">=</span> <span class="n">tr</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">dump_prefix</span><span class="p">:</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>

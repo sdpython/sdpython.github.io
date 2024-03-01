@@ -20,6 +20,7 @@ A model
 
 import copy
 from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
+from onnx_array_api.plotting.graphviz_helper import plot_dot
 import torch
 from torch._dynamo.backends.common import aot_autograd
 from experimental_experiment.torch_dynamo import (
@@ -182,6 +183,19 @@ for i, inst in enumerate(storage["instance"][:2]):
     print(f"-- model {i} running on {inst['providers']}")
     print(onnx_simple_text_plot(inst["onnx"]))
 
+
+################################
+# The forward graph.
+
+plot_dot(storage["instance"][0]["onnx"])
+
+
+################################
+# The brackward graph.
+
+plot_dot(storage["instance"][1]["onnx"])
+
+
 ################################
 # What about dynamic shape?
 # =========================
@@ -201,3 +215,25 @@ for i, inst in enumerate(storage["instance"]):
     print(f"-- model {i} running on {inst['providers']}")
     print()
     print(onnx_simple_text_plot(inst["onnx"]))
+
+################################
+# The forward graph.
+
+plot_dot(storage["instance"][0]["onnx"])
+
+
+################################
+# The brackward graph.
+
+plot_dot(storage["instance"][1]["onnx"])
+
+
+################################
+# Pattern Optimizations
+# =====================
+#
+# By default, once exported into onnx, a model is optimized by
+# looking for patterns. Each of them locally replaces a couple of
+# nodes to optimize the computation
+# (see :ref:`l-pattern-optimization-onnx` and
+# # :ref:`l-pattern-optimization-ort`).

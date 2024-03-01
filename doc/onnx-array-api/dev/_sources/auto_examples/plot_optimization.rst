@@ -67,7 +67,6 @@ Optimize a model with onnxruntime
 
  .. code-block:: none
 
-    [2024-02-06 01:23:11,292] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
     data/small.onnx.optimized.onnx
 
 
@@ -405,25 +404,25 @@ Benchmark
  .. code-block:: none
 
     Original model
-    {'average': 0.009105379839993839,
+    {'average': 0.009000246879996848,
      'context_size': 64,
-     'deviation': 0.0017918229518347475,
-     'max_exec': 0.01237498799997411,
-     'min_exec': 0.006067287999976543,
+     'deviation': 0.0006455111298407484,
+     'max_exec': 0.009893003999968642,
+     'min_exec': 0.007577168000061647,
      'name': 'original',
      'number': 25,
      'repeat': 25,
-     'ttime': 0.22763449599984598}
+     'ttime': 0.2250061719999212}
     Optimized
-    {'average': 0.008868003679998218,
+    {'average': 0.00855517583999317,
      'context_size': 64,
-     'deviation': 0.0007391392419665521,
-     'max_exec': 0.009707923999994818,
-     'min_exec': 0.006505247999994026,
+     'deviation': 0.0006559597826992764,
+     'max_exec': 0.009244560000006459,
+     'min_exec': 0.0068529799999669195,
      'name': 'optimized',
      'number': 25,
      'repeat': 25,
-     'ttime': 0.22170009199995547}
+     'ttime': 0.21387939599982927}
 
 
 
@@ -499,24 +498,24 @@ Plots
       <tbody>
         <tr>
           <th>original</th>
-          <td>0.009105</td>
-          <td>0.001792</td>
-          <td>0.006067</td>
-          <td>0.012375</td>
+          <td>0.009000</td>
+          <td>0.000646</td>
+          <td>0.007577</td>
+          <td>0.009893</td>
           <td>25</td>
           <td>25</td>
-          <td>0.227634</td>
+          <td>0.225006</td>
           <td>64</td>
         </tr>
         <tr>
           <th>optimized</th>
-          <td>0.008868</td>
-          <td>0.000739</td>
-          <td>0.006505</td>
-          <td>0.009708</td>
+          <td>0.008555</td>
+          <td>0.000656</td>
+          <td>0.006853</td>
+          <td>0.009245</td>
           <td>25</td>
           <td>25</td>
-          <td>0.221700</td>
+          <td>0.213879</td>
           <td>64</td>
         </tr>
       </tbody>
@@ -554,7 +553,7 @@ And the graph is:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 22.346 seconds)
+   **Total running time of the script:** (0 minutes 11.208 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimization.py:

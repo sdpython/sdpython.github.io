@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_array_api.npx.npx_types - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
@@ -173,6 +173,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/tools.html">Tools</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Benchmarks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
 </ul>
@@ -188,6 +189,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_api.html">onnx_array_api.graph_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/light_api.html">onnx_array_api.light_api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/translate_api.html">onnx_array_api.translate_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_core_api.html">npx_core_api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_functions.html">npx.npx_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/npx_jit_eager.html">npx_jit_eager</a></li>
@@ -210,8 +212,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../tech/aapi.html">Difficulty to implement an Array API for ONNX</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../command_lines.html">command lines</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_f8.html">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnx_diff.html">Compares the conversions of the same model with different options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimization.html">Optimization with onnxruntime</a></li>
@@ -224,6 +228,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../long_outputs.html">Long outputs uneasy to see</a></li>
 </ul>
 
 </div>
@@ -274,7 +279,9 @@
     <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="DType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.DType">[docs]</a><span class="k">class</span> <span class="nc">DType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
+<div class="viewcode-block" id="DType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.DType">[docs]</a>
+<span class="k">class</span> <span class="nc">DType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Type of the element type returned by tensors</span>
 <span class="sd">    following the :epkg:`Array API`.</span>
@@ -354,10 +361,14 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dt must be DType not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_</span> <span class="o">&lt;</span> <span class="n">dti</span>
 
-<div class="viewcode-block" id="DType.type_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.DType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="DType.type_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.DType.type_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns its full name.&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+</div>
+
 
 
 <span class="k">class</span> <span class="nc">_DType2</span><span class="p">(</span><span class="n">DType</span><span class="p">):</span>
@@ -476,7 +487,9 @@
     <span class="n">Strings</span> <span class="o">=</span> <span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">combined</span><span class="p">(</span><span class="n">ElemTypeCstSet</span><span class="o">.</span><span class="n">strings</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ElemType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ElemType">[docs]</a><span class="k">class</span> <span class="nc">ElemType</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">):</span>
+<div class="viewcode-block" id="ElemType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ElemType">[docs]</a>
+<span class="k">class</span> <span class="nc">ElemType</span><span class="p">(</span><span class="n">ElemTypeCst</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allowed element type based on numpy dtypes.</span>
 
@@ -538,13 +551,18 @@
         <span class="s2">&quot;Compares types.&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">dtype</span>
 
-<div class="viewcode-block" id="ElemType.type_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ElemType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ElemType.type_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ElemType.type_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns its fullname.&quot;</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">int_names</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">s</span></div>
 
-<div class="viewcode-block" id="ElemType.get_set_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ElemType.get_set_name">[docs]</a>    <span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="ElemType.get_set_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ElemType.get_set_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_set_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">):</span>
         <span class="s2">&quot;Returns the set name.&quot;</span>
         <span class="n">tt</span> <span class="o">=</span> <span class="p">[]</span>
@@ -560,10 +578,14 @@
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">dtypes</span> <span class="o">==</span> <span class="n">att</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">d</span>
-        <span class="k">return</span> <span class="kc">None</span></div></div>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Scalar"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.Scalar">[docs]</a><span class="k">class</span> <span class="nc">Scalar</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Scalar">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.Scalar">[docs]</a>
+<span class="k">class</span> <span class="nc">Scalar</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a scalar.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -576,7 +598,10 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Scalar(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">!r}</span><span class="s2">)&quot;</span></div>
 
 
-<div class="viewcode-block" id="ParType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ParType">[docs]</a><span class="k">class</span> <span class="nc">ParType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ParType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ParType">[docs]</a>
+<span class="k">class</span> <span class="nc">ParType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a parameter type.</span>
 
@@ -604,7 +629,9 @@
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">newt</span>
 
-<div class="viewcode-block" id="ParType.type_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ParType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ParType.type_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ParType.type_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns its full name.&quot;</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="n">ParType</span><span class="o">.</span><span class="n">map_names</span><span class="p">:</span>
@@ -615,7 +642,10 @@
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">newt</span></div>
 
-<div class="viewcode-block" id="ParType.onnx_type"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ParType.onnx_type">[docs]</a>    <span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="ParType.onnx_type">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ParType.onnx_type">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">onnx_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="s2">&quot;Returns the onnx corresponding type.&quot;</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
@@ -628,10 +658,14 @@
             <span class="k">return</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRING</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Unsupported attribute type </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2"> &quot;</span> <span class="sa">f</span><span class="s2">&quot;for parameter </span><span class="si">{</span><span class="bp">cls</span><span class="si">!r}</span><span class="s2">.&quot;</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="OptParType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.OptParType">[docs]</a><span class="k">class</span> <span class="nc">OptParType</span><span class="p">(</span><span class="n">ParType</span><span class="p">):</span>
+
+<div class="viewcode-block" id="OptParType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.OptParType">[docs]</a>
+<span class="k">class</span> <span class="nc">OptParType</span><span class="p">(</span><span class="n">ParType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines an optional parameter type.</span>
 
@@ -649,16 +683,22 @@
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">newt</span>
 
-<div class="viewcode-block" id="OptParType.type_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.OptParType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="OptParType.type_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.OptParType.type_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns its full name.&quot;</span>
         <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;OptParType[</span><span class="si">{</span><span class="n">ParType</span><span class="o">.</span><span class="n">map_names</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtype</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">newt</span></div></div>
+        <span class="k">return</span> <span class="n">newt</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ShapeType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ShapeType">[docs]</a><span class="k">class</span> <span class="nc">ShapeType</span><span class="p">(</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="ShapeType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.ShapeType">[docs]</a>
+<span class="k">class</span> <span class="nc">ShapeType</span><span class="p">(</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a shape type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -684,7 +724,10 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">]&quot;</span></div>
 
 
-<div class="viewcode-block" id="TensorType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType">[docs]</a><span class="k">class</span> <span class="nc">TensorType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TensorType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType">[docs]</a>
+<span class="k">class</span> <span class="nc">TensorType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Used to annotate functions.</span>
 
@@ -783,7 +826,9 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">newt</span>
 
-<div class="viewcode-block" id="TensorType.supports_dtype"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType.supports_dtype">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TensorType.supports_dtype">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType.supports_dtype">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">supports_dtype</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">DType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determines if the element type `dtype`</span>
@@ -791,7 +836,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dtypes</span></div>
 
-<div class="viewcode-block" id="TensorType.type_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="TensorType.type_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType.type_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns its full name.&quot;</span>
         <span class="n">set_name</span> <span class="o">=</span> <span class="n">ElemType</span><span class="o">.</span><span class="n">get_set_name</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
@@ -815,6 +863,7 @@
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">newt</span></div>
 
+
     <span class="k">def</span> <span class="nf">_name_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">dt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span><span class="p">:</span>
@@ -827,7 +876,9 @@
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">ElemType</span><span class="o">.</span><span class="n">set_names</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
-<div class="viewcode-block" id="TensorType.issuperset"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType.issuperset">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TensorType.issuperset">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TensorType.issuperset">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">issuperset</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tensor_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tells if *cls* is a superset of *tensor_type*.</span>
@@ -846,10 +897,14 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">True</span></div></div>
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
 
 
-<div class="viewcode-block" id="OptTensorType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.OptTensorType">[docs]</a><span class="k">class</span> <span class="nc">OptTensorType</span><span class="p">(</span><span class="n">TensorType</span><span class="p">):</span>
+
+<div class="viewcode-block" id="OptTensorType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.OptTensorType">[docs]</a>
+<span class="k">class</span> <span class="nc">OptTensorType</span><span class="p">(</span><span class="n">TensorType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines an optional tensor type.</span>
 
@@ -859,7 +914,10 @@
     <span class="n">main_name</span> <span class="o">=</span> <span class="s2">&quot;OptTensorType&quot;</span></div>
 
 
-<div class="viewcode-block" id="SequenceType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.SequenceType">[docs]</a><span class="k">class</span> <span class="nc">SequenceType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SequenceType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.SequenceType">[docs]</a>
+<span class="k">class</span> <span class="nc">SequenceType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a sequence of tensors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -887,7 +945,9 @@
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">newt</span>
 
-<div class="viewcode-block" id="SequenceType.type_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.SequenceType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SequenceType.type_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.SequenceType.type_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns its full name.&quot;</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
@@ -896,10 +956,14 @@
             <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SequenceType[</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">elem_type</span><span class="o">.</span><span class="n">type_name</span><span class="p">()</span><span class="si">!r}</span><span class="s2">]&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">newt</span></div></div>
+        <span class="k">return</span> <span class="n">newt</span></div>
+</div>
 
 
-<div class="viewcode-block" id="TupleType"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TupleType">[docs]</a><span class="k">class</span> <span class="nc">TupleType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TupleType">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TupleType">[docs]</a>
+<span class="k">class</span> <span class="nc">TupleType</span><span class="p">(</span><span class="n">WrapperType</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a sequence of tensors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -938,12 +1002,17 @@
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">newt</span>
 
-<div class="viewcode-block" id="TupleType.len"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TupleType.len">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TupleType.len">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TupleType.len">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">len</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="s2">&quot;Returns the number of types.&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">elem_types</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TupleType.type_name"><a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TupleType.type_name">[docs]</a>    <span class="nd">@classmethod</span>
+
+<div class="viewcode-block" id="TupleType.type_name">
+<a class="viewcode-back" href="../../../api/npx_types.html#onnx_array_api.npx.npx_types.TupleType.type_name">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns its full name.&quot;</span>
         <span class="n">dts</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">type_name</span><span class="p">(),</span> <span class="bp">cls</span><span class="o">.</span><span class="n">elem_types</span><span class="p">))</span>
@@ -953,7 +1022,9 @@
             <span class="n">newt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;TupleType[</span><span class="si">{</span><span class="n">dts</span><span class="si">}</span><span class="s2">]&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;&lt;&quot;</span> <span class="ow">in</span> <span class="n">newt</span> <span class="ow">or</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">newt</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name is wrong </span><span class="si">{</span><span class="n">newt</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">newt</span></div></div>
+        <span class="k">return</span> <span class="n">newt</span></div>
+</div>
+
 
 
 <span class="k">def</span> <span class="nf">_make_type</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
@@ -995,7 +1066,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1015,9 +1086,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../../../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

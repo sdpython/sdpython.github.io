@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_array_api.light_api._op_var - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -173,6 +173,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/tools.html">Tools</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/benchmarks.html">Benchmarks</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Benchmarks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_benchmark_rf.html">Benchmark of TreeEnsemble implementation</a></li>
 </ul>
@@ -211,8 +212,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../tech/aapi.html">Difficulty to implement an Array API for ONNX</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../command_lines.html">command lines</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_f8.html">About float 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnx_diff.html">Compares the conversions of the same model with different options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_first_example.html">First examples with onnx-array-api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnxruntime.html">First examples with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimization.html">Optimization with onnxruntime</a></li>
@@ -225,6 +228,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../long_outputs.html">Long outputs uneasy to see</a></li>
 </ul>
 
 </div>
@@ -260,10 +264,14 @@
         <article role="main">
           <h1>Source code for onnx_array_api.light_api._op_var</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..reference</span> <span class="kn">import</span> <span class="n">from_array_extended</span>
 <span class="kn">from</span> <span class="nn">..annotations</span> <span class="kn">import</span> <span class="n">AI_ONNX_ML</span><span class="p">,</span> <span class="n">domain</span>
 
 
-<div class="viewcode-block" id="OpsVar"><a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api._op_var.OpsVar">[docs]</a><span class="k">class</span> <span class="nc">OpsVar</span><span class="p">:</span>
+<div class="viewcode-block" id="OpsVar">
+<a class="viewcode-back" href="../../../api/light_api.html#onnx_array_api.light_api._op_var.OpsVar">[docs]</a>
+<span class="k">class</span> <span class="nc">OpsVar</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Operators taking only one input.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -329,6 +337,11 @@
 
     <span class="k">def</span> <span class="nf">Celu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Celu&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">ConstantOfShape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;ConstantOfShape&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;ConstantOfShape&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">from_array_extended</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">DepthToSpace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;DCR&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;DepthToSpace&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">blocksize</span><span class="o">=</span><span class="n">blocksize</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
@@ -568,6 +581,13 @@
     <span class="k">def</span> <span class="nf">Shrink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bias</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">lambd</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Shrink&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">bias</span><span class="p">,</span> <span class="n">lambd</span><span class="o">=</span><span class="n">lambd</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">Slice</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">starts</span><span class="p">:</span> <span class="s2">&quot;Var&quot;</span><span class="p">,</span> <span class="n">ends</span><span class="p">:</span> <span class="s2">&quot;Var&quot;</span><span class="p">,</span> <span class="n">axes</span><span class="p">:</span> <span class="s2">&quot;Var&quot;</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Var&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">steps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">starts</span><span class="p">,</span> <span class="n">ends</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">steps</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">Softmax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Var&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Softmax&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
 
@@ -584,6 +604,7 @@
     <span class="nd">@domain</span><span class="p">(</span><span class="n">AI_ONNX_ML</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">Normalizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MAX&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Normalizer&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">AI_ONNX_ML</span><span class="p">)</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_complete</span><span class="p">():</span>
@@ -647,7 +668,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -667,9 +688,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1690763d"></script>
+</div><script src="../../../_static/documentation_options.js?v=7f7c277e"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

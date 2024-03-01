@@ -42,6 +42,23 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained b...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optimize_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_optimize.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Graph Optimization</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="To ignore">
 
 .. only:: html
@@ -235,6 +252,7 @@ all the graphs, the data used to draw them, and the models.
 .. toctree::
    :hidden:
 
+   /auto_examples/plot_optimize
    /auto_examples/bug_dort
    /auto_examples/plot_profile_existing_onnx
    /auto_examples/plot_torch_linreg

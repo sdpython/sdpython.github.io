@@ -36,13 +36,14 @@ can show the intermediate results if needed. It is very slow.
 A model
 =======
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-49
+.. GENERATED FROM PYTHON SOURCE LINES 20-50
 
 .. code-block:: Python
 
 
     import copy
     from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
+    from onnx_array_api.plotting.graphviz_helper import plot_dot
     import torch
     from torch._dynamo.backends.common import aot_autograd
     from experimental_experiment.torch_dynamo import (
@@ -77,14 +78,14 @@ A model
 
  .. code-block:: none
 
-    tensor([[0.2376],
-            [0.1450],
-            [0.0812]], grad_fn=<AddmmBackward0>)
+    tensor([[0.1157],
+            [0.0475],
+            [0.0669]], grad_fn=<AddmmBackward0>)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-58
+.. GENERATED FROM PYTHON SOURCE LINES 51-59
 
 A custom backend
 ================
@@ -95,7 +96,7 @@ It is available through function
 and implemented by class :class:`OrtBackend
 <experimental_experiment.torch_dynamo.fast_backend.OrtBackend>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-70
+.. GENERATED FROM PYTHON SOURCE LINES 59-71
 
 .. code-block:: Python
 
@@ -119,14 +120,14 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[0.2376],
-            [0.1450],
-            [0.0812]])
+    tensor([[0.1157],
+            [0.0475],
+            [0.0669]])
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-83
+.. GENERATED FROM PYTHON SOURCE LINES 72-84
 
 Training
 ========
@@ -141,7 +142,7 @@ An existing list can be filtered out from some inefficient decompositions
 with function :func:`filter_decomposition_table
 <experimental_experiment.torch_dynamo.filter_decomposition_table>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-101
+.. GENERATED FROM PYTHON SOURCE LINES 84-102
 
 .. code-block:: Python
 
@@ -171,18 +172,18 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[0.2376],
-            [0.1450],
-            [0.0812]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[0.1157],
+            [0.0475],
+            [0.0669]], grad_fn=<CompiledFunctionBackward>)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-103
+.. GENERATED FROM PYTHON SOURCE LINES 103-104
 
 Let's see an iteration loop.
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-167
+.. GENERATED FROM PYTHON SOURCE LINES 104-168
 
 .. code-block:: Python
 
@@ -262,9 +263,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:107: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7403.106870651245
-    Loss after epoch 2: 5780.904005050659
-    Loss after epoch 3: 5743.965484619141
+    Loss after epoch 1: 7459.29697561264
+    Loss after epoch 2: 5841.251264572144
+    Loss after epoch 3: 5550.437879562378
     Training process has finished.
 
     OptimizedModule(
@@ -279,7 +280,7 @@ Let's see an iteration loop.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-173
+.. GENERATED FROM PYTHON SOURCE LINES 169-174
 
 What about the ONNX model?
 ==========================
@@ -287,7 +288,7 @@ What about the ONNX model?
 The backend converts the model into ONNX then runs it with :epkg:`onnxruntime`.
 Let's see what it looks like.
 
-.. GENERATED FROM PYTHON SOURCE LINES 173-185
+.. GENERATED FROM PYTHON SOURCE LINES 174-187
 
 .. code-block:: Python
 
@@ -307,6 +308,7 @@ Let's see what it looks like.
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -315,9 +317,9 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:107: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7424.085262298584
-    Loss after epoch 2: 5794.947988510132
-    Loss after epoch 3: 5671.278400421143
+    Loss after epoch 1: 7361.110177993774
+    Loss after epoch 2: 5760.222093582153
+    Loss after epoch 3: 5738.282759666443
     Training process has finished.
     4 were created.
 
@@ -368,7 +370,67 @@ Let's see what it looks like.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 186-192
+.. GENERATED FROM PYTHON SOURCE LINES 188-189
+
+The forward graph.
+
+.. GENERATED FROM PYTHON SOURCE LINES 189-193
+
+.. code-block:: Python
+
+
+    plot_dot(storage["instance"][0]["onnx"])
+
+
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_torch_custom_backend_001.png
+   :alt: plot torch custom backend
+   :srcset: /auto_examples/images/sphx_glr_plot_torch_custom_backend_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Axes: >
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 194-195
+
+The brackward graph.
+
+.. GENERATED FROM PYTHON SOURCE LINES 195-199
+
+.. code-block:: Python
+
+
+    plot_dot(storage["instance"][1]["onnx"])
+
+
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_torch_custom_backend_002.png
+   :alt: plot torch custom backend
+   :srcset: /auto_examples/images/sphx_glr_plot_torch_custom_backend_002.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Axes: >
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 200-206
 
 What about dynamic shape?
 =========================
@@ -377,7 +439,7 @@ Any input or output having `_dim_` in its name is a dynamic dimension.
 Any output having `_NONE_` in its name is replace by None.
 It is needed by pytorch.
 
-.. GENERATED FROM PYTHON SOURCE LINES 192-204
+.. GENERATED FROM PYTHON SOURCE LINES 206-219
 
 .. code-block:: Python
 
@@ -397,6 +459,7 @@ It is needed by pytorch.
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -405,9 +468,9 @@ It is needed by pytorch.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:107: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7378.096992492676
-    Loss after epoch 2: 5804.066596984863
-    Loss after epoch 3: 5677.279918670654
+    Loss after epoch 1: 7359.001808166504
+    Loss after epoch 2: 5790.268497467041
+    Loss after epoch 3: 5699.565372467041
     Training process has finished.
     4 were created.
 
@@ -518,10 +581,81 @@ It is needed by pytorch.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 220-221
+
+The forward graph.
+
+.. GENERATED FROM PYTHON SOURCE LINES 221-225
+
+.. code-block:: Python
+
+
+    plot_dot(storage["instance"][0]["onnx"])
+
+
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_torch_custom_backend_003.png
+   :alt: plot torch custom backend
+   :srcset: /auto_examples/images/sphx_glr_plot_torch_custom_backend_003.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Axes: >
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 226-227
+
+The brackward graph.
+
+.. GENERATED FROM PYTHON SOURCE LINES 227-231
+
+.. code-block:: Python
+
+
+    plot_dot(storage["instance"][1]["onnx"])
+
+
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_torch_custom_backend_004.png
+   :alt: plot torch custom backend
+   :srcset: /auto_examples/images/sphx_glr_plot_torch_custom_backend_004.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Axes: >
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 232-240
+
+Pattern Optimizations
+=====================
+
+By default, once exported into onnx, a model is optimized by
+looking for patterns. Each of them locally replaces a couple of
+nodes to optimize the computation
+(see :ref:`l-pattern-optimization-onnx` and
+# :ref:`l-pattern-optimization-ort`).
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.226 seconds)
+   **Total running time of the script:** (0 minutes 9.491 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend.py:

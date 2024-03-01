@@ -8,7 +8,7 @@
         <title>onnx_array_api.reference.evaluator_yield - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -267,7 +267,10 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">,</span> <span class="n">ValueInfoProto</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
+<span class="kn">from</span> <span class="nn">onnx.shape_inference</span> <span class="kn">import</span> <span class="n">infer_shapes</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">to_array_extended</span>
 <span class="kn">from</span> <span class="nn">.evaluator</span> <span class="kn">import</span> <span class="n">ExtendedReferenceEvaluator</span>
 
 
@@ -287,10 +290,27 @@
     <span class="n">SPARSE_INITIALIZER</span> <span class="o">=</span> <span class="mi">4</span>
     <span class="n">INPUT</span> <span class="o">=</span> <span class="mi">8</span>
     <span class="n">OUTPUT</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">NODE</span> <span class="o">=</span> <span class="mi">32</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name_</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
+
+
+<span class="k">def</span> <span class="nf">_dimension_to_str</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="si">!r}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_rank_to_str</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">shape</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2">:&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;  &quot;</span>
 
 
 <div class="viewcode-block" id="ResultExecution">
@@ -307,6 +327,7 @@
     <span class="n">summary</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">6</span>
@@ -327,12 +348,19 @@
         <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;i=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> out of boundary&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
         <span class="n">els</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">_align</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">_name_</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
-            <span class="n">_align</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;dtype(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span>
-            <span class="n">_align</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)),</span> <span class="mi">15</span><span class="p">),</span>
+            <span class="n">_align</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;dtype(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="mi">8</span><span class="p">),</span>
+            <span class="n">_rank_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">_align</span><span class="p">(</span>
+                <span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">map</span><span class="p">(</span><span class="n">_dimension_to_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="p">),</span>
+                <span class="mi">18</span><span class="p">,</span>
+            <span class="p">),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">summary</span><span class="p">,</span>
-            <span class="n">_align</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+            <span class="n">_align</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">els</span><span class="p">)</span></div>
@@ -366,9 +394,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">value2</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
         <span class="n">value4</span> <span class="o">=</span> <span class="n">value2</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">value4i</span> <span class="o">=</span> <span class="n">value4</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulo</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value4i</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">s</span>
+    <span class="n">value4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">value4</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e10</span><span class="p">,</span> <span class="n">value4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value4</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;?&quot;</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulo</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="YieldEvaluator">
@@ -479,14 +509,15 @@
         <span class="n">output_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">feed_inputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">raise_exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">keep_tensor</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ResultExecution</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Executes the onnx model and enumerate intermediate results without their names.</span>
 
 <span class="sd">        :param output_names: requested outputs by names, None for all</span>
-<span class="sd">        :param feed_inputs: dictionary `{ input name: input value }`</span>
-<span class="sd">        :param raise_exc: raises an exception if the execution fails or stop</span>
-<span class="sd">            where it is</span>
+<span class="sd">        :param feed_inputs: dictionary ``{ input name: input value }``</span>
+<span class="sd">        :param raise_exc: raises an exception if the execution fails or stop where it is</span>
+<span class="sd">        :param keep_tensor: keep the tensor in order to compute precise distances</span>
 <span class="sd">        :return: iterator on ResultExecution</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">op_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">enumerate_results</span><span class="p">(</span>
@@ -494,10 +525,32 @@
         <span class="p">):</span>
             <span class="n">summary</span> <span class="o">=</span> <span class="n">make_summary</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">yield</span> <span class="n">ResultExecution</span><span class="p">(</span>
-                <span class="n">kind</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">summary</span><span class="p">,</span> <span class="n">op_type</span><span class="p">,</span> <span class="n">name</span>
+                <span class="n">kind</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                <span class="n">summary</span><span class="p">,</span>
+                <span class="n">op_type</span><span class="p">,</span>
+                <span class="n">name</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">value</span> <span class="k">if</span> <span class="n">keep_tensor</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
             <span class="p">)</span></div>
 </div>
 
+
+
+<span class="k">def</span> <span class="nf">discrepancies</span><span class="p">(</span>
+    <span class="n">expected</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-7</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes absolute error and relative error between two matrices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">expected</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Incompatible shapes v1.shape=</span><span class="si">{</span><span class="n">expected</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, v2.shape=</span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">expected</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">rel</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">aerr</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">rerr</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">rel</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
 
 
 <div class="viewcode-block" id="DistanceExecution">
@@ -555,6 +608,22 @@
         <span class="k">return</span> <span class="mi">1</span>
 
     <span class="k">def</span> <span class="nf">_cost_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s1</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">s2</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">s2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank_cost</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="n">s1</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="n">s2</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="c1"># dynamic shapes</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s2</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank_cost</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="n">d</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank_cost</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">return</span> <span class="n">d</span>
+
         <span class="n">d</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">s2</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s2</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank_cost</span> <span class="o">+</span> <span class="n">d</span>
@@ -650,6 +719,14 @@
                 <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_pair</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
                 <span class="n">symbol</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;~&quot;</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">_align</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">d1</span><span class="p">),</span><span class="w"> </span><span class="n">column_size</span><span class="p">)</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">_align</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">d2</span><span class="p">),</span><span class="w"> </span><span class="n">column_size</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">d1</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                    <span class="ow">and</span> <span class="n">d2</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                    <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">d2</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">size</span>
+                <span class="p">):</span>
+                    <span class="n">disc</span> <span class="o">=</span> <span class="n">discrepancies</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">d2</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">a</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;aerr&quot;</span><span class="p">],</span> <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;rerr&quot;</span><span class="p">]</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; | a=</span><span class="si">{</span><span class="n">a</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> r=</span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="n">last</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                 <span class="n">d2</span> <span class="o">=</span> <span class="n">s2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="p">(</span>
@@ -658,7 +735,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">d1</span> <span class="o">=</span> <span class="n">s1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;- | </span><span class="si">{</span><span class="n">_align</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">d1</span><span class="p">),</span><span class="w"> </span><span class="n">column_size</span><span class="p">)</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">_align</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">column_size</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row_index</span><span class="si">:</span><span class="s2"> 3d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row_index</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">last</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
             <span class="n">row_index</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
@@ -716,6 +793,83 @@
     <span class="k">return</span> <span class="n">inputs</span>
 
 
+<span class="k">def</span> <span class="nf">_update_shape_types_with_proto</span><span class="p">(</span>
+    <span class="n">proto</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves the shapes and types for a model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span><span class="si">}</span><span class="s2"> for proto&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+        <span class="n">itype</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_value</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span>
+        <span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">itype</span><span class="p">,</span> <span class="n">shape</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+        <span class="n">itype</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_value</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span>
+        <span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">itype</span><span class="p">,</span> <span class="n">shape</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">:</span>
+        <span class="n">itype</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">data_type</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">itype</span><span class="p">,</span> <span class="n">shape</span><span class="p">]</span>
+
+    <span class="n">new_proto</span> <span class="o">=</span> <span class="n">infer_shapes</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">new_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="p">:</span>
+        <span class="n">itype</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_value</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span>
+        <span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">itype</span><span class="p">,</span> <span class="n">shape</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">_enumerate_result_no_execution</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ResultType</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Produces a list of results based on a model in order to</span>
+<span class="sd">    trigger the edit distance comparison.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">type_shape</span> <span class="o">=</span> <span class="n">_update_shape_types_with_proto</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">:</span>
+        <span class="n">itype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">type_shape</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">ResultExecution</span><span class="p">(</span>
+            <span class="n">ResultType</span><span class="o">.</span><span class="n">INITIALIZER</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="p">,</span>
+            <span class="n">shape</span><span class="p">,</span>
+            <span class="n">make_summary</span><span class="p">(</span><span class="n">to_array_extended</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span>
+            <span class="s2">&quot;INIT&quot;</span><span class="p">,</span>
+            <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+        <span class="n">itype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">type_shape</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">ResultExecution</span><span class="p">(</span><span class="n">ResultType</span><span class="o">.</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;????&quot;</span><span class="p">,</span> <span class="s2">&quot;INPUT&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">ResultExecution</span><span class="p">(</span><span class="n">ResultType</span><span class="o">.</span><span class="n">NODE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;????&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+            <span class="n">itype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">type_shape</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">itype</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">ResultExecution</span><span class="p">(</span>
+                <span class="n">ResultType</span><span class="o">.</span><span class="n">RESULT</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;????&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">o</span>
+            <span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+        <span class="n">itype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">type_shape</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">ResultExecution</span><span class="p">(</span><span class="n">ResultType</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;????&quot;</span><span class="p">,</span> <span class="s2">&quot;OUTPUT&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="compare_onnx_execution">
 <a class="viewcode-back" href="../../../api/reference.html#onnx_array_api.reference.compare_onnx_execution">[docs]</a>
 <span class="k">def</span> <span class="nf">compare_onnx_execution</span><span class="p">(</span>
@@ -724,6 +878,8 @@
     <span class="n">inputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">raise_exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;execute&quot;</span><span class="p">,</span>
+    <span class="n">keep_tensor</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">ResultExecution</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">ResultExecution</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compares the execution of two onnx models.</span>
@@ -737,33 +893,56 @@
 <span class="sd">        the same number of inputs or two dictionaries, one for each model</span>
 <span class="sd">    :param verbose: verbosity</span>
 <span class="sd">    :param raise_exc: raise exception if the execution fails or stop at the error</span>
+<span class="sd">    :param mode: the model should be executed but the function can be executed</span>
+<span class="sd">        but the comparison may append on nodes only</span>
+<span class="sd">    :param keep_tensor: keeps the tensor in order to compute a precise distance</span>
 <span class="sd">    :return: four results, a sequence of results for the first model and the second model,</span>
 <span class="sd">        the alignment between the two, DistanceExecution</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] generate inputs&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">inputs</span> <span class="o">=</span> <span class="n">generate_inputs</span><span class="p">(</span><span class="n">model1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected number  </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2"> of inputs.&quot;</span>
-        <span class="n">feeds1</span><span class="p">,</span> <span class="n">feeds2</span> <span class="o">=</span> <span class="n">inputs</span>
+    <span class="k">assert</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;execute&quot;</span><span class="p">,</span> <span class="s2">&quot;nodes&quot;</span><span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for mode=</span><span class="si">{</span><span class="n">mode</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;execute&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] generate inputs&quot;</span><span class="p">)</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="n">generate_inputs</span><span class="p">(</span><span class="n">model1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected number </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2"> of inputs.&quot;</span>
+            <span class="n">feeds1</span><span class="p">,</span> <span class="n">feeds2</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feeds1</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model1</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)}</span>
+            <span class="n">feeds2</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model2</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)}</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feeds1</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">feeds1</span><span class="p">)</span><span class="si">}</span><span class="s2"> for inputs&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feeds2</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">feeds2</span><span class="p">)</span><span class="si">}</span><span class="s2"> for inputs&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[compare_onnx_execution] execute with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2"> inputs&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] execute first model&quot;</span><span class="p">)</span>
+        <span class="n">res1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">YieldEvaluator</span><span class="p">(</span><span class="n">model1</span><span class="p">)</span><span class="o">.</span><span class="n">enumerate_summarized</span><span class="p">(</span>
+                <span class="kc">None</span><span class="p">,</span> <span class="n">feeds1</span><span class="p">,</span> <span class="n">raise_exc</span><span class="o">=</span><span class="n">raise_exc</span><span class="p">,</span> <span class="n">keep_tensor</span><span class="o">=</span><span class="n">keep_tensor</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[compare_onnx_execution] got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span><span class="si">}</span><span class="s2"> results&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] execute second model&quot;</span><span class="p">)</span>
+        <span class="n">res2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">YieldEvaluator</span><span class="p">(</span><span class="n">model2</span><span class="p">)</span><span class="o">.</span><span class="n">enumerate_summarized</span><span class="p">(</span>
+                <span class="kc">None</span><span class="p">,</span> <span class="n">feeds2</span><span class="p">,</span> <span class="n">raise_exc</span><span class="o">=</span><span class="n">raise_exc</span><span class="p">,</span> <span class="n">keep_tensor</span><span class="o">=</span><span class="n">keep_tensor</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;nodes&quot;</span><span class="p">:</span>
+        <span class="c1"># No execution.</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] loading first model&quot;</span><span class="p">)</span>
+        <span class="n">proto1</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">model1</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">model1</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] loading first model&quot;</span><span class="p">)</span>
+        <span class="n">proto2</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">model2</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model2</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">model2</span>
+        <span class="n">res1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_enumerate_result_no_execution</span><span class="p">(</span><span class="n">proto1</span><span class="p">))</span>
+        <span class="n">res2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_enumerate_result_no_execution</span><span class="p">(</span><span class="n">proto2</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">feeds1</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model1</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)}</span>
-        <span class="n">feeds2</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model2</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)}</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feeds1</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">feeds1</span><span class="p">)</span><span class="si">}</span><span class="s2"> for inputs&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feeds2</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">feeds2</span><span class="p">)</span><span class="si">}</span><span class="s2"> for inputs&quot;</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[compare_onnx_execution] got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2"> inputs&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] execute first model&quot;</span><span class="p">)</span>
-    <span class="n">res1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-        <span class="n">YieldEvaluator</span><span class="p">(</span><span class="n">model1</span><span class="p">)</span><span class="o">.</span><span class="n">enumerate_summarized</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds1</span><span class="p">,</span> <span class="n">raise_exc</span><span class="o">=</span><span class="n">raise_exc</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[compare_onnx_execution] got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span><span class="si">}</span><span class="s2"> results&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] execute second model&quot;</span><span class="p">)</span>
-    <span class="n">res2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-        <span class="n">YieldEvaluator</span><span class="p">(</span><span class="n">model2</span><span class="p">)</span><span class="o">.</span><span class="n">enumerate_summarized</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds2</span><span class="p">,</span> <span class="n">raise_exc</span><span class="o">=</span><span class="n">raise_exc</span><span class="p">)</span>
-    <span class="p">)</span>
+        <span class="k">return</span>
+
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[compare_onnx_execution] got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res2</span><span class="p">)</span><span class="si">}</span><span class="s2"> results&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[compare_onnx_execution] compute edit distance&quot;</span><span class="p">)</span>

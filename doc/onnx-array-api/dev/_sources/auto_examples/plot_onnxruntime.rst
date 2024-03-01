@@ -73,7 +73,6 @@ Example
 
  .. code-block:: none
 
-    [2023-12-28 19:15:18,751] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
     0.042
 
 
@@ -124,201 +123,201 @@ Profiling
 
  .. code-block:: none
 
-    isEnabledFor                                                 --    8000    8000 -- 0.01511 0.01511 -- __init__.py:1724:isEnabledFor (isEnabledFor)
-    seterr                                                       --    8000    8000 -- 0.07223 0.16649 -- _ufunc_config.py:33:seterr (seterr)
-        geterr                                                   --    8000    8000 -- 0.04940 0.05780 -- _ufunc_config.py:132:geterr (geterr)
-            <built-in method numpy.geterrobj>                    --    8000    8000 -- 0.00841 0.00841 -- ~:0:<built-in method numpy.geterrobj> (<built-in method numpy.geterrobj>) +++
-        <built-in method numpy.seterrobj>                        --    8000    8000 -- 0.02362 0.02362 -- ~:0:<built-in method numpy.seterrobj> (<built-in method numpy.seterrobj>)
-        <built-in method numpy.geterrobj>                        --    8000    8000 -- 0.01283 0.01283 -- ~:0:<built-in method numpy.geterrobj> (<built-in method numpy.geterrobj>) +++
-    _leading_trailing                                            --    4000   20000 -- 0.21988 0.31010 -- arrayprint.py:369:_leading_trailing (_leading_trailing)
-        _leading_trailing                                        --   16000    8000 -- 0.08713 0.13171 -- arrayprint.py:369:_leading_trailing (_leading_trailing) +++
-        __getitem__                                              --   16000   16000 -- 0.04337 0.06330 -- index_tricks.py:764:__getitem__ (__getitem__)
-            <built-in method builtins.isinstance>                --   16000   16000 -- 0.01993 0.01993 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-        concatenate                                              --    4000    4000 -- 0.00591 0.00591 -- multiarray.py:153:concatenate (concatenate)
-        <built-in method builtins.len>                           --   20000   20000 -- 0.02102 0.02102 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-    recurser                                                     --    4000   76000 -- 0.90410 2.49226 -- arrayprint.py:789:recurser (recurser)
-        _extendLine_pretty                                       --   48000   48000 -- 0.24850 0.84379 -- arrayprint.py:753:_extendLine_pretty (_extendLine_pretty)
-            _extendLine                                          --   48000   48000 -- 0.29677 0.48017 -- arrayprint.py:739:_extendLine (_extendLine)
-                <built-in method builtins.len>                   --  192000  192000 -- 0.18340 0.18340 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-            <method 'splitlines' of 'str' objects>               --   48000   48000 -- 0.06474 0.06474 -- ~:0:<method 'splitlines' of 'str' objects> (<method 'splitlines' of 'str' objects>)
-            <built-in method builtins.len>                       --   48000   48000 -- 0.05037 0.05037 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-        recurser                                                 --   72000   24000 -- 0.77193 2.34140 -- arrayprint.py:789:recurser (recurser) +++
-        __call__                                                 --   48000   48000 -- 0.35132 0.49339 -- arrayprint.py:1018:__call__ (__call__)
-            <built-in method numpy.co...math.dragon4_positional> --   48000   48000 -- 0.14208 0.14208 -- ~:0:<built-in method numpy.core._multiarray_umath.dragon4_positional> (<built-in method numpy.core._multiarray_umath.dragon4_positional>) +++
-        <method 'rstrip' of 'str' objects>                       --   28000   28000 -- 0.03562 0.03562 -- ~:0:<method 'rstrip' of 'str' objects> (<method 'rstrip' of 'str' objects>)
-        <built-in method builtins.len>                           --  180000  180000 -- 0.17725 0.17725 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-        <built-in method builtins.max>                           --   24000   24000 -- 0.03811 0.03811 -- ~:0:<built-in method builtins.max> (<built-in method builtins.max>) +++
-    _wrapreduction                                               --    8000    8000 -- 0.06757 0.18525 -- fromnumeric.py:71:_wrapreduction (_wrapreduction)
-        <dictcomp>                                               --    8000    8000 -- 0.01885 0.01885 -- fromnumeric.py:72:<dictcomp> (<dictcomp>)
-        <method 'items' of 'dict' objects>                       --    8000    8000 -- 0.00993 0.00993 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
-        <method 'reduce' of 'numpy.ufunc' objects>               --    8000    8000 -- 0.08890 0.08890 -- ~:0:<method 'reduce' of 'numpy.ufunc' objects> (<method 'reduce' of 'numpy.ufunc' objects>) +++
-    var                                                          --    2000    2000 -- 0.00962 0.11579 -- npx_core_api.py:54:var (var)
-        __init__                                                 --    2000    2000 -- 0.06341 0.10618 -- npx_var.py:287:__init__ (__init__) +++
-    info                                                         --    5000    5000 -- 0.09356 6.11294 -- npx_jit_eager.py:52:info (info)
-        debug                                                    --    4000    4000 -- 0.01649 0.02458 -- __init__.py:1455:debug (debug)
-            isEnabledFor                                         --    4000    4000 -- 0.00809 0.00809 -- __init__.py:1724:isEnabledFor (isEnabledFor) +++
-        info                                                     --    4000    4000 -- 0.01240 0.01942 -- __init__.py:1467:info (info)
-            isEnabledFor                                         --    4000    4000 -- 0.00701 0.00701 -- __init__.py:1724:isEnabledFor (isEnabledFor) +++
-        __repr__                                                 --    4000    4000 -- 0.05849 5.96725 -- ort_tensors.py:165:__repr__ (__repr__)
-            _array_repr_implementation                           --    4000    4000 -- 0.08909 5.80034 -- arrayprint.py:1487:_array_repr_implementation (_array_repr_implementation)
-                array2string                                     --    4000    4000 -- 0.05877 5.36209 -- arrayprint.py:561:array2string (array2string)
-                    _make_options_dict                           --    4000    4000 -- 0.04988 0.09462 -- arrayprint.py:64:_make_options_dict (_make_options_dict)
-                        <dictcomp>                               --    4000    4000 -- 0.01483 0.01483 -- arrayprint.py:72:<dictcomp> (<dictcomp>)
-                        <method 'items' of 'dict' objects>       --    4000    4000 -- 0.00576 0.00576 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
-                        <built-in method builtins.locals>        --    4000    4000 -- 0.02415 0.02415 -- ~:0:<built-in method builtins.locals> (<built-in method builtins.locals>)
-                    wrapper                                      --    4000    4000 -- 0.05717 5.18966 -- arrayprint.py:506:wrapper (wrapper)
-                        _array2string                            --    4000    4000 -- 0.09319 5.10552 -- arrayprint.py:523:_array2string (_array2string)
-                            _leading_trailing                    --    4000    4000 -- 0.13275 0.31010 -- arrayprint.py:369:_leading_trailing (_leading_trailing) +++
-                            _get_format_function                 --    4000    4000 -- 0.07508 2.17687 -- arrayprint.py:452:_get_format_function (_get_format_function)
-                                _get_formatdict                  --    4000    4000 -- 0.03230 0.03230 -- arrayprint.py:403:_get_formatdict (_get_formatdict)
-                                <lambda>                         --    4000    4000 -- 0.02378 2.05170 -- arrayprint.py:411:<lambda> (<lambda>)
-                                    __init__                     --    4000    4000 -- 0.05172 2.02792 -- arrayprint.py:907:__init__ (__init__)
-                                        _none_or_positive_arg    --    4000    4000 -- 0.00654 0.00654 -- arrayprint.py:898:_none_or_positive_arg (_none_or_positive_arg)
-                                        fillFormat               --    4000    4000 -- 0.49824 1.96424 -- arrayprint.py:934:fillFormat (fillFormat)
-                                            __init__             --    4000    4000 -- 0.00967 0.00967 -- _ufunc_config.py:426:__init__ (__init__)
-                                            __enter__            --    4000    4000 -- 0.01955 0.11997 -- _ufunc_config.py:430:__enter__ (__enter__)
-                                                seterr           --    4000    4000 -- 0.04290 0.10042 -- _ufunc_config.py:33:seterr (seterr) +++
-                                            __exit__             --    4000    4000 -- 0.01818 0.08425 -- _ufunc_config.py:435:__exit__ (__exit__)
-                                                seterr           --    4000    4000 -- 0.02933 0.06607 -- _ufunc_config.py:33:seterr (seterr) +++
-                                            <genexpr>            --   52000   52000 -- 0.18451 0.55209 -- arrayprint.py:989:<genexpr> (<genexpr>)
-                                                <genexpr>        --   52000   52000 -- 0.18660 0.30355 -- arrayprint.py:984:<genexpr> (<genexpr>)
-                                                    <buil...nal> --   48000   48000 -- 0.11695 0.11695 -- ~:0:<built-in method numpy.core._multiarray_umath.dragon4_positional> (<built-in method numpy.core._multiarray_umath.dragon4_positional>) +++
-                                                <method...jects> --   48000   48000 -- 0.06403 0.06403 -- ~:0:<method 'split' of 'str' objects> (<method 'split' of 'str' objects>)
-                                            _max_dispatcher      --    4000    4000 -- 0.00651 0.00651 -- fromnumeric.py:2687:_max_dispatcher (_max_dispatcher)
-                                            max                  --    4000    4000 -- 0.02715 0.14354 -- fromnumeric.py:2692:max (max)
-                                                _wrapreduction   --    4000    4000 -- 0.04043 0.11639 -- fromnumeric.py:71:_wrapreduction (_wrapreduction) +++
-                                            _min_dispatcher      --    4000    4000 -- 0.00522 0.00522 -- fromnumeric.py:2831:_min_dispatcher (_min_dispatcher)
-                                            min                  --    4000    4000 -- 0.01726 0.08612 -- fromnumeric.py:2836:min (min)
-                                                _wrapreduction   --    4000    4000 -- 0.02714 0.06886 -- fromnumeric.py:71:_wrapreduction (_wrapreduction) +++
-                                            <built-in...ins.len> --    8000    8000 -- 0.01145 0.01145 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-                                            <built-in...ins.max> --    8000    8000 -- 0.12990 0.44719 -- ~:0:<built-in method builtins.max> (<built-in method builtins.max>) +++
-                                        <built-in m...sinstance> --    4000    4000 -- 0.00543 0.00543 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-                                <built-in metho...ns.issubclass> --   16000   16000 -- 0.01779 0.01779 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
-                            _formatArray                         --    4000    4000 -- 0.02245 2.51470 -- arrayprint.py:780:_formatArray (_formatArray)
-                                recurser                         --    4000    4000 -- 0.13216 2.49226 -- arrayprint.py:789:recurser (recurser) +++
-                            <built-in method builtins.len>       --    4000    4000 -- 0.00432 0.00432 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-                            <built-in method numpy.asarray>      --    4000    4000 -- 0.00635 0.00635 -- ~:0:<built-in method numpy.asarray> (<built-in method numpy.asarray>)
-                        <method 'add' of 'set' objects>          --    4000    4000 -- 0.00591 0.00591 -- ~:0:<method 'add' of 'set' objects> (<method 'add' of 'set' objects>)
-                        <method 'discard' of 'set' objects>      --    4000    4000 -- 0.00835 0.00835 -- ~:0:<method 'discard' of 'set' objects> (<method 'discard' of 'set' objects>)
-                        <built-in method builtins.id>            --    4000    4000 -- 0.00700 0.00700 -- ~:0:<built-in method builtins.id> (<built-in method builtins.id>)
-                        <built-in method _thread.get_ident>      --    4000    4000 -- 0.00569 0.00569 -- ~:0:<built-in method _thread.get_ident> (<built-in method _thread.get_ident>)
-                    <method 'update' of 'dict' objects>          --    4000    4000 -- 0.00694 0.00694 -- ~:0:<method 'update' of 'dict' objects> (<method 'update' of 'dict' objects>)
-                    <method 'copy' of 'dict' objects>            --    4000    4000 -- 0.00705 0.00705 -- ~:0:<method 'copy' of 'dict' objects> (<method 'copy' of 'dict' objects>)
-                    <built-in method builtins.len>               --    4000    4000 -- 0.00505 0.00505 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-                dtype_is_implied                                 --    4000    4000 -- 0.02599 0.02599 -- arrayprint.py:1415:dtype_is_implied (dtype_is_implied)
-                dtype_short_repr                                 --    4000    4000 -- 0.09837 0.29742 -- arrayprint.py:1455:dtype_short_repr (dtype_short_repr)
-                    _name_get                                    --    4000    4000 -- 0.05260 0.17885 -- _dtype.py:346:_name_get (_name_get)
-                        _kind_name                               --    4000    4000 -- 0.00911 0.00911 -- _dtype.py:24:_kind_name (_kind_name)
-                        _name_includes_bit_suffix                --    4000    4000 -- 0.02274 0.09998 -- _dtype.py:330:_name_includes_bit_suffix (_name_includes_bit_suffix)
-                            issubdtype                           --    4000    4000 -- 0.02927 0.07725 -- numerictypes.py:357:issubdtype (issubdtype)
-                                issubclass_                      --    8000    8000 -- 0.02934 0.04395 -- numerictypes.py:283:issubclass_ (issubclass_)
-                                    <built-in met....issubclass> --    8000    8000 -- 0.01461 0.01461 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
-                                <built-in metho...ns.issubclass> --    4000    4000 -- 0.00403 0.00403 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
-                        <method 'format' of 'str' objects>       --    4000    4000 -- 0.01278 0.01278 -- ~:0:<method 'format' of 'str' objects> (<method 'format' of 'str' objects>) +++
-                        <built-in method builtins.issubclass>    --    4000    4000 -- 0.00438 0.00438 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
-                    <method 'isalpha' of 'str' objects>          --    4000    4000 -- 0.00829 0.00829 -- ~:0:<method 'isalpha' of 'str' objects> (<method 'isalpha' of 'str' objects>)
-                    <method 'isalnum' of 'str' objects>          --    4000    4000 -- 0.00627 0.00627 -- ~:0:<method 'isalnum' of 'str' objects> (<method 'isalnum' of 'str' objects>)
-                    <built-in method builtins.issubclass>        --    4000    4000 -- 0.00564 0.00564 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
-                <method 'rfind' of 'str' objects>                --    4000    4000 -- 0.00779 0.00779 -- ~:0:<method 'rfind' of 'str' objects> (<method 'rfind' of 'str' objects>)
-                <method 'format' of 'str' objects>               --    4000    4000 -- 0.00829 0.00829 -- ~:0:<method 'format' of 'str' objects> (<method 'format' of 'str' objects>) +++
-                <built-in method builtins.len>                   --    8000    8000 -- 0.00967 0.00967 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-            numpy                                                --    4000    4000 -- 0.10843 0.10843 -- ort_tensors.py:61:numpy (numpy)
-        <method 'get' of 'dict' objects>                         --    2000    2000 -- 0.00277 0.00277 -- ~:0:<method 'get' of 'dict' objects> (<method 'get' of 'dict' objects>)
-        <built-in method builtins.len>                           --    4000    4000 -- 0.00536 0.00536 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-    get_cst_var                                                  --    2000    2000 -- 0.01839 0.02945 -- npx_var.py:216:get_cst_var (get_cst_var)
-        parent                                                   --    2000    2000 -- 0.00770 0.01106 -- <frozen importlib._bootstrap>:404:parent (parent)
-            <method 'rpartition' of 'str' objects>               --    2000    2000 -- 0.00336 0.00336 -- ~:0:<method 'rpartition' of 'str' objects> (<method 'rpartition' of 'str' objects>)
-    __init__                                                     --    3000    3000 -- 0.09720 0.16233 -- npx_var.py:287:__init__ (__init__)
-        __init__                                                 --    3000    3000 -- 0.00470 0.00470 -- npx_var.py:281:__init__ (__init__)
-        <listcomp>                                               --    3000    3000 -- 0.00525 0.00525 -- npx_var.py:345:<listcomp> (<listcomp>)
-        self_var                                                 --    2000    2000 -- 0.00545 0.00790 -- npx_var.py:375:self_var (self_var) +++
-        <method 'items' of 'dict' objects>                       --    3000    3000 -- 0.00417 0.00417 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
-        <built-in method builtins.hasattr>                       --    3000    3000 -- 0.00365 0.00365 -- ~:0:<built-in method builtins.hasattr> (<built-in method builtins.hasattr>) +++
-        <built-in method builtins.isinstance>                    --   23000   23000 -- 0.02970 0.02970 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-        <built-in method builtins.len>                           --    6000    6000 -- 0.00744 0.00744 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-        <method 'ravel' of 'numpy.ndarray' objects>              --    1000    1000 -- 0.00231 0.00231 -- ~:0:<method 'ravel' of 'numpy.ndarray' objects> (<method 'ravel' of 'numpy.ndarray' objects>)
-    self_var                                                     --    4000    4000 -- 0.01108 0.01611 -- npx_var.py:375:self_var (self_var)
-        <built-in method builtins.hasattr>                       --    4000    4000 -- 0.00503 0.00503 -- ~:0:<built-in method builtins.hasattr> (<built-in method builtins.hasattr>) +++
-    __init__                                                     --    3000    3000 -- 0.02213 0.03143 -- ort_tensors.py:144:__init__ (__init__)
-        <built-in method builtins.isinstance>                    --    5000    5000 -- 0.00930 0.00930 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-    value                                                        --    3000    3000 -- 0.00446 0.00446 -- ort_tensors.py:192:value (value)
-    loop                                                         --       1       1 -- 0.00001 8.82246 -- plot_onnxruntime.py:66:loop (loop)
-        loop_ort                                                 --       1       1 -- 0.01736 8.40391 -- plot_onnxruntime.py:56:loop_ort (loop_ort)
-            __call__                                             --    1000    1000 -- 0.01873 8.38655 -- npx_jit_eager.py:584:__call__ (__call__)
-                info                                             --    2000    2000 -- 0.01875 0.03057 -- npx_jit_eager.py:52:info (info) +++
-                cast_to_tensor_class                             --    1000    1000 -- 0.01332 0.03407 -- npx_jit_eager.py:394:cast_to_tensor_class (cast_to_tensor_class)
-                    __init__                                     --    2000    2000 -- 0.01081 0.01809 -- ort_tensors.py:144:__init__ (__init__) +++
-                    <method 'append' of 'list' objects>          --    2000    2000 -- 0.00265 0.00265 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>) +++
-                cast_from_tensor_class                           --    1000    1000 -- 0.00925 0.01482 -- npx_jit_eager.py:411:cast_from_tensor_class (cast_from_tensor_class)
-                    value                                        --    1000    1000 -- 0.00160 0.00160 -- ort_tensors.py:192:value (value) +++
-                    <built-in method builtins.isinstance>        --    1000    1000 -- 0.00257 0.00257 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-                    <built-in method builtins.len>               --    1000    1000 -- 0.00141 0.00141 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-                jit_call                                         --    1000    1000 -- 0.05092 8.28835 -- npx_jit_eager.py:462:jit_call (jit_call)
-                    info                                         --    3000    3000 -- 0.07481 6.08237 -- npx_jit_eager.py:52:info (info) +++
-                    make_key                                     --    1000    1000 -- 0.02088 0.08460 -- npx_jit_eager.py:151:make_key (make_key)
-                        key                                      --    2000    2000 -- 0.01392 0.05794 -- ort_tensors.py:187:key (key)
-                            shape                                --    2000    2000 -- 0.00777 0.00777 -- ort_tensors.py:177:shape (shape)
-                            dtype                                --    2000    2000 -- 0.01934 0.03383 -- ort_tensors.py:182:dtype (dtype)
-                                __init__                         --    2000    2000 -- 0.00977 0.01449 -- npx_types.py:29:__init__ (__init__)
-                                    <built-in met....isinstance> --    4000    4000 -- 0.00472 0.00472 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-                            <built-in method builtins.len>       --    2000    2000 -- 0.00243 0.00243 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-                        <method 'append' of 'list' objects>      --    2000    2000 -- 0.00227 0.00227 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>) +++
-                        <built-in method builtins.isinstance>    --    2000    2000 -- 0.00351 0.00351 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-                    move_input_to_kwargs                         --    1000    1000 -- 0.00254 0.00254 -- npx_jit_eager.py:426:move_input_to_kwargs (move_input_to_kwargs)
-                    __hash__                                     --    4000    4000 -- 0.00554 0.00554 -- npx_types.py:45:__hash__ (__hash__)
-                    __eq__                                       --    4000    4000 -- 0.00716 0.00716 -- npx_types.py:56:__eq__ (__eq__)
-                    run                                          --    1000    1000 -- 2.03670 2.05521 -- ort_tensors.py:124:run (run)
-                        __init__                                 --    1000    1000 -- 0.01132 0.01334 -- ort_tensors.py:144:__init__ (__init__) +++
-                        value                                    --    2000    2000 -- 0.00287 0.00287 -- ort_tensors.py:192:value (value) +++
-                        <built-in method builtins.len>           --    2000    2000 -- 0.00231 0.00231 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-        loop_numpy                                               --       1       1 -- 0.00273 0.41853 -- plot_onnxruntime.py:61:loop_numpy (loop_numpy)
-            myloss                                               --    1000    1000 -- 0.01374 0.41580 -- plot_onnxruntime.py:28:myloss (myloss)
-                __add__                                          --    1000    1000 -- 0.00336 0.09913 -- npx_var.py:645:__add__ (__add__)
-                    _binary_op                                   --    1000    1000 -- 0.01129 0.09577 -- npx_var.py:615:_binary_op (_binary_op)
-                        var                                      --    1000    1000 -- 0.00500 0.06388 -- npx_core_api.py:54:var (var) +++
-                        get_cst_var                              --    1000    1000 -- 0.00923 0.01453 -- npx_var.py:216:get_cst_var (get_cst_var) +++
-                        self_var                                 --    1000    1000 -- 0.00283 0.00411 -- npx_var.py:375:self_var (self_var) +++
-                        <built-in method builtins.isinstance>    --    1000    1000 -- 0.00196 0.00196 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-                l1_loss                                          --    1000    1000 -- 0.02822 0.23673 -- plot_onnxruntime.py:20:l1_loss (l1_loss)
-                    wrapper                                      --    1000    1000 -- 0.04273 0.12599 -- npx_core_api.py:142:wrapper (wrapper)
-                        annotation                               --    1000    1000 -- 0.00133 0.00133 -- inspect.py:2695:annotation (annotation)
-                        kind                                     --    2000    2000 -- 0.00251 0.00251 -- inspect.py:2699:kind (kind)
-                        parameters                               --    2000    2000 -- 0.00279 0.00279 -- inspect.py:3006:parameters (parameters)
-                        return_annotation                        --    1000    1000 -- 0.00148 0.00148 -- inspect.py:3010:return_annotation (return_annotation)
-                        __init__                                 --    1000    1000 -- 0.03379 0.05616 -- npx_var.py:287:__init__ (__init__) +++
-                        <method 'items' of ...ingproxy' objects> --    1000    1000 -- 0.00192 0.00192 -- ~:0:<method 'items' of 'mappingproxy' objects> (<method 'items' of 'mappingproxy' objects>)
-                        <method 'items' of 'dict' objects>       --    1000    1000 -- 0.00126 0.00126 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
-                        <method 'append' of 'list' objects>      --    1000    1000 -- 0.00143 0.00143 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>) +++
-                        <built-in method builtins.any>           --    1000    1000 -- 0.00334 0.00790 -- ~:0:<built-in method builtins.any> (<built-in method builtins.any>)
-                            <lambda>                             --    1000    1000 -- 0.00300 0.00456 -- npx_core_api.py:143:<lambda> (<lambda>)
-                                <built-in metho...ns.isinstance> --    1000    1000 -- 0.00156 0.00156 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-                        <built-in method builtins.isinstance>    --    2000    2000 -- 0.00265 0.00265 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
-                        <built-in method builtins.issubclass>    --    2000    2000 -- 0.00260 0.00260 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
-                        <built-in method builtins.len>           --    1000    1000 -- 0.00123 0.00123 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-                    sum                                          --    1000    1000 -- 0.00412 0.08253 -- npx_var.py:890:sum (sum)
-                        reduce_function                          --    1000    1000 -- 0.00746 0.07841 -- npx_var.py:871:reduce_function (reduce_function)
-                            var                                  --    1000    1000 -- 0.00462 0.05191 -- npx_core_api.py:54:var (var) +++
-                            get_cst_var                          --    1000    1000 -- 0.00916 0.01493 -- npx_var.py:216:get_cst_var (get_cst_var) +++
-                            self_var                             --    1000    1000 -- 0.00280 0.00410 -- npx_var.py:375:self_var (self_var) +++
-                l2_loss                                          --    1000    1000 -- 0.03839 0.06620 -- plot_onnxruntime.py:24:l2_loss (l2_loss)
-                    <method 'sum' of 'numpy.ndarray' objects>    --    1000    1000 -- 0.00414 0.02781 -- ~:0:<method 'sum' of 'numpy.ndarray' objects> (<method 'sum' of 'numpy.ndarray' objects>)
-                        _sum                                     --    1000    1000 -- 0.00350 0.02367 -- _methods.py:47:_sum (_sum)
-                            <method 'reduce' ....ufunc' objects> --    1000    1000 -- 0.02017 0.02017 -- ~:0:<method 'reduce' of 'numpy.ufunc' objects> (<method 'reduce' of 'numpy.ufunc' objects>) +++
-    <built-in method builtins.len>                               --  576000  576000 -- 0.57876 0.57876 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>)
-    <method 'append' of 'list' objects>                          --    5000    5000 -- 0.00635 0.00635 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>)
-    <built-in method builtins.isinstance>                        --   59000   59000 -- 0.08134 0.08134 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>)
-    <method 'items' of 'dict' objects>                           --   16000   16000 -- 0.02112 0.02112 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>)
-    <built-in method builtins.issubclass>                        --   38000   38000 -- 0.04905 0.04905 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>)
-    <method 'reduce' of 'numpy.ufunc' objects>                   --    9000    9000 -- 0.10907 0.10907 -- ~:0:<method 'reduce' of 'numpy.ufunc' objects> (<method 'reduce' of 'numpy.ufunc' objects>)
-    <built-in method builtins.hasattr>                           --    7000    7000 -- 0.00868 0.00868 -- ~:0:<built-in method builtins.hasattr> (<built-in method builtins.hasattr>)
-    <method 'format' of 'str' objects>                           --    8000    8000 -- 0.02107 0.02107 -- ~:0:<method 'format' of 'str' objects> (<method 'format' of 'str' objects>)
-    <built-in method builtins.max>                               --   32000   32000 -- 0.16800 0.48529 -- ~:0:<built-in method builtins.max> (<built-in method builtins.max>)
-        <genexpr>                                                --   52000   52000 -- 0.11756 0.16658 -- arrayprint.py:993:<genexpr> (<genexpr>)
-            <built-in method builtins.len>                       --   48000   48000 -- 0.04902 0.04902 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-        <genexpr>                                                --   52000   52000 -- 0.10367 0.15071 -- arrayprint.py:994:<genexpr> (<genexpr>)
-            <built-in method builtins.len>                       --   48000   48000 -- 0.04704 0.04704 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
-    <built-in method numpy.core._...ay_umath.dragon4_positional> --   96000   96000 -- 0.25903 0.25903 -- ~:0:<built-in method numpy.core._multiarray_umath.dragon4_positional> (<built-in method numpy.core._multiarray_umath.dragon4_positional>)
-    <built-in method numpy.geterrobj>                            --   16000   16000 -- 0.02124 0.02124 -- ~:0:<built-in method numpy.geterrobj> (<built-in method numpy.geterrobj>)
+    isEnabledFor                                                 --    8000    8000 -- 0.00578 0.00578 -- __init__.py:1724:isEnabledFor (isEnabledFor)
+    seterr                                                       --    8000    8000 -- 0.02926 0.06622 -- _ufunc_config.py:33:seterr (seterr)
+        geterr                                                   --    8000    8000 -- 0.01875 0.02259 -- _ufunc_config.py:132:geterr (geterr)
+            <built-in method numpy.geterrobj>                    --    8000    8000 -- 0.00384 0.00384 -- ~:0:<built-in method numpy.geterrobj> (<built-in method numpy.geterrobj>) +++
+        <built-in method numpy.seterrobj>                        --    8000    8000 -- 0.00927 0.00927 -- ~:0:<built-in method numpy.seterrobj> (<built-in method numpy.seterrobj>)
+        <built-in method numpy.geterrobj>                        --    8000    8000 -- 0.00510 0.00510 -- ~:0:<built-in method numpy.geterrobj> (<built-in method numpy.geterrobj>) +++
+    _leading_trailing                                            --    4000   20000 -- 0.07957 0.11829 -- arrayprint.py:369:_leading_trailing (_leading_trailing)
+        _leading_trailing                                        --   16000    8000 -- 0.03532 0.05536 -- arrayprint.py:369:_leading_trailing (_leading_trailing) +++
+        __getitem__                                              --   16000   16000 -- 0.01813 0.02674 -- index_tricks.py:764:__getitem__ (__getitem__)
+            <built-in method builtins.isinstance>                --   16000   16000 -- 0.00861 0.00861 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+        concatenate                                              --    4000    4000 -- 0.00248 0.00248 -- multiarray.py:153:concatenate (concatenate)
+        <built-in method builtins.len>                           --   20000   20000 -- 0.00950 0.00950 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+    recurser                                                     --    4000   76000 -- 0.36707 1.02139 -- arrayprint.py:789:recurser (recurser)
+        _extendLine_pretty                                       --   48000   48000 -- 0.10915 0.37134 -- arrayprint.py:753:_extendLine_pretty (_extendLine_pretty)
+            _extendLine                                          --   48000   48000 -- 0.13015 0.21399 -- arrayprint.py:739:_extendLine (_extendLine)
+                <built-in method builtins.len>                   --  192000  192000 -- 0.08384 0.08384 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+            <method 'splitlines' of 'str' objects>               --   48000   48000 -- 0.02568 0.02568 -- ~:0:<method 'splitlines' of 'str' objects> (<method 'splitlines' of 'str' objects>)
+            <built-in method builtins.len>                       --   48000   48000 -- 0.02251 0.02251 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+        recurser                                                 --   72000   24000 -- 0.31527 0.96156 -- arrayprint.py:789:recurser (recurser) +++
+        __call__                                                 --   48000   48000 -- 0.11772 0.17219 -- arrayprint.py:1018:__call__ (__call__)
+            <built-in method numpy.co...math.dragon4_positional> --   48000   48000 -- 0.05447 0.05447 -- ~:0:<built-in method numpy.core._multiarray_umath.dragon4_positional> (<built-in method numpy.core._multiarray_umath.dragon4_positional>) +++
+        <method 'rstrip' of 'str' objects>                       --   28000   28000 -- 0.01472 0.01472 -- ~:0:<method 'rstrip' of 'str' objects> (<method 'rstrip' of 'str' objects>)
+        <built-in method builtins.len>                           --  180000  180000 -- 0.08061 0.08061 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+        <built-in method builtins.max>                           --   24000   24000 -- 0.01547 0.01547 -- ~:0:<built-in method builtins.max> (<built-in method builtins.max>) +++
+    _wrapreduction                                               --    8000    8000 -- 0.02727 0.06887 -- fromnumeric.py:71:_wrapreduction (_wrapreduction)
+        <dictcomp>                                               --    8000    8000 -- 0.00770 0.00770 -- fromnumeric.py:72:<dictcomp> (<dictcomp>)
+        <method 'items' of 'dict' objects>                       --    8000    8000 -- 0.00422 0.00422 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
+        <method 'reduce' of 'numpy.ufunc' objects>               --    8000    8000 -- 0.02969 0.02969 -- ~:0:<method 'reduce' of 'numpy.ufunc' objects> (<method 'reduce' of 'numpy.ufunc' objects>) +++
+    var                                                          --    2000    2000 -- 0.00436 0.05410 -- npx_core_api.py:54:var (var)
+        __init__                                                 --    2000    2000 -- 0.02952 0.04974 -- npx_var.py:287:__init__ (__init__) +++
+    info                                                         --    5000    5000 -- 0.03225 2.39980 -- npx_jit_eager.py:52:info (info)
+        debug                                                    --    4000    4000 -- 0.00564 0.00871 -- __init__.py:1455:debug (debug)
+            isEnabledFor                                         --    4000    4000 -- 0.00306 0.00306 -- __init__.py:1724:isEnabledFor (isEnabledFor) +++
+        info                                                     --    4000    4000 -- 0.00506 0.00777 -- __init__.py:1467:info (info)
+            isEnabledFor                                         --    4000    4000 -- 0.00271 0.00271 -- __init__.py:1724:isEnabledFor (isEnabledFor) +++
+        __repr__                                                 --    4000    4000 -- 0.01890 2.34762 -- ort_tensors.py:165:__repr__ (__repr__)
+            _array_repr_implementation                           --    4000    4000 -- 0.03382 2.29934 -- arrayprint.py:1487:_array_repr_implementation (_array_repr_implementation)
+                array2string                                     --    4000    4000 -- 0.02328 2.13853 -- arrayprint.py:561:array2string (array2string)
+                    _make_options_dict                           --    4000    4000 -- 0.01882 0.03518 -- arrayprint.py:64:_make_options_dict (_make_options_dict)
+                        <dictcomp>                               --    4000    4000 -- 0.00617 0.00617 -- arrayprint.py:72:<dictcomp> (<dictcomp>)
+                        <method 'items' of 'dict' objects>       --    4000    4000 -- 0.00224 0.00224 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
+                        <built-in method builtins.locals>        --    4000    4000 -- 0.00795 0.00795 -- ~:0:<built-in method builtins.locals> (<built-in method builtins.locals>)
+                    wrapper                                      --    4000    4000 -- 0.02117 2.07212 -- arrayprint.py:506:wrapper (wrapper)
+                        _array2string                            --    4000    4000 -- 0.03394 2.04006 -- arrayprint.py:523:_array2string (_array2string)
+                            _leading_trailing                    --    4000    4000 -- 0.04425 0.11829 -- arrayprint.py:369:_leading_trailing (_leading_trailing) +++
+                            _get_format_function                 --    4000    4000 -- 0.02832 0.85366 -- arrayprint.py:452:_get_format_function (_get_format_function)
+                                _get_formatdict                  --    4000    4000 -- 0.01047 0.01047 -- arrayprint.py:403:_get_formatdict (_get_formatdict)
+                                <lambda>                         --    4000    4000 -- 0.00863 0.80699 -- arrayprint.py:411:<lambda> (<lambda>)
+                                    __init__                     --    4000    4000 -- 0.01799 0.79836 -- arrayprint.py:907:__init__ (__init__)
+                                        _none_or_positive_arg    --    4000    4000 -- 0.00285 0.00285 -- arrayprint.py:898:_none_or_positive_arg (_none_or_positive_arg)
+                                        fillFormat               --    4000    4000 -- 0.17366 0.77536 -- arrayprint.py:934:fillFormat (fillFormat)
+                                            __init__             --    4000    4000 -- 0.00349 0.00349 -- _ufunc_config.py:426:__init__ (__init__)
+                                            __enter__            --    4000    4000 -- 0.00765 0.04546 -- _ufunc_config.py:430:__enter__ (__enter__)
+                                                seterr           --    4000    4000 -- 0.01651 0.03781 -- _ufunc_config.py:33:seterr (seterr) +++
+                                            __exit__             --    4000    4000 -- 0.00739 0.03580 -- _ufunc_config.py:435:__exit__ (__exit__)
+                                                seterr           --    4000    4000 -- 0.01275 0.02841 -- _ufunc_config.py:33:seterr (seterr) +++
+                                            <genexpr>            --   52000   52000 -- 0.08174 0.22489 -- arrayprint.py:989:<genexpr> (<genexpr>)
+                                                <genexpr>        --   52000   52000 -- 0.06812 0.11563 -- arrayprint.py:984:<genexpr> (<genexpr>)
+                                                    <buil...nal> --   48000   48000 -- 0.04752 0.04752 -- ~:0:<built-in method numpy.core._multiarray_umath.dragon4_positional> (<built-in method numpy.core._multiarray_umath.dragon4_positional>) +++
+                                                <method...jects> --   48000   48000 -- 0.02752 0.02752 -- ~:0:<method 'split' of 'str' objects> (<method 'split' of 'str' objects>)
+                                            _max_dispatcher      --    4000    4000 -- 0.00264 0.00264 -- fromnumeric.py:2687:_max_dispatcher (_max_dispatcher)
+                                            max                  --    4000    4000 -- 0.00982 0.05203 -- fromnumeric.py:2692:max (max)
+                                                _wrapreduction   --    4000    4000 -- 0.01571 0.04221 -- fromnumeric.py:71:_wrapreduction (_wrapreduction) +++
+                                            _min_dispatcher      --    4000    4000 -- 0.00231 0.00231 -- fromnumeric.py:2831:_min_dispatcher (_min_dispatcher)
+                                            min                  --    4000    4000 -- 0.00687 0.03354 -- fromnumeric.py:2836:min (min)
+                                                _wrapreduction   --    4000    4000 -- 0.01155 0.02667 -- fromnumeric.py:71:_wrapreduction (_wrapreduction) +++
+                                            <built-in...ins.len> --    8000    8000 -- 0.00492 0.00492 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+                                            <built-in...ins.max> --    8000    8000 -- 0.05849 0.19663 -- ~:0:<built-in method builtins.max> (<built-in method builtins.max>) +++
+                                        <built-in m...sinstance> --    4000    4000 -- 0.00216 0.00216 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+                                <built-in metho...ns.issubclass> --   16000   16000 -- 0.00788 0.00788 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
+                            _formatArray                         --    4000    4000 -- 0.00819 1.02958 -- arrayprint.py:780:_formatArray (_formatArray)
+                                recurser                         --    4000    4000 -- 0.05179 1.02139 -- arrayprint.py:789:recurser (recurser) +++
+                            <built-in method builtins.len>       --    4000    4000 -- 0.00211 0.00211 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+                            <built-in method numpy.asarray>      --    4000    4000 -- 0.00248 0.00248 -- ~:0:<built-in method numpy.asarray> (<built-in method numpy.asarray>)
+                        <method 'add' of 'set' objects>          --    4000    4000 -- 0.00242 0.00242 -- ~:0:<method 'add' of 'set' objects> (<method 'add' of 'set' objects>)
+                        <method 'discard' of 'set' objects>      --    4000    4000 -- 0.00326 0.00326 -- ~:0:<method 'discard' of 'set' objects> (<method 'discard' of 'set' objects>)
+                        <built-in method builtins.id>            --    4000    4000 -- 0.00273 0.00273 -- ~:0:<built-in method builtins.id> (<built-in method builtins.id>)
+                        <built-in method _thread.get_ident>      --    4000    4000 -- 0.00247 0.00247 -- ~:0:<built-in method _thread.get_ident> (<built-in method _thread.get_ident>)
+                    <method 'update' of 'dict' objects>          --    4000    4000 -- 0.00305 0.00305 -- ~:0:<method 'update' of 'dict' objects> (<method 'update' of 'dict' objects>)
+                    <method 'copy' of 'dict' objects>            --    4000    4000 -- 0.00280 0.00280 -- ~:0:<method 'copy' of 'dict' objects> (<method 'copy' of 'dict' objects>)
+                    <built-in method builtins.len>               --    4000    4000 -- 0.00211 0.00211 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+                dtype_is_implied                                 --    4000    4000 -- 0.00846 0.00846 -- arrayprint.py:1415:dtype_is_implied (dtype_is_implied)
+                dtype_short_repr                                 --    4000    4000 -- 0.03178 0.10825 -- arrayprint.py:1455:dtype_short_repr (dtype_short_repr)
+                    _name_get                                    --    4000    4000 -- 0.01968 0.06870 -- _dtype.py:346:_name_get (_name_get)
+                        _kind_name                               --    4000    4000 -- 0.00361 0.00361 -- _dtype.py:24:_kind_name (_kind_name)
+                        _name_includes_bit_suffix                --    4000    4000 -- 0.00822 0.03896 -- _dtype.py:330:_name_includes_bit_suffix (_name_includes_bit_suffix)
+                            issubdtype                           --    4000    4000 -- 0.01169 0.03074 -- numerictypes.py:357:issubdtype (issubdtype)
+                                issubclass_                      --    8000    8000 -- 0.01170 0.01711 -- numerictypes.py:283:issubclass_ (issubclass_)
+                                    <built-in met....issubclass> --    8000    8000 -- 0.00541 0.00541 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
+                                <built-in metho...ns.issubclass> --    4000    4000 -- 0.00193 0.00193 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
+                        <method 'format' of 'str' objects>       --    4000    4000 -- 0.00449 0.00449 -- ~:0:<method 'format' of 'str' objects> (<method 'format' of 'str' objects>) +++
+                        <built-in method builtins.issubclass>    --    4000    4000 -- 0.00197 0.00197 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
+                    <method 'isalpha' of 'str' objects>          --    4000    4000 -- 0.00283 0.00283 -- ~:0:<method 'isalpha' of 'str' objects> (<method 'isalpha' of 'str' objects>)
+                    <method 'isalnum' of 'str' objects>          --    4000    4000 -- 0.00258 0.00258 -- ~:0:<method 'isalnum' of 'str' objects> (<method 'isalnum' of 'str' objects>)
+                    <built-in method builtins.issubclass>        --    4000    4000 -- 0.00235 0.00235 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
+                <method 'rfind' of 'str' objects>                --    4000    4000 -- 0.00284 0.00284 -- ~:0:<method 'rfind' of 'str' objects> (<method 'rfind' of 'str' objects>)
+                <method 'format' of 'str' objects>               --    4000    4000 -- 0.00341 0.00341 -- ~:0:<method 'format' of 'str' objects> (<method 'format' of 'str' objects>) +++
+                <built-in method builtins.len>                   --    8000    8000 -- 0.00403 0.00403 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+            numpy                                                --    4000    4000 -- 0.02938 0.02938 -- ort_tensors.py:61:numpy (numpy)
+        <method 'get' of 'dict' objects>                         --    2000    2000 -- 0.00124 0.00124 -- ~:0:<method 'get' of 'dict' objects> (<method 'get' of 'dict' objects>)
+        <built-in method builtins.len>                           --    4000    4000 -- 0.00221 0.00221 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+    get_cst_var                                                  --    2000    2000 -- 0.00742 0.01227 -- npx_var.py:216:get_cst_var (get_cst_var)
+        parent                                                   --    2000    2000 -- 0.00340 0.00485 -- <frozen importlib._bootstrap>:404:parent (parent)
+            <method 'rpartition' of 'str' objects>               --    2000    2000 -- 0.00146 0.00146 -- ~:0:<method 'rpartition' of 'str' objects> (<method 'rpartition' of 'str' objects>)
+    __init__                                                     --    3000    3000 -- 0.04524 0.07556 -- npx_var.py:287:__init__ (__init__)
+        __init__                                                 --    3000    3000 -- 0.00229 0.00229 -- npx_var.py:281:__init__ (__init__)
+        <listcomp>                                               --    3000    3000 -- 0.00235 0.00235 -- npx_var.py:345:<listcomp> (<listcomp>)
+        self_var                                                 --    2000    2000 -- 0.00256 0.00372 -- npx_var.py:375:self_var (self_var) +++
+        <method 'items' of 'dict' objects>                       --    3000    3000 -- 0.00174 0.00174 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
+        <built-in method builtins.hasattr>                       --    3000    3000 -- 0.00178 0.00178 -- ~:0:<built-in method builtins.hasattr> (<built-in method builtins.hasattr>) +++
+        <built-in method builtins.isinstance>                    --   23000   23000 -- 0.01398 0.01398 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+        <built-in method builtins.len>                           --    6000    6000 -- 0.00354 0.00354 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+        <method 'ravel' of 'numpy.ndarray' objects>              --    1000    1000 -- 0.00093 0.00093 -- ~:0:<method 'ravel' of 'numpy.ndarray' objects> (<method 'ravel' of 'numpy.ndarray' objects>)
+    self_var                                                     --    4000    4000 -- 0.00527 0.00773 -- npx_var.py:375:self_var (self_var)
+        <built-in method builtins.hasattr>                       --    4000    4000 -- 0.00246 0.00246 -- ~:0:<built-in method builtins.hasattr> (<built-in method builtins.hasattr>) +++
+    __init__                                                     --    3000    3000 -- 0.00698 0.01058 -- ort_tensors.py:144:__init__ (__init__)
+        <built-in method builtins.isinstance>                    --    5000    5000 -- 0.00360 0.00360 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+    value                                                        --    3000    3000 -- 0.00177 0.00177 -- ort_tensors.py:192:value (value)
+    loop                                                         --       1       1 -- 0.00001 3.41418 -- plot_onnxruntime.py:66:loop (loop)
+        loop_ort                                                 --       1       1 -- 0.00475 3.22619 -- plot_onnxruntime.py:56:loop_ort (loop_ort)
+            __call__                                             --    1000    1000 -- 0.00685 3.22145 -- npx_jit_eager.py:584:__call__ (__call__)
+                info                                             --    2000    2000 -- 0.00732 0.01245 -- npx_jit_eager.py:52:info (info) +++
+                cast_to_tensor_class                             --    1000    1000 -- 0.00507 0.01299 -- npx_jit_eager.py:394:cast_to_tensor_class (cast_to_tensor_class)
+                    __init__                                     --    2000    2000 -- 0.00407 0.00680 -- ort_tensors.py:144:__init__ (__init__) +++
+                    <method 'append' of 'list' objects>          --    2000    2000 -- 0.00113 0.00113 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>) +++
+                cast_from_tensor_class                           --    1000    1000 -- 0.00357 0.00560 -- npx_jit_eager.py:411:cast_from_tensor_class (cast_from_tensor_class)
+                    value                                        --    1000    1000 -- 0.00061 0.00061 -- ort_tensors.py:192:value (value) +++
+                    <built-in method builtins.isinstance>        --    1000    1000 -- 0.00087 0.00087 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+                    <built-in method builtins.len>               --    1000    1000 -- 0.00056 0.00056 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+                jit_call                                         --    1000    1000 -- 0.01712 3.18355 -- npx_jit_eager.py:462:jit_call (jit_call)
+                    info                                         --    3000    3000 -- 0.02493 2.38735 -- npx_jit_eager.py:52:info (info) +++
+                    make_key                                     --    1000    1000 -- 0.00768 0.03081 -- npx_jit_eager.py:151:make_key (make_key)
+                        key                                      --    2000    2000 -- 0.00554 0.02067 -- ort_tensors.py:187:key (key)
+                            shape                                --    2000    2000 -- 0.00251 0.00251 -- ort_tensors.py:177:shape (shape)
+                            dtype                                --    2000    2000 -- 0.00558 0.01159 -- ort_tensors.py:182:dtype (dtype)
+                                __init__                         --    2000    2000 -- 0.00389 0.00601 -- npx_types.py:29:__init__ (__init__)
+                                    <built-in met....isinstance> --    4000    4000 -- 0.00213 0.00213 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+                            <built-in method builtins.len>       --    2000    2000 -- 0.00104 0.00104 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+                        <method 'append' of 'list' objects>      --    2000    2000 -- 0.00103 0.00103 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>) +++
+                        <built-in method builtins.isinstance>    --    2000    2000 -- 0.00143 0.00143 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+                    move_input_to_kwargs                         --    1000    1000 -- 0.00092 0.00092 -- npx_jit_eager.py:426:move_input_to_kwargs (move_input_to_kwargs)
+                    __hash__                                     --    4000    4000 -- 0.00227 0.00227 -- npx_types.py:45:__hash__ (__hash__)
+                    __eq__                                       --    4000    4000 -- 0.00281 0.00281 -- npx_types.py:56:__eq__ (__eq__)
+                    run                                          --    1000    1000 -- 0.73632 0.74228 -- ort_tensors.py:124:run (run)
+                        __init__                                 --    1000    1000 -- 0.00291 0.00378 -- ort_tensors.py:144:__init__ (__init__) +++
+                        value                                    --    2000    2000 -- 0.00116 0.00116 -- ort_tensors.py:192:value (value) +++
+                        <built-in method builtins.len>           --    2000    2000 -- 0.00101 0.00101 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+        loop_numpy                                               --       1       1 -- 0.00114 0.18798 -- plot_onnxruntime.py:61:loop_numpy (loop_numpy)
+            myloss                                               --    1000    1000 -- 0.00558 0.18684 -- plot_onnxruntime.py:28:myloss (myloss)
+                __add__                                          --    1000    1000 -- 0.00158 0.04552 -- npx_var.py:645:__add__ (__add__)
+                    _binary_op                                   --    1000    1000 -- 0.00495 0.04394 -- npx_var.py:615:_binary_op (_binary_op)
+                        var                                      --    1000    1000 -- 0.00224 0.02998 -- npx_core_api.py:54:var (var) +++
+                        get_cst_var                              --    1000    1000 -- 0.00380 0.00615 -- npx_var.py:216:get_cst_var (get_cst_var) +++
+                        self_var                                 --    1000    1000 -- 0.00132 0.00199 -- npx_var.py:375:self_var (self_var) +++
+                        <built-in method builtins.isinstance>    --    1000    1000 -- 0.00087 0.00087 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+                l1_loss                                          --    1000    1000 -- 0.01208 0.10657 -- plot_onnxruntime.py:20:l1_loss (l1_loss)
+                    wrapper                                      --    1000    1000 -- 0.01920 0.05714 -- npx_core_api.py:142:wrapper (wrapper)
+                        annotation                               --    1000    1000 -- 0.00060 0.00060 -- inspect.py:2695:annotation (annotation)
+                        kind                                     --    2000    2000 -- 0.00116 0.00116 -- inspect.py:2699:kind (kind)
+                        parameters                               --    2000    2000 -- 0.00123 0.00123 -- inspect.py:3006:parameters (parameters)
+                        return_annotation                        --    1000    1000 -- 0.00066 0.00066 -- inspect.py:3010:return_annotation (return_annotation)
+                        __init__                                 --    1000    1000 -- 0.01572 0.02582 -- npx_var.py:287:__init__ (__init__) +++
+                        <method 'items' of ...ingproxy' objects> --    1000    1000 -- 0.00078 0.00078 -- ~:0:<method 'items' of 'mappingproxy' objects> (<method 'items' of 'mappingproxy' objects>)
+                        <method 'items' of 'dict' objects>       --    1000    1000 -- 0.00059 0.00059 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>) +++
+                        <method 'append' of 'list' objects>      --    1000    1000 -- 0.00064 0.00064 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>) +++
+                        <built-in method builtins.any>           --    1000    1000 -- 0.00143 0.00341 -- ~:0:<built-in method builtins.any> (<built-in method builtins.any>)
+                            <lambda>                             --    1000    1000 -- 0.00132 0.00199 -- npx_core_api.py:143:<lambda> (<lambda>)
+                                <built-in metho...ns.isinstance> --    1000    1000 -- 0.00067 0.00067 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+                        <built-in method builtins.isinstance>    --    2000    2000 -- 0.00124 0.00124 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>) +++
+                        <built-in method builtins.issubclass>    --    2000    2000 -- 0.00123 0.00123 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>) +++
+                        <built-in method builtins.len>           --    1000    1000 -- 0.00058 0.00058 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+                    sum                                          --    1000    1000 -- 0.00172 0.03735 -- npx_var.py:890:sum (sum)
+                        reduce_function                          --    1000    1000 -- 0.00336 0.03563 -- npx_var.py:871:reduce_function (reduce_function)
+                            var                                  --    1000    1000 -- 0.00212 0.02412 -- npx_core_api.py:54:var (var) +++
+                            get_cst_var                          --    1000    1000 -- 0.00362 0.00612 -- npx_var.py:216:get_cst_var (get_cst_var) +++
+                            self_var                             --    1000    1000 -- 0.00140 0.00202 -- npx_var.py:375:self_var (self_var) +++
+                l2_loss                                          --    1000    1000 -- 0.01778 0.02916 -- plot_onnxruntime.py:24:l2_loss (l2_loss)
+                    <method 'sum' of 'numpy.ndarray' objects>    --    1000    1000 -- 0.00175 0.01138 -- ~:0:<method 'sum' of 'numpy.ndarray' objects> (<method 'sum' of 'numpy.ndarray' objects>)
+                        _sum                                     --    1000    1000 -- 0.00153 0.00963 -- _methods.py:47:_sum (_sum)
+                            <method 'reduce' ....ufunc' objects> --    1000    1000 -- 0.00810 0.00810 -- ~:0:<method 'reduce' of 'numpy.ufunc' objects> (<method 'reduce' of 'numpy.ufunc' objects>) +++
+    <built-in method builtins.len>                               --  576000  576000 -- 0.26183 0.26183 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>)
+    <method 'append' of 'list' objects>                          --    5000    5000 -- 0.00279 0.00279 -- ~:0:<method 'append' of 'list' objects> (<method 'append' of 'list' objects>)
+    <built-in method builtins.isinstance>                        --   59000   59000 -- 0.03555 0.03555 -- ~:0:<built-in method builtins.isinstance> (<built-in method builtins.isinstance>)
+    <method 'items' of 'dict' objects>                           --   16000   16000 -- 0.00880 0.00880 -- ~:0:<method 'items' of 'dict' objects> (<method 'items' of 'dict' objects>)
+    <built-in method builtins.issubclass>                        --   38000   38000 -- 0.02078 0.02078 -- ~:0:<built-in method builtins.issubclass> (<built-in method builtins.issubclass>)
+    <built-in method builtins.hasattr>                           --    7000    7000 -- 0.00424 0.00424 -- ~:0:<built-in method builtins.hasattr> (<built-in method builtins.hasattr>)
+    <method 'reduce' of 'numpy.ufunc' objects>                   --    9000    9000 -- 0.03778 0.03778 -- ~:0:<method 'reduce' of 'numpy.ufunc' objects> (<method 'reduce' of 'numpy.ufunc' objects>)
+    <method 'format' of 'str' objects>                           --    8000    8000 -- 0.00790 0.00790 -- ~:0:<method 'format' of 'str' objects> (<method 'format' of 'str' objects>)
+    <built-in method builtins.max>                               --   32000   32000 -- 0.07396 0.21209 -- ~:0:<built-in method builtins.max> (<built-in method builtins.max>)
+        <genexpr>                                                --   52000   52000 -- 0.04843 0.07053 -- arrayprint.py:993:<genexpr> (<genexpr>)
+            <built-in method builtins.len>                       --   48000   48000 -- 0.02210 0.02210 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+        <genexpr>                                                --   52000   52000 -- 0.04646 0.06760 -- arrayprint.py:994:<genexpr> (<genexpr>)
+            <built-in method builtins.len>                       --   48000   48000 -- 0.02114 0.02114 -- ~:0:<built-in method builtins.len> (<built-in method builtins.len>) +++
+    <built-in method numpy.core._...ay_umath.dragon4_positional> --   96000   96000 -- 0.10199 0.10199 -- ~:0:<built-in method numpy.core._multiarray_umath.dragon4_positional> (<built-in method numpy.core._multiarray_umath.dragon4_positional>)
+    <built-in method numpy.geterrobj>                            --   16000   16000 -- 0.00894 0.00894 -- ~:0:<built-in method numpy.geterrobj> (<built-in method numpy.geterrobj>)
 
 
 
@@ -367,7 +366,7 @@ Benchmark
 
  .. code-block:: none
 
-      0%|          | 0/6 [00:00<?, ?it/s]     17%|█▋        | 1/6 [00:01<00:07,  1.47s/it]     33%|███▎      | 2/6 [00:03<00:06,  1.65s/it]     50%|█████     | 3/6 [00:08<00:10,  3.35s/it]     67%|██████▋   | 4/6 [00:10<00:05,  2.63s/it]     83%|████████▎ | 5/6 [00:12<00:02,  2.37s/it]    100%|██████████| 6/6 [00:16<00:00,  2.97s/it]    100%|██████████| 6/6 [00:16<00:00,  2.70s/it]
+      0%|          | 0/6 [00:00<?, ?it/s]     17%|█▋        | 1/6 [00:00<00:02,  2.08it/s]     33%|███▎      | 2/6 [00:01<00:02,  1.74it/s]     50%|█████     | 3/6 [00:03<00:04,  1.34s/it]     67%|██████▋   | 4/6 [00:03<00:02,  1.05s/it]     83%|████████▎ | 5/6 [00:04<00:00,  1.06it/s]    100%|██████████| 6/6 [00:05<00:00,  1.02s/it]    100%|██████████| 6/6 [00:05<00:00,  1.02it/s]
 
 
 .. raw:: html
@@ -403,33 +402,33 @@ Benchmark
       <tbody>
         <tr>
           <th>1</th>
-          <td>0.000067</td>
-          <td>0.002864</td>
+          <td>0.000023</td>
+          <td>0.000936</td>
         </tr>
         <tr>
           <th>10</th>
-          <td>0.000042</td>
-          <td>0.003509</td>
+          <td>0.000025</td>
+          <td>0.001256</td>
         </tr>
         <tr>
           <th>100</th>
-          <td>0.000079</td>
-          <td>0.010673</td>
+          <td>0.000023</td>
+          <td>0.004456</td>
         </tr>
         <tr>
           <th>1000</th>
-          <td>0.000046</td>
-          <td>0.002968</td>
+          <td>0.000026</td>
+          <td>0.001217</td>
         </tr>
         <tr>
           <th>10000</th>
-          <td>0.000075</td>
-          <td>0.003763</td>
+          <td>0.000041</td>
+          <td>0.001427</td>
         </tr>
         <tr>
           <th>100000</th>
-          <td>0.000791</td>
-          <td>0.007406</td>
+          <td>0.000214</td>
+          <td>0.002102</td>
         </tr>
       </tbody>
     </table>
@@ -472,7 +471,7 @@ Plots
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 55.274 seconds)
+   **Total running time of the script:** (0 minutes 16.864 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_onnxruntime.py:
