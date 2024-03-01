@@ -169,19 +169,24 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_builder_pattern.html">graph_builder_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/convert.html">convert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/torch_dynamo.html">torch_dynamo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/misc.html">Others…</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="bug_dort.html">To ignore</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_linreg.html">Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_custom_backend.html">A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_llama_bench.html">Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_llama_diff_dort.html">Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_aot.html">Evaluate DORT Training</a></li>
@@ -241,7 +246,7 @@ to download the full example code</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.ext_test_case</span> <span class="kn">import</span> <span class="n">get_parsed_args</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.args</span> <span class="kn">import</span> <span class="n">get_parsed_args</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">onnx_extended.tools.js_profile</span> <span class="kn">import</span> <span class="p">(</span>
@@ -253,10 +258,10 @@ to download the full example code</p>
 
 <span class="k">try</span><span class="p">:</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span>
-        <a href="https://docs.python.org/3/library/os.path.html#os.path.dirname" title="os.path.dirname" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span></a><span class="p">(</span><span class="vm">__file__</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;example_4700-CPUep-opt.onnx&quot;</span>
+        <a href="https://docs.python.org/3/library/os.path.html#os.path.dirname" title="os.path.dirname" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span></a><span class="p">(</span><span class="vm">__file__</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;example_4700-CPUep-opt.onnx&quot;</span>
     <span class="p">)</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a> <span class="o">=</span> <span class="s2">&quot;example_4700-CPUep-opt.onnx&quot;</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a> <span class="o">=</span> <span class="s2">&quot;data/example_4700-CPUep-opt.onnx&quot;</span>
 
 <a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span></a> <span class="o">=</span> <span class="n">get_parsed_args</span><span class="p">(</span>
     <span class="s2">&quot;plot_profile_existing_onnx&quot;</span><span class="p">,</span>
@@ -270,7 +275,7 @@ to download the full example code</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">att</span></a><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span></a><span class="p">,</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">att</span></a><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>filename=example_4700-CPUep-opt.onnx
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>filename=data/example_4700-CPUep-opt.onnx
 repeat=10
 </pre></div>
 </div>
@@ -304,202 +309,200 @@ repeat=10
 <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feeds</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2024-02-06 01:26:08,735] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-
-[array([[0.22716433, 0.642355  , 0.08302658, ..., 0.39913985, 0.925505  ,
-        0.37640023],
-       [0.98648435, 0.30556285, 0.70134234, ..., 0.5551272 , 0.7741102 ,
-        0.82418686],
-       [0.54042584, 0.2549982 , 0.21614042, ..., 0.34107348, 0.8963622 ,
-        0.85447156],
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[array([[0.2876195 , 0.5117501 , 0.5808538 , ..., 0.1444196 , 0.56635034,
+        0.2122225 ],
+       [0.99835056, 0.25958943, 0.56490546, ..., 0.6698666 , 0.5851074 ,
+        0.5103866 ],
+       [0.56445265, 0.9916739 , 0.21463436, ..., 0.52340025, 0.08450214,
+        0.8234746 ],
        ...,
-       [0.16653132, 0.4208267 , 0.36833766, ..., 0.5799534 , 0.33223665,
-        0.9883498 ],
-       [0.3402977 , 0.8929004 , 0.34544024, ..., 0.85223544, 0.888768  ,
-        0.5457919 ],
-       [0.35579878, 0.83379334, 0.44058108, ..., 0.03338636, 0.29458284,
-        0.64561576]], dtype=float32), array([[0.09106781, 0.5738359 , 0.01990874, ..., 0.6155384 , 0.36685556,
-        0.9759759 ],
-       [0.43439332, 0.25673133, 0.987796  , ..., 0.55825776, 0.3004231 ,
-        0.37847072],
-       [0.02802572, 0.1841006 , 0.40066758, ..., 0.65733844, 0.14516748,
-        0.47570494],
+       [0.14812194, 0.50253326, 0.43443578, ..., 0.4086174 , 0.6966787 ,
+        0.42965114],
+       [0.03591241, 0.20481965, 0.2321806 , ..., 0.3256641 , 0.4245941 ,
+        0.42964455],
+       [0.4323998 , 0.78594446, 0.9971084 , ..., 0.93515295, 0.31700474,
+        0.9902859 ]], dtype=float32), array([[0.5691713 , 0.70741266, 0.77981204, ..., 0.8283299 , 0.6694671 ,
+        0.764162  ],
+       [0.0179204 , 0.36627162, 0.4233793 , ..., 0.7645771 , 0.6984718 ,
+        0.43186122],
+       [0.8223825 , 0.45931533, 0.3134253 , ..., 0.9082416 , 0.71765   ,
+        0.8254232 ],
        ...,
-       [0.10898405, 0.99316627, 0.4932495 , ..., 0.58059764, 0.73531157,
-        0.30616608],
-       [0.01364807, 0.36755332, 0.24891606, ..., 0.37868112, 0.35123128,
-        0.14378183],
-       [0.9581462 , 0.33972782, 0.7094195 , ..., 0.06950174, 0.6516847 ,
-        0.0626073 ]], dtype=float32), array([[0.92268085, 0.40554526, 0.01055187, ..., 0.80893236, 0.23773211,
-        0.4128545 ],
-       [0.43957782, 0.4506987 , 0.18714654, ..., 0.36704278, 0.57260996,
-        0.23477083],
-       [0.41005483, 0.10182983, 0.13185838, ..., 0.08146195, 0.84076273,
-        0.49762738],
+       [0.6895251 , 0.4472346 , 0.20438279, ..., 0.644505  , 0.671722  ,
+        0.98787606],
+       [0.35419458, 0.8755268 , 0.7690707 , ..., 0.07503936, 0.11422893,
+        0.5025516 ],
+       [0.24902508, 0.15185626, 0.9755437 , ..., 0.07168645, 0.21048105,
+        0.2907118 ]], dtype=float32), array([[0.11874787, 0.14513518, 0.7710519 , ..., 0.09440693, 0.7684218 ,
+        0.56851745],
+       [0.2867651 , 0.5745776 , 0.2098678 , ..., 0.01421903, 0.27903977,
+        0.63845086],
+       [0.5093601 , 0.56659496, 0.25292808, ..., 0.20563196, 0.78882056,
+        0.90239924],
        ...,
-       [0.5869092 , 0.09400484, 0.21671255, ..., 0.47720975, 0.78601557,
-        0.932834  ],
-       [0.6833752 , 0.91461116, 0.41884148, ..., 0.6385049 , 0.92720515,
-        0.0303773 ],
-       [0.54649824, 0.00458358, 0.06905705, ..., 0.9754046 , 0.82303196,
-        0.0397622 ]], dtype=float32), array([[[[6.8780403, 6.922937 , 7.748275 , ..., 6.710476 , 6.7517147,
-          7.872851 ],
-         [5.7637534, 7.5714693, 7.324022 , ..., 7.072465 , 6.8969245,
-          8.010185 ],
-         [5.337053 , 6.039088 , 6.4656215, ..., 7.8429794, 7.082104 ,
-          6.200628 ],
+       [0.83604807, 0.60735476, 0.42201418, ..., 0.7659215 , 0.8409808 ,
+        0.57881266],
+       [0.7611512 , 0.5810545 , 0.44881788, ..., 0.6827203 , 0.9043809 ,
+        0.6448885 ],
+       [0.7308071 , 0.27793026, 0.7728836 , ..., 0.8124605 , 0.6235438 ,
+        0.35099927]], dtype=float32), array([[[[8.162036 , 7.833201 , 9.086611 , ..., 8.532031 , 9.624469 ,
+          8.771687 ],
+         [7.7418365, 6.864408 , 7.386648 , ..., 9.65583  , 9.202703 ,
+          8.169796 ],
+         [6.300659 , 6.428025 , 6.7360234, ..., 9.164555 , 8.769712 ,
+          8.333861 ],
          ...,
-         [5.8470325, 6.1076107, 6.0052204, ..., 5.4582853, 6.699426 ,
-          6.0897584],
-         [5.0187297, 6.0542912, 5.002329 , ..., 7.0357985, 6.549265 ,
-          6.310928 ],
-         [6.4206095, 5.526001 , 6.040769 , ..., 6.6257615, 7.194505 ,
-          7.6466403]],
+         [7.1707034, 6.8488965, 6.930076 , ..., 7.1334934, 6.7822437,
+          6.1923933],
+         [6.917442 , 7.3156943, 6.8298545, ..., 6.8045187, 7.1309357,
+          6.2299414],
+         [7.587194 , 7.834857 , 6.6771665, ..., 6.2968335, 7.8749437,
+          6.7653546]],
 
-        [[6.231985 , 7.450508 , 8.216831 , ..., 6.643682 , 7.3244076,
-          8.491497 ],
-         [7.0527964, 7.442278 , 7.64947  , ..., 7.284844 , 7.5847063,
-          7.731652 ],
-         [6.252473 , 6.2814717, 6.5782247, ..., 7.2594323, 7.4862375,
-          7.6282215],
+        [[8.671592 , 7.1797786, 8.405208 , ..., 9.945991 , 8.552855 ,
+          7.578799 ],
+         [7.054124 , 6.3580384, 7.6009445, ..., 8.765266 , 8.685154 ,
+          8.408999 ],
+         [6.0216484, 6.436605 , 7.591616 , ..., 8.312238 , 8.1008005,
+          7.8471546],
          ...,
-         [6.7830114, 6.3609276, 4.8467107, ..., 6.9470267, 5.9190516,
-          5.311853 ],
-         [6.2354236, 6.0229917, 5.059861 , ..., 7.6256175, 7.0199776,
-          6.2080045],
-         [5.717794 , 6.2387934, 6.4225817, ..., 7.0477624, 8.032475 ,
-          6.6974397]],
+         [6.6842413, 7.1806183, 6.716018 , ..., 7.2211676, 6.386374 ,
+          5.841573 ],
+         [7.541129 , 6.825078 , 6.0218883, ..., 6.0617013, 7.8224735,
+          5.111702 ],
+         [7.0433693, 8.1989   , 6.526661 , ..., 6.538168 , 7.5191555,
+          6.431716 ]],
 
-        [[4.103054 , 5.1147637, 4.99063  , ..., 4.630738 , 4.593536 ,
-          5.863354 ],
-         [5.22707  , 4.508402 , 5.7145743, ..., 4.5707235, 5.663673 ,
-          4.9612966],
-         [3.912483 , 4.3669643, 4.3416023, ..., 5.0296316, 5.398714 ,
-          4.49631  ],
+        [[6.7420373, 5.279814 , 7.275345 , ..., 7.568554 , 7.147992 ,
+          6.899546 ],
+         [5.9175158, 4.8466516, 6.78073  , ..., 7.175529 , 7.5190606,
+          6.349278 ],
+         [6.033977 , 4.951977 , 5.927906 , ..., 7.278926 , 7.13614  ,
+          6.832379 ],
          ...,
-         [4.0542717, 3.949836 , 4.0732965, ..., 4.679947 , 3.8705037,
-          4.070305 ],
-         [4.4870095, 3.2206733, 4.045558 , ..., 4.441333 , 4.003667 ,
-          4.6800528],
-         [3.654995 , 4.2490377, 4.2205462, ..., 4.896993 , 5.087123 ,
-          5.021636 ]],
+         [5.9042263, 5.283274 , 5.2899523, ..., 5.061372 , 6.0520644,
+          4.6687737],
+         [6.101915 , 5.6617355, 4.767281 , ..., 5.6628084, 5.951068 ,
+          5.4981494],
+         [6.3249   , 6.4121957, 5.8040385, ..., 5.130267 , 5.634894 ,
+          5.459363 ]],
 
         ...,
 
-        [[5.6349735, 6.2968016, 6.740759 , ..., 5.622659 , 6.4690475,
-          7.077789 ],
-         [5.826725 , 7.2487874, 6.915916 , ..., 6.1781063, 5.7085676,
-          6.0724316],
-         [4.679414 , 5.320134 , 5.3783517, ..., 6.0525894, 5.74466  ,
-          6.169994 ],
+        [[7.980233 , 8.0885725, 8.960002 , ..., 8.353904 , 9.192875 ,
+          8.392377 ],
+         [7.3083396, 7.0497165, 7.326481 , ..., 8.602455 , 9.567448 ,
+          8.46218  ],
+         [6.195168 , 6.980537 , 6.0513244, ..., 8.24608  , 8.924954 ,
+          8.614551 ],
          ...,
-         [4.6904416, 4.9037924, 4.824571 , ..., 5.122126 , 5.0232625,
-          4.4206424],
-         [5.483167 , 5.383672 , 4.4564004, ..., 6.0094495, 5.7195907,
-          5.5536394],
-         [6.393601 , 5.129305 , 5.3777404, ..., 7.2529216, 5.96471  ,
-          6.1345067]],
+         [7.5765967, 6.8857126, 6.933799 , ..., 6.1475043, 6.688593 ,
+          6.6325045],
+         [6.538036 , 7.6856594, 6.6975675, ..., 6.29707  , 6.1151676,
+          6.584181 ],
+         [7.2074056, 7.805776 , 6.9075265, ..., 6.9406767, 7.8174467,
+          7.3419976]],
 
-        [[6.031075 , 5.7553926, 7.0703893, ..., 5.757337 , 6.848085 ,
-          7.6742845],
-         [6.390192 , 6.7332697, 7.17021  , ..., 6.2188416, 6.520779 ,
-          6.4045324],
-         [5.555749 , 5.8363366, 6.270012 , ..., 6.987903 , 7.5714793,
-          6.333626 ],
+        [[7.4830527, 7.0091524, 7.386139 , ..., 8.880746 , 7.93859  ,
+          7.4498973],
+         [6.7243304, 5.7233915, 6.7963214, ..., 7.9925094, 8.451145 ,
+          8.292507 ],
+         [6.226204 , 6.146023 , 7.027174 , ..., 7.1245203, 8.633364 ,
+          7.6505265],
          ...,
-         [5.1482944, 4.679238 , 5.4918456, ..., 5.338304 , 5.0398684,
-          5.9022617],
-         [5.5966754, 5.1993675, 4.7779675, ..., 6.5200872, 5.0649242,
-          5.722456 ],
-         [5.347056 , 4.8695793, 5.832191 , ..., 6.23902  , 6.274536 ,
-          7.011941 ]],
+         [6.4050555, 6.333716 , 6.682142 , ..., 5.103699 , 5.7443924,
+          5.6825404],
+         [6.6103177, 6.1101723, 5.6713586, ..., 5.493293 , 6.9923697,
+          6.563698 ],
+         [6.556048 , 6.7829504, 7.092544 , ..., 5.844845 , 6.5009556,
+          6.5500703]],
 
-        [[6.781167 , 7.8541136, 7.8276687, ..., 6.5935783, 7.867651 ,
-          8.799418 ],
-         [6.971402 , 8.251391 , 7.979444 , ..., 7.6337605, 7.381488 ,
-          6.9452147],
-         [6.001371 , 7.0008926, 7.084465 , ..., 7.379814 , 7.120801 ,
-          7.1995964],
+        [[6.6341386, 6.2455273, 7.228097 , ..., 7.431932 , 8.259226 ,
+          7.6404023],
+         [6.607283 , 6.3089185, 6.7301507, ..., 7.4966717, 7.959837 ,
+          7.42487  ],
+         [6.2900805, 6.210145 , 5.9718976, ..., 6.5745063, 8.425179 ,
+          7.1123285],
          ...,
-         [5.4307947, 5.7537346, 5.73609  , ..., 6.189144 , 5.86736  ,
-          6.3033104],
-         [6.1996675, 5.4867315, 5.43501  , ..., 6.4758677, 6.8239803,
-          6.429833 ],
-         [6.9226165, 6.5803227, 6.553292 , ..., 8.628633 , 7.0443993,
-          6.975088 ]]]], dtype=float32), array([[[[    3,   254,   259, ...,   238,   366,   247],
-         [  871,   627,   629, ...,   611,   614,   989],
-         [  993,  1121,  1000, ...,  1476,  1482,  1238],
+         [6.5814714, 5.31872  , 5.4532747, ..., 4.6710997, 6.0941043,
+          5.572054 ],
+         [5.8176374, 6.8027425, 5.7372656, ..., 5.4095173, 5.6056085,
+          6.979456 ],
+         [6.6777315, 6.254417 , 6.6716757, ..., 5.8224206, 6.0780997,
+          6.1267886]]]], dtype=float32), array([[[[    2,     4,   381, ...,   486,   488,   245],
+         [  868,   875,   506, ...,   734,   613,   742],
+         [  993,  1370,  1000, ...,  1477,  1482,  1363],
          ...,
-         [14261, 14018, 14023, ..., 14248, 14377, 14256],
-         [14633, 14762, 14395, ..., 14499, 14500, 14507],
-         [15252, 14885, 15012, ..., 15367, 15369, 15375]],
+         [13890, 14019, 13897, ..., 14126, 14006, 14382],
+         [14384, 14637, 14641, ..., 14496, 14875, 14507],
+         [15255, 15011, 14890, ..., 15243, 15122, 15002]],
 
-        [[    2,   128,    11, ...,   487,   240,   123],
-         [  870,   751,   629, ...,   611,   614,   989],
-         [ 1119,   998,  1001, ...,  1476,  1110,  1362],
+        [[    0,   254,   135, ...,   362,   367,   121],
+         [  868,   503,   504, ...,   610,   736,   991],
+         [ 1366,  1370,  1248, ...,  1479,  1482,  1363],
          ...,
-         [13891, 14141, 13899, ..., 14249, 14379, 14256],
-         [14634, 14391, 14395, ..., 14499, 14624, 14631],
-         [15004, 14886, 15136, ..., 14992, 15369, 15374]],
+         [13890, 14019, 13897, ..., 14000, 14006, 14382],
+         [14508, 14389, 14766, ..., 14496, 14875, 14507],
+         [15131, 15134, 15013, ..., 15367, 15247, 15002]],
 
-        [[  126,     4,   383, ...,   363,   365,   123],
-         [  869,   751,   630, ...,   611,   986,   617],
-         [  995,  1121,  1001, ...,  1228,  1110,  1362],
+        [[    2,     6,   258, ...,   486,   488,   121],
+         [  868,   503,   752, ...,   610,   612,   991],
+         [ 1366,  1247,  1124, ...,  1479,  1481,  1363],
          ...,
-         [13891, 14019, 14270, ..., 14000, 14378, 14256],
-         [14757, 14390, 14395, ..., 14499, 14872, 14505],
-         [14880, 14886, 15136, ..., 15366, 15369, 15248]],
+         [14262, 14265, 14269, ..., 14003, 14004, 14382],
+         [14384, 14638, 14765, ..., 14496, 14627, 14507],
+         [15007, 15010, 14890, ..., 15243, 15247, 15002]],
 
         ...,
 
-        [[  125,   379,   258, ...,   114,   243,   123],
-         [  870,   751,   629, ...,   611,   738,   991],
-         [  993,  1121,  1375, ...,  1476,  1482,  1486],
+        [[    2,   129,   383, ...,   486,   242,   246],
+         [  497,   502,   504, ...,   610,   737,   991],
+         [ 1367,   999,  1124, ...,  1479,  1235,  1363],
          ...,
-         [13889, 13893, 14147, ..., 14000, 14377, 14380],
-         [14385, 14760, 14392, ..., 14623, 14874, 14631],
-         [15252, 14884, 15260, ..., 15367, 14997, 15372]],
+         [14262, 14265, 13897, ..., 14000, 14128, 14383],
+         [14387, 14514, 14640, ..., 14620, 14873, 14507],
+         [15253, 15132, 14888, ..., 15365, 14999, 15003]],
 
-        [[  126,     4,    11, ...,   239,   366,   123],
-         [  871,   751,   629, ...,   611,   614,   617],
-         [  993,  1122,  1001, ...,  1230,  1111,  1362],
+        [[    3,     6,   381, ...,   486,   116,   121],
+         [  868,   875,   752, ...,   611,   738,   991],
+         [  992,  1246,  1248, ...,  1479,  1359,  1487],
          ...,
-         [13891, 13893, 14020, ..., 14248, 14379, 14256],
-         [14757, 14639, 14395, ..., 14871, 14872, 14630],
-         [15254, 15008, 15012, ..., 14992, 15369, 15375]],
+         [14262, 14265, 13896, ..., 14003, 14005, 14383],
+         [14385, 14636, 14641, ..., 14496, 14875, 14507],
+         [15254, 15011, 15138, ..., 15241, 15121, 15000]],
 
-        [[  125,   378,   381, ...,   362,   366,   123],
-         [  871,   750,   629, ...,   735,   738,   991],
-         [  993,  1121,  1001, ...,  1476,  1483,  1486],
+        [[    2,   253,   381, ...,   486,   490,   370],
+         [  746,   627,   876, ...,   734,   612,   991],
+         [ 1367,  1369,  1124, ...,  1479,  1359,  1487],
          ...,
-         [13891, 13893, 14145, ..., 14248, 14377, 14132],
-         [14385, 14391, 14392, ..., 14499, 14624, 14631],
-         [15252, 14884, 15012, ..., 15364, 15368, 15373]]]], dtype=int64), array([[7.838498 , 7.39933  , 7.7474947, ..., 7.9107575, 8.485791 ,
-        8.628633 ]], dtype=float32), array([[121365.61 , 120056.6  , 120989.07 , ..., 120560.18 , 121034.195,
-        120783.984]], dtype=float32), array([[61305940., 63596052., 63139048., 62665136., 60499864., 61596768.,
-        61334536., 60487936., 60504844., 60102636., 61622720., 62280472.,
-        61784572., 63577688., 60817824., 60779592., 62232836., 61562788.,
-        61272488., 62549816., 60899964., 59960540., 63336328., 61951816.,
-        62460560., 61074376., 62385040., 61746444., 61746832., 62330428.,
-        61988352., 62434008., 60377896., 62476076., 61614016., 61638724.,
-        62359928., 62444192., 60581688., 61336784., 62479152., 61392660.,
-        61569496., 62327720., 63544184., 61451504., 61955276., 60560864.,
-        63404888., 59793604., 62459888., 60843664., 63592016., 61765844.,
-        62220672., 62158368., 62475880., 62079372., 60825328., 62307676.,
-        61572736., 62401972., 62009704., 61363984., 59238692., 61781584.,
-        62204128., 62092248., 62001428., 61308112., 63799912., 64250084.,
-        61407036., 62756040., 63584984., 62274372., 61160088., 63993044.,
-        62177576., 62556688., 62085828., 61739652., 61424704., 62849776.,
-        62201908., 63332212., 60778412., 60564044., 62404944., 62332528.,
-        60168680., 61624068., 60783980., 64076328., 61149308., 63458280.,
-        63019048., 60543308., 60451008., 63321128., 63573496., 60311128.,
-        61289204., 62364580., 59637852., 62541732., 62482776., 62766688.,
-        61787536., 62316840., 61222064., 63281576., 61415776., 62792420.,
-        61798592., 63249744., 61826224., 62256340., 61402120., 61171264.,
-        60957648., 64344236., 60087296., 62237408., 62238088., 62165724.,
-        61705672., 63156680.]], dtype=float32), array([[4.1425592e+09, 3.8903332e+09, 3.8953073e+09, 4.1128643e+09,
-        4.0044083e+09, 3.7200154e+09, 3.8498808e+09, 4.2442683e+09,
-        3.9724616e+09, 3.7540160e+09]], dtype=float32)]
+         [14261, 14265, 14021, ..., 14124, 14006, 14259],
+         [14384, 14514, 14764, ..., 14620, 14875, 14507],
+         [15007, 15011, 14890, ..., 15365, 14996, 15251]]]], dtype=int64), array([[9.086611 , 8.145453 , 9.081896 , ..., 7.2495503, 7.391125 ,
+        6.979456 ]], dtype=float32), array([[124608.28 , 124693.016, 124310.11 , ..., 124402.4  , 123941.68 ,
+        124711.97 ]], dtype=float32), array([[62395696., 64087776., 63276664., 64629808., 64069260., 62861888.,
+        64757416., 62804360., 63868576., 63199488., 63514320., 64438008.,
+        60880736., 63046136., 62949344., 64800680., 62211920., 63438480.,
+        62808020., 63806104., 65403616., 63847396., 63862068., 65015376.,
+        60669168., 64458248., 63354984., 64482680., 63511892., 63156532.,
+        62395752., 62472552., 63366752., 62308032., 62842144., 64842024.,
+        63744632., 63185928., 65260096., 63927808., 64942852., 64514648.,
+        64390264., 64871144., 62446716., 63163528., 63282104., 63950616.,
+        64749360., 61363128., 63569676., 66337500., 65498460., 64209332.,
+        63737744., 65678076., 62477592., 62520808., 63190720., 64100216.,
+        62450216., 64199356., 64748552., 65093848., 62835948., 62939160.,
+        62133736., 63056384., 62091784., 63241252., 64631224., 63376168.,
+        67029928., 63982284., 63298240., 63561764., 63605748., 64159080.,
+        63777304., 62927440., 64108992., 62833624., 65886792., 62599116.,
+        65962304., 63822464., 64586432., 64938612., 63948504., 64903156.,
+        64387656., 64196572., 63674968., 66378536., 62489840., 64790236.,
+        65322664., 63959492., 61170960., 64124540., 64000320., 62887376.,
+        64492128., 63824684., 64531232., 64614188., 62512376., 65090336.,
+        63668952., 63488032., 63915064., 63649764., 63384728., 60940200.,
+        63729200., 61770088., 63679380., 63493780., 62718784., 64744032.,
+        64110504., 64060048., 62778232., 62720712., 63098304., 63081432.,
+        64910900., 64862836.]], dtype=float32), array([[3.8852695e+09, 4.1123016e+09, 3.8014925e+09, 3.8471398e+09,
+        3.8217843e+09, 4.2982246e+09, 3.7063199e+09, 4.2137126e+09,
+        4.1078049e+09, 4.3222856e+09]], dtype=float32)]
 </pre></div>
 </div>
 </section>
@@ -513,17 +516,26 @@ repeat=10
 <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof</span></a> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">end_profiling</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">js_profile_to_dataframe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <span class="n">js_profile_to_dataframe</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof</span></a><span class="p">,</span> <span class="n">first_it_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Index.html#pandas.Index" title="pandas.core.indexes.base.Index" class="sphx-glr-backref-module-pandas-core-indexes-base sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span><span class="o">.</span><span class="n">columns</span></a><span class="p">)</span>
     <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html#pandas.DataFrame.to_csv" title="pandas.DataFrame.to_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span></a><span class="p">(</span><span class="s2">&quot;plot_profile_existing_onnx.csv&quot;</span><span class="p">)</span>
     <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_excel.html#pandas.DataFrame.to_excel" title="pandas.DataFrame.to_excel" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">to_excel</span></a><span class="p">(</span><span class="s2">&quot;plot_profile_existing_onnx.xlsx&quot;</span><span class="p">)</span>
     <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
     <span class="n">plot_ort_profile</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;dort&quot;</span><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.tight_layout" title="matplotlib.figure.Figure.tight_layout" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
     <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_profile_existing_onnx.png&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Install onnx-extended first.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_profile_existing_onnx_001.png" srcset="../_images/sphx_glr_plot_profile_existing_onnx_001.png" alt="dort, n occurences" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 9.157 seconds)</p>
+<img src="../_images/sphx_glr_plot_profile_existing_onnx_001.png" srcset="../_images/sphx_glr_plot_profile_existing_onnx_001.png" alt="dort, n occurences" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Index([&#39;cat&#39;, &#39;pid&#39;, &#39;tid&#39;, &#39;dur&#39;, &#39;ts&#39;, &#39;ph&#39;, &#39;name&#39;, &#39;args_op_name&#39;,
+       &#39;op_name&#39;, &#39;args_thread_scheduling_stats&#39;, &#39;args_output_size&#39;,
+       &#39;args_parameter_size&#39;, &#39;args_activation_size&#39;, &#39;args_node_index&#39;,
+       &#39;args_provider&#39;, &#39;event_name&#39;, &#39;iteration&#39;, &#39;it==0&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.358 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-profile-existing-onnx-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4fec96388348572170cab364cc442b36/plot_profile_existing_onnx.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_profile_existing_onnx.ipynb</span></code></a></p>

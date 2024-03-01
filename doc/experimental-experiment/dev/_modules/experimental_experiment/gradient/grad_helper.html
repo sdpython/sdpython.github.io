@@ -168,18 +168,24 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_pattern.html">graph_builder_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench.html">Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort.html">Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort.html">Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot.html">Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export.html">Evaluate different ways to export a torch model to ONNX</a></li>
@@ -190,6 +196,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../long_outputs.html">Long Outputs uneasy to read</a></li>
 </ul>
 
 </div>
@@ -624,6 +631,7 @@
     <span class="n">new_model</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">grad_yield</span><span class="o">.</span><span class="n">domain</span>
     <span class="n">new_model</span><span class="o">.</span><span class="n">model_version</span> <span class="o">=</span> <span class="n">grad_yield</span><span class="o">.</span><span class="n">model_version</span>
     <span class="n">new_model</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">grad_yield</span><span class="o">.</span><span class="n">doc_string</span>
+    <span class="n">new_model</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="n">onx</span><span class="o">.</span><span class="n">ir_version</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="s2">&quot;value_info&quot;</span><span class="p">):</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">grad_yield</span><span class="o">.</span><span class="n">value_info</span><span class="p">)</span>
     <span class="k">del</span> <span class="n">new_model</span><span class="o">.</span><span class="n">opset_import</span><span class="p">[:]</span>
@@ -637,6 +645,7 @@
     <span class="n">g</span> <span class="o">=</span> <span class="n">GraphBuilder</span><span class="p">(</span><span class="n">new_model</span><span class="p">)</span>
     <span class="n">g</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
     <span class="n">onx_grad</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>
+    <span class="n">onx_grad</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="n">new_model</span><span class="o">.</span><span class="n">ir_version</span>
     <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_onnx_derivative_fw] done&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">onx_grad</span>
@@ -690,6 +699,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[_onnx_derivative_loss] load </span><span class="si">{</span><span class="n">path_name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">grad_onx</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">grad_onx</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="n">onx</span><span class="o">.</span><span class="n">ir_version</span>
     <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_onnx_derivative_loss] done&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">grad_onx</span>

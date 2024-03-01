@@ -47,8 +47,9 @@ import numpy as np
 import onnx
 from onnx_array_api.reference import compare_onnx_execution, ExtendedReferenceEvaluator
 import torch
-from experimental_experiment.ext_test_case import get_parsed_args, unit_test_going
-from experimental_experiment.torch_exp.onnx_export import to_onnx
+from experimental_experiment.ext_test_case import unit_test_going
+from experimental_experiment.args import get_parsed_args
+from experimental_experiment.torch_exp.onnx_export import to_onnx, OptimizationOptions
 from experimental_experiment.convert.convert_helper import (
     optimize_model_proto,
     ort_optimize,
@@ -122,8 +123,10 @@ def export_custom(filename, model, *args):
         model,
         tuple(args),
         input_names=[f"input{i}" for i in range(len(args))],
-        remove_unused=True,
-        constant_folding=False,
+        options=OptimizationOptions(
+            remove_unused=True,
+            constant_folding=False,
+        ),
     )
     with open(filename, "wb") as f:
         f.write(new_model.SerializeToString())
@@ -196,7 +199,7 @@ if ortopt:
 providers = (
     ["CPUExecutionProvider"]
     if provider == "cpu"
-    else ["CUDAExecutionProvider", "CPUExecutionProvider"]
+    else [("CUDAExecutionProvider", {}), ("CPUExecutionProvider", {})]
 )
 
 model1 = onnx.load(file1)
@@ -254,14 +257,22 @@ def clean_name(name):
 
 
 if sess2 is not None:
-    np_inputs = [i.detach().numpy() for i in inputs[0]]
-    res1, res2, align, dc = compare_onnx_execution(
-        model1, model2, inputs=np_inputs, verbose=1, raise_exc=False
-    )
-    for r in res2:
-        r.name = clean_name(r.name)
-    text = dc.to_str(res1, res2, align, column_size=90)
-    print(text)
+    try:
+        np_inputs = [i.detach().numpy() for i in inputs[0]]
+        res1, res2, align, dc = compare_onnx_execution(
+            model1, model2, inputs=np_inputs, verbose=1, raise_exc=False
+        )
+        for r in res2:
+            r.name = clean_name(r.name)
+        text = dc.to_str(res1, res2, align, column_size=90)
+        print(text)
+    except AssertionError as e:
+        if (
+            "Unexpected type <class 'list'> for value, it must be a numpy array."
+            not in str(e)
+        ):
+            raise
+        print(e)
 
 #################################
 # See :ref:`l-long-outputs-llama-diff-export` for a better view.

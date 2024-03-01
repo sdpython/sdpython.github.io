@@ -168,17 +168,21 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_pattern.html">graph_builder_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/bug_dort.html">To ignore</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx.html">Profile an existing model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg.html">Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench.html">Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul.html">Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export.html">Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort.html">Compares LLAMA exporters for onnxrt backend</a></li>
@@ -233,6 +237,8 @@
 <span class="kn">import</span> <span class="nn">types</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">TensorProto</span>
+<span class="kn">from</span> <span class="nn">.annotations</span> <span class="kn">import</span> <span class="n">all_int</span><span class="p">,</span> <span class="n">is_static_shape</span>
 <span class="kn">from</span> <span class="nn">._helper</span> <span class="kn">import</span> <span class="n">make_hash</span>
 <span class="kn">from</span> <span class="nn">._aten_helper</span> <span class="kn">import</span> <span class="n">torch_dtype_to_onnx_dtype</span>
 <span class="kn">from</span> <span class="nn">.aten_functions</span> <span class="kn">import</span> <span class="n">find_function</span>
@@ -268,14 +274,15 @@
                     <span class="sa">f</span><span class="s2">&quot;node.target=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="s2">, node.meta=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># verbose</span>
             <span class="n">exa</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">example_value</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="si">}{</span><span class="n">example_value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">example_value</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">example_value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">example_value</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span>
                 <span class="k">else</span> <span class="s2">&quot;&quot;</span>
             <span class="p">)</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">val</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="si">}{</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span>
                 <span class="k">else</span> <span class="s2">&quot;&quot;</span>
             <span class="p">)</span>
@@ -286,6 +293,17 @@
                 <span class="sa">f</span><span class="s2">&quot;[DynamoInterpreter-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.run_node][</span><span class="si">{</span><span class="n">symbol</span><span class="si">}{</span><span class="n">a1</span><span class="si">}{</span><span class="n">a2</span><span class="si">}</span><span class="s2">] &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">exa</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
+
+        <span class="c1"># debug</span>
+        <span class="n">exa</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;example_value&quot;</span><span class="p">,</span> <span class="n">example_value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">example_value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">example_value</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shapes_types</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;run_node&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">exa</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;call_function&quot;</span><span class="p">:</span>
@@ -326,14 +344,29 @@
                 <span class="n">example_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">input_args</span><span class="p">[</span><span class="n">index_input</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">as_function</span> <span class="ow">and</span> <span class="n">example_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_dimension</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="n">example_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Unable to guess what node is, node=</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">, &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;meta=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="vm">__dict__</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">example_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
+                <span class="c1"># torch.SymInt</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">example_value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">elem_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
+                    <span class="n">is_dimension</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
+
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span>
-                <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">example_value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">example_value</span><span class="o">.</span><span class="n">shape</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">elem_type</span><span class="o">=</span><span class="n">example_value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="n">example_value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                <span class="n">is_dimension</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
@@ -341,23 +374,32 @@
             <span class="k">if</span> <span class="n">stack_trace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># torch 2.1.0 and 2.2.0 behave differently.</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span>
-                    <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">is_dimension</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;nn_module_stack&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span>
-                    <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">is_dimension</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retriever</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s2">&quot;.FakeTensor&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)):</span>
                     <span class="n">dtype</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span>
                     <span class="n">shape</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span>
+                        <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="kc">False</span>
+                    <span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;value is None, unable to retrieve target </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s2"> for a placeholder.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">shape_as_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unsupported type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s2"> for placeholder &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;target&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="n">output_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span>
@@ -374,16 +416,23 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
-                <span class="n">o</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">a_name</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">o</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">a_name</span> <span class="o">=</span> <span class="n">a</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_is_dimension</span><span class="p">(</span><span class="n">a_name</span><span class="p">):</span>
+                        <span class="n">o</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_name</span><span class="si">}</span><span class="s2">_dim_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">o</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">a_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="c1"># the gradient may need unused output</span>
+                    <span class="n">o</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_name</span><span class="si">}</span><span class="s2">_NONE_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">o</span><span class="p">],</span> <span class="n">value_float</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                     <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">o</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">):</span>
-                        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="p">[</span><span class="n">o</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                    <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">o</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">a_name</span><span class="p">],</span> <span class="p">[</span><span class="n">o</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a_name</span><span class="p">,</span> <span class="n">o</span><span class="p">))</span>
 
         <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
@@ -417,7 +466,13 @@
                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_tensor_output</span><span class="p">(</span>
-                    <span class="n">o</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">indexed</span><span class="o">=</span><span class="kc">False</span>
+                    <span class="n">o</span><span class="p">,</span>
+                    <span class="n">elem_type</span><span class="o">=</span><span class="n">elem_type</span><span class="p">,</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+                    <span class="n">indexed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">is_dimension</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_is_dimension</span><span class="p">(</span>
+                        <span class="n">a</span> <span class="ow">or</span> <span class="n">o</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span>
+                    <span class="p">),</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">]</span>
 
@@ -487,14 +542,13 @@
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">index_slice</span><span class="p">:</span> <span class="nb">slice</span><span class="p">,</span>
-        <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">set_type_shape</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">axes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
         <span class="n">expand_axes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_getitem_slice&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span><span class="si">}</span><span class="s2"> for axes&quot;</span>
-        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">axes</span><span class="p">)</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected only integer axis but got </span><span class="si">{</span><span class="n">axes</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">all_int</span><span class="p">(</span><span class="n">axes</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected only integer axis but got </span><span class="si">{</span><span class="n">axes</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
             <span class="n">index_slice</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Length mismatch </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">index_slice</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -521,13 +575,14 @@
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">aslice</span><span class="p">,</span> <span class="nb">slice</span>
             <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="n">aslice</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">index_slice</span><span class="si">}</span><span class="s2">&quot;</span>
+
             <span class="n">starts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aslice</span><span class="o">.</span><span class="n">start</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">aslice</span><span class="o">.</span><span class="n">stop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">shape_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">shape_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_shape&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                        <span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">input_name</span><span class="p">],</span> <span class="p">[</span><span class="n">shape_name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem_slice&quot;</span>
+                        <span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">input_name</span><span class="p">],</span> <span class="p">[</span><span class="n">shape_name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">A&quot;</span>
                     <span class="p">)</span>
 
                 <span class="n">aaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">axis</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
@@ -539,24 +594,62 @@
                     <span class="s2">&quot;GatherElements&quot;</span><span class="p">,</span>
                     <span class="p">[</span><span class="n">shape_name</span><span class="p">,</span> <span class="n">axis_name</span><span class="p">],</span>
                     <span class="p">[</span><span class="n">end_name</span><span class="p">],</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem_slice&quot;</span><span class="p">,</span>
-                    <span class="n">set_shape_type</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">B&quot;</span><span class="p">,</span>
+                    <span class="n">set_type_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">ends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_name</span><span class="p">)</span>
                 <span class="n">concat</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aslice</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+                <span class="n">vstop</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">aslice</span><span class="o">.</span><span class="n">stop</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">aslice</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">aslice</span><span class="o">.</span><span class="n">stop</span>
+                <span class="p">)</span>
+                <span class="n">concat</span> <span class="o">|=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vstop</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="n">ends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vstop</span><span class="p">)</span>
 
             <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aslice</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="n">aslice</span><span class="o">.</span><span class="n">step</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># if concat: one end is coming from a shape</span>
         <span class="k">if</span> <span class="n">concat</span><span class="p">:</span>
-            <span class="n">iends</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">i</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ends</span>
-            <span class="p">]</span>
-            <span class="n">conc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="o">*</span><span class="n">iends</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem_slice&quot;</span><span class="p">)</span>
+            <span class="n">iends</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ends</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">iends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span>
+                                <span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">C&quot;</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Unexpected rank=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">i</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                        <span class="n">iends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unexpected value for end=</span><span class="si">{</span><span class="n">i</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">iends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ends</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">iends</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">conc_ends</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="o">*</span><span class="n">iends</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">D&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">conc_ends</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">iends</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">E&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">conc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ends</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="n">all_int</span><span class="p">(</span><span class="n">ends</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unexpected value for ends=</span><span class="si">{</span><span class="n">ends</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">_</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">ends</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">conc_ends</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ends</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">all_int</span><span class="p">(</span>
+            <span class="n">starts</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Not implemented for starts=</span><span class="si">{</span><span class="n">starts</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">all_int</span><span class="p">(</span>
+            <span class="n">steps</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Not implemented for starts=</span><span class="si">{</span><span class="n">steps</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">input_name</span><span class="p">,</span>
@@ -564,7 +657,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_start&quot;</span><span class="p">),</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">starts</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
             <span class="p">),</span>
-            <span class="n">conc</span><span class="p">,</span>
+            <span class="n">conc_ends</span><span class="p">,</span>
             <span class="n">axes_name</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_step&quot;</span><span class="p">),</span>
@@ -573,27 +666,26 @@
         <span class="p">]</span>
 
         <span class="k">if</span> <span class="n">expand_axes</span><span class="p">:</span>
-            <span class="n">sliced</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem_slice&quot;</span><span class="p">)</span>
+            <span class="n">sliced</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">F&quot;</span><span class="p">)</span>
             <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Unsqueeze</span><span class="p">(</span>
                 <span class="n">sliced</span><span class="p">,</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expand_axes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
                 <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
-                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem_slice&quot;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">F&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                <span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem_slice&quot;</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Slice&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">G&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">set_type_shape</span><span class="p">:</span>
             <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">new_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_apply_slice_to_shape</span><span class="p">(</span>
-                <span class="n">shape</span><span class="p">,</span> <span class="n">index_slice</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">expand_axes</span><span class="o">=</span><span class="n">expand_axes</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span>
-                <span class="n">node</span><span class="o">.</span><span class="n">name</span>
-            <span class="p">)</span> <span class="ow">and</span> <span class="n">new_shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">concat</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">new_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_apply_slice_to_shape</span><span class="p">(</span>
+                    <span class="n">shape</span><span class="p">,</span> <span class="n">index_slice</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">expand_axes</span><span class="o">=</span><span class="n">expand_axes</span>
+                <span class="p">)</span>
+                <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">name</span>
+                <span class="p">)</span> <span class="ow">or</span> <span class="n">new_shape</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Shape for node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is already set to &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> with type &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> (expecting </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">) &quot;</span>
@@ -601,8 +693,9 @@
                     <span class="sa">f</span><span class="s2">&quot;axes=</span><span class="si">{</span><span class="n">axes</span><span class="si">}</span><span class="s2">, expand_axes=</span><span class="si">{</span><span class="n">expand_axes</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">res</span>
 
     <span class="k">def</span> <span class="nf">_getitem_int1</span><span class="p">(</span>
@@ -610,38 +703,38 @@
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-        <span class="n">set_shape_type</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">set_type_shape</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">axes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
         <span class="n">expand_axes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_getitem_int1&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">_aten_tensor_int1</span>
 
         <span class="k">return</span> <span class="n">_aten_tensor_int1</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">,</span>
-            <span class="n">set_shape_type</span><span class="p">,</span>
+            <span class="n">set_type_shape</span><span class="p">,</span>
             <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
             <span class="n">input_name</span><span class="p">,</span>
             <span class="n">indices</span><span class="p">,</span>
             <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
             <span class="n">expand_axes</span><span class="o">=</span><span class="n">expand_axes</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">getitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
-        <span class="kn">import</span> <span class="nn">torch</span>
-
         <span class="n">args</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">args</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
         <span class="n">node_output</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">args</span>
         <span class="n">result_name</span> <span class="o">=</span> <span class="n">node_output</span><span class="o">.</span><span class="n">name</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">set_shape_type</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">set_type_shape</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
                 <span class="n">shape</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span>
                 <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_get_type</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
-                <span class="n">set_shape_type</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">set_type_shape</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Unexpected type in node </span><span class="si">{</span><span class="n">node</span><span class="si">!r}</span><span class="s2">, type(val)=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
@@ -650,9 +743,9 @@
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">):</span>
             <span class="c1"># A dynamic index (torch.fx.Node)</span>
             <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                <span class="s2">&quot;Gather&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">result_name</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem&quot;</span>
+                <span class="s2">&quot;Gather&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">result_name</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitemA&quot;</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">set_shape_type</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">set_type_shape</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">result_name</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span>
                     <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -663,32 +756,59 @@
             <span class="k">return</span> <span class="n">res</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
-                <span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">result_name</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitem&quot;</span>
+            <span class="n">name_index</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">result_name</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">name_index</span><span class="p">):</span>
+                <span class="c1"># The user to get a tensor a tuple of tensors</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                    <span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">name_index</span><span class="p">],</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitemB_tuple&quot;</span>
+                <span class="p">)</span>
+            <span class="c1"># The user mean to access the first element of a tensor.</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Squeeze</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span>
+                    <span class="n">result_name</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">index</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitemB_index&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;getitemB_index&quot;</span><span class="p">,</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">set_type_shape</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">result_name</span><span class="p">))</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">result_name</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span>
+                        <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">result_name</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span>
+                        <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">result_name</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="p">)</span>
+            <span class="k">return</span> <span class="n">res</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_slice</span><span class="p">(</span>
                 <span class="n">node</span><span class="p">,</span>
                 <span class="n">node_output</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                 <span class="p">[</span><span class="n">index</span><span class="p">],</span>
-                <span class="n">set_shape_type</span><span class="o">=</span><span class="n">set_shape_type</span><span class="p">,</span>
+                <span class="n">set_type_shape</span><span class="o">=</span><span class="n">set_type_shape</span><span class="p">,</span>
                 <span class="n">axes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                 <span class="n">expand_axes</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_getitem_slice1&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">immutable_collections</span><span class="o">.</span><span class="n">immutable_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">immutable_collections</span><span class="o">.</span><span class="n">immutable_list</span><span class="p">):</span>
             <span class="c1"># something like x[[0, 2]]</span>
-            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">index</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">all_int</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
                 <span class="c1"># something like x[[0, 1]]</span>
                 <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_int1</span><span class="p">(</span>
                     <span class="n">node</span><span class="p">,</span>
                     <span class="n">node_output</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                     <span class="n">index</span><span class="p">,</span>
-                    <span class="n">set_shape_type</span><span class="o">=</span><span class="n">set_shape_type</span><span class="p">,</span>
+                    <span class="n">set_type_shape</span><span class="o">=</span><span class="n">set_type_shape</span><span class="p">,</span>
                     <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
                     <span class="n">expand_axes</span><span class="o">=</span><span class="p">[],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_getitem_int1a&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
@@ -719,9 +839,10 @@
                     <span class="n">node</span><span class="p">,</span>
                     <span class="n">node_output</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                     <span class="n">slices</span><span class="p">,</span>
-                    <span class="n">set_shape_type</span><span class="o">=</span><span class="n">set_shape_type</span><span class="p">,</span>
+                    <span class="n">set_type_shape</span><span class="o">=</span><span class="n">set_type_shape</span><span class="p">,</span>
                     <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
                     <span class="n">expand_axes</span><span class="o">=</span><span class="n">expand_axes</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_getitem_slice2&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -752,9 +873,8 @@
             <span class="k">return</span> <span class="n">new_list</span>
         <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="bp">Ellipsis</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">i</span>
-        <span class="kn">import</span> <span class="nn">torch</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">i</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Unexpected type (argument </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
@@ -889,16 +1009,35 @@
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
                     <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
                     <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_get_type</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">set_if_more_precise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_static_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">set_if_more_precise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+                        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Rank already set for </span><span class="si">{</span><span class="n">r</span><span class="si">!r}</span><span class="s2">, but rank=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;differs for shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">output_sets</span><span class="p">:</span>
                         <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
+                    <span class="c1"># this is a shape</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Unexpected type in node </span><span class="si">{</span><span class="n">node</span><span class="si">!r}</span><span class="s2">, type(val)=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unexpected type in node </span><span class="si">{</span><span class="n">node</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;type(val)=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
         <span class="k">if</span> <span class="n">exa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exa</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~</span><span class="si">{</span><span class="n">exa</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">exa</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">exa</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">):</span>
+                <span class="c1"># a tensor</span>
+                <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~</span><span class="si">{</span><span class="n">exa</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">exa</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># a SymInt</span>
+                <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;~SumInt:</span><span class="si">{</span><span class="n">exa</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">last_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">description</span><span class="p">:</span>
             <span class="n">last_node</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
 
@@ -917,12 +1056,11 @@
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">VALUES</span><span class="se">\n</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">example_values_</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="kn">import</span> <span class="nn">torch</span>
         <span class="kn">from</span> <span class="nn">.onnx_export</span> <span class="kn">import</span> <span class="n">_make_builder_interpreter</span>
 
         <span class="n">sub_module</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">owning_module</span><span class="o">.</span><span class="n">get_submodule</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub_module</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub_module</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Not implemented for type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">sub_module</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="si">{</span><span class="n">raise_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
@@ -934,14 +1072,14 @@
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sub_module</span><span class="p">,</span> <span class="s2">&quot;graph&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">sub_module</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span>
+            <span class="n">sub_module</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span>
         <span class="p">):</span>
             <span class="n">gm</span> <span class="o">=</span> <span class="n">sub_module</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># https://pytorch.org/docs/stable/fx.html</span>
-            <span class="n">tracer_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Tracer</span>
+            <span class="n">tracer_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Tracer</span>
             <span class="n">graph</span> <span class="o">=</span> <span class="n">tracer_class</span><span class="p">()</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">sub_module</span><span class="p">)</span>
-            <span class="n">gm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">(</span><span class="n">sub_module</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
+            <span class="n">gm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">(</span><span class="n">sub_module</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
 
         <span class="n">graph_module</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">interpreter</span> <span class="o">=</span> <span class="n">_make_builder_interpreter</span><span class="p">(</span>
             <span class="n">gm</span><span class="p">,</span>
@@ -978,6 +1116,9 @@
                     <span class="n">builder</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">builder</span><span class="o">.</span><span class="n">_known_types</span><span class="p">:</span>
                     <span class="n">builder</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">set_shapes_types</span><span class="p">(</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;call_module&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_nodes</span><span class="p">(</span>
             <span class="n">builder</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;_sub_</span><span class="si">{</span><span class="n">sub_module</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_&quot;</span>

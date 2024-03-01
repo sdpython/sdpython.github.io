@@ -11,7 +11,7 @@ Preparation
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from experimental_experiment.ext_test_case import get_parsed_args
+from experimental_experiment.args import get_parsed_args
 
 try:
     from onnx_extended.tools.js_profile import (
@@ -23,10 +23,10 @@ except ImportError:
 
 try:
     filename = os.path.join(
-        os.path.dirname(__file__ or ""), "example_4700-CPUep-opt.onnx"
+        os.path.dirname(__file__ or ""), "data", "example_4700-CPUep-opt.onnx"
     )
 except NameError:
-    filename = "example_4700-CPUep-opt.onnx"
+    filename = "data/example_4700-CPUep-opt.onnx"
 
 script_args = get_parsed_args(
     "plot_profile_existing_onnx",
@@ -84,11 +84,13 @@ for i in range(script_args.repeat):
 prof = sess.end_profiling()
 if js_profile_to_dataframe is not None:
     df = js_profile_to_dataframe(prof, first_it_out=True)
+    print(df.columns)
     df.to_csv("plot_profile_existing_onnx.csv")
     df.to_excel("plot_profile_existing_onnx.xlsx")
     fig, ax = plt.subplots(1, 2, figsize=(10, 5))
 
     plot_ort_profile(df, ax[0], ax[1], "dort")
+    fig.tight_layout()
     fig.savefig("plot_profile_existing_onnx.png")
 else:
     print("Install onnx-extended first.")

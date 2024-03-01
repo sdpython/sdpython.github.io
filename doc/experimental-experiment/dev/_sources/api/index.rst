@@ -8,8 +8,11 @@ API
 
     gradient
     graph_builder
+    graph_builder_pattern
     interpreter
     onnx_export
     aten_function
     convert
     torch_helper
+    torch_dynamo
+    misc
