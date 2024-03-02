@@ -16,7 +16,7 @@ import onnx
 import pandas
 from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
 from onnx_array_api.plotting.graphviz_helper import plot_dot
-from experimental_experiment.torch_exp.graph_builder import (
+from experimental_experiment.xbuilder.graph_builder import (
     GraphBuilder,
     OptimizationOptions,
 )
@@ -81,3 +81,9 @@ print(onnx_simple_text_plot(optimized_proto))
 # And visually.
 
 plot_dot(optimized_proto)
+
+#################################
+# The first list of patterns optimizes the graph with only
+# standard onnx operators: :ref:`l-pattern-optimization-onnx`.
+# The second list is specific to :pekg:`onnxruntime`:
+# :ref:`l-pattern-optimization-ort`.

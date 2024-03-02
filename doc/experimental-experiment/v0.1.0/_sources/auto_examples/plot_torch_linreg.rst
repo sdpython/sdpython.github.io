@@ -84,8 +84,8 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [4.72672678e-01 7.03844335e-02 9.06282303e+01 1.15530338e+01
-     3.71053180e-01], 0.4638772302750729
+    coefficients: [6.19251508e+01 1.34252062e-01 8.05642332e-02 4.59511516e+01
+     7.09018032e-03], -0.06213641846512519
 
 
 
@@ -113,7 +113,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=99.19831867715722, r2=0.9864253590111406
+    LinearRegression: l2=94.26422650226729, r2=0.9831118749815942
 
 
 
@@ -144,24 +144,24 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 78.27, NNZs: 5, Bias: -1.318162, T: 750, Avg. loss: 891.117342
+    Norm: 65.00, NNZs: 5, Bias: -0.514410, T: 750, Avg. loss: 626.273571
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 87.82, NNZs: 5, Bias: -0.049682, T: 1500, Avg. loss: 82.342900
+    Norm: 73.66, NNZs: 5, Bias: -0.275783, T: 1500, Avg. loss: 74.740068
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 90.34, NNZs: 5, Bias: 0.256443, T: 2250, Avg. loss: 54.121802
+    Norm: 75.98, NNZs: 5, Bias: -0.065348, T: 2250, Avg. loss: 51.256458
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 91.00, NNZs: 5, Bias: 0.272999, T: 3000, Avg. loss: 51.822423
+    Norm: 76.70, NNZs: 5, Bias: -0.095458, T: 3000, Avg. loss: 49.154015
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 91.20, NNZs: 5, Bias: 0.477331, T: 3750, Avg. loss: 51.600215
+    Norm: 76.88, NNZs: 5, Bias: -0.029905, T: 3750, Avg. loss: 48.893635
     Total training time: 0.00 seconds.
     /home/xadupre/install/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1575: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [ 4.15863351e-01 -3.87689716e-02  9.04703105e+01  1.15081875e+01
-      3.98394443e-01], [0.47733139]
+    coefficients: [6.17454874e+01 5.37289925e-02 4.56306349e-02 4.58052836e+01
+     3.90322936e-02], [-0.02990462]
 
 
 
@@ -189,7 +189,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=99.2919226893567, sr2=0.9864125499143972
+    SGDRegressor: sl2=94.27391430417505, sr2=0.9831101393410884
 
 
 
@@ -260,11 +260,11 @@ torch
 
  .. code-block:: none
 
-    iteration 0, loss=2092490.25
-    iteration 1, loss=172047.9375
-    iteration 2, loss=82327.5
-    iteration 3, loss=77851.609375
-    iteration 4, loss=77598.7890625
+    iteration 0, loss=1495964.625
+    iteration 1, loss=150785.140625
+    iteration 2, loss=77944.5
+    iteration 3, loss=73825.6875
+    iteration 4, loss=73583.1796875
 
 
 
@@ -291,7 +291,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=100.04025290168235, tr2=0.9863101458201655
+    TorchLinearRegression: tl2=94.47370950011751, tr2=0.9830743445717219
 
 
 
@@ -318,10 +318,10 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[ 3.5176e-01, -1.8243e-02,  9.0487e+01,  1.1685e+01,  5.0601e-01]],
+    tensor([[ 6.1790e+01, -9.0969e-02,  3.4170e-02,  4.6057e+01,  1.3807e-01]],
            requires_grad=True)
     Parameter containing:
-    tensor([0.6508], requires_grad=True)
+    tensor([-0.0627], requires_grad=True)
 
 
 
@@ -329,7 +329,7 @@ And the coefficients.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.346 seconds)
+   **Total running time of the script:** (0 minutes 2.932 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg.py:

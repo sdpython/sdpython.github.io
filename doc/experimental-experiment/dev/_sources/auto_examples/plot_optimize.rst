@@ -39,7 +39,7 @@ A model
     import pandas
     from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
     from onnx_array_api.plotting.graphviz_helper import plot_dot
-    from experimental_experiment.torch_exp.graph_builder import (
+    from experimental_experiment.xbuilder.graph_builder import (
         GraphBuilder,
         OptimizationOptions,
     )
@@ -546,23 +546,7 @@ Optimization
           <td>...</td>
         </tr>
         <tr>
-          <th>64</th>
-          <td>TransposeMatMulPattern</td>
-          <td>2</td>
-          <td>1.0</td>
-          <td>11.0</td>
-          <td>0.0</td>
-        </tr>
-        <tr>
-          <th>65</th>
-          <td>TransposeMatMulPattern</td>
-          <td>2</td>
-          <td>1.0</td>
-          <td>12.0</td>
-          <td>0.0</td>
-        </tr>
-        <tr>
-          <th>66</th>
+          <th>69</th>
           <td>TransposeMatMulPattern</td>
           <td>2</td>
           <td>1.0</td>
@@ -570,7 +554,7 @@ Optimization
           <td>0.0</td>
         </tr>
         <tr>
-          <th>67</th>
+          <th>70</th>
           <td>TransposeMatMulPattern</td>
           <td>2</td>
           <td>1.0</td>
@@ -578,16 +562,32 @@ Optimization
           <td>0.0</td>
         </tr>
         <tr>
-          <th>68</th>
+          <th>71</th>
           <td>TransposeMatMulPattern</td>
           <td>2</td>
           <td>1.0</td>
           <td>15.0</td>
           <td>0.0</td>
         </tr>
+        <tr>
+          <th>72</th>
+          <td>TransposeMatMulPattern</td>
+          <td>2</td>
+          <td>1.0</td>
+          <td>16.0</td>
+          <td>0.0</td>
+        </tr>
+        <tr>
+          <th>73</th>
+          <td>remove_unused</td>
+          <td>1</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
       </tbody>
     </table>
-    <p>69 rows × 5 columns</p>
+    <p>74 rows × 5 columns</p>
     </div>
     </div>
     <br />
@@ -615,12 +615,15 @@ Summary
                                added  removed
     pattern                                  
     CastPattern                 37.0       37
+    ExpandBroadcastPattern       3.0        6
     MulMulMulPattern             6.0        9
     ReshapeReshapePattern        4.0        8
     RotaryConcatPartPattern      8.0       16
+    Sub1MulPattern               2.0        2
     TransposeMatMulPattern      14.0       28
     TransposeTransposePattern    7.0       14
     remove_identity_nodes        0.0       45
+    remove_unused                0.0        1
 
 
 
@@ -646,7 +649,7 @@ The total is:
 
  .. code-block:: none
 
-    number of removed nodes: 81.0
+    number of removed nodes: 85.0
 
 
 
@@ -672,7 +675,7 @@ Conversion to onnx.
 
  .. code-block:: none
 
-    number of new nodes: 134
+    number of new nodes: 130
 
 
 
@@ -781,16 +784,12 @@ It gives the following.
     init: name='init7_s2_2048_10245' type=dtype('int64') shape=(2,) -- array([2048, 1024])
     init: name='init7_s2_2048_10246' type=dtype('int64') shape=(2,) -- array([2048, 1024])
     init: name='init7_s2_2048_10247' type=dtype('int64') shape=(2,) -- array([2048, 1024])
-    init: name='init7_s3_2_1024_1024' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_102412' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_102413' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_102414' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
-    init: name='init7_s3_2_1024_102415' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_10242' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_10243' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
-    init: name='init7_s3_2_1024_10245' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_10246' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
-    init: name='init7_s3_2_1024_10247' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_4_1024_1024' type=dtype('int64') shape=(3,) -- array([   4, 1024, 1024])
     init: name='init7_s3_4_1024_512' type=dtype('int64') shape=(3,) -- array([   4, 1024,  512])
     init: name='init7_s4_2_1024_2_512' type=dtype('int64') shape=(4,) -- array([   2, 1024,    2,  512])
@@ -810,9 +809,8 @@ It gives the following.
       Mul(_onx_mul0, input35) -> _onx_mul04
     Pow(input35, init1_s1_) -> pow_4
       Mul(_onx_mul05, pow_4) -> _onx_mul06
-        Expand(_onx_mul06, init7_s3_2_1024_1024) -> expand_5
-          Mul(expand_5, input34) -> MulMulMulPattern--_onx_mul08
-            Mul(MulMulMulPattern--_onx_mul08, init1_s_12) -> _onx_mul08
+        Mul(_onx_mul06, input34) -> MulMulMulPattern--_onx_mul08
+          Mul(MulMulMulPattern--_onx_mul08, init1_s_12) -> _onx_mul08
         Add(_onx_mul04, _onx_mul08) -> add_8
           Reshape(add_8, init7_s2_2048_1024) -> view_22
             Gemm(view_22, input33, transA=1, transB=0) -> output_10
@@ -825,9 +823,8 @@ It gives the following.
     Gemm(view_24, input29, transA=0, transB=1) -> mm_11
       Reshape(mm_11, init7_s3_2_1024_10243) -> view_25
     Sigmoid(input27) -> sigmoid
-    ConstantOfShape(init7_s3_2_1024_10245, value=[1.0]) -> fill
-      Sub(fill, sigmoid) -> sub
-        Mul(input27, sub) -> _onx_mul011
+      Mul(input27, sigmoid) -> Sub1MulPattern--_onx_mul011
+        Sub(input27, Sub1MulPattern--_onx_mul011) -> _onx_mul011
           Add(_onx_mul011, init1_s_4) -> add_9
       Mul(sigmoid, add_9) -> _onx_mul012
         Mul(_onx_mul010, _onx_mul012) -> _onx_mul013
@@ -847,9 +844,8 @@ It gives the following.
           Add(add_8, _onx_mul017) -> add_11
     Pow(input23, init1_s1_2) -> pow_6
       Mul(_onx_mul018, pow_6) -> _onx_mul019
-        Expand(_onx_mul019, init7_s3_2_1024_10247) -> expand_6
-          Mul(expand_6, input22) -> MulMulMulPattern--_onx_mul021
-            Mul(MulMulMulPattern--_onx_mul021, init1_s_13) -> _onx_mul021
+        Mul(_onx_mul019, input22) -> MulMulMulPattern--_onx_mul021
+          Mul(MulMulMulPattern--_onx_mul021, init1_s_13) -> _onx_mul021
             Add(add_11, _onx_mul021) -> add_12
               Reshape(add_12, init7_s2_2048_10244) -> view_29
                 Gemm(view_29, input21, transA=1, transB=0) -> output_7
@@ -920,10 +916,9 @@ It gives the following.
               Add(add_12, _onx_mul031) -> add_21
     Pow(input5, init1_s1_3) -> pow_8
       Mul(_onx_mul032, pow_8) -> _onx_mul033
-        Expand(_onx_mul033, init7_s3_2_1024_102415) -> expand_7
-          Mul(expand_7, input4) -> MulMulMulPattern--_onx_mul035
-            Mul(MulMulMulPattern--_onx_mul035, init1_s_14) -> _onx_mul035
-              Add(add_21, _onx_mul035) -> add_22
+        Mul(_onx_mul033, input4) -> MulMulMulPattern--_onx_mul035
+          Mul(MulMulMulPattern--_onx_mul035, init1_s_14) -> _onx_mul035
+            Add(add_21, _onx_mul035) -> add_22
     Equal(input3, init7_s_-1) -> eq_2
       Unsqueeze(eq_2, init7_s1_-12) -> unsqueeze_6
         Where(unsqueeze_6, init1_s1_4, add_22) -> _onx_where0
@@ -956,12 +951,13 @@ It gives the following.
 
 And visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-84
+.. GENERATED FROM PYTHON SOURCE LINES 82-85
 
 .. code-block:: Python
 
 
     plot_dot(optimized_proto)
+
 
 
 
@@ -980,10 +976,17 @@ And visually.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 86-90
+
+The first list of patterns optimizes the graph with only
+standard onnx operators: :ref:`l-pattern-optimization-onnx`.
+The second list is specific to :pekg:`onnxruntime`:
+:ref:`l-pattern-optimization-ort`.
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.097 seconds)
+   **Total running time of the script:** (0 minutes 3.331 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize.py:

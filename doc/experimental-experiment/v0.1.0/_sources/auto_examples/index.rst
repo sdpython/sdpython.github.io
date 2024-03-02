@@ -59,23 +59,6 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="To ignore">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_bug_dort_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_bug_dort.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">To ignore</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Profiles any onnx model on CPU.">
 
 .. only:: html
@@ -253,7 +236,6 @@ all the graphs, the data used to draw them, and the models.
    :hidden:
 
    /auto_examples/plot_optimize
-   /auto_examples/bug_dort
    /auto_examples/plot_profile_existing_onnx
    /auto_examples/plot_torch_linreg
    /auto_examples/plot_torch_custom_backend

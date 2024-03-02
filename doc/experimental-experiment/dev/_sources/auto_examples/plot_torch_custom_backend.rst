@@ -78,9 +78,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[0.1157],
-            [0.0475],
-            [0.0669]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.0791],
+            [-0.1037],
+            [-0.1051]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -120,9 +120,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[0.1157],
-            [0.0475],
-            [0.0669]])
+    tensor([[-0.0791],
+            [-0.1037],
+            [-0.1051]])
 
 
 
@@ -172,9 +172,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[0.1157],
-            [0.0475],
-            [0.0669]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.0791],
+            [-0.1037],
+            [-0.1051]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -263,9 +263,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:107: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7459.29697561264
-    Loss after epoch 2: 5841.251264572144
-    Loss after epoch 3: 5550.437879562378
+    Loss after epoch 1: 7252.133295059204
+    Loss after epoch 2: 5779.721706390381
+    Loss after epoch 3: 5674.621166229248
     Training process has finished.
 
     OptimizedModule(
@@ -317,9 +317,9 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:107: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7361.110177993774
-    Loss after epoch 2: 5760.222093582153
-    Loss after epoch 3: 5738.282759666443
+    Loss after epoch 1: 7262.046192169189
+    Loss after epoch 2: 5797.600561141968
+    Loss after epoch 3: 5716.334669113159
     Training process has finished.
     4 were created.
 
@@ -346,17 +346,16 @@ Let's see what it looks like.
     input: name='input1' type=dtype('float32') shape=[5, 32]
     input: name='input2' type=dtype('float32') shape=[32, 1]
     input: name='input3' type=dtype('float32') shape=[5, 1]
-    init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([1.], dtype=float32)
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init7_s1_1' type=dtype('int64') shape=(1,) -- array([1])
     init: name='init7_s1_32' type=dtype('int64') shape=(1,) -- array([32])
-    Constant(value_float=0) -> output_NONE_4
+    Constant(value_float=0.0) -> output_NONE_4
     Gemm(input3, input2, transA=0, transB=1) -> mm
     Gemm(input3, input1, transA=1, transB=0) -> output_2
     ReduceSum(input3, init7_s1_0, keepdims=1) -> sum_1
       Reshape(sum_1, init7_s1_1) -> output_3
-    Sub(init1_s1_, input1) -> _onx_sub0
-      Mul(input1, _onx_sub0) -> _onx_mul0
+    Mul(input1, input1) -> Sub1MulPattern--_onx_mul0
+      Sub(input1, Sub1MulPattern--_onx_mul0) -> _onx_mul0
       Mul(mm, _onx_mul0) -> sigmoid_backward
         Gemm(sigmoid_backward, input0, transA=1, transB=0) -> output_0
     ReduceSum(sigmoid_backward, init7_s1_0, keepdims=1) -> sum_2
@@ -402,7 +401,7 @@ The forward graph.
 
 .. GENERATED FROM PYTHON SOURCE LINES 194-195
 
-The brackward graph.
+The backward graph.
 
 .. GENERATED FROM PYTHON SOURCE LINES 195-199
 
@@ -432,8 +431,8 @@ The brackward graph.
 
 .. GENERATED FROM PYTHON SOURCE LINES 200-206
 
-What about dynamic shape?
-=========================
+What about dynamic shapes?
+==========================
 
 Any input or output having `_dim_` in its name is a dynamic dimension.
 Any output having `_NONE_` in its name is replace by None.
@@ -468,9 +467,9 @@ It is needed by pytorch.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:107: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7359.001808166504
-    Loss after epoch 2: 5790.268497467041
-    Loss after epoch 3: 5699.565372467041
+    Loss after epoch 1: 7220.884426116943
+    Loss after epoch 2: 5784.7017612457275
+    Loss after epoch 3: 5708.904750823975
     Training process has finished.
     4 were created.
 
@@ -503,22 +502,21 @@ It is needed by pytorch.
     input: name='input2' type=dtype('float32') shape=[5, 32]
     input: name='input3' type=dtype('float32') shape=[32, 1]
     input: name='input4' type=dtype('float32') shape=[5, 1]
-    init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([1.], dtype=float32)
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init7_s1_1' type=dtype('int64') shape=(1,) -- array([1])
     init: name='init7_s1_32' type=dtype('int64') shape=(1,) -- array([32])
-    Constant(value_float=0) -> output_NONE_4
+    Constant(value_float=0.0) -> output_NONE_4
     Gemm(input4, input3, transA=0, transB=1) -> mm
     Gemm(input4, input2, transA=1, transB=0) -> output_2
     ReduceSum(input4, init7_s1_0, keepdims=1) -> sum_1
       Reshape(sum_1, init7_s1_1) -> output_3
-    Sub(init1_s1_, input2) -> _onx_sub0
-      Mul(input2, _onx_sub0) -> _onx_mul0
+    Mul(input2, input2) -> Sub1MulPattern--_onx_mul0
+      Sub(input2, Sub1MulPattern--_onx_mul0) -> _onx_mul0
       Mul(mm, _onx_mul0) -> sigmoid_backward
         Gemm(sigmoid_backward, input1, transA=1, transB=0) -> output_0
     ReduceSum(sigmoid_backward, init7_s1_0, keepdims=1) -> sum_2
       Reshape(sum_2, init7_s1_32) -> output_1
-    Constant(value_float=0) -> output_NONE_5
+    Constant(value_float=0.0) -> output_NONE_5
     output: name='output_0' type=dtype('float32') shape=[32, 10]
     output: name='output_1' type=dtype('float32') shape=[32]
     output: name='output_2' type=dtype('float32') shape=[1, 32]
@@ -555,22 +553,21 @@ It is needed by pytorch.
     input: name='input2' type=dtype('float32') shape=[2, 32]
     input: name='input3' type=dtype('float32') shape=[32, 1]
     input: name='input4' type=dtype('float32') shape=[2, 1]
-    init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([1.], dtype=float32)
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init7_s1_1' type=dtype('int64') shape=(1,) -- array([1])
     init: name='init7_s1_32' type=dtype('int64') shape=(1,) -- array([32])
-    Constant(value_float=0) -> output_NONE_4
+    Constant(value_float=0.0) -> output_NONE_4
     Gemm(input4, input3, transA=0, transB=1) -> mm
     Gemm(input4, input2, transA=1, transB=0) -> output_2
     ReduceSum(input4, init7_s1_0, keepdims=1) -> sum_1
       Reshape(sum_1, init7_s1_1) -> output_3
-    Sub(init1_s1_, input2) -> _onx_sub0
-      Mul(input2, _onx_sub0) -> _onx_mul0
+    Mul(input2, input2) -> Sub1MulPattern--_onx_mul0
+      Sub(input2, Sub1MulPattern--_onx_mul0) -> _onx_mul0
       Mul(mm, _onx_mul0) -> sigmoid_backward
         Gemm(sigmoid_backward, input1, transA=1, transB=0) -> output_0
     ReduceSum(sigmoid_backward, init7_s1_0, keepdims=1) -> sum_2
       Reshape(sum_2, init7_s1_32) -> output_1
-    Constant(value_float=0) -> output_NONE_5
+    Constant(value_float=0.0) -> output_NONE_5
     output: name='output_0' type=dtype('float32') shape=[32, 10]
     output: name='output_1' type=dtype('float32') shape=[32]
     output: name='output_2' type=dtype('float32') shape=[1, 32]
@@ -613,7 +610,7 @@ The forward graph.
 
 .. GENERATED FROM PYTHON SOURCE LINES 226-227
 
-The brackward graph.
+The backward graph.
 
 .. GENERATED FROM PYTHON SOURCE LINES 227-231
 
@@ -655,7 +652,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.491 seconds)
+   **Total running time of the script:** (0 minutes 6.077 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend.py:
