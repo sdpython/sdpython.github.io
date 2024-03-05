@@ -80,9 +80,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[0.1449],
-            [0.4621],
-            [0.3832]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.1086],
+            [-0.2404],
+            [ 0.2456]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -122,9 +122,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[0.1449],
-            [0.4621],
-            [0.3832]])
+    tensor([[-0.1086],
+            [-0.2404],
+            [ 0.2456]])
 
 
 
@@ -174,9 +174,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[0.1449],
-            [0.4621],
-            [0.3832]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.1086],
+            [-0.2404],
+            [ 0.2456]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -265,9 +265,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7228.270523071289
-    Loss after epoch 2: 5517.145568847656
-    Loss after epoch 3: 5215.434867858887
+    Loss after epoch 1: 7490.673868179321
+    Loss after epoch 2: 5637.6253452301025
+    Loss after epoch 3: 5286.622880935669
     Training process has finished.
 
     OptimizedModule(
@@ -319,9 +319,9 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 6942.355251312256
-    Loss after epoch 2: 5455.569366455078
-    Loss after epoch 3: 5303.977066040039
+    Loss after epoch 1: 7785.201421737671
+    Loss after epoch 2: 5573.729024887085
+    Loss after epoch 3: 5485.463703155518
     Training process has finished.
     4 were created.
 
@@ -464,9 +464,9 @@ It is needed by pytorch.
 
     /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7607.606376647949
-    Loss after epoch 2: 5485.45517539978
-    Loss after epoch 3: 5176.542562484741
+    Loss after epoch 1: 7139.538120269775
+    Loss after epoch 2: 5480.143939971924
+    Loss after epoch 3: 5147.930223464966
     Training process has finished.
     2 were created.
 
@@ -595,7 +595,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.586 seconds)
+   **Total running time of the script:** (0 minutes 5.645 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

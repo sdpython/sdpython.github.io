@@ -258,7 +258,7 @@ Running configuration.
 
  .. code-block:: none
 
-      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:10<00:43, 10.80s/it]     40%|████      | 2/5 [00:29<00:46, 15.64s/it]     60%|██████    | 3/5 [00:38<00:24, 12.24s/it]     80%|████████  | 4/5 [00:46<00:10, 10.64s/it]    100%|██████████| 5/5 [00:54<00:00,  9.87s/it]    100%|██████████| 5/5 [00:54<00:00, 10.94s/it]
+      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:07<00:30,  7.62s/it]     40%|████      | 2/5 [00:28<00:46, 15.55s/it]     60%|██████    | 3/5 [00:39<00:26, 13.35s/it]     80%|████████  | 4/5 [00:51<00:12, 12.69s/it]    100%|██████████| 5/5 [01:02<00:00, 12.22s/it]    100%|██████████| 5/5 [01:02<00:00, 12.50s/it]
 
 
 
@@ -317,12 +317,12 @@ Let's process the data.
 
  .. code-block:: none
 
-                                      llama  config  mixed  dynamic backend  ...  disable_pattern               patterns       enable_pattern                                  legend  increase
-    0  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0   eager  ...          default                    NaN                  NaN                           cuda-eager-h2  0.000000
-    1  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0     ort  ...          default                    NaN                  NaN                             cuda-ort-h2  7.860520
-    2  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...          default       +default-default                  NaN                       cuda-custom-h2-()  0.057583
-    3  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN              +default-              default              cuda-custom-h2-(+default-)  0.017674
-    4  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN  +default+onnxruntime-  default+onnxruntime  cuda-custom-h2-(+default+onnxruntime-)  0.038147
+                                      llama  ...  increase
+    0  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.000000
+    1  2x1024-1024-2-1024-1024-1024-2-eager  ...  5.744605
+    2  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.042676
+    3  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.043251
+    4  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.038987
 
     [5 rows x 18 columns]
 
@@ -358,15 +358,15 @@ First lines.
     warmup                                                3                                     3
     torch                           2.3.0.dev20240304+cu118               2.3.0.dev20240304+cu118
     transformers                                     4.37.2                                4.37.2
-    warmup_time                                    1.188309                              8.261033
-    time                                           0.113452                               1.00524
+    warmup_time                                    0.553067                              8.698736
+    time                                           0.113752                              0.767215
     device                                             cuda                                  cuda
     num_hidden_layers                                     2                                     2
     disable_pattern                                 default                               default
     patterns                                            NaN                                   NaN
     enable_pattern                                      NaN                                   NaN
     legend                                    cuda-eager-h2                           cuda-ort-h2
-    increase                                            0.0                               7.86052
+    increase                                            0.0                              5.744605
 
 
 
@@ -410,12 +410,12 @@ Simplified data
 
  .. code-block:: none
 
-                                      llama  config  mixed  dynamic backend  ...  disable_pattern               patterns       enable_pattern                                  legend  increase
-    2  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...          default       +default-default                  NaN                       cuda-custom-h2-()  0.057583
-    4  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN  +default+onnxruntime-  default+onnxruntime  cuda-custom-h2-(+default+onnxruntime-)  0.038147
-    3  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN              +default-              default              cuda-custom-h2-(+default-)  0.017674
-    0  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0   eager  ...          default                    NaN                  NaN                           cuda-eager-h2  0.000000
-    1  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0     ort  ...          default                    NaN                  NaN                             cuda-ort-h2  7.860520
+                                      llama  ...  increase
+    2  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.042676
+    4  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.038987
+    3  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.043251
+    0  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.000000
+    1  2x1024-1024-2-1024-1024-1024-2-eager  ...  5.744605
 
     [5 rows x 18 columns]
 
@@ -527,7 +527,7 @@ Plot increase.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 55.561 seconds)
+   **Total running time of the script:** (1 minutes 4.348 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_llama_bench_102.py:

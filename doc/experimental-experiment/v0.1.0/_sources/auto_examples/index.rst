@@ -182,14 +182,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_dort_201_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_aot_201_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT</div>
+      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT Training</div>
     </div>
 
 
@@ -199,14 +199,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_aot_201_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_dort_201_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT Training</div>
+      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT</div>
     </div>
 
 
@@ -243,8 +243,8 @@ all the graphs, the data used to draw them, and the models.
    /auto_examples/plot_llama_diff_export_301
    /auto_examples/plot_llama_bench_102
    /auto_examples/plot_llama_diff_dort_301
-   /auto_examples/plot_torch_dort_201
    /auto_examples/plot_torch_aot_201
+   /auto_examples/plot_torch_dort_201
    /auto_examples/plot_torch_export_201
 
 

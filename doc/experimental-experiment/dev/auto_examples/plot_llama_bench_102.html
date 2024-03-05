@@ -193,6 +193,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/convert.html">convert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/torch_helper.html">torch_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/torch_dynamo.html">torch_dynamo</a></li>
@@ -208,8 +209,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 </ul>
 </li>
@@ -445,12 +446,12 @@ config 5: {&#39;backend&#39;: &#39;custom&#39;, &#39;device&#39;: &#39;cuda&#39;
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/5 [00:00&lt;?, ?it/s]
- 20%|██        | 1/5 [00:10&lt;00:43, 10.80s/it]
- 40%|████      | 2/5 [00:29&lt;00:46, 15.64s/it]
- 60%|██████    | 3/5 [00:38&lt;00:24, 12.24s/it]
- 80%|████████  | 4/5 [00:46&lt;00:10, 10.64s/it]
-100%|██████████| 5/5 [00:54&lt;00:00,  9.87s/it]
-100%|██████████| 5/5 [00:54&lt;00:00, 10.94s/it]
+ 20%|██        | 1/5 [00:07&lt;00:30,  7.62s/it]
+ 40%|████      | 2/5 [00:28&lt;00:46, 15.55s/it]
+ 60%|██████    | 3/5 [00:39&lt;00:26, 13.35s/it]
+ 80%|████████  | 4/5 [00:51&lt;00:12, 12.69s/it]
+100%|██████████| 5/5 [01:02&lt;00:00, 12.22s/it]
+100%|██████████| 5/5 [01:02&lt;00:00, 12.50s/it]
 </pre></div>
 </div>
 <p>Let’s process the data.</p>
@@ -492,12 +493,12 @@ config 5: {&#39;backend&#39;: &#39;custom&#39;, &#39;device&#39;: &#39;cuda&#39;
     <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                  llama  config  mixed  dynamic backend  ...  disable_pattern               patterns       enable_pattern                                  legend  increase
-0  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0   eager  ...          default                    NaN                  NaN                           cuda-eager-h2  0.000000
-1  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0     ort  ...          default                    NaN                  NaN                             cuda-ort-h2  7.860520
-2  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...          default       +default-default                  NaN                       cuda-custom-h2-()  0.057583
-3  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN              +default-              default              cuda-custom-h2-(+default-)  0.017674
-4  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN  +default+onnxruntime-  default+onnxruntime  cuda-custom-h2-(+default+onnxruntime-)  0.038147
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                  llama  ...  increase
+0  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.000000
+1  2x1024-1024-2-1024-1024-1024-2-eager  ...  5.744605
+2  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.042676
+3  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.043251
+4  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.038987
 
 [5 rows x 18 columns]
 </pre></div>
@@ -516,15 +517,15 @@ repeat                                                5                         
 warmup                                                3                                     3
 torch                           2.3.0.dev20240304+cu118               2.3.0.dev20240304+cu118
 transformers                                     4.37.2                                4.37.2
-warmup_time                                    1.188309                              8.261033
-time                                           0.113452                               1.00524
+warmup_time                                    0.553067                              8.698736
+time                                           0.113752                              0.767215
 device                                             cuda                                  cuda
 num_hidden_layers                                     2                                     2
 disable_pattern                                 default                               default
 patterns                                            NaN                                   NaN
 enable_pattern                                      NaN                                   NaN
 legend                                    cuda-eager-h2                           cuda-ort-h2
-increase                                            0.0                               7.86052
+increase                                            0.0                              5.744605
 </pre></div>
 </div>
 <p>More simple</p>
@@ -537,12 +538,12 @@ increase                                            0.0                         
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.sort_values.html#pandas.DataFrame.sort_values" title="pandas.DataFrame.sort_values" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span></a><span class="p">(</span><span class="s2">&quot;legend&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                  llama  config  mixed  dynamic backend  ...  disable_pattern               patterns       enable_pattern                                  legend  increase
-2  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...          default       +default-default                  NaN                       cuda-custom-h2-()  0.057583
-4  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN  +default+onnxruntime-  default+onnxruntime  cuda-custom-h2-(+default+onnxruntime-)  0.038147
-3  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom  ...              NaN              +default-              default              cuda-custom-h2-(+default-)  0.017674
-0  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0   eager  ...          default                    NaN                  NaN                           cuda-eager-h2  0.000000
-1  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0     ort  ...          default                    NaN                  NaN                             cuda-ort-h2  7.860520
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                  llama  ...  increase
+2  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.042676
+4  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.038987
+3  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.043251
+0  2x1024-1024-2-1024-1024-1024-2-eager  ...  0.000000
+1  2x1024-1024-2-1024-1024-1024-2-eager  ...  5.744605
 
 [5 rows x 18 columns]
 </pre></div>
@@ -593,7 +594,7 @@ increase                                            0.0                         
     <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_llama_bench_relative.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_llama_bench_102_003.png" srcset="../_images/sphx_glr_plot_llama_bench_102_003.png" alt="lower better 2x1024-1024-2-1024-1024-1024-2-eager comparison to eager %" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 55.561 seconds)</p>
+<img src="../_images/sphx_glr_plot_llama_bench_102_003.png" srcset="../_images/sphx_glr_plot_llama_bench_102_003.png" alt="lower better 2x1024-1024-2-1024-1024-1024-2-eager comparison to eager %" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 4.348 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-llama-bench-102-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/f3ab9054a845e4c69ebfa759f2d1ffc8/plot_llama_bench_102.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_llama_bench_102.ipynb</span></code></a></p>

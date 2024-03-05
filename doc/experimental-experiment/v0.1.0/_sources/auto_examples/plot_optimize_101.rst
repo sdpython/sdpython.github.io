@@ -514,7 +514,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000207</td>
+          <td>0.000208</td>
         </tr>
         <tr>
           <th>2</th>
@@ -523,7 +523,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>1.0</td>
-          <td>0.000207</td>
+          <td>0.000208</td>
         </tr>
         <tr>
           <th>3</th>
@@ -532,7 +532,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>2.0</td>
-          <td>0.000207</td>
+          <td>0.000208</td>
         </tr>
         <tr>
           <th>4</th>
@@ -541,7 +541,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>3.0</td>
-          <td>0.000207</td>
+          <td>0.000208</td>
         </tr>
         <tr>
           <th>...</th>
@@ -559,7 +559,7 @@ Optimization
           <td>3.0</td>
           <td>23.0</td>
           <td>0.0</td>
-          <td>0.000089</td>
+          <td>0.000087</td>
         </tr>
         <tr>
           <th>83</th>
@@ -568,7 +568,7 @@ Optimization
           <td>3.0</td>
           <td>24.0</td>
           <td>0.0</td>
-          <td>0.000080</td>
+          <td>0.000079</td>
         </tr>
         <tr>
           <th>84</th>
@@ -577,7 +577,7 @@ Optimization
           <td>3.0</td>
           <td>25.0</td>
           <td>0.0</td>
-          <td>0.000071</td>
+          <td>0.000274</td>
         </tr>
         <tr>
           <th>85</th>
@@ -586,7 +586,7 @@ Optimization
           <td>3.0</td>
           <td>26.0</td>
           <td>0.0</td>
-          <td>0.000059</td>
+          <td>0.000063</td>
         </tr>
         <tr>
           <th>86</th>
@@ -989,7 +989,7 @@ The second list is specific to :epkg:`onnxruntime`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.166 seconds)
+   **Total running time of the script:** (0 minutes 3.964 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:
