@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**04:51.676** total execution time for 11 files **from auto_examples**:
+**00:12.729** total execution time for 11 files **from auto_examples**:
 
 .. container::
 
@@ -32,36 +32,36 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_llama_bench.py` (``plot_llama_bench.py``)
-     - 01:11.645
+   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py` (``plot_llama_diff_export_301.py``)
+     - 00:12.729
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_dort.py` (``plot_torch_dort.py``)
-     - 00:59.764
+   * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``plot_convolutation_matmul_102.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export.py` (``plot_torch_export.py``)
-     - 00:55.956
+   * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``plot_llama_bench_102.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_aot.py` (``plot_torch_aot.py``)
-     - 00:41.586
+   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py` (``plot_llama_diff_dort_301.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort.py` (``plot_llama_diff_dort.py``)
-     - 00:35.019
+   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export.py` (``plot_llama_diff_export.py``)
-     - 00:08.876
+   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend.py` (``plot_torch_custom_backend.py``)
-     - 00:06.077
+   * - :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py` (``plot_torch_aot_201.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx.py` (``plot_profile_existing_onnx.py``)
-     - 00:05.953
+   * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``plot_torch_custom_backend_101.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_optimize.py` (``plot_optimize.py``)
-     - 00:03.331
+   * - :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py` (``plot_torch_dort_201.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_linreg.py` (``plot_torch_linreg.py``)
-     - 00:02.932
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul.py` (``plot_convolutation_matmul.py``)
-     - 00:00.537
+   * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``plot_torch_linreg_101.py``)
+     - 00:00.000
      - 0.0

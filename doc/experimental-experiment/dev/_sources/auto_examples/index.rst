@@ -46,14 +46,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optimize_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optimize_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_optimize.py`
+  :ref:`sphx_glr_auto_examples_plot_optimize_101.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Graph Optimization</div>
+      <div class="sphx-glr-thumbnail-title">101: Graph Optimization</div>
     </div>
 
 
@@ -63,14 +63,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_profile_existing_onnx_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_profile_existing_onnx_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx.py`
+  :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Profile an existing model</div>
+      <div class="sphx-glr-thumbnail-title">101: Profile an existing model with onnxruntime</div>
     </div>
 
 
@@ -80,14 +80,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_linreg_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_linreg_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_linreg.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Linear Regression</div>
+      <div class="sphx-glr-thumbnail-title">101: Linear Regression and export to ONNX</div>
     </div>
 
 
@@ -97,14 +97,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_custom_backend_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_custom_backend_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_custom_backend.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">A custom backend for torch</div>
+      <div class="sphx-glr-thumbnail-title">101: A custom backend for torch</div>
     </div>
 
 
@@ -114,14 +114,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_convolutation_matmul_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_convolutation_matmul_102_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_convolutation_matmul.py`
+  :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Convolution and Matrix Multiplication</div>
+      <div class="sphx-glr-thumbnail-title">102: Convolution and Matrix Multiplication</div>
     </div>
 
 
@@ -131,14 +131,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_diff_export_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_diff_export_301_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_llama_diff_export.py`
+  :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Compares LLAMA exporters</div>
+      <div class="sphx-glr-thumbnail-title">301: Compares LLAMA exporters</div>
     </div>
 
 
@@ -148,14 +148,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_bench_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_bench_102_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_llama_bench.py`
+  :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Measure LLAMA speed</div>
+      <div class="sphx-glr-thumbnail-title">102: Measure LLAMA speed</div>
     </div>
 
 
@@ -165,14 +165,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_diff_dort_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_diff_dort_301_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_llama_diff_dort.py`
+  :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Compares LLAMA exporters for onnxrt backend</div>
+      <div class="sphx-glr-thumbnail-title">301: Compares LLAMA exporters for onnxrt backend</div>
     </div>
 
 
@@ -182,14 +182,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_dort_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_dort_201_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_dort.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Evaluate DORT</div>
+      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT</div>
     </div>
 
 
@@ -199,14 +199,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_aot_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_aot_201_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_aot.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Evaluate DORT Training</div>
+      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT Training</div>
     </div>
 
 
@@ -216,14 +216,14 @@ all the graphs, the data used to draw them, and the models.
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_201_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_export.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_export_201.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Evaluate different ways to export a torch model to ONNX</div>
+      <div class="sphx-glr-thumbnail-title">201: Evaluate different ways to export a torch model to ONNX</div>
     </div>
 
 
@@ -235,17 +235,17 @@ all the graphs, the data used to draw them, and the models.
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_optimize
-   /auto_examples/plot_profile_existing_onnx
-   /auto_examples/plot_torch_linreg
-   /auto_examples/plot_torch_custom_backend
-   /auto_examples/plot_convolutation_matmul
-   /auto_examples/plot_llama_diff_export
-   /auto_examples/plot_llama_bench
-   /auto_examples/plot_llama_diff_dort
-   /auto_examples/plot_torch_dort
-   /auto_examples/plot_torch_aot
-   /auto_examples/plot_torch_export
+   /auto_examples/plot_optimize_101
+   /auto_examples/plot_profile_existing_onnx_101
+   /auto_examples/plot_torch_linreg_101
+   /auto_examples/plot_torch_custom_backend_101
+   /auto_examples/plot_convolutation_matmul_102
+   /auto_examples/plot_llama_diff_export_301
+   /auto_examples/plot_llama_bench_102
+   /auto_examples/plot_llama_diff_dort_301
+   /auto_examples/plot_torch_dort_201
+   /auto_examples/plot_torch_aot_201
+   /auto_examples/plot_torch_export_201
 
 
 .. only:: html

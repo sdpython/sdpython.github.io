@@ -51,16 +51,34 @@ ExpandPattern
 .. autoclass:: experimental_experiment.xoptim.patterns.ExpandPattern
     :members:
 
-MulMulMulPattern
-++++++++++++++++
+MatMulReshape2Of3Pattern
+++++++++++++++++++++++++
 
-.. autoclass:: experimental_experiment.xoptim.patterns.MulMulMulPattern
+.. autoclass:: experimental_experiment.xoptim.patterns.MatMulReshape2Of3Pattern
+    :members:
+
+MulMulMulScalarPattern
++++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.MulMulMulScalarPattern
+    :members:
+
+ReduceReshapePattern
+++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.ReduceReshapePattern
     :members:
 
 ReshapeMatMulReshapePattern
 +++++++++++++++++++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns.ReshapeMatMulReshapePattern
+    :members:
+
+Reshape2Of3Pattern
+++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.Reshape2Of3Pattern
     :members:
 
 ReshapeReshapePattern
@@ -87,6 +105,12 @@ TransposeMatMulPattern
 .. autoclass:: experimental_experiment.xoptim.patterns.TransposeMatMulPattern
     :members:
 
+TransposeReshapeMatMulPattern
++++++++++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.TransposeReshapeMatMulPattern
+    :members:
+
 TransposeTransposePattern
 +++++++++++++++++++++++++
 
@@ -108,4 +132,10 @@ ConstantOfShapeScatterNDPattern
 +++++++++++++++++++++++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns_ort.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern
+    :members:
+
+FusedMatMulPattern
+++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulPattern
     :members:
