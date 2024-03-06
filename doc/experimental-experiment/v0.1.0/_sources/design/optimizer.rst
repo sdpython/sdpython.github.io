@@ -33,7 +33,7 @@ PatternOptimization.match
 
     def match(
         self,
-        g: "GraphBuilderPatternOptimization",  # noqa: F821
+        g: "GraphBuilderPatternOptimization",
         node: NodeProto,
         matched: List[MatchResult],
     ) -> Optional[MatchResult]:
@@ -90,7 +90,7 @@ PatternOptimization.apply
 
     @classmethod
     def apply(
-        cls, g: "GraphBuilder", *nodes: Sequence[NodeProto]  # noqa: F821
+        cls, g: "GraphBuilder", *nodes: Sequence[NodeProto]
     ) -> List[NodeProto]:
 
 The method does the rewriting. It assumes it can happen.
