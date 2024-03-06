@@ -514,7 +514,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000208</td>
+          <td>0.000197</td>
         </tr>
         <tr>
           <th>2</th>
@@ -523,7 +523,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>1.0</td>
-          <td>0.000208</td>
+          <td>0.000197</td>
         </tr>
         <tr>
           <th>3</th>
@@ -532,7 +532,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>2.0</td>
-          <td>0.000208</td>
+          <td>0.000197</td>
         </tr>
         <tr>
           <th>4</th>
@@ -541,7 +541,7 @@ Optimization
           <td>1.0</td>
           <td>0.0</td>
           <td>3.0</td>
-          <td>0.000208</td>
+          <td>0.000197</td>
         </tr>
         <tr>
           <th>...</th>
@@ -559,7 +559,7 @@ Optimization
           <td>3.0</td>
           <td>23.0</td>
           <td>0.0</td>
-          <td>0.000087</td>
+          <td>0.000092</td>
         </tr>
         <tr>
           <th>83</th>
@@ -568,7 +568,7 @@ Optimization
           <td>3.0</td>
           <td>24.0</td>
           <td>0.0</td>
-          <td>0.000079</td>
+          <td>0.000087</td>
         </tr>
         <tr>
           <th>84</th>
@@ -577,7 +577,7 @@ Optimization
           <td>3.0</td>
           <td>25.0</td>
           <td>0.0</td>
-          <td>0.000274</td>
+          <td>0.000075</td>
         </tr>
         <tr>
           <th>85</th>
@@ -586,7 +586,7 @@ Optimization
           <td>3.0</td>
           <td>26.0</td>
           <td>0.0</td>
-          <td>0.000063</td>
+          <td>0.000062</td>
         </tr>
         <tr>
           <th>86</th>
@@ -614,7 +614,7 @@ Summary
 .. code-block:: Python
 
 
-    print(df[["pattern", "added", "removed"]].groupby("pattern").sum())
+    print(df.groupby("pattern").sum())
 
 
 
@@ -624,22 +624,22 @@ Summary
 
  .. code-block:: none
 
-                                   added  removed
-    pattern                                      
-    CastPattern                     37.0       37
-    ExpandBroadcastPattern           3.0        6
-    MatMulReshape2Of3Pattern        10.0       12
-    MulMulMulScalarPattern           6.0        9
-    ReduceReshapePattern             3.0        6
-    Reshape2Of3Pattern               5.0        6
-    ReshapeReshapePattern            4.0        8
-    RotaryConcatPartPattern          8.0       16
-    Sub1MulPattern                   2.0        2
-    TransposeMatMulPattern          14.0       28
-    TransposeReshapeMatMulPattern   12.0       12
-    TransposeTransposePattern        7.0       14
-    remove_identity_nodes            0.0       45
-    remove_unused                    0.0        1
+                                   removed  added  iteration  match_index   time_in
+    pattern                                                                        
+    CastPattern                         37   37.0        0.0        666.0  0.007285
+    ExpandBroadcastPattern               6    3.0        6.0          3.0  0.000251
+    MatMulReshape2Of3Pattern            12   10.0       14.0          3.0  0.001175
+    MulMulMulScalarPattern               9    6.0        3.0          3.0  0.000628
+    ReduceReshapePattern                 6    3.0        0.0        114.0  0.000618
+    Reshape2Of3Pattern                   6    5.0        1.0         43.0  0.000838
+    ReshapeReshapePattern                8    4.0        0.0        170.0  0.000537
+    RotaryConcatPartPattern             16    8.0       13.0          0.0  0.000380
+    Sub1MulPattern                       2    2.0        8.0          0.0  0.000104
+    TransposeMatMulPattern              28   14.0      217.0          0.0  0.001985
+    TransposeReshapeMatMulPattern       12   12.0       98.0          0.0  0.000315
+    TransposeTransposePattern           14    7.0        0.0        336.0  0.001296
+    remove_identity_nodes               45    0.0        0.0          0.0  0.000000
+    remove_unused                        1    0.0        0.0          0.0  0.000000
 
 
 
@@ -989,7 +989,7 @@ The second list is specific to :epkg:`onnxruntime`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.964 seconds)
+   **Total running time of the script:** (0 minutes 2.227 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:

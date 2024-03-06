@@ -56,7 +56,7 @@ df
 ##############################
 # Summary
 
-print(df[["pattern", "added", "removed"]].groupby("pattern").sum())
+print(df.groupby("pattern").sum())
 
 ##############################
 # The total is:

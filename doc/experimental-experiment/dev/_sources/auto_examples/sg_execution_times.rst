@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:31.614** total execution time for 11 files **from auto_examples**:
+**00:02.227** total execution time for 11 files **from auto_examples**:
 
 .. container::
 
@@ -32,14 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py` (``plot_torch_aot_201.py``)
-     - 01:18.839
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py` (``plot_torch_dort_201.py``)
-     - 00:57.998
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py` (``plot_llama_diff_dort_301.py``)
-     - 00:14.777
+   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
+     - 00:02.227
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``plot_convolutation_matmul_102.py``)
      - 00:00.000
@@ -47,16 +41,22 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``plot_llama_bench_102.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py` (``plot_llama_diff_export_301.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py` (``plot_llama_diff_dort_301.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py` (``plot_llama_diff_export_301.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py` (``plot_torch_aot_201.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``plot_torch_custom_backend_101.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py` (``plot_torch_dort_201.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
