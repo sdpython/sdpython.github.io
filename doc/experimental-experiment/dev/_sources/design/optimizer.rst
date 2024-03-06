@@ -298,8 +298,7 @@ There exists some predefined lists of patterns:
 * ``default``: includes all patterns using only standard onnx patterns.
 * ``onnxruntime``: patterns specific to :epkg:`onnxruntime`, the final model
   may be executed by onnxruntime and possibly only onnxruntime as it may
-  introduce patterns from :epkg:`Supported Operators and Data Types`
-  <https://github.com/microsoft/onnxruntime/blob/main/docs/OperatorKernels.md>`_
+  introduce patterns from :epkg:`Supported Operators and Data Types`.
 
 .. runpython::
     :showcode:
@@ -359,3 +358,9 @@ Function :func:`to_onnx <experimental_experiment.torch_interpreter.to_onnx>`
 converts a torch model into ONNX. While doing so, it stores the shape
 information coming from torch. There is no need to run shape inference
 on the onnx model it generates before optimizing it.
+
+Available Patterns
+==================
+
+They may be found at :ref:`l-pattern-optimization-onnx`
+and :ref:`l-pattern-optimization-ort`.
