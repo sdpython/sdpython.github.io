@@ -18,7 +18,7 @@ Classes
 GraphBuilderPatternOptimization
 +++++++++++++++++++++++++++++++
 
-.. autoclass:: experimental_experiment.xoptim.graph_builder_optim.GraphBuilderPatternOptimization
+.. autoclass:: experimental_experiment.xoptim.GraphBuilderPatternOptimization
     :members:
 
 
@@ -49,6 +49,18 @@ ExpandPattern
 +++++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns.ExpandPattern
+    :members:
+
+ExpandBroadcastPattern
+++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.ExpandBroadcastPattern
+    :members:
+
+ExpandSwapPattern
++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.ExpandSwapPattern
     :members:
 
 MatMulReshape2Of3Pattern
