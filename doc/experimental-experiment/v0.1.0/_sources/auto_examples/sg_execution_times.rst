@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.227** total execution time for 11 files **from auto_examples**:
+**00:08.260** total execution time for 11 files **from auto_examples**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
-     - 00:02.227
+     - 00:08.260
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``plot_convolutation_matmul_102.py``)
      - 00:00.000

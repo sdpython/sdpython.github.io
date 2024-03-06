@@ -490,18 +490,20 @@ Optimization
         <tr style="text-align: right;">
           <th></th>
           <th>pattern</th>
-          <th>removed</th>
-          <th>added</th>
-          <th>iteration</th>
-          <th>match_index</th>
           <th>time_in</th>
+          <th>removed</th>
+          <th>iteration</th>
+          <th>instances</th>
+          <th>match_index</th>
+          <th>added</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th>0</th>
-          <td>remove_identity_nodes</td>
-          <td>1</td>
+          <td>check_A</td>
+          <td>0.000598</td>
+          <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -509,39 +511,43 @@ Optimization
         </tr>
         <tr>
           <th>1</th>
-          <td>CastPattern</td>
-          <td>1</td>
+          <td>remove_identity_nodes</td>
+          <td>0.000661</td>
           <td>1.0</td>
-          <td>0.0</td>
-          <td>0.0</td>
-          <td>0.000197</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>CastPattern</td>
-          <td>1</td>
-          <td>1.0</td>
-          <td>0.0</td>
-          <td>1.0</td>
-          <td>0.000197</td>
+          <td>check_B</td>
+          <td>0.000417</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>CastPattern</td>
-          <td>1</td>
-          <td>1.0</td>
+          <td>remove_unused</td>
+          <td>0.002001</td>
           <td>0.0</td>
-          <td>2.0</td>
-          <td>0.000197</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>CastPattern</td>
-          <td>1</td>
-          <td>1.0</td>
-          <td>0.0</td>
-          <td>3.0</td>
-          <td>0.000197</td>
+          <td>check_C</td>
+          <td>0.000444</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
           <th>...</th>
@@ -551,47 +557,53 @@ Optimization
           <td>...</td>
           <td>...</td>
           <td>...</td>
+          <td>...</td>
         </tr>
         <tr>
-          <th>82</th>
-          <td>TransposeReshapeMatMulPattern</td>
-          <td>3</td>
-          <td>3.0</td>
-          <td>23.0</td>
+          <th>704</th>
+          <td>build_for_pattern</td>
+          <td>0.000473</td>
           <td>0.0</td>
-          <td>0.000092</td>
+          <td>27.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
-          <th>83</th>
-          <td>TransposeReshapeMatMulPattern</td>
-          <td>3</td>
-          <td>3.0</td>
-          <td>24.0</td>
-          <td>0.0</td>
-          <td>0.000087</td>
+          <th>705</th>
+          <td>pattern_optimization</td>
+          <td>0.168386</td>
+          <td>89.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
-          <th>84</th>
-          <td>TransposeReshapeMatMulPattern</td>
-          <td>3</td>
-          <td>3.0</td>
-          <td>25.0</td>
-          <td>0.0</td>
-          <td>0.000075</td>
+          <th>706</th>
+          <td>check_F</td>
+          <td>0.000223</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
-          <th>85</th>
-          <td>TransposeReshapeMatMulPattern</td>
-          <td>3</td>
-          <td>3.0</td>
-          <td>26.0</td>
-          <td>0.0</td>
-          <td>0.000062</td>
-        </tr>
-        <tr>
-          <th>86</th>
+          <th>707</th>
           <td>remove_unused</td>
-          <td>1</td>
+          <td>0.000555</td>
+          <td>1.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>708</th>
+          <td>check_G</td>
+          <td>0.000217</td>
+          <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -599,7 +611,7 @@ Optimization
         </tr>
       </tbody>
     </table>
-    <p>87 rows × 6 columns</p>
+    <p>709 rows × 7 columns</p>
     </div>
     </div>
     <br />
@@ -609,12 +621,27 @@ Optimization
 
 Summary
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-61
+.. GENERATED FROM PYTHON SOURCE LINES 58-76
 
 .. code-block:: Python
 
 
-    print(df.groupby("pattern").sum())
+    for c in df.columns:
+        if "time" not in c and "pattern" not in c:
+            df[c] = df[c].fillna(0).astype(int)
+
+    print(
+        df.groupby("pattern").agg(
+            {
+                "time_in": "sum",
+                "added": "sum",
+                "removed": "sum",
+                "iteration": "max",
+                "match_index": "max",
+                "instances": "sum",
+            }
+        )
+    )
 
 
 
@@ -624,31 +651,56 @@ Summary
 
  .. code-block:: none
 
-                                   removed  added  iteration  match_index   time_in
-    pattern                                                                        
-    CastPattern                         37   37.0        0.0        666.0  0.007285
-    ExpandBroadcastPattern               6    3.0        6.0          3.0  0.000251
-    MatMulReshape2Of3Pattern            12   10.0       14.0          3.0  0.001175
-    MulMulMulScalarPattern               9    6.0        3.0          3.0  0.000628
-    ReduceReshapePattern                 6    3.0        0.0        114.0  0.000618
-    Reshape2Of3Pattern                   6    5.0        1.0         43.0  0.000838
-    ReshapeReshapePattern                8    4.0        0.0        170.0  0.000537
-    RotaryConcatPartPattern             16    8.0       13.0          0.0  0.000380
-    Sub1MulPattern                       2    2.0        8.0          0.0  0.000104
-    TransposeMatMulPattern              28   14.0      217.0          0.0  0.001985
-    TransposeReshapeMatMulPattern       12   12.0       98.0          0.0  0.000315
-    TransposeTransposePattern           14    7.0        0.0        336.0  0.001296
-    remove_identity_nodes               45    0.0        0.0          0.0  0.000000
-    remove_unused                        1    0.0        0.0          0.0  0.000000
+                                          time_in  added  removed  iteration  match_index  instances
+    pattern                                                                                         
+    apply_CastPattern                    0.005332     37       37          0           36         37
+    apply_ExpandBroadcastPattern         0.000359      3        6          2            2          3
+    apply_MatMulReshape2Of3Pattern       0.002177     10       12          5            3          4
+    apply_MulMulMulScalarPattern         0.001865      6        9          1            2          3
+    apply_ReduceReshapePattern           0.000440      3        6          0           39          3
+    apply_Reshape2Of3Pattern             0.001236      5        6          1           40          2
+    apply_ReshapeReshapePattern          0.000618      4        8          0           44          4
+    apply_RotaryConcatPartPattern        0.000886      8       16          7            0          2
+    apply_Sub1MulPattern                 0.000382      2        2          8            0          1
+    apply_TransposeMatMulPattern         0.002425     14       28         22            0         14
+    apply_TransposeReshapeMatMulPattern  0.001909     12       12         26            0          4
+    apply_TransposeTransposePattern      0.004568      7       14          0           51          7
+    build_for_pattern                    0.017163      0       44         27            0          0
+    check_A                              0.000598      0        0          0            0          0
+    check_B                              0.000417      0        0          0            0          0
+    check_C                              0.000444      0        0          0            0          0
+    check_F                              0.000223      0        0          0            0          0
+    check_G                              0.000217      0        0          0            0          0
+    check_pattern_A                      0.034226      0        0         26            0          0
+    check_pattern_B                      0.007542      0        0         27            0          0
+    match_CastPattern                    0.002172      0        0         27           37         37
+    match_ExpandBroadcastPattern         0.001758      0        0         27           37          3
+    match_ExpandPattern                  0.001928      0        0         27           37          0
+    match_ExpandSwapPattern              0.001557      0        0         27           37          0
+    match_MatMulReshape2Of3Pattern       0.007822      0        0         27           41          4
+    match_MulMulMulScalarPattern         0.005175      0        0         27           37          3
+    match_ReduceReshapePattern           0.003880      0        0         27           40          3
+    match_Reshape2Of3Pattern             0.013999      0        0         27           41          2
+    match_ReshapeMatMulReshapePattern    0.003022      0        0         27           40          0
+    match_ReshapeReshapePattern          0.003163      0        0         27           45          4
+    match_RotaryConcatPartPattern        0.005865      0        0         27           45          2
+    match_Sub1MulPattern                 0.006444      0        0         27           45          1
+    match_TransposeMatMulPattern         0.006071      0        0         27           45         14
+    match_TransposeReshapeMatMulPattern  0.004166      0        0         27           45          4
+    match_TransposeTransposePattern      0.003259      0        0         27           52          7
+    match_UnsqueezeUnsqueezePattern      0.002032      0        0         27           52          0
+    pattern_optimization                 0.168386      0       89          0            0          0
+    remove_identity_nodes                0.011409      0       45         27            0          0
+    remove_unused                        0.002556      0        1          0            0          0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-63
+.. GENERATED FROM PYTHON SOURCE LINES 77-78
 
 The total is:
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-68
+.. GENERATED FROM PYTHON SOURCE LINES 78-83
 
 .. code-block:: Python
 
@@ -665,16 +717,16 @@ The total is:
 
  .. code-block:: none
 
-    number of removed nodes: 91.0
+    number of removed nodes: 224
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-70
+.. GENERATED FROM PYTHON SOURCE LINES 84-85
 
 Conversion to onnx.
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-75
+.. GENERATED FROM PYTHON SOURCE LINES 85-90
 
 .. code-block:: Python
 
@@ -696,11 +748,11 @@ Conversion to onnx.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-77
+.. GENERATED FROM PYTHON SOURCE LINES 91-92
 
 It gives the following.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-80
+.. GENERATED FROM PYTHON SOURCE LINES 92-95
 
 .. code-block:: Python
 
@@ -950,11 +1002,11 @@ It gives the following.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-82
+.. GENERATED FROM PYTHON SOURCE LINES 96-97
 
 And visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-85
+.. GENERATED FROM PYTHON SOURCE LINES 97-100
 
 .. code-block:: Python
 
@@ -979,7 +1031,7 @@ And visually.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-90
+.. GENERATED FROM PYTHON SOURCE LINES 101-105
 
 The first list of patterns optimizes the graph with only
 standard onnx operators: :ref:`l-pattern-optimization-onnx`.
@@ -989,7 +1041,7 @@ The second list is specific to :epkg:`onnxruntime`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.227 seconds)
+   **Total running time of the script:** (0 minutes 8.260 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:
