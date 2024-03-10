@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Pattern Optimizer" href="optimizer.html" /><link rel="prev" title="101: Profile an existing model with onnxruntime" href="../auto_examples/plot_profile_existing_onnx_101.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Custom Exporter" href="exporter.html" /><link rel="prev" title="101: Profile an existing model with onnxruntime" href="../auto_examples/plot_profile_existing_onnx_101.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Design - experimental-experiment 0.1.0 documentation</title>
@@ -186,10 +186,17 @@
 </ul>
 </li>
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Design</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backends.html">Dynamo Backends</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="models/llama.html">Supported Models</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="times.html">Times</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/graph_builder.html">graph_builder</a></li>
@@ -198,13 +205,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/aten_method.html">aten_methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/prims_function.html">aten_prims</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/convert.html">convert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/torch_helper.html">torch_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/misc.html">Others…</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
@@ -262,25 +270,11 @@
 <h1>Design<a class="headerlink" href="#design" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="optimizer.html">Pattern Optimizer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="optimizer.html#patterns">Patterns</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="optimizer.html#patternoptimization-match">PatternOptimization.match</a></li>
-<li class="toctree-l3"><a class="reference internal" href="optimizer.html#patternoptimization-apply">PatternOptimization.apply</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="optimizer.html#optimization-algorithm">Optimization Algorithm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimizer.html#adding-a-pattern">Adding a pattern</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimizer.html#example">Example</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="optimizer.html#simple-api">Simple API</a></li>
-<li class="toctree-l3"><a class="reference internal" href="optimizer.html#verbosity">Verbosity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="optimizer.html#select-the-pattern-to-use">Select the pattern to use</a></li>
-<li class="toctree-l3"><a class="reference internal" href="optimizer.html#statistics">Statistics</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="optimizer.html#shape-inference">Shape inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="optimizer.html#available-patterns">Available Patterns</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="exporter.html">Custom Exporter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">Dynamo Backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models/index.html">Supported Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="times.html">Times</a></li>
 </ul>
 </div>
 </section>
@@ -290,12 +284,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="optimizer.html">
+          <a class="next-page" href="exporter.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Pattern Optimizer</div>
+                <div class="title">Custom Exporter</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

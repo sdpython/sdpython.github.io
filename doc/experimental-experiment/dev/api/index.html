@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="gradient" href="gradient.html" /><link rel="prev" title="Pattern Optimizer" href="../design/optimizer.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="gradient" href="gradient.html" /><link rel="prev" title="Times" href="../design/times.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>API - experimental-experiment 0.1.0 documentation</title>
@@ -186,10 +186,17 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design/exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/backends.html">Dynamo Backends</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../design/models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/models/llama.html">Supported Models</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design/times.html">Times</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graph_builder.html">graph_builder</a></li>
@@ -198,13 +205,14 @@
 <li class="toctree-l2"><a class="reference internal" href="onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aten_method.html">aten_methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prims_function.html">aten_prims</a></li>
 <li class="toctree-l2"><a class="reference internal" href="convert.html">convert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Others…</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
@@ -270,11 +278,122 @@
 <li class="toctree-l1"><a class="reference internal" href="onnx_export.html">onnx_export</a></li>
 <li class="toctree-l1"><a class="reference internal" href="aten_function.html">aten_functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="aten_method.html">aten_methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prims_function.html">aten_prims</a></li>
 <li class="toctree-l1"><a class="reference internal" href="convert.html">convert</a></li>
 <li class="toctree-l1"><a class="reference internal" href="torch_helper.html">torch_helper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Others…</a></li>
 </ul>
+</div>
+<p><strong>Versions</strong></p>
+<p>The documentation was generated with the following versions.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx</span>
+<span class="kn">import</span> <span class="nn">onnx_array_api</span>
+<span class="kn">import</span> <span class="nn">onnxruntime</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">transformers</span>
+<span class="kn">import</span> <span class="nn">onnxscript</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">onnxrewriter</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">onnxrewriter</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">for</span> <span class="n">pck</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="n">onnx</span><span class="p">,</span>
+    <span class="n">onnx_array_api</span><span class="p">,</span>
+    <span class="n">onnxruntime</span><span class="p">,</span>
+    <span class="n">torch</span><span class="p">,</span>
+    <span class="n">transformers</span><span class="p">,</span>
+    <span class="n">onnxscript</span><span class="p">,</span>
+    <span class="n">onnxrewriter</span><span class="p">,</span>
+<span class="p">]:</span>
+    <span class="k">if</span> <span class="n">pck</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pck</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">pck</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pck</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">onnx</span><span class="p">:</span> <span class="mf">1.17.0</span>
+    <span class="n">onnx_array_api</span><span class="p">:</span> <span class="mf">0.2.0</span>
+    <span class="n">onnxruntime</span><span class="p">:</span> <span class="mf">1.18.0</span><span class="o">+</span><span class="n">cu118</span>
+    <span class="n">torch</span><span class="p">:</span> <span class="mf">2.3.0</span><span class="o">.</span><span class="n">dev20240309</span><span class="o">+</span><span class="n">cu118</span>
+    <span class="n">transformers</span><span class="p">:</span> <span class="mf">4.37.2</span>
+    <span class="n">onnxscript</span><span class="p">:</span> <span class="n">module</span> <span class="s1">&#39;onnxscript&#39;</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s1">&#39;__version__&#39;</span>
+    <span class="n">onnxrewriter</span><span class="p">:</span> <span class="n">module</span> <span class="s1">&#39;onnxrewriter&#39;</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s1">&#39;__version__&#39;</span>
+</pre></div>
+</div>
+<p><strong>Statistics</strong></p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">experimental_experiment</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.ext_test_case</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">statistics_on_file</span><span class="p">,</span>
+    <span class="n">statistics_on_folder</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">experimental_experiment</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">stat</span> <span class="o">=</span> <span class="n">statistics_on_folder</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">root</span><span class="p">,</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;_doc&quot;</span><span class="p">),</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;_unittests&quot;</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">aggregation</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;ext&quot;</span><span class="p">,</span> <span class="s2">&quot;dir&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">gr</span><span class="p">[</span><span class="n">gr</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;_doc/auto_examples&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------------&quot;</span><span class="p">)</span>
+<span class="n">total</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">gr</span><span class="p">[</span><span class="n">gr</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;experimental_experiment/&quot;</span><span class="p">)]</span>
+    <span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;ext&quot;</span><span class="p">,</span> <span class="s2">&quot;dir&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">ext</span>                                        <span class="nb">dir</span>  <span class="n">lines</span>   <span class="n">chars</span>
+    <span class="mi">0</span>    <span class="o">.</span><span class="n">py</span>                                      <span class="n">_doc</span><span class="o">/</span>    <span class="mi">129</span>    <span class="mi">4406</span>
+    <span class="mi">2</span>    <span class="o">.</span><span class="n">py</span>                              <span class="n">_doc</span><span class="o">/</span><span class="n">examples</span>   <span class="mi">3434</span>   <span class="mi">94155</span>
+    <span class="mi">3</span>    <span class="o">.</span><span class="n">py</span>                      <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_convert</span>     <span class="mi">69</span>    <span class="mi">2319</span>
+    <span class="mi">4</span>    <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_gradient</span>    <span class="mi">360</span>   <span class="mi">10808</span>
+    <span class="mi">5</span>    <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_plotting</span>     <span class="mi">18</span>     <span class="mi">541</span>
+    <span class="mi">6</span>    <span class="o">.</span><span class="n">py</span>                    <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_reference</span>    <span class="mi">400</span>   <span class="mi">11286</span>
+    <span class="mi">7</span>    <span class="o">.</span><span class="n">py</span>                 <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_dynamo</span>    <span class="mi">578</span>   <span class="mi">14270</span>
+    <span class="mi">8</span>    <span class="o">.</span><span class="n">py</span>                 <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_helper</span>    <span class="mi">314</span>    <span class="mi">9122</span>
+    <span class="mi">9</span>    <span class="o">.</span><span class="n">py</span>            <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_interpreter</span>   <span class="mi">5856</span>  <span class="mi">156989</span>
+    <span class="mi">10</span>   <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xbuilder</span>    <span class="mi">122</span>    <span class="mi">3668</span>
+    <span class="mi">11</span>   <span class="o">.</span><span class="n">py</span>                       <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xoptim</span>   <span class="mi">2243</span>   <span class="mi">61739</span>
+    <span class="mi">12</span>   <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xrun_doc</span>    <span class="mi">511</span>   <span class="mi">13103</span>
+    <span class="mi">13</span>   <span class="o">.</span><span class="n">py</span>                   <span class="n">experimental_experiment</span><span class="o">/</span>    <span class="mi">814</span>   <span class="mi">19042</span>
+    <span class="mi">14</span>   <span class="o">.</span><span class="n">py</span>            <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">convert</span>    <span class="mi">116</span>    <span class="mi">3094</span>
+    <span class="mi">15</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">gradient</span>   <span class="mi">1022</span>   <span class="mi">30006</span>
+    <span class="mi">16</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">plotting</span>    <span class="mi">454</span>    <span class="mi">8174</span>
+    <span class="mi">17</span>   <span class="o">.</span><span class="n">py</span>          <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">reference</span>    <span class="mi">414</span>   <span class="mi">10516</span>
+    <span class="mi">18</span>   <span class="o">.</span><span class="n">py</span>        <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_bench</span>    <span class="mi">468</span>   <span class="mi">13716</span>
+    <span class="mi">19</span>   <span class="o">.</span><span class="n">py</span>       <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_dynamo</span>    <span class="mi">976</span>   <span class="mi">27482</span>
+    <span class="mi">20</span>   <span class="o">.</span><span class="n">py</span>       <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_helper</span>    <span class="mi">460</span>   <span class="mi">13146</span>
+    <span class="mi">21</span>   <span class="o">.</span><span class="n">py</span>  <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_interpreter</span>   <span class="mi">4564</span>  <span class="mi">113292</span>
+    <span class="mi">22</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">xbuilder</span>   <span class="mi">3595</span>   <span class="mi">92381</span>
+    <span class="mi">23</span>   <span class="o">.</span><span class="n">py</span>             <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">xoptim</span>   <span class="mi">2386</span>   <span class="mi">64382</span>
+    <span class="mi">24</span>  <span class="o">.</span><span class="n">rst</span>                                      <span class="n">_doc</span><span class="o">/</span>    <span class="mi">206</span>   <span class="mi">11594</span>
+    <span class="mi">25</span>  <span class="o">.</span><span class="n">rst</span>                                   <span class="n">_doc</span><span class="o">/</span><span class="n">api</span>    <span class="mi">345</span>    <span class="mi">9460</span>
+    <span class="mi">27</span>  <span class="o">.</span><span class="n">rst</span>                                <span class="n">_doc</span><span class="o">/</span><span class="n">design</span>   <span class="mi">1040</span>   <span class="mi">38493</span>
+    <span class="mi">28</span>  <span class="o">.</span><span class="n">rst</span>                              <span class="n">_doc</span><span class="o">/</span><span class="n">tutorial</span>     <span class="mi">45</span>     <span class="mi">770</span>
+    <span class="o">--------------------</span>
+    <span class="n">lines</span>     <span class="mi">15269</span>
+    <span class="n">chars</span>    <span class="mi">395231</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
 </div>
 </section>
 
@@ -292,14 +411,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../design/optimizer.html">
+          <a class="prev-page" href="../design/times.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Pattern Optimizer</div>
+                <div class="title">Times</div>
                 
               </div>
             </a>

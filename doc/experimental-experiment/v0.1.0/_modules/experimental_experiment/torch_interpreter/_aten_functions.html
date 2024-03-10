@@ -185,10 +185,17 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/backends.html">Dynamo Backends</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../design/models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../design/models/llama.html">Supported Models</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/times.html">Times</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder.html">graph_builder</a></li>
@@ -197,13 +204,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_method.html">aten_methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/prims_function.html">aten_prims</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
@@ -270,7 +278,6 @@
     <span class="n">all_float</span><span class="p">,</span>
     <span class="n">all_int</span><span class="p">,</span>
     <span class="n">all_int_or_float</span><span class="p">,</span>
-    <span class="n">all_int_or_str</span><span class="p">,</span>
     <span class="n">is_static_dimension</span><span class="p">,</span>
     <span class="n">is_static_shape</span><span class="p">,</span>
 <span class="p">)</span>
@@ -281,7 +288,6 @@
 <span class="kn">from</span> <span class="nn">..xbuilder.graph_builder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span>
 <span class="kn">from</span> <span class="nn">..xbuilder.shape_type_compute</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">_adjust_attributes_of_max_pool</span><span class="p">,</span>
-    <span class="n">broadcast_shape</span><span class="p">,</span>
     <span class="n">set_type_shape_unary_op</span><span class="p">,</span>
     <span class="n">set_type_shape_binary_op</span><span class="p">,</span>
     <span class="n">set_type_shape_reduce_op</span><span class="p">,</span>
@@ -421,9 +427,13 @@
     <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;gemm&quot;</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gemm</span><span class="p">(</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gemm</span><span class="p">(</span>
         <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">beta</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;addmm&quot;</span>
-    <span class="p">)</span></div>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
 
 
 
@@ -465,6 +475,8 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;aten_amax&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;reducemax&quot;</span>
+    <span class="kn">from</span> <span class="nn">._prims_functions</span> <span class="kn">import</span> <span class="n">prims_amax</span>
+
     <span class="k">return</span> <span class="n">prims_amax</span><span class="p">(</span>
         <span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">keepdim</span><span class="p">,</span> <span class="n">output_dtype</span><span class="o">=</span><span class="n">output_dtype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
     <span class="p">)</span></div>
@@ -1262,20 +1274,15 @@
         <span class="n">torch</span><span class="o">.</span><span class="n">contiguous_format</span><span class="p">,</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;empty_like not implemented for memory_format=</span><span class="si">{</span><span class="n">memory_format</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_static_shape</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
-        <span class="c1"># simple case</span>
-        <span class="k">return</span> <span class="n">aten_full</span><span class="p">(</span>
-            <span class="n">g</span><span class="p">,</span>
-            <span class="n">sts</span><span class="p">,</span>
-            <span class="n">outputs</span><span class="p">,</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
-            <span class="mi">0</span><span class="p">,</span>
-            <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;empty_like&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;empty_like is not implemented when shape is not fully known &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;for </span><span class="si">{</span><span class="n">x</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="c1"># simple case</span>
+    <span class="k">return</span> <span class="n">aten_full</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span>
+        <span class="n">sts</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="p">,</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;empty_like&quot;</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
@@ -1549,21 +1556,20 @@
 
     <span class="n">new_shape</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected values for size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">size</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="n">all_int</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
         <span class="n">tsize</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
         <span class="n">new_shape</span> <span class="o">=</span> <span class="n">size</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">all_int_or_str</span><span class="p">(</span>
-            <span class="n">size</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected values for size=</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">size</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">all_int</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
             <span class="n">tsize</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
             <span class="n">new_shape</span> <span class="o">=</span> <span class="n">size</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tsize</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_shape_from_results</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_static_shape</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">tsize</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tsize</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="si">}</span><span class="s2"> for size.&quot;</span><span class="p">)</span>
 
@@ -3656,512 +3662,6 @@
         <span class="n">requires_grad</span><span class="o">=</span><span class="n">requires_grad</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
     <span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_add">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_add">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_add</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_add&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;add&quot;</span>
-    <span class="k">return</span> <span class="n">aten_add</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_amax">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_amax">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_amax</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">keepdim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">output_dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_amax&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;reducemax&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">output_dtype</span> <span class="ow">is</span> <span class="kc">None</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when output_dtype=</span><span class="si">{</span><span class="n">output_dtype</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMaxAnyOpset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">keepdim</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMaxAnyOpset</span><span class="p">(</span>
-            <span class="n">x</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">keepdim</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">all_int</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMaxAnyOpset</span><span class="p">(</span>
-            <span class="n">x</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">keepdim</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span><span class="si">}</span><span class="s2"> for dim&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">set_type_shape_reduce_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="n">keepdim</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
-<div class="viewcode-block" id="prims_broadcast_in_dim">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_broadcast_in_dim">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_broadcast_in_dim</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">a</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">shape</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-    <span class="n">broadcast_dimensions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    broadcast</span>
-
-<span class="sd">    ::</span>
-
-<span class="sd">        s = list(shape)</span>
-<span class="sd">        for broadcast_dimension in broadcast_dimensions:</span>
-<span class="sd">            s[broadcast_dimension] = -1</span>
-
-<span class="sd">        v = a</span>
-<span class="sd">        for idx, x in enumerate(s):</span>
-<span class="sd">            if x != -1:</span>
-<span class="sd">                v = unsqueeze(v, idx)</span>
-
-<span class="sd">        return expand(v, shape)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">max</span><span class="p">(</span><span class="n">broadcast_dimensions</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Index out of boundary, shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;broadcast_dimensions=</span><span class="si">{</span><span class="n">broadcast_dimensions</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">broadcast_dimension</span> <span class="ow">in</span> <span class="n">broadcast_dimensions</span><span class="p">:</span>
-        <span class="n">s</span><span class="p">[</span><span class="n">broadcast_dimension</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="n">uns</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">uns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
-
-    <span class="n">unsqueezed</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">UnsqueezeAnyOpset</span><span class="p">(</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">uns</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;broadcast_in_dim&quot;</span>
-    <span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
-        <span class="n">unsqueezed</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;broadcast_in_dim&quot;</span><span class="p">,</span>
-        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
-<div class="viewcode-block" id="prims_cat">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_cat">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_cat</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">tensors</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
-    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_cat&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;concat&quot;</span>
-    <span class="k">return</span> <span class="n">aten_cat</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">tensors</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_clone">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_clone">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_clone</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">memory_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;identity&quot;</span>
-    <span class="k">return</span> <span class="n">aten_clone</span><span class="p">(</span>
-        <span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">memory_format</span><span class="o">=</span><span class="n">memory_format</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_clone&quot;</span>
-    <span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_convert_element_type">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_convert_element_type">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_convert_element_type</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">dtype</span><span class="p">:</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_convert_element_type&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;cast&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;dtype cannot be none for prims_convert_element_type</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">onnx_to</span> <span class="o">=</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">onnx_to</span> <span class="o">==</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Cast&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">onnx_to</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
-<div class="viewcode-block" id="prims_collapse_view">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_collapse_view">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_collapse_view</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_collapse_view&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;reshape&quot;</span>
-    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span>
-        <span class="n">x</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;collapse_view not implemented if x has no shape</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="n">end</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">end</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">start</span><span class="p">:</span>
-                <span class="n">new_shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">s</span> <span class="o">*=</span> <span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="n">ashape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ashape</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">ashape</span><span class="p">[</span><span class="n">ashape</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ashape</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
-<div class="viewcode-block" id="prims_cos">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_cos">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_cos</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_cos&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;cos&quot;</span>
-    <span class="k">return</span> <span class="n">aten_cos</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_div">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_div">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_div</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_div&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;div&quot;</span>
-    <span class="k">return</span> <span class="n">aten_div</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_empty_strided">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_empty_strided">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_empty_strided</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">size</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">stride</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-    <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.device&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-    <span class="n">requires_grad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_empty_strided&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;constantofshape&quot;</span>
-    <span class="c1"># strided is unused.</span>
-    <span class="k">return</span> <span class="n">aten_empty_strided</span><span class="p">(</span>
-        <span class="n">g</span><span class="p">,</span>
-        <span class="n">sts</span><span class="p">,</span>
-        <span class="n">outputs</span><span class="p">,</span>
-        <span class="n">size</span><span class="p">,</span>
-        <span class="n">stride</span><span class="p">,</span>
-        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
-        <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span>
-        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
-        <span class="n">requires_grad</span><span class="o">=</span><span class="n">requires_grad</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-    <span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_eq">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_eq">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_eq</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_eq&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;equal&quot;</span>
-    <span class="k">return</span> <span class="n">aten_eq</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_exp">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_exp">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_exp</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_exp&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;exp&quot;</span>
-    <span class="k">return</span> <span class="n">aten_exp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_gt">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_gt">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_gt</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_gt&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;greater&quot;</span>
-    <span class="k">return</span> <span class="n">aten_gt</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_iota">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_iota">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_iota</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-    <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.device&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-    <span class="n">requires_grad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;arange&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">length</span><span class="p">,</span> <span class="nb">int</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when length=</span><span class="si">{</span><span class="n">length</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">start</span><span class="p">,</span> <span class="nb">int</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when start=</span><span class="si">{</span><span class="n">start</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">step</span><span class="p">,</span> <span class="nb">int</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when step=</span><span class="si">{</span><span class="n">step</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">length</span> <span class="o">*</span> <span class="n">step</span>
-    <span class="k">return</span> <span class="n">aten_arange</span><span class="p">(</span>
-        <span class="n">g</span><span class="p">,</span>
-        <span class="n">sts</span><span class="p">,</span>
-        <span class="n">outputs</span><span class="p">,</span>
-        <span class="n">start</span><span class="p">,</span>
-        <span class="n">end</span><span class="p">,</span>
-        <span class="n">step</span><span class="p">,</span>
-        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
-        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
-        <span class="n">requires_grad</span><span class="o">=</span><span class="n">requires_grad</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_iota&quot;</span><span class="p">,</span>
-    <span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_lt">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_lt">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_lt</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_lt&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;less&quot;</span>
-    <span class="k">return</span> <span class="n">aten_lt</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_mul">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_mul">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_mul</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_mul&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;mul&quot;</span>
-    <span class="k">return</span> <span class="n">aten_mul</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_neg">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_neg">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_neg</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_neg&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;neg&quot;</span>
-    <span class="k">return</span> <span class="n">aten_neg</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_pow">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_pow">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_pow</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">exponent</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_pow&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;pow&quot;</span>
-    <span class="k">return</span> <span class="n">aten_pow_Tensor_Tensor</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">exponent</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_rsqrt">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_rsqrt">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_rsqrt</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_rsqrt&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;rqsrt&quot;</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reciprocal</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
-<div class="viewcode-block" id="prims_sin">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_sin">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_sin</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_sin&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;sim&quot;</span>
-    <span class="k">return</span> <span class="n">aten_sin</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_split_dim">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_split_dim">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_split_dim</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">outer_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_split_dim&quot;</span><span class="p">,</span>
-<span class="p">):</span>
-    <span class="s2">&quot;split&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expecting 1 outputs but got </span><span class="si">{</span><span class="n">outputs</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span>
-        <span class="n">x</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Not implemented when shape of </span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2"> is unknown</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">shape_dim</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">shape_dim</span><span class="p">,</span> <span class="nb">int</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Not implemented for a dynamic dimension </span><span class="si">{</span><span class="n">shape_dim</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">shape_dim</span> <span class="o">%</span> <span class="n">outer_length</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;shape_dim=</span><span class="si">{</span><span class="n">shape_dim</span><span class="si">}</span><span class="s2"> not a multiple of outer_length=</span><span class="si">{</span><span class="n">outer_length</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-
-    <span class="n">inner_length</span> <span class="o">=</span> <span class="n">shape_dim</span> <span class="o">//</span> <span class="n">outer_length</span>
-    <span class="n">new_shape</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">dim</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">outer_length</span><span class="p">,</span> <span class="n">inner_length</span><span class="p">)</span> <span class="o">+</span> <span class="n">shape</span><span class="p">[</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_shape</span><span class="p">),</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_shape</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
-<div class="viewcode-block" id="prims_sub">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_sub">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_sub</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_sub&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;sub&quot;</span>
-    <span class="k">return</span> <span class="n">aten_sub</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_sum">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_sum">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_sum</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">keepdim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">output_dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;reducesum&quot;</span>
-    <span class="k">return</span> <span class="n">aten_sum</span><span class="p">(</span>
-        <span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="n">keepdim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">output_dtype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_sum&quot;</span>
-    <span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_transpose">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_transpose">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_transpose</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">input_name</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">perm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;transpose&quot;</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Transpose&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">input_name</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">perm</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">input_name</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">input_name</span><span class="p">):</span>
-            <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">input_name</span><span class="p">))</span>
-            <span class="n">new_shape</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
-                <span class="n">new_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_shape</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">input_name</span><span class="p">):</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">input_name</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
-<div class="viewcode-block" id="prims_view_of">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_view_of">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_view_of</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;identity&quot;</span>
-    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_view_of&quot;</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="prims_where">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.prims_where">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_where</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">condition</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">T</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;where&quot;</span>
-    <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))),</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;The two last arguments (</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">other</span><span class="si">}</span><span class="s2">) are constant and cannot be used &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;to infer types</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">other</span><span class="p">,</span> <span class="nb">str</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;No other case is implemented for where</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_where&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
-            <span class="n">shape</span> <span class="o">=</span> <span class="n">broadcast_shape</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">condition</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">condition</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">other</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="n">res</span></div>
 
 </pre></div>
         </article>

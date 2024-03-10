@@ -43,10 +43,21 @@ To run the script:
 Some helpers
 ++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-70
+.. GENERATED FROM PYTHON SOURCE LINES 27-80
 
 .. code-block:: Python
 
+
+    from experimental_experiment.args import get_parsed_args
+
+    script_args = get_parsed_args(
+        "plot_llama_diff_export",
+        description=__doc__,
+        part=("attention", "one value among attention, decoder, model"),
+        exporter=("dynamo", "one value among dynamo, custom"),
+        ortopt=(1, "run onnxruntime optimization"),
+        expose="part,exporter,ortopt",
+    )
 
     import contextlib
     import os
@@ -71,7 +82,6 @@ Some helpers
     from onnx_array_api.reference import compare_onnx_execution, ExtendedReferenceEvaluator
     import torch
     from experimental_experiment.ext_test_case import unit_test_going
-    from experimental_experiment.args import get_parsed_args
     from experimental_experiment.torch_interpreter import to_onnx
     from experimental_experiment.xbuilder import OptimizationOptions
     from experimental_experiment.convert.convert_helper import (
@@ -97,25 +107,16 @@ Some helpers
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-73
+.. GENERATED FROM PYTHON SOURCE LINES 81-83
 
 The exporting functions
 +++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-138
+.. GENERATED FROM PYTHON SOURCE LINES 83-139
 
 .. code-block:: Python
 
 
-
-    script_args = get_parsed_args(
-        "plot_llama_diff_export",
-        description=__doc__,
-        part=("attention", "one value among attention, decoder, model"),
-        exporter=("dynamo", "one value among dynamo, custom"),
-        ortopt=(1, "run onnxruntime optimization"),
-        expose="part,exporter,ortopt",
-    )
 
     print(f"part={script_args.part}")
     print(f"exporter={script_args.exporter}")
@@ -147,7 +148,7 @@ The exporting functions
         try:
             new_model = optimize_model_proto(model)
         except ImportError as e:
-            print("skipping optimization, missing package:", e)
+            print("skipping optimization, missing package or failure:", e)
             new_model = model
         with open(filename, "wb") as f:
             f.write(new_model.SerializeToString())
@@ -186,12 +187,12 @@ The exporting functions
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-141
+.. GENERATED FROM PYTHON SOURCE LINES 140-142
 
 Model and data
 ++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-170
+.. GENERATED FROM PYTHON SOURCE LINES 142-178
 
 .. code-block:: Python
 
@@ -221,7 +222,14 @@ Model and data
 
     print(f"simple run with {len(inputs)} inputs")
     expected = model(*inputs[0])
-    print(f"eager mode worked {expected.shape}, {expected.dtype}")
+    if isinstance(expected, tuple):
+        for t in expected:
+            if not isinstance(t, tuple):
+                print(f"eager worked {t.shape}, {t.dtype}")
+            else:
+                print(f"eager worked {type(t)}")
+    else:
+        print(f"eager mode worked {expected.shape}, {expected.dtype}")
 
 
 
@@ -238,12 +246,12 @@ Model and data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 171-173
+.. GENERATED FROM PYTHON SOURCE LINES 179-181
 
 Exporting
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 173-190
+.. GENERATED FROM PYTHON SOURCE LINES 181-198
 
 .. code-block:: Python
 
@@ -274,20 +282,18 @@ Exporting
 
     torch script exporter
     torch dynamo exporter
-    Applied 6 pattern rewrite rules.
     Applied 0 pattern rewrite rules.
-    /home/xadupre/github/experimental-experiment/experimental_experiment/convert/convert_helper.py:49: UserWarning: onnxrewrite.rewrite failed due to not enough values to unpack (expected 3, got 1), saving the model into 'bug-onnxrewriter.onnx'
-      warnings.warn(
+    Applied 0 pattern rewrite rules.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 191-193
+.. GENERATED FROM PYTHON SOURCE LINES 199-201
 
 Verification
 ++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-227
+.. GENERATED FROM PYTHON SOURCE LINES 201-235
 
 .. code-block:: Python
 
@@ -334,17 +340,17 @@ Verification
  .. code-block:: none
 
     Using models optimized by onnxruntime
-    Error with the eager model and onnxruntime: 7.450580596923828e-08, 7.450580596923828e-08
+    Error with the eager model and onnxruntime: 6.705522537231445e-08, 6.705522537231445e-08
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-230
+.. GENERATED FROM PYTHON SOURCE LINES 236-238
 
 Verification with the reference evaluator
 +++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 230-249
+.. GENERATED FROM PYTHON SOURCE LINES 238-261
 
 .. code-block:: Python
 
@@ -362,8 +368,12 @@ Verification with the reference evaluator
     got1 = sess1.run(None, feeds1)
     got2 = got1 if sess2 is None else sess2.run(None, feeds2)
 
-    diff1 = np.abs(expected.detach().numpy() - got1[0]).max()
-    diff2 = np.abs(expected.detach().numpy() - got2[0]).max()
+    if isinstance(expected, tuple):
+        diff1 = np.abs(expected[0].detach().numpy() - got1[0]).max()
+        diff2 = np.abs(expected[0].detach().numpy() - got2[0]).max()
+    else:
+        diff1 = np.abs(expected.detach().numpy() - got1[0]).max()
+        diff2 = np.abs(expected.detach().numpy() - got2[0]).max()
 
     print(f"Error with the eager model and the reference evaluator: {diff1}, {diff2}")
 
@@ -375,17 +385,17 @@ Verification with the reference evaluator
 
  .. code-block:: none
 
-    Error with the eager model and the reference evaluator: 3.91155481338501e-08, 3.91155481338501e-08
+    Error with the eager model and the reference evaluator: 4.470348358154297e-08, 4.6566128730773926e-08
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 250-252
+.. GENERATED FROM PYTHON SOURCE LINES 262-264
 
 Comparison and execution
 ++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 252-278
+.. GENERATED FROM PYTHON SOURCE LINES 264-290
 
 .. code-block:: Python
 
@@ -427,99 +437,111 @@ Comparison and execution
     [compare_onnx_execution] execute first model
     [compare_onnx_execution] got 53 results
     [compare_onnx_execution] execute second model
-    [compare_onnx_execution] got 63 results
+    [compare_onnx_execution] got 88 results
     [compare_onnx_execution] compute edit distance
-    [compare_onnx_execution] got 77 pairs
+    [compare_onnx_execution] got 89 pairs
     [compare_onnx_execution] done
-    001 ~ | INITIA float32  2:512x512            BYAJ                 onnx::MatMul_131                 | INITIA int64    1:2                  BKAA                 ortshared_7_1_2_0_token_110     
-    002 + |                                                                                            | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_0_token_106      
-    003 + |                                                                                            | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_4_token_115      
-    004 + |                                                                                            | INITIA float32                       BAAA                 ortshared_1_0_1_1_token_116      
-    005 + |                                                                                            | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_0_token_107      
-    006 ~ | INITIA float32  2:512x512            ZZOK                 onnx::MatMul_132                 | INITIA float32  2:512x512            CRVB                 _attention_1_torch_nn_modules_li
-    007 ~ | INITIA float32  2:512x512            ADTA                 onnx::MatMul_133                 | INITIA float32  2:512x512            BYAJ                 _attention_1_torch_nn_modules_li
-    008 + |                                                                                            | INITIA float32  2:512x512            ZZOK                 _attention_1_torch_nn_modules_li 
-    009 ~ | INITIA float32  2:512x512            CRVB                 onnx::MatMul_169                 | INITIA float32  2:512x512            ADTA                 _attention_1_torch_nn_modules_li
-    010 ~ | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_0_token_76       | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_1_token_108     
-    011 ~ | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_2_token_75       | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_0_token_112     
-    012 ~ | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_1_token_74       | INITIA int64                         BAAA                 ortshared_7_0_1_0_token_109     
-    013 = | INITIA float32  2:1024x64            CJYF                 /attention/rotary_emb/Constant_o | INITIA float32  2:1024x64            CJYF                 _attention_1__val_22            
-    014 - | INITIA float32  2:1024x64            GSEC                 /attention/rotary_emb/Constant_1 |                                                                                           
-    015 ~ | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_0_token_73       | INITIA int64                         ZAAA                 ortshared_7_0_1_1_token_117     
-    016 ~ | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_3_token_78       | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_3_token_113     
-    017 + |                                                                                            | INITIA float32  2:1024x64            GSEC                 _attention_1__val_32             
-    018 - | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_0_token_80       |                                                                                           
-    019 ~ | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_4_token_79       | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_2_token_111     
-    020 = | INPUT  float32  3:2x1024x512         ZCVJ                 input                            | INPUT  float32  3:2x1024x512         ZCVJ                 l_hidden_states_                
-    021 = | INPUT  float32  4:2x1x1024x1024      AAAA                 onnx::Add_1                      | INPUT  float32  4:2x1x1024x1024      AAAA                 l_attention_mask_               
-    022 = | INPUT  int64    2:1x1024             KAQG                 position_ids                     | INPUT  int64    2:1x1024             KAQG                 l_position_ids_                 
-    023 + |                                                                                            | RESULT int64    2:1x1024             KAQG Expand          _attention_1__val_35             
-    024 + |                                                                                            | RESULT int64    3:1x1024x1           KAQG Unsqueeze       _attention_1__val_37             
-    025 + |                                                                                            | RESULT int64    3:1x1024x1           KAQG Concat          _attention_1__val_38             
-    026 ~ | RESULT float32  3:1x1024x64          GSEC Gather          /attention/Gather_1_output_0     | RESULT float32  3:1x1024x64          GSEC GatherND        _attention_1__val_39            
-    027 = | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       /attention/Unsqueeze_1_output_0  | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       _attention_1_aten_unsqueeze_65_n
-    028 + |                                                                                            | RESULT float32  4:1x1x1024x64        GSEC Transpose       _attention_1_unsqueeze_1         
-    029 + |                                                                                            | RESULT float32  3:2x1024x512         ZTJR MatMul          _attention_1_attention_q_proj_1  
-    030 + |                                                                                            | RESULT float32  4:2x1024x8x64        ZTJR Reshape         _attention_1_view_6              
-    031 + |                                                                                            | RESULT float32  4:2x8x1024x64        UANN Transpose       _attention_1_transpose           
-    032 + |                                                                                            | RESULT float32  4:2x8x1024x32        UUNS Slice           _attention_1_slice_4             
-    033 + |                                                                                            | RESULT float32  4:2x8x1024x32        GGNI Neg             _attention_1_neg                 
-    034 + |                                                                                            | RESULT float32  4:2x8x1024x32        ZFAV Slice           _attention_1_slice_3             
-    035 + |                                                                                            | RESULT float32  4:2x8x1024x64        ELMD Concat          _attention_1_cat                 
-    036 + |                                                                                            | RESULT float32  4:2x8x1024x64        QOEM Mul             _attention_1_mul_1               
-    037 + |                                                                                            | RESULT float32  3:1x1024x64          CJYF GatherND        _attention_1__val_29             
-    038 + |                                                                                            | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       _attention_1_aten_unsqueeze_55_n 
-    039 + |                                                                                            | RESULT float32  4:1x1x1024x64        CJYF Transpose       _attention_1_unsqueeze           
-    040 + |                                                                                            | RESULT float32  4:2x8x1024x64        ECFU Mul             _attention_1_mul                 
-    041 + |                                                                                            | RESULT float32  4:2x8x1024x64        TRKG Add             _attention_1_add                 
-    042 = | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_4_out0           | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_6_out0          
-    043 = | RESULT float32  3:2x1024x512         PLTS MatMul          /attention/k_proj/MatMul_output_ | RESULT float32  3:2x1024x512         PLTS MatMul          _attention_1_attention_k_proj_1 
-    044 = | RESULT float32  4:2x1024x8x64        PLTS Reshape         /attention/Reshape_1_output_0    | RESULT float32  4:2x1024x8x64        PLTS Reshape         _attention_1_view_7             
-    045 = | RESULT float32  4:2x1024x8x32        YOZJ Slice           /attention/Slice_3               | RESULT float32  4:2x1024x8x32        YOZJ Slice           _attention_1_Slice_140          
-    046 = | RESULT float32  4:2x1024x8x32        CMBR Neg             /attention/Neg_1                 | RESULT float32  4:2x1024x8x32        CMBR Neg             _attention_1_aten_neg_141_n0    
-    047 = | RESULT float32  4:2x1024x8x32        SXUJ Slice           /attention/Slice_2               | RESULT float32  4:2x1024x8x32        SXUJ Slice           _attention_1_Slice_123          
-    048 = | RESULT float32  4:2x1024x8x64        UJUA Concat          /attention/Concat_1              | RESULT float32  4:2x1024x8x64        UJUA Concat          _attention_1_aten_cat_143_n0    
-    049 = | RESULT float32  4:2x1024x8x64        ZXGK Mul             /attention/Mul_3                 | RESULT float32  4:2x1024x8x64        ZXGK Mul             _attention_1_aten_mul_144_n0    
-    050 - | RESULT float32  3:1x1024x64          CJYF Gather          /attention/Gather_output_0       |                                                                                           
-    051 - | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       /attention/Unsqueeze_output_0    |                                                                                           
-    052 = | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_6_out0           | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_8_out0          
-    053 = | RESULT float32  4:2x1024x8x64        JJKB Mul             /attention/Mul_2                 | RESULT float32  4:2x1024x8x64        JJKB Mul             _attention_1_aten_mul_106_n0    
-    054 = | RESULT float32  4:2x1024x8x64        JFQK Add             /attention/Add_1                 | RESULT float32  4:2x1024x8x64        JFQK Add             _inlfunc_aten_add|folded_1_n3   
-    055 = | RESULT float32  4:2x8x64x1024        DLLP Transpose       /attention/Transpose_3_output_0  | RESULT float32  4:2x8x64x1024        DLLP Transpose       _attention_1_transpose_3        
-    056 - | RESULT float32  3:2x1024x512         ZTJR MatMul          /attention/q_proj/MatMul_output_ |                                                                                           
-    057 - | RESULT float32  4:2x1024x8x64        ZTJR Reshape         /attention/Reshape_output_0      |                                                                                           
-    058 - | RESULT float32  4:2x8x1024x64        UANN Transpose       /attention/Transpose_output_0    |                                                                                           
-    059 - | RESULT float32  4:2x8x1024x32        UUNS Slice           /attention/Slice_1_output_0      |                                                                                           
-    060 - | RESULT float32  4:2x8x1024x32        GGNI Neg             /attention/Neg_output_0          |                                                                                           
-    061 - | RESULT float32  4:2x8x1024x32        ZFAV Slice           /attention/Slice_output_0        |                                                                                           
-    062 - | RESULT float32  4:2x8x1024x64        ELMD Concat          /attention/Concat_output_0       |                                                                                           
-    063 - | RESULT float32  4:2x8x1024x64        QOEM Mul             /attention/Mul_1_output_0        |                                                                                           
-    064 - | RESULT float32  4:2x8x1024x64        ECFU Mul             /attention/Mul_output_0          |                                                                                           
-    065 - | RESULT float32  4:2x8x1024x64        TRKG Add             /attention/Add_output_0          |                                                                                           
-    066 = | RESULT float32  4:2x8x1024x1024      BGBJ FusedMatMul     /attention/Div_output_0          | RESULT float32  4:2x8x1024x1024      BGBJ FusedMatMul     _attention_1_div                
-    067 + |                                                                                            | RESULT float32  4:2x1x1024x1024      AAAA Mul             _inlfunc_aten_add|folded_2_other 
-    068 = | RESULT float32  4:2x8x1024x1024      BGBJ Add             /attention/Add_2_output_0        | RESULT float32  4:2x8x1024x1024      BGBJ Add             _attention_1_add_2              
-    069 = | RESULT float32  4:2x8x1024x1024      NNOO Softmax         /attention/Softmax_output_0      | RESULT float32  4:2x8x1024x1024      NNOO Softmax         _attention_1__softmax           
-    070 = | RESULT float32  3:2x1024x512         ZMBM MatMul          /attention/v_proj/MatMul_output_ | RESULT float32  3:2x1024x512         ZMBM MatMul          _attention_1_attention_v_proj_1 
-    071 = | RESULT float32  4:2x1024x8x64        ZMBM Reshape         /attention/Reshape_2_output_0    | RESULT float32  4:2x1024x8x64        ZMBM Reshape         _attention_1_view_8             
-    072 = | RESULT float32  4:2x8x1024x64        XPCK Transpose       /attention/Transpose_2_output_0  | RESULT float32  4:2x8x1024x64        XPCK Transpose       _attention_1_transpose_2        
-    073 = | RESULT float32  4:2x8x1024x64        BEAN MatMul          /attention/MatMul_1_output_0     | RESULT float32  4:2x8x1024x64        BEAN MatMul          _attention_1_view_14            
-    074 = | RESULT float32  4:2x1024x8x64        POIF Transpose       /attention/Transpose_4_output_0  | RESULT float32  4:2x1024x8x64        POIF Transpose       _attention_1_transpose_4        
-    075 = | RESULT float32  3:2x1024x512         POIF Reshape         /attention/Reshape_3_output_0    | RESULT float32  3:2x1024x512         POIF Reshape         _attention_1_view_15            
-    076 = | RESULT float32  3:2x1024x512         KJAA MatMul          130                              | RESULT float32  3:2x1024x512         KJAA MatMul          attention_1                     
-    077 = | OUTPUT float32  3:2x1024x512         KJAA                 130                              | OUTPUT float32  3:2x1024x512         KJAA                 attention_1                     
+    001 = | INITIA float32  2:512x512            THUB                 onnx::MatMul_131                 | INITIA float32  2:512x512            THUB                 t__2                            
+    002 + |                                                                                            | INITIA int64    1:4                  CIKM                 ortshared_7_1_4_2_token_173      
+    003 ~ | INITIA float32  2:512x512            AWUX                 onnx::MatMul_132                 | INITIA float32  2:512x512            WEME                 t_3__58                         
+    004 ~ | INITIA float32  2:512x512            HZZE                 onnx::MatMul_133                 | INITIA float32  2:512x512            AWUX                 t_1__8                          
+    005 + |                                                                                            | INITIA int64    1:3                  QKKA                 ortshared_7_1_3_3_token_170      
+    006 + |                                                                                            | INITIA int64    1:2                  USAA                 ortshared_7_1_2_1_token_164      
+    007 ~ | INITIA float32  2:512x512            WEME                 onnx::MatMul_169                 | INITIA float32  2:512x512            HZZE                 t_2__14                         
+    008 + |                                                                                            | INITIA int64    1:3                  QMKA                 ortshared_7_1_3_0_token_162      
+    009 ~ | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_0_token_76       | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_2_token_169     
+    010 ~ | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_2_token_75       | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_1_token_161     
+    011 + |                                                                                            | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_0_token_156      
+    012 ~ | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_1_token_74       | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_2_token_166     
+    013 = | INITIA float32  2:1024x64            CJYF                 /attention/rotary_emb/Constant_o | INITIA float32  2:1024x64            CJYF                 _val_22__1                      
+    014 + |                                                                                            | INITIA int64                         ZAAA                 ortshared_7_0_1_0_token_157      
+    015 + |                                                                                            | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_3_token_171      
+    016 = | INITIA float32  2:1024x64            GSEC                 /attention/rotary_emb/Constant_1 | INITIA float32  2:1024x64            GSEC                 _val_32__1                      
+    017 + |                                                                                            | INITIA int64    1:3                  QKMA                 ortshared_7_1_3_1_token_167      
+    018 + |                                                                                            | INITIA int64                         BAAA                 ortshared_7_0_1_1_token_168      
+    019 ~ | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_0_token_73       | INITIA int64    1:4                  CIKK                 ortshared_7_1_4_1_token_163     
+    020 ~ | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_3_token_78       | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_0_token_158     
+    021 + |                                                                                            | INITIA float32                       IAAA                 ortshared_1_0_1_1_token_165      
+    022 ~ | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_0_token_80       | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_4_token_172     
+    023 + |                                                                                            | INITIA float32                       BAAA                 ortshared_1_0_1_0_token_159      
+    024 ~ | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_4_token_79       | INITIA int64    1:2                  BKAA                 ortshared_7_1_2_0_token_160     
+    025 = | INPUT  float32  3:2x1024x512         PIQH                 input                            | INPUT  float32  3:2x1024x512         PIQH                 l_hidden_states_                
+    026 = | INPUT  float32  4:2x1x1024x1024      AAAA                 onnx::Add_1                      | INPUT  float32  4:2x1x1024x1024      AAAA                 l_attention_mask_               
+    027 = | INPUT  int64    2:1x1024             KAQG                 position_ids                     | INPUT  int64    2:1x1024             KAQG                 l_position_ids_                 
+    028 + |                                                                                            | RESULT int64    2:1x1024             KAQG Expand          _val_35__1                       
+    029 + |                                                                                            | RESULT int64    3:1x1024x1           KAQG Unsqueeze       _val_37__1                       
+    030 + |                                                                                            | RESULT int64    3:1x1024x1           KAQG Concat          _val_38__1                       
+    031 ~ | RESULT float32  3:1x1024x64          GSEC Gather          /attention/Gather_1_output_0     | RESULT float32  3:1x1024x64          GSEC GatherND        _val_39__1                      
+    032 = | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       /attention/Unsqueeze_1_output_0  | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       n2__25                          
+    033 = | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_4_out0           | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_6_out0          
+    034 + |                                                                                            | RESULT float32  2:2048x512           PIQH Reshape         view_4__14                       
+    035 + |                                                                                            | RESULT float32  2:2048x512           EJNU MatMul          mm_1__8                          
+    036 ~ | RESULT float32  3:2x1024x512         EJNU MatMul          /attention/k_proj/MatMul_output_ | RESULT float32  3:2x1024x512         EJNU Reshape         attention_k_proj_1__1           
+    037 = | RESULT float32  4:2x1024x8x64        EJNU Reshape         /attention/Reshape_1_output_0    | RESULT float32  4:2x1024x8x64        EJNU Reshape         view_7__1                       
+    038 = | RESULT float32  4:2x1024x8x32        ILQU Slice           /attention/Slice_3               | RESULT float32  4:2x1024x8x32        ILQU Slice           Slice_140__1                    
+    039 = | RESULT float32  4:2x1024x8x32        SPKG Neg             /attention/Neg_1                 | RESULT float32  4:2x1024x8x32        SPKG Neg             n0__32                          
+    040 = | RESULT float32  4:2x1024x8x32        XXWZ Slice           /attention/Slice_2               | RESULT float32  4:2x1024x8x32        XXWZ Slice           Slice_123__1                    
+    041 = | RESULT float32  4:2x1024x8x64        OLFF Concat          /attention/Concat_1              | RESULT float32  4:2x1024x8x64        OLFF Concat          n0__33                          
+    042 + |                                                                                            | RESULT float32  4:2x1024x8x64        KLMA Mul             n0__34                           
+    043 + |                                                                                            | RESULT float32  4:2x8x1024x64        FQPW Transpose       mul_3__1                         
+    044 + |                                                                                            | RESULT float32  2:2048x512           SSUC MatMul          mm_2__14                         
+    045 + |                                                                                            | RESULT float32  3:2x1024x512         SSUC Reshape         attention_v_proj_1__1            
+    046 + |                                                                                            | RESULT float32  4:2x1024x8x64        SSUC Reshape         view_8__1                        
+    047 + |                                                                                            | RESULT float32  4:2x8x1024x64        NXUC Transpose       transpose_2__1                   
+    048 + |                                                                                            | RESULT float32  3:16x1024x64         NXUC Reshape         view_13__1                       
+    049 + |                                                                                            | RESULT float32  4:2x1x1024x1024      AAAA Mul             other_1__45                      
+    050 + |                                                                                            | RESULT float32                       BAAA Cast            alpha_0__35                      
+    051 = | RESULT float32  4:2x1024x8x64        KLMA Mul             /attention/Mul_3                 | RESULT float32  4:2x1024x8x64        KLMA Mul             n2__35                          
+    052 ~ | RESULT float32  3:1x1024x64          CJYF Gather          /attention/Gather_output_0       | RESULT float32  3:1x1024x64          CJYF GatherND        _val_29__1                      
+    053 = | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       /attention/Unsqueeze_output_0    | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       n2__24                          
+    054 = | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_6_out0           | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_10_out0         
+    055 = | RESULT float32  4:2x1024x8x64        SMUG Mul             /attention/Mul_2                 | RESULT float32  4:2x1024x8x64        SMUG Mul             n0__31                          
+    056 = | RESULT float32  4:2x1024x8x64        CWFG Add             /attention/Add_1                 | RESULT float32  4:2x1024x8x64        CWFG Add             n3__35                          
+    057 = | RESULT float32  4:2x8x64x1024        XDXO Transpose       /attention/Transpose_3_output_0  | RESULT float32  4:2x8x64x1024        XDXO Transpose       transpose_3__1                  
+    058 + |                                                                                            | RESULT float32  3:16x64x1024         XDXO Reshape         view_10__1                       
+    059 + |                                                                                            | RESULT float32                       BAAA Cast            alpha_0__30                      
+    060 + |                                                                                            | RESULT float32  4:1x1x1024x64        GSEC Transpose       unsqueeze_1__1                   
+    061 + |                                                                                            | RESULT float32  2:2048x512           VQGM MatMul          mm__2                            
+    062 ~ | RESULT float32  3:2x1024x512         VQGM MatMul          /attention/q_proj/MatMul_output_ | RESULT float32  3:2x1024x512         VQGM Reshape         attention_q_proj_1__1           
+    063 = | RESULT float32  4:2x1024x8x64        VQGM Reshape         /attention/Reshape_output_0      | RESULT float32  4:2x1024x8x64        VQGM Reshape         view_6__1                       
+    064 = | RESULT float32  4:2x8x1024x64        CKOD Transpose       /attention/Transpose_output_0    | RESULT float32  4:2x8x1024x64        CKOD Transpose       transpose__1                    
+    065 = | RESULT float32  4:2x8x1024x32        PQEU Slice           /attention/Slice_1_output_0      | RESULT float32  4:2x8x1024x32        PQEU Slice           slice_4__1                      
+    066 = | RESULT float32  4:2x8x1024x32        LKWG Neg             /attention/Neg_output_0          | RESULT float32  4:2x8x1024x32        LKWG Neg             neg__1                          
+    067 = | RESULT float32  4:2x8x1024x32        NUKI Slice           /attention/Slice_output_0        | RESULT float32  4:2x8x1024x32        NUKI Slice           slice_3__1                      
+    068 = | RESULT float32  4:2x8x1024x64        YDHP Concat          /attention/Concat_output_0       | RESULT float32  4:2x8x1024x64        YDHP Concat          cat__1                          
+    069 + |                                                                                            | RESULT float32  4:2x8x1024x64        WGAL Mul             mul_1__1                         
+    070 = | RESULT float32  4:2x8x1024x64        WGAL Mul             /attention/Mul_1_output_0        | RESULT float32  4:2x8x1024x64        WGAL Mul             other_1__30                     
+    071 + |                                                                                            | RESULT float32  4:1x1x1024x64        CJYF Transpose       unsqueeze__1                     
+    072 = | RESULT float32  4:2x8x1024x64        UCBN Mul             /attention/Mul_output_0          | RESULT float32  4:2x8x1024x64        UCBN Mul             mul__1                          
+    073 = | RESULT float32  4:2x8x1024x64        PHAX Add             /attention/Add_output_0          | RESULT float32  4:2x8x1024x64        PHAX Add             add__1                          
+    074 + |                                                                                            | RESULT float32  3:16x1024x64         PHAX Reshape         view_9__1                        
+    075 + |                                                                                            | RESULT float32  3:16x1024x1024       FTJJ MatMul          bmm__1                           
+    076 + |                                                                                            | RESULT float32  4:2x8x1024x1024      FTJJ Reshape         view_11__1                       
+    077 ~ | RESULT float32  4:2x8x1024x1024      XZKO FusedMatMul     /attention/Div_output_0          | RESULT float32  4:2x8x1024x1024      XZKO Div             div__1                          
+    078 = | RESULT float32  4:2x8x1024x1024      XZKO Add             /attention/Add_2_output_0        | RESULT float32  4:2x8x1024x1024      XZKO Add             add_2__1                        
+    079 ~ | RESULT float32  4:2x8x1024x1024      ONNO Softmax         /attention/Softmax_output_0      | RESULT float32  4:2x8x1024x1024      ONNN Softmax         result__46                      
+    080 + |                                                                                            | RESULT float32  3:16x1024x1024       ONNN Reshape         view_12__1                       
+    081 + |                                                                                            | RESULT float32  3:16x1024x64         REWV MatMul          bmm_1__1                         
+    082 ~ | RESULT float32  3:2x1024x512         SSUC MatMul          /attention/v_proj/MatMul_output_ | RESULT float32  4:2x8x1024x64        REWV Reshape         view_14__1                      
+    083 ~ | RESULT float32  4:2x1024x8x64        SSUC Reshape         /attention/Reshape_2_output_0    | RESULT float32  4:2x1024x8x64        KLSA Transpose       transpose_4__1                  
+    084 ~ | RESULT float32  4:2x8x1024x64        NXUC Transpose       /attention/Transpose_2_output_0  | RESULT float32  3:2x1024x512         KLSA Reshape         view_15__1                      
+    085 - | RESULT float32  4:2x8x1024x64        REWV MatMul          /attention/MatMul_1_output_0     |                                                                                           
+    086 ~ | RESULT float32  4:2x1024x8x64        KLSA Transpose       /attention/Transpose_4_output_0  | RESULT float32  2:2048x512           KLSA Reshape         view_16__58                     
+    087 ~ | RESULT float32  3:2x1024x512         KLSA Reshape         /attention/Reshape_3_output_0    | RESULT float32  2:2048x512           ZEPQ MatMul          mm_3__58                        
+    088 ~ | RESULT float32  3:2x1024x512         ZEPQ MatMul          130                              | RESULT float32  3:2x1024x512         ZEPQ Reshape         attention_1                     
+    089 = | OUTPUT float32  3:2x1024x512         ZEPQ                 130                              | OUTPUT float32  3:2x1024x512         ZEPQ                 attention_1                     
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 279-280
+.. GENERATED FROM PYTHON SOURCE LINES 291-292
 
 See :ref:`l-long-outputs-llama-diff-export` for a better view.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 13.162 seconds)
+   **Total running time of the script:** (1 minutes 43.386 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_llama_diff_export_301.py:

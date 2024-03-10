@@ -186,10 +186,17 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design/exporter.html">Custom Exporter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/backends.html">Dynamo Backends</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../design/models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../design/models/llama.html">Supported Models</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../design/times.html">Times</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graph_builder.html">graph_builder</a></li>
@@ -198,13 +205,14 @@
 <li class="toctree-l2"><a class="reference internal" href="onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aten_method.html">aten_methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prims_function.html">aten_prims</a></li>
 <li class="toctree-l2"><a class="reference internal" href="convert.html">convert</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Others…</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
@@ -265,8 +273,39 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.torch_interpreter.interpreter.</span></span><span class="sig-name descname"><span class="pre">DynamoInterpreter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph_builder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="graph_builder.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">retriever</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.12)"><span class="pre">Callable</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/torch_interpreter/interpreter.html#DynamoInterpreter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Interprets a torch graph into an ONNX graph.
+Dispatches every node to the appropriate converting function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph_builder</strong> – a graph builder</p></li>
+<li><p><strong>retriever</strong> – callable to help retrieve the weights in a module,
+see function <cite>_retrieve
+&lt;experimental_experiment.torch_interpreter.onnx_export._retrieve&gt;</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.run_node">
+<span class="sig-name descname"><span class="pre">run_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pytorch.org/docs/stable/fx.html#torch.fx.Node" title="(in PyTorch v2.2)"><span class="pre">torch.fx.Node</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/torch_interpreter/interpreter.html#DynamoInterpreter.run_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.run_node" title="Link to this definition">#</a></dt>
+<dd><p>Runs a node: call the approrpiate method based on the node type.</p>
+</dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="retriever">
+<h2>Retriever<a class="headerlink" href="#retriever" title="Link to this heading">#</a></h2>
+<section id="retrieve">
+<h3>_retrieve<a class="headerlink" href="#retrieve" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.torch_interpreter.onnx_export._retrieve">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.torch_interpreter.onnx_export.</span></span><span class="sig-name descname"><span class="pre">_retrieve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.2)"><span class="pre">torch.Tensor</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.2)"><span class="pre">torch.Tensor</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_builder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="graph_builder.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.2)"><span class="pre">torch.Tensor</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/torch_interpreter/onnx_export.html#_retrieve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_interpreter.onnx_export._retrieve" title="Link to this definition">#</a></dt>
+<dd><p>Sent to the <a class="reference internal" href="#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter" title="experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a>.
+It retrieves the weights.</p>
+</dd></dl>
+
+</section>
 </section>
 </section>
 
@@ -327,7 +366,17 @@
             <ul>
 <li><a class="reference internal" href="#">interpreter</a><ul>
 <li><a class="reference internal" href="#dynamointerpreter">DynamoInterpreter</a><ul>
-<li><a class="reference internal" href="#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter"><code class="docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter"><code class="docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a><ul>
+<li><a class="reference internal" href="#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.run_node"><code class="docutils literal notranslate"><span class="pre">DynamoInterpreter.run_node()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#retriever">Retriever</a><ul>
+<li><a class="reference internal" href="#retrieve">_retrieve</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.torch_interpreter.onnx_export._retrieve"><code class="docutils literal notranslate"><span class="pre">_retrieve()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
