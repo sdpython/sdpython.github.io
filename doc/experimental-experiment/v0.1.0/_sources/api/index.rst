@@ -19,6 +19,7 @@ API
     torch_helper
     torch_dynamo
     misc
+    dimension
 
 **Versions**
 
@@ -74,6 +75,7 @@ The documentation was generated with the following versions.
     gr = gr[gr["dir"] != "_doc/auto_examples"]
     print(gr)
     print("--------------------")
+    print("total in experimental_experiment/...")
     total = (
         gr[gr["dir"].str.contains("experimental_experiment/")]
         .drop(["ext", "dir"], axis=1)

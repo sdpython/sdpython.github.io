@@ -46,7 +46,7 @@ You may use ``--mixed=1`` to compare the backward graphs.
 Some helpers
 ++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-98
+.. GENERATED FROM PYTHON SOURCE LINES 30-99
 
 .. code-block:: Python
 
@@ -61,7 +61,8 @@ Some helpers
         backward=(0, "does one operator for backward"),
         cuda=(0, "use cuda or not"),
         mixed=(0, "use miwed precision"),
-        expose="part,exporter,ortopt,cuda,mixed",
+        opset=(18, "onnx opset"),
+        expose="part,exporter,ortopt,cuda,mixed,opset",
     )
 
 
@@ -125,12 +126,12 @@ Some helpers
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-101
+.. GENERATED FROM PYTHON SOURCE LINES 100-102
 
 The exporting functions
 +++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-112
+.. GENERATED FROM PYTHON SOURCE LINES 102-115
 
 .. code-block:: Python
 
@@ -144,6 +145,8 @@ The exporting functions
     print(f"cuda={use_cuda}")
     use_mixed = script_args.mixed in (1, "1")
     print(f"mixed={use_mixed}")
+    opset = int(script_args.opset)
+    print(f"opset={opset}")
 
 
 
@@ -158,16 +161,17 @@ The exporting functions
     backward=False
     cuda=False
     mixed=False
+    opset=18
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-115
+.. GENERATED FROM PYTHON SOURCE LINES 116-118
 
 Model and data
 ++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-169
+.. GENERATED FROM PYTHON SOURCE LINES 118-172
 
 .. code-block:: Python
 
@@ -234,17 +238,17 @@ Model and data
  .. code-block:: none
 
     simple run with 2 inputs
-    torch.float32 (2, 1024, 512) [sum=213]
+    torch.float32 (2, 1024, 512) [sum=-355]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-172
+.. GENERATED FROM PYTHON SOURCE LINES 173-175
 
 Exporting
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 172-257
+.. GENERATED FROM PYTHON SOURCE LINES 175-260
 
 .. code-block:: Python
 
@@ -279,7 +283,7 @@ Exporting
             fw_compiler=lambda *args, **kwargs: onnx_debug_backend(
                 *args,
                 dump_prefix=os.path.join(folder, "llama_debug"),
-                target_opset=17,
+                target_opset=opset,
                 storage=storage,
                 **kwargs,
             ),
@@ -341,7 +345,7 @@ Exporting
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/torch/onnx/_internal/exporter.py:136: UserWarning: torch.onnx.dynamo_export only implements opset version 18 for now. If you need to use a different opset version, please register them with register_custom_op.
+    /home/xadupre/.local/lib/python3.10/site-packages/torch/onnx/_internal/exporter.py:137: UserWarning: torch.onnx.dynamo_export only implements opset version 18 for now. If you need to use a different opset version, please register them with register_custom_op.
       warnings.warn(
     Applied 0 pattern rewrite rules.
     Applied 0 pattern rewrite rules.
@@ -349,13 +353,13 @@ Exporting
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 258-261
+.. GENERATED FROM PYTHON SOURCE LINES 261-264
 
 For forward, there are two files, one onnx model and the graph module
 printed in a txt file. For backward, there are two onnx models.
 Then it is multiplied by the number of backends.
 
-.. GENERATED FROM PYTHON SOURCE LINES 261-265
+.. GENERATED FROM PYTHON SOURCE LINES 264-268
 
 .. code-block:: Python
 
@@ -376,11 +380,11 @@ Then it is multiplied by the number of backends.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 266-267
+.. GENERATED FROM PYTHON SOURCE LINES 269-270
 
 Inputs used by the debug backend
 
-.. GENERATED FROM PYTHON SOURCE LINES 267-272
+.. GENERATED FROM PYTHON SOURCE LINES 270-275
 
 .. code-block:: Python
 
@@ -410,11 +414,11 @@ Inputs used by the debug backend
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 273-274
+.. GENERATED FROM PYTHON SOURCE LINES 276-277
 
 Let's the first line of the graph module
 
-.. GENERATED FROM PYTHON SOURCE LINES 274-279
+.. GENERATED FROM PYTHON SOURCE LINES 277-282
 
 .. code-block:: Python
 
@@ -445,12 +449,12 @@ Let's the first line of the graph module
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 280-282
+.. GENERATED FROM PYTHON SOURCE LINES 283-285
 
 Comparison and execution
 ++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 282-310
+.. GENERATED FROM PYTHON SOURCE LINES 285-313
 
 .. code-block:: Python
 
@@ -496,11 +500,11 @@ Comparison and execution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 311-312
+.. GENERATED FROM PYTHON SOURCE LINES 314-315
 
 The inputs of both models
 
-.. GENERATED FROM PYTHON SOURCE LINES 312-316
+.. GENERATED FROM PYTHON SOURCE LINES 315-319
 
 .. code-block:: Python
 
@@ -516,18 +520,18 @@ The inputs of both models
 
  .. code-block:: none
 
-    onnxrt: [('INPUT', 'primals_5', 1, (2048, 64)), ('INPUT', 'primals_6', 1, (2048, 64)), ('INPUT', 'primals_1', 1, (512, 512)), ('INPUT', 'primals_7', 1, (2, 1024, 512)), ('INPUT', 'primals_2', 1, (512, 512)), ('INPUT', 'primals_4', 1, (512, 512)), ('INPUT', 'primals_3', 1, (512, 512)), ('INPUT', 'primals_8', 7, (1, 1024)), ('INPUT', 'primals_9', 1, (2, 1, 1024, 1024))]
+    onnxrt: [('INPUT', 'primals_2', 1, (512, 512)), ('INPUT', 'primals_4', 1, (512, 512)), ('INPUT', 'primals_3', 1, (512, 512)), ('INPUT', 'primals_5', 1, (2048, 64)), ('INPUT', 'primals_6', 1, (2048, 64)), ('INPUT', 'primals_1', 1, (512, 512)), ('INPUT', 'primals_7', 1, (2, 1024, 512)), ('INPUT', 'primals_8', 7, (1, 1024)), ('INPUT', 'primals_9', 1, (2, 1, 1024, 1024))]
     debug: [('INPUT', 'input0', 1, (512, 512)), ('INPUT', 'input1', 1, (512, 512)), ('INPUT', 'input2', 1, (512, 512)), ('INPUT', 'input3', 1, (512, 512)), ('INPUT', 'input4', 1, (2048, 64)), ('INPUT', 'input5', 1, (2048, 64)), ('INPUT', 'input6', 1, (2, 1024, 512)), ('INPUT', 'input7', 7, (1, 1024)), ('INPUT', 'input8', 1, (2, 1, 1024, 1024))]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 317-319
+.. GENERATED FROM PYTHON SOURCE LINES 320-322
 
 Inputs are not the same. The first model has more and some inputs were
 moved into the initializer list into for `model_debug`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 319-322
+.. GENERATED FROM PYTHON SOURCE LINES 322-325
 
 .. code-block:: Python
 
@@ -542,12 +546,12 @@ moved into the initializer list into for `model_debug`.
 
  .. code-block:: none
 
-    debug: [('INPUT', 'input0', 1, (512, 512)), ('INPUT', 'input1', 1, (512, 512)), ('INPUT', 'input2', 1, (512, 512)), ('INPUT', 'input3', 1, (512, 512)), ('INPUT', 'input4', 1, (2048, 64)), ('INPUT', 'input5', 1, (2048, 64)), ('INPUT', 'input6', 1, (2, 1024, 512)), ('INPUT', 'input7', 7, (1, 1024)), ('INPUT', 'input8', 1, (2, 1, 1024, 1024)), ('INIT', 'init1_s_', 1, ()), ('INIT', 'init7_s1_0', 7, (1,)), ('INIT', 'init7_s1_1', 7, (1,)), ('INIT', 'init7_s1_1024', 7, (1,)), ('INIT', 'init7_s1_3', 7, (1,)), ('INIT', 'init7_s1_32', 7, (1,)), ('INIT', 'init7_s1_9223372036854775807', 7, (1,)), ('INIT', 'init7_s2_2048_512', 7, (2,)), ('INIT', 'init7_s3_16_1024_1024', 7, (3,)), ('INIT', 'init7_s3_16_1024_64', 7, (3,)), ('INIT', 'init7_s3_16_64_1024', 7, (3,)), ('INIT', 'init7_s3_2_1024_512', 7, (3,)), ('INIT', 'init7_s4_2_1024_8_64', 7, (4,))]
+    debug: [('INPUT', 'input0', 1, (512, 512)), ('INPUT', 'input1', 1, (512, 512)), ('INPUT', 'input2', 1, (512, 512)), ('INPUT', 'input3', 1, (512, 512)), ('INPUT', 'input4', 1, (2048, 64)), ('INPUT', 'input5', 1, (2048, 64)), ('INPUT', 'input6', 1, (2, 1024, 512)), ('INPUT', 'input7', 7, (1, 1024)), ('INPUT', 'input8', 1, (2, 1, 1024, 1024)), ('INIT', 'init7_s2_2048_512', 7, (2,)), ('INIT', 'init7_s3_2_1024_512', 7, (3,)), ('INIT', 'init7_s4_2_1024_8_64', 7, (4,)), ('INIT', 'init7_s1_0', 7, (1,)), ('INIT', 'init7_s1_1024', 7, (1,)), ('INIT', 'init7_s1_1', 7, (1,)), ('INIT', 'init7_s1_32', 7, (1,)), ('INIT', 'init7_s1_3', 7, (1,)), ('INIT', 'init7_s1_9223372036854775807', 7, (1,)), ('INIT', 'init7_s3_16_1024_64', 7, (3,)), ('INIT', 'init7_s3_16_64_1024', 7, (3,)), ('INIT', 'init1_s_', 1, ()), ('INIT', 'init7_s3_16_1024_1024', 7, (3,))]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 323-331
+.. GENERATED FROM PYTHON SOURCE LINES 326-334
 
 Optimization and Verification
 +++++++++++++++++++++++++++++
@@ -558,7 +562,7 @@ every function to be defined so the order of functions in the model matters.
 No recursivity is allowed by this runtime. We need to reorder as function Rank is usually placed
 at the end of the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 331-334
+.. GENERATED FROM PYTHON SOURCE LINES 334-337
 
 .. code-block:: Python
 
@@ -578,11 +582,11 @@ at the end of the model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 335-336
+.. GENERATED FROM PYTHON SOURCE LINES 338-339
 
 Let's load the model and optimize them.
 
-.. GENERATED FROM PYTHON SOURCE LINES 336-344
+.. GENERATED FROM PYTHON SOURCE LINES 339-347
 
 .. code-block:: Python
 
@@ -603,15 +607,16 @@ Let's load the model and optimize them.
  .. code-block:: none
 
     Applied 0 pattern rewrite rules.
+    Applied 0 pattern rewrite rules.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 345-346
+.. GENERATED FROM PYTHON SOURCE LINES 348-349
 
 Let's apply onnxruntime optimization
 
-.. GENERATED FROM PYTHON SOURCE LINES 346-365
+.. GENERATED FROM PYTHON SOURCE LINES 349-368
 
 .. code-block:: Python
 
@@ -648,11 +653,11 @@ Let's apply onnxruntime optimization
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 366-367
+.. GENERATED FROM PYTHON SOURCE LINES 369-370
 
 For what's following, we need to build two lists of matching inputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 367-373
+.. GENERATED FROM PYTHON SOURCE LINES 370-376
 
 .. code-block:: Python
 
@@ -676,11 +681,11 @@ For what's following, we need to build two lists of matching inputs.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 374-375
+.. GENERATED FROM PYTHON SOURCE LINES 377-378
 
 We check both models are running.
 
-.. GENERATED FROM PYTHON SOURCE LINES 375-383
+.. GENERATED FROM PYTHON SOURCE LINES 378-386
 
 .. code-block:: Python
 
@@ -699,11 +704,11 @@ We check both models are running.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 384-385
+.. GENERATED FROM PYTHON SOURCE LINES 387-388
 
 Side by side
 
-.. GENERATED FROM PYTHON SOURCE LINES 385-396
+.. GENERATED FROM PYTHON SOURCE LINES 388-399
 
 .. code-block:: Python
 
@@ -732,119 +737,117 @@ Side by side
     [compare_onnx_execution] execute second model
     [compare_onnx_execution] got 81 results
     [compare_onnx_execution] compute edit distance
-    [compare_onnx_execution] got 111 pairs
+    [compare_onnx_execution] got 109 pairs
     [compare_onnx_execution] done
-    001 ~ | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_5_token_179      | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_0_token_113     
-    002 ~ | INITIA int64    1:1                  KAAA                 ortshared_7_1_1_2_token_165      | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_2_token_119     
-    003 ~ | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_1_token_164      | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_0_token_114     
-    004 ~ | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_4_token_173      | INITIA int64    1:1                  KAAA                 ortshared_7_1_1_1_token_118     
-    005 - | INITIA int64    1:3                  QKMA                 ortshared_7_1_3_3_token_177      |                                                                                           
-    006 - | INITIA float32                       BAAA                 ortshared_1_0_1_1_token_180      |                                                                                           
-    007 ~ | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_3_token_170      | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_4_token_122     
-    008 ~ | INITIA int64    1:4                  CIKK                 ortshared_7_1_4_2_token_174      | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_3_token_121     
-    009 - | INITIA float32                       IAAA                 ortshared_1_0_1_0_token_172      |                                                                                           
-    010 ~ | INITIA int64    1:3                  QKKA                 ortshared_7_1_3_0_token_166      | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_5_token_123     
-    011 - | INITIA int64                         ZAAA                 ortshared_7_0_1_1_token_168      |                                                                                           
-    012 = | INITIA int64    1:2                  USAA                 ortshared_7_1_2_1_token_178      | INITIA int64    1:2                  USAA                 ortshared_7_1_2_0_token_125     
-    013 - | INITIA int64                         BAAA                 ortshared_7_0_1_0_token_162      |                                                                                           
-    014 ~ | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_0_token_169      | INITIA int64    1:3                  QKKA                 ortshared_7_1_3_3_token_124     
-    015 ~ | INITIA int64    1:3                  QMKA                 ortshared_7_1_3_1_token_167      | INITIA int64    1:3                  QKMA                 ortshared_7_1_3_0_token_115     
-    016 ~ | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_0_token_163      | INITIA int64    1:3                  QMKA                 ortshared_7_1_3_1_token_116     
-    017 = | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_2_token_176      | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_2_token_120     
-    018 - | INITIA int64    1:4                  CIKM                 ortshared_7_1_4_1_token_171      |                                                                                           
-    019 - | INITIA int64    1:2                  BKAA                 ortshared_7_1_2_0_token_175      |                                                                                           
-    020 - | INPUT  float32  2:2048x64            MDRB                 primals_5                        |                                                                                           
-    021 - | INPUT  float32  2:2048x64            ZHDU                 primals_6                        |                                                                                           
-    022 = | INPUT  float32  2:512x512            VZBT                 primals_1                        | INPUT  float32  2:512x512            VZBT                 input0                          
-    023 - | INPUT  float32  3:2x1024x512         JNNC                 primals_7                        |                                                                                           
-    024 = | INPUT  float32  2:512x512            AAFW                 primals_2                        | INPUT  float32  2:512x512            AAFW                 input1                          
-    025 = | INPUT  float32  2:512x512            MWON                 primals_4                        | INPUT  float32  2:512x512            MWON                 input2                          
-    026 = | INPUT  float32  2:512x512            TAWX                 primals_3                        | INPUT  float32  2:512x512            TAWX                 input3                          
-    027 + |                                                                                            | INPUT  float32  2:2048x64            MDRB                 input4                           
-    028 + |                                                                                            | INPUT  float32  2:2048x64            ZHDU                 input5                           
-    029 + |                                                                                            | INPUT  float32  3:2x1024x512         JNNC                 input6                           
-    030 = | INPUT  int64    2:1x1024             KAQG                 primals_8                        | INPUT  int64    2:1x1024             KAQG                 input7                          
-    031 = | INPUT  float32  4:2x1x1024x1024      AAAA                 primals_9                        | INPUT  float32  4:2x1x1024x1024      AAAA                 input8                          
-    032 - | RESULT float32  2:512x512            MWON Identity        t_6                              |                                                                                           
-    033 - | RESULT float32  4:2x1x1024x1024      AAAA Mul             _inlfunc_aten_add|folded_2_other |                                                                                           
-    034 - | RESULT int64    2:1x1024             KAQG Expand          _val_61                          |                                                                                           
-    035 - | RESULT int64    3:1x1024x1           KAQG Unsqueeze       _val_63                          |                                                                                           
-    036 - | RESULT int64    3:1x1024x1           KAQG Concat          _val_64                          |                                                                                           
-    037 = | RESULT float32  2:1024x64            GSEC Slice           slice_2                          | RESULT float32  2:1024x64            GSEC Slice           slice_2                         
-    038 - | RESULT float32  2:1024x64            GSEC Transpose       _val_58                          |                                                                                           
-    039 ~ | RESULT float32  3:1x1024x64          GSEC GatherND        _val_65                          | RESULT float32  3:1x1024x64          GSEC Gather          index_1                         
-    040 = | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       aten_unsqueeze_110_n2            | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       output_5                        
-    041 = | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_5_out0           | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_4_out0          
-    042 = | RESULT float32  2:2048x512           JNNC Reshape         view                             | RESULT float32  2:2048x512           JNNC Reshape         output_2                        
-    043 ~ | RESULT float32  2:2048x512           YZQI FusedMatMul     mm_1                             | RESULT float32  2:2048x512           YZQI Gemm            mm_1                            
-    044 - | RESULT float32  3:2x1024x512         YZQI Reshape         view_3                           |                                                                                           
-    045 = | RESULT float32  4:2x1024x8x64        YZQI Reshape         view_7                           | RESULT float32  4:2x1024x8x64        YZQI Reshape         view_7                          
-    046 = | RESULT float32  4:2x1024x8x32        XVOF Slice           Slice_195                        | RESULT float32  4:2x1024x8x32        XVOF Slice           slice_Tensor6                   
-    047 = | RESULT float32  4:2x1024x8x32        DFMV Neg             aten_neg_199_n0                  | RESULT float32  4:2x1024x8x32        DFMV Neg             neg2                            
-    048 = | RESULT float32  4:2x1024x8x32        BDCD Slice           Slice_178                        | RESULT float32  4:2x1024x8x32        BDCD Slice           slice_Tensor5                   
-    049 = | RESULT float32  4:2x1024x8x64        FIOY Concat          aten_cat_204_n0                  | RESULT float32  4:2x1024x8x64        FIOY Concat          cat2                            
-    050 = | RESULT float32  4:2x1024x8x64        ZYNV Mul             aten_mul_208_n0                  | RESULT float32  4:2x1024x8x64        ZYNV Mul             mul4                            
-    051 = | RESULT float32  2:1024x64            CJYF Slice           slice_1                          | RESULT float32  2:1024x64            CJYF Slice           slice_1                         
-    052 - | RESULT float32  2:1024x64            CJYF Transpose       _val_49                          |                                                                                           
-    053 ~ | RESULT float32  3:1x1024x64          CJYF GatherND        _val_56                          | RESULT float32  3:1x1024x64          CJYF Gather          index                           
-    054 = | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       aten_unsqueeze_109_n2            | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       output_4                        
-    055 = | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_8_out0           | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_6_out0          
-    056 = | RESULT float32  4:2x1024x8x64        SFVR Mul             aten_mul_161_n0                  | RESULT float32  4:2x1024x8x64        SFVR Mul             mul3                            
-    057 = | RESULT float32  4:2x1024x8x64        QDIM Add             _inlfunc_aten_add|folded_1_n3    | RESULT float32  4:2x1024x8x64        QDIM Add             add_Tensor2                     
-    058 = | RESULT float32  4:2x8x64x1024        QEVZ Transpose       transpose_3                      | RESULT float32  4:2x8x64x1024        QEVZ Transpose       transpose_3                     
-    059 ~ | RESULT float32  3:16x64x1024         QEVZ Reshape         view_10                          | RESULT float32  2:2048x512           JNNC Reshape         output_1                        
-    060 - | RESULT float32  4:1x1x1024x64        GSEC Transpose       unsqueeze_1                      |                                                                                           
-    061 ~ | RESULT float32  2:2048x512           UDZO FusedMatMul     mm                               | RESULT float32  2:2048x512           UDZO Gemm            mm                              
-    062 - | RESULT float32  3:2x1024x512         UDZO Reshape         view_1                           |                                                                                           
-    063 = | RESULT float32  4:2x1024x8x64        UDZO Reshape         view_6                           | RESULT float32  4:2x1024x8x64        UDZO Reshape         view_6                          
-    064 = | RESULT float32  4:2x8x1024x64        ZZCL Transpose       transpose                        | RESULT float32  4:2x8x1024x64        ZZCL Transpose       transpose                       
-    065 = | RESULT float32  4:2x8x1024x32        IGFY Slice           slice_4                          | RESULT float32  4:2x8x1024x32        IGFY Slice           slice_4                         
-    066 = | RESULT float32  4:2x8x1024x32        SUVC Neg             neg                              | RESULT float32  4:2x8x1024x32        SUVC Neg             neg                             
-    067 = | RESULT float32  4:2x8x1024x32        RTYM Slice           slice_3                          | RESULT float32  4:2x8x1024x32        RTYM Slice           slice_3                         
-    068 = | RESULT float32  4:2x8x1024x64        JNTP Concat          cat                              | RESULT float32  4:2x8x1024x64        JNTP Concat          cat                             
-    069 = | RESULT float32  4:2x8x1024x64        SJWX Mul             mul_1                            | RESULT float32  4:2x8x1024x64        SJWX Mul             mul_1                           
-    070 - | RESULT float32  4:1x1x1024x64        CJYF Transpose       unsqueeze                        |                                                                                           
-    071 = | RESULT float32  4:2x8x1024x64        HKEJ Mul             mul                              | RESULT float32  4:2x8x1024x64        HKEJ Mul             mul                             
-    072 = | RESULT float32  4:2x8x1024x64        ZTAH Add             add                              | RESULT float32  4:2x8x1024x64        ZTAH Add             add                             
-    073 - | RESULT float32  3:16x1024x64         ZTAH Reshape         view_9                           |                                                                                           
-    074 - | RESULT float32  3:16x1024x1024       RZIS MatMul          bmm                              |                                                                                           
-    075 - | RESULT float32  4:2x8x1024x1024      RZIS Reshape         view_11                          |                                                                                           
-    076 ~ | RESULT float32  4:2x8x1024x1024      VTBM Div             div                              | RESULT float32  4:2x8x1024x1024      VTBM FusedMatMul     div                             
-    077 = | RESULT float32  4:2x8x1024x1024      VTBM Add             add_2                            | RESULT float32  4:2x8x1024x1024      VTBM Add             add_2                           
-    078 = | RESULT float32  4:2x8x1024x1024      NNOO Softmax         _softmax                         | RESULT float32  4:2x8x1024x1024      NNOO Softmax         output_8                        
-    079 - | RESULT float32  3:16x1024x1024       NNOO Reshape         view_12                          |                                                                                           
-    080 ~ | RESULT float32  2:2048x512           LODB FusedMatMul     mm_2                             | RESULT float32  2:2048x512           JNNC Reshape         output_3                        
-    081 ~ | RESULT float32  3:2x1024x512         LODB Reshape         view_5                           | RESULT float32  2:2048x512           LAEM Gemm            mm_2                            
-    082 ~ | RESULT float32  4:2x1024x8x64        LODB Reshape         view_8                           | RESULT float32  4:2x1024x8x64        LAEM Reshape         view_8                          
-    083 ~ | RESULT float32  4:2x8x1024x64        JQXJ Transpose       transpose_2                      | RESULT float32  4:2x8x1024x64        FFCP Transpose       transpose_2                     
-    084 ~ | RESULT float32  3:16x1024x64         JQXJ Reshape         view_13                          | RESULT float32  4:2x8x1024x64        FLHP MatMul          view_11                         
-    085 ~ | RESULT float32  3:16x1024x64         LJUL MatMul          bmm_1                            | RESULT float32  4:2x1024x8x64        IJUB Transpose       transpose_4                     
-    086 ~ | RESULT float32  4:2x8x1024x64        LJUL Reshape         view_14                          | RESULT float32  2:2048x512           IJUB Reshape         output_12                       
-    087 ~ | RESULT float32  4:2x1024x8x64        QEAF Transpose       transpose_4                      | RESULT float32  2:2048x512           CZEY Gemm            mm_3                            
-    088 ~ | RESULT float32  3:2x1024x512         QEAF Reshape         view_15                          | RESULT float32  3:2x1024x512         CZEY Reshape         output_0                        
-    089 + |                                                                                            | RESULT float32  2:512x512            AWUV Transpose       output_11                        
-    090 ~ | RESULT float32  2:2048x512           QEAF Reshape         view_16                          | RESULT float32  3:16x1024x64         FFCP Reshape         output_10                       
-    091 - | RESULT float32  2:2048x512           ADNN FusedMatMul     mm_3                             |                                                                                           
-    092 - | RESULT float32  3:2x1024x512         ADNN Reshape         view_17                          |                                                                                           
-    093 ~ | RESULT float32  3:16x1024x1024       NNOO Transpose       transpose_6                      | RESULT float32  3:16x1024x1024       NNOO Reshape         output_9                        
-    094 + |                                                                                            | RESULT float32  3:16x64x1024         QEVZ Reshape         output_7                         
-    095 - | RESULT float32  4:2x8x1024x1024      NNOO Identity        detach_3                         |                                                                                           
-    096 ~ | RESULT float32  3:16x1024x64         QEVZ Transpose       transpose_9                      | RESULT float32  3:16x1024x64         ZTAH Reshape         output_6                        
-    097 + |                                                                                            | OUTPUT float32  3:2x1024x512         CZEY                 output_0                         
-    098 ~ | RESULT float32  3:16x64x1024         ZTAH Transpose       transpose_8                      | OUTPUT float32  2:2048x512           JNNC                 output_1                        
-    099 ~ | RESULT float32  3:16x64x1024         JQXJ Transpose       transpose_7                      | OUTPUT float32  2:2048x512           JNNC                 output_2                        
-    100 = | OUTPUT float32  2:2048x512           JNNC                 view                             | OUTPUT float32  2:2048x512           JNNC                 output_3                        
-    101 - | OUTPUT float32  2:512x512            MWON                 t_6                              |                                                                                           
-    102 = | OUTPUT float32  4:1x1x1024x64        CJYF                 unsqueeze                        | OUTPUT float32  4:1x1x1024x64        CJYF                 output_4                        
-    103 = | OUTPUT float32  4:1x1x1024x64        GSEC                 unsqueeze_1                      | OUTPUT float32  4:1x1x1024x64        GSEC                 output_5                        
-    104 ~ | OUTPUT float32  3:16x64x1024         JQXJ                 transpose_7                      | OUTPUT float32  3:16x1024x64         ZTAH                 output_6                        
-    105 ~ | OUTPUT float32  3:16x64x1024         ZTAH                 transpose_8                      | OUTPUT float32  3:16x64x1024         QEVZ                 output_7                        
-    106 - | OUTPUT float32  3:16x1024x64         QEVZ                 transpose_9                      |                                                                                           
-    107 = | OUTPUT float32  4:2x8x1024x1024      NNOO                 detach_3                         | OUTPUT float32  4:2x8x1024x1024      NNOO                 output_8                        
-    108 = | OUTPUT float32  3:16x1024x1024       NNOO                 transpose_6                      | OUTPUT float32  3:16x1024x1024       NNOO                 output_9                        
-    109 ~ | OUTPUT float32  2:2048x512           QEAF                 view_16                          | OUTPUT float32  3:16x1024x64         FFCP                 output_10                       
-    110 + |                                                                                            | OUTPUT float32  2:512x512            AWUV                 output_11                        
-    111 ~ | OUTPUT float32  3:2x1024x512         ADNN                 view_17                          | OUTPUT float32  2:2048x512           IJUB                 output_12                       
+    001 ~ | INITIA float32                       BAAA                 ortshared_1_0_1_0_token_164      | INITIA int64    1:2                  USAA                 ortshared_7_1_2_0_token_121     
+    002 - | INITIA int64    1:3                  QKMA                 ortshared_7_1_3_2_token_172      |                                                                                           
+    003 = | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_0_token_168      | INITIA int64    1:3                  CKSA                 ortshared_7_1_3_3_token_125     
+    004 ~ | INITIA int64    1:3                  QMKA                 ortshared_7_1_3_3_token_180      | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_0_token_115     
+    005 ~ | INITIA int64    1:2                  USAA                 ortshared_7_1_2_0_token_170      | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_0_token_113     
+    006 = | INITIA int64    1:1                  KAAA                 ortshared_7_1_1_2_token_169      | INITIA int64    1:1                  KAAA                 ortshared_7_1_1_4_token_119     
+    007 ~ | INITIA int64    1:1                  AAAA                 ortshared_7_1_1_5_token_179      | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_3_token_118     
+    008 - | INITIA int64    1:4                  CIKM                 ortshared_7_1_4_2_token_178      |                                                                                           
+    009 ~ | INITIA int64    1:4                  CIKK                 ortshared_7_1_4_0_token_162      | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_5_token_120     
+    010 - | INITIA int64                         ZAAA                 ortshared_7_0_1_0_token_166      |                                                                                           
+    011 - | INITIA float32                       IAAA                 ortshared_1_0_1_1_token_165      |                                                                                           
+    012 ~ | INITIA int64    1:1                  BAAA                 ortshared_7_1_1_4_token_174      | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_1_token_114     
+    013 - | INITIA int64                         BAAA                 ortshared_7_0_1_1_token_176      |                                                                                           
+    014 ~ | INITIA int64    1:1                  DAAA                 ortshared_7_1_1_1_token_167      | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_2_token_117     
+    015 ~ | INITIA int64    1:3                  QKKA                 ortshared_7_1_3_1_token_171      | INITIA int64    1:3                  QKMA                 ortshared_7_1_3_0_token_116     
+    016 - | INITIA int64    1:1                  GAAA                 ortshared_7_1_1_0_token_163      |                                                                                           
+    017 ~ | INITIA int64    1:4                  CKIM                 ortshared_7_1_4_1_token_177      | INITIA int64    1:3                  QMKA                 ortshared_7_1_3_1_token_123     
+    018 - | INITIA int64    1:1                  ?AAA                 ortshared_7_1_1_3_token_173      |                                                                                           
+    019 ~ | INITIA int64    1:2                  BKAA                 ortshared_7_1_2_1_token_175      | INITIA int64    1:3                  QKKA                 ortshared_7_1_3_2_token_124     
+    020 = | INPUT  float32  2:512x512            AYTK                 primals_2                        | INPUT  float32  2:512x512            AYTK                 input0                          
+    021 = | INPUT  float32  2:512x512            OIBB                 primals_4                        | INPUT  float32  2:512x512            OIBB                 input1                          
+    022 = | INPUT  float32  2:512x512            QHCJ                 primals_3                        | INPUT  float32  2:512x512            QHCJ                 input2                          
+    023 + |                                                                                            | INPUT  float32  2:512x512            ZYEX                 input3                           
+    024 = | INPUT  float32  2:2048x64            MDRB                 primals_5                        | INPUT  float32  2:2048x64            MDRB                 input4                          
+    025 = | INPUT  float32  2:2048x64            ZHDU                 primals_6                        | INPUT  float32  2:2048x64            ZHDU                 input5                          
+    026 - | INPUT  float32  2:512x512            ZYEX                 primals_1                        |                                                                                           
+    027 = | INPUT  float32  3:2x1024x512         KPQW                 primals_7                        | INPUT  float32  3:2x1024x512         KPQW                 input6                          
+    028 = | INPUT  int64    2:1x1024             KAQG                 primals_8                        | INPUT  int64    2:1x1024             KAQG                 input7                          
+    029 = | INPUT  float32  4:2x1x1024x1024      AAAA                 primals_9                        | INPUT  float32  4:2x1x1024x1024      AAAA                 input8                          
+    030 - | RESULT float32  2:512x512            OIBB Identity        t_6                              |                                                                                           
+    031 - | RESULT float32  4:2x1x1024x1024      AAAA Mul             other_1__45                      |                                                                                           
+    032 - | RESULT int64    2:1x1024             KAQG Expand          _val_62                          |                                                                                           
+    033 - | RESULT int64    3:1x1024x1           KAQG Unsqueeze       _val_64                          |                                                                                           
+    034 - | RESULT int64    3:1x1024x1           KAQG Concat          _val_65                          |                                                                                           
+    035 = | RESULT float32  2:1024x64            GSEC Slice           slice_2                          | RESULT float32  2:1024x64            GSEC Slice           slice_2                         
+    036 - | RESULT float32  2:1024x64            GSEC Transpose       _val_59                          |                                                                                           
+    037 ~ | RESULT float32  3:1x1024x64          GSEC GatherND        _val_66                          | RESULT float32  3:1x1024x64          GSEC Gather          index_1                         
+    038 = | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       n2__16                           | RESULT float32  4:1x1x1024x64        GSEC Unsqueeze       output_5                        
+    039 = | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_5_out0           | RESULT float32  4:1x1024x1x64        GSEC Transpose       Transpose_token_4_out0          
+    040 = | RESULT float32  2:2048x512           KPQW Reshape         view                             | RESULT float32  2:2048x512           KPQW Reshape         output_2                        
+    041 ~ | RESULT float32  2:2048x512           TIUU FusedMatMul     mm_1                             | RESULT float32  2:2048x512           MSDE Gemm            mm_1                            
+    042 - | RESULT float32  3:2x1024x512         TIUU Reshape         view_3                           |                                                                                           
+    043 ~ | RESULT float32  4:2x1024x8x64        TIUU Reshape         view_7                           | RESULT float32  4:2x1024x8x64        MSDE Reshape         view_7                          
+    044 ~ | RESULT float32  4:2x1024x8x32        MOPZ Slice           Slice_195                        | RESULT float32  4:2x1024x8x32        YGAY Slice           slice_Tensor6                   
+    045 ~ | RESULT float32  4:2x1024x8x32        OMLB Neg             n0__27                           | RESULT float32  4:2x1024x8x32        CUAC Neg             neg2                            
+    046 ~ | RESULT float32  4:2x1024x8x32        GUEV Slice           Slice_178                        | RESULT float32  4:2x1024x8x32        NLDH Slice           slice_Tensor5                   
+    047 ~ | RESULT float32  4:2x1024x8x64        UGPV Concat          n0__30                           | RESULT float32  4:2x1024x8x64        PGEK Concat          cat2                            
+    048 ~ | RESULT float32  4:2x1024x8x64        CZOT Mul             n0__33                           | RESULT float32  4:2x1024x8x64        PFQC Mul             mul4                            
+    049 = | RESULT float32  2:1024x64            CJYF Slice           slice_1                          | RESULT float32  2:1024x64            CJYF Slice           slice_1                         
+    050 - | RESULT float32  2:1024x64            CJYF Transpose       _val_50                          |                                                                                           
+    051 ~ | RESULT float32  3:1x1024x64          CJYF GatherND        _val_57                          | RESULT float32  3:1x1024x64          CJYF Gather          index                           
+    052 = | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       n2__15                           | RESULT float32  4:1x1x1024x64        CJYF Unsqueeze       output_4                        
+    053 = | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_8_out0           | RESULT float32  4:1x1024x1x64        CJYF Transpose       Transpose_token_6_out0          
+    054 ~ | RESULT float32  4:2x1024x8x64        LCFD Mul             n0__24                           | RESULT float32  4:2x1024x8x64        UURX Mul             mul3                            
+    055 ~ | RESULT float32  4:2x1024x8x64        MBTW Add             n3__35                           | RESULT float32  4:2x1024x8x64        JZIZ Add             add_Tensor2                     
+    056 ~ | RESULT float32  4:2x8x64x1024        YPAP Transpose       transpose_3                      | RESULT float32  4:2x8x64x1024        SQMV Transpose       transpose_3                     
+    057 - | RESULT float32  3:16x64x1024         YPAP Reshape         view_10                          |                                                                                           
+    058 - | RESULT float32  4:1x1x1024x64        GSEC Transpose       unsqueeze_1                      |                                                                                           
+    059 ~ | RESULT float32  2:2048x512           BMQW FusedMatMul     mm                               | RESULT float32  2:2048x512           KPQW Reshape         output_1                        
+    060 ~ | RESULT float32  3:2x1024x512         BMQW Reshape         view_1                           | RESULT float32  2:2048x512           TIUU Gemm            mm                              
+    061 ~ | RESULT float32  4:2x1024x8x64        BMQW Reshape         view_6                           | RESULT float32  4:2x1024x8x64        TIUU Reshape         view_6                          
+    062 ~ | RESULT float32  4:2x8x1024x64        JFAN Transpose       transpose                        | RESULT float32  4:2x8x1024x64        ZCLC Transpose       transpose                       
+    063 ~ | RESULT float32  4:2x8x1024x32        DTUX Slice           slice_4                          | RESULT float32  4:2x8x1024x32        NNPA Slice           slice_4                         
+    064 ~ | RESULT float32  4:2x8x1024x32        XHGD Neg             neg                              | RESULT float32  4:2x8x1024x32        NNLA Neg             neg                             
+    065 ~ | RESULT float32  4:2x8x1024x32        GNFP Slice           slice_3                          | RESULT float32  4:2x8x1024x32        MOWC Slice           slice_3                         
+    066 ~ | RESULT float32  4:2x8x1024x64        DULR Concat          cat                              | RESULT float32  4:2x8x1024x64        ZAHD Concat          cat                             
+    067 ~ | RESULT float32  4:2x8x1024x64        GLPW Mul             mul_1                            | RESULT float32  4:2x8x1024x64        CAQR Mul             mul_1                           
+    068 - | RESULT float32  4:1x1x1024x64        CJYF Transpose       unsqueeze                        |                                                                                           
+    069 ~ | RESULT float32  4:2x8x1024x64        WAVQ Mul             mul                              | RESULT float32  4:2x8x1024x64        XQKZ Mul             mul                             
+    070 ~ | RESULT float32  4:2x8x1024x64        CLLN Add             add                              | RESULT float32  4:2x8x1024x64        YPAP Add             add                             
+    071 - | RESULT float32  3:16x1024x64         CLLN Reshape         view_9                           |                                                                                           
+    072 - | RESULT float32  3:16x1024x1024       UAFW MatMul          bmm                              |                                                                                           
+    073 - | RESULT float32  4:2x8x1024x1024      UAFW Reshape         view_11                          |                                                                                           
+    074 ~ | RESULT float32  4:2x8x1024x1024      PDOG Div             div                              | RESULT float32  4:2x8x1024x1024      EZUQ FusedMatMul     div                             
+    075 ~ | RESULT float32  4:2x8x1024x1024      PDOG Add             add_2                            | RESULT float32  4:2x8x1024x1024      EZUQ Add             add_2                           
+    076 = | RESULT float32  4:2x8x1024x1024      ONNN Softmax         result__46                       | RESULT float32  4:2x8x1024x1024      ONNN Softmax         output_8                        
+    077 - | RESULT float32  3:16x1024x1024       ONNN Reshape         view_12                          |                                                                                           
+    078 ~ | RESULT float32  2:2048x512           QBUY FusedMatMul     mm_2                             | RESULT float32  2:2048x512           KPQW Reshape         output_3                        
+    079 ~ | RESULT float32  3:2x1024x512         QBUY Reshape         view_5                           | RESULT float32  2:2048x512           QBUY Gemm            mm_2                            
+    080 = | RESULT float32  4:2x1024x8x64        QBUY Reshape         view_8                           | RESULT float32  4:2x1024x8x64        QBUY Reshape         view_8                          
+    081 = | RESULT float32  4:2x8x1024x64        WWIL Transpose       transpose_2                      | RESULT float32  4:2x8x1024x64        WWIL Transpose       transpose_2                     
+    082 ~ | RESULT float32  3:16x1024x64         WWIL Reshape         view_13                          | RESULT float32  4:2x8x1024x64        VVDS MatMul          view_11                         
+    083 ~ | RESULT float32  3:16x1024x64         RUGP MatMul          bmm_1                            | RESULT float32  4:2x1024x8x64        TVXX Transpose       transpose_4                     
+    084 ~ | RESULT float32  4:2x8x1024x64        RUGP Reshape         view_14                          | RESULT float32  2:2048x512           TVXX Reshape         output_12                       
+    085 ~ | RESULT float32  4:2x1024x8x64        PWAV Transpose       transpose_4                      | RESULT float32  2:2048x512           EECA Gemm            mm_3                            
+    086 ~ | RESULT float32  3:2x1024x512         PWAV Reshape         view_15                          | RESULT float32  3:2x1024x512         EECA Reshape         output_0                        
+    087 + |                                                                                            | RESULT float32  2:512x512            AETA Transpose       output_11                        
+    088 ~ | RESULT float32  2:2048x512           PWAV Reshape         view_16                          | RESULT float32  3:16x1024x64         WWIL Reshape         output_10                       
+    089 - | RESULT float32  2:2048x512           TWDD FusedMatMul     mm_3                             |                                                                                           
+    090 - | RESULT float32  3:2x1024x512         TWDD Reshape         view_17                          |                                                                                           
+    091 ~ | RESULT float32  3:16x1024x1024       ONNN Transpose       transpose_6                      | RESULT float32  3:16x1024x1024       ONNN Reshape         output_9                        
+    092 + |                                                                                            | RESULT float32  3:16x64x1024         SQMV Reshape         output_7                         
+    093 - | RESULT float32  4:2x8x1024x1024      ONNN Identity        detach_3                         |                                                                                           
+    094 ~ | RESULT float32  3:16x1024x64         YPAP Transpose       transpose_9                      | RESULT float32  3:16x1024x64         YPAP Reshape         output_6                        
+    095 + |                                                                                            | OUTPUT float32  3:2x1024x512         EECA                 output_0                         
+    096 ~ | RESULT float32  3:16x64x1024         CLLN Transpose       transpose_8                      | OUTPUT float32  2:2048x512           KPQW                 output_1                        
+    097 ~ | RESULT float32  3:16x64x1024         WWIL Transpose       transpose_7                      | OUTPUT float32  2:2048x512           KPQW                 output_2                        
+    098 = | OUTPUT float32  2:2048x512           KPQW                 view                             | OUTPUT float32  2:2048x512           KPQW                 output_3                        
+    099 - | OUTPUT float32  2:512x512            OIBB                 t_6                              |                                                                                           
+    100 = | OUTPUT float32  4:1x1x1024x64        CJYF                 unsqueeze                        | OUTPUT float32  4:1x1x1024x64        CJYF                 output_4                        
+    101 = | OUTPUT float32  4:1x1x1024x64        GSEC                 unsqueeze_1                      | OUTPUT float32  4:1x1x1024x64        GSEC                 output_5                        
+    102 ~ | OUTPUT float32  3:16x64x1024         WWIL                 transpose_7                      | OUTPUT float32  3:16x1024x64         YPAP                 output_6                        
+    103 ~ | OUTPUT float32  3:16x64x1024         CLLN                 transpose_8                      | OUTPUT float32  3:16x64x1024         SQMV                 output_7                        
+    104 - | OUTPUT float32  3:16x1024x64         YPAP                 transpose_9                      |                                                                                           
+    105 = | OUTPUT float32  4:2x8x1024x1024      ONNN                 detach_3                         | OUTPUT float32  4:2x8x1024x1024      ONNN                 output_8                        
+    106 = | OUTPUT float32  3:16x1024x1024       ONNN                 transpose_6                      | OUTPUT float32  3:16x1024x1024       ONNN                 output_9                        
+    107 ~ | OUTPUT float32  2:2048x512           PWAV                 view_16                          | OUTPUT float32  3:16x1024x64         WWIL                 output_10                       
+    108 + |                                                                                            | OUTPUT float32  2:512x512            AETA                 output_11                        
+    109 ~ | OUTPUT float32  3:2x1024x512         TWDD                 view_17                          | OUTPUT float32  2:2048x512           TVXX                 output_12                       
 
 
 
@@ -852,7 +855,7 @@ Side by side
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 14.777 seconds)
+   **Total running time of the script:** (0 minutes 33.751 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_llama_diff_dort_301.py:
