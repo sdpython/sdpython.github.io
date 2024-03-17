@@ -182,6 +182,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/errors.html">Frequent Exceptions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -205,6 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/dimension.html">Dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_test.html">Testing</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -213,8 +215,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -225,6 +227,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/onnxrt.html">Use the custom exporter in torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../times.html">Times</a></li>
@@ -417,33 +425,20 @@
 <a class="viewcode-back" href="../../../api/torch_helper.html#experimental_experiment.torch_helper.llama_helper.get_llama_model">[docs]</a>
 <span class="k">def</span> <span class="nf">get_llama_model</span><span class="p">(</span>
     <span class="n">input_dims</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">15</span><span class="p">)),</span>
-    <span class="n">hidden_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-    <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">vocab_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
-    <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-    <span class="n">max_position_embeddings</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
-    <span class="n">num_attention_heads</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">_attn_implementation</span><span class="o">=</span><span class="s2">&quot;eager&quot;</span><span class="p">,</span>  <span class="c1"># needed value to remove graph breaks</span>
+    <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">num_hidden_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">vocab_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="n">intermediate_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">max_position_embeddings</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="n">num_attention_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">_attn_implementation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;eager&quot;</span><span class="p">,</span>  <span class="c1"># needed value to remove graph breaks</span>
+    <span class="n">with_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a model.</span>
 <span class="sd">    See `LlamaConfig</span>
-<span class="sd">    &lt;https://huggingface.co/docs/transformers/v4.37.2/en/model_doc/llama2#transformers.LlamaConfig&gt;`_.</span>
+<span class="sd">    &lt;https://huggingface.co/docs/transformers/main/en/model_doc/llama#transformers.LlamaConfig&gt;`_.</span>
 <span class="sd">    The parameters are chosen for a unit test configuration.</span>
-<span class="sd">    For benchmark, a bigger one should be used.</span>
-<span class="sd">    Commented out, the default value from :epkg:`transformers`.</span>
-
-<span class="sd">    ::</span>
-
-<span class="sd">        kwargs = dict(</span>
-<span class="sd">            input_dims=[(2, 1024)] * 2,</span>
-<span class="sd">            num_hidden_layers=1,  # 32</span>
-<span class="sd">            hidden_size=512,  # 4096</span>
-<span class="sd">            vocab_size=4000,  # 32000</span>
-<span class="sd">            intermediate_size=2000,  # 11008</span>
-<span class="sd">            max_position_embeddings=2048,</span>
-<span class="sd">            num_attention_heads=8,  # 32</span>
-<span class="sd">        )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">torch</span>
     <span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">LlamaConfig</span>
@@ -460,20 +455,41 @@
     <span class="k">if</span> <span class="n">_attn_implementation</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">_attn_implementation</span> <span class="o">=</span> <span class="n">_attn_implementation</span>
 
+    <span class="k">if</span> <span class="n">with_mask</span><span class="p">:</span>
+
+        <span class="k">class</span> <span class="nc">LlamaModelWrapper</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">LlamaModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">):</span>
+                <span class="n">model_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">model_output</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">generate_example_inputs</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">seq</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">ids_tensor</span><span class="p">([</span><span class="n">batch</span><span class="p">,</span> <span class="n">seq</span><span class="p">],</span> <span class="n">vocab_size</span><span class="p">)</span>
+            <span class="n">input_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="n">input_mask</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
+            <span class="k">return</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">input_mask</span>
+
+        <span class="n">example_args_collection</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">input_dims</span><span class="p">:</span>
+            <span class="n">example_args_collection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_example_inputs</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">LlamaModelWrapper</span><span class="p">(</span><span class="n">config</span><span class="p">),</span> <span class="n">example_args_collection</span>
+
     <span class="k">class</span> <span class="nc">LlamaModelWrapper</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">LlamaModel</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">):</span>
-            <span class="n">model_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ids</span><span class="p">):</span>
+            <span class="n">model_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">model_output</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">generate_example_inputs</span><span class="p">(</span><span class="n">batch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">seq</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">input_ids</span> <span class="o">=</span> <span class="n">ids_tensor</span><span class="p">([</span><span class="n">batch</span><span class="p">,</span> <span class="n">seq</span><span class="p">],</span> <span class="n">vocab_size</span><span class="p">)</span>
-        <span class="n">input_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-        <span class="k">assert</span> <span class="n">input_mask</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
-        <span class="k">return</span> <span class="n">input_ids</span><span class="p">,</span> <span class="n">input_mask</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">input_ids</span><span class="p">,)</span>
 
     <span class="n">example_args_collection</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">input_dims</span><span class="p">:</span>

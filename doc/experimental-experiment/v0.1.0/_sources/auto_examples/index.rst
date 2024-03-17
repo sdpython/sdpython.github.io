@@ -127,23 +127,6 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The script is calling many times the script experimental_experiment.torch_bench.dort_bench.py.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_bench_102_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">102: Measure LLAMA speed</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The script compares the two exporters implemented in pytorch for a part of llama model. The mod...">
 
 .. only:: html
@@ -156,6 +139,23 @@ all the graphs, the data used to draw them, and the models.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">301: Compares LLAMA exporters</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The script is calling many times the script experimental_experiment.torch_bench.dort_bench.py.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_bench_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: Measure LLAMA speed</div>
     </div>
 
 
@@ -240,8 +240,8 @@ all the graphs, the data used to draw them, and the models.
    /auto_examples/plot_torch_linreg_101
    /auto_examples/plot_torch_custom_backend_101
    /auto_examples/plot_convolutation_matmul_102
-   /auto_examples/plot_llama_bench_102
    /auto_examples/plot_llama_diff_export_301
+   /auto_examples/plot_llama_bench_102
    /auto_examples/plot_llama_diff_dort_301
    /auto_examples/plot_torch_aot_201
    /auto_examples/plot_torch_dort_201

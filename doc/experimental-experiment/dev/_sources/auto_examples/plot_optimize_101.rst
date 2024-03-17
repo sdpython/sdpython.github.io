@@ -502,7 +502,7 @@ Optimization
         <tr>
           <th>0</th>
           <td>check_A</td>
-          <td>0.000541</td>
+          <td>0.000319</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -512,8 +512,8 @@ Optimization
         <tr>
           <th>1</th>
           <td>remove_identity_nodes</td>
-          <td>0.000957</td>
-          <td>1.0</td>
+          <td>0.000399</td>
+          <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -522,7 +522,7 @@ Optimization
         <tr>
           <th>2</th>
           <td>check_B</td>
-          <td>0.000623</td>
+          <td>0.000296</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -532,7 +532,7 @@ Optimization
         <tr>
           <th>3</th>
           <td>remove_unused</td>
-          <td>0.001736</td>
+          <td>0.000721</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -542,7 +542,7 @@ Optimization
         <tr>
           <th>4</th>
           <td>check_C</td>
-          <td>0.000644</td>
+          <td>0.000312</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -562,7 +562,7 @@ Optimization
         <tr>
           <th>704</th>
           <td>build_for_pattern</td>
-          <td>0.000548</td>
+          <td>0.000326</td>
           <td>0.0</td>
           <td>27.0</td>
           <td>NaN</td>
@@ -572,7 +572,7 @@ Optimization
         <tr>
           <th>705</th>
           <td>pattern_optimization</td>
-          <td>0.377779</td>
+          <td>0.113490</td>
           <td>89.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -582,7 +582,7 @@ Optimization
         <tr>
           <th>706</th>
           <td>check_F</td>
-          <td>0.000213</td>
+          <td>0.000174</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -592,7 +592,7 @@ Optimization
         <tr>
           <th>707</th>
           <td>remove_unused</td>
-          <td>0.000599</td>
+          <td>0.000425</td>
           <td>1.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -602,7 +602,7 @@ Optimization
         <tr>
           <th>708</th>
           <td>check_G</td>
-          <td>0.000218</td>
+          <td>0.000172</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -650,45 +650,45 @@ Summary
 
                                           time_in  added  removed  iteration  match_index  instances
     pattern                                                                                         
-    apply_CastPattern                    0.005610     37       37          0           36         37
-    apply_ExpandBroadcastPattern         0.000758      3        6          2            2          3
-    apply_MatMulReshape2Of3Pattern       0.007388     10       12          5            3          4
-    apply_MulMulMulScalarPattern         0.002975      6        9          1            2          3
-    apply_ReduceReshapePattern           0.001171      3        6          0           39          3
-    apply_Reshape2Of3Pattern             0.001967      5        6          1           40          2
-    apply_ReshapeReshapePattern          0.001420      4        8          0           44          4
-    apply_RotaryConcatPartPattern        0.003644      8       16          7            0          2
-    apply_Sub1MulPattern                 0.002569      2        2          8            0          1
-    apply_TransposeMatMulPattern         0.004655     14       28         22            0         14
-    apply_TransposeReshapeMatMulPattern  0.001431     12       12         26            0          4
-    apply_TransposeTransposePattern      0.007766      7       14          0           51          7
-    build_for_pattern                    0.036048      0       44         27            0          0
-    check_A                              0.000541      0        0          0            0          0
-    check_B                              0.000623      0        0          0            0          0
-    check_C                              0.000644      0        0          0            0          0
-    check_F                              0.000213      0        0          0            0          0
-    check_G                              0.000218      0        0          0            0          0
-    check_pattern_A                      0.053077      0        0         26            0          0
-    check_pattern_B                      0.028767      0        0         27            0          0
-    match_CastPattern                    0.004428      0        0         27           37         37
-    match_ExpandBroadcastPattern         0.003613      0        0         27           37          3
-    match_ExpandPattern                  0.003786      0        0         27           37          0
-    match_ExpandSwapPattern              0.003335      0        0         27           37          0
-    match_MatMulReshape2Of3Pattern       0.020273      0        0         27           41          4
-    match_MulMulMulScalarPattern         0.010386      0        0         27           37          3
-    match_ReduceReshapePattern           0.008516      0        0         27           40          3
-    match_Reshape2Of3Pattern             0.046496      0        0         27           41          2
-    match_ReshapeMatMulReshapePattern    0.007180      0        0         27           40          0
-    match_ReshapeReshapePattern          0.009411      0        0         27           45          4
-    match_RotaryConcatPartPattern        0.012632      0        0         27           45          2
-    match_Sub1MulPattern                 0.012361      0        0         27           45          1
-    match_TransposeMatMulPattern         0.016394      0        0         27           45         14
-    match_TransposeReshapeMatMulPattern  0.011319      0        0         27           45          4
-    match_TransposeTransposePattern      0.007110      0        0         27           52          7
-    match_UnsqueezeUnsqueezePattern      0.003627      0        0         27           52          0
-    pattern_optimization                 0.377779      0       89          0            0          0
-    remove_identity_nodes                0.027787      0       45         27            0          0
-    remove_unused                        0.002335      0        1          0            0          0
+    apply_CastPattern                    0.002938     37       37          0           36         37
+    apply_ExpandBroadcastPattern         0.000238      3        6          2            2          3
+    apply_MatMulReshape2Of3Pattern       0.001530     10       12          5            3          4
+    apply_MulMulMulScalarPattern         0.001133      6        9          1            2          3
+    apply_ReduceReshapePattern           0.000336      3        6          0           39          3
+    apply_Reshape2Of3Pattern             0.000865      5        6          1           40          2
+    apply_ReshapeReshapePattern          0.000386      4        8          0           44          4
+    apply_RotaryConcatPartPattern        0.000959      8       16          7            0          2
+    apply_Sub1MulPattern                 0.000353      2        2          8            0          1
+    apply_TransposeMatMulPattern         0.002035     14       28         22            0         14
+    apply_TransposeReshapeMatMulPattern  0.000869     12       12         26            0          4
+    apply_TransposeTransposePattern      0.002475      7       14          0           51          7
+    build_for_pattern                    0.010776      0       44         27            0          0
+    check_A                              0.000319      0        0          0            0          0
+    check_B                              0.000296      0        0          0            0          0
+    check_C                              0.000312      0        0          0            0          0
+    check_F                              0.000174      0        0          0            0          0
+    check_G                              0.000172      0        0          0            0          0
+    check_pattern_A                      0.022172      0        0         26            0          0
+    check_pattern_B                      0.005817      0        0         27            0          0
+    match_CastPattern                    0.001426      0        0         27           37         37
+    match_ExpandBroadcastPattern         0.001277      0        0         27           37          3
+    match_ExpandPattern                  0.001393      0        0         27           37          0
+    match_ExpandSwapPattern              0.001230      0        0         27           37          0
+    match_MatMulReshape2Of3Pattern       0.005609      0        0         27           41          4
+    match_MulMulMulScalarPattern         0.003460      0        0         27           37          3
+    match_ReduceReshapePattern           0.002751      0        0         27           40          3
+    match_Reshape2Of3Pattern             0.009622      0        0         27           41          2
+    match_ReshapeMatMulReshapePattern    0.001979      0        0         27           40          0
+    match_ReshapeReshapePattern          0.002163      0        0         27           45          4
+    match_RotaryConcatPartPattern        0.003173      0        0         27           45          2
+    match_Sub1MulPattern                 0.004112      0        0         27           45          1
+    match_TransposeMatMulPattern         0.004958      0        0         27           45         14
+    match_TransposeReshapeMatMulPattern  0.003232      0        0         27           45          4
+    match_TransposeTransposePattern      0.002258      0        0         27           52          7
+    match_UnsqueezeUnsqueezePattern      0.001332      0        0         27           52          0
+    pattern_optimization                 0.113490      0       89          0            0          0
+    remove_identity_nodes                0.008593      0       44         27            0          0
+    remove_unused                        0.001146      0        1          0            0          0
 
 
 
@@ -714,7 +714,7 @@ The total is:
 
  .. code-block:: none
 
-    number of removed nodes: 224
+    number of removed nodes: 223
 
 
 
@@ -857,6 +857,7 @@ It gives the following.
     init: name='init1_s_13' type=dtype('float32') shape=() -- array([0.00195312], dtype=float32)
     init: name='init1_s_14' type=dtype('float32') shape=() -- array([0.00195312], dtype=float32)
     Constant(value_float=0) -> output_11
+      Identity(output_11) -> output_12
     Reshape(input28, init7_s2_2048_10242) -> typeR_input28
     Mul(input37, input2) -> _onx_mul0
       Mul(_onx_mul0, input34) -> _onx_mul03
@@ -977,9 +978,8 @@ It gives the following.
     Unsqueeze(input3, init7_s1_-13) -> _onx_unsqueeze0
     ConstantOfShape(init7_s2_1024_10242, value=[0.0]) -> _onx_constantofshape05
       ScatterND(_onx_constantofshape05, _onx_unsqueeze0, _onx_where0, reduction=b'add') -> output_3
-    Constant(value_float=0) -> output_12
-    Constant(value_float=0) -> output_13
-    Constant(value_float=0) -> output_14
+    Identity(output_11) -> output_13
+    Identity(output_11) -> output_14
     output: name='output_0' type=dtype('float32') shape=[1024]
     output: name='output_1' type=dtype('float32') shape=[1024]
     output: name='output_2' type=dtype('float32') shape=[1024]
@@ -1038,7 +1038,7 @@ The second list is specific to :epkg:`onnxruntime`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.138 seconds)
+   **Total running time of the script:** (0 minutes 2.325 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:

@@ -90,8 +90,8 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [ 2.85334010e+01  5.78692664e-01 -2.07644090e-01  6.36161997e+01
-      6.34238304e-02], 0.13072559041862508
+    coefficients: [ 8.77645073e-01  7.23508174e+01 -5.21526059e-02  9.31183877e+01
+      5.58228290e-01], 0.26571651725229817
 
 
 
@@ -119,7 +119,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=121.50173220801342, r2=0.9717981359337369
+    LinearRegression: l2=99.37158225696727, r2=0.9921955426688784
 
 
 
@@ -150,24 +150,23 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 58.06, NNZs: 5, Bias: -0.719020, T: 750, Avg. loss: 544.576057
+    Norm: 99.54, NNZs: 5, Bias: -1.083300, T: 750, Avg. loss: 1453.695892
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 66.28, NNZs: 5, Bias: -0.270378, T: 1500, Avg. loss: 75.026616
+    Norm: 112.76, NNZs: 5, Bias: -0.399563, T: 1500, Avg. loss: 105.002287
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 68.59, NNZs: 5, Bias: -0.103964, T: 2250, Avg. loss: 53.492065
+    Norm: 116.17, NNZs: 5, Bias: -0.083427, T: 2250, Avg. loss: 51.117831
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 69.27, NNZs: 5, Bias: -0.055816, T: 3000, Avg. loss: 51.392009
+    Norm: 117.33, NNZs: 5, Bias: 0.205811, T: 3000, Avg. loss: 46.281330
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 69.53, NNZs: 5, Bias: -0.071746, T: 3750, Avg. loss: 51.119791
+    Norm: 117.71, NNZs: 5, Bias: 0.129218, T: 3750, Avg. loss: 45.656226
     Total training time: 0.00 seconds.
     /home/xadupre/install/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1575: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [ 2.84753176e+01  5.11249164e-01 -2.21588448e-01  6.34343935e+01
-     -1.06613702e-02], [-0.07174593]
+    coefficients: [ 0.8506411  72.25623951 -0.17585021 92.92246497  0.5644385 ], [0.12921801]
 
 
 
@@ -195,7 +194,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=121.83385362409902, sr2=0.9717210469666931
+    SGDRegressor: sl2=99.41981237130881, sr2=0.9921917547663321
 
 
 
@@ -266,11 +265,11 @@ torch
 
  .. code-block:: none
 
-    iteration 0, loss=1229277.75
-    iteration 1, loss=144752.1875
-    iteration 2, loss=81070.0546875
-    iteration 3, loss=77160.3046875
-    iteration 4, loss=76935.109375
+    iteration 0, loss=3388378.75
+    iteration 1, loss=246132.15625
+    iteration 2, loss=78806.203125
+    iteration 3, loss=69241.828125
+    iteration 4, loss=68663.84375
 
 
 
@@ -297,7 +296,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=121.7823905599721, tr2=0.9717329920995942
+    TorchLinearRegression: tl2=99.65278124005958, tr2=0.9921734578291762
 
 
 
@@ -326,9 +325,10 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[28.5728,  0.6951, -0.1634, 63.5478,  0.1229]], requires_grad=True)
+    tensor([[ 1.0995e+00,  7.2252e+01, -8.1620e-02,  9.3018e+01,  5.0411e-01]],
+           requires_grad=True)
     Parameter containing:
-    tensor([0.1237], requires_grad=True)
+    tensor([0.2408], requires_grad=True)
 
 
 
@@ -375,8 +375,8 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[   4.515741],
-           [-124.604385]], dtype=float32)]
+    [array([[-192.17436],
+           [ -48.7338 ]], dtype=float32)]
 
 
 
@@ -440,7 +440,7 @@ With dynamic shapes
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['batch', 5]
     init: name='arg0_1' type=dtype('float32') shape=(1, 5)
-    init: name='arg1_1' type=dtype('float32') shape=(1,) -- array([0.12372676], dtype=float32)
+    init: name='arg1_1' type=dtype('float32') shape=(1,) -- array([0.24076203], dtype=float32)
     Gemm(x, arg0_1, arg1_1, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
     output: name='output_0' type=dtype('float32') shape=['batch', 1]
 
@@ -450,7 +450,7 @@ With dynamic shapes
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.593 seconds)
+   **Total running time of the script:** (0 minutes 3.163 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg_101.py:

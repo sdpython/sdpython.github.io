@@ -183,6 +183,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/errors.html">Frequent Exceptions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -206,6 +207,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/misc.html">Others…</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/dimension.html">Dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/torch_test.html">Testing</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Example gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -214,8 +216,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -226,6 +228,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/onnxrt.html">Use the custom exporter in torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/llama.html">LLaMa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/mistral.html">Mistral</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../times.html">Times</a></li>
@@ -318,9 +326,9 @@ can show the intermediate results if needed. It is very slow.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">mlp</span><span class="p">(</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.1086],
-        [-0.2404],
-        [ 0.2456]], grad_fn=&lt;AddmmBackward0&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.1377],
+        [ 0.0022],
+        [ 0.1547]], grad_fn=&lt;AddmmBackward0&gt;)
 </pre></div>
 </div>
 </section>
@@ -342,9 +350,9 @@ and implemented by class <a class="reference internal" href="../api/torch_dynamo
 <span class="nb">print</span><span class="p">(</span><span class="n">compiled_model</span><span class="p">(</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.1086],
-        [-0.2404],
-        [ 0.2456]])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.1377],
+        [ 0.0022],
+        [ 0.1547]])
 </pre></div>
 </div>
 </section>
@@ -374,9 +382,9 @@ with function <a class="reference internal" href="../api/torch_dynamo.html#exper
 <span class="nb">print</span><span class="p">(</span><span class="n">compiled_model</span><span class="p">(</span><a href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.1086],
-        [-0.2404],
-        [ 0.2456]], grad_fn=&lt;CompiledFunctionBackward&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.1377],
+        [ 0.0022],
+        [ 0.1547]], grad_fn=&lt;CompiledFunctionBackward&gt;)
 </pre></div>
 </div>
 <p>Let’s see an iteration loop.</p>
@@ -414,7 +422,7 @@ with function <a class="reference internal" href="../api/torch_dynamo.html#exper
         <a href="https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset" title="torch.utils.data.Dataset" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class"><span class="n">DiabetesDataset</span></a><span class="p">(</span><span class="o">*</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="sklearn.datasets.load_diabetes" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_diabetes</span></a><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
         <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">num_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">loss_function</span> <span class="o">=</span> <a href="https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss" title="torch.nn.L1Loss" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">L1Loss</span></a><span class="p">()</span>
@@ -448,9 +456,9 @@ with function <a class="reference internal" href="../api/torch_dynamo.html#exper
   warnings.warn(
 /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn&#39;t take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
   warnings.warn(
-Loss after epoch 1: 7490.673868179321
-Loss after epoch 2: 5637.6253452301025
-Loss after epoch 3: 5286.622880935669
+Loss after epoch 1: 7422.153186798096
+Loss after epoch 2: 5531.330051422119
+Loss after epoch 3: 5222.763031005859
 Training process has finished.
 
 OptimizedModule(
@@ -485,9 +493,9 @@ Let’s see what it looks like.</p>
   warnings.warn(
 /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn&#39;t take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
   warnings.warn(
-Loss after epoch 1: 7785.201421737671
-Loss after epoch 2: 5573.729024887085
-Loss after epoch 3: 5485.463703155518
+Loss after epoch 1: 7220.020864486694
+Loss after epoch 2: 5544.643701553345
+Loss after epoch 3: 5222.171184539795
 Training process has finished.
 4 were created.
 
@@ -514,9 +522,9 @@ input: name=&#39;input0&#39; type=dtype(&#39;float32&#39;) shape=[5, 10]
 input: name=&#39;input1&#39; type=dtype(&#39;float32&#39;) shape=[5, 32]
 input: name=&#39;input2&#39; type=dtype(&#39;float32&#39;) shape=[32, 1]
 input: name=&#39;input3&#39; type=dtype(&#39;float32&#39;) shape=[5, 1]
+init: name=&#39;init7_s1_0&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([0])
 init: name=&#39;init1_s1_&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
 init: name=&#39;init1_s1_2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
-init: name=&#39;init7_s1_0&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([0])
 Constant(value_float=0.0) -&gt; output_NONE_4
 Gemm(input3, input2, transA=0, transB=1) -&gt; mm
 Gemm(input3, input1, transA=1, transB=0) -&gt; output_2
@@ -567,11 +575,13 @@ It is needed by pytorch.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn&#39;t take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
   warnings.warn(
-Loss after epoch 1: 7139.538120269775
-Loss after epoch 2: 5480.143939971924
-Loss after epoch 3: 5147.930223464966
+/home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn&#39;t take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+  warnings.warn(
+Loss after epoch 1: 7449.048362731934
+Loss after epoch 2: 5446.76446723938
+Loss after epoch 3: 5214.085321426392
 Training process has finished.
-2 were created.
+4 were created.
 
 -- model 0 running on [&#39;CPUExecutionProvider&#39;]
 
@@ -581,16 +591,16 @@ input: name=&#39;input1&#39; type=dtype(&#39;float32&#39;) shape=[32]
 input: name=&#39;input2&#39; type=dtype(&#39;float32&#39;) shape=[1, 32]
 input: name=&#39;input3&#39; type=dtype(&#39;float32&#39;) shape=[1]
 input: name=&#39;input_dim_4&#39; type=dtype(&#39;int64&#39;) shape=[1]
-input: name=&#39;input5&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 10]
+input: name=&#39;input5&#39; type=dtype(&#39;float32&#39;) shape=[&#39;primals_5&#39;, 10]
 Gemm(input5, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -&gt; addmm
   Relu(addmm) -&gt; output_2
     Gemm(output_2, input2, input3, transA=0, transB=1, alpha=1.00, beta=1.00) -&gt; output_0
 Transpose(input2, perm=[1,0]) -&gt; output_3
 Identity(input5) -&gt; output_1
 Identity(input_dim_4) -&gt; output_dim_4
-output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 1]
-output: name=&#39;output_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 10]
-output: name=&#39;output_2&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 32]
+output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[5, 1]
+output: name=&#39;output_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;primals_5&#39;, 10]
+output: name=&#39;output_2&#39; type=dtype(&#39;float32&#39;) shape=[5, 32]
 output: name=&#39;output_3&#39; type=dtype(&#39;float32&#39;) shape=[32, 1]
 output: name=&#39;output_dim_4&#39; type=dtype(&#39;int64&#39;) shape=[1]
 
@@ -598,14 +608,15 @@ output: name=&#39;output_dim_4&#39; type=dtype(&#39;int64&#39;) shape=[1]
 
 opset: domain=&#39;&#39; version=18
 input: name=&#39;input_dim_0&#39; type=dtype(&#39;int64&#39;) shape=[1]
-input: name=&#39;input1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 10]
-input: name=&#39;input2&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 32]
+input: name=&#39;input1&#39; type=dtype(&#39;float32&#39;) shape=[5, 10]
+input: name=&#39;input2&#39; type=dtype(&#39;float32&#39;) shape=[5, 32]
 input: name=&#39;input3&#39; type=dtype(&#39;float32&#39;) shape=[32, 1]
-input: name=&#39;input4&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 1]
+input: name=&#39;input4&#39; type=dtype(&#39;float32&#39;) shape=[5, 1]
+init: name=&#39;init7_s1_0&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([0])
 init: name=&#39;init1_s1_&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
 init: name=&#39;init1_s1_2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
-init: name=&#39;init7_s1_0&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([0])
 Constant(value_float=0.0) -&gt; output_NONE_4
+  Identity(output_NONE_4) -&gt; output_NONE_5
 Gemm(input4, input3, transA=0, transB=1) -&gt; mm
 Gemm(input4, input2, transA=1, transB=0) -&gt; output_2
 ReduceSum(input4, init7_s1_0, keepdims=0) -&gt; output_3
@@ -613,7 +624,54 @@ LessOrEqual(input2, init1_s1_) -&gt; _onx_lessorequal0
   Where(_onx_lessorequal0, init1_s1_2, mm) -&gt; threshold_backward
     Gemm(threshold_backward, input1, transA=1, transB=0) -&gt; output_0
 ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -&gt; output_1
-Constant(value_float=0.0) -&gt; output_NONE_5
+output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[32, 10]
+output: name=&#39;output_1&#39; type=dtype(&#39;float32&#39;) shape=[32]
+output: name=&#39;output_2&#39; type=dtype(&#39;float32&#39;) shape=[1, 32]
+output: name=&#39;output_3&#39; type=dtype(&#39;float32&#39;) shape=[1]
+output: name=&#39;output_NONE_4&#39; type=dtype(&#39;float32&#39;) shape=None
+output: name=&#39;output_NONE_5&#39; type=dtype(&#39;float32&#39;) shape=None
+
+-- model 2 running on [&#39;CPUExecutionProvider&#39;]
+
+opset: domain=&#39;&#39; version=18
+input: name=&#39;input0&#39; type=dtype(&#39;float32&#39;) shape=[32, 10]
+input: name=&#39;input1&#39; type=dtype(&#39;float32&#39;) shape=[32]
+input: name=&#39;input2&#39; type=dtype(&#39;float32&#39;) shape=[1, 32]
+input: name=&#39;input3&#39; type=dtype(&#39;float32&#39;) shape=[1]
+input: name=&#39;input_dim_4&#39; type=dtype(&#39;int64&#39;) shape=[1]
+input: name=&#39;input5&#39; type=dtype(&#39;float32&#39;) shape=[&#39;primals_5&#39;, 10]
+Gemm(input5, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -&gt; addmm
+  Relu(addmm) -&gt; output_2
+    Gemm(output_2, input2, input3, transA=0, transB=1, alpha=1.00, beta=1.00) -&gt; output_0
+Transpose(input2, perm=[1,0]) -&gt; output_3
+Identity(input5) -&gt; output_1
+Identity(input_dim_4) -&gt; output_dim_4
+output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[2, 1]
+output: name=&#39;output_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;primals_5&#39;, 10]
+output: name=&#39;output_2&#39; type=dtype(&#39;float32&#39;) shape=[2, 32]
+output: name=&#39;output_3&#39; type=dtype(&#39;float32&#39;) shape=[32, 1]
+output: name=&#39;output_dim_4&#39; type=dtype(&#39;int64&#39;) shape=[1]
+
+-- model 3 running on [&#39;CPUExecutionProvider&#39;]
+
+opset: domain=&#39;&#39; version=18
+input: name=&#39;input_dim_0&#39; type=dtype(&#39;int64&#39;) shape=[1]
+input: name=&#39;input1&#39; type=dtype(&#39;float32&#39;) shape=[2, 10]
+input: name=&#39;input2&#39; type=dtype(&#39;float32&#39;) shape=[2, 32]
+input: name=&#39;input3&#39; type=dtype(&#39;float32&#39;) shape=[32, 1]
+input: name=&#39;input4&#39; type=dtype(&#39;float32&#39;) shape=[2, 1]
+init: name=&#39;init7_s1_0&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([0])
+init: name=&#39;init1_s1_&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
+init: name=&#39;init1_s1_2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
+Constant(value_float=0.0) -&gt; output_NONE_4
+  Identity(output_NONE_4) -&gt; output_NONE_5
+Gemm(input4, input3, transA=0, transB=1) -&gt; mm
+Gemm(input4, input2, transA=1, transB=0) -&gt; output_2
+ReduceSum(input4, init7_s1_0, keepdims=0) -&gt; output_3
+LessOrEqual(input2, init1_s1_) -&gt; _onx_lessorequal0
+  Where(_onx_lessorequal0, init1_s1_2, mm) -&gt; threshold_backward
+    Gemm(threshold_backward, input1, transA=1, transB=0) -&gt; output_0
+ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -&gt; output_1
 output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[32, 10]
 output: name=&#39;output_1&#39; type=dtype(&#39;float32&#39;) shape=[32]
 output: name=&#39;output_2&#39; type=dtype(&#39;float32&#39;) shape=[1, 32]
@@ -644,7 +702,7 @@ looking for patterns. Each of them locally replaces a couple of
 nodes to optimize the computation
 (see <a class="reference internal" href="../api/graph_builder_pattern.html#l-pattern-optimization-onnx"><span class="std std-ref">Onnx Patterns</span></a> and
 # <a class="reference internal" href="../api/graph_builder_pattern.html#l-pattern-optimization-ort"><span class="std std-ref">Ort Patterns</span></a>).</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.645 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.192 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-torch-custom-backend-101-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/86a9b8b098df9ad424bd5f995eda8712/plot_torch_custom_backend_101.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_torch_custom_backend_101.ipynb</span></code></a></p>

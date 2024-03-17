@@ -182,6 +182,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/errors.html">Frequent Exceptions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -205,6 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/dimension.html">Dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_test.html">Testing</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -213,8 +215,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -225,6 +227,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/onnxrt.html">Use the custom exporter in torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../times.html">Times</a></li>
@@ -270,7 +278,7 @@
           <h1>Source code for experimental_experiment.torch_interpreter.onnx_export</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
 <span class="kn">from</span> <span class="nn">onnx.defs</span> <span class="kn">import</span> <span class="n">onnx_opset_version</span>
 <span class="kn">from</span> <span class="nn">..xbuilder.graph_builder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">OptimizationOptions</span>
@@ -358,6 +366,37 @@
 
 
 
+<span class="k">def</span> <span class="nf">_export</span><span class="p">(</span>
+    <span class="n">mod</span><span class="p">,</span>
+    <span class="n">args</span><span class="p">,</span>
+    <span class="n">tracing_mode</span><span class="p">,</span>
+    <span class="n">dynamic_shapes</span><span class="p">,</span>
+    <span class="n">same_signature</span><span class="p">,</span>
+    <span class="n">decomposition_table</span><span class="p">,</span>
+    <span class="n">use_dynamo</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">torch</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">use_dynamo</span><span class="p">:</span>
+        <span class="n">exported_mod</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">exported_mod</span>
+
+    <span class="c1"># import torch.utils._pytree as pytree</span>
+    <span class="c1"># flat_args, orig_in_spec = pytree.tree_flatten((args, ))</span>
+    <span class="c1"># print(&quot;+++++&quot;, orig_in_spec, type(flat_args), len(flat_args))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+        <span class="n">mod</span><span class="p">,</span>
+        <span class="n">aten_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">tracing_mode</span><span class="o">=</span><span class="n">tracing_mode</span><span class="p">,</span>
+        <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span>
+        <span class="n">same_signature</span><span class="o">=</span><span class="n">same_signature</span><span class="p">,</span>
+        <span class="n">decomposition_table</span><span class="o">=</span><span class="n">decomposition_table</span><span class="p">,</span>
+        <span class="n">assume_static_by_default</span><span class="o">=</span><span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+
 <span class="k">def</span> <span class="nf">_make_builder_interpreter</span><span class="p">(</span>
     <span class="n">mod</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.fx.GraphModule&quot;</span><span class="p">],</span>  <span class="c1"># noqa: F821</span>
     <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
@@ -368,7 +407,13 @@
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">raise_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tracing_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;symbolic&quot;</span><span class="p">,</span>
+    <span class="n">same_signature</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">decomposition_table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Dict</span><span class="p">[</span><span class="s2">&quot;torch._ops.OpOverload&quot;</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dispatcher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Dispatcher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">use_dynamo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;torch.fx.GraphModule&quot;</span><span class="p">,</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="s2">&quot;DynamoInterpreter&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exports a torch model into ONNX using</span>
@@ -384,8 +429,12 @@
 <span class="sd">    :param verbose: verbosity level</span>
 <span class="sd">    :param raise_list: the builder stops any time a name falls into that list,</span>
 <span class="sd">        this is a debbuging tool</span>
-<span class="sd">    :param dynamic_shapes: see :epkg:`torch.export.export`</span>
+<span class="sd">    :param dynamic_shapes: see :epkg:`torch.export.export` or ``torch._dynamo.export``</span>
+<span class="sd">    :param same_signature: same signature</span>
+<span class="sd">    :param tracing_mode: tracing model</span>
+<span class="sd">    :param decomposition_table: decomposition table</span>
 <span class="sd">    :param dispatcher: see :class:`experimental_experiment.torch_interpreter.Dispatcher`</span>
+<span class="sd">    :param use_dynamo: use ``torch.export.export`` or ``torch._dynamo.export``</span>
 <span class="sd">    :return: onnx model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -402,7 +451,16 @@
         <span class="n">buffers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">graph_module</span><span class="o">.</span><span class="n">named_buffers</span><span class="p">())</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">exported_mod</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+        <span class="n">exported_mod</span> <span class="o">=</span> <span class="n">_export</span><span class="p">(</span>
+            <span class="n">mod</span><span class="p">,</span>
+            <span class="n">args</span><span class="p">,</span>
+            <span class="n">tracing_mode</span><span class="o">=</span><span class="n">tracing_mode</span><span class="p">,</span>
+            <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span>
+            <span class="n">same_signature</span><span class="o">=</span><span class="n">same_signature</span><span class="p">,</span>
+            <span class="n">decomposition_table</span><span class="o">=</span><span class="n">decomposition_table</span><span class="p">,</span>
+            <span class="n">use_dynamo</span><span class="o">=</span><span class="n">use_dynamo</span><span class="p">,</span>
+        <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[_make_builder_interpreter] args=</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -418,12 +476,19 @@
             <span class="n">buffers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">exported_mod</span><span class="o">.</span><span class="n">named_buffers</span><span class="p">())</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="n">buffers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">named_buffers</span><span class="p">())</span>
-        <span class="n">signature</span> <span class="o">=</span> <span class="n">exported_mod</span><span class="o">.</span><span class="n">graph_signature</span>
-        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">signature</span><span class="o">.</span><span class="n">inputs_to_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">mapping</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="kc">True</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">signature</span><span class="o">.</span><span class="n">inputs_to_buffers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">mapping</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">exported_mod</span><span class="p">,</span> <span class="s2">&quot;graph_signature&quot;</span><span class="p">):</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="n">exported_mod</span><span class="o">.</span><span class="n">graph_signature</span>
+            <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">signature</span><span class="o">.</span><span class="n">inputs_to_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">mapping</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">signature</span><span class="o">.</span><span class="n">inputs_to_buffers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">mapping</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
+                <span class="n">mapping</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">,</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">buffers</span><span class="p">:</span>
+                <span class="n">mapping</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">,</span> <span class="kc">False</span>
 
     <span class="n">builder</span> <span class="o">=</span> <span class="n">GraphBuilder</span><span class="p">(</span>
         <span class="n">target_opset</span><span class="p">,</span>
@@ -443,7 +508,9 @@
 
     <span class="kn">from</span> <span class="nn">.interpreter</span> <span class="kn">import</span> <span class="n">DynamoInterpreter</span>
 
-    <span class="n">interpreter</span> <span class="o">=</span> <span class="n">DynamoInterpreter</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">retrieve</span><span class="p">,</span> <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">)</span>
+    <span class="n">interpreter</span> <span class="o">=</span> <span class="n">DynamoInterpreter</span><span class="p">(</span>
+        <span class="n">builder</span><span class="p">,</span> <span class="n">retrieve</span><span class="p">,</span> <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">,</span> <span class="n">use_dynamo</span><span class="o">=</span><span class="n">use_dynamo</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">graph_module</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">interpreter</span>
 
 
@@ -462,6 +529,7 @@
     <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">dispatcher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Dispatcher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">api_two</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">GraphBuilder</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exports a torch model into ONNX using</span>
@@ -481,6 +549,7 @@
 <span class="sd">    :param dynamic_shapes: see :epkg:`torch.export.export`</span>
 <span class="sd">    :param optimize: optimize the model before exporting into onnx</span>
 <span class="sd">    :param dispatcher: see :class:`experimental_experiment.torch_interpreter.Dispatcher`</span>
+<span class="sd">    :param api_two: use ``torch._dynamo.export`` instead of ``torch.export.export``</span>
 <span class="sd">    :return: onnx model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">target_opset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -503,6 +572,7 @@
         <span class="n">raise_list</span><span class="o">=</span><span class="n">raise_list</span><span class="p">,</span>
         <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span>
         <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">,</span>
+        <span class="n">use_dynamo</span><span class="o">=</span><span class="n">api_two</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -524,6 +594,8 @@
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] to_onnx done in </span><span class="si">{</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">())</span>
 
     <span class="k">if</span> <span class="n">return_builder</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">onx</span><span class="p">,</span> <span class="n">builder</span>
