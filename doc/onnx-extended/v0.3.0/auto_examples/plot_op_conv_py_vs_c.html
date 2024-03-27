@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How float format has an impact on speed computation" href="plot_op_conv_denorm.html" /><link rel="prev" title="Focus on operators optimization" href="../tutorial/ops.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Using C implementation of operator Conv - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -176,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -215,7 +216,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
@@ -256,6 +258,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -352,9 +355,6 @@ The following example compares the processing time for three runtimes.</p>
 <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onnx_model</span></a> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_model" title="onnx.helper.make_model" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_model</span></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/classes.html#onnx.GraphProto" title="onnx.GraphProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">graph</span></a><span class="p">,</span> <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_opsetid" title="onnx.helper.make_opsetid" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_opsetid</span></a><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)],</span> <span class="n">ir_version</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2023-12-29 23:38:12,287] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-</pre></div>
-</div>
 </section>
 <section id="referenceevaluator-and-creferenceevaluator">
 <h2>ReferenceEvaluator and CReferenceEvaluator<a class="headerlink" href="#referenceevaluator-and-creferenceevaluator" title="Link to this heading">#</a></h2>
@@ -390,9 +390,9 @@ The following example compares the processing time for three runtimes.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;speedup is </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t2</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 0.0008064220000014756s
-CReferenceEvaluator: 9.955339999851277e-05s
-speedup is 8.100396370325099
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 0.0012245282000012596s
+CReferenceEvaluator: 7.407859999875655e-05s
+speedup is 16.530120709919114
 </pre></div>
 </div>
 <p>Let’s add <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> as well.</p>
@@ -405,8 +405,8 @@ speedup is 8.100396370325099
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;speedup is </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t3</span></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>InferenceSession: 2.9544599999098864e-05s
-speedup is 27.295072535288078
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>InferenceSession: 5.787280000004103e-05s
+speedup is 21.15895895827386
 </pre></div>
 </div>
 </section>
@@ -432,11 +432,11 @@ speedup is 27.295072535288078
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/4 [00:00&lt;?, ?it/s]
- 25%|██▌       | 1/4 [00:00&lt;00:00,  6.82it/s]
- 50%|█████     | 2/4 [00:00&lt;00:00,  6.77it/s]
- 75%|███████▌  | 3/4 [00:00&lt;00:00,  6.63it/s]
-100%|██████████| 4/4 [00:00&lt;00:00,  3.92it/s]
-100%|██████████| 4/4 [00:00&lt;00:00,  4.63it/s]
+ 25%|██▌       | 1/4 [00:00&lt;00:00,  9.78it/s]
+ 50%|█████     | 2/4 [00:00&lt;00:00,  9.72it/s]
+ 75%|███████▌  | 3/4 [00:00&lt;00:00,  8.89it/s]
+100%|██████████| 4/4 [00:01&lt;00:00,  2.11it/s]
+100%|██████████| 4/4 [00:01&lt;00:00,  2.94it/s]
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -467,26 +467,26 @@ speedup is 27.295072535288078
     <tr>
       <th>0</th>
       <td>16</td>
-      <td>0.000264</td>
-      <td>0.000027</td>
+      <td>0.000184</td>
+      <td>0.000018</td>
     </tr>
     <tr>
       <th>1</th>
       <td>32</td>
-      <td>0.000268</td>
-      <td>0.000026</td>
+      <td>0.000186</td>
+      <td>0.000019</td>
     </tr>
     <tr>
       <th>2</th>
       <td>48</td>
-      <td>0.000279</td>
-      <td>0.000028</td>
+      <td>0.000224</td>
+      <td>0.000022</td>
     </tr>
     <tr>
       <th>3</th>
       <td>64</td>
-      <td>0.000729</td>
-      <td>0.000096</td>
+      <td>0.001972</td>
+      <td>0.000084</td>
     </tr>
   </tbody>
 </table>
@@ -508,7 +508,7 @@ speedup is 27.295072535288078
 <span class="c1"># plt.show()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" srcset="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" alt="Comparison python / C implementation for Conv" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.150 seconds)</p>
+<img src="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" srcset="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" alt="Comparison python / C implementation for Conv" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.276 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-conv-py-vs-c-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/1ebdc612f5f9c97bca264aafd83effec/plot_op_conv_py_vs_c.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_conv_py_vs_c.ipynb</span></code></a></p>

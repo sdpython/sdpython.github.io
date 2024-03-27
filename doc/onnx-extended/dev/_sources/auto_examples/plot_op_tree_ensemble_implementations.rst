@@ -49,9 +49,10 @@ dimension. Here are the following implementation:
 Sparse Data
 +++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-96
+.. GENERATED FROM PYTHON SOURCE LINES 33-97
 
 .. code-block:: Python
+
 
     import logging
     import pickle
@@ -120,21 +121,15 @@ Sparse Data
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    [2024-01-10 11:45:00,837] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 97-99
+.. GENERATED FROM PYTHON SOURCE LINES 98-100
 
 Training a model
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-204
+.. GENERATED FROM PYTHON SOURCE LINES 100-206
 
 .. code-block:: Python
 
@@ -171,7 +166,7 @@ Training a model
                     n_trees, max_depth=max_depth, verbose=2, n_jobs=int(script_args.n_jobs)
                 )
                 model.fit(X[:-batch_size], y[:-batch_size])
-                onx = to_onnx(model, X[:1])
+                onx = to_onnx(model, X[:1], target_opset={"": 18, "ai.onnx.ml": 3})
                 skl_name = filename + ".pkl"
                 with open(skl_name, "wb") as f:
                     pickle.dump(model, f)
@@ -188,6 +183,7 @@ Training a model
                     make_graph([node], onx.graph.name, onx.graph.input, onx.graph.output),
                     domain=onx.domain,
                     opset_imports=onx.opset_import,
+                    ir_version=onx.ir_version,
                 )
                 model = None
 
@@ -261,20 +257,20 @@ Training a model
     Training to get 'plot_op_tree_ensemble_sparse-f512-512-d12-s0.99-0.onnx' with X.shape=(10240, 512)
     [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 8 concurrent workers.
     building tree 1 of 1
-    [Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.9s finished
+    [Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.5s finished
     Xb.shape=(2048, 512)
     yb.shape=(2048,)
-    measured sparsity=0.9900026321411133
+    measured sparsity=0.9900474548339844
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 205-207
+.. GENERATED FROM PYTHON SOURCE LINES 207-209
 
 Implementations
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 207-510
+.. GENERATED FROM PYTHON SOURCE LINES 209-512
 
 .. code-block:: Python
 
@@ -593,20 +589,20 @@ Implementations
     run 'ort' - shape=(2048, 512)
     run 'custom' - shape=(2048, 512)
     run 'cusopt' - shape=(2048, 512)
-    run 'sparse' - shape=(21022,)
-    /home/xadupre/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:345: UserWarning: Unable to find environment variable 'TEST_LLC_EXE'.
+    run 'sparse' - shape=(20928,)
+    /home/xadupre/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:347: UserWarning: Unable to find environment variable 'TEST_LLC_EXE'.
       warnings.warn("Unable to find environment variable 'TEST_LLC_EXE'.")
     done.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 511-513
+.. GENERATED FROM PYTHON SOURCE LINES 513-515
 
 Benchmark implementations
 +++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 513-557
+.. GENERATED FROM PYTHON SOURCE LINES 515-559
 
 .. code-block:: Python
 
@@ -669,22 +665,20 @@ Benchmark implementations
     run 'cusopt'
     run 'sparse'
     done.
-        average  deviation  min_exec  ...  disc_max  err_mean   err_max
-    0  0.008552   0.005899  0.004607  ...  0.000000  0.000288  0.000427
-    1  0.011449   0.005112  0.004716  ...  0.001831  0.000304  0.001831
-    2  0.006274   0.000924  0.004976  ...  0.000168  0.000408  0.000519
-    3  0.024713   0.003176  0.020641  ...  0.000168  0.000408  0.000519
-
-    [4 rows x 14 columns]
+        average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time    name  disc_mean  disc_max  err_mean   err_max
+    0  0.009025   0.001772  0.006650  0.012464      10      10  0.090253            64     0.019561     ort   0.000000  0.000000  0.000814  0.000916
+    1  0.010363   0.000983  0.008530  0.011642      10      10  0.103629            64     0.024990  custom   0.000030  0.000122  0.000787  0.000885
+    2  0.009965   0.001279  0.008338  0.013380      10      10  0.099648            64     0.030188  cusopt   0.000153  0.000244  0.000662  0.000793
+    3  0.040652   0.011380  0.030505  0.060633      10      10  0.406523            64     0.124438  sparse   0.000153  0.000244  0.000662  0.000793
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 558-559
+.. GENERATED FROM PYTHON SOURCE LINES 560-561
 
 Plots.
 
-.. GENERATED FROM PYTHON SOURCE LINES 559-580
+.. GENERATED FROM PYTHON SOURCE LINES 561-582
 
 .. code-block:: Python
 
@@ -724,7 +718,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 37.427 seconds)
+   **Total running time of the script:** (0 minutes 20.911 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_tree_ensemble_implementations.py:

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="External Data and Big Models" href="external_data.html" /><link rel="prev" title="TreeEnsemble, dense, and sparse" href="../auto_examples/plot_op_tree_ensemble_sparse.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Many Tools to help investigating issues - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -176,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -215,7 +216,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
@@ -256,6 +258,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -316,17 +319,8 @@ through command lines.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">onnx</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="external_data.html">External Data and Big Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="external_data.html#save-a-big-model">Save a big model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="external_data.html#load-a-big-model">Load a big model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="external_data.html#example-with-llama">Example with Llama</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="onnx_manipulations.html">Onnx Manipulations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="onnx_manipulations.html#extract-a-subgraph">Extract a subgraph</a></li>
-<li class="toctree-l2"><a class="reference internal" href="onnx_manipulations.html#analyze">Analyze</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="external_data.html">External Data and Big Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onnx_manipulations.html">Onnx Manipulations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quantize.html">Quantization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="statistics.html">Statistics</a></li>
 </ul>
@@ -336,21 +330,10 @@ in <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>.
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">onnxruntime</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="profiling.html">Profiling onnxruntime</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="profiling.html#time-per-type-of-node">Time per type of node</a></li>
-<li class="toctree-l2"><a class="reference internal" href="profiling.html#time-per-instance">Time per instance</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="profiling.html">Profiling onnxruntime</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ort_debug.html">Debug Intermediate Results</a></li>
-<li class="toctree-l1"><a class="reference internal" href="old_version.html">Compare multiple versions of onnxruntime</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="old_version.html#step-1-save-a-test">Step 1: save a test</a></li>
-<li class="toctree-l2"><a class="reference internal" href="old_version.html#step-2-evaluate-multiple-versions-of-onnxruntime">Step 2: evaluate multiple versions of onnxruntime</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="trees.html">Trees</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="trees.html#parallelization-implementation">Parallelization implementation</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="old_version.html">Compare multiple versions of onnxruntime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trees.html">Trees</a></li>
 </ul>
 </div>
 </section>

@@ -3,9 +3,9 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="TreeEnsemble, dense, and sparse" href="plot_op_tree_ensemble_sparse.html" /><link rel="prev" title="Compares implementations of Einsum" href="plot_op_einsum.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="TreeEnsemble, dense, and sparse" href="plot_op_tree_ensemble_sparse.html" /><link rel="prev" title="Fusing multiplication operators on CUDA" href="plot_op_mul_cuda.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>TreeEnsemble optimization - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -176,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -215,7 +216,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
@@ -256,6 +258,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -423,7 +426,7 @@ fast. Many more parameters can be tried.</p>
             <span class="mi">1</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">script_args</span><span class="o">.</span><span class="n">n_jobs</span></a><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="o">-</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="o">-</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">])</span>
-        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">target_opset</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
 
         <span class="c1"># And wd multiply the trees.</span>
         <span class="n">node</span> <span class="o">=</span> <span class="n">multiply_tree</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_trees</span></a><span class="p">)</span>
@@ -431,6 +434,7 @@ fast. Many more parameters can be tried.</p>
             <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_graph" title="onnx.helper.make_graph" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_graph</span></a><span class="p">([</span><span class="n">node</span><span class="p">],</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">),</span>
             <span class="n">domain</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span><span class="o">.</span><span class="n">domain</span></a><span class="p">,</span>
             <span class="n">opset_imports</span><span class="o">=</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">opset_import</span><span class="p">,</span>
+            <span class="n">ir_version</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span><span class="o">.</span><span class="n">ir_version</span></a><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">filename</span></a><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedWriter" title="io.BufferedWriter" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
@@ -469,7 +473,7 @@ max_depth=5
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training to get &#39;plot_op_tree_ensemble_optim-f5-10-d5.onnx&#39; with X.shape=(20000, 5)
 [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 8 concurrent workers.
 building tree 1 of 1
-[Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.2s finished
+[Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.1s finished
 Xb.shape=(10000, 5)
 yb.shape=(10000,)
 </pre></div>
@@ -487,9 +491,9 @@ First the current model.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;ai.onnx.ml&#39; version=1
-opset: domain=&#39;&#39; version=19
+opset: domain=&#39;&#39; version=18
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 5]
-TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[0,0,3...2,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_modes=630:[b&#39;BRANCH_LEQ&#39;,b&#39;BRANCH_LEQ&#39;...b&#39;LEAF&#39;,b&#39;LEAF&#39;], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.20009872317314148,-1.1906558275222778...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-162.12649536132812,-114.27810668945312...107.13147735595703,152.6385955810547]) -&gt; variable
+TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[4,2,0...2,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_modes=630:[b&#39;BRANCH_LEQ&#39;,b&#39;BRANCH_LEQ&#39;...b&#39;LEAF&#39;,b&#39;LEAF&#39;], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.005562378093600273,-0.06174834817647934...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-223.03829956054688,-165.71694946289062...176.72509765625,231.73460388183594]) -&gt; variable
 output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 1]
 </pre></div>
 </div>
@@ -524,10 +528,10 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;,
 Save into &#39;plot_op_tree_ensemble_optim-f5-10-d5.onnxmodified.onnx&#39;.
 done.
 opset: domain=&#39;ai.onnx.ml&#39; version=1
-opset: domain=&#39;&#39; version=19
+opset: domain=&#39;&#39; version=18
 opset: domain=&#39;onnx_extented.ortops.optim.cpu&#39; version=1
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 5]
-TreeEnsembleRegressor[onnx_extented.ortops.optim.cpu](X, nodes_modes=b&#39;LEQ,LEQ,LEQ,LEQ,LEQ,LEAF,LEAF,LEQ,LEAF...LEAF,LEAF&#39;, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[0,0,3...2,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.20009872317314148,-1.1906558275222778...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-162.12649536132812,-114.27810668945312...107.13147735595703,152.6385955810547]) -&gt; variable
+TreeEnsembleRegressor[onnx_extented.ortops.optim.cpu](X, nodes_modes=b&#39;LEQ,LEQ,LEQ,LEQ,LEQ,LEAF,LEAF,LEQ,LEAF...LEAF,LEAF&#39;, n_targets=1, nodes_falsenodeids=630:[32,17,10...62,0,0], nodes_featureids=630:[4,2,0...2,0,0], nodes_hitrates=630:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=630:[0,0,0...0,0,0], nodes_nodeids=630:[0,1,2...60,61,62], nodes_treeids=630:[0,0,0...9,9,9], nodes_truenodeids=630:[1,2,3...61,0,0], nodes_values=630:[-0.005562378093600273,-0.06174834817647934...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=320:[0,0,0...0,0,0], target_nodeids=320:[5,6,8...59,61,62], target_treeids=320:[0,0,0...9,9,9], target_weights=320:[-223.03829956054688,-165.71694946289062...176.72509765625,231.73460388183594]) -&gt; variable
 output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 1]
 </pre></div>
 </div>
@@ -569,7 +573,7 @@ done.
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Discrepancies: max=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">d</span></a><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">ya</span></a><span class="si">}</span><span class="s2">, mean=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">d</span></a><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">ya</span></a><span class="si">}</span><span class="s2"> (A=</span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">ya</span></a><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Discrepancies: max=2.56771443218895e-07, mean=5.363955679626997e-08 (A=950.80908203125)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Discrepancies: max=3.932471202006127e-07, mean=4.860534374984127e-08 (A=1241.6651611328125)
 </pre></div>
 </div>
 </section>
@@ -580,7 +584,7 @@ done.
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;baseline: </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>baseline: 0.10309480000023541
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>baseline: 0.06486119999999573
 </pre></div>
 </div>
 <p>The custom implementation.</p>
@@ -588,7 +592,7 @@ done.
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;new time: </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t2</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>new time: 0.05421680000017659
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>new time: 0.033903600000030565
 </pre></div>
 </div>
 <p>The same implementation but ran from the onnx python backend.</p>
@@ -598,7 +602,7 @@ done.
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CReferenceEvaluator: </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t3</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CReferenceEvaluator: 0.0474501999997301
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CReferenceEvaluator: 0.032910399999764195
 </pre></div>
 </div>
 <p>The python implementation but from the onnx python backend.</p>
@@ -610,7 +614,7 @@ done.
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ReferenceEvaluator: </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t4</span></a><span class="si">}</span><span class="s2"> (only 5 times instead of 50)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 4.078654500000084 (only 5 times instead of 50)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 3.1879457 (only 5 times instead of 50)
 </pre></div>
 </div>
 </section>
@@ -705,38 +709,38 @@ The default values are the first ones.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/16 [00:00&lt;?, ?it/s]
 i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   0%|          | 0/16 [00:00&lt;?, ?it/s]
-i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00&lt;00:07,  1.96it/s]
-i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:   6%|▋         | 1/16 [00:00&lt;00:07,  1.96it/s]
-i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  12%|█▎        | 2/16 [00:00&lt;00:05,  2.71it/s]
-i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  12%|█▎        | 2/16 [00:00&lt;00:05,  2.71it/s]
-i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  19%|█▉        | 3/16 [00:01&lt;00:04,  3.05it/s]
-i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  19%|█▉        | 3/16 [00:01&lt;00:04,  3.05it/s]
-i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  25%|██▌       | 4/16 [00:01&lt;00:03,  3.26it/s]
-i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  25%|██▌       | 4/16 [00:01&lt;00:03,  3.26it/s]
-i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  31%|███▏      | 5/16 [00:01&lt;00:03,  3.23it/s]
-i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  31%|███▏      | 5/16 [00:01&lt;00:03,  3.23it/s]
-i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  38%|███▊      | 6/16 [00:01&lt;00:02,  3.41it/s]
-i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  38%|███▊      | 6/16 [00:01&lt;00:02,  3.41it/s]
-i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  44%|████▍     | 7/16 [00:02&lt;00:02,  3.50it/s]
-i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  44%|████▍     | 7/16 [00:02&lt;00:02,  3.50it/s]
-i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  50%|█████     | 8/16 [00:02&lt;00:02,  3.53it/s]
-i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  50%|█████     | 8/16 [00:02&lt;00:02,  3.53it/s]
-i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  56%|█████▋    | 9/16 [00:02&lt;00:01,  3.59it/s]
-i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  56%|█████▋    | 9/16 [00:02&lt;00:01,  3.59it/s]
-i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  62%|██████▎   | 10/16 [00:02&lt;00:01,  3.68it/s]
-i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  62%|██████▎   | 10/16 [00:02&lt;00:01,  3.68it/s]
-i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  69%|██████▉   | 11/16 [00:03&lt;00:01,  3.74it/s]
-i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  69%|██████▉   | 11/16 [00:03&lt;00:01,  3.74it/s]
-i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  75%|███████▌  | 12/16 [00:03&lt;00:01,  3.79it/s]
-i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  75%|███████▌  | 12/16 [00:03&lt;00:01,  3.79it/s]
-i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  81%|████████▏ | 13/16 [00:03&lt;00:00,  3.76it/s]
-i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  81%|████████▏ | 13/16 [00:03&lt;00:00,  3.76it/s]
-i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  88%|████████▊ | 14/16 [00:04&lt;00:00,  3.73it/s]
-i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  88%|████████▊ | 14/16 [00:04&lt;00:00,  3.73it/s]
-i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  94%|█████████▍| 15/16 [00:04&lt;00:00,  3.72it/s]
-i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x:  94%|█████████▍| 15/16 [00:04&lt;00:00,  3.72it/s]
-i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x: 100%|██████████| 16/16 [00:04&lt;00:00,  3.66it/s]
-i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.03x: 100%|██████████| 16/16 [00:04&lt;00:00,  3.48it/s]
+i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00&lt;00:07,  2.04it/s]
+i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:   6%|▋         | 1/16 [00:00&lt;00:07,  2.04it/s]
+i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  12%|█▎        | 2/16 [00:00&lt;00:04,  2.81it/s]
+i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  12%|█▎        | 2/16 [00:00&lt;00:04,  2.81it/s]
+i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  19%|█▉        | 3/16 [00:00&lt;00:03,  3.27it/s]
+i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  19%|█▉        | 3/16 [00:00&lt;00:03,  3.27it/s]
+i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  25%|██▌       | 4/16 [00:01&lt;00:03,  3.45it/s]
+i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  25%|██▌       | 4/16 [00:01&lt;00:03,  3.45it/s]
+i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  31%|███▏      | 5/16 [00:01&lt;00:03,  3.56it/s]
+i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  31%|███▏      | 5/16 [00:01&lt;00:03,  3.56it/s]
+i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  38%|███▊      | 6/16 [00:01&lt;00:02,  3.71it/s]
+i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  38%|███▊      | 6/16 [00:01&lt;00:02,  3.71it/s]
+i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  44%|████▍     | 7/16 [00:02&lt;00:02,  3.81it/s]
+i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  44%|████▍     | 7/16 [00:02&lt;00:02,  3.81it/s]
+i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  50%|█████     | 8/16 [00:02&lt;00:02,  3.69it/s]
+i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  50%|█████     | 8/16 [00:02&lt;00:02,  3.69it/s]
+i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  56%|█████▋    | 9/16 [00:02&lt;00:01,  3.73it/s]
+i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  56%|█████▋    | 9/16 [00:02&lt;00:01,  3.73it/s]
+i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.00x:  62%|██████▎   | 10/16 [00:02&lt;00:01,  3.95it/s]
+i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  62%|██████▎   | 10/16 [00:02&lt;00:01,  3.95it/s]
+i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  69%|██████▉   | 11/16 [00:03&lt;00:01,  3.90it/s]
+i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  69%|██████▉   | 11/16 [00:03&lt;00:01,  3.90it/s]
+i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  75%|███████▌  | 12/16 [00:03&lt;00:01,  3.92it/s]
+i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  75%|███████▌  | 12/16 [00:03&lt;00:01,  3.92it/s]
+i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  81%|████████▏ | 13/16 [00:03&lt;00:00,  3.95it/s]
+i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  81%|████████▏ | 13/16 [00:03&lt;00:00,  3.95it/s]
+i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  88%|████████▊ | 14/16 [00:03&lt;00:00,  3.95it/s]
+i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  88%|████████▊ | 14/16 [00:03&lt;00:00,  3.95it/s]
+i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.18x:  94%|█████████▍| 15/16 [00:03&lt;00:00,  4.37it/s]
+i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.89x:  94%|█████████▍| 15/16 [00:03&lt;00:00,  4.37it/s]
+i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.89x: 100%|██████████| 16/16 [00:04&lt;00:00,  4.16it/s]
+i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.89x: 100%|██████████| 16/16 [00:04&lt;00:00,  3.76it/s]
 </pre></div>
 </div>
 <p>And the results.</p>
@@ -753,11 +757,11 @@ i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1
        &#39;parallel_N&#39;, &#39;batch_size_tree&#39;, &#39;batch_size_rows&#39;, &#39;use_node3&#39;],
       dtype=&#39;object&#39;)
     average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  ...         short_name  TRY             name  parallel_tree parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3
-0  0.001382   0.000080  0.001168  0.001464      10      10  0.013825            64     0.007059  ...         0,baseline  0.0         baseline            NaN             NaN         NaN              NaN              NaN        NaN
-1  0.001346   0.000627  0.000714  0.002295      10      10  0.013465            64     0.012119  ...  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0           128.0        50.0              1.0              1.0        0.0
-2  0.001477   0.000939  0.000628  0.003061      10      10  0.014766            64     0.015152  ...  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0           128.0        25.0              1.0              1.0        0.0
-3  0.001606   0.000868  0.000659  0.002761      10      10  0.016056            64     0.011667  ...   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0            64.0        50.0              1.0              1.0        0.0
-4  0.001555   0.000857  0.000624  0.002691      10      10  0.015555            64     0.014027  ...   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0            64.0        25.0              1.0              1.0        0.0
+0  0.001233   0.000580  0.000920  0.002947      10      10  0.012327            64     0.019365  ...         0,baseline  0.0         baseline            NaN             NaN         NaN              NaN              NaN        NaN
+1  0.001239   0.000655  0.000518  0.002204      10      10  0.012388            64     0.009845  ...  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0           128.0        50.0              1.0              1.0        0.0
+2  0.001475   0.000658  0.000649  0.002447      10      10  0.014752            64     0.010031  ...  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0           128.0        25.0              1.0              1.0        0.0
+3  0.001283   0.000625  0.000532  0.002173      10      10  0.012832            64     0.011999  ...   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0            64.0        50.0              1.0              1.0        0.0
+4  0.001520   0.000780  0.000527  0.002538      10      10  0.015195            64     0.009333  ...   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0            64.0        25.0              1.0              1.0        0.0
 
 [5 rows x 20 columns]
 </pre></div>
@@ -780,16 +784,16 @@ i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>     average  deviation     ttime  warmup_time  n_exp         short_name  TRY             name  parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3
-1   0.001346   0.000627  0.013465     0.012119      0  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0
-0   0.001382   0.000080  0.013825     0.007059      0         0,baseline  0.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
-10  0.001383   0.000805  0.013828     0.013777      9  1,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0
-11  0.001410   0.000598  0.014102     0.012231     10   1,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0
-6   0.001430   0.000618  0.014300     0.010566      5  0,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
-12  0.001446   0.000577  0.014460     0.004873     11   1,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
-2   0.001477   0.000939  0.014766     0.015152      1  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0
-9   0.001512   0.000731  0.015122     0.009226      8  1,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0
-13  0.001528   0.000717  0.015284     0.011832     12  1,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0
-7   0.001552   0.000674  0.015521     0.010729      6   0,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0
+15  0.000652   0.000026  0.006524     0.003420     14   1,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0
+10  0.001047   0.000483  0.010473     0.010070      9  1,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0
+0   0.001233   0.000580  0.012327     0.019365      0         0,baseline  0.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
+1   0.001239   0.000655  0.012388     0.009845      0  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0
+3   0.001283   0.000625  0.012832     0.011999      2   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0
+7   0.001316   0.000668  0.013163     0.010758      6   0,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0
+13  0.001330   0.000547  0.013297     0.011176     12  1,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0
+14  0.001340   0.000732  0.013404     0.014076     13  1,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
+6   0.001355   0.000178  0.013549     0.006678      5  0,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
+12  0.001369   0.000703  0.013689     0.011556     11   1,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
 </pre></div>
 </div>
 </section>
@@ -799,16 +803,16 @@ i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>     average  deviation     ttime  warmup_time  n_exp         short_name  TRY             name  parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3
-13  0.001528   0.000717  0.015284     0.011832     12  1,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0
-7   0.001552   0.000674  0.015521     0.010729      6   0,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0
-4   0.001555   0.000857  0.015555     0.014027      3   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
-14  0.001570   0.000872  0.015696     0.011788     13  1,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
-8   0.001583   0.000816  0.015826     0.014267      7   0,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0
-3   0.001606   0.000868  0.016056     0.011667      2   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0
-15  0.001616   0.000736  0.016158     0.005087     14   1,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0
-16  0.001713   0.000969  0.017125     0.007210     15   1,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0
-17  0.001937   0.001396  0.019371     0.022326      0         1,baseline  1.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
-5   0.001968   0.000770  0.019678     0.012655      4  0,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0
+6   0.001355   0.000178  0.013549     0.006678      5  0,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0
+12  0.001369   0.000703  0.013689     0.011556     11   1,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
+9   0.001464   0.000804  0.014645     0.009871      8  1,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0
+2   0.001475   0.000658  0.014752     0.010031      1  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0
+11  0.001493   0.000652  0.014932     0.010300     10   1,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0
+4   0.001520   0.000780  0.015195     0.009333      3   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0
+5   0.001521   0.000749  0.015205     0.009134      4  0,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0
+16  0.001563   0.000671  0.015627     0.007246     15   1,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0
+8   0.001689   0.000981  0.016885     0.015829      7   0,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0
+17  0.002029   0.001311  0.020293     0.021451      0         1,baseline  1.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN
 </pre></div>
 </div>
 </section>
@@ -821,7 +825,7 @@ i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_op_tree_ensemble_optim.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_op_tree_ensemble_optim_001.png" srcset="../_images/sphx_glr_plot_op_tree_ensemble_optim_001.png" alt="TreeEnsemble tuning, n_tries=2 parallel_tree,parallel_tree_N,parallel_N,batch_size_tree,batch_size_rows,use_node3 lower is better" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.922 seconds)</p>
+<img src="../_images/sphx_glr_plot_op_tree_ensemble_optim_001.png" srcset="../_images/sphx_glr_plot_op_tree_ensemble_optim_001.png" alt="TreeEnsemble tuning, n_tries=2 parallel_tree,parallel_tree_N,parallel_N,batch_size_tree,batch_size_rows,use_node3 lower is better" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 9.109 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-tree-ensemble-optim-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/bddb59946a84e28fa7c21ed8ee960fea/plot_op_tree_ensemble_optim.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_tree_ensemble_optim.ipynb</span></code></a></p>
@@ -848,14 +852,14 @@ i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="plot_op_einsum.html">
+          <a class="prev-page" href="plot_op_mul_cuda.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Compares implementations of Einsum</div>
+                <div class="title">Fusing multiplication operators on CUDA</div>
                 
               </div>
             </a>

@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_extended._command_lines - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -175,6 +175,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -214,7 +215,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/plotting.html">onnx_extended.plotting</a></li>
@@ -255,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -406,7 +409,9 @@
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value for law=</span><span class="si">{</span><span class="n">law</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="store_intermediate_results"><a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.store_intermediate_results">[docs]</a><span class="k">def</span> <span class="nf">store_intermediate_results</span><span class="p">(</span>
+<div class="viewcode-block" id="store_intermediate_results">
+<a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.store_intermediate_results">[docs]</a>
+<span class="k">def</span> <span class="nf">store_intermediate_results</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">]],</span>
     <span class="n">out</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
@@ -482,7 +487,10 @@
     <span class="k">return</span> <span class="n">got</span></div>
 
 
-<div class="viewcode-block" id="display_intermediate_results"><a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.display_intermediate_results">[docs]</a><span class="k">def</span> <span class="nf">display_intermediate_results</span><span class="p">(</span>
+
+<div class="viewcode-block" id="display_intermediate_results">
+<a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.display_intermediate_results">[docs]</a>
+<span class="k">def</span> <span class="nf">display_intermediate_results</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">save</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">tab</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
@@ -554,7 +562,10 @@
         <span class="n">exts</span><span class="p">[</span><span class="n">ext</span><span class="p">](</span><span class="n">save</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="print_proto"><a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.print_proto">[docs]</a><span class="k">def</span> <span class="nf">print_proto</span><span class="p">(</span><span class="n">proto</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="n">external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="print_proto">
+<a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.print_proto">[docs]</a>
+<span class="k">def</span> <span class="nf">print_proto</span><span class="p">(</span><span class="n">proto</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="n">external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Shows an onnx model or a protobuf string on stdout.</span>
 <span class="sd">    Extension &#39;.onnx&#39; is considered a model,</span>
@@ -625,7 +636,10 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value </span><span class="si">{</span><span class="n">fmt</span><span class="si">!r}</span><span class="s2"> for fmt.&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cmd_quantize"><a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_quantize">[docs]</a><span class="k">def</span> <span class="nf">cmd_quantize</span><span class="p">(</span>
+
+<div class="viewcode-block" id="cmd_quantize">
+<a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_quantize">[docs]</a>
+<span class="k">def</span> <span class="nf">cmd_quantize</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;fp8&quot;</span><span class="p">,</span>
@@ -673,9 +687,11 @@
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span>
-            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span>
-            <span class="k">else</span> <span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+            <span class="n">level</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">WARN</span>
+                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;fp8&quot;</span><span class="p">:</span>
@@ -728,7 +744,10 @@
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value </span><span class="si">{</span><span class="n">kind</span><span class="si">!r}</span><span class="s2"> for kind.&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cmd_select"><a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_select">[docs]</a><span class="k">def</span> <span class="nf">cmd_select</span><span class="p">(</span>
+
+<div class="viewcode-block" id="cmd_select">
+<a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_select">[docs]</a>
+<span class="k">def</span> <span class="nf">cmd_select</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">save</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -758,9 +777,11 @@
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span>
-            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span>
-            <span class="k">else</span> <span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+            <span class="n">level</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">WARN</span>
+                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -781,6 +802,7 @@
     <span class="k">if</span> <span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">plot_profile</span><span class="p">(</span>
@@ -848,7 +870,9 @@
         <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">out_png</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="cmd_plot"><a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_plot">[docs]</a><span class="k">def</span> <span class="nf">cmd_plot</span><span class="p">(</span>
+<div class="viewcode-block" id="cmd_plot">
+<a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_plot">[docs]</a>
+<span class="k">def</span> <span class="nf">cmd_plot</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">out_csv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -882,7 +906,10 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected kind </span><span class="si">{</span><span class="n">kind</span><span class="si">:</span><span class="s2">r</span><span class="si">}</span><span class="s2">, it should be </span><span class="si">{</span><span class="n">allowed</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cmd_stat"><a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_stat">[docs]</a><span class="k">def</span> <span class="nf">cmd_stat</span><span class="p">(</span><span class="n">input_model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+
+<div class="viewcode-block" id="cmd_stat">
+<a class="viewcode-back" href="../../command_lines.html#onnx_extended._command_lines.cmd_stat">[docs]</a>
+<span class="k">def</span> <span class="nf">cmd_stat</span><span class="p">(</span><span class="n">input_model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Produces statistics on initializer and tree ensemble operators.</span>
 
@@ -904,6 +931,7 @@
         <span class="n">obs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">joined_name</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
         <span class="n">obs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">dict_values</span><span class="p">)</span>
         <span class="k">yield</span> <span class="n">obs</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -916,7 +944,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -936,9 +964,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../../_static/documentation_options.js?v=83a61292"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

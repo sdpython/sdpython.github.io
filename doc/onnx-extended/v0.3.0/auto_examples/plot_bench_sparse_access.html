@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Measuring performance of TfIdfVectorizer" href="plot_op_tfidfvectorizer_sparse.html" /><link rel="prev" title="Measuring onnxruntime performance against a cython binding" href="plot_bench_cypy_ort.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Evaluating random access for sparse - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -176,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -215,7 +216,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
@@ -256,6 +258,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -377,11 +380,11 @@ warmup=2
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ratio sparse/dense: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ev</span></a><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ev</span></a><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dense:  initialization:0.0115
-                access:7.86e-05
-sparse: initialization:0.0126
-                access:0.000579
-Ratio sparse/dense: 7.363613231552162
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dense:  initialization:0.00732
+                access:2.81e-05
+sparse: initialization:0.0102
+                access:0.00043
+Ratio sparse/dense: 15.290184921763867
 </pre></div>
 </div>
 <p>If &gt; 1, sparse is slower.</p>
@@ -415,50 +418,50 @@ Ratio sparse/dense: 7.363613231552162
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/21 [00:00&lt;?, ?it/s]
-  5%|▍         | 1/21 [00:00&lt;00:10,  1.97it/s]
- 10%|▉         | 2/21 [00:00&lt;00:08,  2.29it/s]
- 14%|█▍        | 3/21 [00:01&lt;00:06,  2.70it/s]
- 19%|█▉        | 4/21 [00:01&lt;00:05,  3.07it/s]
- 24%|██▍       | 5/21 [00:01&lt;00:04,  3.36it/s]
- 29%|██▊       | 6/21 [00:01&lt;00:04,  3.74it/s]
- 33%|███▎      | 7/21 [00:02&lt;00:03,  4.02it/s]
- 38%|███▊      | 8/21 [00:02&lt;00:03,  3.60it/s]
- 43%|████▎     | 9/21 [00:02&lt;00:03,  3.44it/s]
- 48%|████▊     | 10/21 [00:03&lt;00:03,  3.53it/s]
- 52%|█████▏    | 11/21 [00:03&lt;00:02,  3.73it/s]
- 57%|█████▋    | 12/21 [00:03&lt;00:02,  4.03it/s]
- 62%|██████▏   | 13/21 [00:03&lt;00:01,  4.27it/s]
- 67%|██████▋   | 14/21 [00:03&lt;00:01,  4.51it/s]
- 71%|███████▏  | 15/21 [00:04&lt;00:01,  3.92it/s]
- 76%|███████▌  | 16/21 [00:04&lt;00:01,  3.67it/s]
- 81%|████████  | 17/21 [00:04&lt;00:01,  3.73it/s]
- 86%|████████▌ | 18/21 [00:05&lt;00:00,  3.88it/s]
- 90%|█████████ | 19/21 [00:05&lt;00:00,  4.01it/s]
- 95%|█████████▌| 20/21 [00:05&lt;00:00,  4.15it/s]
-100%|██████████| 21/21 [00:05&lt;00:00,  4.29it/s]
-100%|██████████| 21/21 [00:05&lt;00:00,  3.70it/s]
+  5%|▍         | 1/21 [00:00&lt;00:06,  2.92it/s]
+ 10%|▉         | 2/21 [00:00&lt;00:06,  3.17it/s]
+ 14%|█▍        | 3/21 [00:00&lt;00:05,  3.55it/s]
+ 19%|█▉        | 4/21 [00:01&lt;00:04,  3.90it/s]
+ 24%|██▍       | 5/21 [00:01&lt;00:03,  4.27it/s]
+ 29%|██▊       | 6/21 [00:01&lt;00:03,  4.50it/s]
+ 33%|███▎      | 7/21 [00:01&lt;00:02,  4.75it/s]
+ 38%|███▊      | 8/21 [00:02&lt;00:03,  3.86it/s]
+ 43%|████▎     | 9/21 [00:02&lt;00:03,  3.71it/s]
+ 48%|████▊     | 10/21 [00:02&lt;00:02,  3.82it/s]
+ 52%|█████▏    | 11/21 [00:02&lt;00:02,  4.05it/s]
+ 57%|█████▋    | 12/21 [00:03&lt;00:02,  4.25it/s]
+ 62%|██████▏   | 13/21 [00:03&lt;00:01,  4.38it/s]
+ 67%|██████▋   | 14/21 [00:03&lt;00:01,  4.55it/s]
+ 71%|███████▏  | 15/21 [00:03&lt;00:01,  4.06it/s]
+ 76%|███████▌  | 16/21 [00:04&lt;00:01,  3.86it/s]
+ 81%|████████  | 17/21 [00:04&lt;00:01,  3.91it/s]
+ 86%|████████▌ | 18/21 [00:04&lt;00:00,  4.10it/s]
+ 90%|█████████ | 19/21 [00:04&lt;00:00,  4.40it/s]
+ 95%|█████████▌| 20/21 [00:04&lt;00:00,  4.71it/s]
+100%|██████████| 21/21 [00:05&lt;00:00,  4.92it/s]
+100%|██████████| 21/21 [00:05&lt;00:00,  4.18it/s]
       dense0    dense1     dense   sparse0   sparse1    sparse  sparsity  rows    cols  repeat  random  ntimes
-0   0.007894  0.000033  0.007926  0.011227  0.000422  0.011650    0.7500   100  100000       5      10       2
-1   0.007839  0.000030  0.007869  0.008657  0.000381  0.009038    0.8000   100  100000       5      10       2
-2   0.006501  0.000031  0.006532  0.004088  0.000245  0.004333    0.9000   100  100000       5      10       2
-3   0.005541  0.000037  0.005578  0.002129  0.000188  0.002317    0.9500   100  100000       5      10       2
-4   0.003747  0.000032  0.003779  0.000391  0.000125  0.000516    0.9900   100  100000       5      10       2
-5   0.002479  0.000027  0.002506  0.000043  0.000076  0.000119    0.9990   100  100000       5      10       2
-6   0.002905  0.000027  0.002932  0.000007  0.000041  0.000048    0.9999   100  100000       5      10       2
-7   0.006894  0.000052  0.006946  0.009924  0.000656  0.010580    0.7500   100  100000       5      10       4
-8   0.007062  0.000050  0.007112  0.007804  0.000582  0.008386    0.8000   100  100000       5      10       4
-9   0.006250  0.000052  0.006302  0.003893  0.000447  0.004340    0.9000   100  100000       5      10       4
-10  0.005859  0.000052  0.005911  0.001995  0.000322  0.002316    0.9500   100  100000       5      10       4
-11  0.003394  0.000052  0.003446  0.000397  0.000237  0.000634    0.9900   100  100000       5      10       4
-12  0.002858  0.000056  0.002914  0.000051  0.000141  0.000193    0.9990   100  100000       5      10       4
-13  0.002318  0.000047  0.002365  0.000008  0.000075  0.000083    0.9999   100  100000       5      10       4
-14  0.007497  0.000094  0.007591  0.010031  0.001132  0.011164    0.7500   100  100000       5      10       8
-15  0.006721  0.000091  0.006811  0.007839  0.001005  0.008845    0.8000   100  100000       5      10       8
-16  0.006311  0.000092  0.006403  0.003879  0.000708  0.004587    0.9000   100  100000       5      10       8
-17  0.005430  0.000105  0.005535  0.001929  0.000617  0.002546    0.9500   100  100000       5      10       8
-18  0.004344  0.000117  0.004462  0.000489  0.000527  0.001016    0.9900   100  100000       5      10       8
-19  0.002696  0.000096  0.002792  0.000045  0.000336  0.000381    0.9990   100  100000       5      10       8
-20  0.002998  0.000100  0.003098  0.000008  0.000169  0.000177    0.9999   100  100000       5      10       8
+0   0.008539  0.000033  0.008571  0.010443  0.000415  0.010858    0.7500   100  100000       5      10       2
+1   0.007293  0.000028  0.007321  0.007318  0.000290  0.007608    0.8000   100  100000       5      10       2
+2   0.006298  0.000031  0.006329  0.003685  0.000215  0.003900    0.9000   100  100000       5      10       2
+3   0.006052  0.000036  0.006087  0.001938  0.000167  0.002105    0.9500   100  100000       5      10       2
+4   0.003819  0.000039  0.003859  0.000462  0.000132  0.000594    0.9900   100  100000       5      10       2
+5   0.002728  0.000025  0.002753  0.000040  0.000080  0.000120    0.9990   100  100000       5      10       2
+6   0.002728  0.000029  0.002757  0.000007  0.000035  0.000042    0.9999   100  100000       5      10       2
+7   0.006708  0.000045  0.006753  0.008967  0.000585  0.009552    0.7500   100  100000       5      10       4
+8   0.007725  0.000078  0.007803  0.008212  0.000670  0.008883    0.8000   100  100000       5      10       4
+9   0.005805  0.000050  0.005856  0.003578  0.000352  0.003930    0.9000   100  100000       5      10       4
+10  0.005253  0.000049  0.005302  0.001743  0.000286  0.002029    0.9500   100  100000       5      10       4
+11  0.006534  0.000093  0.006627  0.001228  0.000478  0.001706    0.9900   100  100000       5      10       4
+12  0.002450  0.000047  0.002497  0.000038  0.000131  0.000168    0.9990   100  100000       5      10       4
+13  0.002333  0.000047  0.002380  0.000007  0.000074  0.000080    0.9999   100  100000       5      10       4
+14  0.006716  0.000081  0.006797  0.009080  0.001011  0.010091    0.7500   100  100000       5      10       8
+15  0.006299  0.000082  0.006381  0.007108  0.000899  0.008007    0.8000   100  100000       5      10       8
+16  0.005854  0.000084  0.005937  0.003494  0.000641  0.004135    0.9000   100  100000       5      10       8
+17  0.005178  0.000082  0.005260  0.001745  0.000532  0.002277    0.9500   100  100000       5      10       8
+18  0.003623  0.000107  0.003730  0.000385  0.000457  0.000842    0.9900   100  100000       5      10       8
+19  0.002295  0.000084  0.002380  0.000037  0.000270  0.000308    0.9990   100  100000       5      10       8
+20  0.002347  0.000083  0.002431  0.000007  0.000144  0.000150    0.9999   100  100000       5      10       8
 </pre></div>
 </div>
 <p>Plots</p>
@@ -481,7 +484,7 @@ Ratio sparse/dense: 7.363613231552162
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_bench_sparse_access.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_bench_sparse_access_001.png" srcset="../_images/sphx_glr_plot_bench_sparse_access_001.png" alt="Dense vs Sparsity (access only), Dense vs Sparsity (access only), Dense vs Sparsity (access only)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.013 seconds)</p>
+<img src="../_images/sphx_glr_plot_bench_sparse_access_001.png" srcset="../_images/sphx_glr_plot_bench_sparse_access_001.png" alt="Dense vs Sparsity (access only), Dense vs Sparsity (access only), Dense vs Sparsity (access only)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.679 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-bench-sparse-access-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d03ab99a60db9002b3c028cd0daa17ed/plot_bench_sparse_access.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bench_sparse_access.ipynb</span></code></a></p>

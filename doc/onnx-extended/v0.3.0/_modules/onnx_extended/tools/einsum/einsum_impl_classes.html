@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_extended.tools.einsum.einsum_impl_classes - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
@@ -175,6 +175,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -214,7 +215,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/plotting.html">onnx_extended.plotting</a></li>
@@ -255,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -336,7 +339,9 @@
     <span class="k">return</span> <span class="p">[(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="EinsumSubOp"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp">[docs]</a><span class="k">class</span> <span class="nc">EinsumSubOp</span><span class="p">:</span>
+<div class="viewcode-block" id="EinsumSubOp">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp">[docs]</a>
+<span class="k">class</span> <span class="nc">EinsumSubOp</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a sub operation used in Einsum decomposition.</span>
 
@@ -432,7 +437,9 @@
         <span class="n">m</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">inps</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">kw</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="k">return</span> <span class="n">m</span>
 
-<div class="viewcode-block" id="EinsumSubOp.dot_label"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.dot_label">[docs]</a>    <span class="k">def</span> <span class="nf">dot_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="EinsumSubOp.dot_label">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.dot_label">[docs]</a>
+    <span class="k">def</span> <span class="nf">dot_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Displays some informations useful to understand the operator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -445,6 +452,7 @@
             <span class="n">eq</span> <span class="o">=</span> <span class="n">eq</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\\\</span><span class="s2">=&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="s2">&quot;~&quot;</span> <span class="o">+</span> <span class="n">eq</span>
         <span class="k">return</span> <span class="kc">None</span></div>
+
 
     <span class="k">def</span> <span class="nf">_check_arg_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">typ</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">empty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="k">assert</span> <span class="p">(</span>
@@ -713,7 +721,9 @@
         <span class="n">row2</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">row2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_row_</span><span class="p">(</span><span class="n">row2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
-<div class="viewcode-block" id="EinsumSubOp.compute_output_row"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.compute_output_row">[docs]</a>    <span class="k">def</span> <span class="nf">compute_output_row</span><span class="p">(</span>
+<div class="viewcode-block" id="EinsumSubOp.compute_output_row">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.compute_output_row">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_output_row</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">row</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">row2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -735,7 +745,10 @@
         <span class="n">meth</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">row2</span><span class="o">=</span><span class="n">row2</span><span class="p">,</span> <span class="n">ab</span><span class="o">=</span><span class="n">ab</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_info</span><span class="p">(</span><span class="n">o_row</span><span class="o">=</span><span class="n">single_axes</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="n">o_row2</span><span class="o">=</span><span class="n">single_axes</span><span class="p">(</span><span class="n">row2</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="EinsumSubOp.add_info"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.add_info">[docs]</a>    <span class="k">def</span> <span class="nf">add_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="EinsumSubOp.add_info">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.add_info">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds information to the node.</span>
 
@@ -746,6 +759,7 @@
                 <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span>
             <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> already added (operator </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">).&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span></div>
+
 
     <span class="k">def</span> <span class="nf">_check_inputs_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_expected</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">check_dim</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="k">assert</span> <span class="p">(</span>
@@ -1018,7 +1032,9 @@
             <span class="n">output</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span>
 
-<div class="viewcode-block" id="EinsumSubOp.apply"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+<div class="viewcode-block" id="EinsumSubOp.apply">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1057,6 +1073,7 @@
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;+ </span><span class="si">%s</span><span class="s2">, shape=</span><span class="si">%r</span><span class="s2"> -- </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">output</span></div>
+
 
     <span class="k">def</span> <span class="nf">_onnx_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;einsum</span><span class="si">%d</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
@@ -1445,7 +1462,9 @@
         <span class="n">name_final</span> <span class="o">=</span> <span class="n">root</span> <span class="o">+</span> <span class="s2">&quot;_final&quot;</span>
         <span class="k">yield</span> <span class="n">helper</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Reshape&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">name_dot</span><span class="p">,</span> <span class="n">name_new_shape</span><span class="p">],</span> <span class="p">[</span><span class="n">name_final</span><span class="p">])</span>
 
-<div class="viewcode-block" id="EinsumSubOp.to_onnx"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.to_onnx">[docs]</a>    <span class="k">def</span> <span class="nf">to_onnx</span><span class="p">(</span>
+<div class="viewcode-block" id="EinsumSubOp.to_onnx">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.to_onnx">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_onnx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
@@ -1494,7 +1513,10 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;+ CT </span><span class="si">%r</span><span class="s2"> -- (</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
             <span class="k">yield</span> <span class="n">node</span></div>
 
-<div class="viewcode-block" id="EinsumSubOp.get_dot_kind"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.get_dot_kind">[docs]</a>    <span class="k">def</span> <span class="nf">get_dot_kind</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="EinsumSubOp.get_dot_kind">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.EinsumSubOp.get_dot_kind">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_dot_kind</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Every matrix multiplication can be either:</span>
 
@@ -1518,10 +1540,14 @@
         <span class="n">batch_right</span> <span class="o">=</span> <span class="p">[</span><span class="n">row_right</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">batch_axes</span><span class="p">]</span>
         <span class="n">n_left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch_left</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">max</span><span class="p">(</span><span class="n">batch_left</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
         <span class="n">n_right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch_right</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">max</span><span class="p">(</span><span class="n">batch_right</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;N&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">n_left</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="si">}{</span><span class="s1">&#39;N&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">n_right</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="si">}</span><span class="s2">&quot;</span></div></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;N&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">n_left</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="si">}{</span><span class="s1">&#39;N&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">n_right</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="si">}</span><span class="s2">&quot;</span></div>
+</div>
 
 
-<div class="viewcode-block" id="GraphEinsumSubOp"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp">[docs]</a><span class="k">class</span> <span class="nc">GraphEinsumSubOp</span><span class="p">:</span>
+
+<div class="viewcode-block" id="GraphEinsumSubOp">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp">[docs]</a>
+<span class="k">class</span> <span class="nc">GraphEinsumSubOp</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class gathering all nodes produced to explicit einsum</span>
 <span class="sd">    operators.</span>
@@ -1555,7 +1581,9 @@
             <span class="n">duplicates</span><span class="o">=</span><span class="n">duplicates</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.append"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">EinsumSubOp</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EinsumSubOp</span><span class="p">]:</span>
+<div class="viewcode-block" id="GraphEinsumSubOp.append">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.append">[docs]</a>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">EinsumSubOp</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EinsumSubOp</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds one input or result.</span>
 
@@ -1577,14 +1605,20 @@
             <span class="k">return</span> <span class="n">op</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.mark_last_node"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.mark_last_node">[docs]</a>    <span class="k">def</span> <span class="nf">mark_last_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GraphEinsumSubOp.mark_last_node">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.mark_last_node">[docs]</a>
+    <span class="k">def</span> <span class="nf">mark_last_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Marks the last node as the final output.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_added_op</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;last_added_op is None.&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mark</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_added_op</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.mark"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.mark">[docs]</a>    <span class="k">def</span> <span class="nf">mark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">op</span><span class="p">:</span> <span class="n">EinsumSubOp</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GraphEinsumSubOp.mark">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.mark">[docs]</a>
+    <span class="k">def</span> <span class="nf">mark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">op</span><span class="p">:</span> <span class="n">EinsumSubOp</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Marks one input or result as an intermediate result</span>
 <span class="sd">        after a full einsum step.</span>
@@ -1604,12 +1638,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">EinsumSubOp</span><span class="p">]:</span>
         <span class="s2">&quot;Iterates on nodes.&quot;</span>
         <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ops</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">op</span>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.to_dot"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.to_dot">[docs]</a>    <span class="k">def</span> <span class="nf">to_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="GraphEinsumSubOp.to_dot">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.to_dot">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Produces a graph in :epkg:`dot`.</span>
 
@@ -1691,7 +1728,10 @@
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.apply_sequence"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.apply_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">apply_sequence</span><span class="p">(</span>
+
+<div class="viewcode-block" id="GraphEinsumSubOp.apply_sequence">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.apply_sequence">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_sequence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EinsumSubOp</span><span class="p">],</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1716,7 +1756,10 @@
         <span class="k">assert</span> <span class="n">last</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Sequence of operations is empty.&quot;</span>
         <span class="k">return</span> <span class="n">last</span></div>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.clean_unused_nodes"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.clean_unused_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">clean_unused_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GraphEinsumSubOp.clean_unused_nodes">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.clean_unused_nodes">[docs]</a>
+    <span class="k">def</span> <span class="nf">clean_unused_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cleans nodes with unused outputs.</span>
 
@@ -1768,7 +1811,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_op</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_added_op</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.simplify_mm_nodes"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.simplify_mm_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">simplify_mm_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GraphEinsumSubOp.simplify_mm_nodes">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.simplify_mm_nodes">[docs]</a>
+    <span class="k">def</span> <span class="nf">simplify_mm_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Node name suffixed by `mm` are an artifact to keep</span>
 <span class="sd">        the graph consistent while building it. They can</span>
@@ -1794,6 +1840,7 @@
                 <span class="p">)</span>
                 <span class="n">op</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
                 <span class="n">op</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span></div>
+
 
     <span class="k">def</span> <span class="nf">_get_forward_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">EinsumSubOp</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1891,7 +1938,9 @@
             <span class="k">if</span> <span class="n">mark_input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mark</span><span class="p">(</span><span class="n">mark_input</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.remove_duplicate_transpose"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.remove_duplicate_transpose">[docs]</a>    <span class="k">def</span> <span class="nf">remove_duplicate_transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="GraphEinsumSubOp.remove_duplicate_transpose">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.remove_duplicate_transpose">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_duplicate_transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes consecutive transpose by merging them.</span>
 
@@ -1953,7 +2002,10 @@
                         <span class="p">)</span>
                     <span class="p">)</span></div>
 
-<div class="viewcode-block" id="GraphEinsumSubOp.to_onnx"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.to_onnx">[docs]</a>    <span class="k">def</span> <span class="nf">to_onnx</span><span class="p">(</span>
+
+<div class="viewcode-block" id="GraphEinsumSubOp.to_onnx">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_impl_classes.GraphEinsumSubOp.to_onnx">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_onnx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="o">*</span><span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -2052,7 +2104,9 @@
             <span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">onnx_remove_node_unused</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">onnx_remove_node_unused</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -2065,7 +2119,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -2085,9 +2139,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../../../../_static/documentation_options.js?v=83a61292"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

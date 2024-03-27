@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:37.427** total execution time for 13 files **from all galleries**:
+**05:42.371** total execution time for 14 files **from all galleries**:
 
 .. container::
 
@@ -32,42 +32,45 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py` (``examples/plot_op_tree_ensemble_implementations.py``)
-     - 00:37.427
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``examples/plot_bench_cpu.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cypy_ort.py` (``examples/plot_bench_cypy_ort.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py` (``examples/plot_bench_gemm_f8.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``examples/plot_bench_gemm_ort.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_sparse_access.py` (``examples/plot_bench_sparse_access.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_conv_denorm.py` (``examples/plot_op_conv_denorm.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_conv_py_vs_c.py` (``examples/plot_op_conv_py_vs_c.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_einsum.py` (``examples/plot_op_einsum.py``)
-     - 00:00.000
+     - 01:40.217
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tfidfvectorizer_sparse.py` (``examples/plot_op_tfidfvectorizer_sparse.py``)
-     - 00:00.000
+     - 01:31.393
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_conv_denorm.py` (``examples/plot_op_conv_denorm.py``)
+     - 00:41.074
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_einsum.py` (``examples/plot_op_einsum.py``)
+     - 00:23.725
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py` (``examples/plot_op_tree_ensemble_implementations.py``)
+     - 00:20.911
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_mul_cuda.py` (``examples/plot_op_mul_cuda.py``)
+     - 00:09.822
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_optim.py` (``examples/plot_op_tree_ensemble_optim.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_sparse.py` (``examples/plot_op_tree_ensemble_sparse.py``)
-     - 00:00.000
+     - 00:09.109
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profile_gemm_ort.py` (``examples/plot_profile_gemm_ort.py``)
-     - 00:00.000
+     - 00:07.546
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_conv_py_vs_c.py` (``examples/plot_op_conv_py_vs_c.py``)
+     - 00:07.276
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``examples/plot_bench_cpu.py``)
+     - 00:06.849
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_sparse_access.py` (``examples/plot_bench_sparse_access.py``)
+     - 00:06.679
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py` (``examples/plot_bench_gemm_f8.py``)
+     - 00:06.638
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_sparse.py` (``examples/plot_op_tree_ensemble_sparse.py``)
+     - 00:06.336
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cypy_ort.py` (``examples/plot_bench_cypy_ort.py``)
+     - 00:04.796
      - 0.0

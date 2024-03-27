@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_extended.tools.graph.onnx_graph_struct - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
@@ -175,6 +175,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -214,7 +215,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/plotting.html">onnx_extended.plotting</a></li>
@@ -255,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -341,7 +344,9 @@
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="NodeKind"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeKind">[docs]</a><span class="k">class</span> <span class="nc">NodeKind</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="NodeKind">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeKind">[docs]</a>
+<span class="k">class</span> <span class="nc">NodeKind</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Node kind.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -354,7 +359,10 @@
     <span class="n">NODE</span> <span class="o">=</span> <span class="mi">16</span></div>
 
 
-<div class="viewcode-block" id="Node"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node">[docs]</a><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Node">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node">[docs]</a>
+<span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a node in the graph.</span>
 <span class="sd">    It can be an iniatialier or a node.</span>
@@ -420,7 +428,9 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Node.match"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.match">[docs]</a>    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="Node.match">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.match">[docs]</a>
+    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if a node match the proposed pattern.</span>
 
@@ -436,7 +446,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected pattern key k=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">, v=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Node.get_tensor"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.get_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">get_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Node.get_tensor">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.get_tensor">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
         <span class="s2">&quot;Returns the value of the&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_node</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Constant&quot;</span><span class="p">:</span>
@@ -452,6 +465,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_output</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">outname</span><span class="si">!r}</span><span class="s2"> is an output not a tensor.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">outname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -537,7 +551,9 @@
             <span class="k">return</span> <span class="s2">&quot;output&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">op_type</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_node</span> <span class="k">else</span> <span class="s2">&quot;initializer&quot;</span>
 
-<div class="viewcode-block" id="Node.is_constant"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.is_constant">[docs]</a>    <span class="k">def</span> <span class="nf">is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="Node.is_constant">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.is_constant">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        True if operator Constant or initializer or a Constant as</span>
 <span class="sd">        an output of an operator taking only constants.</span>
@@ -547,6 +563,7 @@
                 <span class="k">return</span> <span class="kc">True</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_constant</span><span class="p">()</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_input</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_output</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="s2">&quot;Tells if a node is a constant or operate on constants.&quot;</span>
@@ -574,7 +591,9 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">output</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Node.create_with_new_values"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.create_with_new_values">[docs]</a>    <span class="k">def</span> <span class="nf">create_with_new_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_tensor</span><span class="p">:</span> <span class="n">TensorProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Node&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="Node.create_with_new_values">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.create_with_new_values">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_with_new_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_tensor</span><span class="p">:</span> <span class="n">TensorProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Node&quot;</span><span class="p">:</span>
         <span class="s2">&quot;Creates an iniatializer or a node Constant based on the new value.&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_node</span><span class="p">:</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="n">new_tensor</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -584,7 +603,10 @@
         <span class="n">new_tensor</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">generate_name</span><span class="p">(</span><span class="n">new_tensor</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">new_tensor</span><span class="p">,</span> <span class="n">NodeKind</span><span class="o">.</span><span class="n">INITIALIZER</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Node.getattr"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.getattr">[docs]</a>    <span class="k">def</span> <span class="nf">getattr</span><span class="p">(</span>
+
+<div class="viewcode-block" id="Node.getattr">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Node.getattr">[docs]</a>
+    <span class="k">def</span> <span class="nf">getattr</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">astype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">has_default</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -620,10 +642,14 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Attribute name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> for node </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2"> &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;cannot be cast into </span><span class="si">{</span><span class="n">astype</span><span class="si">!r}</span><span class="s2">. Attribute is </span><span class="si">{</span><span class="n">proto</span><span class="si">}</span><span class="s2">.&quot;</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="NodeWithSubGraph"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeWithSubGraph">[docs]</a><span class="k">class</span> <span class="nc">NodeWithSubGraph</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+
+<div class="viewcode-block" id="NodeWithSubGraph">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeWithSubGraph">[docs]</a>
+<span class="k">class</span> <span class="nc">NodeWithSubGraph</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A node with a subgraphs (If, Loop, Scan, ...).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -646,7 +672,10 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="NodeSet"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeSet">[docs]</a><span class="k">class</span> <span class="nc">NodeSet</span><span class="p">:</span>
+
+<div class="viewcode-block" id="NodeSet">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.NodeSet">[docs]</a>
+<span class="k">class</span> <span class="nc">NodeSet</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a set of nodes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -662,7 +691,10 @@
             <span class="k">yield</span> <span class="n">n</span></div>
 
 
-<div class="viewcode-block" id="Graph"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph">[docs]</a><span class="k">class</span> <span class="nc">Graph</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Graph">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph">[docs]</a>
+<span class="k">class</span> <span class="nc">Graph</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A GraphProto, FunctionProto or ModelProto.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -772,7 +804,9 @@
             <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">generated_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Graph.get_shape"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">]]:</span>
+<div class="viewcode-block" id="Graph.get_shape">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_shape">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the shape of a result.</span>
 
@@ -783,6 +817,7 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">ttype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">_get_shape</span><span class="p">(</span><span class="n">ttype</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_exists_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_input</span><span class="p">:</span>
@@ -800,7 +835,9 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="Graph.generate_name"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.generate_name">[docs]</a>    <span class="k">def</span> <span class="nf">generate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="Graph.generate_name">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.generate_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">generate_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a name which is not used for any existing result in the graph.</span>
 
@@ -816,7 +853,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">generated_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">suggestion</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">suggestion</span></div>
 
-<div class="viewcode-block" id="Graph.generate_node_name"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.generate_node_name">[docs]</a>    <span class="k">def</span> <span class="nf">generate_node_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Graph.generate_node_name">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.generate_node_name">[docs]</a>
+    <span class="k">def</span> <span class="nf">generate_node_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates a node name which is not used for</span>
 <span class="sd">        any existing node in the graph.</span>
@@ -833,7 +873,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">generated_node_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">suggestion</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">suggestion</span></div>
 
-<div class="viewcode-block" id="Graph.get_node_producer"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_node_producer">[docs]</a>    <span class="k">def</span> <span class="nf">get_node_producer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Node</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Graph.get_node_producer">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_node_producer">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_node_producer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Node</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the node producing the output *name*.</span>
 
@@ -844,7 +887,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to find any node producing output </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_output</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Graph.get_opsets"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_opsets">[docs]</a>    <span class="k">def</span> <span class="nf">get_opsets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="Graph.get_opsets">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_opsets">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_opsets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the opsets available registered for ever domain</span>
 <span class="sd">        in the model.</span>
@@ -859,7 +905,10 @@
         <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="Graph.get_opset"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_opset">[docs]</a>    <span class="k">def</span> <span class="nf">get_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Graph.get_opset">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.get_opset">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the opset for a specific domain.</span>
 
@@ -877,7 +926,10 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Domain </span><span class="si">{</span><span class="n">domain</span><span class="si">!r}</span><span class="s2"> is not part the the model.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Graph.is_constant"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.is_constant">[docs]</a>    <span class="k">def</span> <span class="nf">is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Graph.is_constant">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.is_constant">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tells if output *name* is constant.</span>
 
@@ -888,6 +940,7 @@
             <span class="k">return</span> <span class="kc">False</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_output</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">is_constant</span><span class="p">()</span></div>
+
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -925,7 +978,9 @@
                 <span class="k">continue</span>
             <span class="k">yield</span> <span class="n">node</span>
 
-<div class="viewcode-block" id="Graph.replace_nodes"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.replace_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">replace_nodes</span><span class="p">(</span>
+<div class="viewcode-block" id="Graph.replace_nodes">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.replace_nodes">[docs]</a>
+    <span class="k">def</span> <span class="nf">replace_nodes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">indices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
         <span class="n">new_nodes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]],</span>
@@ -1016,7 +1071,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_opsets</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">nodes_set</span></div>
 
-<div class="viewcode-block" id="Graph.simplify"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.simplify">[docs]</a>    <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remove_unused</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Graph&quot;</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Graph.simplify">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.simplify">[docs]</a>
+    <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remove_unused</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Graph&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stores every node into nodes.</span>
 <span class="sd">        Removes unused nodes.</span>
@@ -1041,7 +1099,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">remove_unused_nodes</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="Graph.remove_unused_nodes"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.remove_unused_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">remove_unused_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Graph.remove_unused_nodes">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.remove_unused_nodes">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_unused_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes unused nodes, a node with only unused outputs.</span>
 
@@ -1072,7 +1133,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">total_remove</span></div>
 
-<div class="viewcode-block" id="Graph.upgrade_opsets"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.upgrade_opsets">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade_opsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_opsets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="Graph.upgrade_opsets">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.upgrade_opsets">[docs]</a>
+    <span class="k">def</span> <span class="nf">upgrade_opsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_opsets</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Upgrades the models to a newer opsets.</span>
 
@@ -1091,7 +1155,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_complete_init</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Graph.add_functions"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.add_functions">[docs]</a>    <span class="k">def</span> <span class="nf">add_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protos</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FunctionProto</span><span class="p">]):</span>
+
+<div class="viewcode-block" id="Graph.add_functions">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.add_functions">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protos</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">FunctionProto</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds functions to the graph when it is exported to ONNX.</span>
 
@@ -1108,7 +1175,10 @@
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">proto</span></div>
 
-<div class="viewcode-block" id="Graph.to_onnx"><a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.to_onnx">[docs]</a>    <span class="k">def</span> <span class="nf">to_onnx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="Graph.to_onnx">
+<a class="viewcode-back" href="../../../../api/tools_graph.html#onnx_extended.tools.graph.onnx_graph_struct.Graph.to_onnx">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_onnx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts the current graph into onnx with the same type</span>
 <span class="sd">        as the input type.</span>
@@ -1147,7 +1217,9 @@
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The conversion to onnx is not implemented for type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+</div>
+
 </pre></div>
         </article>
       </div>
@@ -1160,7 +1232,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1180,9 +1252,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../../../../_static/documentation_options.js?v=83a61292"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

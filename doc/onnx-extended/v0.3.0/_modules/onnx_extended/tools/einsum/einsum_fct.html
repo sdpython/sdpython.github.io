@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_extended.tools.einsum.einsum_fct - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
@@ -175,6 +175,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -214,7 +215,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/plotting.html">onnx_extended.plotting</a></li>
@@ -255,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -318,7 +321,9 @@
 <span class="n">_einsum_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
 
-<div class="viewcode-block" id="OnnxMicroRuntime"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.OnnxMicroRuntime">[docs]</a><span class="k">class</span> <span class="nc">OnnxMicroRuntime</span><span class="p">:</span>
+<div class="viewcode-block" id="OnnxMicroRuntime">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.OnnxMicroRuntime">[docs]</a>
+<span class="k">class</span> <span class="nc">OnnxMicroRuntime</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements a micro runtime for ONNX graphs.</span>
 <span class="sd">    It does not implements all the operator types.</span>
@@ -342,7 +347,9 @@
         <span class="s2">&quot;Returns output names.&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_onnx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
 
-<div class="viewcode-block" id="OnnxMicroRuntime.run"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.OnnxMicroRuntime.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="OnnxMicroRuntime.run">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.OnnxMicroRuntime.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -376,6 +383,7 @@
                 <span class="n">results</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">o</span>
 
         <span class="k">return</span> <span class="n">results</span></div>
+
 
     <span class="c1">########################</span>
     <span class="c1"># Runtime for operators</span>
@@ -513,6 +521,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axes</span><span class="p">),)</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">enumerate_cached_einsum</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enumerates all cached einsum function.</span>
@@ -522,7 +531,9 @@
         <span class="k">yield</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
 
 
-<div class="viewcode-block" id="CachedEinsum"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum">[docs]</a><span class="k">class</span> <span class="nc">CachedEinsum</span><span class="p">:</span>
+<div class="viewcode-block" id="CachedEinsum">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum">[docs]</a>
+<span class="k">class</span> <span class="nc">CachedEinsum</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Stores all the necessary information to cache the preprocessing</span>
 <span class="sd">    of a an einsum equation.</span>
@@ -584,7 +595,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="CachedEinsum.default_inputs"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.default_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">default_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<div class="viewcode-block" id="CachedEinsum.default_inputs">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.default_inputs">[docs]</a>
+    <span class="k">def</span> <span class="nf">default_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns default inputs (reshaped numpy.arange + 0.7i).</span>
 
@@ -606,7 +619,10 @@
         <span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">*</span> <span class="n">ii</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">inputs</span></div>
 
-<div class="viewcode-block" id="CachedEinsum.build"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CachedEinsum.build">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build">[docs]</a>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Preprocesses the equation builds whatever is necessary</span>
 <span class="sd">        to compute the result of the einsum equation.</span>
@@ -620,6 +636,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown strategy </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">build_runtime</span><span class="p">()</span></div>
+
 
     <span class="k">def</span> <span class="nf">_build_optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># loops over all permutations</span>
@@ -745,7 +762,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timed_permutations_</span> <span class="o">=</span> <span class="n">confs</span>
         <span class="k">return</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="CachedEinsum.build_onnx_einsum"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build_onnx_einsum">[docs]</a>    <span class="k">def</span> <span class="nf">build_onnx_einsum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ModelProto</span><span class="p">:</span>
+<div class="viewcode-block" id="CachedEinsum.build_onnx_einsum">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build_onnx_einsum">[docs]</a>
+    <span class="k">def</span> <span class="nf">build_onnx_einsum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ModelProto</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Builds an ONNX graph with a single einsum operator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -776,7 +795,10 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">model</span></div>
 
-<div class="viewcode-block" id="CachedEinsum.build_runtime"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build_runtime">[docs]</a>    <span class="k">def</span> <span class="nf">build_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CachedEinsum.build_runtime">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build_runtime">[docs]</a>
+    <span class="k">def</span> <span class="nf">build_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Builds the runtime associated to the</span>
 <span class="sd">        equation `self.equation_`.</span>
@@ -826,6 +848,7 @@
                 <span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onnx_names_</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)}</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
+
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calls the runtime `self.runtime_`.</span>
@@ -833,7 +856,9 @@
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;runtime_&quot;</span><span class="p">),</span> <span class="s2">&quot;Method &#39;build_runtime&#39; was not called.&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime_</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CachedEinsum.build_einsum"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build_einsum">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CachedEinsum.build_einsum">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.CachedEinsum.build_einsum">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">build_einsum</span><span class="p">(</span>
         <span class="n">equation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">runtime</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -860,7 +885,9 @@
             <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">inst</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">inst</span></div></div>
+        <span class="k">return</span> <span class="n">inst</span></div>
+</div>
+
 
 
 <span class="k">def</span> <span class="nf">_einsum</span><span class="p">(</span>
@@ -900,7 +927,9 @@
     <span class="k">return</span> <span class="n">cached</span>
 
 
-<div class="viewcode-block" id="optimize_decompose_einsum_equation"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.optimize_decompose_einsum_equation">[docs]</a><span class="k">def</span> <span class="nf">optimize_decompose_einsum_equation</span><span class="p">(</span>
+<div class="viewcode-block" id="optimize_decompose_einsum_equation">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.optimize_decompose_einsum_equation">[docs]</a>
+<span class="k">def</span> <span class="nf">optimize_decompose_einsum_equation</span><span class="p">(</span>
     <span class="n">equation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -992,7 +1021,10 @@
     <span class="k">return</span> <span class="n">res</span></div>
 
 
-<div class="viewcode-block" id="einsum"><a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.einsum">[docs]</a><span class="k">def</span> <span class="nf">einsum</span><span class="p">(</span>
+
+<div class="viewcode-block" id="einsum">
+<a class="viewcode-back" href="../../../../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.einsum">[docs]</a>
+<span class="k">def</span> <span class="nf">einsum</span><span class="p">(</span>
     <span class="n">equation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1249,6 +1281,7 @@
         <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">cached</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -1261,7 +1294,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -1281,9 +1314,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../../../../_static/documentation_options.js?v=83a61292"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

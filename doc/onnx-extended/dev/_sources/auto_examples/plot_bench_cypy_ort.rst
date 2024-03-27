@@ -28,9 +28,10 @@ against a :epkg:`cython` binding.
 The time spent in it is not significant when the computation is huge
 but it may be for small matrices.
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-41
+.. GENERATED FROM PYTHON SOURCE LINES 12-42
 
 .. code-block:: Python
+
 
     import numpy
     from pandas import DataFrame
@@ -68,12 +69,12 @@ but it may be for small matrices.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-44
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 A simple onnx model
 +++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-54
+.. GENERATED FROM PYTHON SOURCE LINES 45-55
 
 .. code-block:: Python
 
@@ -94,12 +95,12 @@ A simple onnx model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-57
+.. GENERATED FROM PYTHON SOURCE LINES 56-58
 
 Two python bindings on CPU
 ++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-73
+.. GENERATED FROM PYTHON SOURCE LINES 58-74
 
 .. code-block:: Python
 
@@ -132,14 +133,14 @@ Two python bindings on CPU
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-78
+.. GENERATED FROM PYTHON SOURCE LINES 75-79
 
 Time measurement
 ++++++++++++++++
 
 *run_1_1* is a specific implementation when there is only 1 input and output.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-88
+.. GENERATED FROM PYTHON SOURCE LINES 79-89
 
 .. code-block:: Python
 
@@ -161,19 +162,19 @@ Time measurement
 
  .. code-block:: none
 
-    t_ort={'average': 1.541398500003197e-05, 'deviation': 3.7418839307620205e-06, 'min_exec': 1.2525000001915033e-05, 'max_exec': 3.114449999884528e-05, 'repeat': 100, 'number': 200, 'ttime': 0.001541398500003197, 'context_size': 64, 'warmup_time': 9.929999987434712e-05}
-    t_ext={'average': 1.6753990000052e-05, 'deviation': 4.207457745525793e-06, 'min_exec': 1.364449999982753e-05, 'max_exec': 3.382750000127999e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0016753990000052, 'context_size': 64, 'warmup_time': 0.00012239999978191918}
-    t_ext2={'average': 1.3012700000058432e-05, 'deviation': 1.7858599077363989e-06, 'min_exec': 1.184700000067096e-05, 'max_exec': 1.9518999999945662e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0013012700000058432, 'context_size': 64, 'warmup_time': 5.0800000281014945e-05}
+    t_ort={'average': 1.1017984999807592e-05, 'deviation': 1.1627572347791087e-06, 'min_exec': 1.0173499999837077e-05, 'max_exec': 1.705549999996947e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0011017984999807592, 'context_size': 64, 'warmup_time': 6.429999984902679e-05}
+    t_ext={'average': 1.4125910000029763e-05, 'deviation': 1.0116295268419106e-05, 'min_exec': 9.202999999615713e-06, 'max_exec': 7.462750000058804e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0014125910000029763, 'context_size': 64, 'warmup_time': 7.379999988188501e-05}
+    t_ext2={'average': 8.863004999875556e-06, 'deviation': 1.1311618198577438e-06, 'min_exec': 7.898999999724765e-06, 'max_exec': 1.5066000000842906e-05, 'repeat': 100, 'number': 200, 'ttime': 0.0008863004999875556, 'context_size': 64, 'warmup_time': 4.759999956149841e-05}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-91
+.. GENERATED FROM PYTHON SOURCE LINES 90-92
 
 Benchmark
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-124
+.. GENERATED FROM PYTHON SOURCE LINES 92-125
 
 .. code-block:: Python
 
@@ -218,7 +219,7 @@ Benchmark
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]    100%|██████████| 4/4 [00:04<00:00,  1.17s/it]    100%|██████████| 4/4 [00:04<00:00,  1.17s/it]
+      0%|          | 0/4 [00:00<?, ?it/s]    100%|██████████| 4/4 [00:03<00:00,  1.12it/s]    100%|██████████| 4/4 [00:03<00:00,  1.12it/s]
 
 
 .. raw:: html
@@ -258,169 +259,169 @@ Benchmark
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.000013</td>
-          <td>1.771852e-06</td>
-          <td>0.000013</td>
-          <td>0.000024</td>
+          <td>0.000011</td>
+          <td>6.732164e-07</td>
+          <td>0.000010</td>
+          <td>0.000015</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000668</td>
+          <td>0.000539</td>
           <td>64</td>
-          <td>0.000158</td>
+          <td>0.000090</td>
           <td>ort</td>
           <td>1</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.000013</td>
-          <td>5.166275e-07</td>
-          <td>0.000013</td>
-          <td>0.000014</td>
+          <td>0.000009</td>
+          <td>1.841304e-07</td>
+          <td>0.000009</td>
+          <td>0.000010</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000134</td>
+          <td>0.000094</td>
           <td>64</td>
-          <td>0.000114</td>
+          <td>0.000040</td>
           <td>ext</td>
           <td>1</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.000012</td>
-          <td>3.875565e-07</td>
-          <td>0.000012</td>
-          <td>0.000013</td>
+          <td>0.000008</td>
+          <td>8.129576e-08</td>
+          <td>0.000008</td>
+          <td>0.000008</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000121</td>
+          <td>0.000079</td>
           <td>64</td>
-          <td>0.000034</td>
+          <td>0.000022</td>
           <td>ext_1_1</td>
           <td>1</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.000014</td>
-          <td>1.661980e-06</td>
-          <td>0.000013</td>
-          <td>0.000022</td>
+          <td>0.000011</td>
+          <td>5.452700e-07</td>
+          <td>0.000011</td>
+          <td>0.000015</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000686</td>
+          <td>0.000546</td>
           <td>64</td>
-          <td>0.000065</td>
+          <td>0.000032</td>
           <td>ort</td>
           <td>10</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.000015</td>
-          <td>2.777243e-06</td>
-          <td>0.000014</td>
-          <td>0.000023</td>
+          <td>0.000010</td>
+          <td>7.448463e-07</td>
+          <td>0.000009</td>
+          <td>0.000012</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000155</td>
+          <td>0.000096</td>
           <td>64</td>
-          <td>0.000098</td>
+          <td>0.000029</td>
           <td>ext</td>
           <td>10</td>
         </tr>
         <tr>
           <th>5</th>
-          <td>0.000013</td>
-          <td>1.596053e-06</td>
-          <td>0.000012</td>
-          <td>0.000018</td>
+          <td>0.000008</td>
+          <td>9.436630e-08</td>
+          <td>0.000008</td>
+          <td>0.000008</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000130</td>
+          <td>0.000080</td>
           <td>64</td>
-          <td>0.000034</td>
+          <td>0.000021</td>
           <td>ext_1_1</td>
           <td>10</td>
         </tr>
         <tr>
           <th>6</th>
-          <td>0.000018</td>
-          <td>1.172104e-06</td>
-          <td>0.000017</td>
-          <td>0.000022</td>
+          <td>0.000015</td>
+          <td>3.044421e-06</td>
+          <td>0.000014</td>
+          <td>0.000033</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000898</td>
+          <td>0.000748</td>
           <td>64</td>
-          <td>0.000079</td>
+          <td>0.000036</td>
           <td>ort</td>
           <td>100</td>
         </tr>
         <tr>
           <th>7</th>
+          <td>0.000014</td>
+          <td>2.304404e-06</td>
+          <td>0.000013</td>
           <td>0.000019</td>
-          <td>5.615950e-07</td>
-          <td>0.000019</td>
-          <td>0.000020</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000191</td>
+          <td>0.000139</td>
           <td>64</td>
-          <td>0.000142</td>
+          <td>0.000057</td>
           <td>ext</td>
           <td>100</td>
         </tr>
         <tr>
           <th>8</th>
-          <td>0.000018</td>
-          <td>1.944964e-06</td>
-          <td>0.000017</td>
-          <td>0.000024</td>
+          <td>0.000011</td>
+          <td>9.202717e-08</td>
+          <td>0.000011</td>
+          <td>0.000011</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000181</td>
+          <td>0.000112</td>
           <td>64</td>
-          <td>0.000039</td>
+          <td>0.000025</td>
           <td>ext_1_1</td>
           <td>100</td>
         </tr>
         <tr>
           <th>9</th>
-          <td>0.000616</td>
-          <td>1.392450e-04</td>
-          <td>0.000489</td>
-          <td>0.001105</td>
+          <td>0.000485</td>
+          <td>1.299964e-04</td>
+          <td>0.000371</td>
+          <td>0.001006</td>
           <td>50</td>
           <td>50</td>
-          <td>0.030808</td>
+          <td>0.024248</td>
           <td>64</td>
-          <td>0.003442</td>
+          <td>0.001992</td>
           <td>ort</td>
           <td>1000</td>
         </tr>
         <tr>
           <th>10</th>
-          <td>0.000660</td>
-          <td>1.444117e-04</td>
-          <td>0.000482</td>
-          <td>0.001089</td>
+          <td>0.000462</td>
+          <td>8.708347e-05</td>
+          <td>0.000365</td>
+          <td>0.000741</td>
           <td>50</td>
           <td>50</td>
-          <td>0.032976</td>
+          <td>0.023108</td>
           <td>64</td>
-          <td>0.003477</td>
+          <td>0.002587</td>
           <td>ext</td>
           <td>1000</td>
         </tr>
         <tr>
           <th>11</th>
-          <td>0.000557</td>
-          <td>5.918109e-05</td>
-          <td>0.000492</td>
-          <td>0.000745</td>
+          <td>0.000454</td>
+          <td>5.599289e-05</td>
+          <td>0.000372</td>
+          <td>0.000642</td>
           <td>50</td>
           <td>50</td>
-          <td>0.027839</td>
+          <td>0.022699</td>
           <td>64</td>
-          <td>0.000675</td>
+          <td>0.000430</td>
           <td>ext_1_1</td>
           <td>1000</td>
         </tr>
@@ -431,12 +432,12 @@ Benchmark
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-127
+.. GENERATED FROM PYTHON SOURCE LINES 126-128
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-134
+.. GENERATED FROM PYTHON SOURCE LINES 128-135
 
 .. code-block:: Python
 
@@ -462,7 +463,7 @@ Plots
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.286 seconds)
+   **Total running time of the script:** (0 minutes 4.796 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cypy_ort.py:

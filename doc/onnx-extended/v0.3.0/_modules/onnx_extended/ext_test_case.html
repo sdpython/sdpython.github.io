@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_extended.ext_test_case - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
@@ -175,6 +175,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -214,7 +215,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/plotting.html">onnx_extended.plotting</a></li>
@@ -255,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -368,7 +371,9 @@
     <span class="k">return</span> <span class="n">going</span> <span class="o">==</span> <span class="mi">1</span>
 
 
-<div class="viewcode-block" id="ignore_warnings"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ignore_warnings">[docs]</a><span class="k">def</span> <span class="nf">ignore_warnings</span><span class="p">(</span><span class="n">warns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="ne">Warning</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<div class="viewcode-block" id="ignore_warnings">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ignore_warnings">[docs]</a>
+<span class="k">def</span> <span class="nf">ignore_warnings</span><span class="p">(</span><span class="n">warns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="ne">Warning</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Catches warnings.</span>
 
@@ -388,7 +393,10 @@
     <span class="k">return</span> <span class="n">wrapper</span></div>
 
 
-<div class="viewcode-block" id="measure_time"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.measure_time">[docs]</a><span class="k">def</span> <span class="nf">measure_time</span><span class="p">(</span>
+
+<div class="viewcode-block" id="measure_time">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.measure_time">[docs]</a>
+<span class="k">def</span> <span class="nf">measure_time</span><span class="p">(</span>
     <span class="n">stmt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">],</span>
     <span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -509,13 +517,18 @@
     <span class="k">return</span> <span class="n">mes</span></div>
 
 
-<div class="viewcode-block" id="ExtTestCase"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase">[docs]</a><span class="k">class</span> <span class="nc">ExtTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ExtTestCase">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase">[docs]</a>
+<span class="k">class</span> <span class="nc">ExtTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
     <span class="n">_warns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="ne">Warning</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">assertExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File or folder </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> does not exists.&quot;</span>
 
-<div class="viewcode-block" id="ExtTestCase.assertIns"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertIns">[docs]</a>    <span class="k">def</span> <span class="nf">assertIns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="ExtTestCase.assertIns">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertIns">[docs]</a>
+    <span class="k">def</span> <span class="nf">assertIns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks that one of the substrings in sub is part of s.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -523,6 +536,7 @@
             <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
                 <span class="k">return</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;None of the substring in </span><span class="si">{</span><span class="n">sub</span><span class="si">}</span><span class="s2"> is part of </span><span class="si">{</span><span class="n">s</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">assertEqualArray</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -542,7 +556,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">assert_allclose</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ExtTestCase.assertAlmostEqual"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertAlmostEqual">[docs]</a>    <span class="k">def</span> <span class="nf">assertAlmostEqual</span><span class="p">(</span>
+<div class="viewcode-block" id="ExtTestCase.assertAlmostEqual">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertAlmostEqual">[docs]</a>
+    <span class="k">def</span> <span class="nf">assertAlmostEqual</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">expected</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -555,7 +571,10 @@
             <span class="n">value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqualArray</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ExtTestCase.assertNotAlmostEqual"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertNotAlmostEqual">[docs]</a>    <span class="k">def</span> <span class="nf">assertNotAlmostEqual</span><span class="p">(</span>
+
+<div class="viewcode-block" id="ExtTestCase.assertNotAlmostEqual">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.assertNotAlmostEqual">[docs]</a>
+    <span class="k">def</span> <span class="nf">assertNotAlmostEqual</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">expected</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -571,6 +590,7 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;Arrays are equal.&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
             <span class="k">pass</span></div>
+
 
     <span class="k">def</span> <span class="nf">assertRaise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -599,12 +619,17 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">full</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prefix=</span><span class="si">{</span><span class="n">prefix</span><span class="si">!r}</span><span class="s2"> does not start string  </span><span class="si">{</span><span class="n">full</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ExtTestCase.tearDownClass"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.tearDownClass">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ExtTestCase.tearDownClass">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.tearDownClass">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_warns</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ExtTestCase.capture"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.capture">[docs]</a>    <span class="k">def</span> <span class="nf">capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="ExtTestCase.capture">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.capture">[docs]</a>
+    <span class="k">def</span> <span class="nf">capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Runs a function and capture standard output and error.</span>
 
@@ -624,7 +649,10 @@
                     <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
         <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">sout</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(),</span> <span class="n">serr</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ExtTestCase.tryCall"><a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.tryCall">[docs]</a>    <span class="k">def</span> <span class="nf">tryCall</span><span class="p">(</span>
+
+<div class="viewcode-block" id="ExtTestCase.tryCall">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_extended.ext_test_case.ExtTestCase.tryCall">[docs]</a>
+    <span class="k">def</span> <span class="nf">tryCall</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">none_if</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -642,7 +670,17 @@
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">e</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div></div>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">onx</span><span class="p">:</span> <span class="s2">&quot;onnx.ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="s2">&quot;SerializeToString&quot;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
+
+            <span class="k">return</span> <span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to print type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -655,7 +693,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Xavier Dupré
+                Copyright &#169; 2023-2024, Xavier Dupré
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -675,9 +713,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ea4a43d1"></script>
+</div><script src="../../_static/documentation_options.js?v=83a61292"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

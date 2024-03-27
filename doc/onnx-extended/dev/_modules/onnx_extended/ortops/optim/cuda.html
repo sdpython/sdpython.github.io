@@ -1,0 +1,426 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+        <title>onnx_extended.ortops.optim.cuda - onnx-extended 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">onnx-extended 0.3.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-extended 0.3.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tutorial/reference_evaluator.html">CReferenceEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tutorial/cython_binding.html">Cython Binding of onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tutorial/custom_ops.html">Custom Kernels for onnxruntime</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../tutorial/ops.html">Focus on operators optimization</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Focus on operators optimization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../tutorial/many_tools.html">Many Tools to help investigating issues</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Many Tools to help investigating issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/external_data.html">External Data and Big Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/onnx_manipulations.html">Onnx Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/quantize.html">Quantization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/statistics.html">Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/profiling.html">Profiling onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/ort_debug.html">Debug Intermediate Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/old_version.html">Compare multiple versions of onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/trees.html">Trees</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../tutorial/build.html">Build from source</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Build from source</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/build_cython.html">Build with cython</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/build_pybind11.html">Build with pybind11</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/build_cuda.html">Build with CUDA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/build_ortext.html">Build with onnxruntime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tutorial/readings.html">Readings</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../tutorial/parallelization.html">Experiments about parallelization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Experiments about parallelization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_bench_cpu.html">Measuring CPU performance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../command_lines.html">command lines</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/check.html">onnx_extended.__init__.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/ext_test_case.html">onnx_extended.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/memory_peak.html">onnx_extended.memory_peak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/helper.html">onnx_extended.helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/ortcy.html">onnx_extended.ortcy</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/plotting.html">onnx_extended.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/reference.html">onnx_extended.reference</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/validation.html">validation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of validation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/validation_cpu.html">validation.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/validation_cuda.html">validation.cuda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/validation_sparse.html">validation.bench_trees</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/validation_trees.html">validation.bench_trees</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/tools.html">tools</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_io.html">onnx_extended.tools.onnx_io</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_einsum.html">onnx_extended.tools.einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_graph.html">onnx_extended.tools.graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_graph_transformer.html">onnx_extended.tools.graph.onnx_graph_transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_inline.html">onnx_extended.tools.onnx_inline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_nodes.html">onnx_extended.tools.onnx_nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_stats.html">onnx_extended.tools.stats_nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tools_other.html">onnx_extended.tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../tech/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tech/install_cuda_wsl.html">Install CUDA on WSL (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tech/usefulcmd.html">Useful commands on Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tech/gemm.html">Gemm and storage order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tech/2023-09-05-glibc.html">2023-09-05 - version GLIBCXX_3.4.30 not found</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../benchmarks.html">ONNX Benchmarks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_cpu.html">Measuring CPU performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_conv_py_vs_c.html">Using C implementation of operator Conv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_cypy_ort.html">Measuring onnxruntime performance against a cython binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_sparse_access.html">Evaluating random access for sparse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_op_tree_ensemble_implementations.html">Evaluate different implementation of TreeEnsemble</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../license.html">LICENSE</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for onnx_extended.ortops.optim.cuda</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">_get_ort_ext_libs</span>
+
+
+<div class="viewcode-block" id="get_ort_ext_libs">
+<a class="viewcode-back" href="../../../../api/ortops_optim_cuda.html#onnx_extended.ortops.optim.cuda.get_ort_ext_libs">[docs]</a>
+<span class="k">def</span> <span class="nf">get_ort_ext_libs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the list of libraries implementing new simple</span>
+<span class="sd">    :epkg:`onnxruntime` kernels implemented for the</span>
+<span class="sd">    :epkg:`CUDAExecutionProvider`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">libs</span> <span class="o">=</span> <span class="n">_get_ort_ext_libs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">lib</span> <span class="k">for</span> <span class="n">lib</span> <span class="ow">in</span> <span class="n">libs</span> <span class="k">if</span> <span class="s2">&quot;cuda_cuda&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lib</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">documentation</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a list of rst string documenting every implemented kernels</span>
+<span class="sd">    in this subfolder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span>
+            <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">,</span>
+            <span class="p">[</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    onnx_extented.ortops.optim.cuda.MulMul</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Two consecutive element-wise multiplication assuming</span>
+<span class="sd">    all tensors have the same shape (no broadcast).</span>
+
+<span class="sd">    **Provider**</span>
+<span class="sd">    </span>
+<span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">    </span>
+<span class="sd">    **Inputs**</span>
+<span class="sd">    </span>
+<span class="sd">    * A: tensor of type T</span>
+<span class="sd">    * B: tensor of type T</span>
+<span class="sd">    * C: tensor of type T</span>
+
+<span class="sd">    **Outputs**</span>
+
+<span class="sd">    * ABC (T): element-wise matrix multiplication</span>
+
+<span class="sd">    **Constraints**</span>
+
+<span class="sd">    * T: float, float16</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    onnx_extented.ortops.optim.cuda.ScatterNDOfShape</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    ConstantOfShape + ScatterND</span>
+
+<span class="sd">    **Provider**</span>
+<span class="sd">    </span>
+<span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">    </span>
+<span class="sd">    **Inputs**</span>
+<span class="sd">    </span>
+<span class="sd">    * shape: tensor of type I</span>
+<span class="sd">    * indices: tensor of type I</span>
+<span class="sd">    * updates: tensor of type I</span>
+
+<span class="sd">    **Outputs**</span>
+
+<span class="sd">    * Z (T): updates tensor</span>
+
+<span class="sd">    **Constraints**</span>
+
+<span class="sd">    * I: int64</span>
+<span class="sd">    * T: float, float16</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023-2024, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=83a61292"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

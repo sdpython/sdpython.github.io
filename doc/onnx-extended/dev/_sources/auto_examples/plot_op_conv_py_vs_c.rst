@@ -33,9 +33,10 @@ The following example compares the processing time for three runtimes.
 Creation of a simple model
 ++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-50
+.. GENERATED FROM PYTHON SOURCE LINES 17-51
 
 .. code-block:: Python
+
 
     import numpy as np
     import matplotlib.pyplot as plt
@@ -74,22 +75,16 @@ Creation of a simple model
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    [2023-12-29 23:38:12,287] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 51-54
+.. GENERATED FROM PYTHON SOURCE LINES 52-55
 
 ReferenceEvaluator and CReferenceEvaluator
 ++++++++++++++++++++++++++++++++++++++++++
 Let's first compare the outputs are the same.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-68
+.. GENERATED FROM PYTHON SOURCE LINES 55-69
 
 .. code-block:: Python
 
@@ -120,14 +115,14 @@ Let's first compare the outputs are the same.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-73
+.. GENERATED FROM PYTHON SOURCE LINES 70-74
 
 Everything works fine.
 
 Time measurement
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-83
+.. GENERATED FROM PYTHON SOURCE LINES 74-84
 
 .. code-block:: Python
 
@@ -149,18 +144,18 @@ Time measurement
 
  .. code-block:: none
 
-    ReferenceEvaluator: 0.0008064220000014756s
-    CReferenceEvaluator: 9.955339999851277e-05s
-    speedup is 8.100396370325099
+    ReferenceEvaluator: 0.0012245282000012596s
+    CReferenceEvaluator: 7.407859999875655e-05s
+    speedup is 16.530120709919114
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-85
+.. GENERATED FROM PYTHON SOURCE LINES 85-86
 
 Let's add :epkg:`onnxruntime` as well.
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-95
+.. GENERATED FROM PYTHON SOURCE LINES 86-96
 
 .. code-block:: Python
 
@@ -182,18 +177,18 @@ Let's add :epkg:`onnxruntime` as well.
 
  .. code-block:: none
 
-    InferenceSession: 2.9544599999098864e-05s
-    speedup is 27.295072535288078
+    InferenceSession: 5.787280000004103e-05s
+    speedup is 21.15895895827386
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-98
+.. GENERATED FROM PYTHON SOURCE LINES 97-99
 
 Plotting
 ++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-118
+.. GENERATED FROM PYTHON SOURCE LINES 99-119
 
 .. code-block:: Python
 
@@ -225,7 +220,7 @@ Plotting
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:00,  6.82it/s]     50%|█████     | 2/4 [00:00<00:00,  6.77it/s]     75%|███████▌  | 3/4 [00:00<00:00,  6.63it/s]    100%|██████████| 4/4 [00:00<00:00,  3.92it/s]    100%|██████████| 4/4 [00:00<00:00,  4.63it/s]
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:00,  9.78it/s]     50%|█████     | 2/4 [00:00<00:00,  9.72it/s]     75%|███████▌  | 3/4 [00:00<00:00,  8.89it/s]    100%|██████████| 4/4 [00:01<00:00,  2.11it/s]    100%|██████████| 4/4 [00:01<00:00,  2.94it/s]
 
 
 .. raw:: html
@@ -258,26 +253,26 @@ Plotting
         <tr>
           <th>0</th>
           <td>16</td>
-          <td>0.000264</td>
-          <td>0.000027</td>
+          <td>0.000184</td>
+          <td>0.000018</td>
         </tr>
         <tr>
           <th>1</th>
           <td>32</td>
-          <td>0.000268</td>
-          <td>0.000026</td>
+          <td>0.000186</td>
+          <td>0.000019</td>
         </tr>
         <tr>
           <th>2</th>
           <td>48</td>
-          <td>0.000279</td>
-          <td>0.000028</td>
+          <td>0.000224</td>
+          <td>0.000022</td>
         </tr>
         <tr>
           <th>3</th>
           <td>64</td>
-          <td>0.000729</td>
-          <td>0.000096</td>
+          <td>0.001972</td>
+          <td>0.000084</td>
         </tr>
       </tbody>
     </table>
@@ -286,11 +281,11 @@ Plotting
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-120
+.. GENERATED FROM PYTHON SOURCE LINES 120-121
 
 Finally.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-133
+.. GENERATED FROM PYTHON SOURCE LINES 121-134
 
 .. code-block:: Python
 
@@ -322,7 +317,7 @@ Finally.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.150 seconds)
+   **Total running time of the script:** (0 minutes 7.276 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_conv_py_vs_c.py:

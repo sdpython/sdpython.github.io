@@ -36,6 +36,7 @@ def get_model():
             ],
         ),
         opset_imports=[make_opsetid("", 18)],
+        ir_version=9,
     )
     check_model(model_def0)
     return model_def0

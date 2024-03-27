@@ -137,6 +137,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The examples compare the performaance of two fused operators Mul with the unfused sequence.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_mul_cuda_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_op_mul_cuda.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fusing multiplication operators on CUDA</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="An example with Conv. The floats followed the IEEE standard Single-precision floating-point for...">
 
 .. only:: html
@@ -252,6 +269,7 @@ Examples Gallery
    /auto_examples/plot_op_tfidfvectorizer_sparse
    /auto_examples/plot_bench_gemm_f8
    /auto_examples/plot_op_einsum
+   /auto_examples/plot_op_mul_cuda
    /auto_examples/plot_op_conv_denorm
    /auto_examples/plot_op_tree_ensemble_optim
    /auto_examples/plot_op_tree_ensemble_sparse

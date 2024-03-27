@@ -30,9 +30,10 @@ from Ulrich Drepper.
 Cache Performance
 +++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-24
+.. GENERATED FROM PYTHON SOURCE LINES 14-25
 
 .. code-block:: Python
+
 
     from tqdm import tqdm
     import matplotlib.pyplot as plt
@@ -51,12 +52,12 @@ Cache Performance
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-27
+.. GENERATED FROM PYTHON SOURCE LINES 26-28
 
 Code of `benchmark_cache
 <https://github.com/sdpython/onnx-extended/blob/main/onnx_extended/validation/cpu/speed_metrics.cpp#L17>`_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-55
+.. GENERATED FROM PYTHON SOURCE LINES 28-56
 
 .. code-block:: Python
 
@@ -96,17 +97,17 @@ Code of `benchmark_cache
 
  .. code-block:: none
 
-      0%|          | 0/256 [00:00<?, ?it/s]     48%|████▊     | 123/256 [00:00<00:00, 1220.72it/s]     96%|█████████▌| 246/256 [00:00<00:00, 595.68it/s]     100%|██████████| 256/256 [00:00<00:00, 620.11it/s]
+      0%|          | 0/256 [00:00<?, ?it/s]     54%|█████▎    | 137/256 [00:00<00:00, 1352.31it/s]    100%|██████████| 256/256 [00:00<00:00, 708.71it/s] 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
+.. GENERATED FROM PYTHON SOURCE LINES 57-59
 
 Cache size estimator
 ++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-63
+.. GENERATED FROM PYTHON SOURCE LINES 59-64
 
 .. code-block:: Python
 
@@ -123,17 +124,17 @@ Cache size estimator
 
  .. code-block:: none
 
-    L2 cache size estimation is 0.703 Mb.
+    L2 cache size estimation is 1.695 Mb.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-66
+.. GENERATED FROM PYTHON SOURCE LINES 65-67
 
 Verification
 ++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-79
+.. GENERATED FROM PYTHON SOURCE LINES 67-80
 
 .. code-block:: Python
 
@@ -171,7 +172,7 @@ Verification
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-89
+.. GENERATED FROM PYTHON SOURCE LINES 81-90
 
 TreeEnsemble Performance
 ++++++++++++++++++++++++
@@ -183,7 +184,7 @@ The code of `benchmark_cache_tree
 <https://github.com/sdpython/onnx-extended/blob/main/onnx_extended/validation/cpu/speed_metrics.cpp#L50>`_
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-117
+.. GENERATED FROM PYTHON SOURCE LINES 90-118
 
 .. code-block:: Python
 
@@ -223,7 +224,7 @@ The code of `benchmark_cache_tree
 
  .. code-block:: none
 
-      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:01<00:05,  1.31s/it]     40%|████      | 2/5 [00:02<00:03,  1.17s/it]     60%|██████    | 3/5 [00:03<00:02,  1.06s/it]     80%|████████  | 4/5 [00:04<00:01,  1.08s/it]    100%|██████████| 5/5 [00:05<00:00,  1.09s/it]    100%|██████████| 5/5 [00:05<00:00,  1.10s/it]
+      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:00<00:03,  1.03it/s]     40%|████      | 2/5 [00:01<00:02,  1.07it/s]     60%|██████    | 3/5 [00:02<00:01,  1.10it/s]     80%|████████  | 4/5 [00:03<00:00,  1.12it/s]    100%|██████████| 5/5 [00:04<00:00,  1.12it/s]    100%|██████████| 5/5 [00:04<00:00,  1.11it/s]
 
 
 .. raw:: html
@@ -260,58 +261,58 @@ The code of `benchmark_cache_tree
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.041219</td>
-          <td>0.03867</td>
-          <td>0.030491</td>
-          <td>0.033571</td>
-          <td>0.034151</td>
+          <td>0.028126</td>
+          <td>0.038091</td>
+          <td>0.028161</td>
+          <td>0.028261</td>
+          <td>0.028189</td>
           <td>0</td>
-          <td>0.035621</td>
-          <td>0.034151</td>
+          <td>0.030166</td>
+          <td>0.028189</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.041219</td>
-          <td>0.03867</td>
-          <td>0.030491</td>
-          <td>0.033571</td>
-          <td>0.034151</td>
+          <td>0.028126</td>
+          <td>0.038091</td>
+          <td>0.028161</td>
+          <td>0.028261</td>
+          <td>0.028189</td>
           <td>1</td>
-          <td>0.035621</td>
-          <td>0.034151</td>
+          <td>0.030166</td>
+          <td>0.028189</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.041219</td>
-          <td>0.03867</td>
-          <td>0.030491</td>
-          <td>0.033571</td>
-          <td>0.034151</td>
+          <td>0.028126</td>
+          <td>0.038091</td>
+          <td>0.028161</td>
+          <td>0.028261</td>
+          <td>0.028189</td>
           <td>2</td>
-          <td>0.035621</td>
-          <td>0.034151</td>
+          <td>0.030166</td>
+          <td>0.028189</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.041219</td>
-          <td>0.03867</td>
-          <td>0.030491</td>
-          <td>0.033571</td>
-          <td>0.034151</td>
+          <td>0.028126</td>
+          <td>0.038091</td>
+          <td>0.028161</td>
+          <td>0.028261</td>
+          <td>0.028189</td>
           <td>3</td>
-          <td>0.035621</td>
-          <td>0.034151</td>
+          <td>0.030166</td>
+          <td>0.028189</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.041219</td>
-          <td>0.03867</td>
-          <td>0.030491</td>
-          <td>0.033571</td>
-          <td>0.034151</td>
+          <td>0.028126</td>
+          <td>0.038091</td>
+          <td>0.028161</td>
+          <td>0.028261</td>
+          <td>0.028189</td>
           <td>4</td>
-          <td>0.035621</td>
-          <td>0.034151</td>
+          <td>0.030166</td>
+          <td>0.028189</td>
         </tr>
       </tbody>
     </table>
@@ -320,12 +321,12 @@ The code of `benchmark_cache_tree
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-120
+.. GENERATED FROM PYTHON SOURCE LINES 119-121
 
 Estimation
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-128
+.. GENERATED FROM PYTHON SOURCE LINES 121-129
 
 .. code-block:: Python
 
@@ -347,25 +348,25 @@ Estimation
 
     Optimal batch size is among:
           i  time_med  time_avg
-    0  1280  0.032751  0.033592
-    1  1600  0.032936  0.033915
-    2  1408  0.032959  0.033938
-    3  1344  0.033052  0.034085
-    4  1216  0.033169  0.034291
-    5  1536  0.033426  0.033785
-    6  1472  0.033493  0.033620
-    7  1152  0.033496  0.034325
-    8  1664  0.033597  0.034121
-    9  1792  0.033612  0.036147
+    0   448  0.027966  0.028792
+    1    64  0.028016  0.028505
+    2   192  0.028045  0.028000
+    3   896  0.028057  0.028381
+    4  1856  0.028061  0.028154
+    5  1920  0.028076  0.027879
+    6  1216  0.028079  0.029016
+    7   128  0.028087  0.028028
+    8   384  0.028093  0.028341
+    9   704  0.028118  0.028209
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-130
+.. GENERATED FROM PYTHON SOURCE LINES 130-131
 
 One possible estimation
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-135
+.. GENERATED FROM PYTHON SOURCE LINES 131-136
 
 .. code-block:: Python
 
@@ -382,16 +383,16 @@ One possible estimation
 
  .. code-block:: none
 
-    Estimation: 1202.786800709671
+    Estimation: 938.7128273422819
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-137
+.. GENERATED FROM PYTHON SOURCE LINES 137-138
 
 Plots.
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-146
+.. GENERATED FROM PYTHON SOURCE LINES 138-147
 
 .. code-block:: Python
 
@@ -419,7 +420,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.694 seconds)
+   **Total running time of the script:** (0 minutes 6.849 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu.py:

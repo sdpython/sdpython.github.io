@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Readings" href="readings.html" /><link rel="prev" title="Build with CUDA" href="build_cuda.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Build with onnxruntime - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -176,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_bench_gemm_ort.html">Measuring performance about Gemm with onnxruntime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 </ul>
@@ -215,7 +216,8 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/ortops.html">onnx_extended.ortops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_extended.ortops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cpu.html">onnx_extended.ortops.tutorial.cpu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/ortops_tutorial_cuda.html">onnx_extended.ortops.tutorial.cuda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim.html">onnx_extended.ortops.optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cpu.html">onnx_extended.ortops.optim.cpu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ortops_optim_cuda.html">onnx_extended.ortops.optim.cuda</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api/plotting.html">onnx_extended.plotting</a></li>
@@ -256,6 +258,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
@@ -309,6 +312,24 @@
 <a class="reference external" href="https://cython.org/">cython</a>. The standard one relies on <a class="reference external" href="https://github.com/pybind/pybind11">pybind11</a>.
 For that purpose, it includes the onnxruntime binaries released
 on github (see <a class="reference external" href="https://github.com/microsoft/onnxruntime/releases">onnxruntime releases</a>).</p>
+<section id="build-onnxruntime">
+<h2>build onnxruntime<a class="headerlink" href="#build-onnxruntime" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clear</span><span class="o">&amp;&amp;</span><span class="n">CUDA_VERSION</span><span class="o">=</span><span class="mf">11.8</span> <span class="n">CUDACXX</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">cuda</span><span class="o">-</span><span class="mf">11.8</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">nvcc</span> <span class="n">python</span> <span class="o">./</span><span class="n">tools</span><span class="o">/</span><span class="n">ci_build</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">config</span> <span class="n">Release</span> <span class="o">--</span><span class="n">build_wheel</span> <span class="o">--</span><span class="n">build_dir</span> <span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">linux_cuda</span> \
+        <span class="o">--</span><span class="n">build_shared_lib</span> <span class="o">--</span><span class="n">use_cuda</span> <span class="o">--</span><span class="n">cuda_home</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">cuda</span><span class="o">-</span><span class="mf">11.8</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">cudnn_home</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">cuda</span><span class="o">-</span><span class="mf">11.8</span><span class="o">/</span> <span class="o">--</span><span class="n">cuda_version</span><span class="o">=</span><span class="mf">11.8</span> <span class="o">--</span><span class="n">enable_training</span> <span class="o">--</span><span class="n">enable_training_ops</span> \
+        <span class="o">--</span><span class="n">cmake_extra_defines</span> <span class="s2">&quot;CMAKE_CUDA_ARCHITECTURES=61&quot;</span> \
+        <span class="o">--</span><span class="n">parallel</span> <span class="o">--</span><span class="n">skip_tests</span>
+
+<span class="n">clear</span><span class="o">&amp;&amp;</span><span class="n">CUDA_VERSION</span><span class="o">=</span><span class="mf">12.1</span> <span class="n">CUDACXX</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">cuda</span><span class="o">-</span><span class="mf">12.1</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">nvcc</span> <span class="n">python</span> <span class="o">./</span><span class="n">tools</span><span class="o">/</span><span class="n">ci_build</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">config</span> <span class="n">Release</span> <span class="o">--</span><span class="n">build_wheel</span> <span class="o">--</span><span class="n">build_dir</span> <span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">linux_cuda</span> \
+        <span class="o">--</span><span class="n">build_shared_lib</span> <span class="o">--</span><span class="n">use_cuda</span> <span class="o">--</span><span class="n">cuda_home</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">cuda</span><span class="o">-</span><span class="mf">12.1</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">cudnn_home</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">cuda</span><span class="o">-</span><span class="mf">12.1</span><span class="o">/</span> <span class="o">--</span><span class="n">cuda_version</span><span class="o">=</span><span class="mf">12.1</span> <span class="o">--</span><span class="n">enable_training</span> <span class="o">--</span><span class="n">enable_training_ops</span> \
+        <span class="o">--</span><span class="n">cmake_extra_defines</span> <span class="s2">&quot;CMAKE_CUDA_ARCHITECTURES=70;72&quot;</span> \
+        <span class="o">--</span><span class="n">parallel</span> <span class="o">--</span><span class="n">skip_tests</span>
+</pre></div>
+</div>
+</section>
 <section id="cmake">
 <h2>cmake<a class="headerlink" href="#cmake" title="Link to this heading">#</a></h2>
 <p>The first step is to load the extension <a class="reference external" href="https://github.com/sdpython/onnx-extended/blob/main/_cmake/externals/FindOrt.cmake">FindOrt.cmake</a>
@@ -391,6 +412,7 @@ These project define constant <cite>ORT_VERSION</cite>. For example, version 1.1
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Build with onnxruntime</a><ul>
+<li><a class="reference internal" href="#build-onnxruntime">build onnxruntime</a></li>
 <li><a class="reference internal" href="#cmake">cmake</a></li>
 </ul>
 </li>
