@@ -46,9 +46,10 @@ Compared implementations:
 Preparation
 +++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-52
+.. GENERATED FROM PYTHON SOURCE LINES 30-53
 
 .. code-block:: Python
+
 
     import timeit
     import numpy
@@ -79,14 +80,14 @@ Preparation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-57
+.. GENERATED FROM PYTHON SOURCE LINES 54-58
 
 Measures
 ++++++++
 
 numpy
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-60
+.. GENERATED FROM PYTHON SOURCE LINES 58-61
 
 .. code-block:: Python
 
@@ -101,16 +102,16 @@ numpy
 
  .. code-block:: none
 
-    numpy time 0.018813399999999092
+    numpy time 0.011885600000823615
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-62
+.. GENERATED FROM PYTHON SOURCE LINES 62-63
 
 python implementation
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-67
+.. GENERATED FROM PYTHON SOURCE LINES 63-68
 
 .. code-block:: Python
 
@@ -127,16 +128,16 @@ python implementation
 
  .. code-block:: none
 
-    python implementation 6.625477400000364
+    python implementation 7.265511200001129
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-69
+.. GENERATED FROM PYTHON SOURCE LINES 69-70
 
 cython implementation
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-74
+.. GENERATED FROM PYTHON SOURCE LINES 70-75
 
 .. code-block:: Python
 
@@ -153,16 +154,16 @@ cython implementation
 
  .. code-block:: none
 
-    cython implementation 0.15298249999977998
+    cython implementation 0.1918974000000162
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-76
+.. GENERATED FROM PYTHON SOURCE LINES 76-77
 
 cython implementation parallelized
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-81
+.. GENERATED FROM PYTHON SOURCE LINES 77-82
 
 .. code-block:: Python
 
@@ -179,16 +180,16 @@ cython implementation parallelized
 
  .. code-block:: none
 
-    cython implementation parallelized 0.9826514999999745
+    cython implementation parallelized 0.9288433000001532
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-83
+.. GENERATED FROM PYTHON SOURCE LINES 83-84
 
 cython implementation parallelized, AVX + transposed
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-90
+.. GENERATED FROM PYTHON SOURCE LINES 84-91
 
 .. code-block:: Python
 
@@ -207,16 +208,16 @@ cython implementation parallelized, AVX + transposed
 
  .. code-block:: none
 
-    cython implementation parallelized avx 0.9252214999996795
+    cython implementation parallelized avx 0.8376110999997763
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-92
+.. GENERATED FROM PYTHON SOURCE LINES 92-93
 
 Speed up...
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-97
+.. GENERATED FROM PYTHON SOURCE LINES 93-98
 
 .. code-block:: Python
 
@@ -233,10 +234,10 @@ Speed up...
 
  .. code-block:: none
 
-    numpy is 352.167997 faster than pure python.
-    numpy is 8.131571 faster than cython.
-    numpy is 52.231468 faster than parallelized cython.
-    numpy is 49.178857 faster than avx parallelized cython.
+    numpy is 611.286868 faster than pure python.
+    numpy is 16.145369 faster than cython.
+    numpy is 78.148625 faster than parallelized cython.
+    numpy is 70.472765 faster than avx parallelized cython.
 
 
 
@@ -244,7 +245,7 @@ Speed up...
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.721 seconds)
+   **Total running time of the script:** (0 minutes 9.253 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_dot_mul_timeit.py:

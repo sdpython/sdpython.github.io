@@ -18,13 +18,15 @@
 .. _sphx_glr_auto_examples_plot_benchmark_filter.py:
 
 
+.. _l-compare-filtering-implementation:
+
 Compares filtering implementations (numpy, cython)
 ==================================================
 
 The benchmark looks into different ways to implement
 thresholding: every value of a vector superior to *mx*
-is replaced by *mx*. It compares several implementation
-to :epkg:`numpy`.
+is replaced by *mx* (:func:`numpy.clip`).
+It compares several implementation to :epkg:`numpy`.
 
 * :func:`cfilter_dmax <teachcompute.validation.cython.experiment_cython.cfilter_dmax>`
   `cfilter_dmax <https://github.com/sdpython/teachcompute/blob/main/
@@ -54,7 +56,7 @@ to :epkg:`numpy`.
   `pyfilter_dmax <https://github.com/sdpython/teachcompute/blob/main/
   teachcompute/validation/cython/experiment_cython.pyx#L15>`_
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-94
+.. GENERATED FROM PYTHON SOURCE LINES 40-96
 
 .. code-block:: Python
 
@@ -122,56 +124,56 @@ to :epkg:`numpy`.
 
  .. code-block:: none
 
-    <function numpy_filter at 0x7f50b7028940>
-      0%|          | 0/200 [00:00<?, ?it/s]     24%|██▍       | 48/200 [00:00<00:00, 478.21it/s]     48%|████▊     | 96/200 [00:00<00:00, 312.14it/s]     66%|██████▌   | 131/200 [00:00<00:00, 254.36it/s]     80%|███████▉  | 159/200 [00:00<00:00, 222.36it/s]     92%|█████████▏| 183/200 [00:00<00:00, 192.67it/s]    100%|██████████| 200/200 [00:00<00:00, 216.88it/s]
-    <cyfunction pyfilter_dmax at 0x7f5088f7ac20>
-      0%|          | 0/5 [00:00<?, ?it/s]    100%|██████████| 5/5 [00:00<00:00, 53.97it/s]
-    <cyfunction filter_dmax_cython at 0x7f5088f7b850>
-      0%|          | 0/200 [00:00<?, ?it/s]     37%|███▋      | 74/200 [00:00<00:00, 731.10it/s]     74%|███████▍  | 148/200 [00:00<00:00, 359.33it/s]     97%|█████████▋| 194/200 [00:00<00:00, 285.14it/s]    100%|██████████| 200/200 [00:00<00:00, 312.74it/s]
-    <cyfunction filter_dmax_cython_optim at 0x7f5088f7bed0>
-      0%|          | 0/200 [00:00<?, ?it/s]     40%|████      | 80/200 [00:00<00:00, 791.45it/s]     80%|████████  | 160/200 [00:00<00:00, 357.75it/s]    100%|██████████| 200/200 [00:00<00:00, 323.16it/s]
-    <cyfunction cyfilter_dmax at 0x7f5088f7be00>
-      0%|          | 0/200 [00:00<?, ?it/s]     40%|████      | 80/200 [00:00<00:00, 795.13it/s]     80%|████████  | 160/200 [00:00<00:00, 389.43it/s]    100%|██████████| 200/200 [00:00<00:00, 339.95it/s]
-    <cyfunction cfilter_dmax at 0x7f50b6ef0ee0>
-      0%|          | 0/200 [00:00<?, ?it/s]     40%|████      | 80/200 [00:00<00:00, 790.24it/s]     80%|████████  | 160/200 [00:00<00:00, 395.88it/s]    100%|██████████| 200/200 [00:00<00:00, 336.80it/s]
-    <cyfunction cfilter_dmax2 at 0x7f50b6ef0e10>
-      0%|          | 0/200 [00:00<?, ?it/s]     47%|████▋     | 94/200 [00:00<00:00, 925.16it/s]     94%|█████████▎| 187/200 [00:00<00:00, 454.19it/s]    100%|██████████| 200/200 [00:00<00:00, 463.34it/s]
-    <cyfunction cfilter_dmax16 at 0x7f50b6ef0d40>
-      0%|          | 0/200 [00:00<?, ?it/s]     29%|██▉       | 58/200 [00:00<00:00, 576.40it/s]     58%|█████▊    | 116/200 [00:00<00:00, 265.64it/s]     76%|███████▌  | 152/200 [00:00<00:00, 171.54it/s]     88%|████████▊ | 176/200 [00:01<00:00, 143.08it/s]     98%|█████████▊| 195/200 [00:01<00:00, 124.70it/s]    100%|██████████| 200/200 [00:01<00:00, 154.62it/s]
-    <cyfunction cfilter_dmax4 at 0x7f50b6ef0c70>
-      0%|          | 0/200 [00:00<?, ?it/s]     26%|██▌       | 51/200 [00:00<00:00, 507.25it/s]     51%|█████     | 102/200 [00:00<00:00, 262.13it/s]     68%|██████▊   | 135/200 [00:00<00:00, 192.44it/s]     80%|███████▉  | 159/200 [00:00<00:00, 157.36it/s]     89%|████████▉ | 178/200 [00:01<00:00, 134.61it/s]     97%|█████████▋| 194/200 [00:01<00:00, 121.06it/s]    100%|██████████| 200/200 [00:01<00:00, 151.25it/s]
-    [{'average': 1.2499999984356692e-06,
+    <function numpy_filter at 0x7ff2e6763b50>
+      0%|          | 0/200 [00:00<?, ?it/s]     30%|███       | 60/200 [00:00<00:00, 590.09it/s]     60%|██████    | 120/200 [00:00<00:00, 406.31it/s]     82%|████████▏ | 164/200 [00:00<00:00, 309.15it/s]    100%|█████████▉| 199/200 [00:00<00:00, 217.43it/s]    100%|██████████| 200/200 [00:00<00:00, 263.15it/s]
+    <cyfunction pyfilter_dmax at 0x7ff32e47fc60>
+      0%|          | 0/5 [00:00<?, ?it/s]    100%|██████████| 5/5 [00:00<00:00, 39.54it/s]    100%|██████████| 5/5 [00:00<00:00, 39.44it/s]
+    <cyfunction filter_dmax_cython at 0x7ff2fd0928e0>
+      0%|          | 0/200 [00:00<?, ?it/s]     40%|███▉      | 79/200 [00:00<00:00, 789.85it/s]     79%|███████▉  | 158/200 [00:00<00:00, 403.12it/s]    100%|██████████| 200/200 [00:00<00:00, 364.30it/s]
+    <cyfunction filter_dmax_cython_optim at 0x7ff2fd092400>
+      0%|          | 0/200 [00:00<?, ?it/s]     43%|████▎     | 86/200 [00:00<00:00, 843.32it/s]     86%|████████▌ | 171/200 [00:00<00:00, 367.13it/s]    100%|██████████| 200/200 [00:00<00:00, 340.45it/s]
+    <cyfunction cyfilter_dmax at 0x7ff2fd091be0>
+      0%|          | 0/200 [00:00<?, ?it/s]     26%|██▌       | 51/200 [00:00<00:00, 509.43it/s]     51%|█████     | 102/200 [00:00<00:00, 490.98it/s]     76%|███████▌  | 152/200 [00:00<00:00, 379.40it/s]     96%|█████████▋| 193/200 [00:00<00:00, 311.63it/s]    100%|██████████| 200/200 [00:00<00:00, 340.26it/s]
+    <cyfunction cfilter_dmax at 0x7ff2e846ee90>
+      0%|          | 0/200 [00:00<?, ?it/s]     30%|███       | 60/200 [00:00<00:00, 589.64it/s]     60%|█████▉    | 119/200 [00:00<00:00, 377.84it/s]     80%|████████  | 161/200 [00:00<00:00, 269.06it/s]     96%|█████████▋| 193/200 [00:00<00:00, 240.61it/s]    100%|██████████| 200/200 [00:00<00:00, 272.39it/s]
+    <cyfunction cfilter_dmax2 at 0x7ff2e846f850>
+      0%|          | 0/200 [00:00<?, ?it/s]     46%|████▌     | 91/200 [00:00<00:00, 899.44it/s]     90%|█████████ | 181/200 [00:00<00:00, 480.37it/s]    100%|██████████| 200/200 [00:00<00:00, 457.30it/s]
+    <cyfunction cfilter_dmax16 at 0x7ff2e846f2a0>
+      0%|          | 0/200 [00:00<?, ?it/s]     24%|██▍       | 49/200 [00:00<00:00, 485.73it/s]     49%|████▉     | 98/200 [00:00<00:00, 238.28it/s]     64%|██████▍   | 129/200 [00:00<00:00, 186.34it/s]     76%|███████▌  | 152/200 [00:00<00:00, 151.77it/s]     85%|████████▌ | 170/200 [00:01<00:00, 131.02it/s]     92%|█████████▎| 185/200 [00:01<00:00, 95.66it/s]      98%|█████████▊| 197/200 [00:01<00:00, 76.03it/s]    100%|██████████| 200/200 [00:01<00:00, 118.11it/s]
+    <cyfunction cfilter_dmax4 at 0x7ff2e846f370>
+      0%|          | 0/200 [00:00<?, ?it/s]     25%|██▌       | 50/200 [00:00<00:00, 491.18it/s]     50%|█████     | 100/200 [00:00<00:00, 252.00it/s]     66%|██████▌   | 132/200 [00:00<00:00, 197.74it/s]     78%|███████▊  | 156/200 [00:00<00:00, 163.05it/s]     88%|████████▊ | 175/200 [00:01<00:00, 140.04it/s]     96%|█████████▌| 191/200 [00:01<00:00, 102.01it/s]    100%|██████████| 200/200 [00:01<00:00, 133.75it/s]
+    [{'average': 1.1421999952290207e-06,
       'context_size': 232,
-      'deviation': 1.3535141185601317e-08,
+      'deviation': 1.2789058602498825e-08,
       'fct': 'numpy_filter',
-      'max_exec': 1.2820000029023503e-06,
-      'min_exec': 1.2359999982436421e-06,
+      'max_exec': 1.1799999992945231e-06,
+      'min_exec': 1.1359999916749075e-06,
       'number': 50,
       'repeat': 10,
-      'ttime': 1.2499999984356691e-05,
-      'warmup_time': 3.5600000046542846e-05,
+      'ttime': 1.1421999952290207e-05,
+      'warmup_time': 2.9200000426499173e-05,
       'x_name': 10},
-     {'average': 1.4046000005691895e-06,
+     {'average': 1.1563999978534411e-06,
       'context_size': 232,
-      'deviation': 1.834536447496029e-07,
+      'deviation': 7.578910748483153e-09,
       'fct': 'numpy_filter',
-      'max_exec': 1.8980000004376053e-06,
-      'min_exec': 1.2859999969805358e-06,
+      'max_exec': 1.1779999840655364e-06,
+      'min_exec': 1.1500000255182385e-06,
       'number': 50,
       'repeat': 10,
-      'ttime': 1.4046000005691894e-05,
-      'warmup_time': 1.8900000213761814e-05,
+      'ttime': 1.1563999978534411e-05,
+      'warmup_time': 1.089999932446517e-05,
       'x_name': 210}]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-97
+.. GENERATED FROM PYTHON SOURCE LINES 97-99
 
 Let's display the results
 +++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-117
+.. GENERATED FROM PYTHON SOURCE LINES 99-119
 
 .. code-block:: Python
 
@@ -213,7 +215,7 @@ Let's display the results
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-121
+.. GENERATED FROM PYTHON SOURCE LINES 120-123
 
 The results depends on the machine, its
 number of cores, the compilation settings
@@ -222,7 +224,7 @@ of :epkg:`numpy` or this module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.258 seconds)
+   **Total running time of the script:** (0 minutes 9.877 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_filter.py:

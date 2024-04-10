@@ -28,9 +28,10 @@ by rows or by columns when the computation is parallelized.
 Vector Sum
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-76
+.. GENERATED FROM PYTHON SOURCE LINES 12-77
 
 .. code-block:: Python
+
 
     from tqdm import tqdm
     import numpy
@@ -104,33 +105,33 @@ Vector Sum
 
  .. code-block:: none
 
-      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:04<01:03,  4.86s/it]     14%|█▍        | 2/14 [00:09<00:58,  4.86s/it]     21%|██▏       | 3/14 [00:12<00:40,  3.69s/it]     29%|██▊       | 4/14 [00:15<00:36,  3.63s/it]     36%|███▌      | 5/14 [00:17<00:27,  3.01s/it]     43%|████▎     | 6/14 [00:19<00:22,  2.83s/it]     50%|█████     | 7/14 [00:22<00:18,  2.66s/it]     57%|█████▋    | 8/14 [00:24<00:14,  2.37s/it]     64%|██████▍   | 9/14 [00:25<00:10,  2.14s/it]     71%|███████▏  | 10/14 [00:27<00:08,  2.11s/it]     79%|███████▊  | 11/14 [00:29<00:06,  2.05s/it]     86%|████████▌ | 12/14 [00:31<00:03,  1.96s/it]     93%|█████████▎| 13/14 [00:33<00:01,  1.96s/it]    100%|██████████| 14/14 [00:35<00:00,  1.95s/it]    100%|██████████| 14/14 [00:35<00:00,  2.52s/it]
+      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:06<01:23,  6.43s/it]     14%|█▍        | 2/14 [00:11<01:08,  5.67s/it]     21%|██▏       | 3/14 [00:15<00:54,  4.97s/it]     29%|██▊       | 4/14 [00:18<00:42,  4.21s/it]     36%|███▌      | 5/14 [00:20<00:29,  3.32s/it]     43%|████▎     | 6/14 [00:23<00:25,  3.15s/it]     50%|█████     | 7/14 [00:25<00:19,  2.81s/it]     57%|█████▋    | 8/14 [00:27<00:14,  2.45s/it]     64%|██████▍   | 9/14 [00:28<00:11,  2.21s/it]     71%|███████▏  | 10/14 [00:30<00:08,  2.18s/it]     79%|███████▊  | 11/14 [00:32<00:06,  2.13s/it]     86%|████████▌ | 12/14 [00:34<00:04,  2.03s/it]     93%|█████████▎| 13/14 [00:36<00:01,  1.97s/it]    100%|██████████| 14/14 [00:38<00:00,  1.90s/it]    100%|██████████| 14/14 [00:38<00:00,  2.74s/it]
     direction        cols//          rows        rows//
     dim                                                
-    500        2.485300e-09  1.172266e-09  4.590556e-10
-    700        7.206235e-09  1.949640e-09  6.058516e-09
-    800        6.439113e-09  1.400715e-09  6.106934e-09
-    900        4.936623e-09  1.441093e-09  3.962276e-09
-    1000       3.945011e-09  1.538367e-09  2.984257e-09
-    1100       3.319963e-09  1.456020e-09  2.425906e-09
-    1200       3.010357e-09  1.623550e-09  1.996246e-09
-    1300       3.316534e-09  1.535960e-09  1.729561e-09
-    1400       3.115103e-09  1.522813e-09  1.590546e-09
-    1500       3.139821e-09  1.547917e-09  1.513376e-09
-    1600       3.630654e-09  1.527942e-09  1.365719e-09
-    1700       3.658771e-09  1.465522e-09  1.262831e-09
-    1800       3.691050e-09  1.557445e-09  1.278427e-09
-    2000       4.057287e-09  1.631127e-09  1.082761e-09
+    500        1.072867e-08  2.317543e-09  1.079809e-08
+    700        5.984602e-09  1.196886e-09  5.927380e-09
+    800        4.683267e-09  1.221538e-09  4.340294e-09
+    900        3.889213e-09  1.494314e-09  3.683368e-09
+    1000       3.667275e-09  1.558552e-09  3.167424e-09
+    1100       3.650802e-09  1.432739e-09  2.968966e-09
+    1200       3.353628e-09  1.464854e-09  2.266978e-09
+    1300       3.360654e-09  1.482433e-09  1.779446e-09
+    1400       3.235819e-09  1.541875e-09  1.625567e-09
+    1500       3.098604e-09  1.505656e-09  1.474872e-09
+    1600       3.468438e-09  1.592590e-09  1.480811e-09
+    1700       3.216257e-09  1.370334e-09  1.524832e-09
+    1800       3.430561e-09  1.431448e-09  1.383657e-09
+    2000       3.611785e-09  1.496696e-09  1.074231e-09
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-79
+.. GENERATED FROM PYTHON SOURCE LINES 78-80
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-90
+.. GENERATED FROM PYTHON SOURCE LINES 80-91
 
 .. code-block:: Python
 
@@ -158,13 +159,13 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:747: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-95
+.. GENERATED FROM PYTHON SOURCE LINES 92-96
 
 The summation by rows is much faster as expected.
 That explains why it is usually more efficient to
@@ -174,7 +175,7 @@ Parallelization is faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 36.798 seconds)
+   **Total running time of the script:** (0 minutes 39.811 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum_parallel.py:

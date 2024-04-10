@@ -29,9 +29,10 @@ summation of random permutation of the same array of values.
 Setup
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-32
+.. GENERATED FROM PYTHON SOURCE LINES 13-33
 
 .. code-block:: Python
+
 
     from tqdm import tqdm
     import numpy as np
@@ -60,12 +61,12 @@ Setup
 
  .. code-block:: none
 
-    reduced sum=1618.072509765625, iterative sum=1618.0577392578125, delta=-0.0147705078125
+    reduced sum=1440.249755859375, iterative sum=1440.235107421875, delta=-0.0146484375
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-40
+.. GENERATED FROM PYTHON SOURCE LINES 34-41
 
 There are discrepancies.
 
@@ -75,7 +76,7 @@ Random order
 Let's go further and check the sum of random permutation of the same set.
 Let's compare the result with the same sum done with a higher precision (double).
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-77
+.. GENERATED FROM PYTHON SOURCE LINES 41-78
 
 .. code-block:: Python
 
@@ -124,16 +125,16 @@ Let's compare the result with the same sum done with a higher precision (double)
 
  .. code-block:: none
 
-      0%|          | 0/200 [00:00<?, ?it/s]      4%|▍         | 9/200 [00:00<00:02, 84.39it/s]      9%|▉         | 18/200 [00:00<00:02, 81.55it/s]     14%|█▎        | 27/200 [00:00<00:02, 79.57it/s]     18%|█▊        | 37/200 [00:00<00:01, 86.93it/s]     23%|██▎       | 46/200 [00:00<00:01, 85.55it/s]     28%|██▊       | 56/200 [00:00<00:01, 90.09it/s]     35%|███▌      | 70/200 [00:00<00:01, 105.78it/s]     40%|████      | 81/200 [00:00<00:01, 100.59it/s]     48%|████▊     | 97/200 [00:00<00:00, 117.86it/s]     55%|█████▍    | 109/200 [00:01<00:00, 116.16it/s]     60%|██████    | 121/200 [00:01<00:00, 107.94it/s]     68%|██████▊   | 135/200 [00:01<00:00, 116.24it/s]     74%|███████▎  | 147/200 [00:01<00:00, 116.99it/s]     80%|████████  | 160/200 [00:01<00:00, 118.81it/s]     88%|████████▊ | 175/200 [00:01<00:00, 127.75it/s]     94%|█████████▍| 189/200 [00:01<00:00, 128.88it/s]    100%|██████████| 200/200 [00:01<00:00, 111.11it/s]
-    min=1618.05517578125 max=1618.0579833984375 delta=0.0028076171875
-    min=1618.0725121498108 max=1618.0725121498108 delta=0.0 (double)
-    min=1618.0723876953125 max=1618.072509765625 delta=0.0001220703125 (reduced)
-    min=1618.0725121498108 max=1618.0725121498108 delta=0.0 (reduced)
+      0%|          | 0/200 [00:00<?, ?it/s]      4%|▍         | 9/200 [00:00<00:02, 82.91it/s]     10%|▉         | 19/200 [00:00<00:02, 86.94it/s]     14%|█▍        | 28/200 [00:00<00:02, 65.00it/s]     18%|█▊        | 35/200 [00:00<00:02, 60.78it/s]     21%|██        | 42/200 [00:00<00:02, 60.55it/s]     26%|██▌       | 52/200 [00:00<00:02, 71.63it/s]     30%|███       | 60/200 [00:00<00:01, 73.24it/s]     34%|███▍      | 68/200 [00:01<00:02, 60.65it/s]     40%|████      | 81/200 [00:01<00:01, 77.86it/s]     45%|████▌     | 90/200 [00:01<00:01, 80.86it/s]     50%|█████     | 100/200 [00:01<00:01, 83.64it/s]     55%|█████▍    | 109/200 [00:01<00:01, 79.93it/s]     60%|██████    | 121/200 [00:01<00:00, 89.91it/s]     66%|██████▌   | 131/200 [00:01<00:00, 75.73it/s]     72%|███████▎  | 145/200 [00:01<00:00, 90.65it/s]     79%|███████▉  | 158/200 [00:01<00:00, 100.06it/s]     86%|████████▌ | 171/200 [00:02<00:00, 107.30it/s]     92%|█████████▏| 183/200 [00:02<00:00, 107.24it/s]     98%|█████████▊| 195/200 [00:02<00:00, 107.48it/s]    100%|██████████| 200/200 [00:02<00:00, 85.56it/s] 
+    min=1440.234130859375 max=1440.2376708984375 delta=0.0035400390625
+    min=1440.2498691082 max=1440.2498691082 delta=0.0 (double)
+    min=1440.249755859375 max=1440.25 delta=0.000244140625 (reduced)
+    min=1440.2498691082 max=1440.2498691082 delta=0.0 (reduced)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-90
+.. GENERATED FROM PYTHON SOURCE LINES 79-91
 
 This example clearly shows the order has an impact.
 It is usually unavoidable but it could reduced if the sum
@@ -148,7 +149,7 @@ However if we have an estimator of this average, not necessarily
 the exact value, we would help the summation to keep the same order
 of magnitude than the values it adds.
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-95
+.. GENERATED FROM PYTHON SOURCE LINES 91-96
 
 .. code-block:: Python
 
@@ -165,20 +166,20 @@ of magnitude than the values it adds.
 
  .. code-block:: none
 
-      0%|          | 0/200 [00:00<?, ?it/s]      6%|▋         | 13/200 [00:00<00:01, 121.99it/s]     13%|█▎        | 26/200 [00:00<00:01, 95.88it/s]      20%|██        | 40/200 [00:00<00:01, 110.26it/s]     26%|██▌       | 52/200 [00:00<00:01, 110.35it/s]     33%|███▎      | 66/200 [00:00<00:01, 119.81it/s]     40%|████      | 81/200 [00:00<00:00, 128.05it/s]     48%|████▊     | 96/200 [00:00<00:00, 133.99it/s]     55%|█████▌    | 110/200 [00:00<00:00, 129.82it/s]     62%|██████▏   | 124/200 [00:01<00:00, 107.33it/s]     68%|██████▊   | 136/200 [00:01<00:00, 98.16it/s]      74%|███████▎  | 147/200 [00:01<00:00, 93.10it/s]     78%|███████▊  | 157/200 [00:01<00:00, 71.40it/s]     83%|████████▎ | 166/200 [00:01<00:00, 72.03it/s]     90%|████████▉ | 179/200 [00:01<00:00, 84.76it/s]     94%|█████████▍| 189/200 [00:01<00:00, 85.74it/s]    100%|██████████| 200/200 [00:02<00:00, 90.48it/s]    100%|██████████| 200/200 [00:02<00:00, 98.04it/s]
-    min=1618.0731201171875 max=1618.0731201171875 delta=0.0
-    min=1618.0724694132805 max=1618.0724694132805 delta=0.0 (double)
-    min=1618.072470664978 max=1618.0725011825562 delta=3.0517578125e-05 (reduced)
-    min=1618.0724694132805 max=1618.0724694132805 delta=0.0 (reduced)
+      0%|          | 0/200 [00:00<?, ?it/s]      4%|▍         | 9/200 [00:00<00:02, 84.55it/s]     10%|█         | 21/200 [00:00<00:01, 104.03it/s]     18%|█▊        | 36/200 [00:00<00:01, 122.78it/s]     26%|██▌       | 52/200 [00:00<00:01, 136.73it/s]     33%|███▎      | 66/200 [00:00<00:01, 125.16it/s]     40%|███▉      | 79/200 [00:00<00:01, 111.86it/s]     46%|████▋     | 93/200 [00:00<00:00, 118.43it/s]     54%|█████▎    | 107/200 [00:00<00:00, 124.51it/s]     60%|██████    | 120/200 [00:01<00:00, 120.20it/s]     66%|██████▋   | 133/200 [00:01<00:00, 108.45it/s]     74%|███████▎  | 147/200 [00:01<00:00, 115.72it/s]     80%|███████▉  | 159/200 [00:01<00:00, 108.38it/s]     86%|████████▌ | 171/200 [00:01<00:00, 106.13it/s]     91%|█████████ | 182/200 [00:01<00:00, 89.58it/s]      96%|█████████▌| 192/200 [00:01<00:00, 60.65it/s]    100%|██████████| 200/200 [00:02<00:00, 51.50it/s]    100%|██████████| 200/200 [00:02<00:00, 89.79it/s]
+    min=1440.2513427734375 max=1440.2513427734375 delta=0.0
+    min=1440.2498311400414 max=1440.2498311400414 delta=0.0 (double)
+    min=1440.2498388290405 max=1440.2498655319214 delta=2.6702880859375e-05 (reduced)
+    min=1440.2498311400414 max=1440.2498311400414 delta=0.0 (reduced)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-97
+.. GENERATED FROM PYTHON SOURCE LINES 97-98
 
 The differences are clearly lower.
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-103
+.. GENERATED FROM PYTHON SOURCE LINES 98-104
 
 .. code-block:: Python
 
@@ -198,19 +199,19 @@ The differences are clearly lower.
 
     bias     0.000000    1475.612998
     name                            
-    red_f32     0.000122    0.000031
+    red_f32     0.000244    0.000027
     red_f64          0.0         0.0
-    seq_fp32    0.002808         0.0
+    seq_fp32     0.00354         0.0
     seq_fp64         0.0         0.0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-105
+.. GENERATED FROM PYTHON SOURCE LINES 105-106
 
 Plots.
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-110
+.. GENERATED FROM PYTHON SOURCE LINES 106-111
 
 .. code-block:: Python
 
@@ -234,7 +235,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.671 seconds)
+   **Total running time of the script:** (0 minutes 5.287 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_check_random_order.py:

@@ -250,7 +250,7 @@ or a custom implementation from domain
 
     opset: domain='' version=18
     opset: domain='com.microsoft' version=1
-    opset: domain='onnx_extented.ortops.tutorial.cuda' version=1
+    opset: domain='onnx_extended.ortops.tutorial.cuda' version=1
     input: name='A' type=dtype('float32') shape=['', '']
     input: name='B' type=dtype('float32') shape=['', '']
     GemmFloat8[com.microsoft](A, B, alpha=1.00, computeType=b'CUBLAS_COMPUTE_32F', fastAccumulationMode=1, rowMajor=1, transA=1) -> C
@@ -517,7 +517,32 @@ Let's run the profiles
 
  .. code-block:: none
 
-      0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):   0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:02,  6.86it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:02,  6.86it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:01,  6.85it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:01,  6.85it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  46%|████▌     | 11/24 [00:01<00:01,  6.85it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:02,  2.73it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:02,  2.73it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  6.26it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  6.26it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512): 100%|██████████| 24/24 [00:04<00:00,  5.41it/s]
+
+      0%|          | 0/24 [00:00<?, ?it/s]
+    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):   0%|          | 0/24 [00:00<?, ?it/s]
+    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]
+    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]
+    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]
+    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  29%|██▉       | 7/24 [00:01<00:02,  5.73it/s]
+    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:02,  6.86it/s]
+    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:02,  6.86it/s]
+    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:01,  6.85it/s]
+    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:01,  6.85it/s]
+    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  46%|████▌     | 11/24 [00:01<00:01,  6.85it/s]
+    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]
+    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]
+    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]
+    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  54%|█████▍    | 13/24 [00:02<00:01,  6.24it/s]
+    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:02,  2.73it/s]
+    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:02,  2.73it/s]
+    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]
+    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]
+    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]
+    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]
+    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  3.07it/s]
+    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  6.26it/s]
+    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  6.26it/s]
+    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512): 100%|██████████| 24/24 [00:04<00:00,  5.41it/s]
 
 
 

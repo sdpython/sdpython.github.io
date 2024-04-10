@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**06:38.490** total execution time for 14 files **from auto_examples**:
+**00:01.980** total execution time for 15 files **from auto_examples**:
 
 .. container::
 
@@ -32,45 +32,48 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_benchmark_parallel_process_concurrent.py` (``plot_benchmark_parallel_process_concurrent.py``)
-     - 02:31.012
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py` (``plot_bench_cpu_vector_sum_avx_parallel.py``)
-     - 01:00.636
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot_mul.py` (``plot_benchmark_dot_mul.py``)
-     - 00:55.111
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py` (``plot_bench_cpu_vector_sum_parallel.py``)
-     - 00:36.798
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot.py` (``plot_benchmark_dot.py``)
-     - 00:21.163
+   * - :ref:`sphx_glr_auto_examples_plot_piecewise_linear.py` (``plot_piecewise_linear.py``)
+     - 00:01.980
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum.py` (``plot_bench_cpu_vector_sum.py``)
-     - 00:18.351
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py` (``plot_bench_cpu_vector_sum_avx_parallel.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_cpu_vector_sum_parallel.py` (``plot_bench_cpu_vector_sum_parallel.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_benchmark_associative.py` (``plot_benchmark_associative.py``)
-     - 00:16.443
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot_cython_omp.py` (``plot_benchmark_dot_cython_omp.py``)
-     - 00:12.893
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot_mul_timeit.py` (``plot_benchmark_dot_mul_timeit.py``)
-     - 00:08.721
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_benchmark_filter.py` (``plot_benchmark_filter.py``)
-     - 00:08.258
+   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot.py` (``plot_benchmark_dot.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot_cython.py` (``plot_benchmark_dot_cython.py``)
-     - 00:05.147
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot_cython_omp.py` (``plot_benchmark_dot_cython_omp.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot_mul.py` (``plot_benchmark_dot_mul.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_benchmark_dot_mul_timeit.py` (``plot_benchmark_dot_mul_timeit.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_benchmark_filter.py` (``plot_benchmark_filter.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_benchmark_long_parallel_process_joblib.py` (``plot_benchmark_long_parallel_process_joblib.py``)
-     - 00:03.460
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_serialisation_examples.py` (``plot_serialisation_examples.py``)
-     - 00:00.496
+   * - :ref:`sphx_glr_auto_examples_plot_benchmark_parallel_process_concurrent.py` (``plot_benchmark_parallel_process_concurrent.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_check_random_order.py` (``plot_check_random_order.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_serialisation_examples.py` (``plot_serialisation_examples.py``)
      - 00:00.000
      - 0.0

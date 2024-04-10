@@ -183,6 +183,23 @@ Gallerie d'exemples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="A piecewise linear function is implemented and trained following the tutorial Custom C++ and CU...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_piecewise_linear_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_piecewise_linear.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compares implementations for a Piecewise Linear</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The example compares the time spend in computing the sum of all coefficients of a matrix when t...">
 
 .. only:: html
@@ -267,6 +284,7 @@ Gallerie d'exemples
    /auto_examples/plot_check_random_order
    /auto_examples/plot_bench_cpu_vector_sum_parallel
    /auto_examples/plot_benchmark_dot_cython_omp
+   /auto_examples/plot_piecewise_linear
    /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
    /auto_examples/plot_benchmark_dot_cython
    /auto_examples/plot_benchmark_dot_mul
