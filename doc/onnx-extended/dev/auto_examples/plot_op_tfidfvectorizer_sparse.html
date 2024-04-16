@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Measuring performance of TfIdfVectorizer - onnx-extended 0.3.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
@@ -392,33 +392,33 @@ with onnxruntime for different batch size and vocabulary size.</p>
     <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="p">:</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class"><span class="n">ModelProto</span></a><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <a href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="typing.Tuple" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-data"><span class="n">Tuple</span></a><span class="p">[</span><span class="n">InferenceSession</span><span class="p">,</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">InferenceSession</span><span class="p">]:</span>
     <span class="c1"># first: onnxruntime</span>
-    <span class="n">ref</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto.SerializeToString" title="onnx.ModelProto.SerializeToString" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-method"><span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span></a><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
 
     <span class="c1"># second: custom kernel equivalent to the onnxruntime implementation</span>
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/classes.html#onnx.ModelProto.graph" title="onnx.ModelProto.graph" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-attribute"><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span></a><span class="p">:</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;TfIdfVectorizer&quot;</span><span class="p">:</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="s2">&quot;onnx_extented.ortops.optim.cpu&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="s2">&quot;onnx_extended.ortops.optim.cpu&quot;</span>
             <span class="c1"># new_add = make_attribute(&quot;sparse&quot;, 1)</span>
             <span class="c1"># node.attribute.append(new_add)</span>
 
-    <span class="n">d</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
-    <span class="n">d</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="s2">&quot;onnx_extented.ortops.optim.cpu&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/classes.html#onnx.ModelProto.opset_import" title="onnx.ModelProto.opset_import" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-attribute"><span class="n">onx</span><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">add</span></a><span class="p">()</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="s2">&quot;onnx_extended.ortops.optim.cpu&quot;</span>
     <span class="n">d</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="n">r</span> <span class="o">=</span> <span class="n">get_ort_ext_libs</span><span class="p">()</span>
     <span class="n">opts</span> <span class="o">=</span> <span class="n">SessionOptions</span><span class="p">()</span>
     <span class="n">opts</span><span class="o">.</span><span class="n">register_custom_ops_library</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">cus</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
-        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto.SerializeToString" title="onnx.ModelProto.SerializeToString" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-method"><span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span></a><span class="p">(),</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
     <span class="c1"># third: with sparse</span>
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <a href="https://onnx.ai/onnx/api/classes.html#onnx.ModelProto.graph" title="onnx.ModelProto.graph" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-attribute"><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span></a><span class="p">:</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;TfIdfVectorizer&quot;</span><span class="p">:</span>
             <span class="n">new_add</span> <span class="o">=</span> <a href="https://onnx.ai/onnx/api/helper.html#onnx.helper.make_attribute" title="onnx.helper.make_attribute" class="sphx-glr-backref-module-onnx-helper sphx-glr-backref-type-py-function"><span class="n">make_attribute</span></a><span class="p">(</span><span class="s2">&quot;sparse&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_add</span><span class="p">)</span>
     <span class="n">cussp</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
-        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto.SerializeToString" title="onnx.ModelProto.SerializeToString" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-method"><span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span></a><span class="p">(),</span> <span class="n">opts</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ref</span><span class="p">,</span> <span class="n">cus</span><span class="p">,</span> <span class="n">cussp</span>
@@ -491,33 +491,33 @@ with onnxruntime for different batch size and vocabulary size.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/20 [00:00&lt;?, ?it/s]
-  5%|▌         | 1/20 [00:04&lt;01:16,  4.02s/it]
- 10%|█         | 2/20 [00:08&lt;01:16,  4.24s/it]
- 15%|█▌        | 3/20 [00:12&lt;01:11,  4.20s/it]
- 20%|██        | 4/20 [00:16&lt;01:07,  4.19s/it]
- 25%|██▌       | 5/20 [00:21&lt;01:05,  4.34s/it]
- 30%|███       | 6/20 [00:25&lt;00:59,  4.24s/it]
- 35%|███▌      | 7/20 [00:29&lt;00:55,  4.25s/it]
- 40%|████      | 8/20 [00:33&lt;00:50,  4.22s/it]
- 45%|████▌     | 9/20 [00:37&lt;00:45,  4.16s/it]
- 50%|█████     | 10/20 [00:42&lt;00:42,  4.28s/it]
- 55%|█████▌    | 11/20 [00:46&lt;00:37,  4.18s/it]
- 60%|██████    | 12/20 [00:50&lt;00:33,  4.17s/it]
- 65%|██████▌   | 13/20 [00:54&lt;00:28,  4.13s/it]
- 70%|███████   | 14/20 [00:58&lt;00:25,  4.20s/it]
- 75%|███████▌  | 15/20 [01:03&lt;00:21,  4.29s/it]
- 80%|████████  | 16/20 [01:07&lt;00:16,  4.22s/it]
- 85%|████████▌ | 17/20 [01:11&lt;00:12,  4.25s/it]
- 90%|█████████ | 18/20 [01:15&lt;00:08,  4.19s/it]
- 95%|█████████▌| 19/20 [01:20&lt;00:04,  4.31s/it]
-100%|██████████| 20/20 [01:24&lt;00:00,  4.32s/it]
-100%|██████████| 20/20 [01:24&lt;00:00,  4.24s/it]
-    average     deviation  min_exec  max_exec  repeat    number     ttime  context_size  warmup_time   peak    name  voc_size  batch_size      time
-0  0.000014  1.702595e-06  0.000013  0.000069       1   74707.0  1.068158            64     0.000181   4096  sparse       100           1  0.000014
-1  0.000011  3.773764e-07  0.000011  0.000027       1  107331.0  1.176812            64     0.000078   4096     ref       100           1  0.000011
-2  0.000011  3.298799e-07  0.000011  0.000045       1  104546.0  1.197913            64     0.000114      0  custom       100           1  0.000011
-3  0.000024  2.180624e-06  0.000023  0.000107       1   48120.0  1.169743            64     0.000192  12288  sparse       100          10  0.000024
-4  0.000021  6.909125e-06  0.000016  0.000180       1   62826.0  1.344614            64     0.000541      0     ref       100          10  0.000021
+  5%|▌         | 1/20 [00:03&lt;01:13,  3.89s/it]
+ 10%|█         | 2/20 [00:07&lt;01:12,  4.01s/it]
+ 15%|█▌        | 3/20 [00:18&lt;02:01,  7.16s/it]
+ 20%|██        | 4/20 [00:24&lt;01:47,  6.69s/it]
+ 25%|██▌       | 5/20 [00:28&lt;01:25,  5.73s/it]
+ 30%|███       | 6/20 [00:32&lt;01:12,  5.17s/it]
+ 35%|███▌      | 7/20 [00:36&lt;01:01,  4.73s/it]
+ 40%|████      | 8/20 [00:53&lt;01:44,  8.70s/it]
+ 45%|████▌     | 9/20 [00:58&lt;01:21,  7.45s/it]
+ 50%|█████     | 10/20 [01:04&lt;01:08,  6.87s/it]
+ 55%|█████▌    | 11/20 [01:08&lt;00:54,  6.04s/it]
+ 60%|██████    | 12/20 [01:12&lt;00:43,  5.47s/it]
+ 65%|██████▌   | 13/20 [01:17&lt;00:36,  5.21s/it]
+ 70%|███████   | 14/20 [01:21&lt;00:29,  5.00s/it]
+ 75%|███████▌  | 15/20 [01:26&lt;00:24,  4.83s/it]
+ 80%|████████  | 16/20 [01:30&lt;00:18,  4.69s/it]
+ 85%|████████▌ | 17/20 [01:34&lt;00:13,  4.56s/it]
+ 90%|█████████ | 18/20 [01:41&lt;00:10,  5.21s/it]
+ 95%|█████████▌| 19/20 [01:45&lt;00:04,  4.98s/it]
+100%|██████████| 20/20 [01:50&lt;00:00,  4.91s/it]
+100%|██████████| 20/20 [01:50&lt;00:00,  5.53s/it]
+    average     deviation  min_exec  max_exec  repeat    number     ttime  context_size  warmup_time  peak    name  voc_size  batch_size      time
+0  0.000011  4.420324e-07  0.000011  0.000033       1  107705.0  1.175561            64     0.000133     0  sparse       100           1  0.000011
+1  0.000008  5.987542e-08  0.000008  0.000018       1  118809.0  1.003869            64     0.000065     0     ref       100           1  0.000008
+2  0.000009  1.190383e-07  0.000009  0.000014       1  115511.0  1.045835            64     0.000059     0  custom       100           1  0.000009
+3  0.000018  1.884044e-07  0.000018  0.000037       1   69669.0  1.274357            64     0.000108     0  sparse       100          10  0.000018
+4  0.000020  4.875017e-07  0.000020  0.000076       1   49659.0  1.011707            64     0.000386     0     ref       100          10  0.000020
 </pre></div>
 </div>
 </section>
@@ -531,18 +531,18 @@ with onnxruntime for different batch size and vocabulary size.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size           1         10        500       1000      2000
 voc_size name
-100      custom  0.000011  0.000020  0.000062  0.000110  0.000239
-         ref     0.000011  0.000021  0.000095  0.000163  0.000326
-         sparse  0.000014  0.000024  0.000359  0.000717  0.001460
-1000     custom  0.000012  0.000024  0.000207  0.000421  0.001194
-         ref     0.000013  0.000030  0.000415  0.000777  0.001870
-         sparse  0.000014  0.000024  0.000345  0.000686  0.001351
-5000     custom  0.000014  0.000035  0.001587  0.002943  0.009600
-         ref     0.000017  0.000058  0.002229  0.004054  0.011941
-         sparse  0.000014  0.000026  0.000347  0.000741  0.001363
-10000    custom  0.000014  0.000048  0.002931  0.008870  0.021336
-         ref     0.000022  0.000096  0.004295  0.011893  0.023329
-         sparse  0.000014  0.000025  0.000347  0.000694  0.001360
+100      custom  0.000009  0.000011  0.001285  0.001102  0.003812
+         ref     0.000008  0.000020  0.000240  0.000283  0.000460
+         sparse  0.000011  0.000018  0.027514  0.054872  0.038684
+1000     custom  0.000009  0.000013  0.011613  0.015593  0.012037
+         ref     0.000010  0.000029  0.000603  0.001161  0.002532
+         sparse  0.000010  0.000018  0.045987  0.040809  0.047291
+5000     custom  0.000010  0.000022  0.019654  0.056102  0.054929
+         ref     0.000013  0.000062  0.002509  0.004734  0.047305
+         sparse  0.000010  0.000018  0.028423  0.032217  0.032524
+10000    custom  0.000012  0.000038  0.035639  0.065129  0.061126
+         ref     0.000018  0.000097  0.004215  0.046718  0.058947
+         sparse  0.000010  0.000018  0.042234  0.042093  0.054897
 </pre></div>
 </div>
 </section>
@@ -558,20 +558,20 @@ began.</p>
 <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size           1         10         500        1000        2000
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size       1         10         500        1000        2000
 voc_size name
-100      custom  0.000000  0.000000   0.003906   0.000000    0.097656
-         ref     0.003906  0.000000   0.000000   0.000000    0.000000
-         sparse  0.003906  0.011719   0.000000   0.000000    0.000000
-1000     custom  0.000000  0.000000   0.000000   0.000000    7.632812
-         ref     0.000000  0.000000   0.000000   0.000000    2.593750
-         sparse  0.000000  0.000000   0.000000   0.000000    0.000000
-5000     custom  0.000000  0.000000  11.523438  21.035156   80.152344
-         ref     0.000000  0.000000   2.910156  30.566406   79.050781
-         sparse  0.000000  0.000000   0.000000   0.000000    0.000000
-10000    custom  0.000000  0.000000  21.035156  78.152344  154.300781
-         ref     0.000000  0.000000  38.105469  77.179688  154.175781
-         sparse  0.000000  0.000000   0.000000   0.000000    0.000000
+100      custom   0.0  0.000000   0.000000   0.000000    0.000000
+         ref      0.0  0.000000   0.042969   0.000000    0.000000
+         sparse   0.0  0.000000   0.402344   0.000000    0.000000
+1000     custom   0.0  0.000000   0.011719   3.878906    7.964844
+         ref      0.0  0.000000   0.007812   4.175781    3.839844
+         sparse   0.0  0.000000   0.031250   0.003906    0.109375
+5000     custom   0.0  0.000000   9.542969  20.453125   78.605469
+         ref      0.0  0.015625   0.570312  20.824219   78.812500
+         sparse   0.0  0.000000   0.000000   0.000000    0.214844
+10000    custom   0.0  0.386719  20.605469  77.078125  152.847656
+         ref      0.0  0.015625  39.707031  76.679688  152.847656
+         sparse   0.0  0.000000   0.000000   0.000000    0.000000
 </pre></div>
 </div>
 </section>
@@ -586,7 +586,7 @@ voc_size name
 <section id="take-away">
 <h2>Take away<a class="headerlink" href="#take-away" title="Link to this heading">#</a></h2>
 <p>Sparse works better when the sparsity is big enough and the batch size as well.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 31.393 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 55.563 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-tfidfvectorizer-sparse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9dd5da9d3b69fcd7a1c0ebd41d7a2271/plot_op_tfidfvectorizer_sparse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_tfidfvectorizer_sparse.ipynb</span></code></a></p>

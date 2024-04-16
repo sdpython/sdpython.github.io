@@ -144,9 +144,9 @@ Time measurement
 
  .. code-block:: none
 
-    ReferenceEvaluator: 0.0012245282000012596s
-    CReferenceEvaluator: 7.407859999875655e-05s
-    speedup is 16.530120709919114
+    ReferenceEvaluator: 0.0034341561757028098s
+    CReferenceEvaluator: 0.00020743190124630924s
+    speedup is 16.55558356776095
 
 
 
@@ -177,8 +177,8 @@ Let's add :epkg:`onnxruntime` as well.
 
  .. code-block:: none
 
-    InferenceSession: 5.787280000004103e-05s
-    speedup is 21.15895895827386
+    InferenceSession: 3.208070993423462e-05s
+    speedup is 107.04738712898879
 
 
 
@@ -220,7 +220,7 @@ Plotting
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:00,  9.78it/s]     50%|█████     | 2/4 [00:00<00:00,  9.72it/s]     75%|███████▌  | 3/4 [00:00<00:00,  8.89it/s]    100%|██████████| 4/4 [00:01<00:00,  2.11it/s]    100%|██████████| 4/4 [00:01<00:00,  2.94it/s]
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:00<00:00,  9.39it/s]     50%|█████     | 2/4 [00:00<00:00,  8.96it/s]     75%|███████▌  | 3/4 [00:00<00:00,  8.20it/s]    100%|██████████| 4/4 [00:02<00:00,  1.11s/it]    100%|██████████| 4/4 [00:02<00:00,  1.34it/s]
 
 
 .. raw:: html
@@ -253,26 +253,26 @@ Plotting
         <tr>
           <th>0</th>
           <td>16</td>
-          <td>0.000184</td>
-          <td>0.000018</td>
+          <td>0.000191</td>
+          <td>0.000019</td>
         </tr>
         <tr>
           <th>1</th>
           <td>32</td>
-          <td>0.000186</td>
-          <td>0.000019</td>
+          <td>0.000206</td>
+          <td>0.000021</td>
         </tr>
         <tr>
           <th>2</th>
           <td>48</td>
-          <td>0.000224</td>
-          <td>0.000022</td>
+          <td>0.000241</td>
+          <td>0.000024</td>
         </tr>
         <tr>
           <th>3</th>
           <td>64</td>
-          <td>0.001972</td>
-          <td>0.000084</td>
+          <td>0.005022</td>
+          <td>0.000208</td>
         </tr>
       </tbody>
     </table>
@@ -317,7 +317,7 @@ Finally.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.276 seconds)
+   **Total running time of the script:** (0 minutes 5.715 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_conv_py_vs_c.py:

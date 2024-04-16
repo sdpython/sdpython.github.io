@@ -54,6 +54,7 @@ if has_cuda:
 else:
     dtests, ddims = "", ""
 
+dtests, ddims = "0,1,2,3,4,15", "16,32,64,64x128x92"
 
 script_args = get_parsed_args(
     "plot_bench_gemm_f8",

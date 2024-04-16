@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Measuring onnxruntime performance against a cython binding - onnx-extended 0.3.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
@@ -362,9 +362,9 @@ but it may be for small matrices.</p>
 <section id="two-python-bindings-on-cpu">
 <h2>Two python bindings on CPU<a class="headerlink" href="#two-python-bindings-on-cpu" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sess_ort</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
-    <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onnx_model</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+    <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto.SerializeToString" title="onnx.ModelProto.SerializeToString" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-method"><span class="n">onnx_model</span><span class="o">.</span><span class="n">SerializeToString</span></a><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
 <span class="p">)</span>
-<span class="n">sess_ext</span> <span class="o">=</span> <span class="n">OrtSession</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onnx_model</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+<span class="n">sess_ext</span> <span class="o">=</span> <span class="n">OrtSession</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto.SerializeToString" title="onnx.ModelProto.SerializeToString" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-method"><span class="n">onnx_model</span><span class="o">.</span><span class="n">SerializeToString</span></a><span class="p">())</span>
 
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a> <span class="o">+</span> <span class="mi">1</span>
@@ -394,9 +394,9 @@ but it may be for small matrices.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t_ext2=</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t_ext2</span></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>t_ort={&#39;average&#39;: 1.1017984999807592e-05, &#39;deviation&#39;: 1.1627572347791087e-06, &#39;min_exec&#39;: 1.0173499999837077e-05, &#39;max_exec&#39;: 1.705549999996947e-05, &#39;repeat&#39;: 100, &#39;number&#39;: 200, &#39;ttime&#39;: 0.0011017984999807592, &#39;context_size&#39;: 64, &#39;warmup_time&#39;: 6.429999984902679e-05}
-t_ext={&#39;average&#39;: 1.4125910000029763e-05, &#39;deviation&#39;: 1.0116295268419106e-05, &#39;min_exec&#39;: 9.202999999615713e-06, &#39;max_exec&#39;: 7.462750000058804e-05, &#39;repeat&#39;: 100, &#39;number&#39;: 200, &#39;ttime&#39;: 0.0014125910000029763, &#39;context_size&#39;: 64, &#39;warmup_time&#39;: 7.379999988188501e-05}
-t_ext2={&#39;average&#39;: 8.863004999875556e-06, &#39;deviation&#39;: 1.1311618198577438e-06, &#39;min_exec&#39;: 7.898999999724765e-06, &#39;max_exec&#39;: 1.5066000000842906e-05, &#39;repeat&#39;: 100, &#39;number&#39;: 200, &#39;ttime&#39;: 0.0008863004999875556, &#39;context_size&#39;: 64, &#39;warmup_time&#39;: 4.759999956149841e-05}
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>t_ort={&#39;average&#39;: 9.409485198557377e-06, &#39;deviation&#39;: 2.3764202501528837e-06, &#39;min_exec&#39;: 8.409405127167702e-06, &#39;max_exec&#39;: 1.9792215898633003e-05, &#39;repeat&#39;: 100, &#39;number&#39;: 200, &#39;ttime&#39;: 0.0009409485198557376, &#39;context_size&#39;: 64, &#39;warmup_time&#39;: 0.00011787004768848419}
+t_ext={&#39;average&#39;: 9.249336738139391e-06, &#39;deviation&#39;: 2.5598556327324997e-07, &#39;min_exec&#39;: 8.984087035059929e-06, &#39;max_exec&#39;: 1.024233177304268e-05, &#39;repeat&#39;: 100, &#39;number&#39;: 200, &#39;ttime&#39;: 0.0009249336738139391, &#39;context_size&#39;: 64, &#39;warmup_time&#39;: 0.00011874362826347351}
+t_ext2={&#39;average&#39;: 8.205207902938128e-06, &#39;deviation&#39;: 2.587393173954054e-07, &#39;min_exec&#39;: 7.95595347881317e-06, &#39;max_exec&#39;: 9.159315377473831e-06, &#39;repeat&#39;: 100, &#39;number&#39;: 200, &#39;ttime&#39;: 0.0008205207902938127, &#39;context_size&#39;: 64, &#39;warmup_time&#39;: 4.6601518988609314e-05}
 </pre></div>
 </div>
 </section>
@@ -437,8 +437,8 @@ t_ext2={&#39;average&#39;: 8.863004999875556e-06, &#39;deviation&#39;: 1.1311618
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/4 [00:00&lt;?, ?it/s]
-100%|██████████| 4/4 [00:03&lt;00:00,  1.12it/s]
-100%|██████████| 4/4 [00:03&lt;00:00,  1.12it/s]
+100%|██████████| 4/4 [00:06&lt;00:00,  1.62s/it]
+100%|██████████| 4/4 [00:06&lt;00:00,  1.62s/it]
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -476,13 +476,13 @@ t_ext2={&#39;average&#39;: 8.863004999875556e-06, &#39;deviation&#39;: 1.1311618
   <tbody>
     <tr>
       <th>0</th>
+      <td>0.000009</td>
+      <td>3.665475e-07</td>
+      <td>0.000009</td>
       <td>0.000011</td>
-      <td>6.732164e-07</td>
-      <td>0.000010</td>
-      <td>0.000015</td>
       <td>50</td>
       <td>10</td>
-      <td>0.000539</td>
+      <td>0.000432</td>
       <td>64</td>
       <td>0.000090</td>
       <td>ort</td>
@@ -490,155 +490,155 @@ t_ext2={&#39;average&#39;: 8.863004999875556e-06, &#39;deviation&#39;: 1.1311618
     </tr>
     <tr>
       <th>1</th>
-      <td>0.000009</td>
-      <td>1.841304e-07</td>
-      <td>0.000009</td>
       <td>0.000010</td>
+      <td>6.597062e-07</td>
+      <td>0.000009</td>
+      <td>0.000011</td>
       <td>10</td>
       <td>10</td>
-      <td>0.000094</td>
+      <td>0.000098</td>
       <td>64</td>
-      <td>0.000040</td>
+      <td>0.000069</td>
       <td>ext</td>
       <td>1</td>
     </tr>
     <tr>
       <th>2</th>
+      <td>0.000009</td>
+      <td>9.768385e-07</td>
       <td>0.000008</td>
-      <td>8.129576e-08</td>
-      <td>0.000008</td>
-      <td>0.000008</td>
+      <td>0.000012</td>
       <td>10</td>
       <td>10</td>
-      <td>0.000079</td>
+      <td>0.000089</td>
       <td>64</td>
-      <td>0.000022</td>
+      <td>0.000026</td>
       <td>ext_1_1</td>
       <td>1</td>
     </tr>
     <tr>
       <th>3</th>
+      <td>0.000009</td>
+      <td>5.134171e-07</td>
+      <td>0.000009</td>
       <td>0.000011</td>
-      <td>5.452700e-07</td>
-      <td>0.000011</td>
-      <td>0.000015</td>
       <td>50</td>
       <td>10</td>
-      <td>0.000546</td>
+      <td>0.000441</td>
       <td>64</td>
-      <td>0.000032</td>
+      <td>0.000054</td>
       <td>ort</td>
       <td>10</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.000010</td>
-      <td>7.448463e-07</td>
       <td>0.000009</td>
-      <td>0.000012</td>
+      <td>3.375483e-07</td>
+      <td>0.000009</td>
+      <td>0.000010</td>
       <td>10</td>
       <td>10</td>
-      <td>0.000096</td>
+      <td>0.000095</td>
       <td>64</td>
-      <td>0.000029</td>
+      <td>0.000054</td>
       <td>ext</td>
       <td>10</td>
     </tr>
     <tr>
       <th>5</th>
       <td>0.000008</td>
-      <td>9.436630e-08</td>
+      <td>2.790339e-07</td>
       <td>0.000008</td>
-      <td>0.000008</td>
+      <td>0.000009</td>
       <td>10</td>
       <td>10</td>
-      <td>0.000080</td>
+      <td>0.000084</td>
       <td>64</td>
-      <td>0.000021</td>
+      <td>0.000023</td>
       <td>ext_1_1</td>
       <td>10</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>0.000015</td>
-      <td>3.044421e-06</td>
-      <td>0.000014</td>
-      <td>0.000033</td>
+      <td>0.000013</td>
+      <td>1.368070e-06</td>
+      <td>0.000012</td>
+      <td>0.000021</td>
       <td>50</td>
       <td>10</td>
-      <td>0.000748</td>
+      <td>0.000638</td>
       <td>64</td>
-      <td>0.000036</td>
+      <td>0.000078</td>
       <td>ort</td>
       <td>100</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>0.000014</td>
-      <td>2.304404e-06</td>
       <td>0.000013</td>
-      <td>0.000019</td>
+      <td>3.717984e-07</td>
+      <td>0.000012</td>
+      <td>0.000013</td>
       <td>10</td>
       <td>10</td>
-      <td>0.000139</td>
+      <td>0.000129</td>
       <td>64</td>
-      <td>0.000057</td>
+      <td>0.000069</td>
       <td>ext</td>
       <td>100</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>0.000011</td>
-      <td>9.202717e-08</td>
-      <td>0.000011</td>
-      <td>0.000011</td>
+      <td>0.000012</td>
+      <td>3.297163e-07</td>
+      <td>0.000012</td>
+      <td>0.000012</td>
       <td>10</td>
       <td>10</td>
-      <td>0.000112</td>
+      <td>0.000118</td>
       <td>64</td>
-      <td>0.000025</td>
+      <td>0.000032</td>
       <td>ext_1_1</td>
       <td>100</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>0.000485</td>
-      <td>1.299964e-04</td>
-      <td>0.000371</td>
-      <td>0.001006</td>
+      <td>0.000850</td>
+      <td>4.653905e-04</td>
+      <td>0.000420</td>
+      <td>0.001566</td>
       <td>50</td>
       <td>50</td>
-      <td>0.024248</td>
+      <td>0.042513</td>
       <td>64</td>
-      <td>0.001992</td>
+      <td>0.005373</td>
       <td>ort</td>
       <td>1000</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>0.000462</td>
-      <td>8.708347e-05</td>
-      <td>0.000365</td>
-      <td>0.000741</td>
+      <td>0.000881</td>
+      <td>5.092849e-04</td>
+      <td>0.000415</td>
+      <td>0.001961</td>
       <td>50</td>
       <td>50</td>
-      <td>0.023108</td>
+      <td>0.044033</td>
       <td>64</td>
-      <td>0.002587</td>
+      <td>0.002322</td>
       <td>ext</td>
       <td>1000</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>0.000454</td>
-      <td>5.599289e-05</td>
-      <td>0.000372</td>
-      <td>0.000642</td>
+      <td>0.000838</td>
+      <td>4.750738e-04</td>
+      <td>0.000414</td>
+      <td>0.001564</td>
       <td>50</td>
       <td>50</td>
-      <td>0.022699</td>
+      <td>0.041912</td>
       <td>64</td>
-      <td>0.000430</td>
+      <td>0.000448</td>
       <td>ext_1_1</td>
       <td>1000</td>
     </tr>
@@ -658,7 +658,7 @@ t_ext2={&#39;average&#39;: 8.863004999875556e-06, &#39;deviation&#39;: 1.1311618
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_bench_ort.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_bench_cypy_ort_001.png" srcset="../_images/sphx_glr_plot_bench_cypy_ort_001.png" alt="Binding Comparison" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.796 seconds)</p>
+<img src="../_images/sphx_glr_plot_bench_cypy_ort_001.png" srcset="../_images/sphx_glr_plot_bench_cypy_ort_001.png" alt="Binding Comparison" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.664 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-bench-cypy-ort-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4465bf25b2f4fd8a6ba1106012bb5fec/plot_bench_cypy_ort.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bench_cypy_ort.ipynb</span></code></a></p>

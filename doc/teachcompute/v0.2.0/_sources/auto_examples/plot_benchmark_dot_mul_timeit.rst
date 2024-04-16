@@ -102,7 +102,7 @@ numpy
 
  .. code-block:: none
 
-    numpy time 0.011885600000823615
+    numpy time 0.007210858166217804
 
 
 
@@ -128,7 +128,7 @@ python implementation
 
  .. code-block:: none
 
-    python implementation 7.265511200001129
+    python implementation 6.807620272040367
 
 
 
@@ -154,7 +154,7 @@ cython implementation
 
  .. code-block:: none
 
-    cython implementation 0.1918974000000162
+    cython implementation 0.13256879895925522
 
 
 
@@ -180,7 +180,7 @@ cython implementation parallelized
 
  .. code-block:: none
 
-    cython implementation parallelized 0.9288433000001532
+    cython implementation parallelized 8.353140810504556
 
 
 
@@ -208,7 +208,7 @@ cython implementation parallelized, AVX + transposed
 
  .. code-block:: none
 
-    cython implementation parallelized avx 0.8376110999997763
+    cython implementation parallelized avx 4.79345921613276
 
 
 
@@ -234,10 +234,10 @@ Speed up...
 
  .. code-block:: none
 
-    numpy is 611.286868 faster than pure python.
-    numpy is 16.145369 faster than cython.
-    numpy is 78.148625 faster than parallelized cython.
-    numpy is 70.472765 faster than avx parallelized cython.
+    numpy is 944.079070 faster than pure python.
+    numpy is 18.384608 faster than cython.
+    numpy is 1158.411470 faster than parallelized cython.
+    numpy is 664.755721 faster than avx parallelized cython.
 
 
 
@@ -245,7 +245,7 @@ Speed up...
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.253 seconds)
+   **Total running time of the script:** (0 minutes 20.109 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_dot_mul_timeit.py:

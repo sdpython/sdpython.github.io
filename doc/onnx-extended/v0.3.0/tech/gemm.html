@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Gemm and storage order - onnx-extended 0.3.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
@@ -311,43 +311,43 @@
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms#Level_3">Gemm</a>
 means general matrix multiplication. It is a common routine in linear algebra.</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../_images/math/8962fe0be020965db8a9344f6502a92457a9a75f.svg" alt="Gemm(A, B, C, tA, tB, \alpha, \beta) = \alpha A^{tA} B^{tB} + \beta C"/></p>
-</div></div>
-<p>Where <img class="math" src="../_images/math/4c35423eb268bf7f83847476c7c0e52c8d875dfd.svg" alt="A^{tA}"/> means <em>A</em> is <em>tA</em> if 0 and <img class="math" src="../_images/math/17c2540ae6f4d04fd9d6ec5721e215f5eb9bb0d9.svg" alt="A'"/> if <em>tA</em> is 1.
+<div class="math notranslate nohighlight">
+\[Gemm(A, B, C, tA, tB, \alpha, \beta) = \alpha A^{tA} B^{tB} + \beta C\]</div>
+</div>
+<p>Where <span class="math notranslate nohighlight">\(A^{tA}\)</span> means <em>A</em> is <em>tA</em> if 0 and <span class="math notranslate nohighlight">\(A'\)</span> if <em>tA</em> is 1.
 The coefficients of a matrix are stored in memory in a one dimension
-array <em>T</em>: <img class="math" src="../_images/math/504a8a8a438e01923f0591b87e2767134b84e94b.svg" alt="A(i,j) = T[i * C + j]"/> where <em>C</em> is the number of columns
+array <em>T</em>: <span class="math notranslate nohighlight">\(A(i,j) = T[i * C + j]\)</span> where <em>C</em> is the number of columns
 of matrix A. In that case, the storage is said as <em>row major</em>. In case
-<img class="math" src="../_images/math/25bbb4bd13aab57f31254d5816de6a551e03c6df.svg" alt="A(i,j) = T[j * R + i]"/> where <em>R</em> is the number of rows,
+<span class="math notranslate nohighlight">\(A(i,j) = T[j * R + i]\)</span> where <em>R</em> is the number of rows,
 the storage is <em>column major</em>.</p>
-<p>We define a matrix <em>A</em> with <img class="math" src="../_images/math/71b45fa0c334784fb8f5f35c6563d4b05a063f58.svg" alt="(I, J, M, R)"/>, it has <em>I</em>
+<p>We define a matrix <em>A</em> with <span class="math notranslate nohighlight">\((I, J, M, R)\)</span>, it has <em>I</em>
 rows, <em>J</em> columns, the memory buffer is <em>M</em> and the matrix order
 <em>R</em>. In that case, we can express the transpose of this matrix by:
-If <img class="math" src="../_images/math/4ab77ff1512825e507bd0817b181a9473b3dedbd.svg" alt="A=(I,J,M,R)"/>, then <img class="math" src="../_images/math/41fc8680e7356eab9d607833fc110344fef98458.svg" alt="A' = (J,I,M,C)"/>.</p>
-<p>Let’s use that notation for <img class="math" src="../_images/math/fb474b1bd039de6ac43093c970f5680e0ac76957.svg" alt="A=(I,J,M_A,R)"/>, <img class="math" src="../_images/math/ed7e29194a54d1bfcbe80990596f977f05e23955.svg" alt="B=(J,K,M_B,R)"/>
-and <img class="math" src="../_images/math/ebe643b17b3dfc9a96abd4b9b02808db0f63f0ef.svg" alt="C=(I,K,M_C,R)"/>. We note <img class="math" src="../_images/math/380dab03658f5c35c51ecd7eb0a9b4c330db8c80.svg" alt="D =  A^{tA} B^{tB} = (I, K, M_D, R)"/>.</p>
+If <span class="math notranslate nohighlight">\(A=(I,J,M,R)\)</span>, then <span class="math notranslate nohighlight">\(A' = (J,I,M,C)\)</span>.</p>
+<p>Let’s use that notation for <span class="math notranslate nohighlight">\(A=(I,J,M_A,R)\)</span>, <span class="math notranslate nohighlight">\(B=(J,K,M_B,R)\)</span>
+and <span class="math notranslate nohighlight">\(C=(I,K,M_C,R)\)</span>. We note <span class="math notranslate nohighlight">\(D =  A^{tA} B^{tB} = (I, K, M_D, R)\)</span>.</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../_images/math/0f3ea88f5a6fa18d4600409ca67b15baaf248e29.svg" alt="\begin{array}{rcl}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
 \alpha A^{tA} B^{tB} + \beta C &amp;=&amp; \alpha (I,J,M_A,R)^{tA} (J,K,M_B,R)^{tB} + \beta (I,K,M_C,R) \\
 &amp;=&amp; \left( \alpha (I,J,M_A,R)^{tA} (J,K,M_B,R)^{tB} + \beta (I,K,M_C,R) \right)'' \\
 &amp;=&amp; \left( \alpha (J,K,M_B,R)^{1-tB} (I,J,M_A,R)^{1-tA} + \beta (I,K,M_C,R)' \right)' \\
 &amp;=&amp; \left( \alpha (K,J,M_B,C)^{tB} (J,I,M_A,C)^{tA}  + \beta (K,I,M_C,C) \right)' (*)\\
 &amp;=&amp; \left( (K,I,M_D,C) + \beta (K,I,M_C,C) \right)' \\
 &amp;=&amp;  (I,K,M_D,R)  + \beta (I,K,M_C,R)
-\end{array}"/></p>
-</div></div>
+\end{array}\end{split}\]</div>
+</div>
 <p>This trick can be used to run the computation of matrices using
 a column major algorithm instead of a row major algorithm
 by using line <cite>(*)</cite> as a replacement.</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../_images/math/d18650c9f628f0d2eb4513c104c42d102128373f.svg" alt="\begin{array}{rcl}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl}
 &amp;&amp;\alpha (I,J,M_A,R)^{tA} (J,K,M_B,R)^{tB} + \beta (I,K,M_C,R) \\
 &amp;=&amp; \left( \alpha (K,J,M_B,C)^{tB} (J,I,M_A,C)^{tA}  + \beta (K,I,M_C,C) \right)'\\
 &amp;=&amp; \alpha (J,I,M_A,C)^{1-tA}(K,J,M_B,C)^{1-tB}   + \beta (K,I,M_C,C)'
-\end{array}"/></p>
-</div></div>
+\end{array}\end{split}\]</div>
+</div>
 </section>
 
         </article>
@@ -403,5 +403,6 @@ by using line <cite>(*)</cite> as a replacement.</p>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

@@ -255,12 +255,11 @@ Training a model
     warmup=3
     train_all_trees=False - False
     Training to get 'plot_op_tree_ensemble_sparse-f512-512-d12-s0.99-0.onnx' with X.shape=(10240, 512)
-    [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 8 concurrent workers.
+    [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 30 concurrent workers.
     building tree 1 of 1
-    [Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.5s finished
     Xb.shape=(2048, 512)
     yb.shape=(2048,)
-    measured sparsity=0.9900474548339844
+    measured sparsity=0.9899873733520508
 
 
 
@@ -428,13 +427,13 @@ Implementations
         for node in onx.graph.node:
             if node.op_type == "TreeEnsembleRegressor":
                 node.op_type = "TreeEnsembleAssemblyRegressor"
-                node.domain = "onnx_extented.ortops.tutorial.cpu"
+                node.domain = "onnx_extended.ortops.tutorial.cpu"
                 del node.attribute[:]
                 new_add = make_attribute("assembly", assembly_name)
                 node.attribute.append(new_add)
 
         d = onx.opset_import.add()
-        d.domain = "onnx_extented.ortops.tutorial.cpu"
+        d.domain = "onnx_extended.ortops.tutorial.cpu"
         d.version = 1
 
         r = lib_tuto()
@@ -466,7 +465,7 @@ Implementations
             onx,
             op_type="TreeEnsembleRegressor",
             op_domain="ai.onnx.ml",
-            new_op_domain="onnx_extented.ortops.optim.cpu",
+            new_op_domain="onnx_extended.ortops.optim.cpu",
             nodes_modes=modes,
             **kwargs,
         )
@@ -589,8 +588,8 @@ Implementations
     run 'ort' - shape=(2048, 512)
     run 'custom' - shape=(2048, 512)
     run 'cusopt' - shape=(2048, 512)
-    run 'sparse' - shape=(20928,)
-    /home/xadupre/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:347: UserWarning: Unable to find environment variable 'TEST_LLC_EXE'.
+    run 'sparse' - shape=(21054,)
+    /home/onyxia/work/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:347: UserWarning: Unable to find environment variable 'TEST_LLC_EXE'.
       warnings.warn("Unable to find environment variable 'TEST_LLC_EXE'.")
     done.
 
@@ -666,10 +665,10 @@ Benchmark implementations
     run 'sparse'
     done.
         average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time    name  disc_mean  disc_max  err_mean   err_max
-    0  0.009025   0.001772  0.006650  0.012464      10      10  0.090253            64     0.019561     ort   0.000000  0.000000  0.000814  0.000916
-    1  0.010363   0.000983  0.008530  0.011642      10      10  0.103629            64     0.024990  custom   0.000030  0.000122  0.000787  0.000885
-    2  0.009965   0.001279  0.008338  0.013380      10      10  0.099648            64     0.030188  cusopt   0.000153  0.000244  0.000662  0.000793
-    3  0.040652   0.011380  0.030505  0.060633      10      10  0.406523            64     0.124438  sparse   0.000153  0.000244  0.000662  0.000793
+    0  0.001605   0.001360  0.001049  0.005683      10      10  0.016049            64     0.003707     ort   0.000000  0.000000  0.000792  0.001038
+    1  0.003348   0.002730  0.001454  0.008544      10      10  0.033476            64     0.009410  custom   0.000666  0.000793  0.000127  0.000671
+    2  0.003698   0.002570  0.001459  0.007468      10      10  0.036981            64     0.004817  cusopt   0.000062  0.000305  0.000834  0.000916
+    3  0.009092   0.002046  0.004069  0.013124      10      10  0.090916            64     0.011365  sparse   0.000062  0.000305  0.000834  0.000916
 
 
 
@@ -718,7 +717,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 20.911 seconds)
+   **Total running time of the script:** (0 minutes 19.434 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_tree_ensemble_implementations.py:

@@ -112,8 +112,8 @@ Python implementation
 
  .. code-block:: none
 
-    device: cpu
-    duration=0.10492949999934353, alpha_neg=tensor([0.2260], requires_grad=True) alpha_pos=tensor([1.7046], requires_grad=True)
+    device: cuda:0
+    duration=0.586897948756814, alpha_neg=tensor([0.2656], device='cuda:0', requires_grad=True) alpha_pos=tensor([1.6451], device='cuda:0', requires_grad=True)
 
 
 
@@ -143,7 +143,7 @@ C++ implementation
 
  .. code-block:: none
 
-    duration=0.09440030000041588, alpha_neg=tensor([0.2260], requires_grad=True) alpha_pos=tensor([1.7046], requires_grad=True)
+    duration=0.46520004235208035, alpha_neg=tensor([0.2656], device='cuda:0', requires_grad=True) alpha_pos=tensor([1.6451], device='cuda:0', requires_grad=True)
 
 
 
@@ -173,7 +173,7 @@ C++ implementation, second try
 
  .. code-block:: none
 
-    duration=0.09008469999935187, alpha_neg=tensor([0.2260], requires_grad=True) alpha_pos=tensor([1.7046], requires_grad=True)
+    duration=0.41781871765851974, alpha_neg=tensor([0.2656], device='cuda:0', requires_grad=True) alpha_pos=tensor([1.6451], device='cuda:0', requires_grad=True)
 
 
 
@@ -221,14 +221,14 @@ Graphs
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f19fe0bd570>
+    <matplotlib.legend.Legend object at 0x7f102ec417d0>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.980 seconds)
+   **Total running time of the script:** (0 minutes 1.770 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_piecewise_linear.py:

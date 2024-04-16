@@ -132,6 +132,23 @@ Gallerie d'exemples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Measure the time between two additions, one with CUDA, one with numpy. The script can be profil...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_vector_add_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Measuring CUDA performance with a vector addition</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Parallelization usually means a summation is done with a random order. That may lead to differe...">
 
 .. only:: html
@@ -166,6 +183,23 @@ Gallerie d'exemples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="The objective is to measure the summation of all elements from a tensor.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_vector_sum_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_sum.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Measuring CUDA performance with a vector sum</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="numpy has a very fast implementation of the dot product. It is difficult to be better and very ...">
 
 .. only:: html
@@ -178,6 +212,23 @@ Gallerie d'exemples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Compares dot implementations (numpy, c++, sse, openmp)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Measure the time between two additions, with or without streams. The script can be profiled wit...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_vector_add_stream_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_bench_cuda_vector_add_stream.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Measuring CUDA performance with a vector addition with streams</div>
     </div>
 
 
@@ -212,6 +263,23 @@ Gallerie d'exemples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a parallelized vector sum and AVX</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script does not export a full llama model but a shorter one to be able to fast iterate on ...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_model_onnx_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export a LLAMA model into ONNX</div>
     </div>
 
 
@@ -281,11 +349,15 @@ Gallerie d'exemples
    /auto_examples/plot_benchmark_dot
    /auto_examples/plot_bench_cpu_vector_sum
    /auto_examples/plot_benchmark_filter
+   /auto_examples/plot_bench_cuda_vector_add
    /auto_examples/plot_check_random_order
    /auto_examples/plot_bench_cpu_vector_sum_parallel
+   /auto_examples/plot_bench_cuda_vector_sum
    /auto_examples/plot_benchmark_dot_cython_omp
+   /auto_examples/plot_bench_cuda_vector_add_stream
    /auto_examples/plot_piecewise_linear
    /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
+   /auto_examples/plot_export_model_onnx
    /auto_examples/plot_benchmark_dot_cython
    /auto_examples/plot_benchmark_dot_mul
    /auto_examples/plot_serialisation_examples

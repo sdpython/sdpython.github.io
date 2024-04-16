@@ -144,13 +144,13 @@ And the other model
                         "MulMul",
                         ["X", "Y", "Z"],
                         ["xyz"],
-                        domain="onnx_extented.ortops.optim.cuda",
+                        domain="onnx_extended.ortops.optim.cuda",
                     ),
                     oh.make_node(
                         "MulMul",
                         ["Y", "X", "xyz"],
                         ["final"],
-                        domain="onnx_extented.ortops.optim.cuda",
+                        domain="onnx_extended.ortops.optim.cuda",
                     ),
                 ],
                 "nd",
@@ -163,7 +163,7 @@ And the other model
             ),
             opset_imports=[
                 oh.make_opsetid("", 18),
-                oh.make_opsetid("onnx_extented.ortops.optim.cuda", 1),
+                oh.make_opsetid("onnx_extended.ortops.optim.cuda", 1),
             ],
             ir_version=9,
         )
@@ -180,12 +180,12 @@ And the other model
  .. code-block:: none
 
     opset: domain='' version=18
-    opset: domain='onnx_extented.ortops.optim.cuda' version=1
+    opset: domain='onnx_extended.ortops.optim.cuda' version=1
     input: name='X' type=dtype('float32') shape=['', '']
     input: name='Y' type=dtype('float32') shape=['', '']
     input: name='Z' type=dtype('float32') shape=['', '']
-    MulMul[onnx_extented.ortops.optim.cuda](X, Y, Z) -> xyz
-      MulMul[onnx_extented.ortops.optim.cuda](Y, X, xyz) -> final
+    MulMul[onnx_extended.ortops.optim.cuda](X, Y, Z) -> xyz
+      MulMul[onnx_extended.ortops.optim.cuda](Y, X, xyz) -> final
     output: name='final' type=dtype('float32') shape=['', '']
 
 
@@ -268,12 +268,6 @@ Discrepancies
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    diff=0.0
 
 
 
@@ -399,13 +393,6 @@ Not Fused.
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]     67%|██████▋   | 2/3 [00:00<00:00, 17.38it/s]    100%|██████████| 3/3 [00:00<00:00,  6.78it/s]
-
 
 
 
@@ -426,12 +413,6 @@ Fused.
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 19.83it/s]    100%|██████████| 3/3 [00:00<00:00, 19.79it/s]
 
 
 
@@ -456,17 +437,6 @@ Data
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-         warmup      time       std       min       max  repeat  size      label
-    0  0.001150  0.000240  0.000020  0.000224  0.000276       5   256  Not Fused
-    1  0.004206  0.000968  0.000042  0.000906  0.001012       5   512  Not Fused
-    2  0.013224  0.003572  0.000084  0.003509  0.003736       5  1024  Not Fused
-    3  0.000572  0.000123  0.000004  0.000120  0.000130       5   256      Fused
-    4  0.002633  0.000686  0.000004  0.000680  0.000690       5   512      Fused
 
 
 
@@ -496,21 +466,6 @@ Pivot.
 
 
 
-.. image-sg:: /auto_examples/images/sphx_glr_plot_op_mul_cuda_001.png
-   :alt: Fused/Unfused element wise multiplication on CUDA itype=1
-   :srcset: /auto_examples/images/sphx_glr_plot_op_mul_cuda_001.png
-   :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    label     Fused  Not Fused     ratio
-    size                                
-    256    0.000123   0.000240  0.511812
-    512    0.000686   0.000968  0.708505
-    1024   0.002403   0.003572  0.672624
 
 
 
@@ -522,7 +477,7 @@ It seems the fused operator is 33% faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.822 seconds)
+   **Total running time of the script:** (0 minutes 0.114 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_mul_cuda.py:

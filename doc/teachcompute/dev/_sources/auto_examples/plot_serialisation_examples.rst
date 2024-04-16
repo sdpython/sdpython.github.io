@@ -259,7 +259,7 @@ Et la relecture avec la classe :class:`json.JSONDecoder`.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f5068297880>
+    <__main__.A object at 0x7f0f571f4750>
 
 
 
@@ -317,7 +317,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.003245500000048196
+    0.0020502805709838867
 
 
 
@@ -341,7 +341,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.00038890000041647
+    0.0002789050340652466
 
 
 
@@ -374,7 +374,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0006450999999287887
+    0.0004956275224685669
 
 
 
@@ -397,7 +397,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0004648999997698411
+    0.00030700303614139557
 
 
 
@@ -425,7 +425,7 @@ On enlève le temps passé dans la creation du buffer.
  .. code-block:: none
 
 
-    4.2499999835854396e-05
+    3.213249146938324e-05
 
 
 
@@ -573,7 +573,7 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f50684cf8e0>
+    <__main__.A object at 0x7f0f57277250>
 
 
 
@@ -705,7 +705,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    <__main__.B object at 0x7f504b672560>
+    <__main__.B object at 0x7f0f57224710>
 
 
 
@@ -750,7 +750,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.0004768000003423367
+    0.0003259088844060898
 
 
 
@@ -773,7 +773,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.00031349999972007936
+    0.000281456857919693
 
 
 
@@ -804,7 +804,7 @@ Il est possible d'accélérer un peu les choses.
  .. code-block:: none
 
 
-    0.00044460000026447233
+    0.0003290250897407532
 
 
 
@@ -870,7 +870,7 @@ Binaire
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f504b542ef0>}
+    {'x': 5, 'f': <function myfunc at 0x7f0f5a443b00>}
 
 
 
@@ -961,7 +961,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    b'\x80\x05\x95\xff\x01\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02KCC\x08|\x00d\x01\x17\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cN/home/xadupre/github/teachcompute/_doc/examples/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94M\xa7\x01C\x02\x08\x01\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94\x8c\x1ccloudpickle.cloudpickle_fast\x94\x8c\x12_function_setstate\x94\x93\x94h\x19}\x94}\x94(h\x16h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x17\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
+    b'\x80\x05\x95\xf8\x01\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02K\x03C\x0c\x97\x00|\x00d\x01z\x00\x00\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cR/home/onyxia/work/github/teachcompute/_doc/examples/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94h\x0fM\xa7\x01C\x0b\x80\x00\xd8\x0b\x0c\x88q\x895\x80L\x94C\x00\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94h\x03\x8c\x12_function_setstate\x94\x93\x94h\x1a}\x94}\x94(h\x17h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x18\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
 
 
 
@@ -986,7 +986,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f504b542a70>}
+    {'x': 5, 'f': <function myfunc at 0x7f0f5a443060>}
 
 
 
@@ -1072,7 +1072,7 @@ même si elle ne produit pas toujours d'erreur.
 
  .. code-block:: none
 
-    <function myfunc at 0x7f504b542c20> is not JSON serializable
+    <function myfunc at 0x7f0f5a443100> is not JSON serializable
 
     ''
 
@@ -1135,7 +1135,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
  .. code-block:: none
 
 
-    {'x': 5, 'it': <list_iterator object at 0x7f504b671e70>}
+    {'x': 5, 'it': <list_iterator object at 0x7f0f57340a60>}
 
 
 
@@ -1246,14 +1246,14 @@ Summary
  .. code-block:: none
 
                                               expression      time
-    0                        json.dump(data, StringIO())  0.003246
-    1                       ujson.dump(data, StringIO())  0.000389
-    2                           json.load(StringIO(res))  0.000645
-    3                          ujson.load(StringIO(res))  0.000465
-    4                                      StringIO(res)  0.000042
-    5                       pickle.dump(data, BytesIO())  0.000477
-    6                          pickle.load(BytesIO(seq))  0.000313
-    7  pickle.dump(data, BytesIO(), protocol=pickle.H...  0.000445
+    0                        json.dump(data, StringIO())  0.002050
+    1                       ujson.dump(data, StringIO())  0.000279
+    2                           json.load(StringIO(res))  0.000496
+    3                          ujson.load(StringIO(res))  0.000307
+    4                                      StringIO(res)  0.000032
+    5                       pickle.dump(data, BytesIO())  0.000326
+    6                          pickle.load(BytesIO(seq))  0.000281
+    7  pickle.dump(data, BytesIO(), protocol=pickle.H...  0.000329
 
 
 
@@ -1286,7 +1286,7 @@ Summary
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.496 seconds)
+   **Total running time of the script:** (0 minutes 0.362 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_serialisation_examples.py:

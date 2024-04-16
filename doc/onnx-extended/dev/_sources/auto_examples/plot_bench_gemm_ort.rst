@@ -152,18 +152,18 @@ Device properties
 
  .. code-block:: none
 
-    {'clockRate': 1569000,
+    {'clockRate': 1770000,
      'computeMode': 0,
      'concurrentKernels': 1,
      'isMultiGpuBoard': 0,
-     'major': 6,
+     'major': 8,
      'maxThreadsPerBlock': 1024,
-     'minor': 1,
+     'minor': 6,
      'multiProcessorCount': 10,
-     'name': 'NVIDIA GeForce GTX 1060',
+     'name': 'NVIDIA A2',
      'sharedMemPerBlock': 49152,
      'totalConstMem': 65536,
-     'totalGlobalMem': 6442319872}
+     'totalGlobalMem': 15614476288}
 
 
 
@@ -176,7 +176,7 @@ Model to benchmark
 It includes one Gemm. The operator changes.
 It can the regular Gemm, a custom Gemm from domain `com.microsoft`
 or a custom implementation from domain
-`onnx_extented.ortops.tutorial.cuda`.
+`onnx_extended.ortops.tutorial.cuda`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 119-199
 
@@ -252,7 +252,7 @@ or a custom implementation from domain
             opset_imports=[
                 make_opsetid("", opset),
                 make_opsetid("com.microsoft", 1),
-                make_opsetid("onnx_extented.ortops.tutorial.cuda", 1),
+                make_opsetid("onnx_extended.ortops.tutorial.cuda", 1),
             ],
             ir_version=ir,
         )
@@ -272,7 +272,7 @@ or a custom implementation from domain
 
     opset: domain='' version=18
     opset: domain='com.microsoft' version=1
-    opset: domain='onnx_extented.ortops.tutorial.cuda' version=1
+    opset: domain='onnx_extended.ortops.tutorial.cuda' version=1
     input: name='A' type=dtype('float32') shape=['', '']
     input: name='B' type=dtype('float32') shape=['', '']
     GemmFloat8[com.microsoft](A, B, alpha=1.00, computeType=b'CUBLAS_COMPUTE_32F', fastAccumulationMode=1, rowMajor=1, transB=1) -> C
@@ -359,7 +359,7 @@ The benchmark will run the following configurations.
     # M, N, K
     # we use multiple of 8, otherwise, float8 does not work.
     dims = [list(int(i) for i in line.split(",")) for line in script_args.dims.split(";")]
-    domains = ["onnx_extented.ortops.tutorial.cuda", "", "com.microsoft"]
+    domains = ["onnx_extended.ortops.tutorial.cuda", "", "com.microsoft"]
 
 
 
@@ -440,8 +440,8 @@ Let's cache the matrices involved.
 
  .. code-block:: none
 
-      0%|          | 0/28 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   0%|          | 0/28 [00:00<?, ?it/s]    t=1 dim=[32, 32, 32]:   0%|          | 0/28 [00:00<?, ?it/s]     t=10 dim=[32, 32, 32]:   0%|          | 0/28 [00:00<?, ?it/s]    t=16 dim=[32, 32, 32]:   0%|          | 0/28 [00:00<?, ?it/s]    t=17 dim=[64, 64, 64]:   0%|          | 0/28 [00:00<?, ?it/s]    t=1 dim=[64, 64, 64]:   0%|          | 0/28 [00:00<?, ?it/s]     t=10 dim=[64, 64, 64]:   0%|          | 0/28 [00:00<?, ?it/s]    t=16 dim=[64, 64, 64]:   0%|          | 0/28 [00:00<?, ?it/s]    t=16 dim=[64, 64, 64]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]    t=17 dim=[128, 128, 128]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]    t=1 dim=[128, 128, 128]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]     t=10 dim=[128, 128, 128]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]    t=16 dim=[128, 128, 128]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]    t=17 dim=[256, 256, 256]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]    t=1 dim=[256, 256, 256]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]     t=10 dim=[256, 256, 256]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]    t=16 dim=[256, 256, 256]:  29%|██▊       | 8/28 [00:00<00:00, 65.78it/s]    t=16 dim=[256, 256, 256]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]    t=17 dim=[400, 400, 400]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]    t=1 dim=[400, 400, 400]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]     t=10 dim=[400, 400, 400]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]    t=16 dim=[400, 400, 400]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]    t=17 dim=[512, 512, 512]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]    t=1 dim=[512, 512, 512]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]     t=10 dim=[512, 512, 512]:  57%|█████▋    | 16/28 [00:00<00:00, 69.10it/s]    t=10 dim=[512, 512, 512]:  82%|████████▏ | 23/28 [00:00<00:00, 39.76it/s]    t=16 dim=[512, 512, 512]:  82%|████████▏ | 23/28 [00:00<00:00, 39.76it/s]    t=17 dim=[1024, 1024, 1024]:  82%|████████▏ | 23/28 [00:00<00:00, 39.76it/s]    t=1 dim=[1024, 1024, 1024]:  82%|████████▏ | 23/28 [00:00<00:00, 39.76it/s]     t=10 dim=[1024, 1024, 1024]:  82%|████████▏ | 23/28 [00:00<00:00, 39.76it/s]    t=16 dim=[1024, 1024, 1024]:  82%|████████▏ | 23/28 [00:00<00:00, 39.76it/s]    t=16 dim=[1024, 1024, 1024]: 100%|██████████| 28/28 [00:00<00:00, 21.87it/s]    t=16 dim=[1024, 1024, 1024]: 100%|██████████| 28/28 [00:00<00:00, 28.63it/s]
-    28 matrices were created.
+      0%|          | 0/36 [00:00<?, ?it/s]    t=17 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]    t=1 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]     t=10 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]    t=16 dim=[32, 32, 32]:   0%|          | 0/36 [00:00<?, ?it/s]    t=16 dim=[32, 32, 32]:  11%|█         | 4/36 [00:00<00:00, 34.65it/s]    t=17 dim=[64, 64, 64]:  11%|█         | 4/36 [00:00<00:00, 34.65it/s]    t=1 dim=[64, 64, 64]:  11%|█         | 4/36 [00:00<00:00, 34.65it/s]     t=10 dim=[64, 64, 64]:  11%|█         | 4/36 [00:00<00:00, 34.65it/s]    t=16 dim=[64, 64, 64]:  11%|█         | 4/36 [00:00<00:00, 34.65it/s]    t=16 dim=[64, 64, 64]:  22%|██▏       | 8/36 [00:00<00:00, 33.12it/s]    t=17 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:00, 33.12it/s]    t=1 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:00, 33.12it/s]     t=10 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:00, 33.12it/s]    t=16 dim=[128, 128, 128]:  22%|██▏       | 8/36 [00:00<00:00, 33.12it/s]    t=16 dim=[128, 128, 128]:  33%|███▎      | 12/36 [00:00<00:00, 26.13it/s]    t=17 dim=[256, 256, 256]:  33%|███▎      | 12/36 [00:00<00:00, 26.13it/s]    t=1 dim=[256, 256, 256]:  33%|███▎      | 12/36 [00:00<00:00, 26.13it/s]     t=10 dim=[256, 256, 256]:  33%|███▎      | 12/36 [00:00<00:00, 26.13it/s]    t=10 dim=[256, 256, 256]:  42%|████▏     | 15/36 [00:00<00:00, 27.08it/s]    t=16 dim=[256, 256, 256]:  42%|████▏     | 15/36 [00:00<00:00, 27.08it/s]    t=17 dim=[400, 400, 400]:  42%|████▏     | 15/36 [00:00<00:00, 27.08it/s]    t=1 dim=[400, 400, 400]:  42%|████▏     | 15/36 [00:00<00:00, 27.08it/s]     t=10 dim=[400, 400, 400]:  42%|████▏     | 15/36 [00:00<00:00, 27.08it/s]    t=10 dim=[400, 400, 400]:  53%|█████▎    | 19/36 [00:00<00:00, 29.57it/s]    t=16 dim=[400, 400, 400]:  53%|█████▎    | 19/36 [00:00<00:00, 29.57it/s]    t=17 dim=[512, 512, 512]:  53%|█████▎    | 19/36 [00:00<00:00, 29.57it/s]    t=1 dim=[512, 512, 512]:  53%|█████▎    | 19/36 [00:00<00:00, 29.57it/s]     t=10 dim=[512, 512, 512]:  53%|█████▎    | 19/36 [00:00<00:00, 29.57it/s]    t=10 dim=[512, 512, 512]:  64%|██████▍   | 23/36 [00:00<00:00, 21.54it/s]    t=16 dim=[512, 512, 512]:  64%|██████▍   | 23/36 [00:00<00:00, 21.54it/s]    t=17 dim=[1024, 1024, 1024]:  64%|██████▍   | 23/36 [00:00<00:00, 21.54it/s]    t=1 dim=[1024, 1024, 1024]:  64%|██████▍   | 23/36 [00:01<00:00, 21.54it/s]     t=1 dim=[1024, 1024, 1024]:  72%|███████▏  | 26/36 [00:01<00:00, 18.24it/s]    t=10 dim=[1024, 1024, 1024]:  72%|███████▏  | 26/36 [00:01<00:00, 18.24it/s]    t=16 dim=[1024, 1024, 1024]:  72%|███████▏  | 26/36 [00:01<00:00, 18.24it/s]    t=17 dim=[2048, 2048, 2048]:  72%|███████▏  | 26/36 [00:01<00:00, 18.24it/s]    t=17 dim=[2048, 2048, 2048]:  81%|████████  | 29/36 [00:01<00:00, 13.50it/s]    t=1 dim=[2048, 2048, 2048]:  81%|████████  | 29/36 [00:01<00:00, 13.50it/s]     t=10 dim=[2048, 2048, 2048]:  81%|████████  | 29/36 [00:01<00:00, 13.50it/s]    t=10 dim=[2048, 2048, 2048]:  86%|████████▌ | 31/36 [00:01<00:00, 10.21it/s]    t=16 dim=[2048, 2048, 2048]:  86%|████████▌ | 31/36 [00:01<00:00, 10.21it/s]    t=17 dim=[4096, 4096, 4096]:  86%|████████▌ | 31/36 [00:02<00:00, 10.21it/s]    t=17 dim=[4096, 4096, 4096]:  92%|█████████▏| 33/36 [00:02<00:00,  5.04it/s]    t=1 dim=[4096, 4096, 4096]:  92%|█████████▏| 33/36 [00:02<00:00,  5.04it/s]     t=1 dim=[4096, 4096, 4096]:  94%|█████████▍| 34/36 [00:03<00:00,  3.71it/s]    t=10 dim=[4096, 4096, 4096]:  94%|█████████▍| 34/36 [00:03<00:00,  3.71it/s]    t=10 dim=[4096, 4096, 4096]:  97%|█████████▋| 35/36 [00:04<00:00,  2.91it/s]    t=16 dim=[4096, 4096, 4096]:  97%|█████████▋| 35/36 [00:04<00:00,  2.91it/s]    t=16 dim=[4096, 4096, 4096]: 100%|██████████| 36/36 [00:05<00:00,  2.41it/s]    t=16 dim=[4096, 4096, 4096]: 100%|██████████| 36/36 [00:05<00:00,  7.10it/s]
+    36 matrices were created.
 
 
 
@@ -485,7 +485,7 @@ Let's run the benchmark
                 domain={
                     "": "ORT",
                     "com.microsoft": "COM",
-                    "onnx_extented.ortops.tutorial.cuda": "EXT",
+                    "onnx_extended.ortops.tutorial.cuda": "EXT",
                 }[domain],
                 provider={
                     "CPUExecutionProvider": "cpu",
@@ -622,7 +622,7 @@ Let's run the benchmark
 
  .. code-block:: none
 
-      0%|          | 0/336 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/336 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:03<00:09, 25.24it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:03<00:09, 25.24it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:  25%|██▌       | 85/336 [00:03<00:09, 25.24it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  25%|██▌       | 85/336 [00:03<00:09, 25.24it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 88/336 [00:06<00:22, 11.23it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 88/336 [00:06<00:22, 11.23it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  26%|██▌       | 88/336 [00:06<00:22, 11.23it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:  27%|██▋       | 90/336 [00:06<00:22, 11.13it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 90/336 [00:06<00:22, 11.13it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 90/336 [00:10<00:22, 11.13it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 92/336 [00:10<00:49,  4.98it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:  27%|██▋       | 92/336 [00:10<00:49,  4.98it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  27%|██▋       | 92/336 [00:10<00:49,  4.98it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 94/336 [00:11<00:55,  4.32it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 94/336 [00:11<00:55,  4.32it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 95/336 [00:12<00:57,  4.22it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:  28%|██▊       | 95/336 [00:12<00:57,  4.22it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  28%|██▊       | 95/336 [00:12<00:57,  4.22it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 97/336 [00:12<00:55,  4.28it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 97/336 [00:12<00:55,  4.28it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 98/336 [00:12<00:55,  4.31it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:  29%|██▉       | 98/336 [00:12<00:55,  4.31it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  29%|██▉       | 98/336 [00:12<00:55,  4.31it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|██▉       | 100/336 [00:13<00:56,  4.18it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|██▉       | 100/336 [00:13<00:56,  4.18it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|███       | 101/336 [00:13<00:58,  4.01it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:  30%|███       | 101/336 [00:13<00:58,  4.01it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  30%|███       | 101/336 [00:13<00:58,  4.01it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 103/336 [00:15<01:32,  2.53it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 103/336 [00:15<01:32,  2.53it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 104/336 [00:16<02:05,  1.84it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  31%|███       | 104/336 [00:16<02:05,  1.84it/s]    t=1 e=InferenceSession p=CPUE dim=[32, 32, 32]:  31%|███       | 104/336 [00:16<02:05,  1.84it/s]          t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:  31%|███       | 104/336 [00:16<02:05,  1.84it/s]    t=1 e=InferenceSession p=CPUE dim=[128, 128, 128]:  31%|███       | 104/336 [00:16<02:05,  1.84it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  31%|███       | 104/336 [00:16<02:05,  1.84it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  35%|███▍      | 116/336 [00:16<00:33,  6.47it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  35%|███▍      | 116/336 [00:16<00:33,  6.47it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  35%|███▍      | 116/336 [00:16<00:33,  6.47it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  36%|███▋      | 122/336 [00:17<00:23,  9.02it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  36%|███▋      | 122/336 [00:17<00:23,  9.02it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]       t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]          t=1 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  38%|███▊      | 126/336 [00:17<00:27,  7.74it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  46%|████▌     | 155/336 [00:20<00:16, 10.74it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  46%|████▌     | 155/336 [00:20<00:16, 10.74it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  47%|████▋     | 158/336 [00:20<00:18,  9.75it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  47%|████▋     | 158/336 [00:20<00:18,  9.75it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  47%|████▋     | 158/336 [00:20<00:18,  9.75it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  47%|████▋     | 158/336 [00:20<00:18,  9.75it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  47%|████▋     | 158/336 [00:20<00:18,  9.75it/s]            t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 169/336 [00:25<00:38,  4.32it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 169/336 [00:25<00:38,  4.32it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  50%|█████     | 169/336 [00:26<00:38,  4.32it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  51%|█████     | 171/336 [00:26<00:36,  4.55it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  51%|█████     | 171/336 [00:26<00:36,  4.55it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  51%|█████     | 171/336 [00:34<00:36,  4.55it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  51%|█████▏    | 173/336 [00:34<01:43,  1.57it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  51%|█████▏    | 173/336 [00:34<01:43,  1.57it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  51%|█████▏    | 173/336 [00:34<01:43,  1.57it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 175/336 [00:41<02:41,  1.00s/it]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 175/336 [00:41<02:41,  1.00s/it]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 176/336 [00:42<02:31,  1.06it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  52%|█████▏    | 176/336 [00:42<02:31,  1.06it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  52%|█████▏    | 176/336 [00:42<02:31,  1.06it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  53%|█████▎    | 178/336 [00:45<02:47,  1.06s/it]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  53%|█████▎    | 178/336 [00:45<02:47,  1.06s/it]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  53%|█████▎    | 179/336 [00:45<02:31,  1.04it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  53%|█████▎    | 179/336 [00:45<02:31,  1.04it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  53%|█████▎    | 179/336 [00:45<02:31,  1.04it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▍    | 181/336 [00:48<02:58,  1.15s/it]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▍    | 181/336 [00:48<02:58,  1.15s/it]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▍    | 182/336 [00:48<02:32,  1.01it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  54%|█████▍    | 182/336 [00:48<02:32,  1.01it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  54%|█████▍    | 182/336 [00:48<02:32,  1.01it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▍    | 184/336 [00:54<03:49,  1.51s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▍    | 184/336 [00:54<03:49,  1.51s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▌    | 185/336 [00:54<03:12,  1.28s/it]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  55%|█████▌    | 185/336 [00:54<03:12,  1.28s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  55%|█████▌    | 185/336 [00:54<03:12,  1.28s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 187/336 [01:28<16:22,  6.59s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 187/336 [01:28<16:22,  6.59s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 188/336 [01:29<13:33,  5.50s/it]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  56%|█████▌    | 188/336 [01:29<13:33,  5.50s/it]    t=10 e=InferenceSession p=CPUE dim=[32, 32, 32]:  56%|█████▌    | 188/336 [01:29<13:33,  5.50s/it]          t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  56%|█████▌    | 188/336 [01:29<13:33,  5.50s/it]    t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  58%|█████▊    | 194/336 [01:29<04:53,  2.07s/it]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  58%|█████▊    | 194/336 [01:29<04:53,  2.07s/it]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  59%|█████▊    | 197/336 [01:29<03:21,  1.45s/it]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  59%|█████▊    | 197/336 [01:29<03:21,  1.45s/it]    t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  60%|█████▉    | 200/336 [01:29<02:20,  1.03s/it]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  60%|█████▉    | 200/336 [01:29<02:20,  1.03s/it]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  60%|██████    | 203/336 [01:30<01:37,  1.37it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  60%|██████    | 203/336 [01:30<01:37,  1.37it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  61%|██████▏   | 206/336 [01:30<01:12,  1.78it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  61%|██████▏   | 206/336 [01:30<01:12,  1.78it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]       t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  62%|██████▏   | 209/336 [01:32<01:08,  1.85it/s]          t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  69%|██████▉   | 233/336 [01:32<00:13,  7.67it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  69%|██████▉   | 233/336 [01:32<00:13,  7.67it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  69%|██████▉   | 233/336 [01:32<00:13,  7.67it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  71%|███████   | 239/336 [01:32<00:10,  9.42it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  71%|███████   | 239/336 [01:32<00:10,  9.42it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  72%|███████▏  | 243/336 [01:33<00:11,  8.33it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  72%|███████▏  | 243/336 [01:33<00:11,  8.33it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  72%|███████▏  | 243/336 [01:33<00:11,  8.33it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  72%|███████▏  | 243/336 [01:33<00:11,  8.33it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  72%|███████▏  | 243/336 [01:33<00:11,  8.33it/s]             t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  76%|███████▌  | 254/336 [01:33<00:06, 12.15it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  76%|███████▌  | 254/336 [01:33<00:06, 12.15it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  76%|███████▌  | 254/336 [01:33<00:06, 12.15it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  76%|███████▌  | 254/336 [01:33<00:06, 12.15it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  77%|███████▋  | 258/336 [01:33<00:06, 12.10it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  77%|███████▋  | 258/336 [01:33<00:06, 12.10it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  77%|███████▋  | 258/336 [01:34<00:06, 12.10it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  78%|███████▊  | 261/336 [01:34<00:07, 10.32it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 261/336 [01:34<00:07, 10.32it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 263/336 [01:34<00:07,  9.91it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  78%|███████▊  | 263/336 [01:34<00:07,  9.91it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  78%|███████▊  | 263/336 [01:34<00:07,  9.91it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  79%|███████▉  | 266/336 [01:34<00:06, 10.85it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  79%|███████▉  | 266/336 [01:34<00:06, 10.85it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  79%|███████▉  | 266/336 [01:34<00:06, 10.85it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  80%|████████  | 269/336 [01:35<00:06, 10.84it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  80%|████████  | 269/336 [01:35<00:06, 10.84it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  80%|████████  | 269/336 [01:35<00:06, 10.84it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[32, 32, 32]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]          t=16 e=InferenceSession p=CPUE dim=[64, 64, 64]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[128, 128, 128]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[256, 256, 256]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[400, 400, 400]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[512, 512, 512]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]       t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]          t=16 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  81%|████████  | 272/336 [01:36<00:11,  5.65it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]: 100%|██████████| 336/336 [01:36<00:00,  3.49it/s]
+      0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[32, 32, 32]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[64, 64, 64]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[128, 128, 128]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[256, 256, 256]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[400, 400, 400]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[512, 512, 512]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CPUE dim=[32, 32, 32]:   0%|          | 0/432 [00:00<?, ?it/s]          t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:   0%|          | 0/432 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CPUE dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=InferenceSession p=CPUE dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=InferenceSession p=CPUE dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=InferenceSession p=CPUE dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=InferenceSession p=CPUE dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]       t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]          t=1 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=1 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]            t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[256, 256, 256]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[400, 400, 400]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[512, 512, 512]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  32%|███▏      | 140/432 [00:00<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  32%|███▏      | 140/432 [00:01<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  32%|███▏      | 140/432 [00:01<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  32%|███▏      | 140/432 [00:01<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CPUE dim=[32, 32, 32]:  32%|███▏      | 140/432 [00:01<00:00, 1100.70it/s]          t=10 e=InferenceSession p=CPUE dim=[64, 64, 64]:  32%|███▏      | 140/432 [00:01<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  32%|███▏      | 140/432 [00:01<00:00, 1100.70it/s]    t=10 e=InferenceSession p=CPUE dim=[128, 128, 128]:  58%|█████▊    | 251/432 [00:01<00:01, 160.57it/s]     t=10 e=InferenceSession p=CPUE dim=[256, 256, 256]:  58%|█████▊    | 251/432 [00:01<00:01, 160.57it/s]    t=10 e=InferenceSession p=CPUE dim=[400, 400, 400]:  58%|█████▊    | 251/432 [00:01<00:01, 160.57it/s]    t=10 e=InferenceSession p=CPUE dim=[512, 512, 512]:  58%|█████▊    | 251/432 [00:01<00:01, 160.57it/s]    t=10 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  58%|█████▊    | 251/432 [00:01<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]       t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]          t=10 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  58%|█████▊    | 251/432 [00:02<00:01, 160.57it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=10 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]             t=16 e=InferenceSession p=CUDA dim=[32, 32, 32]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=16 e=InferenceSession p=CUDA dim=[64, 64, 64]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  70%|██████▉   | 302/432 [00:02<00:01, 104.21it/s]    t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]     t=16 e=InferenceSession p=CUDA dim=[128, 128, 128]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[256, 256, 256]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[400, 400, 400]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[512, 512, 512]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[1024, 1024, 1024]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[2048, 2048, 2048]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CUDA dim=[4096, 4096, 4096]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]    t=16 e=InferenceSession p=CPUE dim=[32, 32, 32]:  77%|███████▋  | 332/432 [00:02<00:01, 86.45it/s]          t=16 e=InferenceSession p=CPUE dim=[64, 64, 64]:  77%|███████▋  | 332/432 [00:03<00:01, 86.45it/s]    t=16 e=InferenceSession p=CPUE dim=[128, 128, 128]:  77%|███████▋  | 332/432 [00:03<00:01, 86.45it/s]    t=16 e=InferenceSession p=CPUE dim=[256, 256, 256]:  77%|███████▋  | 332/432 [00:03<00:01, 86.45it/s]    t=16 e=InferenceSession p=CPUE dim=[400, 400, 400]:  77%|███████▋  | 332/432 [00:03<00:01, 86.45it/s]    t=16 e=InferenceSession p=CPUE dim=[400, 400, 400]:  84%|████████▍ | 365/432 [00:03<00:00, 91.54it/s]    t=16 e=InferenceSession p=CPUE dim=[512, 512, 512]:  84%|████████▍ | 365/432 [00:03<00:00, 91.54it/s]    t=16 e=InferenceSession p=CPUE dim=[1024, 1024, 1024]:  84%|████████▍ | 365/432 [00:03<00:00, 91.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  84%|████████▍ | 365/432 [00:03<00:00, 91.54it/s]       t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  84%|████████▍ | 365/432 [00:03<00:00, 91.54it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[32, 32, 32]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[64, 64, 64]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[128, 128, 128]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[256, 256, 256]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[400, 400, 400]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  88%|████████▊ | 382/432 [00:03<00:00, 90.79it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[512, 512, 512]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[1024, 1024, 1024]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[2048, 2048, 2048]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CUDA dim=[4096, 4096, 4096]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[32, 32, 32]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]          t=16 e=CReferenceEvaluator p=CPUE dim=[64, 64, 64]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[128, 128, 128]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[256, 256, 256]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[400, 400, 400]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[512, 512, 512]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]:  92%|█████████▏| 397/432 [00:03<00:00, 96.26it/s]    t=16 e=CReferenceEvaluator p=CPUE dim=[1024, 1024, 1024]: 100%|██████████| 432/432 [00:03<00:00, 121.15it/s]
 
 
 
@@ -654,28 +654,28 @@ Results
 
  .. code-block:: none
 
-                                0                1                 2                 3                    4
-    average               0.00489         0.000179          0.004755           0.00032             0.005273
-    deviation             0.00023         0.000016          0.000191          0.000052             0.000415
-    min_exec              0.00466         0.000168          0.004512          0.000244             0.004865
-    max_exec             0.005993          0.00026          0.005431          0.000431             0.006488
-    repeat                     40               40                40                40                   40
-    number                     16               16                16                16                   16
-    ttime                0.195605         0.007143           0.19019          0.012782             0.210911
-    context_size               64               64                64                64                   64
-    warmup_time          0.005092         0.000672          0.005076          0.000362             0.005676
-    engine                    ort              ort               ort               ort                  ort
-    stype                     f32              f32               f32               f32                  f32
-    type                      f32              f32               f32               f32                  f32
-    M                          32               32                64                64                  128
-    N                          32               32                64                64                  128
-    K                          32               32                64                64                  128
-    cost                   131072           131072           1048576           1048576              8388608
-    cost_s        131072-32x32x32  131072-32x32x32  1048576-64x64x64  1048576-64x64x64  8388608-128x128x128
-    domain                    EXT              ORT               EXT               ORT                  EXT
-    provider                 cuda             cuda              cuda              cuda                 cuda
-    platform               x86_64           x86_64            x86_64            x86_64               x86_64
-    intime                   None             None              None              None                 None
+                                0                 1                    2                     3                      4
+    average              0.000011          0.000019             0.000029              0.000073               0.000145
+    deviation            0.000001          0.000008             0.000003              0.000021               0.000005
+    min_exec             0.000011          0.000014             0.000026              0.000053               0.000138
+    max_exec             0.000018          0.000041             0.000038               0.00013               0.000152
+    repeat                     40                40                   40                    20                     10
+    number                     16                16                   16                     8                      4
+    ttime                0.000443          0.000779             0.001165              0.001464               0.001448
+    context_size               64                64                   64                    64                     64
+    warmup_time          0.000049          0.000125             0.000064              0.000189               0.000189
+    engine                    ort               ort                  ort                   ort                    ort
+    stype                     f32               f32                  f32                   f32                    f32
+    type                      f32               f32                  f32                   f32                    f32
+    M                          32                64                  128                   256                    400
+    N                          32                64                  128                   256                    400
+    K                          32                64                  128                   256                    400
+    cost                   131072           1048576              8388608              67108864              256000000
+    cost_s        131072-32x32x32  1048576-64x64x64  8388608-128x128x128  67108864-256x256x256  256000000-400x400x400
+    domain                    ORT               ORT                  ORT                   ORT                    ORT
+    provider                  cpu               cpu                  cpu                   cpu                    cpu
+    platform               x86_64            x86_64               x86_64                x86_64                 x86_64
+    intime                   None              None                 None                  None                   None
 
 
 .. raw:: html
@@ -725,15 +725,15 @@ Results
       <tbody>
         <tr>
           <th>0</th>
-          <td>0.004890</td>
-          <td>0.000230</td>
-          <td>0.004660</td>
-          <td>0.005993</td>
+          <td>0.000011</td>
+          <td>1.318731e-06</td>
+          <td>0.000011</td>
+          <td>0.000018</td>
           <td>40</td>
           <td>16</td>
-          <td>0.195605</td>
+          <td>0.000443</td>
           <td>64</td>
-          <td>0.005092</td>
+          <td>0.000049</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
@@ -742,335 +742,167 @@ Results
           <td>32</td>
           <td>131072</td>
           <td>131072-32x32x32</td>
-          <td>EXT</td>
-          <td>cuda</td>
+          <td>ORT</td>
+          <td>cpu</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.000179</td>
-          <td>0.000016</td>
-          <td>0.000168</td>
-          <td>0.000260</td>
+          <td>0.000019</td>
+          <td>7.599805e-06</td>
+          <td>0.000014</td>
+          <td>0.000041</td>
           <td>40</td>
           <td>16</td>
-          <td>0.007143</td>
+          <td>0.000779</td>
           <td>64</td>
-          <td>0.000672</td>
+          <td>0.000125</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>131072</td>
-          <td>131072-32x32x32</td>
+          <td>64</td>
+          <td>64</td>
+          <td>64</td>
+          <td>1048576</td>
+          <td>1048576-64x64x64</td>
           <td>ORT</td>
-          <td>cuda</td>
+          <td>cpu</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.004755</td>
-          <td>0.000191</td>
-          <td>0.004512</td>
-          <td>0.005431</td>
+          <td>0.000029</td>
+          <td>3.490552e-06</td>
+          <td>0.000026</td>
+          <td>0.000038</td>
           <td>40</td>
           <td>16</td>
-          <td>0.190190</td>
+          <td>0.001165</td>
           <td>64</td>
-          <td>0.005076</td>
+          <td>0.000064</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
-          <td>EXT</td>
-          <td>cuda</td>
+          <td>128</td>
+          <td>128</td>
+          <td>128</td>
+          <td>8388608</td>
+          <td>8388608-128x128x128</td>
+          <td>ORT</td>
+          <td>cpu</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.000320</td>
-          <td>0.000052</td>
-          <td>0.000244</td>
-          <td>0.000431</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.012782</td>
+          <td>0.000073</td>
+          <td>2.063886e-05</td>
+          <td>0.000053</td>
+          <td>0.000130</td>
+          <td>20</td>
+          <td>8</td>
+          <td>0.001464</td>
           <td>64</td>
-          <td>0.000362</td>
+          <td>0.000189</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
+          <td>256</td>
+          <td>256</td>
+          <td>256</td>
+          <td>67108864</td>
+          <td>67108864-256x256x256</td>
           <td>ORT</td>
-          <td>cuda</td>
+          <td>cpu</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.005273</td>
-          <td>0.000415</td>
-          <td>0.004865</td>
-          <td>0.006488</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.210911</td>
+          <td>0.000145</td>
+          <td>5.000921e-06</td>
+          <td>0.000138</td>
+          <td>0.000152</td>
+          <td>10</td>
+          <td>4</td>
+          <td>0.001448</td>
           <td>64</td>
-          <td>0.005676</td>
+          <td>0.000189</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
-          <td>EXT</td>
-          <td>cuda</td>
+          <td>400</td>
+          <td>400</td>
+          <td>400</td>
+          <td>256000000</td>
+          <td>256000000-400x400x400</td>
+          <td>ORT</td>
+          <td>cpu</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
         <tr>
           <th>5</th>
-          <td>0.000817</td>
-          <td>0.000221</td>
+          <td>0.000498</td>
+          <td>2.085198e-05</td>
+          <td>0.000482</td>
           <td>0.000556</td>
-          <td>0.001555</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.032660</td>
+          <td>10</td>
+          <td>4</td>
+          <td>0.004977</td>
           <td>64</td>
-          <td>0.000851</td>
+          <td>0.000521</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
+          <td>512</td>
+          <td>512</td>
+          <td>512</td>
+          <td>536870912</td>
+          <td>536870912-512x512x512</td>
           <td>ORT</td>
-          <td>cuda</td>
+          <td>cpu</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
         <tr>
           <th>6</th>
-          <td>0.007044</td>
-          <td>0.000401</td>
-          <td>0.006537</td>
-          <td>0.007853</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.140886</td>
+          <td>0.003442</td>
+          <td>1.059837e-04</td>
+          <td>0.003382</td>
+          <td>0.003699</td>
+          <td>10</td>
+          <td>4</td>
+          <td>0.034419</td>
           <td>64</td>
-          <td>0.007007</td>
+          <td>0.003425</td>
           <td>ort</td>
           <td>f32</td>
           <td>f32</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
-          <td>EXT</td>
-          <td>cuda</td>
+          <td>1024</td>
+          <td>1024</td>
+          <td>1024</td>
+          <td>4294967296</td>
+          <td>4294967296-1024x1024x1024</td>
+          <td>ORT</td>
+          <td>cpu</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
         <tr>
           <th>7</th>
-          <td>0.001910</td>
-          <td>0.000162</td>
-          <td>0.001621</td>
-          <td>0.002349</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.038203</td>
-          <td>64</td>
-          <td>0.001914</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>8</th>
-          <td>0.009082</td>
-          <td>0.000386</td>
-          <td>0.008605</td>
-          <td>0.010057</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.090820</td>
-          <td>64</td>
-          <td>0.009130</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>400</td>
-          <td>400</td>
-          <td>400</td>
-          <td>256000000</td>
-          <td>256000000-400x400x400</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>9</th>
-          <td>0.004567</td>
-          <td>0.000199</td>
-          <td>0.004277</td>
-          <td>0.004889</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.045672</td>
-          <td>64</td>
-          <td>0.004253</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>400</td>
-          <td>400</td>
-          <td>400</td>
-          <td>256000000</td>
-          <td>256000000-400x400x400</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>10</th>
-          <td>0.011514</td>
-          <td>0.000239</td>
-          <td>0.011129</td>
-          <td>0.011965</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.115140</td>
-          <td>64</td>
-          <td>0.011324</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>512</td>
-          <td>512</td>
-          <td>512</td>
-          <td>536870912</td>
-          <td>536870912-512x512x512</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>11</th>
-          <td>0.006779</td>
-          <td>0.000129</td>
-          <td>0.006587</td>
-          <td>0.006994</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.067790</td>
-          <td>64</td>
-          <td>0.006846</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>512</td>
-          <td>512</td>
-          <td>512</td>
-          <td>536870912</td>
-          <td>536870912-512x512x512</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>12</th>
-          <td>0.035128</td>
-          <td>0.000139</td>
-          <td>0.034889</td>
-          <td>0.035432</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.351280</td>
-          <td>64</td>
-          <td>0.035979</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>4294967296</td>
-          <td>4294967296-1024x1024x1024</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>13</th>
-          <td>0.028854</td>
-          <td>0.000046</td>
-          <td>0.028789</td>
-          <td>0.028946</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.288543</td>
-          <td>64</td>
-          <td>0.028995</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>4294967296</td>
-          <td>4294967296-1024x1024x1024</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>14</th>
-          <td>0.000012</td>
-          <td>0.000001</td>
-          <td>0.000010</td>
+          <td>0.000025</td>
+          <td>1.161152e-05</td>
           <td>0.000018</td>
+          <td>0.000060</td>
           <td>40</td>
           <td>16</td>
-          <td>0.000461</td>
+          <td>0.001004</td>
           <td>64</td>
-          <td>0.000030</td>
-          <td>ort</td>
+          <td>0.000138</td>
+          <td>np</td>
           <td>f32</td>
           <td>f32</td>
           <td>32</td>
@@ -1078,6 +910,174 @@ Results
           <td>32</td>
           <td>131072</td>
           <td>131072-32x32x32</td>
+          <td>ORT</td>
+          <td>cpu</td>
+          <td>x86_64</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th>8</th>
+          <td>0.000031</td>
+          <td>1.351792e-05</td>
+          <td>0.000024</td>
+          <td>0.000090</td>
+          <td>40</td>
+          <td>16</td>
+          <td>0.001223</td>
+          <td>64</td>
+          <td>0.000070</td>
+          <td>np</td>
+          <td>f32</td>
+          <td>f32</td>
+          <td>64</td>
+          <td>64</td>
+          <td>64</td>
+          <td>1048576</td>
+          <td>1048576-64x64x64</td>
+          <td>ORT</td>
+          <td>cpu</td>
+          <td>x86_64</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th>9</th>
+          <td>0.000132</td>
+          <td>8.156039e-06</td>
+          <td>0.000125</td>
+          <td>0.000165</td>
+          <td>40</td>
+          <td>16</td>
+          <td>0.005288</td>
+          <td>64</td>
+          <td>0.000201</td>
+          <td>np</td>
+          <td>f32</td>
+          <td>f32</td>
+          <td>128</td>
+          <td>128</td>
+          <td>128</td>
+          <td>8388608</td>
+          <td>8388608-128x128x128</td>
+          <td>ORT</td>
+          <td>cpu</td>
+          <td>x86_64</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th>10</th>
+          <td>0.000425</td>
+          <td>7.010425e-05</td>
+          <td>0.000395</td>
+          <td>0.000716</td>
+          <td>20</td>
+          <td>8</td>
+          <td>0.008491</td>
+          <td>64</td>
+          <td>0.000625</td>
+          <td>np</td>
+          <td>f32</td>
+          <td>f32</td>
+          <td>256</td>
+          <td>256</td>
+          <td>256</td>
+          <td>67108864</td>
+          <td>67108864-256x256x256</td>
+          <td>ORT</td>
+          <td>cpu</td>
+          <td>x86_64</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th>11</th>
+          <td>0.000027</td>
+          <td>5.275874e-07</td>
+          <td>0.000027</td>
+          <td>0.000029</td>
+          <td>40</td>
+          <td>16</td>
+          <td>0.001091</td>
+          <td>64</td>
+          <td>0.000048</td>
+          <td>ort</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>32</td>
+          <td>32</td>
+          <td>32</td>
+          <td>131072</td>
+          <td>131072-32x32x32</td>
+          <td>ORT</td>
+          <td>cpu</td>
+          <td>x86_64</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th>12</th>
+          <td>0.000043</td>
+          <td>6.803883e-06</td>
+          <td>0.000038</td>
+          <td>0.000071</td>
+          <td>40</td>
+          <td>16</td>
+          <td>0.001706</td>
+          <td>64</td>
+          <td>0.000059</td>
+          <td>ort</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>64</td>
+          <td>64</td>
+          <td>64</td>
+          <td>1048576</td>
+          <td>1048576-64x64x64</td>
+          <td>ORT</td>
+          <td>cpu</td>
+          <td>x86_64</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th>13</th>
+          <td>0.000187</td>
+          <td>8.686394e-06</td>
+          <td>0.000181</td>
+          <td>0.000217</td>
+          <td>40</td>
+          <td>16</td>
+          <td>0.007478</td>
+          <td>64</td>
+          <td>0.000334</td>
+          <td>ort</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>128</td>
+          <td>128</td>
+          <td>128</td>
+          <td>8388608</td>
+          <td>8388608-128x128x128</td>
+          <td>ORT</td>
+          <td>cpu</td>
+          <td>x86_64</td>
+          <td>None</td>
+        </tr>
+        <tr>
+          <th>14</th>
+          <td>0.000455</td>
+          <td>1.082936e-05</td>
+          <td>0.000439</td>
+          <td>0.000490</td>
+          <td>20</td>
+          <td>8</td>
+          <td>0.009094</td>
+          <td>64</td>
+          <td>0.000588</td>
+          <td>ort</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>256</td>
+          <td>256</td>
+          <td>256</td>
+          <td>67108864</td>
+          <td>67108864-256x256x256</td>
           <td>ORT</td>
           <td>cpu</td>
           <td>x86_64</td>
@@ -1085,23 +1085,23 @@ Results
         </tr>
         <tr>
           <th>15</th>
-          <td>0.000023</td>
-          <td>0.000003</td>
-          <td>0.000017</td>
-          <td>0.000032</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.000911</td>
+          <td>0.001844</td>
+          <td>3.228713e-05</td>
+          <td>0.001805</td>
+          <td>0.001900</td>
+          <td>10</td>
+          <td>4</td>
+          <td>0.018436</td>
           <td>64</td>
-          <td>0.000042</td>
+          <td>0.001852</td>
           <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>400</td>
+          <td>400</td>
+          <td>400</td>
+          <td>256000000</td>
+          <td>256000000-400x400x400</td>
           <td>ORT</td>
           <td>cpu</td>
           <td>x86_64</td>
@@ -1109,23 +1109,23 @@ Results
         </tr>
         <tr>
           <th>16</th>
-          <td>0.000047</td>
-          <td>0.000006</td>
-          <td>0.000040</td>
-          <td>0.000069</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.001866</td>
+          <td>0.003112</td>
+          <td>5.202908e-04</td>
+          <td>0.002867</td>
+          <td>0.004605</td>
+          <td>10</td>
+          <td>4</td>
+          <td>0.031118</td>
           <td>64</td>
-          <td>0.000071</td>
+          <td>0.002916</td>
           <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>512</td>
+          <td>512</td>
+          <td>512</td>
+          <td>536870912</td>
+          <td>536870912-512x512x512</td>
           <td>ORT</td>
           <td>cpu</td>
           <td>x86_64</td>
@@ -1133,23 +1133,23 @@ Results
         </tr>
         <tr>
           <th>17</th>
-          <td>0.000271</td>
-          <td>0.000029</td>
-          <td>0.000228</td>
-          <td>0.000367</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.005422</td>
+          <td>0.007631</td>
+          <td>4.576857e-05</td>
+          <td>0.007574</td>
+          <td>0.007759</td>
+          <td>10</td>
+          <td>4</td>
+          <td>0.076309</td>
           <td>64</td>
-          <td>0.000245</td>
+          <td>0.007728</td>
           <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>1024</td>
+          <td>1024</td>
+          <td>1024</td>
+          <td>4294967296</td>
+          <td>4294967296-1024x1024x1024</td>
           <td>ORT</td>
           <td>cpu</td>
           <td>x86_64</td>
@@ -1157,23 +1157,23 @@ Results
         </tr>
         <tr>
           <th>18</th>
-          <td>0.001023</td>
-          <td>0.000084</td>
-          <td>0.000875</td>
-          <td>0.001174</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.010228</td>
+          <td>0.000199</td>
+          <td>1.693145e-06</td>
+          <td>0.000197</td>
+          <td>0.000208</td>
+          <td>40</td>
+          <td>16</td>
+          <td>0.007963</td>
           <td>64</td>
-          <td>0.000738</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>400</td>
-          <td>400</td>
-          <td>400</td>
-          <td>256000000</td>
-          <td>256000000-400x400x400</td>
+          <td>0.000241</td>
+          <td>np</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>32</td>
+          <td>32</td>
+          <td>32</td>
+          <td>131072</td>
+          <td>131072-32x32x32</td>
           <td>ORT</td>
           <td>cpu</td>
           <td>x86_64</td>
@@ -1181,23 +1181,23 @@ Results
         </tr>
         <tr>
           <th>19</th>
-          <td>0.002013</td>
-          <td>0.000087</td>
-          <td>0.001782</td>
-          <td>0.002142</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.020126</td>
+          <td>0.001455</td>
+          <td>7.908326e-06</td>
+          <td>0.001447</td>
+          <td>0.001463</td>
+          <td>2</td>
+          <td>2</td>
+          <td>0.002910</td>
           <td>64</td>
-          <td>0.001949</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>512</td>
-          <td>512</td>
-          <td>512</td>
-          <td>536870912</td>
-          <td>536870912-512x512x512</td>
+          <td>0.001495</td>
+          <td>np</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>64</td>
+          <td>64</td>
+          <td>64</td>
+          <td>1048576</td>
+          <td>1048576-64x64x64</td>
           <td>ORT</td>
           <td>cpu</td>
           <td>x86_64</td>
@@ -1205,23 +1205,23 @@ Results
         </tr>
         <tr>
           <th>20</th>
-          <td>0.016095</td>
-          <td>0.001203</td>
-          <td>0.014631</td>
-          <td>0.018449</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.160953</td>
+          <td>0.011151</td>
+          <td>8.119410e-05</td>
+          <td>0.011070</td>
+          <td>0.011233</td>
+          <td>2</td>
+          <td>2</td>
+          <td>0.022303</td>
           <td>64</td>
-          <td>0.014230</td>
-          <td>ort</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>4294967296</td>
-          <td>4294967296-1024x1024x1024</td>
+          <td>0.011059</td>
+          <td>np</td>
+          <td>f16</td>
+          <td>f16</td>
+          <td>128</td>
+          <td>128</td>
+          <td>128</td>
+          <td>8388608</td>
+          <td>8388608-128x128x128</td>
           <td>ORT</td>
           <td>cpu</td>
           <td>x86_64</td>
@@ -1229,687 +1229,15 @@ Results
         </tr>
         <tr>
           <th>21</th>
-          <td>0.000044</td>
-          <td>0.000015</td>
-          <td>0.000035</td>
-          <td>0.000084</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.001772</td>
-          <td>64</td>
-          <td>0.000078</td>
-          <td>np</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>131072</td>
-          <td>131072-32x32x32</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>22</th>
-          <td>0.000071</td>
-          <td>0.000021</td>
-          <td>0.000048</td>
-          <td>0.000123</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.002835</td>
-          <td>64</td>
-          <td>0.000103</td>
-          <td>np</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>23</th>
-          <td>0.003370</td>
-          <td>0.003987</td>
-          <td>0.000111</td>
-          <td>0.015590</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.134783</td>
-          <td>64</td>
-          <td>0.011207</td>
-          <td>np</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>24</th>
-          <td>0.003486</td>
-          <td>0.002434</td>
-          <td>0.000422</td>
-          <td>0.009248</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.069720</td>
-          <td>64</td>
-          <td>0.000528</td>
-          <td>np</td>
-          <td>f32</td>
-          <td>f32</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>25</th>
-          <td>0.008238</td>
-          <td>0.000238</td>
-          <td>0.007839</td>
-          <td>0.008848</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.329519</td>
-          <td>64</td>
-          <td>0.010102</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>131072</td>
-          <td>131072-32x32x32</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>26</th>
-          <td>0.000241</td>
-          <td>0.000038</td>
-          <td>0.000209</td>
-          <td>0.000415</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.009632</td>
-          <td>64</td>
-          <td>0.000382</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>131072</td>
-          <td>131072-32x32x32</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>27</th>
-          <td>0.012193</td>
-          <td>0.001524</td>
-          <td>0.010824</td>
-          <td>0.015947</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.487702</td>
-          <td>64</td>
-          <td>0.010899</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>28</th>
-          <td>0.001076</td>
-          <td>0.000454</td>
-          <td>0.000449</td>
-          <td>0.002011</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.043057</td>
-          <td>64</td>
-          <td>0.000863</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>29</th>
-          <td>0.010802</td>
-          <td>0.001165</td>
-          <td>0.009682</td>
-          <td>0.015130</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.432093</td>
-          <td>64</td>
-          <td>0.009645</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>30</th>
-          <td>0.000500</td>
-          <td>0.000061</td>
-          <td>0.000417</td>
-          <td>0.000709</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.019991</td>
-          <td>64</td>
-          <td>0.000704</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>31</th>
-          <td>0.018378</td>
-          <td>0.000373</td>
-          <td>0.017770</td>
-          <td>0.019396</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.367556</td>
-          <td>64</td>
-          <td>0.017944</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>32</th>
-          <td>0.001512</td>
-          <td>0.000108</td>
-          <td>0.001343</td>
-          <td>0.001705</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.030246</td>
-          <td>64</td>
-          <td>0.001472</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>33</th>
-          <td>0.073036</td>
-          <td>0.002474</td>
-          <td>0.070877</td>
-          <td>0.079000</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.730364</td>
-          <td>64</td>
-          <td>0.070677</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>400</td>
-          <td>400</td>
-          <td>400</td>
-          <td>256000000</td>
-          <td>256000000-400x400x400</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>34</th>
-          <td>0.002754</td>
-          <td>0.000114</td>
-          <td>0.002580</td>
-          <td>0.002951</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.027536</td>
-          <td>64</td>
-          <td>0.002850</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>400</td>
-          <td>400</td>
-          <td>400</td>
-          <td>256000000</td>
-          <td>256000000-400x400x400</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>35</th>
-          <td>0.115094</td>
-          <td>0.004889</td>
-          <td>0.106854</td>
-          <td>0.123440</td>
-          <td>10</td>
-          <td>4</td>
-          <td>1.150936</td>
-          <td>64</td>
-          <td>0.123673</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>512</td>
-          <td>512</td>
-          <td>512</td>
-          <td>536870912</td>
-          <td>536870912-512x512x512</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>36</th>
-          <td>0.004500</td>
-          <td>0.000123</td>
-          <td>0.004315</td>
-          <td>0.004685</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.044998</td>
-          <td>64</td>
-          <td>0.004542</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>512</td>
-          <td>512</td>
-          <td>512</td>
-          <td>536870912</td>
-          <td>536870912-512x512x512</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>37</th>
-          <td>0.732097</td>
-          <td>0.017199</td>
-          <td>0.706991</td>
-          <td>0.755061</td>
-          <td>10</td>
-          <td>4</td>
-          <td>7.320970</td>
-          <td>64</td>
-          <td>0.778394</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>4294967296</td>
-          <td>4294967296-1024x1024x1024</td>
-          <td>EXT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>38</th>
-          <td>0.020952</td>
-          <td>0.000149</td>
-          <td>0.020830</td>
-          <td>0.021370</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.209521</td>
-          <td>64</td>
-          <td>0.021117</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>4294967296</td>
-          <td>4294967296-1024x1024x1024</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>39</th>
-          <td>0.000041</td>
-          <td>0.000014</td>
-          <td>0.000026</td>
-          <td>0.000072</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.001653</td>
-          <td>64</td>
-          <td>0.000055</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>131072</td>
-          <td>131072-32x32x32</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>40</th>
-          <td>0.000088</td>
-          <td>0.000006</td>
-          <td>0.000065</td>
-          <td>0.000101</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.003515</td>
-          <td>64</td>
-          <td>0.000121</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>41</th>
-          <td>0.000295</td>
-          <td>0.000081</td>
-          <td>0.000153</td>
-          <td>0.000659</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.011809</td>
-          <td>64</td>
-          <td>0.000303</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>42</th>
-          <td>0.001413</td>
-          <td>0.000509</td>
-          <td>0.000963</td>
-          <td>0.002738</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.028258</td>
-          <td>64</td>
-          <td>0.002137</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>43</th>
-          <td>0.003152</td>
-          <td>0.000339</td>
-          <td>0.002451</td>
-          <td>0.003683</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.031521</td>
-          <td>64</td>
-          <td>0.002008</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>400</td>
-          <td>400</td>
-          <td>400</td>
-          <td>256000000</td>
-          <td>256000000-400x400x400</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>44</th>
-          <td>0.010407</td>
-          <td>0.003035</td>
-          <td>0.006079</td>
-          <td>0.017162</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.104070</td>
-          <td>64</td>
-          <td>0.014414</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>512</td>
-          <td>512</td>
-          <td>512</td>
-          <td>536870912</td>
-          <td>536870912-512x512x512</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>45</th>
-          <td>0.031043</td>
-          <td>0.001915</td>
-          <td>0.027471</td>
-          <td>0.034875</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.310432</td>
-          <td>64</td>
-          <td>0.032101</td>
-          <td>ort</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>4294967296</td>
-          <td>4294967296-1024x1024x1024</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>46</th>
-          <td>0.000398</td>
-          <td>0.000105</td>
-          <td>0.000281</td>
-          <td>0.000827</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.015919</td>
-          <td>64</td>
-          <td>0.000351</td>
-          <td>np</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>131072</td>
-          <td>131072-32x32x32</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>47</th>
-          <td>0.001907</td>
-          <td>0.000027</td>
-          <td>0.001881</td>
-          <td>0.001934</td>
+          <td>0.086860</td>
+          <td>1.009954e-04</td>
+          <td>0.086759</td>
+          <td>0.086961</td>
           <td>2</td>
           <td>2</td>
-          <td>0.003815</td>
+          <td>0.173720</td>
           <td>64</td>
-          <td>0.001931</td>
-          <td>np</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>48</th>
-          <td>0.017289</td>
-          <td>0.002794</td>
-          <td>0.014495</td>
-          <td>0.020084</td>
-          <td>2</td>
-          <td>2</td>
-          <td>0.034579</td>
-          <td>64</td>
-          <td>0.014279</td>
-          <td>np</td>
-          <td>f16</td>
-          <td>f16</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
-          <td>ORT</td>
-          <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>49</th>
-          <td>0.115596</td>
-          <td>0.003265</td>
-          <td>0.112331</td>
-          <td>0.118860</td>
-          <td>2</td>
-          <td>2</td>
-          <td>0.231191</td>
-          <td>64</td>
-          <td>0.148986</td>
+          <td>0.086763</td>
           <td>np</td>
           <td>f16</td>
           <td>f16</td>
@@ -1920,174 +1248,6 @@ Results
           <td>67108864-256x256x256</td>
           <td>ORT</td>
           <td>cpu</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>50</th>
-          <td>0.000430</td>
-          <td>0.000070</td>
-          <td>0.000338</td>
-          <td>0.000605</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.017214</td>
-          <td>64</td>
-          <td>0.000499</td>
-          <td>ort</td>
-          <td>bf16</td>
-          <td>bf16</td>
-          <td>32</td>
-          <td>32</td>
-          <td>32</td>
-          <td>131072</td>
-          <td>131072-32x32x32</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>51</th>
-          <td>0.000500</td>
-          <td>0.000076</td>
-          <td>0.000418</td>
-          <td>0.000748</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.020017</td>
-          <td>64</td>
-          <td>0.000527</td>
-          <td>ort</td>
-          <td>bf16</td>
-          <td>bf16</td>
-          <td>64</td>
-          <td>64</td>
-          <td>64</td>
-          <td>1048576</td>
-          <td>1048576-64x64x64</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>52</th>
-          <td>0.000755</td>
-          <td>0.000126</td>
-          <td>0.000627</td>
-          <td>0.001136</td>
-          <td>40</td>
-          <td>16</td>
-          <td>0.030213</td>
-          <td>64</td>
-          <td>0.000876</td>
-          <td>ort</td>
-          <td>bf16</td>
-          <td>bf16</td>
-          <td>128</td>
-          <td>128</td>
-          <td>128</td>
-          <td>8388608</td>
-          <td>8388608-128x128x128</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>53</th>
-          <td>0.001434</td>
-          <td>0.000104</td>
-          <td>0.001308</td>
-          <td>0.001694</td>
-          <td>20</td>
-          <td>8</td>
-          <td>0.028672</td>
-          <td>64</td>
-          <td>0.001525</td>
-          <td>ort</td>
-          <td>bf16</td>
-          <td>bf16</td>
-          <td>256</td>
-          <td>256</td>
-          <td>256</td>
-          <td>67108864</td>
-          <td>67108864-256x256x256</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>54</th>
-          <td>0.003611</td>
-          <td>0.000176</td>
-          <td>0.003354</td>
-          <td>0.003970</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.036113</td>
-          <td>64</td>
-          <td>0.004095</td>
-          <td>ort</td>
-          <td>bf16</td>
-          <td>bf16</td>
-          <td>400</td>
-          <td>400</td>
-          <td>400</td>
-          <td>256000000</td>
-          <td>256000000-400x400x400</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>55</th>
-          <td>0.005800</td>
-          <td>0.000090</td>
-          <td>0.005692</td>
-          <td>0.005974</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.058003</td>
-          <td>64</td>
-          <td>0.006251</td>
-          <td>ort</td>
-          <td>bf16</td>
-          <td>bf16</td>
-          <td>512</td>
-          <td>512</td>
-          <td>512</td>
-          <td>536870912</td>
-          <td>536870912-512x512x512</td>
-          <td>ORT</td>
-          <td>cuda</td>
-          <td>x86_64</td>
-          <td>None</td>
-        </tr>
-        <tr>
-          <th>56</th>
-          <td>0.027627</td>
-          <td>0.000088</td>
-          <td>0.027478</td>
-          <td>0.027772</td>
-          <td>10</td>
-          <td>4</td>
-          <td>0.276274</td>
-          <td>64</td>
-          <td>0.027796</td>
-          <td>ort</td>
-          <td>bf16</td>
-          <td>bf16</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>1024</td>
-          <td>4294967296</td>
-          <td>4294967296-1024x1024x1024</td>
-          <td>ORT</td>
-          <td>cuda</td>
           <td>x86_64</td>
           <td>None</td>
         </tr>
@@ -2118,90 +1278,157 @@ The errors
 
  .. code-block:: none
 
-    1/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    2/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    3/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    4/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    5/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    6/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    7/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    8/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    9/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    10/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    11/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    12/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    13/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    14/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    15/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    16/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    17/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    18/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    19/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    20/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    21/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    22/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    23/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    24/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    25/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    26/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    27/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    28/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    29/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    30/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    31/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    32/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    33/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    34/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    35/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    36/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    37/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    38/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    39/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    40/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    41/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
-    42/84-f8 not available, major=6, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
-    43/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    44/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    45/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    46/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    47/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    48/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    49/84-(1, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("1.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float),"B": tensor(float),) -> ("C": tensor(float),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    50/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    51/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    52/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    53/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    54/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    55/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    56/84-(10, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("10.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(float16),"B": tensor(float16),) -> ("C": tensor(float16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    57/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    58/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    59/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    60/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    61/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    62/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    63/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    64/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    65/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    66/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    67/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    68/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    69/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    70/84-(16, 'type', ['CUDAExecutionProvider', 'CPUExecutionProvider'], 'com.microsoft', InvalidGraph('[ONNXRuntimeError] : 10 : INVALID_GRAPH : This is an invalid model. In Node, ("16.1.1.com.microsoft..1..1..CUBLAS_COMPUTE_32F..False", GemmFloat8, "com.microsoft", -1) : ("A": tensor(bfloat16),"B": tensor(bfloat16),) -> ("C": tensor(bfloat16),) , Error Unrecognized attribute: rowMajor for operator GemmFloat8'))
-    71/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
-    72/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
-    73/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
-    74/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
-    75/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
-    76/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
-    77/84-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
-    78/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    79/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    80/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    81/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    82/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    83/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
-    84/84-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extented.ortops.tutorial.cuda'.
+    1/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    2/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    3/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    4/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    5/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    6/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    7/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    8/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    9/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    10/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    11/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    12/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    13/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    14/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    15/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    16/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    17/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    18/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    19/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    20/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    21/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    22/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    23/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    24/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    25/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    26/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    27/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    28/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    29/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    30/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    31/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    32/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    33/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    34/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    35/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    36/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    37/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    38/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    39/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    40/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    41/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    42/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    43/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    44/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    45/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    46/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    47/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    48/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    49/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    50/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    51/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    52/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    53/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain=''.
+    54/151-f8 not available, major=8, tt=17, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='com.microsoft'.
+    55/151-provider=CUDAExecutionProvider is missing
+    56/151-provider=CUDAExecutionProvider is missing
+    57/151-provider=CUDAExecutionProvider is missing
+    58/151-provider=CUDAExecutionProvider is missing
+    59/151-provider=CUDAExecutionProvider is missing
+    60/151-provider=CUDAExecutionProvider is missing
+    61/151-provider=CUDAExecutionProvider is missing
+    62/151-provider=CUDAExecutionProvider is missing
+    63/151-provider=CUDAExecutionProvider is missing
+    64/151-provider=CUDAExecutionProvider is missing
+    65/151-provider=CUDAExecutionProvider is missing
+    66/151-provider=CUDAExecutionProvider is missing
+    67/151-provider=CUDAExecutionProvider is missing
+    68/151-provider=CUDAExecutionProvider is missing
+    69/151-provider=CUDAExecutionProvider is missing
+    70/151-provider=CUDAExecutionProvider is missing
+    71/151-provider=CUDAExecutionProvider is missing
+    72/151-provider=CUDAExecutionProvider is missing
+    73/151-provider=CUDAExecutionProvider is missing
+    74/151-provider=CUDAExecutionProvider is missing
+    75/151-provider=CUDAExecutionProvider is missing
+    76/151-provider=CUDAExecutionProvider is missing
+    77/151-provider=CUDAExecutionProvider is missing
+    78/151-provider=CUDAExecutionProvider is missing
+    79/151-provider=CUDAExecutionProvider is missing
+    80/151-provider=CUDAExecutionProvider is missing
+    81/151-provider=CUDAExecutionProvider is missing
+    82/151-provider=CUDAExecutionProvider is missing
+    83/151-provider=CUDAExecutionProvider is missing
+    84/151-provider=CUDAExecutionProvider is missing
+    85/151-provider=CUDAExecutionProvider is missing
+    86/151-provider=CUDAExecutionProvider is missing
+    87/151-provider=CUDAExecutionProvider is missing
+    88/151-provider=CUDAExecutionProvider is missing
+    89/151-provider=CUDAExecutionProvider is missing
+    90/151-provider=CUDAExecutionProvider is missing
+    91/151-provider=CUDAExecutionProvider is missing
+    92/151-provider=CUDAExecutionProvider is missing
+    93/151-provider=CUDAExecutionProvider is missing
+    94/151-provider=CUDAExecutionProvider is missing
+    95/151-provider=CUDAExecutionProvider is missing
+    96/151-provider=CUDAExecutionProvider is missing
+    97/151-provider=CUDAExecutionProvider is missing
+    98/151-provider=CUDAExecutionProvider is missing
+    99/151-provider=CUDAExecutionProvider is missing
+    100/151-provider=CUDAExecutionProvider is missing
+    101/151-provider=CUDAExecutionProvider is missing
+    102/151-provider=CUDAExecutionProvider is missing
+    103/151-provider=CUDAExecutionProvider is missing
+    104/151-provider=CUDAExecutionProvider is missing
+    105/151-provider=CUDAExecutionProvider is missing
+    106/151-provider=CUDAExecutionProvider is missing
+    107/151-provider=CUDAExecutionProvider is missing
+    108/151-provider=CUDAExecutionProvider is missing
+    109/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    110/151-provider=CUDAExecutionProvider is missing
+    111/151-provider=CUDAExecutionProvider is missing
+    112/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    113/151-provider=CUDAExecutionProvider is missing
+    114/151-provider=CUDAExecutionProvider is missing
+    115/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    116/151-provider=CUDAExecutionProvider is missing
+    117/151-provider=CUDAExecutionProvider is missing
+    118/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    119/151-provider=CUDAExecutionProvider is missing
+    120/151-provider=CUDAExecutionProvider is missing
+    121/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    122/151-provider=CUDAExecutionProvider is missing
+    123/151-provider=CUDAExecutionProvider is missing
+    124/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    125/151-provider=CUDAExecutionProvider is missing
+    126/151-provider=CUDAExecutionProvider is missing
+    127/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    128/151-provider=CUDAExecutionProvider is missing
+    129/151-provider=CUDAExecutionProvider is missing
+    130/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    131/151-provider=CUDAExecutionProvider is missing
+    132/151-provider=CUDAExecutionProvider is missing
+    133/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    134/151-provider=CUDAExecutionProvider is missing
+    135/151-provider=CUDAExecutionProvider is missing
+    136/151-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
+    137/151-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
+    138/151-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
+    139/151-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
+    140/151-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
+    141/151-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
+    142/151-(16, 'type', ['CPUExecutionProvider'], '', NotImplemented("[ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Gemm(13) node with name ''"))
+    143/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    144/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    145/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    146/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    147/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    148/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    149/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    150/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
+    151/151-No model for tt=16, provider=['CUDAExecutionProvider', 'CPUExecutionProvider'], domain='onnx_extended.ortops.tutorial.cuda'.
 
 
 
@@ -2239,19 +1466,19 @@ Summary
  .. code-block:: none
 
     summary
-                 average                                                                                
-    provider         cpu                                    cuda                                        
-    type             f16                 f32                bf16       f16                 f32          
-    domain           ORT                 ORT                 ORT       EXT       ORT       EXT       ORT
-    engine            np       ort        np       ort       ort       ort       ort       ort       ort
-    cost                                                                                                
-    131072      0.000398  0.000041  0.000044  0.000012  0.000430  0.008238  0.000241  0.004890  0.000179
-    1048576     0.001907  0.000088  0.000071  0.000023  0.000500  0.012193  0.001076  0.004755  0.000320
-    8388608     0.017289  0.000295  0.003370  0.000047  0.000755  0.010802  0.000500  0.005273  0.000817
-    67108864    0.115596  0.001413  0.003486  0.000271  0.001434  0.018378  0.001512  0.007044  0.001910
-    256000000        NaN  0.003152       NaN  0.001023  0.003611  0.073036  0.002754  0.009082  0.004567
-    536870912        NaN  0.010407       NaN  0.002013  0.005800  0.115094  0.004500  0.011514  0.006779
-    4294967296       NaN  0.031043       NaN  0.016095  0.027627  0.732097  0.020952  0.035128  0.028854
+                 average                              
+    provider         cpu                              
+    type             f16                 f32          
+    domain           ORT                 ORT          
+    engine            np       ort        np       ort
+    cost                                              
+    131072      0.000199  0.000027  0.000025  0.000011
+    1048576     0.001455  0.000043  0.000031  0.000019
+    8388608     0.011151  0.000187  0.000132  0.000029
+    67108864    0.086860  0.000455  0.000425  0.000073
+    256000000        NaN  0.001844       NaN  0.000145
+    536870912        NaN  0.003112       NaN  0.000498
+    4294967296       NaN  0.007631       NaN  0.003442
 
 
 .. raw:: html
@@ -2279,18 +1506,14 @@ Summary
       <thead>
         <tr>
           <th></th>
-          <th colspan="9" halign="left">average</th>
+          <th colspan="4" halign="left">average</th>
         </tr>
         <tr>
           <th>provider</th>
           <th colspan="4" halign="left">cpu</th>
-          <th colspan="5" halign="left">cuda</th>
         </tr>
         <tr>
           <th>type</th>
-          <th colspan="2" halign="left">f16</th>
-          <th colspan="2" halign="left">f32</th>
-          <th>bf16</th>
           <th colspan="2" halign="left">f16</th>
           <th colspan="2" halign="left">f32</th>
         </tr>
@@ -2298,11 +1521,6 @@ Summary
           <th>domain</th>
           <th colspan="2" halign="left">ORT</th>
           <th colspan="2" halign="left">ORT</th>
-          <th>ORT</th>
-          <th>EXT</th>
-          <th>ORT</th>
-          <th>EXT</th>
-          <th>ORT</th>
         </tr>
         <tr>
           <th>engine</th>
@@ -2310,19 +1528,9 @@ Summary
           <th>ort</th>
           <th>np</th>
           <th>ort</th>
-          <th>ort</th>
-          <th>ort</th>
-          <th>ort</th>
-          <th>ort</th>
-          <th>ort</th>
         </tr>
         <tr>
           <th>cost</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
           <th></th>
           <th></th>
           <th></th>
@@ -2332,87 +1540,52 @@ Summary
       <tbody>
         <tr>
           <th>131072</th>
-          <td>0.000398</td>
-          <td>0.000041</td>
-          <td>0.000044</td>
-          <td>0.000012</td>
-          <td>0.000430</td>
-          <td>0.008238</td>
-          <td>0.000241</td>
-          <td>0.004890</td>
-          <td>0.000179</td>
+          <td>0.000199</td>
+          <td>0.000027</td>
+          <td>0.000025</td>
+          <td>0.000011</td>
         </tr>
         <tr>
           <th>1048576</th>
-          <td>0.001907</td>
-          <td>0.000088</td>
-          <td>0.000071</td>
-          <td>0.000023</td>
-          <td>0.000500</td>
-          <td>0.012193</td>
-          <td>0.001076</td>
-          <td>0.004755</td>
-          <td>0.000320</td>
+          <td>0.001455</td>
+          <td>0.000043</td>
+          <td>0.000031</td>
+          <td>0.000019</td>
         </tr>
         <tr>
           <th>8388608</th>
-          <td>0.017289</td>
-          <td>0.000295</td>
-          <td>0.003370</td>
-          <td>0.000047</td>
-          <td>0.000755</td>
-          <td>0.010802</td>
-          <td>0.000500</td>
-          <td>0.005273</td>
-          <td>0.000817</td>
+          <td>0.011151</td>
+          <td>0.000187</td>
+          <td>0.000132</td>
+          <td>0.000029</td>
         </tr>
         <tr>
           <th>67108864</th>
-          <td>0.115596</td>
-          <td>0.001413</td>
-          <td>0.003486</td>
-          <td>0.000271</td>
-          <td>0.001434</td>
-          <td>0.018378</td>
-          <td>0.001512</td>
-          <td>0.007044</td>
-          <td>0.001910</td>
+          <td>0.086860</td>
+          <td>0.000455</td>
+          <td>0.000425</td>
+          <td>0.000073</td>
         </tr>
         <tr>
           <th>256000000</th>
           <td>NaN</td>
-          <td>0.003152</td>
+          <td>0.001844</td>
           <td>NaN</td>
-          <td>0.001023</td>
-          <td>0.003611</td>
-          <td>0.073036</td>
-          <td>0.002754</td>
-          <td>0.009082</td>
-          <td>0.004567</td>
+          <td>0.000145</td>
         </tr>
         <tr>
           <th>536870912</th>
           <td>NaN</td>
-          <td>0.010407</td>
+          <td>0.003112</td>
           <td>NaN</td>
-          <td>0.002013</td>
-          <td>0.005800</td>
-          <td>0.115094</td>
-          <td>0.004500</td>
-          <td>0.011514</td>
-          <td>0.006779</td>
+          <td>0.000498</td>
         </tr>
         <tr>
           <th>4294967296</th>
           <td>NaN</td>
-          <td>0.031043</td>
+          <td>0.007631</td>
           <td>NaN</td>
-          <td>0.016095</td>
-          <td>0.027627</td>
-          <td>0.732097</td>
-          <td>0.020952</td>
-          <td>0.035128</td>
-          <td>0.028854</td>
+          <td>0.003442</td>
         </tr>
       </tbody>
     </table>
@@ -2446,19 +1619,19 @@ With the dimensions.
 
  .. code-block:: none
 
-                                average                                                                                
-    provider                        cpu                                    cuda                                        
-    type                            f16                 f32                bf16       f16                 f32          
-    domain                          ORT                 ORT                 ORT       EXT       ORT       EXT       ORT
-    engine                           np       ort        np       ort       ort       ort       ort       ort       ort
-    cost_s                                                                                                             
-    1048576-64x64x64           0.001907  0.000088  0.000071  0.000023  0.000500  0.012193  0.001076  0.004755  0.000320
-    131072-32x32x32            0.000398  0.000041  0.000044  0.000012  0.000430  0.008238  0.000241  0.004890  0.000179
-    256000000-400x400x400           NaN  0.003152       NaN  0.001023  0.003611  0.073036  0.002754  0.009082  0.004567
-    4294967296-1024x1024x1024       NaN  0.031043       NaN  0.016095  0.027627  0.732097  0.020952  0.035128  0.028854
-    536870912-512x512x512           NaN  0.010407       NaN  0.002013  0.005800  0.115094  0.004500  0.011514  0.006779
-    67108864-256x256x256       0.115596  0.001413  0.003486  0.000271  0.001434  0.018378  0.001512  0.007044  0.001910
-    8388608-128x128x128        0.017289  0.000295  0.003370  0.000047  0.000755  0.010802  0.000500  0.005273  0.000817
+                                average                              
+    provider                        cpu                              
+    type                            f16                 f32          
+    domain                          ORT                 ORT          
+    engine                           np       ort        np       ort
+    cost_s                                                           
+    1048576-64x64x64           0.001455  0.000043  0.000031  0.000019
+    131072-32x32x32            0.000199  0.000027  0.000025  0.000011
+    256000000-400x400x400           NaN  0.001844       NaN  0.000145
+    4294967296-1024x1024x1024       NaN  0.007631       NaN  0.003442
+    536870912-512x512x512           NaN  0.003112       NaN  0.000498
+    67108864-256x256x256       0.086860  0.000455  0.000425  0.000073
+    8388608-128x128x128        0.011151  0.000187  0.000132  0.000029
 
 
 
@@ -2508,7 +1681,7 @@ plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 40.217 seconds)
+   **Total running time of the script:** (0 minutes 10.057 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_gemm_ort.py:
