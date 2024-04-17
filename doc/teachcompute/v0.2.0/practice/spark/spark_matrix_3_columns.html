@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Spark et MLlib - ML" href="spark_mllib.html" /><link rel="prev" title="Premiers pas avec Spark" href="spark_first_steps.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.5 and Furo 2024.01.29 -->
         <title>Matrices en 3 colonnes - Documentation teachcompute 0.2.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -320,11 +320,11 @@
         </div>
         <article role="main">
           <section id="Matrices-en-3-colonnes">
-<h1>Matrices en 3 colonnes<a class="headerlink" href="#Matrices-en-3-colonnes" title="Link to this heading">#</a></h1>
+<h1>Matrices en 3 colonnes<a class="headerlink" href="#Matrices-en-3-colonnes" title="Lien vers cette rubrique">¶</a></h1>
 <p>Représentation d’une matrice avec Spark / Map / Reduce.</p>
 <p>Ce notebook propose d’implémenter un produit matriciel sous Spark. Spark comme SQL n’aime pas trop avoir un nombre de colonnes variables. La première étape consiste à transformer les matrices <span class="math notranslate nohighlight">\(I\times J\)</span> en tableau de trois colonnes <span class="math notranslate nohighlight">\((i,j,coefficient)\)</span>.</p>
 <section id="Session-spark-with-no-cluster">
-<h2>Session spark with no cluster<a class="headerlink" href="#Session-spark-with-no-cluster" title="Link to this heading">#</a></h2>
+<h2>Session spark with no cluster<a class="headerlink" href="#Session-spark-with-no-cluster" title="Lien vers cette rubrique">¶</a></h2>
 <p>Spark est censé tourner sur un cluster. Mais ce n’est pas essentielle pour comprendre la logique. Le notebook tourne donc en local.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -340,7 +340,7 @@
 </div>
 </section>
 <section id="Création-d'une-matrice-aléatoire">
-<h2>Création d’une matrice aléatoire<a class="headerlink" href="#Création-d'une-matrice-aléatoire" title="Link to this heading">#</a></h2>
+<h2>Création d’une matrice aléatoire<a class="headerlink" href="#Création-d'une-matrice-aléatoire" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -484,7 +484,7 @@ array([[1.2962659 , 2.75236533],
 </div>
 </section>
 <section id="Conversion-d'une-matrice-au-format-Spark">
-<h2>Conversion d’une matrice au format Spark<a class="headerlink" href="#Conversion-d'une-matrice-au-format-Spark" title="Link to this heading">#</a></h2>
+<h2>Conversion d’une matrice au format Spark<a class="headerlink" href="#Conversion-d'une-matrice-au-format-Spark" title="Lien vers cette rubrique">¶</a></h2>
 <p>Lorsqu’un traitement est distribué en Map/Reduce, il n’est pas possible de s’appuyer sur l’ordre dans lequel sont traitées les lignes. Le plus est d’ajouter cette information sur chaque ligne plutôt que de chercher à la récupérer.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -569,7 +569,7 @@ array([[1.2962659 , 2.75236533],
 </div>
 </section>
 <section id="Produit-matriciel">
-<h2>Produit matriciel<a class="headerlink" href="#Produit-matriciel" title="Link to this heading">#</a></h2>
+<h2>Produit matriciel<a class="headerlink" href="#Produit-matriciel" title="Lien vers cette rubrique">¶</a></h2>
 <p>Il faut d’abord faire la jointure avec la méthode <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.join">join</a>. Il faut que la clé soit sur la première colonne.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
@@ -720,7 +720,7 @@ array([[1.2962659 , 2.75236533],
 </div>
 </section>
 <section id="Même-algorithme-avec-les-Spark-DataFrame">
-<h2>Même algorithme avec les Spark DataFrame<a class="headerlink" href="#Même-algorithme-avec-les-Spark-DataFrame" title="Link to this heading">#</a></h2>
+<h2>Même algorithme avec les Spark DataFrame<a class="headerlink" href="#Même-algorithme-avec-les-Spark-DataFrame" title="Lien vers cette rubrique">¶</a></h2>
 <p>On a besoin de réaliser un <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.flatMap">flatMap</a>. Une façon de faire est de créer des colonnes qui sont de type composé : un tableau, une structure. La multiplication des lignes est obtenue avec la fonction <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.functions.explode">explode</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
@@ -1178,7 +1178,7 @@ root
 </div>
 </section>
 <section id="Fin">
-<h2>Fin<a class="headerlink" href="#Fin" title="Link to this heading">#</a></h2>
+<h2>Fin<a class="headerlink" href="#Fin" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1266,10 +1266,10 @@ root
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=9313ea4c"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=bf059b8c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
