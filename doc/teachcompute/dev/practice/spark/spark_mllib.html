@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Parallelization of a vector sum with C++" href="../../index_vector_sum.html" /><link rel="prev" title="Matrices en 3 colonnes" href="spark_matrix_3_columns.html" />
 
-    <!-- Generated with Sphinx 7.3.5 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Spark et MLlib - ML - Documentation teachcompute 0.2.0</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -248,8 +248,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_benchmark_parallel_process_concurrent.html">Parallelization of a dot product with processes (concurrent.futures)</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../index_torch.html">Torch Extensions</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Torch Extensions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../index_torch.html">pytorch</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of pytorch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 </ul>
 </li>
 </ul>
@@ -320,12 +321,12 @@
         </div>
         <article role="main">
           <section id="Spark-et-MLlib---ML">
-<h1>Spark et MLlib - ML<a class="headerlink" href="#Spark-et-MLlib---ML" title="Lien vers cette rubrique">¶</a></h1>
+<h1>Spark et MLlib - ML<a class="headerlink" href="#Spark-et-MLlib---ML" title="Link to this heading">#</a></h1>
 <p>Régression logisitique avec <a class="reference external" href="https://spark.apache.org/">Spark</a>.</p>
 <p><a class="reference external" href="https://spark.apache.org/docs/latest/ml-guide.html">MLlib</a> est la librairie de machine learning distribué implémenté sur Spark et qui explique en partie son succès. La première mouture de la librairie était <a class="reference external" href="https://mahout.apache.org/">Mahout</a> implémentée sur <a class="reference external" href="https://hadoop.apache.org/">Hadoop</a>. <a class="reference external" href="https://spark.apache.org/docs/latest/ml-guide.html">MLlib</a> est devenu le standard. <a class="reference external" href="https://spark.apache.org/docs/latest/ml-guide.html">ML</a> est la dernière version et s’appuie sur les
 <a class="reference external" href="https://spark.apache.org/docs/latest/ml-pipeline.html#dataframe">DataFrame</a>. On retrouve les mêmes concepts que ceux de <a class="reference external" href="https://scikit-learn.org/">scikit-learn</a> tels que les <a class="reference external" href="https://spark.apache.org/docs/latest/ml-pipeline.html#main-concepts-in-pipelines">Pipeline</a>.</p>
 <section id="Data">
-<h2>Data<a class="headerlink" href="#Data" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Data<a class="headerlink" href="#Data" title="Link to this heading">#</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -585,19 +586,12 @@ dtype: object
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-your 131072x1 screen size is bogus. expect trouble
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
+your 131072x1 screen size is bogus. expect trouble
 23/11/09 20:35:02 WARN Utils: Your hostname, DESKTOP-USNMVAJ resolves to a loopback address: 127.0.1.1; using 172.28.7.44 instead (on interface eth0)
 23/11/09 20:35:02 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
 Setting default log level to &#34;WARN&#34;.
@@ -649,7 +643,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </section>
 <section id="Régression-logistique-(RDD)">
-<h2>Régression logistique (RDD)<a class="headerlink" href="#Régression-logistique-(RDD)" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Régression logistique (RDD)<a class="headerlink" href="#Régression-logistique-(RDD)" title="Link to this heading">#</a></h2>
 <p>On reprend l’exemple de la documentation : <a class="reference external" href="https://spark.apache.org/docs/latest/mllib-linear-methods.html">Linear Methods - RDD-based API</a>. On exclue les variables catégorielles pour garder l’exemple concis.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -859,7 +853,7 @@ Training Error = 0.20217438039372254
 </div>
 </section>
 <section id="Régression-logisitique-(DataFrame)">
-<h2>Régression logisitique (DataFrame)<a class="headerlink" href="#Régression-logisitique-(DataFrame)" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Régression logisitique (DataFrame)<a class="headerlink" href="#Régression-logisitique-(DataFrame)" title="Link to this heading">#</a></h2>
 <p>On s’inspire de l’exemple : <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.classification.LogisticRegression.html">Régression Logistique</a>. Le code change, la préparation des données aussi. Les modèles acceptent comme entrées un vecteur colonne créé par un <a class="reference external" href="https://spark.apache.org/docs/3.1.3/api/python/reference/api/pyspark.ml.feature.VectorAssembler.html">VectorAssembler</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -1050,7 +1044,7 @@ Intercept: 1.1482462553407051
 </div>
 </section>
 <section id="Fin">
-<h2>Fin<a class="headerlink" href="#Fin" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Fin<a class="headerlink" href="#Fin" title="Link to this heading">#</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
@@ -1136,12 +1130,10 @@ Intercept: 1.1482462553407051
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=9313ea4c"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="../../_static/translations.js?v=bf059b8c"></script>
+    <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

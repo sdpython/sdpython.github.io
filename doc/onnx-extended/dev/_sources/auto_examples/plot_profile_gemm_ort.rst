@@ -130,18 +130,18 @@ Device properties
 
  .. code-block:: none
 
-    {'clockRate': 1770000,
+    {'clockRate': 1569000,
      'computeMode': 0,
      'concurrentKernels': 1,
      'isMultiGpuBoard': 0,
-     'major': 8,
+     'major': 6,
      'maxThreadsPerBlock': 1024,
-     'minor': 6,
+     'minor': 1,
      'multiProcessorCount': 10,
-     'name': 'NVIDIA A2',
+     'name': 'NVIDIA GeForce GTX 1060',
      'sharedMemPerBlock': 49152,
      'totalConstMem': 65536,
-     'totalGlobalMem': 15614476288}
+     'totalGlobalMem': 6442319872}
 
 
 
@@ -517,7 +517,7 @@ Let's run the profiles
 
  .. code-block:: none
 
-      0%|          | 0/24 [00:00<?, ?it/s]    100%|██████████| 24/24 [00:00<00:00, 276547.52it/s]
+      0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):   0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  6.25it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  6.25it/s]    t=1 e=InferenceSession p=CUDA dim=(256, 256, 256):  29%|██▉       | 7/24 [00:01<00:02,  6.25it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  29%|██▉       | 7/24 [00:01<00:02,  6.25it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:01,  7.11it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  42%|████▏     | 10/24 [00:01<00:01,  7.11it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:01,  7.01it/s]    t=1 e=InferenceSession p=CUDA dim=(512, 512, 512):  46%|████▌     | 11/24 [00:01<00:01,  7.01it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  46%|████▌     | 11/24 [00:01<00:01,  7.01it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:01<00:01,  6.52it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  54%|█████▍    | 13/24 [00:01<00:01,  6.52it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  58%|█████▊    | 14/24 [00:02<00:01,  6.88it/s]    t=10 e=InferenceSession p=CUDA dim=(256, 256, 256):  58%|█████▊    | 14/24 [00:02<00:01,  6.88it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  58%|█████▊    | 14/24 [00:02<00:01,  6.88it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:03,  2.33it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  67%|██████▋   | 16/24 [00:04<00:03,  2.33it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  2.71it/s]    t=10 e=InferenceSession p=CUDA dim=(512, 512, 512):  71%|███████   | 17/24 [00:04<00:02,  2.71it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  71%|███████   | 17/24 [00:04<00:02,  2.71it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  83%|████████▎ | 20/24 [00:04<00:00,  4.60it/s]    t=16 e=InferenceSession p=CUDA dim=(256, 256, 256):  83%|████████▎ | 20/24 [00:04<00:00,  4.60it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  83%|████████▎ | 20/24 [00:04<00:00,  4.60it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  6.64it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512):  96%|█████████▌| 23/24 [00:04<00:00,  6.64it/s]    t=16 e=InferenceSession p=CUDA dim=(512, 512, 512): 100%|██████████| 24/24 [00:04<00:00,  5.44it/s]
 
 
 
@@ -541,6 +541,22 @@ Results
 
 
 
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+                               0             1                      2                            3            4
+    xdim             256x256x256   256x256x256            256x256x256                  256x256x256  256x256x256
+    xdomain                  EXT           EXT                    EXT                          EXT          EXT
+    xdtype                   f32           f32                    f32                          f32          f32
+    it==0                      0             0                      0                            0            0
+    cat                     Node          Node                   Node                      Session      Session
+    args_node_index                                                 0                                          
+    args_op_name              CG            CG                     CG                           CG           CG
+    args_provider                               CUDAExecutionProvider                                          
+    event_name       fence_after  fence_before            kernel_time  SequentialExecutor::Execute    model_run
+    dur                        1            11                  77607                        83081       107891
 
 
 
@@ -573,6 +589,28 @@ Summary
 
 
 
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    summary
+                                                         dur                                        
+    xdtype                                              bf16        f16                f32          
+    xdomain                                              ORT        EXT      ORT       EXT       ORT
+    args_op_name                                        Gemm         CG     Gemm        CG      Gemm
+    xdim        cat     event_name                                                                  
+    256x256x256 Node    fence_after                      6.0        0.0      0.0       1.0       0.0
+                        fence_before                    53.0        9.0      5.0      11.0      12.0
+                        kernel_time                   3805.0   258186.0    653.0   77607.0     617.0
+                Session SequentialExecutor::Execute   4922.0   276226.0   1047.0   83081.0    1230.0
+                        model_run                    32872.0   293517.0  22503.0  107891.0   28256.0
+    512x512x512 Node    fence_after                      4.0        3.0      0.0      14.0       2.0
+                        fence_before                    38.0        8.0     19.0      14.0      23.0
+                        kernel_time                   2187.0  1677734.0    807.0  106929.0    1054.0
+                Session SequentialExecutor::Execute   3389.0  1782222.0   1277.0  117346.0    1662.0
+                        model_run                    95772.0  1824003.0  72224.0  197278.0  106903.0
 
 
 
@@ -644,6 +682,37 @@ plot
 
 
 
+.. image-sg:: /auto_examples/images/sphx_glr_plot_profile_gemm_ort_001.png
+   :alt: kernel time, fence_before, Global times, fence_after
+   :srcset: /auto_examples/images/sphx_glr_plot_profile_gemm_ort_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    compact
+    xdtype          bf16        f16              f32        
+    xdomain          ORT        EXT    ORT       EXT     ORT
+    args_op_name    Gemm         CG   Gemm        CG    Gemm
+    xdim                                                    
+    256x256x256   3805.0   258186.0  653.0   77607.0   617.0
+    512x512x512   2187.0  1677734.0  807.0  106929.0  1054.0
+
+    not operator
+    xdtype                                      bf16       f16                f32         
+    xdomain                                      ORT       EXT      ORT       EXT      ORT
+    xdim        event_name                                                                
+    256x256x256 SequentialExecutor::Execute   7871.5  148575.0  10831.5  520392.5   1321.0
+                model_loading_array            135.0      87.0     95.0     266.0     67.0
+                model_run                    23784.0  158797.5  23340.0  536924.5  16785.5
+                session_initialization         684.0     435.0    396.0    1668.0    296.0
+    512x512x512 SequentialExecutor::Execute   2083.5  943891.5    979.0   62387.0   1372.0
+                model_loading_array             75.0      98.0     97.0      83.0     96.0
+                model_run                    52400.5  967147.5  39986.5  106062.0  58466.0
+                session_initialization         358.0     480.0    565.0     394.0    571.0
 
 
 
@@ -651,7 +720,7 @@ plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.847 seconds)
+   **Total running time of the script:** (0 minutes 8.372 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_profile_gemm_ort.py:

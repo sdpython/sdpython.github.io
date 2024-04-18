@@ -269,6 +269,12 @@ Discrepancies
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    diff=0.0
+
 
 
 
@@ -393,6 +399,13 @@ Not Fused.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    sizes=(256, 512, 1024)
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 12.00it/s]    100%|██████████| 3/3 [00:00<00:00, 11.98it/s]
+
 
 
 
@@ -413,6 +426,12 @@ Fused.
 
 
 
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 18.85it/s]    100%|██████████| 3/3 [00:00<00:00, 18.81it/s]
 
 
 
@@ -437,6 +456,17 @@ Data
 
 
 
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+         warmup      time       std       min       max  repeat  size      label
+    0  0.001041  0.000263  0.000037  0.000231  0.000331       5   256  Not Fused
+    1  0.006591  0.001112  0.000071  0.000994  0.001203       5   512  Not Fused
+    2  0.013479  0.003823  0.000384  0.003556  0.004579       5  1024  Not Fused
+    3  0.001064  0.000250  0.000064  0.000195  0.000364       5   256      Fused
+    4  0.002817  0.000724  0.000097  0.000646  0.000894       5   512      Fused
 
 
 
@@ -466,6 +496,21 @@ Pivot.
 
 
 
+.. image-sg:: /auto_examples/images/sphx_glr_plot_op_mul_cuda_001.png
+   :alt: Fused/Unfused element wise multiplication on CUDA itype=1
+   :srcset: /auto_examples/images/sphx_glr_plot_op_mul_cuda_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    label     Fused  Not Fused     ratio
+    size                                
+    256    0.000250   0.000263  0.951791
+    512    0.000724   0.001112  0.650576
+    1024   0.002463   0.003823  0.644207
 
 
 
@@ -477,7 +522,7 @@ It seems the fused operator is 33% faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.114 seconds)
+   **Total running time of the script:** (0 minutes 15.456 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_mul_cuda.py:

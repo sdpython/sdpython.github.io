@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>onnx_extended.ortops.optim.cuda - onnx-extended 0.3.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
@@ -260,6 +260,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_scatternd_cuda.html">Optimizing ScatterND operator on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_optim.html">TreeEnsemble optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tree_ensemble_sparse.html">TreeEnsemble, dense, and sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_gemm_ort.html">Profiles a simple onnx graph including a singleGemm</a></li>
@@ -326,6 +327,27 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
+<section id="onnx-extended-ortops-optim-cuda-addadd">
+<h3>onnx_extended.ortops.optim.cuda.AddAdd<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-addadd" title="Link to this heading">#</a></h3>
+<p>Two consecutive element-wise addition assuming
+all tensors have the same shape (no broadcast).</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>A: tensor of type T</p></li>
+<li><p>B: tensor of type T</p></li>
+<li><p>C: tensor of type T</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>ABC (T): element-wise matrix multiplication</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
 <section id="onnx-extended-ortops-optim-cuda-mulmul">
 <h3>onnx_extended.ortops.optim.cuda.MulMul<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-mulmul" title="Link to this heading">#</a></h3>
 <p>Two consecutive element-wise multiplication assuming

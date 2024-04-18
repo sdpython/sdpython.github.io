@@ -169,7 +169,7 @@ The conversion to ONNX
 
     conversion to ONNX in file {filename!r}
     done.
-    model size 278.0539436340332 Mb.
+    model size 276.0319871902466 Mb.
 
 
 
@@ -184,7 +184,7 @@ This gives the following in :epkg:`Netron`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.785 seconds)
+   **Total running time of the script:** (0 minutes 23.126 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_model_onnx.py:

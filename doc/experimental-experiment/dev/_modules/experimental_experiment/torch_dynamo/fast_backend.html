@@ -8,7 +8,7 @@
         <title>experimental_experiment.torch_dynamo.fast_backend - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -201,10 +201,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_test.html">Testing</a></li>
 </ul>
@@ -226,8 +226,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -286,10 +288,11 @@
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch._C</span> <span class="kn">import</span> <span class="n">_from_dlpack</span>
 <span class="kn">from</span> <span class="nn">onnxruntime.capi</span> <span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
+<span class="kn">from</span> <span class="nn">..convert.ort_helper</span> <span class="kn">import</span> <span class="n">append_custom_libraries</span>
 <span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">OptimizationOptions</span>
 <span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">to_onnx</span>
 <span class="kn">from</span> <span class="nn">..torch_interpreter._torch_helper</span> <span class="kn">import</span> <span class="n">create_input_names</span>
-<span class="kn">from</span> <span class="nn">..xoptim.patterns</span> <span class="kn">import</span> <span class="n">get_pattern_list</span>
+<span class="kn">from</span> <span class="nn">..xoptim</span> <span class="kn">import</span> <span class="n">get_pattern_list</span>
 <span class="kn">from</span> <span class="nn">.backend_helper</span> <span class="kn">import</span> <span class="n">get_dimensions</span>
 
 
@@ -316,6 +319,7 @@
             <span class="n">onnxruntime</span><span class="o">.</span><span class="n">GraphOptimizationLevel</span><span class="p">,</span> <span class="n">ort_optimization_level</span>
         <span class="p">)</span>
     <span class="n">opts</span><span class="o">.</span><span class="n">add_session_config_entry</span><span class="p">(</span><span class="s2">&quot;session.disable_aot_function_inlining&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+    <span class="n">append_custom_libraries</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
@@ -671,6 +675,61 @@
 
 
 
+<span class="k">def</span> <span class="nf">_default_export</span><span class="p">(</span>
+    <span class="n">graph_module</span><span class="p">,</span>
+    <span class="n">args</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">,</span>
+    <span class="n">target_opset</span><span class="p">,</span>
+    <span class="n">dispatcher</span><span class="p">,</span>
+    <span class="n">optimize</span><span class="p">,</span>
+    <span class="n">enable_pattern</span><span class="p">,</span>
+    <span class="n">disable_pattern</span><span class="p">,</span>
+    <span class="n">rename_inputs</span><span class="p">,</span>
+    <span class="n">processor</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">input_names</span> <span class="o">=</span> <span class="n">input_names</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">create_input_names</span><span class="p">(</span><span class="n">graph_module</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">rename_inputs</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="n">verbose_onnx</span><span class="p">,</span> <span class="n">verbose_backend</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">verbose</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">patterns</span> <span class="o">=</span> <span class="n">get_pattern_list</span><span class="p">(</span><span class="n">enable_pattern</span><span class="p">,</span> <span class="n">disable_pattern</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">)</span>
+
+    <span class="n">options</span> <span class="o">=</span> <span class="n">OptimizationOptions</span><span class="p">(</span>
+        <span class="n">remove_unused</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">constant_folding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">patterns</span><span class="o">=</span><span class="n">patterns</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">,</span>
+        <span class="n">processor</span><span class="o">=</span><span class="n">processor</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">onx</span><span class="p">,</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
+        <span class="n">graph_module</span><span class="p">,</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+        <span class="n">input_names</span><span class="o">=</span><span class="n">input_names</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">,</span>
+        <span class="n">target_opset</span><span class="o">=</span><span class="n">target_opset</span><span class="p">,</span>
+        <span class="n">return_builder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">,</span>
+        <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">onx</span><span class="p">,</span> <span class="n">builder</span>
+
+
+<span class="k">def</span> <span class="nf">_print_memory</span><span class="p">(</span><span class="n">max_device</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">max_device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] CUDA memory &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;allocated=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_allocated</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;reserved=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_reserved</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;max_device=</span><span class="si">{</span><span class="n">max_device</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+
 <div class="viewcode-block" id="onnx_custom_backend">
 <a class="viewcode-back" href="../../../api/torch_dynamo.html#experimental_experiment.torch_dynamo.onnx_custom_backend">[docs]</a>
 <span class="k">def</span> <span class="nf">onnx_custom_backend</span><span class="p">(</span>
@@ -690,6 +749,10 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">ort_optimization_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dispatcher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Dispatcher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">rename_inputs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">exporter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">processor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CPU&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom backend to export torch models into onnx</span>
@@ -713,6 +776,11 @@
 <span class="sd">    :param ort_optimization_level: graph optimization level for onnxruntime,</span>
 <span class="sd">        the default value is the same as what :epkg:`onnxruntime` defines</span>
 <span class="sd">    :param dispatcher: see :class:`experimental_experiment.torch_interpreter.Dispatcher`</span>
+<span class="sd">    :param rename_inputs: rename the inputs</span>
+<span class="sd">    :param optimize: enable or disable the optimization</span>
+<span class="sd">    :param exporter: use a different exporter</span>
+<span class="sd">    :param processor: optimization should be made for this processor</span>
+<span class="sd">        or this list of processors (comma separated value)</span>
 <span class="sd">    :return: Callable</span>
 
 <span class="sd">    See :ref:`l-plot-onnxrt-diff` or :ref:`l-plot-custom-backend` for examples.</span>
@@ -720,6 +788,8 @@
 <span class="sd">    onnx models, graph module as well the inputs and outputs when</span>
 <span class="sd">    the model is run.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># determines the devices</span>
 
     <span class="n">DEVICES</span> <span class="o">=</span> <span class="p">{</span>
         <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="p">(</span><span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="o">.</span><span class="n">default_memory</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
@@ -737,55 +807,52 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">max_device</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-    <span class="n">input_names</span> <span class="o">=</span> <span class="n">input_names</span> <span class="o">=</span> <span class="n">create_input_names</span><span class="p">(</span><span class="n">graph_module</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-
-    <span class="n">verbose_onnx</span><span class="p">,</span> <span class="n">verbose_backend</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">verbose</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="n">patterns</span> <span class="o">=</span> <span class="n">get_pattern_list</span><span class="p">(</span><span class="n">enable_pattern</span><span class="p">,</span> <span class="n">disable_pattern</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">)</span>
-
-    <span class="n">options</span> <span class="o">=</span> <span class="n">OptimizationOptions</span><span class="p">(</span>
-        <span class="n">remove_unused</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">constant_folding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">patterns</span><span class="o">=</span><span class="n">patterns</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="c1"># Conversion to onnx</span>
 
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">max_device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] CUDA memory &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;allocated=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_allocated</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;reserved=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_reserved</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;max_device=</span><span class="si">{</span><span class="n">max_device</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+        <span class="n">_print_memory</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[onnx_custom_backend] starts conversion to onnx.&quot;</span><span class="p">)</span>
 
-    <span class="n">onx</span><span class="p">,</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
-        <span class="n">graph_module</span><span class="p">,</span>
-        <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
-        <span class="n">input_names</span><span class="o">=</span><span class="n">input_names</span><span class="p">,</span>
-        <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">,</span>
-        <span class="n">target_opset</span><span class="o">=</span><span class="n">target_opset</span><span class="p">,</span>
-        <span class="n">return_builder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">exporter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">onx</span><span class="p">,</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">_default_export</span><span class="p">(</span>
+            <span class="n">graph_module</span><span class="p">,</span>
+            <span class="n">args</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="p">,</span>
+            <span class="n">target_opset</span><span class="p">,</span>
+            <span class="n">dispatcher</span><span class="p">,</span>
+            <span class="n">optimize</span><span class="p">,</span>
+            <span class="n">enable_pattern</span><span class="p">,</span>
+            <span class="n">disable_pattern</span><span class="p">,</span>
+            <span class="n">rename_inputs</span><span class="p">,</span>
+            <span class="n">processor</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;dynamo&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">._dynamo_exporter</span> <span class="kn">import</span> <span class="n">_dynamo_export</span>
+
+        <span class="n">onx</span><span class="p">,</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">_dynamo_export</span><span class="p">(</span>
+            <span class="n">graph_module</span><span class="p">,</span>
+            <span class="n">args</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="p">,</span>
+            <span class="n">target_opset</span><span class="p">,</span>
+            <span class="n">dispatcher</span><span class="p">,</span>
+            <span class="n">optimize</span><span class="p">,</span>
+            <span class="n">enable_pattern</span><span class="p">,</span>
+            <span class="n">disable_pattern</span><span class="p">,</span>
+            <span class="n">rename_inputs</span><span class="p">,</span>
+            <span class="n">processor</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown exporter </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] to_onnx done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> with &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and </span><span class="si">{</span><span class="n">onx</span><span class="o">.</span><span class="n">functions</span><span class="si">}</span><span class="s2"> local functions.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> local functions.&quot;</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">max_device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] CUDA memory &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;allocated=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_allocated</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;reserved=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_reserved</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;max_device=</span><span class="si">{</span><span class="n">max_device</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+        <span class="n">_print_memory</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span>
+
+    <span class="c1"># Applies other transformation.</span>
 
     <span class="k">if</span> <span class="n">pre_ort_model_transforms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -794,13 +861,7 @@
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">pre_ort_model_transforms</span><span class="p">:</span>
             <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">max_device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] CUDA memory &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;allocated=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_allocated</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;reserved=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_reserved</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;max_device=</span><span class="si">{</span><span class="n">max_device</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
+                <span class="n">_print_memory</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] starts pre_ort_model_transforms </span><span class="si">{</span><span class="n">tr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">onx</span> <span class="o">=</span> <span class="n">tr</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
@@ -811,13 +872,9 @@
                     <span class="sa">f</span><span class="s2">&quot;done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> with &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> local functions.&quot;</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="n">max_device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] CUDA memory &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;allocated=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_allocated</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;reserved=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_reserved</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;max_device=</span><span class="si">{</span><span class="n">max_device</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
+                <span class="n">_print_memory</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span>
+
+    <span class="c1"># Checks for variable ONNXRT_DUMP_PATH</span>
 
     <span class="n">value</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXRT_DUMP_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
@@ -839,15 +896,11 @@
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">dump_first_inputs</span> <span class="o">=</span> <span class="n">name</span>
 
+    <span class="c1"># InferenceSession</span>
+
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">max_device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] CUDA memory &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;allocated=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_allocated</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;reserved=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_reserved</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;max_device=</span><span class="si">{</span><span class="n">max_device</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+        <span class="n">_print_memory</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[onnx_custom_backend] starts creating InferenceSession&quot;</span><span class="p">)</span>
 
     <span class="n">sess</span><span class="p">,</span> <span class="n">run_options</span> <span class="o">=</span> <span class="n">_get_session</span><span class="p">(</span>
@@ -862,17 +915,13 @@
         <span class="nb">print</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] InferenceSession done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">max_device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[onnx_custom_backend] CUDA memory &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;allocated=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_allocated</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;reserved=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">memory_reserved</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;max_device=</span><span class="si">{</span><span class="n">max_device</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+        <span class="n">_print_memory</span><span class="p">(</span><span class="n">max_device</span><span class="p">)</span>
 
     <span class="n">input_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">]</span>
     <span class="n">output_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
     <span class="n">is_dimension_in</span><span class="p">,</span> <span class="n">is_dimension_out</span> <span class="o">=</span> <span class="n">get_dimensions</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
+
+    <span class="c1"># Storage</span>
 
     <span class="k">if</span> <span class="n">storage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">stor</span> <span class="o">=</span> <span class="p">{}</span>
@@ -892,6 +941,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">stor</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1"># Creates the backend.</span>
     <span class="n">run</span> <span class="o">=</span> <span class="n">OrtBackend</span><span class="p">(</span>
         <span class="n">sess</span><span class="o">=</span><span class="n">sess</span><span class="p">,</span>
         <span class="n">run_options</span><span class="o">=</span><span class="n">run_options</span><span class="p">,</span>

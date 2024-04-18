@@ -202,10 +202,10 @@
 <li class="toctree-l2"><a class="reference internal" href="aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_test.html">Testing</a></li>
 </ul>
@@ -227,8 +227,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -302,16 +304,20 @@ involving onnxruntime contrib operators.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [&lt;class &#39;experimental_experiment.reference.ops.op_concat.Concat&#39;&gt;,
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [&lt;class &#39;experimental_experiment.reference.ops.op_add_add_mul_mul.AddAdd&#39;&gt;,
+     &lt;class &#39;experimental_experiment.reference.ops.op_concat.Concat&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_cast_like.CastLike_15&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_cast_like.CastLike_19&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_constant_of_shape.ConstantOfShape&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_fused_matmul.FusedMatMul&#39;&gt;,
+     &lt;class &#39;experimental_experiment.reference.ops.op_gather_grad.GatherGrad&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_memcpy_host.MemcpyFromHost&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_memcpy_host.MemcpyToHost&#39;&gt;,
+     &lt;class &#39;experimental_experiment.reference.ops.op_add_add_mul_mul.MulMul&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_quick_gelu.QuickGelu&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_scatter_elements.ScatterElements&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_scatternd_of_shape.ScatterNDOfShape&#39;&gt;,
+     &lt;class &#39;experimental_experiment.reference.ops.op_simplified_layer_normalization.SimplifiedLayerNormalization&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_slice.Slice_1&#39;&gt;,
      &lt;class &#39;experimental_experiment.reference.ops.op_slice.Slice_10&#39;&gt;]
 </pre></div>
@@ -320,6 +326,67 @@ involving onnxruntime contrib operators.</p>
 <dt class="sig sig-object py" id="experimental_experiment.reference.ExtendedReferenceEvaluator.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/reference/evaluator.html#ExtendedReferenceEvaluator.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.reference.ExtendedReferenceEvaluator.run" title="Link to this definition">#</a></dt>
 <dd><p>See <a class="reference external" href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator.run" title="(in ONNX v1.17.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">onnx.reference.ReferenceEvaluator.run()</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="orteval">
+<h2>OrtEval<a class="headerlink" href="#orteval" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="experimental_experiment.reference.OrtEval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.reference.</span></span><span class="sig-name descname"><span class="pre">OrtEval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">providers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">onnxruntime.SessionOptions</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incremental</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimized_model_filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/reference/ort_evaluator.html#OrtEval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.reference.OrtEval" title="Link to this definition">#</a></dt>
+<dd><p>This class loads an onnx model and the executes one by one the nodes
+with onnxruntime. This class is mostly meant for debugging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proto</strong> – ModelProto or filaname</p></li>
+<li><p><strong>providers</strong> – providers</p></li>
+<li><p><strong>options</strong> – session options</p></li>
+<li><p><strong>verbose</strong> – verbosity</p></li>
+<li><p><strong>whole</strong> – run the whole model instead instead of node
+by node</p></li>
+<li><p><strong>incremental</strong> – run the model node by node, but for every node,
+executes the graph up to that node</p></li>
+<li><p><strong>optimized_model_filepath</strong> – export the optimized graph</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.reference.OrtEval.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">feed_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/experimental_experiment/reference/ort_evaluator.html#OrtEval.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.reference.OrtEval.run" title="Link to this definition">#</a></dt>
+<dd><p>Runs the model.
+It only works with numpy arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> – required outputs or None for all</p></li>
+<li><p><strong>feed_inputs</strong> – inputs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>outputs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.reference.OrtEval.run_dlpack">
+<span class="sig-name descname"><span class="pre">run_dlpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">feed_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/experimental_experiment/reference/ort_evaluator.html#OrtEval.run_dlpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.reference.OrtEval.run_dlpack" title="Link to this definition">#</a></dt>
+<dd><p>Runs the model using <a class="reference external" href="https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/python/onnxruntime_inference_collection.py#L339">run_with_ortvaluevector</a>.
+It only works with <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> – required outputs or None for all</p></li>
+<li><p><strong>feed_inputs</strong> – inputs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>outputs</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -406,6 +473,14 @@ involving onnxruntime contrib operators.</p>
 <li><a class="reference internal" href="#extendedreferenceevaluator">ExtendedReferenceEvaluator</a><ul>
 <li><a class="reference internal" href="#experimental_experiment.reference.ExtendedReferenceEvaluator"><code class="docutils literal notranslate"><span class="pre">ExtendedReferenceEvaluator</span></code></a><ul>
 <li><a class="reference internal" href="#experimental_experiment.reference.ExtendedReferenceEvaluator.run"><code class="docutils literal notranslate"><span class="pre">ExtendedReferenceEvaluator.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#orteval">OrtEval</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.reference.OrtEval"><code class="docutils literal notranslate"><span class="pre">OrtEval</span></code></a><ul>
+<li><a class="reference internal" href="#experimental_experiment.reference.OrtEval.run"><code class="docutils literal notranslate"><span class="pre">OrtEval.run()</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.reference.OrtEval.run_dlpack"><code class="docutils literal notranslate"><span class="pre">OrtEval.run_dlpack()</span></code></a></li>
 </ul>
 </li>
 </ul>

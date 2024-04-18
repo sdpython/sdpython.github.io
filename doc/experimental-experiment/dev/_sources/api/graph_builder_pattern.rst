@@ -12,10 +12,20 @@ get_onnxruntime_patterns
 
 .. autofunction:: experimental_experiment.xoptim.patterns_ort.get_onnxruntime_patterns
 
+get_fix_patterns
+================
+
+.. autofunction:: experimental_experiment.xoptim.patterns_fix.get_fix_patterns
+
+get_pattern
+===========
+
+.. autofunction:: experimental_experiment.xoptim.get_pattern
+
 get_pattern_list
 ================
 
-.. autofunction:: experimental_experiment.xoptim.patterns.get_pattern_list
+.. autofunction:: experimental_experiment.xoptim.get_pattern_list
 
 Classes
 =======
@@ -30,24 +40,36 @@ GraphBuilderPatternOptimization
 MatchResult
 +++++++++++
 
-.. autoclass:: experimental_experiment.xoptim.patterns.MatchResult
+.. autoclass:: experimental_experiment.xoptim.MatchResult
     :members:
 
 PatternOptimization
 +++++++++++++++++++
 
-.. autoclass:: experimental_experiment.xoptim.patterns.PatternOptimization
+.. autoclass:: experimental_experiment.xoptim.PatternOptimization
+    :members:
+
+EasyPatternOptimization
++++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.EasyPatternOptimization
     :members:
 
 .. _l-pattern-optimization-onnx:
 
-Onnx Patterns
-=============
+Onnx (default) Patterns
+=======================
 
 CastPattern
 +++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns.CastPattern
+    :members:
+
+CastCastBinaryPattern
++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.CastCastBinaryPattern
     :members:
 
 ExpandPattern
@@ -98,6 +120,12 @@ Reshape2Of3Pattern
 .. autoclass:: experimental_experiment.xoptim.patterns.Reshape2Of3Pattern
     :members:
 
+ReshapeReshapeBinaryPattern
++++++++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.ReshapeReshapeBinaryPattern
+    :members:
+
 ReshapeReshapePattern
 +++++++++++++++++++++
 
@@ -110,10 +138,22 @@ RotaryConcatPartPattern
 .. autoclass:: experimental_experiment.xoptim.patterns.RotaryConcatPartPattern
     :members:
 
+SlicesSplitPattern
+++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.SlicesSplitPattern
+    :members:
+
 Sub1MulPattern
 ++++++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns.Sub1MulPattern
+    :members:
+
+SwitchOrderBinaryPattern
+++++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern
     :members:
 
 TransposeMatMulPattern
@@ -140,19 +180,43 @@ UnsqueezeUnsqueezePattern
 .. autoclass:: experimental_experiment.xoptim.patterns.UnsqueezeUnsqueezePattern
     :members:
 
+Fix Patterns
+============
+
+AddReductionScatterND
++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_fix.add_reduction_scatter_nd.AddReductionScatterND
+    :members:
+
+Experimental Patterns
+=====================
+
+ConstantOfShapeScatterNDPattern
++++++++++++++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern
+    :members:
+
 .. _l-pattern-optimization-ort:
 
 Ort Patterns
 ============
 
-ConstantOfShapeScatterNDPattern
-+++++++++++++++++++++++++++++++
+SimplifiedLayerNormalizationPattern
++++++++++++++++++++++++++++++++++++
 
-.. autoclass:: experimental_experiment.xoptim.patterns_ort.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern
+.. autoclass:: experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern
     :members:
 
 FusedMatMulPattern
 ++++++++++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulPattern
+    :members:
+
+SoftmaxGradPattern
+++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_ort.activation_grad.SoftmaxGradPattern
     :members:

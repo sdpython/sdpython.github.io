@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:11.409** total execution time for 11 files **from all galleries**:
+**04:06.105** total execution time for 11 files **from all galleries**:
 
 .. container::
 
@@ -33,15 +33,15 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``examples/plot_llama_bench_102.py``)
-     - 01:11.409
+     - 03:34.949
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py` (``examples/plot_llama_diff_export_301.py``)
+     - 00:31.156
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py` (``examples/plot_llama_diff_dort_301.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py` (``examples/plot_llama_diff_export_301.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``examples/plot_optimize_101.py``)

@@ -27,14 +27,17 @@ The script is calling many times the script ``experimental_experiment.torch_benc
 
 ::
 
-    python _doc/examples/plot_llama_bench.py --help
+    python _doc/examples/plot_llama_bench_102.py --help
     
 For exemple, to check mixed precision on multiple backend:
 
 ::
 
-    python _doc/examples/plot_llama_bench.py --device=cuda --num_hidden_layers=1 --mixed=1
+    python _doc/examples/plot_llama_bench_102.py --device=cuda --num_hidden_layers=2 --mixed=1
 
+::
+
+    python _doc/examples/plot_llama_bench_102.py --device=cuda --num_hidden_layers=2 --mixed=1 --backend=eager,dynger,ortmodule,inductor,ort+,custom --config=large
 
 Run the following command to run one experiment and get the available options:
 
@@ -42,7 +45,7 @@ Run the following command to run one experiment and get the available options:
 
     python -m experimental_experiment.torch_bench.dort_bench --help
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-176
+.. GENERATED FROM PYTHON SOURCE LINES 30-201
 
 .. code-block:: Python
 
@@ -55,19 +58,28 @@ Run the following command to run one experiment and get the available options:
         warmup=3,
         repeat=5,
         model=("llama", "model to benchmark"),
-        backend=("eager,inductor,ort,custom,plug", "backend to test"),
+        backend=(
+            "eager,dynger,inductor,ort,ort+,custom,ortmodule",
+            "backend to test, among eager,dynger,inductor,ort,ort+,custom,plug,ortmodule,backort",
+        ),
         device=("cuda" if check_cuda_availability() else "cpu", "device to test"),
-        num_hidden_layers=("2", "hidden layers to test"),
+        num_hidden_layers=("1", "hidden layers to test"),
         mixed=("0", "boolean value to test (mixed precision or not)"),
         dynamic=("0", "boolean value to test dynamic shapes or not"),
         script_name=("experimental_experiment.torch_bench.dort_bench", "script to run"),
         dump=(0, "dump the models with env ONNXRT_DUMP_PATH"),
         check=(0, "just check the script is working, ignores all other parameters"),
         config=("medium", "configuration to use, default or medium"),
-        patterns=("none,default,default+onnxruntime", "optimization patterns to use"),
+        patterns=(
+            "none,default,default+onnxruntime," "default+onnxruntime+experimental",
+            "optimization patterns to use",
+        ),
+        implementation=("eager", "eager or sdpa or both values comma separated value"),
+        with_mask=(1, "with or without a second input (mask"),
         disable_pattern=("none", "pattern or patterns to disable"),
         expose="backend,device,num_hidden_layers,mixed,scipt_name,repeat,"
-        "warmup,dump,check,config,patterns,dynamic,disable_pattern,model",
+        "warmup,dump,check,config,patterns,dynamic,disable_pattern,model"
+        "implementation,with_mask",
     )
 
     import onnxruntime  # noqa: F401
@@ -99,6 +111,8 @@ Run the following command to run one experiment and get the available options:
         warmup,
         pattern,
         disable_pattern,
+        implementation,
+        with_mask,
         existing=None,
     ):
         cf = dict(
@@ -111,9 +125,11 @@ Run the following command to run one experiment and get the available options:
             dynamic=dynamic,
             config=config,
             warmup=warmup,
+            implementation=implementation,
+            with_mask=with_mask,
         )
 
-        if existing and backend != "custom":
+        if existing and backend not in ("custom", "ort+"):
             for ex in existing:
                 if not ex:
                     continue
@@ -126,8 +142,8 @@ Run the following command to run one experiment and get the available options:
                     return None
 
         if pattern == "none":
-            opt = dict(disable_pattern="default")
-        elif pattern in ("default", "default+onnxruntime"):
+            opt = dict(enable_pattern="default", disable_pattern="default")
+        elif pattern in "default" or "+" in pattern:
             opt = dict(enable_pattern=pattern)
         else:
             raise AssertionError(f"unexpected value for pattern={pattern!r}")
@@ -137,6 +153,11 @@ Run the following command to run one experiment and get the available options:
                 cf["disable_pattern"] += f",{disable_pattern}"
             else:
                 cf["disable_pattern"] = disable_pattern
+        if "+experimental" in cf["enable_pattern"]:
+            try:
+                import onnx_extended  # noqa: F401
+            except ImportError:
+                return None
         return cf
 
 
@@ -150,6 +171,7 @@ Run the following command to run one experiment and get the available options:
             mixed,
             dynamic,
             pattern,
+            impl,
         ) in itertools.product(
             parsed_args.backend.split(","),
             parsed_args.device.split(","),
@@ -157,6 +179,7 @@ Run the following command to run one experiment and get the available options:
             list(map(int, parsed_args.mixed.split(","))),
             list(map(int, parsed_args.dynamic.split(","))),
             parsed_args.patterns.split(","),
+            parsed_args.implementation.split(","),
         ):
             if mixed == 1 and device == "cpu":
                 continue
@@ -176,6 +199,8 @@ Run the following command to run one experiment and get the available options:
                     pattern=pattern,
                     disable_pattern=parsed_args.disable_pattern,
                     existing=configs,
+                    implementation=impl,
+                    with_mask=parsed_args.with_mask,
                 )
             )
     else:
@@ -184,7 +209,7 @@ Run the following command to run one experiment and get the available options:
         configs = [
             dict(
                 model=parsed_args.model,
-                backend="ort",
+                backend="custom",
                 device=device,
                 num_hidden_layers=1,
                 repeat=1,
@@ -202,11 +227,11 @@ Run the following command to run one experiment and get the available options:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-178
+.. GENERATED FROM PYTHON SOURCE LINES 202-203
 
 All configurations to consider.
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-183
+.. GENERATED FROM PYTHON SOURCE LINES 203-208
 
 .. code-block:: Python
 
@@ -223,21 +248,27 @@ All configurations to consider.
 
  .. code-block:: none
 
-    config 1: {'model': 'llama', 'backend': 'eager', 'device': 'cuda', 'num_hidden_layers': 2, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'disable_pattern': 'default'}
-    config 2: {'model': 'llama', 'backend': 'ort', 'device': 'cuda', 'num_hidden_layers': 2, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'disable_pattern': 'default'}
-    config 3: {'model': 'llama', 'backend': 'custom', 'device': 'cuda', 'num_hidden_layers': 2, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'disable_pattern': 'default'}
-    config 4: {'model': 'llama', 'backend': 'custom', 'device': 'cuda', 'num_hidden_layers': 2, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'enable_pattern': 'default'}
-    config 5: {'model': 'llama', 'backend': 'custom', 'device': 'cuda', 'num_hidden_layers': 2, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'enable_pattern': 'default+onnxruntime'}
-    config 6: {'model': 'llama', 'backend': 'plug', 'device': 'cuda', 'num_hidden_layers': 2, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'disable_pattern': 'default'}
+    config 1: {'model': 'llama', 'backend': 'eager', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default', 'disable_pattern': 'default'}
+    config 2: {'model': 'llama', 'backend': 'dynger', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default', 'disable_pattern': 'default'}
+    config 3: {'model': 'llama', 'backend': 'ort', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default', 'disable_pattern': 'default'}
+    config 4: {'model': 'llama', 'backend': 'ort+', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default', 'disable_pattern': 'default'}
+    config 5: {'model': 'llama', 'backend': 'ort+', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default'}
+    config 6: {'model': 'llama', 'backend': 'ort+', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default+onnxruntime'}
+    config 7: {'model': 'llama', 'backend': 'ort+', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default+onnxruntime+experimental'}
+    config 8: {'model': 'llama', 'backend': 'custom', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default', 'disable_pattern': 'default'}
+    config 9: {'model': 'llama', 'backend': 'custom', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default'}
+    config 10: {'model': 'llama', 'backend': 'custom', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default+onnxruntime'}
+    config 11: {'model': 'llama', 'backend': 'custom', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default+onnxruntime+experimental'}
+    config 12: {'model': 'llama', 'backend': 'ortmodule', 'device': 'cuda', 'num_hidden_layers': 1, 'repeat': 5, 'mixed': 0, 'dynamic': 0, 'config': 'medium', 'warmup': 3, 'implementation': 'eager', 'with_mask': 1, 'enable_pattern': 'default', 'disable_pattern': 'default'}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-185
+.. GENERATED FROM PYTHON SOURCE LINES 209-210
 
 Running configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 185-200
+.. GENERATED FROM PYTHON SOURCE LINES 210-225
 
 .. code-block:: Python
 
@@ -264,33 +295,42 @@ Running configuration.
 
  .. code-block:: none
 
-      0%|          | 0/6 [00:00<?, ?it/s]     17%|█▋        | 1/6 [00:06<00:34,  6.99s/it]     33%|███▎      | 2/6 [00:21<00:44, 11.14s/it]     50%|█████     | 3/6 [00:31<00:33, 11.02s/it]     67%|██████▋   | 4/6 [00:42<00:22, 11.04s/it]     83%|████████▎ | 5/6 [00:52<00:10, 10.46s/it]    100%|██████████| 6/6 [01:04<00:00, 11.08s/it]    100%|██████████| 6/6 [01:04<00:00, 10.78s/it]
+      0%|          | 0/12 [00:00<?, ?it/s]      8%|▊         | 1/12 [00:16<02:57, 16.17s/it]     17%|█▋        | 2/12 [00:32<02:40, 16.04s/it]     25%|██▌       | 3/12 [00:54<02:50, 18.89s/it]     33%|███▎      | 4/12 [01:16<02:39, 19.97s/it]     42%|████▏     | 5/12 [01:36<02:20, 20.04s/it]     50%|█████     | 6/12 [01:58<02:04, 20.68s/it]     58%|█████▊    | 7/12 [02:06<01:23, 16.70s/it]     67%|██████▋   | 8/12 [02:23<01:07, 16.91s/it]     75%|███████▌  | 9/12 [02:42<00:52, 17.53s/it]     83%|████████▎ | 10/12 [02:57<00:33, 16.71s/it]     92%|█████████▏| 11/12 [03:15<00:16, 16.97s/it]    100%|██████████| 12/12 [03:33<00:00, 17.19s/it]    100%|██████████| 12/12 [03:33<00:00, 17.75s/it]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 201-202
+.. GENERATED FROM PYTHON SOURCE LINES 226-227
 
 Let's process the data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 202-240
+.. GENERATED FROM PYTHON SOURCE LINES 227-293
 
 .. code-block:: Python
 
 
+    prefix = (
+        f"plot_{parsed_args.model}-{parsed_args.with_mask}-"
+        f"m{parsed_args.mixed}d{parsed_args.dynamic}-"
+        f"{parsed_args.implementation}"
+    )
+
     if data_collected:
 
         def clean_pattern(s):
-            if "+default" in s:
-                s = s.replace("ConstantOfShapeScatterND", "")
             s = s.replace("+default-default", "")
             return s
 
         def make_legend(row):
             row = row.to_dict()
-            val = [row["device"], row["backend"], f"h{row['num_hidden_layers']}"]
+            val = [
+                row["device"],
+                f"h{row['num_hidden_layers']}",
+                row["implementation"],
+                row["backend"],
+            ]
             if row["mixed"]:
-                val.append("mixed")
+                val.append("mix")
             if row["dynamic"]:
                 val.append("dyn")
             if "patterns" in row and row["patterns"] and "nan" not in str(row["patterns"]):
@@ -303,17 +343,36 @@ Let's process the data.
         df = df.drop(["OUTPUT", "ERROR"], axis=1)
         df["legend"] = df.apply(make_legend, axis=1)
         df["time"] = df["time"].astype(float)
-        min_eager = df[df.legend.str.contains("eager")]["time"].dropna().min()
-        df["increase"] = df["time"] / min_eager - 1
-        # df["ERROR"] = df["ERROR"].apply(lambda s: s.replace("\n", " "))
-        filename = f"plot_{parsed_args.model}_bench_with_cmd.csv"
+        df_eager = df[(df["implementation"] == "eager") & (df["backend"] == "eager")][
+            "time"
+        ].dropna()
+        if df_eager.shape[0] > 0:
+            min_eager = df_eager.min()
+            df["increase"] = df["time"] / min_eager - 1
+            # df["ERROR"] = df["ERROR"].apply(lambda s: s.replace("\n", " "))
+        filename = f"plot_{prefix}_bench_with_cmd.csv"
         df.to_csv(filename, index=False)
+        filename = f"plot_{prefix}_bench_with_cmd.xlsx"
+        df.to_excel(filename, index=False)
 
         df = df.drop(["CMD"], axis=1)
-        filename = f"plot_{parsed_args.model}_bench.csv"
+        filename = f"plot_{prefix}_bench.csv"
         df.to_csv(filename, index=False)
         df = pandas.read_csv(filename)  # to cast type
         print(df)
+
+        # summary
+        cs = [
+            c
+            for c in ["backend", "patterns", "warmup_time", "time", "increase"]
+            if c in df.columns
+        ]
+        dfs = df[cs]
+        filename = f"plot_{prefix}_summary.xlsx"
+        dfs.to_excel(filename, index=False)
+        filename = f"plot_{prefix}_summary.csv"
+        dfs.to_csv(filename, index=False)
+        print(dfs)
 
 
 
@@ -323,24 +382,43 @@ Let's process the data.
 
  .. code-block:: none
 
-                                      llama  config  mixed  dynamic backend  repeat  ...  num_hidden_layers disable_pattern          patterns       enable_pattern                      legend  increase
-    0  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0   eager       5  ...                  2         default               NaN                  NaN               cuda-eager-h2  0.000000
-    1  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0     ort       5  ...                  2         default               NaN                  NaN                 cuda-ort-h2  0.115742
-    2  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom       5  ...                  2         default  +default-default                  NaN           cuda-custom-h2-()  0.045713
-    3  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom       5  ...                  2             NaN         +default-              default  cuda-custom-h2-(+default-)  0.043562
-    4                                   NaN  medium      0        0  custom       5  ...                  2             NaN               NaN  default+onnxruntime              cuda-custom-h2       NaN
-    5  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0    plug       5  ...                  2         default               NaN                  NaN                cuda-plug-h2  0.085262
+                                         llama  config  mixed  dynamic  ... disable_pattern                            patterns                                             legend  increase
+    0   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                                cuda-h1-eager-eager  0.000000
+    1   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                               cuda-h1-eager-dynger  0.020299
+    2   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                                  cuda-h1-eager-ort  0.274669
+    3   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                    +default-default                              cuda-h1-eager-ort+-()  0.269223
+    4   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN                           +default-                     cuda-h1-eager-ort+-(+default-)  0.248932
+    5   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN               +default+onnxruntime-         cuda-h1-eager-ort+-(+default+onnxruntime-)  0.237072
+    6                                      NaN  medium      0        0  ...             NaN                                 NaN                                 cuda-h1-eager-ort+       NaN
+    7   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                    +default-default                            cuda-h1-eager-custom-()  0.055231
+    8   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN                           +default-                   cuda-h1-eager-custom-(+default-)  0.029160
+    9   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN               +default+onnxruntime-       cuda-h1-eager-custom-(+default+onnxruntime-)  0.007539
+    10  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN  +default+onnxruntime+experimental-  cuda-h1-eager-custom-(+default+onnxruntime+exp...  0.002318
+    11  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                            cuda-h1-eager-ortmodule -0.069537
 
-    [6 rows x 19 columns]
+    [12 rows x 22 columns]
+          backend                            patterns  warmup_time      time  increase
+    0       eager                                 NaN     2.764505  0.792278  0.000000
+    1      dynger                                 NaN     4.140018  0.808360  0.020299
+    2         ort                                 NaN     7.230607  1.009892  0.274669
+    3        ort+                    +default-default     7.580654  1.005577  0.269223
+    4        ort+                           +default-     7.669677  0.989501  0.248932
+    5        ort+               +default+onnxruntime-     8.506198  0.980104  0.237072
+    6        ort+                                 NaN          NaN       NaN       NaN
+    7      custom                    +default-default     6.590138  0.836036  0.055231
+    8      custom                           +default-     4.951408  0.815380  0.029160
+    9      custom               +default+onnxruntime-     4.347518  0.798251  0.007539
+    10     custom  +default+onnxruntime+experimental-     5.083299  0.794114  0.002318
+    11  ortmodule                                 NaN     7.603932  0.737185 -0.069537
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 241-242
+.. GENERATED FROM PYTHON SOURCE LINES 294-295
 
 First lines.
 
-.. GENERATED FROM PYTHON SOURCE LINES 242-245
+.. GENERATED FROM PYTHON SOURCE LINES 295-298
 
 .. code-block:: Python
 
@@ -355,35 +433,38 @@ First lines.
 
  .. code-block:: none
 
-                                                          0                                     1
-    llama              2x1024-1024-2-1024-1024-1024-2-eager  2x1024-1024-2-1024-1024-1024-2-eager
-    config                                           medium                                medium
-    mixed                                                 0                                     0
-    dynamic                                               0                                     0
-    backend                                           eager                                   ort
-    repeat                                                5                                     5
-    warmup                                                3                                     3
-    torch                           2.3.0.dev20240314+cu118               2.3.0.dev20240314+cu118
-    transformers                                     4.37.2                                4.37.2
-    warmup_time                                    0.508143                              7.044695
-    time                                           0.111433                               0.12433
-    model                                             llama                                 llama
-    device                                             cuda                                  cuda
-    num_hidden_layers                                     2                                     2
-    disable_pattern                                 default                               default
-    patterns                                            NaN                                   NaN
-    enable_pattern                                      NaN                                   NaN
-    legend                                    cuda-eager-h2                           cuda-ort-h2
-    increase                                            0.0                              0.115742
+                                                            0                                       1
+    llama              2x1024-1024-1-1024-1024-1024-2-eager-1  2x1024-1024-1-1024-1024-1024-2-eager-1
+    config                                             medium                                  medium
+    mixed                                                   0                                       0
+    dynamic                                                 0                                       0
+    optimize                                             True                                    True
+    backend                                             eager                                  dynger
+    repeat                                                  5                                       5
+    warmup                                                  3                                       3
+    with_mask                                               1                                       1
+    implementation                                      eager                                   eager
+    torch                             2.4.0.dev20240325+cu118                 2.4.0.dev20240325+cu118
+    transformers                                       4.37.2                                  4.37.2
+    warmup_time                                      2.764505                                4.140018
+    time                                             0.792278                                 0.80836
+    model                                               llama                                   llama
+    device                                               cuda                                    cuda
+    num_hidden_layers                                       1                                       1
+    enable_pattern                                    default                                 default
+    disable_pattern                                   default                                 default
+    patterns                                              NaN                                     NaN
+    legend                                cuda-h1-eager-eager                    cuda-h1-eager-dynger
+    increase                                              0.0                                0.020299
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 246-247
+.. GENERATED FROM PYTHON SOURCE LINES 299-300
 
 More simple
 
-.. GENERATED FROM PYTHON SOURCE LINES 247-252
+.. GENERATED FROM PYTHON SOURCE LINES 300-305
 
 .. code-block:: Python
 
@@ -399,11 +480,11 @@ More simple
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 253-254
+.. GENERATED FROM PYTHON SOURCE LINES 306-307
 
 Simplified data
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-257
+.. GENERATED FROM PYTHON SOURCE LINES 307-310
 
 .. code-block:: Python
 
@@ -418,24 +499,30 @@ Simplified data
 
  .. code-block:: none
 
-                                      llama  config  mixed  dynamic backend  repeat  ...  num_hidden_layers disable_pattern          patterns       enable_pattern                      legend  increase
-    4                                   NaN  medium      0        0  custom       5  ...                  2             NaN               NaN  default+onnxruntime              cuda-custom-h2       NaN
-    2  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom       5  ...                  2         default  +default-default                  NaN           cuda-custom-h2-()  0.045713
-    3  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0  custom       5  ...                  2             NaN         +default-              default  cuda-custom-h2-(+default-)  0.043562
-    0  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0   eager       5  ...                  2         default               NaN                  NaN               cuda-eager-h2  0.000000
-    1  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0     ort       5  ...                  2         default               NaN                  NaN                 cuda-ort-h2  0.115742
-    5  2x1024-1024-2-1024-1024-1024-2-eager  medium      0        0    plug       5  ...                  2         default               NaN                  NaN                cuda-plug-h2  0.085262
+                                         llama  config  mixed  dynamic  ... disable_pattern                            patterns                                             legend  increase
+    7   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                    +default-default                            cuda-h1-eager-custom-()  0.055231
+    10  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN  +default+onnxruntime+experimental-  cuda-h1-eager-custom-(+default+onnxruntime+exp...  0.002318
+    9   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN               +default+onnxruntime-       cuda-h1-eager-custom-(+default+onnxruntime-)  0.007539
+    8   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN                           +default-                   cuda-h1-eager-custom-(+default-)  0.029160
+    1   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                               cuda-h1-eager-dynger  0.020299
+    0   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                                cuda-h1-eager-eager  0.000000
+    2   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                                  cuda-h1-eager-ort  0.274669
+    6                                      NaN  medium      0        0  ...             NaN                                 NaN                                 cuda-h1-eager-ort+       NaN
+    3   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                    +default-default                              cuda-h1-eager-ort+-()  0.269223
+    5   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN               +default+onnxruntime-         cuda-h1-eager-ort+-(+default+onnxruntime-)  0.237072
+    4   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...             NaN                           +default-                     cuda-h1-eager-ort+-(+default-)  0.248932
+    11  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...         default                                 NaN                            cuda-h1-eager-ortmodule -0.069537
 
-    [6 rows x 19 columns]
+    [12 rows x 22 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 258-259
+.. GENERATED FROM PYTHON SOURCE LINES 311-312
 
 Plot warmup time.
 
-.. GENERATED FROM PYTHON SOURCE LINES 259-278
+.. GENERATED FROM PYTHON SOURCE LINES 312-335
 
 .. code-block:: Python
 
@@ -445,24 +532,28 @@ Plot warmup time.
     ver = f"{torch_version[0]} - {transformers_version[0]}"
     model = parsed_args.model
     modeldf = list(set(df[model].dropna()))[0]
+    title_prefix = (
+        f"lower better\n"
+        f"{parsed_args.model} - {ver} - mask{parsed_args.with_mask}"
+        f"\n<device>-h<hidden-layers>-<implementation>-<backend>-(optimization)"
+    )
+
 
     if data_collected:
         fig, ax = plt.subplots(1, 1, figsize=(12, df.shape[0] // 3 + 1))
 
         df = df.sort_values("time").set_index("legend")
-        df[["warmup_time"]].plot.barh(
-            ax=ax, title=f"lower better\n{parsed_args.model}\nwarmup time\n{ver}"
-        )
+        df[["warmup_time"]].plot.barh(ax=ax, title=f"warmup time\n{title_prefix}")
         ax.grid(True)
 
         fig.tight_layout()
-        fig.savefig(f"plot_{parsed_args.model}_bench_warmup_time.png")
+        fig.savefig(f"plot_{prefix}_bench_warmup_time.png")
 
 
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_llama_bench_102_001.png
-   :alt: lower better llama warmup time 2.3.0.dev20240314+cu118 - 4.37.2
+   :alt: warmup time lower better llama - 2.4.0.dev20240325+cu118 - 4.37.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
    :srcset: /auto_examples/images/sphx_glr_plot_llama_bench_102_001.png
    :class: sphx-glr-single-img
 
@@ -470,11 +561,11 @@ Plot warmup time.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 279-280
+.. GENERATED FROM PYTHON SOURCE LINES 336-337
 
 Plot time.
 
-.. GENERATED FROM PYTHON SOURCE LINES 280-295
+.. GENERATED FROM PYTHON SOURCE LINES 337-350
 
 .. code-block:: Python
 
@@ -482,22 +573,20 @@ Plot time.
     if data_collected:
         fig, ax = plt.subplots(1, 1, figsize=(12, df.shape[0] // 3 + 1))
 
-        df[["time"]].plot.barh(
-            ax=ax, title=f"lower better\n{parsed_args.model}\niteration time\n{ver}"
-        )
+        df[["time"]].plot.barh(ax=ax, title=f"computation time\n{title_prefix}")
         mi, ma = df["time"].min(), df["time"].max()
         mi = mi - (ma - mi) / 10
         ax.set_xlim(left=mi)
         ax.grid(True)
 
         fig.tight_layout()
-        fig.savefig(f"plot_{parsed_args.model}_bench_time.png")
+        fig.savefig(f"plot_{prefix}_bench_time.png")
 
 
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_llama_bench_102_002.png
-   :alt: lower better llama iteration time 2.3.0.dev20240314+cu118 - 4.37.2
+   :alt: computation time lower better llama - 2.4.0.dev20240325+cu118 - 4.37.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
    :srcset: /auto_examples/images/sphx_glr_plot_llama_bench_102_002.png
    :class: sphx-glr-single-img
 
@@ -505,11 +594,11 @@ Plot time.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 296-297
+.. GENERATED FROM PYTHON SOURCE LINES 351-352
 
 Plot increase.
 
-.. GENERATED FROM PYTHON SOURCE LINES 297-308
+.. GENERATED FROM PYTHON SOURCE LINES 352-361
 
 .. code-block:: Python
 
@@ -517,18 +606,16 @@ Plot increase.
     if data_collected:
         fig, ax = plt.subplots(1, 1, figsize=(12, df.shape[0] // 3 + 1))
 
-        df[["increase"]].plot.barh(
-            ax=ax, title=f"lower better\n{parsed_args.model}\ncomparison to eager %"
-        )
+        df[["increase"]].plot.barh(ax=ax, title=f"comparison to eager %\n{title_prefix}")
         ax.grid(True)
 
         fig.tight_layout()
-        fig.savefig(f"plot_{parsed_args.model}_bench_relative.png")
+        fig.savefig(f"plot_{prefix}_bench_relative.png")
 
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_llama_bench_102_003.png
-   :alt: lower better llama comparison to eager %
+   :alt: comparison to eager % lower better llama - 2.4.0.dev20240325+cu118 - 4.37.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
    :srcset: /auto_examples/images/sphx_glr_plot_llama_bench_102_003.png
    :class: sphx-glr-single-img
 
@@ -539,7 +626,7 @@ Plot increase.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 11.409 seconds)
+   **Total running time of the script:** (3 minutes 34.949 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_llama_bench_102.py:

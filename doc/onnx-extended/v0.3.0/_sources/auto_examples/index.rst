@@ -171,6 +171,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="How to parallelize something like the following?">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_scatternd_cuda_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_op_scatternd_cuda.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Optimizing ScatterND operator on CUDA</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The execution of a TreeEnsembleRegressor can lead to very different results depending on how th...">
 
 .. only:: html
@@ -271,6 +288,7 @@ Examples Gallery
    /auto_examples/plot_op_einsum
    /auto_examples/plot_op_mul_cuda
    /auto_examples/plot_op_conv_denorm
+   /auto_examples/plot_op_scatternd_cuda
    /auto_examples/plot_op_tree_ensemble_optim
    /auto_examples/plot_op_tree_ensemble_sparse
    /auto_examples/plot_profile_gemm_ort

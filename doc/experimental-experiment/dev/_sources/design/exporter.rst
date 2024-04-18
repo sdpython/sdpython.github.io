@@ -153,6 +153,7 @@ It is important to update the shape the information is available.
 * :meth:`has_shape <experimental_experiment.xbuilder.GraphBuilder.has_shape>`
 * :meth:`has_rank <experimental_experiment.xbuilder.GraphBuilder.has_rank>`
 * :meth:`has_dynamic_object <experimental_experiment.xbuilder.GraphBuilder.has_dynamic_object>`
+* :meth:`is_sequence <experimental_experiment.xbuilder.GraphBuilder.is_sequence>`
 * :meth:`is_constant <experimental_experiment.xbuilder.GraphBuilder.is_constant>`
 * :meth:`value_as_shape <experimental_experiment.xbuilder.GraphBuilder.value_as_shape>`
 
@@ -160,6 +161,7 @@ Get the information:
 
 * :meth:`get_type <experimental_experiment.xbuilder.GraphBuilder.get_type>`
 * :meth:`get_shape <experimental_experiment.xbuilder.GraphBuilder.get_shape>`
+* :meth:`get_sequence <experimental_experiment.xbuilder.GraphBuilder.get_sequence>`
 * :meth:`get_rank <experimental_experiment.xbuilder.GraphBuilder.get_rank>`
 * :meth:`get_constant <experimental_experiment.xbuilder.GraphBuilder.get_constant>`
 * :meth:`value_as_shape <experimental_experiment.xbuilder.GraphBuilder.value_as_shape>`
@@ -169,6 +171,7 @@ Set the information:
 * :meth:`set_type <experimental_experiment.xbuilder.GraphBuilder.set_type>`
 * :meth:`set_shape <experimental_experiment.xbuilder.GraphBuilder.set_shape>`
 * :meth:`set_rank <experimental_experiment.xbuilder.GraphBuilder.set_rank>`
+* :meth:`set_sequence <experimental_experiment.xbuilder.GraphBuilder.set_sequence>`
 * :meth:`set_value_shape <experimental_experiment.xbuilder.GraphBuilder.set_value_shape>`
 
 A function used to provide information to the user and calls in most of the error message:
@@ -199,8 +202,8 @@ Example
     gr.make_tensor_input("X", TensorProto.FLOAT, ("a", "b"), is_dimension=False)
     weight = gr.make_initializer("", np.array([[0.4, 0.5, 0.6]], dtype=np.float32).T)
     bias = gr.make_initializer("", np.array([[0.4, 0.5, 0.6]], dtype=np.float32))
-    mm = gr.make_node("MatMul", ["X", weight])
-    out = gr.make_node("Add", [mm, bias], ["Y"])
+    mm = gr.make_node("MatMul", ["X", weight], name="n")
+    out = gr.make_node("Add", [mm, bias], ["Y"], name="n")
     gr.make_tensor_output(out, TensorProto.FLOAT, ("a",), indexed=False, is_dimension=False)
     onx = gr.to_onnx()
 
@@ -397,7 +400,7 @@ Let's consider the easy converting following function.
 
     def aten_addmm(
         g: GraphBuilder,
-        sts: bool,
+        sts: Optional[Dict[str, Any]],
         outputs: List[str],
 
         a: T,
@@ -410,7 +413,7 @@ Let's consider the easy converting following function.
         res = g.op.Gemm(
             b, c, a, alpha=float(alpha), beta=float(beta), outputs=outputs, name="addmm"
         )
-        if sts:
+        if not sts:
             g.set_type(res, g.get_type(b))
             g.set_rank(res, 2)
         return res
@@ -437,16 +440,16 @@ as shown in this function.
 
 ::
 
-    def aten_asin(g: GraphBuilder, sts: bool, outputs: List[str], x: T) -> T:
+    def aten_asin(g: GraphBuilder, sts: Optional[Dict[str, Any]], outputs: List[str], x: T) -> T:
         "asin"
         res = g.make_node("Asin", [x], outputs)
-        if sts:
+        if not sts:
             set_type_shape_unary_op(g, outputs[0], x)
         return res  
 
-The boolean ``sts`` is ``False`` when the graph given by torch contains
-information about shape and type. In that case, the interpreter will
-give them to the graph builder.
+The boolean ``sts`` is ``None`` when the graph given by torch contains
+no information about shape and type. Otherwise, the interpreter
+gives them to the graph builder through ``sts``.
 
 Different Implementations
 +++++++++++++++++++++++++
@@ -459,7 +462,7 @@ are different. And the graph builder will remove the ``Identity`` node.
 
     def aten_copy(
         g: GraphBuilder,
-        sts: bool,
+        sts: Optional[Dict[str, Any]],
         outputs: List[str],
         x: T,
         src: T,

@@ -255,11 +255,12 @@ Training a model
     warmup=3
     train_all_trees=False - False
     Training to get 'plot_op_tree_ensemble_sparse-f512-512-d12-s0.99-0.onnx' with X.shape=(10240, 512)
-    [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 30 concurrent workers.
+    [Parallel(n_jobs=-1)]: Using backend ThreadingBackend with 8 concurrent workers.
     building tree 1 of 1
+    [Parallel(n_jobs=-1)]: Done   1 out of   1 | elapsed:    0.7s finished
     Xb.shape=(2048, 512)
     yb.shape=(2048,)
-    measured sparsity=0.9899873733520508
+    measured sparsity=0.9900093078613281
 
 
 
@@ -588,8 +589,8 @@ Implementations
     run 'ort' - shape=(2048, 512)
     run 'custom' - shape=(2048, 512)
     run 'cusopt' - shape=(2048, 512)
-    run 'sparse' - shape=(21054,)
-    /home/onyxia/work/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:347: UserWarning: Unable to find environment variable 'TEST_LLC_EXE'.
+    run 'sparse' - shape=(21008,)
+    /home/xadupre/github/onnx-extended/_doc/examples/plot_op_tree_ensemble_implementations.py:347: UserWarning: Unable to find environment variable 'TEST_LLC_EXE'.
       warnings.warn("Unable to find environment variable 'TEST_LLC_EXE'.")
     done.
 
@@ -664,11 +665,13 @@ Benchmark implementations
     run 'cusopt'
     run 'sparse'
     done.
-        average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time    name  disc_mean  disc_max  err_mean   err_max
-    0  0.001605   0.001360  0.001049  0.005683      10      10  0.016049            64     0.003707     ort   0.000000  0.000000  0.000792  0.001038
-    1  0.003348   0.002730  0.001454  0.008544      10      10  0.033476            64     0.009410  custom   0.000666  0.000793  0.000127  0.000671
-    2  0.003698   0.002570  0.001459  0.007468      10      10  0.036981            64     0.004817  cusopt   0.000062  0.000305  0.000834  0.000916
-    3  0.009092   0.002046  0.004069  0.013124      10      10  0.090916            64     0.011365  sparse   0.000062  0.000305  0.000834  0.000916
+        average  deviation  min_exec  ...  disc_max  err_mean   err_max
+    0  0.004816   0.000400  0.004104  ...  0.000000  0.000548  0.003296
+    1  0.006222   0.001099  0.004575  ...  0.000305  0.000755  0.003174
+    2  0.010416   0.003999  0.005916  ...  0.000854  0.000584  0.004150
+    3  0.030294   0.008347  0.024421  ...  0.000854  0.000584  0.004150
+
+    [4 rows x 14 columns]
 
 
 
@@ -717,7 +720,7 @@ Plots.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 19.434 seconds)
+   **Total running time of the script:** (0 minutes 15.704 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_tree_ensemble_implementations.py:

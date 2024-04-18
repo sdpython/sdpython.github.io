@@ -8,7 +8,7 @@
         <title>experimental_experiment.xoptim.graph_builder_optim - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -201,10 +201,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_test.html">Testing</a></li>
 </ul>
@@ -226,8 +226,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -279,12 +281,27 @@
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pprint</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">NodeProto</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
+<span class="kn">from</span> <span class="nn">onnx.shape_inference</span> <span class="kn">import</span> <span class="n">infer_shapes</span>
 <span class="kn">import</span> <span class="nn">onnx.helper</span> <span class="k">as</span> <span class="nn">oh</span>
+<span class="kn">import</span> <span class="nn">onnx.numpy_helper</span> <span class="k">as</span> <span class="nn">onh</span>
 <span class="kn">from</span> <span class="nn">..xbuilder._onnx_helper</span> <span class="kn">import</span> <span class="n">enumerate_subgraphs</span>
 <span class="kn">from</span> <span class="nn">..xbuilder.type_inference</span> <span class="kn">import</span> <span class="n">infer_types</span>
-<span class="kn">from</span> <span class="nn">.patterns</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">get_default_patterns</span>
+<span class="kn">from</span> <span class="nn">.patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span class="kn">from</span> <span class="nn">.patterns</span> <span class="kn">import</span> <span class="n">get_default_patterns</span>
+
+
+<span class="k">def</span> <span class="nf">_count</span><span class="p">(</span><span class="n">matches</span><span class="p">):</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">cl</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="n">cl</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="n">cl</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
 
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization">
@@ -300,6 +317,16 @@
 <span class="sd">        python -m onnx_array_api compare -m1 &lt;model.onnx&gt; -m2 &lt;optimized.onnx&gt; -m nodes -c 80</span>
 
 <span class="sd">    This class assumes a pattern cannot reuse an existing name.</span>
+
+<span class="sd">    :param builder: GraphBuilder</span>
+<span class="sd">    :param patterns: list of patterns to apply</span>
+<span class="sd">    :param recursive: goes through subgraphs</span>
+<span class="sd">    :param verifies: verifies the model but it takes time</span>
+<span class="sd">    :param verbose: verbosity</span>
+<span class="sd">    :param dump_applied_patterns: dump applied patterns in a folder,</span>
+<span class="sd">        the users can check every pattern dumped as a :epkg:`FunctionProto`</span>
+<span class="sd">    :param processor: optimization should be made for this processor</span>
+<span class="sd">        or this list of processors (comma separated value)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -307,21 +334,77 @@
         <span class="n">builder</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">patterns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">PatternOptimization</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">verifies</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">dump_applied_patterns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">processor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CPU&quot;</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="k">assert</span> <span class="n">processor</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;CUDA&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CPU&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CPU,CUDA&quot;</span><span class="p">,</span>
+        <span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;Unknown processor </span><span class="si">{</span><span class="n">processor</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">builder</span> <span class="o">=</span> <span class="n">builder</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LOG_PATTERN_OPTIMIZE&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">patterns</span> <span class="o">=</span> <span class="n">patterns</span> <span class="ow">or</span> <span class="n">get_default_patterns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span> <span class="o">=</span> <span class="n">recursive</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verifies</span> <span class="o">=</span> <span class="n">verifies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dump_applied_patterns</span> <span class="o">=</span> <span class="n">dump_applied_patterns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processor</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">processor</span> <span class="k">if</span> <span class="s2">&quot;,&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">processor</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(</span><span class="n">processor</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
         <span class="c1"># This assume a name is given once and</span>
         <span class="c1"># no constant can replace an existing one.</span>
         <span class="c1"># _build method should not change it.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache_computed_constant</span> <span class="o">=</span> <span class="p">{}</span>
 
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.has_processor">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.has_processor">[docs]</a>
+    <span class="k">def</span> <span class="nf">has_processor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processor</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks the process is on the list of used processors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">processor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">processor</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+        <span class="s2">&quot;property&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="s2">&quot;property&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">input_names</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="s2">&quot;property&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">inputs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="s2">&quot;property&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">output_names</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="s2">&quot;property&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">outputs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opsets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;property&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">opsets</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.iter_nodes">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.iter_nodes">[docs]</a>
     <span class="k">def</span> <span class="nf">iter_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+        <span class="s2">&quot;iterator&quot;</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">node</span>
+            <span class="k">yield</span> <span class="n">node</span></div>
+
 
     <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -332,8 +415,10 @@
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_nodes</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes_</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">node</span><span class="p">)]</span> <span class="o">=</span> <span class="n">node</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_output_names_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">output_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">predecessors_</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">successors_id</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">used_</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> for node </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -342,7 +427,12 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                    <span class="n">successors_id</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">successors_id</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="c1"># This test avoids the same successor to appear twice if one node</span>
+                    <span class="c1"># consumes twice the same node.</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                    <span class="n">successors_id</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
 
             <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">enumerate_subgraphs</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
                 <span class="n">g</span> <span class="o">=</span> <span class="n">sub</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -379,6 +469,20 @@
         <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs_</span></div>
 
 
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.is_used">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.is_used">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_used</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells if a result is used or not,</span>
+<span class="sd">        including as an output of the graph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span>
+            <span class="ow">or</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">used_</span>
+            <span class="ow">or</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_output_names_</span>
+        <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.is_used_more_than_once">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.is_used_more_than_once">[docs]</a>
     <span class="k">def</span> <span class="nf">is_used_more_than_once</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -412,6 +516,58 @@
 <span class="sd">        Tells if a result is a constant.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.is_constant_scalar">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.is_constant_scalar">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_constant_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells if a constant is a scalar</span>
+
+<span class="sd">        :param name: name</span>
+<span class="sd">        :param value: value to compare to if specified</span>
+<span class="sd">        :return: boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cst</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">):</span>
+            <span class="c1"># This could fail xith bfloat16, ...</span>
+            <span class="n">cst</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">cst</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for constant </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!r, type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,):</span>
+            <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">cst</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cst</span> <span class="o">==</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.get_constant_scalar">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_constant_scalar">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_constant_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a scalar as a constant.</span>
+
+<span class="sd">        :param name: name</span>
+<span class="sd">        :return: int or float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cst</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">):</span>
+            <span class="c1"># This could fail xith bfloat16, ...</span>
+            <span class="n">cst</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">cst</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for constant </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!r, type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">cst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="k">else</span> <span class="n">cst</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">}:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.get_computed_constant">
@@ -450,17 +606,36 @@
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_attribute">[docs]</a>
     <span class="k">def</span> <span class="nf">get_attribute</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">att_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AttributeProto</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AttributeProto</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an attribute for a node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">att_name</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="n">exc</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.get_axis">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_axis">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">default_axis</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the axis for many operators.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">att</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">att</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">default_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2"> has no axis and no default value.&quot;</span>
+            <span class="k">return</span> <span class="n">default_axis</span>
+        <span class="k">return</span> <span class="n">att</span><span class="o">.</span><span class="n">i</span></div>
+
+
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.get_constant_or_attribute">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_constant_or_attribute">[docs]</a>
     <span class="k">def</span> <span class="nf">get_constant_or_attribute</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_index</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">input_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">cvt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an input or the value of an attribute.</span>
@@ -469,7 +644,9 @@
 
 <span class="sd">        :param node: node</span>
 <span class="sd">        :param attribute: attribute name</span>
-<span class="sd">        :input_index: input index</span>
+<span class="sd">        :param input_index: input index</span>
+<span class="sd">        :param cvt: if not None, called this conversion function before</span>
+<span class="sd">            returning the result</span>
 <span class="sd">        :return: value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">found</span> <span class="o">=</span> <span class="kc">None</span>
@@ -482,7 +659,13 @@
         <span class="k">assert</span> <span class="n">input_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span>
             <span class="n">node</span><span class="o">.</span><span class="n">input</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Input </span><span class="si">{</span><span class="n">input_index</span><span class="si">}</span><span class="s2"> does not exist in node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">.&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="n">input_index</span><span class="p">])</span></div>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="n">input_index</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">cvt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">val</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cvt</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to convert val=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> with cvt=</span><span class="si">{</span><span class="n">cvt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.has_type">
@@ -550,6 +733,28 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">predecessor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predecessors_</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_</span><span class="p">[</span><span class="n">predecessor</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.next_node">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.next_node">[docs]</a>
+    <span class="k">def</span> <span class="nf">next_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the next node if it is unique, otherwise fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected number of successors </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.next_nodes">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.next_nodes">[docs]</a>
+    <span class="k">def</span> <span class="nf">next_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the node consuming the given results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.try_infer_type">
@@ -621,17 +826,6 @@
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="GraphBuilderPatternOptimization.next_nodes">
-<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.next_nodes">[docs]</a>
-    <span class="k">def</span> <span class="nf">next_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the node consuming the given results.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">successors_</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span></div>
-
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">main_opset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Returns the opset for the main domain (assuming it is used).&quot;</span>
@@ -645,9 +839,75 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">new_name</span>
 
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.unique_name">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.unique_name">[docs]</a>
     <span class="k">def</span> <span class="nf">unique_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="s2">&quot;Returns a unique name.&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.make_node_check_opset">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.make_node_check_opset">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_node_check_opset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">AttributeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a node without adding it to the graph but</span>
+<span class="sd">        adapt for some known operators changing over</span>
+<span class="sd">        multiple opets.</span>
+
+<span class="sd">        :param op_type: operator type</span>
+<span class="sd">        :param inputs: input names</span>
+<span class="sd">        :param outputs: outputs names, if one integer, creates n unique names,</span>
+<span class="sd">            if str, creates one unique names, if a list, use the name</span>
+<span class="sd">        :param domain: node domain</span>
+<span class="sd">        :param attributes: list of attributes</span>
+<span class="sd">        :param name: node name</span>
+<span class="sd">        :param kwargs: other attributes</span>
+<span class="sd">        :return: a node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;The method only supports the main domain not </span><span class="si">{</span><span class="n">domain</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Squeeze&quot;</span><span class="p">,</span> <span class="s2">&quot;Unsqueeze&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">main_opset</span> <span class="o">&lt;</span> <span class="mi">13</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;axis must be given as an attribute for </span><span class="si">{</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                    <span class="n">op_type</span><span class="p">,</span>
+                    <span class="n">inputs</span><span class="p">,</span>
+                    <span class="n">outputs</span><span class="p">,</span>
+                    <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                    <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="s2">&quot;axes&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">axes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">]</span>
+                <span class="n">axes_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">axes</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+                <span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">axes_name</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="n">op_type</span><span class="p">,</span>
+                <span class="n">inputs</span><span class="p">,</span>
+                <span class="n">outputs</span><span class="p">,</span>
+                <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+                <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Operator </span><span class="si">{</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2"> not supported yet.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.make_node">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.make_node">[docs]</a>
     <span class="k">def</span> <span class="nf">make_node</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -658,7 +918,35 @@
         <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a node without adding it to the graph.</span>
+
+<span class="sd">        :param op_type: operator type</span>
+<span class="sd">        :param inputs: input names</span>
+<span class="sd">        :param outputs: outputs names, if one integer, creates n unique names,</span>
+<span class="sd">            if str, creates one unique names, if a list, use the name</span>
+<span class="sd">        :param domain: node domain</span>
+<span class="sd">        :param attributes: list of attributes</span>
+<span class="sd">        :param name: node name</span>
+<span class="sd">        :param kwargs: other attributes</span>
+<span class="sd">        :return: a node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;None&quot;</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;It is good practice to give every node a name so that is &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;easier to see where this node is created but name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;and op_type=</span><span class="si">{</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">unique_node_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">outputs</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">op_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+                <span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="n">outputs</span><span class="p">)]</span>
         <span class="n">proto</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="n">op_type</span><span class="p">,</span>
             <span class="n">inputs</span><span class="p">,</span>
@@ -667,9 +955,16 @@
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">outputs</span><span class="p">))</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Repeated outputs for node </span><span class="si">{</span><span class="n">op_type</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2">) -&gt; &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">attributes</span><span class="p">:</span>
             <span class="n">proto</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">proto</span>
+        <span class="k">return</span> <span class="n">proto</span></div>
+
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.apply_match">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.apply_match">[docs]</a>
@@ -710,10 +1005,153 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">insert_and_remove_nodes</span><span class="p">(</span><span class="n">position_insert</span><span class="p">,</span> <span class="n">new_nodes</span><span class="p">,</span> <span class="n">removed</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.apply_match] </span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2"> applied.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump_applied_patterns</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_pattern_as_proto</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dump_applied_patterns</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">new_nodes</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_nodes</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_check_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statistics</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_to_cstop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">init</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Name mismatch </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> != </span><span class="si">{</span><span class="n">init</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="n">init</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">init</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Name mismatch </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> != </span><span class="si">{</span><span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Constant&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">init</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">init</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">onh</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
+        <span class="kn">import</span> <span class="nn">torch</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">init</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">init</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_save_pattern_as_proto</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">match</span><span class="p">:</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">new_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_0.onnx&quot;</span>
+        <span class="n">fullname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fullname</span><span class="p">):</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">.onnx&quot;</span>
+            <span class="n">fullname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization._save_pattern_as_proto] save </span><span class="si">{</span><span class="n">fullname</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">unique_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">unique_names</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+            <span class="n">unique_names</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="n">new_initializers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">input_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">output_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">new_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">unique_names</span><span class="p">:</span>
+                    <span class="n">input_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
+                    <span class="n">new_initializers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">unique_names</span><span class="p">:</span>
+                    <span class="n">output_names</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+
+        <span class="n">old_initializers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
+                    <span class="n">old_initializers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">new_init_nodes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new_initializers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="n">old_init_nodes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">old_initializers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">]</span>
+
+        <span class="n">fproto</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_function</span><span class="p">(</span>
+            <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;pattern&quot;</span><span class="p">,</span>
+            <span class="n">fname</span><span class="o">=</span><span class="n">match</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">input_names</span><span class="p">),</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">output_names</span><span class="p">),</span>
+            <span class="n">nodes</span><span class="o">=</span><span class="n">old_init_nodes</span> <span class="o">+</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">],</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="n">fproto_apply</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_function</span><span class="p">(</span>
+            <span class="s2">&quot;pattern&quot;</span><span class="p">,</span>
+            <span class="k">match</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">input_names</span><span class="p">),</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">output_names</span><span class="p">),</span>
+            <span class="n">new_init_nodes</span> <span class="o">+</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">new_nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">],</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_sh</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">_sh</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">fproto</span><span class="o">.</span><span class="n">input</span>
+        <span class="p">]</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_tensor_value_info</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">_sh</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">fproto</span><span class="o">.</span><span class="n">output</span>
+        <span class="p">]</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span><span class="n">fproto</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;pattern&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">),</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="n">fproto</span><span class="o">.</span><span class="n">opset_import</span><span class="p">,</span>
+            <span class="n">ir_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">ir_version</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">model_apply</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_model</span><span class="p">(</span>
+            <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span><span class="n">fproto_apply</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;pattern&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">),</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="n">fproto_apply</span><span class="o">.</span><span class="n">opset_import</span><span class="p">,</span>
+            <span class="n">ir_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">ir_version</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization._save_pattern_as_proto] saved </span><span class="si">{</span><span class="n">fullname</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">_apply.onnx&quot;</span>
+        <span class="n">fullname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model_apply</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization._save_pattern_as_proto] saved </span><span class="si">{</span><span class="n">fullname</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statistics</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">verifies</span><span class="p">):</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -730,6 +1168,31 @@
                     <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">]: </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="n">known</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;MatMul&quot;</span><span class="p">,</span> <span class="s2">&quot;Gemm&quot;</span><span class="p">,</span> <span class="s2">&quot;FusedMatMul&quot;</span><span class="p">}</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">):</span>
+                <span class="n">sh1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+                <span class="n">sh2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+                <span class="n">tA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;transA&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">tB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;transB&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">tA</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">tA</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">tA</span><span class="o">.</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="n">tB</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">tB</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">tB</span><span class="o">.</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">tA</span><span class="p">:</span>
+                    <span class="n">sh1</span> <span class="o">=</span> <span class="p">(</span><span class="n">sh1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sh1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">tB</span><span class="p">:</span>
+                    <span class="n">sh2</span> <span class="o">=</span> <span class="p">(</span><span class="n">sh2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sh2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">sh1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="n">sh2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="n">sh1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">sh2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># noqa: E721</span>
+                <span class="p">),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">, inputs=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;shape1=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;shape2=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;tA=</span><span class="si">{</span><span class="n">tA</span><span class="si">}</span><span class="s2">, tB=</span><span class="si">{</span><span class="n">tB</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+
         <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">known</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown output </span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, step </span><span class="si">{</span><span class="n">step</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -739,11 +1202,48 @@
                 <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">verifies</span><span class="p">:</span>
+            <span class="n">onx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span><span class="n">optimize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">new_shapes</span> <span class="o">=</span> <span class="n">infer_shapes</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">new_shapes</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="p">:</span>
+                <span class="n">itype</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">elem_type</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                    <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_param</span> <span class="k">else</span> <span class="n">d</span><span class="o">.</span><span class="n">dim_value</span>
+                    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span>
+                <span class="p">)</span>
+                <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;name </span><span class="si">{</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is missing&quot;</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="n">itype</span>
+                <span class="p">),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Result </span><span class="si">{</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> has type </span><span class="si">{</span><span class="n">itype</span><span class="si">}</span><span class="s2"> but the builder &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;assumes it is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="n">shape</span>
+                <span class="p">),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Result </span><span class="si">{</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> has shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> but the builder &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;assumes it is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># from onnxruntime import InferenceSession</span>
+            <span class="c1"># InferenceSession(</span>
+            <span class="c1">#     onx.SerializeToString(),</span>
+            <span class="c1">#     providers=[&quot;CPUExecutionProvider&quot;],</span>
+            <span class="c1"># )</span>
+
+<div class="viewcode-block" id="GraphBuilderPatternOptimization.do_not_remove">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.do_not_remove">[docs]</a>
+    <span class="k">def</span> <span class="nf">do_not_remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if a node can be removed.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">do_not_remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.optimize">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.optimize">[docs]</a>
     <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">remove_identity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">remove_identity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stop_after</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Optimizes the based on the given list of patterns.</span>
@@ -751,6 +1251,8 @@
 <span class="sd">        :param max_iter: maximum number of iterations</span>
 <span class="sd">        :param remove_identity: remove identity nodes, it is better to keep it True,</span>
 <span class="sd">            not doing it might prevent other patterns to find a set of nodes to optimize</span>
+<span class="sd">        :param sopt_after: stop after this number of replacements (to debug),</span>
+<span class="sd">            -1 not to stop</span>
 <span class="sd">        :return: the method returns informations about the applied processes.</span>
 
 <span class="sd">        The algorithm runs multiple iteration until the graph is not evolving</span>
@@ -779,10 +1281,10 @@
 <span class="sd">        but it guarantees the local structure when applying the rewriting was</span>
 <span class="sd">        not altered by another one.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">assert</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span>
         <span class="p">),</span> <span class="s2">&quot;GraphBuilderPatternOptimization.optimize does not implement recursivity&quot;</span>
+        <span class="n">continue_optimization</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">max_iter</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="n">max_iter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -799,8 +1301,11 @@
         <span class="n">begin_all</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">statistics</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="n">n_applied</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">last_it</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">continue_optimization</span><span class="p">:</span>
+                <span class="k">break</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] iteration </span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">: &quot;</span>
@@ -814,9 +1319,22 @@
             <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">durations</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">patterns</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">continue_optimization</span><span class="p">:</span>
+                    <span class="k">break</span>
                 <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
                 <span class="n">before</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">pattern</span><span class="o">.</span><span class="n">enumerate_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+                    <span class="c1"># bypass this node if the name contains some specific name</span>
+                    <span class="n">fail_match</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_not_remove</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                            <span class="n">fail_match</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">fail_match</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1"># checks that a node is not already part of another pattern</span>
                     <span class="n">bypass</span> <span class="o">=</span> <span class="kc">False</span>
                     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
                         <span class="k">if</span> <span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="n">marked</span><span class="p">:</span>
@@ -824,38 +1342,71 @@
                             <span class="n">bypass</span> <span class="o">=</span> <span class="kc">True</span>
                             <span class="k">break</span>
                     <span class="k">if</span> <span class="n">bypass</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.match] OVERLAP &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;match=</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="p">)</span>
                         <span class="k">continue</span>
                     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
                         <span class="n">marked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
                     <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] match=</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;match=</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                     <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pattern</span><span class="p">,</span> <span class="n">match</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">stop_after</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">+</span> <span class="n">n_applied</span> <span class="o">&gt;=</span> <span class="n">stop_after</span><span class="p">:</span>
+                        <span class="n">continue_optimization</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;stop after with &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> as stop_after=</span><span class="si">{</span><span class="n">stop_after</span><span class="si">}</span><span class="s2"> &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;and n_applied=</span><span class="si">{</span><span class="n">n_applied</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="p">)</span>
+                        <span class="k">break</span>
 
+                <span class="n">d</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
                 <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="nb">dict</span><span class="p">(</span>
                         <span class="n">pattern</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;match_</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                         <span class="n">iteration</span><span class="o">=</span><span class="n">it</span><span class="p">,</span>
                         <span class="n">instances</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">-</span> <span class="n">before</span><span class="p">,</span>
-                        <span class="n">time_in</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">,</span>
+                        <span class="n">time_in</span><span class="o">=</span><span class="n">d</span><span class="p">,</span>
                         <span class="n">match_index</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">),</span>
                     <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">durations</span><span class="p">[</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">durations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">d</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">matches</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">durations</span><span class="p">:</span>
                     <span class="n">rev</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">durations</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
                     <span class="n">revs</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rev</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">rev</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] applies &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> matches, [0]=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2"> - &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;time=</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">durations</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | max_time=</span><span class="si">{</span><span class="n">revs</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] applies &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> matches, </span><span class="si">{</span><span class="n">_count</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> - &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;time=</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">durations</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | max_time=</span><span class="si">{</span><span class="n">revs</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] applies </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> matches, &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;[0]=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2"> - time=</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">durations</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | max_time=</span><span class="si">{</span><span class="n">revs</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] applies &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> matches, [0]=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] applies </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> matches, &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;[0]=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] applies &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2"> matches, </span><span class="si">{</span><span class="n">_count</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
             <span class="c1"># applies patterns (they must be disjoined)</span>
@@ -863,6 +1414,7 @@
             <span class="n">n_added</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">n_removed</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">im</span><span class="p">,</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matches</span><span class="p">):</span>
+
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] &quot;</span>
@@ -898,11 +1450,13 @@
 
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] done </span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">: -</span><span class="si">{</span><span class="n">rem</span><span class="si">}</span><span class="s2"> +</span><span class="si">{</span><span class="n">add</span><span class="si">}</span><span class="s2"> nodes&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] done &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">: -</span><span class="si">{</span><span class="n">rem</span><span class="si">}</span><span class="s2"> +</span><span class="si">{</span><span class="n">add</span><span class="si">}</span><span class="s2"> nodes&quot;</span>
                     <span class="p">)</span>
                     <span class="k">if</span> <span class="n">full_removed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] removed outputs </span><span class="si">{</span><span class="n">full_removed</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;removed outputs </span><span class="si">{</span><span class="n">full_removed</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
 
                 <span class="n">obs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -915,28 +1469,31 @@
                     <span class="n">time_in</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_check_graph</span><span class="p">(</span><span class="n">statistics</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">match</span><span class="p">),</span> <span class="n">it</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_check_graph</span><span class="p">(</span><span class="n">statistics</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">match</span><span class="p">),</span> <span class="n">it</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verifies</span><span class="p">)</span>
 
                 <span class="n">n_added</span> <span class="o">+=</span> <span class="n">add</span>
                 <span class="n">n_removed</span> <span class="o">+=</span> <span class="n">rem</span>
+                <span class="n">n_applied</span> <span class="o">+=</span> <span class="mi">1</span>
+
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] done all: -</span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2"> +</span><span class="si">{</span><span class="n">n_added</span><span class="si">}</span><span class="s2"> nodes&quot;</span>
                 <span class="p">)</span>
 
-            <span class="c1"># remove unnecessary identity nodes</span>
-
-            <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-            <span class="n">id_removed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">remove_identity_nodes</span><span class="p">()</span>
-            <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;remove_identity_nodes&quot;</span><span class="p">,</span>
-                    <span class="n">iteration</span><span class="o">=</span><span class="n">it</span><span class="p">,</span>
-                    <span class="n">removed</span><span class="o">=</span><span class="n">id_removed</span><span class="p">,</span>
-                    <span class="n">time_in</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">,</span>
+            <span class="k">if</span> <span class="n">remove_identity</span><span class="p">:</span>
+                <span class="c1"># remove unnecessary identity nodes</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+                <span class="n">id_removed</span><span class="p">,</span> <span class="n">id_added</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">remove_identity_nodes</span><span class="p">()</span>
+                <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;remove_identity_nodes&quot;</span><span class="p">,</span>
+                        <span class="n">iteration</span><span class="o">=</span><span class="n">it</span><span class="p">,</span>
+                        <span class="n">added</span><span class="o">=</span><span class="n">id_added</span><span class="p">,</span>
+                        <span class="n">removed</span><span class="o">=</span><span class="n">id_removed</span><span class="p">,</span>
+                        <span class="n">time_in</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_check_graph</span><span class="p">(</span><span class="n">statistics</span><span class="p">,</span> <span class="s2">&quot;remove_identity&quot;</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_check_graph</span><span class="p">(</span><span class="n">statistics</span><span class="p">,</span> <span class="s2">&quot;remove_identity&quot;</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verifies</span><span class="p">)</span>
 
             <span class="c1"># rebuild the graph structure</span>
 
@@ -946,7 +1503,6 @@
                 <span class="nb">dict</span><span class="p">(</span>
                     <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;build_for_pattern&quot;</span><span class="p">,</span>
                     <span class="n">iteration</span><span class="o">=</span><span class="n">it</span><span class="p">,</span>
-                    <span class="n">removed</span><span class="o">=</span><span class="n">id_removed</span><span class="p">,</span>
                     <span class="n">time_in</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -963,6 +1519,8 @@
                 <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] done after </span><span class="si">{</span><span class="n">last_it</span><span class="si">}</span><span class="s2"> iterations with &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes in </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_compile_statistics</span><span class="p">(</span><span class="n">statistics</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">statistics</span></div>
 </div>

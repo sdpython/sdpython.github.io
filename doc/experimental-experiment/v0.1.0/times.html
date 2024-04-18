@@ -202,10 +202,10 @@
 <li class="toctree-l2"><a class="reference internal" href="api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/torch_test.html">Testing</a></li>
 </ul>
@@ -227,8 +227,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -299,7 +301,7 @@
 <span class="kn">import</span> <span class="nn">experimental_experiment</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.torch_helper.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.torch_models.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
 
 <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;creating model&quot;</span><span class="p">)</span>
@@ -322,7 +324,7 @@
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">creating</span> <span class="n">model</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">symbolic</span> <span class="o">---</span> <span class="mf">0.636099400000603</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">symbolic</span> <span class="o">---</span> <span class="mf">0.488915599999018</span>
 </pre></div>
 </div>
 </section>
@@ -344,7 +346,7 @@
 <span class="kn">import</span> <span class="nn">experimental_experiment</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.torch_helper.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.torch_models.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
 
 <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;creating model&quot;</span><span class="p">)</span>
@@ -367,7 +369,7 @@
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">creating</span> <span class="n">model</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">fake</span> <span class="o">---</span> <span class="mf">0.3130590000000666</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">fake</span> <span class="o">---</span> <span class="mf">0.7044235000012122</span>
 </pre></div>
 </div>
 </section>
@@ -407,20 +409,20 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.24127349999980652</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.00033689999872876797</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">1.220770400001129</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.18467539999983273</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.00015239999993355013</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">0.973701599999913</span>
     <span class="s1">&#39;torch.export&#39;</span> <span class="n">already</span> <span class="n">imported</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.export</span> <span class="o">---</span> <span class="mf">1.8999999156221747e-06</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.03384600000026694</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">2.19319490000089</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.export</span> <span class="o">---</span> <span class="mf">2.0000006770715117e-06</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.08084769999913988</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">6.210091999999349</span>
     <span class="s1">&#39;torch.onnx&#39;</span> <span class="n">already</span> <span class="n">imported</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">2.4000000848900527e-06</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.19348410000020522</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.03458879999925557</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.0015120999996725004</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.5009492999997747</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.03796200000033423</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">1.5999994502635673e-06</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.42795160000059695</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.007665200000701589</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.0017572000015206868</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.3082910000011907</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.03392390000044543</span>
 </pre></div>
 </div>
 <p>With a bigger model:</p>
@@ -440,7 +442,7 @@
 <span class="kn">import</span> <span class="nn">experimental_experiment</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.torch_helper.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.torch_models.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
 
 <span class="n">model</span><span class="p">,</span> <span class="n">example_args_collection</span> <span class="o">=</span> <span class="n">get_llama_decoder</span><span class="p">(</span>
     <span class="n">input_dims</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)],</span>
@@ -467,8 +469,8 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">20.80276589999994</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">6.913997199999358</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">2.0003467999995337</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">1.8221568999997544</span>
 </pre></div>
 </div>
 </section>
@@ -511,20 +513,20 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.620578399999431</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.0021544000010180753</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">2.183252699998775</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.1999004999997851</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.00015179999900283292</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">1.1796379999996134</span>
     <span class="s1">&#39;torch.export&#39;</span> <span class="n">already</span> <span class="n">imported</span>
     <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.export</span> <span class="o">---</span> <span class="mf">1.8999999156221747e-06</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.09549169999991136</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">3.809013699999923</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.1561928999999509</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">2.543677100000423</span>
     <span class="s1">&#39;torch.onnx&#39;</span> <span class="n">already</span> <span class="n">imported</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">1.0000001566368155e-05</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.48862629999894125</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.18331840000064403</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.0035458999991533346</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">1.363153099999181</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.09218499999951746</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">1.7000002117129043e-06</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.3981943999988289</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.007976699998835102</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.0018204999996669358</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.39214999999967404</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.07515310000053432</span>
 </pre></div>
 </div>
 <p>With a bigger model:</p>
@@ -544,7 +546,7 @@
 <span class="kn">import</span> <span class="nn">experimental_experiment</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span>
 <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.torch_helper.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
+<span class="kn">from</span> <span class="nn">experimental_experiment.torch_models.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_decoder</span>
 
 <span class="n">model</span><span class="p">,</span> <span class="n">example_args_collection</span> <span class="o">=</span> <span class="n">get_llama_decoder</span><span class="p">(</span>
     <span class="n">input_dims</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)],</span>
@@ -570,8 +572,8 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">8.081118599999172</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">9.79584789999899</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">2.370999999999185</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">2.2174699000006513</span>
 </pre></div>
 </div>
 </section>

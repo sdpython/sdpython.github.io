@@ -8,7 +8,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_mul - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -201,10 +201,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/torch_test.html">Testing</a></li>
 </ul>
@@ -226,8 +226,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -277,17 +279,19 @@
         <article role="main">
           <h1>Source code for experimental_experiment.xoptim.patterns.onnx_mul</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span>
-<span class="kn">from</span> <span class="nn">.patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span class="kn">from</span> <span class="nn">...xbuilder.shape_helper</span> <span class="kn">import</span> <span class="n">DYNAMIC_SHAPE</span>
+<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
 <div class="viewcode-block" id="MulMulMulScalarPattern">
 <a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.MulMulMulScalarPattern">[docs]</a>
 <span class="k">class</span> <span class="nc">MulMulMulScalarPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replaces the sequence {Div | Mul} and  {Div | Mul} + {Div | Mul} with {Div | Mul} Mul.</span>
+<span class="sd">    Replaces the sequence {Div | Mul} and {Div | Mul} + {Div | Mul} with {Div | Mul} Mul.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="MulMulMulScalarPattern.match">
@@ -339,9 +343,8 @@
 
 <div class="viewcode-block" id="MulMulMulScalarPattern.apply">
 <a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.MulMulMulScalarPattern.apply">[docs]</a>
-    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">node_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -351,8 +354,8 @@
         <span class="n">new_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
             <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span>
             <span class="p">[</span><span class="n">node_left</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node_right</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
-            <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)],</span>
-            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)],</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">cst_left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node_left</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">cst_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node_right</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -377,10 +380,318 @@
             <span class="s2">&quot;Mul&quot;</span><span class="p">,</span>
             <span class="p">[</span><span class="n">new_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_cst</span><span class="p">],</span>
             <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-Cst&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-Cst&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">[</span><span class="n">new_node</span><span class="p">,</span> <span class="n">new_node2</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SwitchOrderBinaryPattern">
+<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern">[docs]</a>
+<span class="k">class</span> <span class="nc">SwitchOrderBinaryPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If it makes sense, switches the order of two multiplications</span>
+<span class="sd">    or two addtions if the broadcasting reduces one operator to</span>
+<span class="sd">    a an insignificant number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SwitchOrderBinaryPattern.BroadcastType">
+<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.BroadcastType">[docs]</a>
+    <span class="k">class</span> <span class="nc">BroadcastType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Kind of broadcast.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">FALSE</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">TRUE</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">MAYBE</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">BOTH</span> <span class="o">=</span> <span class="mi">3</span></div>
+
+
+<div class="viewcode-block" id="SwitchOrderBinaryPattern.match">
+<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.match">[docs]</a>
+    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">matched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Add&quot;</span><span class="p">,</span> <span class="s2">&quot;Mul&quot;</span><span class="p">}</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">op_type</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">left_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="s2">&quot;op_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">right_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="s2">&quot;op_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="n">left_type</span><span class="p">,</span> <span class="n">right_type</span><span class="p">}:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">left_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">choose</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">right_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">choose</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Both left and right do the same operator.</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">left</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">op_type</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">right</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">op_type</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+                <span class="n">choose</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="n">right</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">op_type</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">op_type</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+                <span class="n">choose</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">right</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">op_type</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">op_type</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+                <span class="n">choose</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">left</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">op_type</span><span class="p">:</span>
+                <span class="n">choose</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># all have shapes and the right type</span>
+                <span class="n">choose</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="n">other_node</span> <span class="o">=</span> <span class="n">left</span> <span class="k">if</span> <span class="n">choose</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">right</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">other_node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Type mismatch </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">other_node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">shape_left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">shape_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">before_left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">before_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_order</span><span class="p">(</span>
+                <span class="n">shape_left</span><span class="p">,</span> <span class="n">shape_right</span><span class="p">,</span> <span class="n">before_left</span><span class="p">,</span> <span class="n">before_right</span><span class="p">,</span> <span class="n">choose</span>
+            <span class="p">)</span>
+            <span class="o">==</span> <span class="mi">0</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">choose</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+            <span class="n">choose</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">other_node</span> <span class="o">=</span> <span class="n">right</span>
+            <span class="n">before_left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">before_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">switch_order</span><span class="p">(</span>
+                    <span class="n">shape_left</span><span class="p">,</span> <span class="n">shape_right</span><span class="p">,</span> <span class="n">before_left</span><span class="p">,</span> <span class="n">before_right</span><span class="p">,</span> <span class="n">choose</span>
+                <span class="p">)</span>
+                <span class="o">==</span> <span class="mi">0</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">choose</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for choose=</span><span class="si">{</span><span class="n">choose</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">other_node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Type mismatch </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">other_node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span> <span class="k">if</span> <span class="n">choose</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">right</span> <span class="k">if</span> <span class="n">choose</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_align_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sh</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">rk</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aligns shapes to the same size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sh</span><span class="p">)</span> <span class="o">==</span> <span class="n">rk</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sh</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="n">rk</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">sh</span><span class="p">))</span> <span class="o">+</span> <span class="n">sh</span>
+
+<div class="viewcode-block" id="SwitchOrderBinaryPattern.switch_order">
+<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.switch_order">[docs]</a>
+    <span class="k">def</span> <span class="nf">switch_order</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shape_left</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
+        <span class="n">shape_right</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
+        <span class="n">shape_before_left</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
+        <span class="n">shape_before_right</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
+        <span class="n">side</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells if the order should be switched.</span>
+<span class="sd">        `side==0` indicates if `shape_left` comes from</span>
+<span class="sd">        `Op(shape_before_left, shape_before_mul)`.</span>
+
+<span class="sd">        if ``side == 0``:</span>
+
+<span class="sd">        * Case 0: (B + C) + A: ``Op(Op(shape_before_left, shape_before_right), shape_right)``</span>
+<span class="sd">        * Case 1: (B + A) + C: ``Op(Op(shape_before_left, shape_right), shape_before_right)``</span>
+<span class="sd">        * Case 2: (A + C) + B: ``Op(Op(shape_right, shape_before_left), shape_before_left)``</span>
+
+<span class="sd">        The function returns the case.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch_order</span><span class="p">(</span>
+                <span class="n">shape_right</span><span class="p">,</span> <span class="n">shape_left</span><span class="p">,</span> <span class="n">shape_before_left</span><span class="p">,</span> <span class="n">shape_before_right</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="p">)</span>
+
+        <span class="c1"># option</span>
+
+        <span class="n">r_left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_left</span><span class="p">)</span>
+        <span class="n">r_right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_right</span><span class="p">)</span>
+        <span class="n">r_b_left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_before_left</span><span class="p">)</span>
+        <span class="n">r_b_right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_before_right</span><span class="p">)</span>
+
+        <span class="n">rk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">r_left</span><span class="p">,</span> <span class="n">r_right</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">r_b_left</span><span class="p">,</span> <span class="n">r_b_right</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">max</span><span class="p">(</span><span class="n">r_left</span><span class="p">,</span> <span class="n">r_right</span><span class="p">)</span> <span class="o">==</span> <span class="n">rk</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Inconsistencies with shapes (side=</span><span class="si">{</span><span class="n">side</span><span class="si">}</span><span class="s2">) shape_left=</span><span class="si">{</span><span class="n">shape_left</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;shape_right=</span><span class="si">{</span><span class="n">shape_right</span><span class="si">}</span><span class="s2">, shape_before_left=</span><span class="si">{</span><span class="n">shape_before_left</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;shape_before_right=</span><span class="si">{</span><span class="n">shape_before_right</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">cases</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">max</span><span class="p">(</span><span class="n">r_b_left</span><span class="p">,</span> <span class="n">r_b_right</span><span class="p">),</span>
+            <span class="nb">max</span><span class="p">(</span><span class="n">r_right</span><span class="p">,</span> <span class="n">r_b_left</span><span class="p">),</span>
+            <span class="nb">max</span><span class="p">(</span><span class="n">r_right</span><span class="p">,</span> <span class="n">r_b_right</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">cases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">cases</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">cases</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">cases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">cases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cases</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="mi">2</span>
+
+        <span class="c1"># Ranks cannot be used to determine if switch is recommended.</span>
+        <span class="n">rk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cases</span><span class="p">)</span>
+        <span class="c1"># shape_left = self._align_shape(shape_left, rk)</span>
+        <span class="n">shape_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_shape</span><span class="p">(</span><span class="n">shape_right</span><span class="p">,</span> <span class="n">rk</span><span class="p">)</span>
+        <span class="n">shape_before_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_shape</span><span class="p">(</span><span class="n">shape_before_left</span><span class="p">,</span> <span class="n">rk</span><span class="p">)</span>
+        <span class="n">shape_before_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_shape</span><span class="p">(</span><span class="n">shape_before_right</span><span class="p">,</span> <span class="n">rk</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">shape_before_left</span><span class="p">,</span> <span class="n">shape_before_right</span><span class="p">,</span> <span class="n">shape_right</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">c</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">cases</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)]</span>
+
+                <span class="k">if</span> <span class="n">cases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">cases</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                    <span class="k">return</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">cases</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">cases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                    <span class="k">return</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">cases</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">cases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cases</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="k">return</span> <span class="mi">2</span>
+
+            <span class="c1"># Dynamic shapes is not implemented yet but it should</span>
+            <span class="c1"># take place here.</span>
+
+        <span class="c1"># No change.</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="SwitchOrderBinaryPattern.apply">
+<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">node_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">node_right</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+
+        <span class="n">side</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">node_left</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">other_node</span> <span class="o">=</span> <span class="n">node_right</span> <span class="k">if</span> <span class="n">node_left</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">node_left</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">other_node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Type mismatch </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">other_node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">shape_left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">shape_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">before_left</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">before_right</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">case</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch_order</span><span class="p">(</span>
+            <span class="n">shape_left</span><span class="p">,</span> <span class="n">shape_right</span><span class="p">,</span> <span class="n">before_left</span><span class="p">,</span> <span class="n">before_right</span><span class="p">,</span> <span class="n">side</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">case</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;case=</span><span class="si">{</span><span class="n">case</span><span class="si">}</span><span class="s2">, the matching should not have happened &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(side=</span><span class="si">{</span><span class="n">side</span><span class="si">}</span><span class="s2">) shape_left=</span><span class="si">{</span><span class="n">shape_left</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;shape_right=</span><span class="si">{</span><span class="n">shape_right</span><span class="si">}</span><span class="s2">, before_left=</span><span class="si">{</span><span class="n">before_left</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;before_right=</span><span class="si">{</span><span class="n">before_right</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># For side == 0</span>
+        <span class="c1"># Case 0: (B + C) + A</span>
+        <span class="c1"># Case 1: (B + A) + C</span>
+        <span class="c1"># Case 2: (A + C) + B</span>
+
+        <span class="n">op_type</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
+        <span class="n">final</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">case</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">op1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                    <span class="n">op_type</span><span class="p">,</span> <span class="p">[</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">op2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                    <span class="n">op_type</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">op1</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">C</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">final</span><span class="p">],</span>
+                    <span class="n">doc_string</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">]</span>
+
+            <span class="c1"># case 2</span>
+            <span class="n">op1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="n">op_type</span><span class="p">,</span> <span class="p">[</span><span class="n">C</span><span class="p">,</span> <span class="n">A</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">op2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="n">op_type</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">op1</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">B</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">final</span><span class="p">],</span>
+                <span class="n">doc_string</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">]</span>
+
+        <span class="c1"># side 1</span>
+        <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">other_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">case</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">op1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="n">op_type</span><span class="p">,</span> <span class="p">[</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">op2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="n">op_type</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">op1</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">C</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">final</span><span class="p">],</span>
+                <span class="n">doc_string</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">]</span>
+
+        <span class="c1"># case 2</span>
+        <span class="n">op1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+            <span class="n">op_type</span><span class="p">,</span> <span class="p">[</span><span class="n">C</span><span class="p">,</span> <span class="n">A</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">op2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+            <span class="n">op_type</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">op1</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">B</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">final</span><span class="p">],</span>
+            <span class="n">doc_string</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">]</span></div>
 </div>
 
 </pre></div>

@@ -9,7 +9,7 @@
         <title>Benchmark of TreeEnsemble implementation - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -286,8 +286,6 @@ It does it for a fixed number of rows and features.</p>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">from</span> <span class="nn">lightgbm</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.base.RegressorMixin.html#sklearn.base.RegressorMixin" title="sklearn.base.RegressorMixin" class="sphx-glr-backref-module-sklearn-base sphx-glr-backref-type-py-class"><span class="n">LGBMRegressor</span></a>
-<span class="kn">from</span> <span class="nn">onnxmltools.convert.lightgbm.operator_converters.LightGbm</span> <span class="kn">import</span> <span class="n">convert_lightgbm</span>
-<span class="kn">from</span> <span class="nn">onnxmltools.convert.xgboost.operator_converters.XGBoost</span> <span class="kn">import</span> <span class="n">convert_xgboost</span>
 <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">SessionOptions</span>
 <span class="kn">from</span> <span class="nn">psutil</span> <span class="kn">import</span> <span class="n">cpu_count</span>
 <span class="kn">from</span> <span class="nn">sphinx_runpython.runpython</span> <span class="kn">import</span> <span class="n">run_cmd</span>
@@ -297,9 +295,14 @@ It does it for a fixed number of rows and features.</p>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class"><span class="n">RandomForestRegressor</span></a>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.base.RegressorMixin.html#sklearn.base.RegressorMixin" title="sklearn.base.RegressorMixin" class="sphx-glr-backref-module-sklearn-base sphx-glr-backref-type-py-class"><span class="n">XGBRegressor</span></a>
+<span class="kn">from</span> <span class="nn">onnxmltools.convert.xgboost.operator_converters.XGBoost</span> <span class="kn">import</span> <span class="n">convert_xgboost</span>
 
 
 <span class="k">def</span> <span class="nf">skl2onnx_convert_lightgbm</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">container</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">onnxmltools.convert.lightgbm.operator_converters.LightGbm</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">convert_lightgbm</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="n">options</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">get_options</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">raw_operator</span><span class="p">)</span>
     <span class="k">if</span> <span class="s2">&quot;split&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
         <span class="n">operator</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">]</span>
@@ -446,8 +449,8 @@ into ONNX and for the following configurations.</p>
         <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_dir</span></a><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;nf-</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span><span class="o">.</span><span class="n">shape</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">-rf-J-</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_j</span></a><span class="si">}</span><span class="s2">-E-</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_estimators</span></a><span class="si">}</span><span class="s2">-D-</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="si">}</span><span class="s2">.pkl&quot;</span>
     <span class="p">)</span>
     <span class="k">if</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.exists" title="os.path.exists" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedWriter" title="io.BufferedWriter" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
-            <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rf</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/pickle.html#pickle.load" title="pickle.load" class="sphx-glr-backref-module-pickle sphx-glr-backref-type-py-function"><span class="n">pickle</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.BufferedWriter" title="io.BufferedWriter" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
+            <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rf</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/pickle.html#pickle.load" title="pickle.load" class="sphx-glr-backref-module-pickle sphx-glr-backref-type-py-function"><span class="n">pickle</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;J=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_j</span></a><span class="si">}</span><span class="s2"> E=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_estimators</span></a><span class="si">}</span><span class="s2"> D=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="si">}</span><span class="s2"> train rf&quot;</span><span class="p">)</span>
         <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_j</span></a> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class"><span class="n">Regressor</span></a><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class"><span class="n">RandomForestRegressor</span></a><span class="p">):</span>
@@ -457,8 +460,8 @@ into ONNX and for the following configurations.</p>
         <span class="k">else</span><span class="p">:</span>
             <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rf</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class"><span class="n">Regressor</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_estimators</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_estimators</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_jobs</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_j</span></a><span class="p">)</span>
             <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor.fit" title="sklearn.ensemble.RandomForestRegressor.fit" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-method"><span class="n">rf</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[:</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_train</span></a><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">[:</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_train</span></a><span class="p">])</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedWriter" title="io.BufferedWriter" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
-            <a href="https://docs.python.org/3/library/pickle.html#pickle.dump" title="pickle.dump" class="sphx-glr-backref-module-pickle sphx-glr-backref-type-py-function"><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span></a><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rf</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedWriter" title="io.BufferedWriter" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
+            <a href="https://docs.python.org/3/library/pickle.html#pickle.dump" title="pickle.dump" class="sphx-glr-backref-module-pickle sphx-glr-backref-type-py-function"><span class="n">pickle</span><span class="o">.</span><span class="n">dump</span></a><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rf</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">)</span>
 
     <span class="n">bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;J=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_j</span></a><span class="si">}</span><span class="s2"> E=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_estimators</span></a><span class="si">}</span><span class="s2"> D=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="si">}</span><span class="s2"> ISession&quot;</span><span class="p">)</span>
     <span class="n">so</span> <span class="o">=</span> <span class="n">SessionOptions</span><span class="p">()</span>
@@ -470,9 +473,9 @@ into ONNX and for the following configurations.</p>
         <span class="n">sess</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="n">so</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;J=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_j</span></a><span class="si">}</span><span class="s2"> E=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_estimators</span></a><span class="si">}</span><span class="s2"> D=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">max_depth</span></a><span class="si">}</span><span class="s2"> cvt onnx&quot;</span><span class="p">)</span>
-        <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rf</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedWriter" title="io.BufferedWriter" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
-            <a href="https://docs.python.org/3/library/io.html#io.BufferedWriter" title="io.BufferedWriter" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="o">.</span><span class="n">write</span><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rf</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
+            <a href="https://docs.python.org/3/library/io.html#io.BufferedReader" title="io.BufferedReader" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
         <span class="n">sess</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">,</span> <span class="n">so</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
     <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx_size</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.html#os.stat" title="os.stat" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">stat</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cache_name</span></a><span class="p">)</span><span class="o">.</span><span class="n">st_size</span>
 
@@ -512,199 +515,136 @@ into ONNX and for the following configurations.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=10 D=4 train rf:   0%|          | 0/36 [00:00&lt;?, ?it/s]
 J=8 E=10 D=4 ISession:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=10 D=4 cvt onnx:   0%|          | 0/36 [00:00&lt;?, ?it/s]
 J=8 E=10 D=4 predict1:   0%|          | 0/36 [00:00&lt;?, ?it/s]
 J=8 E=10 D=4 predictB:   0%|          | 0/36 [00:00&lt;?, ?it/s]
 J=8 E=10 D=4 predictO:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=20 D=4 train rf:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=20 D=4 ISession:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=20 D=4 cvt onnx:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=20 D=4 predict1:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=20 D=4 predictB:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=20 D=4 predictO:   0%|          | 0/36 [00:00&lt;?, ?it/s]
-J=8 E=20 D=4 predictO:   6%|▌         | 2/36 [00:00&lt;00:05,  5.74it/s]
-J=8 E=30 D=4 train rf:   6%|▌         | 2/36 [00:00&lt;00:05,  5.74it/s]
-J=8 E=30 D=4 ISession:   6%|▌         | 2/36 [00:00&lt;00:05,  5.74it/s]
-J=8 E=30 D=4 cvt onnx:   6%|▌         | 2/36 [00:00&lt;00:05,  5.74it/s]
-J=8 E=30 D=4 predict1:   6%|▌         | 2/36 [00:00&lt;00:05,  5.74it/s]
-J=8 E=30 D=4 predictB:   6%|▌         | 2/36 [00:00&lt;00:05,  5.74it/s]
-J=8 E=30 D=4 predictO:   6%|▌         | 2/36 [00:00&lt;00:05,  5.74it/s]
-J=8 E=30 D=4 predictO:   8%|▊         | 3/36 [00:00&lt;00:06,  5.20it/s]
-J=8 E=10 D=6 train rf:   8%|▊         | 3/36 [00:00&lt;00:06,  5.20it/s]
-J=8 E=10 D=6 ISession:   8%|▊         | 3/36 [00:00&lt;00:06,  5.20it/s]
-J=8 E=10 D=6 cvt onnx:   8%|▊         | 3/36 [00:00&lt;00:06,  5.20it/s]
-J=8 E=10 D=6 predict1:   8%|▊         | 3/36 [00:00&lt;00:06,  5.20it/s]
-J=8 E=10 D=6 predictB:   8%|▊         | 3/36 [00:00&lt;00:06,  5.20it/s]
-J=8 E=10 D=6 predictO:   8%|▊         | 3/36 [00:00&lt;00:06,  5.20it/s]
-J=8 E=10 D=6 predictO:  11%|█         | 4/36 [00:00&lt;00:05,  5.80it/s]
-J=8 E=20 D=6 train rf:  11%|█         | 4/36 [00:00&lt;00:05,  5.80it/s]
-J=8 E=20 D=6 ISession:  11%|█         | 4/36 [00:00&lt;00:05,  5.80it/s]
-J=8 E=20 D=6 cvt onnx:  11%|█         | 4/36 [00:00&lt;00:05,  5.80it/s]
-J=8 E=20 D=6 predict1:  11%|█         | 4/36 [00:00&lt;00:05,  5.80it/s]
-J=8 E=20 D=6 predictB:  11%|█         | 4/36 [00:00&lt;00:05,  5.80it/s]
-J=8 E=20 D=6 predictO:  11%|█         | 4/36 [00:00&lt;00:05,  5.80it/s]
-J=8 E=20 D=6 predictO:  14%|█▍        | 5/36 [00:00&lt;00:05,  5.50it/s]
-J=8 E=30 D=6 train rf:  14%|█▍        | 5/36 [00:00&lt;00:05,  5.50it/s]
-J=8 E=30 D=6 ISession:  14%|█▍        | 5/36 [00:00&lt;00:05,  5.50it/s]
-J=8 E=30 D=6 cvt onnx:  14%|█▍        | 5/36 [00:00&lt;00:05,  5.50it/s]
-J=8 E=30 D=6 predict1:  14%|█▍        | 5/36 [00:01&lt;00:05,  5.50it/s]
-J=8 E=30 D=6 predictB:  14%|█▍        | 5/36 [00:01&lt;00:05,  5.50it/s]
-J=8 E=30 D=6 predictO:  14%|█▍        | 5/36 [00:01&lt;00:05,  5.50it/s]
-J=8 E=30 D=6 predictO:  17%|█▋        | 6/36 [00:01&lt;00:06,  4.34it/s]
-J=8 E=10 D=8 train rf:  17%|█▋        | 6/36 [00:01&lt;00:06,  4.34it/s]
-J=8 E=10 D=8 ISession:  17%|█▋        | 6/36 [00:01&lt;00:06,  4.34it/s]
-J=8 E=10 D=8 cvt onnx:  17%|█▋        | 6/36 [00:01&lt;00:06,  4.34it/s]
-J=8 E=10 D=8 predict1:  17%|█▋        | 6/36 [00:01&lt;00:06,  4.34it/s]
-J=8 E=10 D=8 predictB:  17%|█▋        | 6/36 [00:01&lt;00:06,  4.34it/s]
-J=8 E=10 D=8 predictO:  17%|█▋        | 6/36 [00:01&lt;00:06,  4.34it/s]
-J=8 E=10 D=8 predictO:  19%|█▉        | 7/36 [00:01&lt;00:06,  4.46it/s]
-J=8 E=20 D=8 train rf:  19%|█▉        | 7/36 [00:01&lt;00:06,  4.46it/s]
-J=8 E=20 D=8 ISession:  19%|█▉        | 7/36 [00:01&lt;00:06,  4.46it/s]
-J=8 E=20 D=8 cvt onnx:  19%|█▉        | 7/36 [00:01&lt;00:06,  4.46it/s]
-J=8 E=20 D=8 predict1:  19%|█▉        | 7/36 [00:01&lt;00:06,  4.46it/s]
-J=8 E=20 D=8 predictB:  19%|█▉        | 7/36 [00:01&lt;00:06,  4.46it/s]
-J=8 E=20 D=8 predictO:  19%|█▉        | 7/36 [00:01&lt;00:06,  4.46it/s]
-J=8 E=20 D=8 predictO:  22%|██▏       | 8/36 [00:01&lt;00:06,  4.42it/s]
-J=8 E=30 D=8 train rf:  22%|██▏       | 8/36 [00:01&lt;00:06,  4.42it/s]
-J=8 E=30 D=8 ISession:  22%|██▏       | 8/36 [00:01&lt;00:06,  4.42it/s]
-J=8 E=30 D=8 cvt onnx:  22%|██▏       | 8/36 [00:01&lt;00:06,  4.42it/s]
-J=8 E=30 D=8 predict1:  22%|██▏       | 8/36 [00:01&lt;00:06,  4.42it/s]
-J=8 E=30 D=8 predictB:  22%|██▏       | 8/36 [00:01&lt;00:06,  4.42it/s]
-J=8 E=30 D=8 predictO:  22%|██▏       | 8/36 [00:02&lt;00:06,  4.42it/s]
-J=8 E=30 D=8 predictO:  25%|██▌       | 9/36 [00:02&lt;00:07,  3.84it/s]
-J=8 E=10 D=10 train rf:  25%|██▌       | 9/36 [00:02&lt;00:07,  3.84it/s]
-J=8 E=10 D=10 ISession:  25%|██▌       | 9/36 [00:02&lt;00:07,  3.84it/s]
-J=8 E=10 D=10 cvt onnx:  25%|██▌       | 9/36 [00:02&lt;00:07,  3.84it/s]
-J=8 E=10 D=10 predict1:  25%|██▌       | 9/36 [00:02&lt;00:07,  3.84it/s]
-J=8 E=10 D=10 predictB:  25%|██▌       | 9/36 [00:02&lt;00:07,  3.84it/s]
-J=8 E=10 D=10 predictO:  25%|██▌       | 9/36 [00:02&lt;00:07,  3.84it/s]
-J=8 E=10 D=10 predictO:  28%|██▊       | 10/36 [00:02&lt;00:05,  4.56it/s]
-J=8 E=20 D=10 train rf:  28%|██▊       | 10/36 [00:02&lt;00:05,  4.56it/s]
-J=8 E=20 D=10 ISession:  28%|██▊       | 10/36 [00:02&lt;00:05,  4.56it/s]
-J=8 E=20 D=10 cvt onnx:  28%|██▊       | 10/36 [00:02&lt;00:05,  4.56it/s]
-J=8 E=20 D=10 predict1:  28%|██▊       | 10/36 [00:02&lt;00:05,  4.56it/s]
-J=8 E=20 D=10 predictB:  28%|██▊       | 10/36 [00:02&lt;00:05,  4.56it/s]
-J=8 E=20 D=10 predictO:  28%|██▊       | 10/36 [00:02&lt;00:05,  4.56it/s]
-J=8 E=20 D=10 predictO:  31%|███       | 11/36 [00:02&lt;00:05,  4.81it/s]
-J=8 E=30 D=10 train rf:  31%|███       | 11/36 [00:02&lt;00:05,  4.81it/s]
-J=8 E=30 D=10 ISession:  31%|███       | 11/36 [00:02&lt;00:05,  4.81it/s]
-J=8 E=30 D=10 cvt onnx:  31%|███       | 11/36 [00:02&lt;00:05,  4.81it/s]
-J=8 E=30 D=10 predict1:  31%|███       | 11/36 [00:02&lt;00:05,  4.81it/s]
-J=8 E=30 D=10 predictB:  31%|███       | 11/36 [00:02&lt;00:05,  4.81it/s]
-J=8 E=30 D=10 predictO:  31%|███       | 11/36 [00:02&lt;00:05,  4.81it/s]
-J=8 E=30 D=10 predictO:  33%|███▎      | 12/36 [00:02&lt;00:05,  4.01it/s]
-J=4 E=10 D=4 train rf:  33%|███▎      | 12/36 [00:02&lt;00:05,  4.01it/s]
-J=4 E=10 D=4 ISession:  33%|███▎      | 12/36 [00:02&lt;00:05,  4.01it/s]
-J=4 E=10 D=4 cvt onnx:  33%|███▎      | 12/36 [00:02&lt;00:05,  4.01it/s]
-J=4 E=10 D=4 predict1:  33%|███▎      | 12/36 [00:02&lt;00:05,  4.01it/s]
-J=4 E=10 D=4 predictB:  33%|███▎      | 12/36 [00:02&lt;00:05,  4.01it/s]
-J=4 E=10 D=4 predictO:  33%|███▎      | 12/36 [00:02&lt;00:05,  4.01it/s]
-J=4 E=10 D=4 predictO:  36%|███▌      | 13/36 [00:02&lt;00:04,  4.74it/s]
-J=4 E=20 D=4 train rf:  36%|███▌      | 13/36 [00:02&lt;00:04,  4.74it/s]
-J=4 E=20 D=4 ISession:  36%|███▌      | 13/36 [00:02&lt;00:04,  4.74it/s]
-J=4 E=20 D=4 cvt onnx:  36%|███▌      | 13/36 [00:02&lt;00:04,  4.74it/s]
-J=4 E=20 D=4 predict1:  36%|███▌      | 13/36 [00:02&lt;00:04,  4.74it/s]
-J=4 E=20 D=4 predictB:  36%|███▌      | 13/36 [00:02&lt;00:04,  4.74it/s]
-J=4 E=20 D=4 predictO:  36%|███▌      | 13/36 [00:02&lt;00:04,  4.74it/s]
-J=4 E=20 D=4 predictO:  39%|███▉      | 14/36 [00:02&lt;00:04,  5.08it/s]
-J=4 E=30 D=4 train rf:  39%|███▉      | 14/36 [00:02&lt;00:04,  5.08it/s]
-J=4 E=30 D=4 ISession:  39%|███▉      | 14/36 [00:03&lt;00:04,  5.08it/s]
-J=4 E=30 D=4 cvt onnx:  39%|███▉      | 14/36 [00:03&lt;00:04,  5.08it/s]
-J=4 E=30 D=4 predict1:  39%|███▉      | 14/36 [00:03&lt;00:04,  5.08it/s]
-J=4 E=30 D=4 predictB:  39%|███▉      | 14/36 [00:03&lt;00:04,  5.08it/s]
-J=4 E=30 D=4 predictO:  39%|███▉      | 14/36 [00:03&lt;00:04,  5.08it/s]
-J=4 E=30 D=4 predictO:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=10 D=6 train rf:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=10 D=6 ISession:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=10 D=6 cvt onnx:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=10 D=6 predict1:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=10 D=6 predictB:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=10 D=6 predictO:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=20 D=6 train rf:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=20 D=6 ISession:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=20 D=6 cvt onnx:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=20 D=6 predict1:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=20 D=6 predictB:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=20 D=6 predictO:  42%|████▏     | 15/36 [00:03&lt;00:04,  4.96it/s]
-J=4 E=20 D=6 predictO:  47%|████▋     | 17/36 [00:03&lt;00:03,  5.88it/s]
-J=4 E=30 D=6 train rf:  47%|████▋     | 17/36 [00:03&lt;00:03,  5.88it/s]
-J=4 E=30 D=6 ISession:  47%|████▋     | 17/36 [00:03&lt;00:03,  5.88it/s]
-J=4 E=30 D=6 cvt onnx:  47%|████▋     | 17/36 [00:03&lt;00:03,  5.88it/s]
-J=4 E=30 D=6 predict1:  47%|████▋     | 17/36 [00:03&lt;00:03,  5.88it/s]
-J=4 E=30 D=6 predictB:  47%|████▋     | 17/36 [00:03&lt;00:03,  5.88it/s]
-J=4 E=30 D=6 predictO:  47%|████▋     | 17/36 [00:03&lt;00:03,  5.88it/s]
-J=4 E=30 D=6 predictO:  50%|█████     | 18/36 [00:03&lt;00:03,  5.48it/s]
-J=4 E=10 D=8 train rf:  50%|█████     | 18/36 [00:03&lt;00:03,  5.48it/s]
-J=4 E=10 D=8 ISession:  50%|█████     | 18/36 [00:03&lt;00:03,  5.48it/s]
-J=4 E=10 D=8 cvt onnx:  50%|█████     | 18/36 [00:03&lt;00:03,  5.48it/s]
-J=4 E=10 D=8 predict1:  50%|█████     | 18/36 [00:03&lt;00:03,  5.48it/s]
-J=4 E=10 D=8 predictB:  50%|█████     | 18/36 [00:03&lt;00:03,  5.48it/s]
-J=4 E=10 D=8 predictO:  50%|█████     | 18/36 [00:03&lt;00:03,  5.48it/s]
-J=4 E=10 D=8 predictO:  53%|█████▎    | 19/36 [00:03&lt;00:02,  6.15it/s]
-J=4 E=20 D=8 train rf:  53%|█████▎    | 19/36 [00:03&lt;00:02,  6.15it/s]
-J=4 E=20 D=8 ISession:  53%|█████▎    | 19/36 [00:03&lt;00:02,  6.15it/s]
-J=4 E=20 D=8 cvt onnx:  53%|█████▎    | 19/36 [00:03&lt;00:02,  6.15it/s]
-J=4 E=20 D=8 predict1:  53%|█████▎    | 19/36 [00:03&lt;00:02,  6.15it/s]
-J=4 E=20 D=8 predictB:  53%|█████▎    | 19/36 [00:03&lt;00:02,  6.15it/s]
-J=4 E=20 D=8 predictO:  53%|█████▎    | 19/36 [00:04&lt;00:02,  6.15it/s]
-J=4 E=20 D=8 predictO:  56%|█████▌    | 20/36 [00:04&lt;00:04,  3.95it/s]
-J=4 E=30 D=8 train rf:  56%|█████▌    | 20/36 [00:04&lt;00:04,  3.95it/s]
-J=4 E=30 D=8 ISession:  56%|█████▌    | 20/36 [00:04&lt;00:04,  3.95it/s]
-J=4 E=30 D=8 cvt onnx:  56%|█████▌    | 20/36 [00:04&lt;00:04,  3.95it/s]
-J=4 E=30 D=8 predict1:  56%|█████▌    | 20/36 [00:04&lt;00:04,  3.95it/s]
-J=4 E=30 D=8 predictB:  56%|█████▌    | 20/36 [00:04&lt;00:04,  3.95it/s]
-J=4 E=30 D=8 predictO:  56%|█████▌    | 20/36 [00:04&lt;00:04,  3.95it/s]
-J=4 E=30 D=8 predictO:  58%|█████▊    | 21/36 [00:04&lt;00:04,  3.64it/s]
-J=4 E=10 D=10 train rf:  58%|█████▊    | 21/36 [00:04&lt;00:04,  3.64it/s]
-J=4 E=10 D=10 ISession:  58%|█████▊    | 21/36 [00:04&lt;00:04,  3.64it/s]
-J=4 E=10 D=10 cvt onnx:  58%|█████▊    | 21/36 [00:04&lt;00:04,  3.64it/s]
-J=4 E=10 D=10 predict1:  58%|█████▊    | 21/36 [00:04&lt;00:04,  3.64it/s]
-J=4 E=10 D=10 predictB:  58%|█████▊    | 21/36 [00:04&lt;00:04,  3.64it/s]
-J=4 E=10 D=10 predictO:  58%|█████▊    | 21/36 [00:04&lt;00:04,  3.64it/s]
-J=4 E=10 D=10 predictO:  61%|██████    | 22/36 [00:04&lt;00:03,  4.24it/s]
-J=4 E=20 D=10 train rf:  61%|██████    | 22/36 [00:04&lt;00:03,  4.24it/s]
-J=4 E=20 D=10 ISession:  61%|██████    | 22/36 [00:04&lt;00:03,  4.24it/s]
-J=4 E=20 D=10 cvt onnx:  61%|██████    | 22/36 [00:04&lt;00:03,  4.24it/s]
-J=4 E=20 D=10 predict1:  61%|██████    | 22/36 [00:04&lt;00:03,  4.24it/s]
-J=4 E=20 D=10 predictB:  61%|██████    | 22/36 [00:04&lt;00:03,  4.24it/s]
-J=4 E=20 D=10 predictO:  61%|██████    | 22/36 [00:04&lt;00:03,  4.24it/s]
-J=4 E=20 D=10 predictO:  64%|██████▍   | 23/36 [00:04&lt;00:02,  4.38it/s]
-J=4 E=30 D=10 train rf:  64%|██████▍   | 23/36 [00:04&lt;00:02,  4.38it/s]
-J=4 E=30 D=10 ISession:  64%|██████▍   | 23/36 [00:05&lt;00:02,  4.38it/s]
-J=4 E=30 D=10 cvt onnx:  64%|██████▍   | 23/36 [00:05&lt;00:02,  4.38it/s]
-J=4 E=30 D=10 predict1:  64%|██████▍   | 23/36 [00:05&lt;00:02,  4.38it/s]
-J=4 E=30 D=10 predictB:  64%|██████▍   | 23/36 [00:05&lt;00:02,  4.38it/s]
-J=4 E=30 D=10 predictO:  64%|██████▍   | 23/36 [00:05&lt;00:02,  4.38it/s]
-J=4 E=30 D=10 predictO:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=4 train rf:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=4 ISession:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=4 cvt onnx:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=4 predict1:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=4 predictB:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=4 predictO:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=6 train rf:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=6 ISession:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=6 cvt onnx:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=6 predict1:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=6 predictB:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=6 predictO:  67%|██████▋   | 24/36 [00:05&lt;00:03,  3.78it/s]
-J=1 E=10 D=6 predictO:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=8 train rf:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=8 ISession:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=8 cvt onnx:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=8 predict1:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=8 predictB:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=8 predictO:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=10 train rf:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=10 ISession:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=10 cvt onnx:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=10 predict1:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=10 predictB:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=10 predictO:  78%|███████▊  | 28/36 [00:05&lt;00:00,  8.63it/s]
-J=1 E=10 D=10 predictO:  94%|█████████▍| 34/36 [00:05&lt;00:00, 16.19it/s]
-J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:00,  6.52it/s]
+J=8 E=10 D=4 predictO:   3%|▎         | 1/36 [00:00&lt;00:03,  9.15it/s]
+J=8 E=20 D=4 ISession:   3%|▎         | 1/36 [00:00&lt;00:03,  9.15it/s]
+J=8 E=20 D=4 predict1:   3%|▎         | 1/36 [00:00&lt;00:03,  9.15it/s]
+J=8 E=20 D=4 predictB:   3%|▎         | 1/36 [00:00&lt;00:03,  9.15it/s]
+J=8 E=20 D=4 predictO:   3%|▎         | 1/36 [00:00&lt;00:03,  9.15it/s]
+J=8 E=20 D=4 predictO:   6%|▌         | 2/36 [00:00&lt;00:03,  9.17it/s]
+J=8 E=30 D=4 ISession:   6%|▌         | 2/36 [00:00&lt;00:03,  9.17it/s]
+J=8 E=30 D=4 predict1:   6%|▌         | 2/36 [00:00&lt;00:03,  9.17it/s]
+J=8 E=30 D=4 predictB:   6%|▌         | 2/36 [00:00&lt;00:03,  9.17it/s]
+J=8 E=30 D=4 predictO:   6%|▌         | 2/36 [00:00&lt;00:03,  9.17it/s]
+J=8 E=30 D=4 predictO:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=10 D=6 ISession:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=10 D=6 predict1:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=10 D=6 predictB:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=10 D=6 predictO:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=20 D=6 ISession:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=20 D=6 predict1:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=20 D=6 predictB:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=20 D=6 predictO:   8%|▊         | 3/36 [00:00&lt;00:04,  7.55it/s]
+J=8 E=20 D=6 predictO:  14%|█▍        | 5/36 [00:00&lt;00:03,  9.48it/s]
+J=8 E=30 D=6 ISession:  14%|█▍        | 5/36 [00:00&lt;00:03,  9.48it/s]
+J=8 E=30 D=6 predict1:  14%|█▍        | 5/36 [00:00&lt;00:03,  9.48it/s]
+J=8 E=30 D=6 predictB:  14%|█▍        | 5/36 [00:00&lt;00:03,  9.48it/s]
+J=8 E=30 D=6 predictO:  14%|█▍        | 5/36 [00:00&lt;00:03,  9.48it/s]
+J=8 E=30 D=6 predictO:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=10 D=8 ISession:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=10 D=8 predict1:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=10 D=8 predictB:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=10 D=8 predictO:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=20 D=8 ISession:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=20 D=8 predict1:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=20 D=8 predictB:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=20 D=8 predictO:  17%|█▋        | 6/36 [00:00&lt;00:03,  7.95it/s]
+J=8 E=20 D=8 predictO:  22%|██▏       | 8/36 [00:00&lt;00:03,  8.79it/s]
+J=8 E=30 D=8 ISession:  22%|██▏       | 8/36 [00:00&lt;00:03,  8.79it/s]
+J=8 E=30 D=8 predict1:  22%|██▏       | 8/36 [00:00&lt;00:03,  8.79it/s]
+J=8 E=30 D=8 predictB:  22%|██▏       | 8/36 [00:00&lt;00:03,  8.79it/s]
+J=8 E=30 D=8 predictO:  22%|██▏       | 8/36 [00:01&lt;00:03,  8.79it/s]
+J=8 E=30 D=8 predictO:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=10 D=10 ISession:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=10 D=10 predict1:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=10 D=10 predictB:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=10 D=10 predictO:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=20 D=10 ISession:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=20 D=10 predict1:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=20 D=10 predictB:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=20 D=10 predictO:  25%|██▌       | 9/36 [00:01&lt;00:03,  8.57it/s]
+J=8 E=20 D=10 predictO:  31%|███       | 11/36 [00:01&lt;00:02,  9.57it/s]
+J=8 E=30 D=10 ISession:  31%|███       | 11/36 [00:01&lt;00:02,  9.57it/s]
+J=8 E=30 D=10 predict1:  31%|███       | 11/36 [00:01&lt;00:02,  9.57it/s]
+J=8 E=30 D=10 predictB:  31%|███       | 11/36 [00:01&lt;00:02,  9.57it/s]
+J=8 E=30 D=10 predictO:  31%|███       | 11/36 [00:01&lt;00:02,  9.57it/s]
+J=8 E=30 D=10 predictO:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=10 D=4 ISession:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=10 D=4 predict1:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=10 D=4 predictB:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=10 D=4 predictO:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=20 D=4 ISession:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=20 D=4 predict1:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=20 D=4 predictB:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=20 D=4 predictO:  33%|███▎      | 12/36 [00:01&lt;00:02,  8.59it/s]
+J=4 E=20 D=4 predictO:  39%|███▉      | 14/36 [00:01&lt;00:02,  9.78it/s]
+J=4 E=30 D=4 ISession:  39%|███▉      | 14/36 [00:01&lt;00:02,  9.78it/s]
+J=4 E=30 D=4 predict1:  39%|███▉      | 14/36 [00:01&lt;00:02,  9.78it/s]
+J=4 E=30 D=4 predictB:  39%|███▉      | 14/36 [00:01&lt;00:02,  9.78it/s]
+J=4 E=30 D=4 predictO:  39%|███▉      | 14/36 [00:01&lt;00:02,  9.78it/s]
+J=4 E=30 D=4 predictO:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=10 D=6 ISession:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=10 D=6 predict1:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=10 D=6 predictB:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=10 D=6 predictO:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=20 D=6 ISession:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=20 D=6 predict1:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=20 D=6 predictB:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=20 D=6 predictO:  42%|████▏     | 15/36 [00:01&lt;00:02,  9.30it/s]
+J=4 E=20 D=6 predictO:  47%|████▋     | 17/36 [00:01&lt;00:01,  9.71it/s]
+J=4 E=30 D=6 ISession:  47%|████▋     | 17/36 [00:01&lt;00:01,  9.71it/s]
+J=4 E=30 D=6 predict1:  47%|████▋     | 17/36 [00:01&lt;00:01,  9.71it/s]
+J=4 E=30 D=6 predictB:  47%|████▋     | 17/36 [00:01&lt;00:01,  9.71it/s]
+J=4 E=30 D=6 predictO:  47%|████▋     | 17/36 [00:01&lt;00:01,  9.71it/s]
+J=4 E=30 D=6 predictO:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=10 D=8 ISession:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=10 D=8 predict1:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=10 D=8 predictB:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=10 D=8 predictO:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=20 D=8 ISession:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=20 D=8 predict1:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=20 D=8 predictB:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=20 D=8 predictO:  50%|█████     | 18/36 [00:02&lt;00:02,  8.92it/s]
+J=4 E=20 D=8 predictO:  56%|█████▌    | 20/36 [00:02&lt;00:01,  9.92it/s]
+J=4 E=30 D=8 ISession:  56%|█████▌    | 20/36 [00:02&lt;00:01,  9.92it/s]
+J=4 E=30 D=8 predict1:  56%|█████▌    | 20/36 [00:02&lt;00:01,  9.92it/s]
+J=4 E=30 D=8 predictB:  56%|█████▌    | 20/36 [00:02&lt;00:01,  9.92it/s]
+J=4 E=30 D=8 predictO:  56%|█████▌    | 20/36 [00:02&lt;00:01,  9.92it/s]
+J=4 E=30 D=8 predictO:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=10 D=10 ISession:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=10 D=10 predict1:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=10 D=10 predictB:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=10 D=10 predictO:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=20 D=10 ISession:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=20 D=10 predict1:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=20 D=10 predictB:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=20 D=10 predictO:  58%|█████▊    | 21/36 [00:02&lt;00:01,  9.24it/s]
+J=4 E=20 D=10 predictO:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=4 E=30 D=10 ISession:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=4 E=30 D=10 predict1:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=4 E=30 D=10 predictB:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=4 E=30 D=10 predictO:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=1 E=10 D=4 ISession:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=1 E=10 D=4 predict1:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=1 E=10 D=4 predictB:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=1 E=10 D=4 predictO:  64%|██████▍   | 23/36 [00:02&lt;00:01, 10.22it/s]
+J=1 E=10 D=4 predictO:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=6 ISession:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=6 predict1:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=6 predictB:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=6 predictO:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=8 ISession:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=8 predict1:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=8 predictB:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=8 predictO:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=10 ISession:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=10 predict1:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=10 predictB:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=10 predictO:  69%|██████▉   | 25/36 [00:02&lt;00:00, 11.04it/s]
+J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:02&lt;00:00, 13.39it/s]
 </pre></div>
 </div>
 </section>
@@ -772,10 +712,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>11016</td>
-      <td>0.004663</td>
-      <td>0.003874</td>
+      <td>0.008059</td>
+      <td>0.008305</td>
       <td>7</td>
-      <td>0.035049</td>
+      <td>0.064896</td>
     </tr>
     <tr>
       <th>1</th>
@@ -788,10 +728,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>11016</td>
-      <td>0.000109</td>
-      <td>0.000104</td>
+      <td>0.000122</td>
+      <td>0.000119</td>
       <td>7</td>
-      <td>0.000961</td>
+      <td>0.001116</td>
     </tr>
     <tr>
       <th>2</th>
@@ -804,10 +744,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>21920</td>
-      <td>0.022436</td>
-      <td>0.020714</td>
+      <td>0.010397</td>
+      <td>0.009973</td>
       <td>7</td>
-      <td>0.162124</td>
+      <td>0.073086</td>
     </tr>
     <tr>
       <th>3</th>
@@ -820,10 +760,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>21920</td>
-      <td>0.000348</td>
-      <td>0.000273</td>
+      <td>0.000197</td>
+      <td>0.000193</td>
       <td>7</td>
-      <td>0.016084</td>
+      <td>0.018644</td>
     </tr>
     <tr>
       <th>4</th>
@@ -836,10 +776,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>31581</td>
-      <td>0.013858</td>
-      <td>0.015409</td>
+      <td>0.014009</td>
+      <td>0.013726</td>
       <td>7</td>
-      <td>0.094792</td>
+      <td>0.117249</td>
     </tr>
     <tr>
       <th>5</th>
@@ -852,10 +792,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>31581</td>
-      <td>0.000231</td>
-      <td>0.000221</td>
+      <td>0.000234</td>
+      <td>0.000227</td>
       <td>7</td>
-      <td>0.001835</td>
+      <td>0.018801</td>
     </tr>
     <tr>
       <th>6</th>
@@ -868,10 +808,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>32334</td>
-      <td>0.007907</td>
-      <td>0.007529</td>
+      <td>0.005623</td>
+      <td>0.005928</td>
       <td>7</td>
-      <td>0.057407</td>
+      <td>0.040000</td>
     </tr>
     <tr>
       <th>7</th>
@@ -884,10 +824,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>32334</td>
-      <td>0.000124</td>
-      <td>0.000121</td>
+      <td>0.000137</td>
+      <td>0.000135</td>
       <td>7</td>
-      <td>0.001088</td>
+      <td>0.015484</td>
     </tr>
     <tr>
       <th>8</th>
@@ -900,10 +840,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>63384</td>
-      <td>0.012955</td>
-      <td>0.013004</td>
+      <td>0.009197</td>
+      <td>0.009705</td>
       <td>7</td>
-      <td>0.096642</td>
+      <td>0.063185</td>
     </tr>
     <tr>
       <th>9</th>
@@ -916,10 +856,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>63384</td>
-      <td>0.000286</td>
-      <td>0.000291</td>
+      <td>0.000201</td>
+      <td>0.000200</td>
       <td>7</td>
-      <td>0.002325</td>
+      <td>0.008112</td>
     </tr>
     <tr>
       <th>10</th>
@@ -932,10 +872,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>93267</td>
-      <td>0.027431</td>
-      <td>0.028835</td>
+      <td>0.015458</td>
+      <td>0.013936</td>
       <td>7</td>
-      <td>0.200870</td>
+      <td>0.111482</td>
     </tr>
     <tr>
       <th>11</th>
@@ -948,10 +888,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>93267</td>
-      <td>0.000504</td>
-      <td>0.000457</td>
+      <td>0.000984</td>
+      <td>0.001171</td>
       <td>7</td>
-      <td>0.004844</td>
+      <td>0.008292</td>
     </tr>
     <tr>
       <th>12</th>
@@ -964,10 +904,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>70250</td>
-      <td>0.011049</td>
-      <td>0.011233</td>
+      <td>0.007109</td>
+      <td>0.007691</td>
       <td>7</td>
-      <td>0.082753</td>
+      <td>0.050002</td>
     </tr>
     <tr>
       <th>13</th>
@@ -980,10 +920,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>70250</td>
-      <td>0.000192</td>
-      <td>0.000191</td>
+      <td>0.000188</td>
+      <td>0.000176</td>
       <td>7</td>
-      <td>0.001593</td>
+      <td>0.001608</td>
     </tr>
     <tr>
       <th>14</th>
@@ -996,10 +936,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>136595</td>
-      <td>0.012846</td>
-      <td>0.013259</td>
+      <td>0.010403</td>
+      <td>0.010489</td>
       <td>7</td>
-      <td>0.088674</td>
+      <td>0.073281</td>
     </tr>
     <tr>
       <th>15</th>
@@ -1012,10 +952,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>136595</td>
-      <td>0.000355</td>
-      <td>0.000352</td>
+      <td>0.000235</td>
+      <td>0.000218</td>
       <td>7</td>
-      <td>0.005967</td>
+      <td>0.001886</td>
     </tr>
     <tr>
       <th>16</th>
@@ -1028,10 +968,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>200526</td>
-      <td>0.016845</td>
-      <td>0.016797</td>
+      <td>0.013901</td>
+      <td>0.013794</td>
       <td>7</td>
-      <td>0.116471</td>
+      <td>0.095357</td>
     </tr>
     <tr>
       <th>17</th>
@@ -1044,10 +984,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>200526</td>
-      <td>0.000407</td>
-      <td>0.000421</td>
+      <td>0.000318</td>
+      <td>0.000329</td>
       <td>7</td>
-      <td>0.002960</td>
+      <td>0.002452</td>
     </tr>
     <tr>
       <th>18</th>
@@ -1060,10 +1000,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>110896</td>
-      <td>0.005824</td>
-      <td>0.004942</td>
+      <td>0.005046</td>
+      <td>0.004331</td>
       <td>7</td>
-      <td>0.041422</td>
+      <td>0.036955</td>
     </tr>
     <tr>
       <th>19</th>
@@ -1076,10 +1016,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>110896</td>
-      <td>0.000198</td>
-      <td>0.000204</td>
+      <td>0.000195</td>
+      <td>0.000193</td>
       <td>7</td>
-      <td>0.015227</td>
+      <td>0.001651</td>
     </tr>
     <tr>
       <th>20</th>
@@ -1092,10 +1032,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>205168</td>
-      <td>0.008968</td>
-      <td>0.009674</td>
+      <td>0.009787</td>
+      <td>0.009735</td>
       <td>7</td>
-      <td>0.062466</td>
+      <td>0.070975</td>
     </tr>
     <tr>
       <th>21</th>
@@ -1108,10 +1048,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>205168</td>
-      <td>0.000336</td>
-      <td>0.000333</td>
+      <td>0.000341</td>
+      <td>0.000329</td>
       <td>7</td>
-      <td>0.002585</td>
+      <td>0.002545</td>
     </tr>
     <tr>
       <th>22</th>
@@ -1124,10 +1064,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>337667</td>
-      <td>0.016275</td>
-      <td>0.015951</td>
+      <td>0.015894</td>
+      <td>0.016135</td>
       <td>7</td>
-      <td>0.114295</td>
+      <td>0.110542</td>
     </tr>
     <tr>
       <th>23</th>
@@ -1140,10 +1080,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>337667</td>
-      <td>0.001137</td>
-      <td>0.001014</td>
+      <td>0.000423</td>
+      <td>0.000450</td>
       <td>7</td>
-      <td>0.021866</td>
+      <td>0.003040</td>
     </tr>
     <tr>
       <th>24</th>
@@ -1156,10 +1096,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>10651</td>
-      <td>0.008808</td>
-      <td>0.008799</td>
+      <td>0.006571</td>
+      <td>0.006656</td>
       <td>7</td>
-      <td>0.061873</td>
+      <td>0.046083</td>
     </tr>
     <tr>
       <th>25</th>
@@ -1172,10 +1112,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>10651</td>
-      <td>0.000143</td>
-      <td>0.000139</td>
+      <td>0.000100</td>
+      <td>0.000096</td>
       <td>7</td>
-      <td>0.001274</td>
+      <td>0.000862</td>
     </tr>
     <tr>
       <th>26</th>
@@ -1188,10 +1128,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>22066</td>
-      <td>0.012346</td>
-      <td>0.012440</td>
+      <td>0.009687</td>
+      <td>0.009409</td>
       <td>7</td>
-      <td>0.086840</td>
+      <td>0.068101</td>
     </tr>
     <tr>
       <th>27</th>
@@ -1204,10 +1144,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>22066</td>
-      <td>0.000280</td>
-      <td>0.000242</td>
+      <td>0.000187</td>
+      <td>0.000189</td>
       <td>7</td>
-      <td>0.002151</td>
+      <td>0.001471</td>
     </tr>
     <tr>
       <th>28</th>
@@ -1220,10 +1160,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>32019</td>
-      <td>0.016049</td>
-      <td>0.016524</td>
+      <td>0.013959</td>
+      <td>0.013730</td>
       <td>7</td>
-      <td>0.112539</td>
+      <td>0.100615</td>
     </tr>
     <tr>
       <th>29</th>
@@ -1236,10 +1176,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>32019</td>
-      <td>0.000322</td>
-      <td>0.000319</td>
+      <td>0.000363</td>
+      <td>0.000350</td>
       <td>7</td>
-      <td>0.002475</td>
+      <td>0.002796</td>
     </tr>
     <tr>
       <th>30</th>
@@ -1252,10 +1192,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>29122</td>
-      <td>0.007346</td>
-      <td>0.007374</td>
+      <td>0.010356</td>
+      <td>0.010596</td>
       <td>7</td>
-      <td>0.051454</td>
+      <td>0.071284</td>
     </tr>
     <tr>
       <th>31</th>
@@ -1268,10 +1208,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>29122</td>
-      <td>0.000199</td>
-      <td>0.000187</td>
+      <td>0.000175</td>
+      <td>0.000156</td>
       <td>7</td>
-      <td>0.001529</td>
+      <td>0.001587</td>
     </tr>
     <tr>
       <th>32</th>
@@ -1284,10 +1224,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>60902</td>
-      <td>0.012161</td>
-      <td>0.012156</td>
+      <td>0.009367</td>
+      <td>0.009151</td>
       <td>7</td>
-      <td>0.086634</td>
+      <td>0.067881</td>
     </tr>
     <tr>
       <th>33</th>
@@ -1300,10 +1240,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>60902</td>
-      <td>0.000320</td>
-      <td>0.000321</td>
+      <td>0.000242</td>
+      <td>0.000239</td>
       <td>7</td>
-      <td>0.002459</td>
+      <td>0.001878</td>
     </tr>
     <tr>
       <th>34</th>
@@ -1316,10 +1256,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>90785</td>
-      <td>0.014893</td>
-      <td>0.015159</td>
+      <td>0.016756</td>
+      <td>0.016786</td>
       <td>7</td>
-      <td>0.104060</td>
+      <td>0.118466</td>
     </tr>
     <tr>
       <th>35</th>
@@ -1332,10 +1272,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>90785</td>
-      <td>0.000444</td>
-      <td>0.000437</td>
+      <td>0.000333</td>
+      <td>0.000328</td>
       <td>7</td>
-      <td>0.003262</td>
+      <td>0.002602</td>
     </tr>
     <tr>
       <th>36</th>
@@ -1348,10 +1288,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>63147</td>
-      <td>0.006897</td>
-      <td>0.006924</td>
+      <td>0.007990</td>
+      <td>0.008152</td>
       <td>7</td>
-      <td>0.048358</td>
+      <td>0.056213</td>
     </tr>
     <tr>
       <th>37</th>
@@ -1364,10 +1304,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>63147</td>
-      <td>0.000237</td>
-      <td>0.000220</td>
+      <td>0.000143</td>
+      <td>0.000133</td>
       <td>7</td>
-      <td>0.001840</td>
+      <td>0.001182</td>
     </tr>
     <tr>
       <th>38</th>
@@ -1380,10 +1320,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>129927</td>
-      <td>0.042975</td>
-      <td>0.042962</td>
+      <td>0.009747</td>
+      <td>0.009624</td>
       <td>7</td>
-      <td>0.297704</td>
+      <td>0.069242</td>
     </tr>
     <tr>
       <th>39</th>
@@ -1396,10 +1336,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>129927</td>
-      <td>0.000601</td>
-      <td>0.000562</td>
+      <td>0.000320</td>
+      <td>0.000318</td>
       <td>7</td>
-      <td>0.004383</td>
+      <td>0.002462</td>
     </tr>
     <tr>
       <th>40</th>
@@ -1412,10 +1352,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>199897</td>
-      <td>0.020627</td>
-      <td>0.020247</td>
+      <td>0.014127</td>
+      <td>0.013040</td>
       <td>7</td>
-      <td>0.145145</td>
+      <td>0.102263</td>
     </tr>
     <tr>
       <th>41</th>
@@ -1428,10 +1368,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>199897</td>
-      <td>0.000688</td>
-      <td>0.000654</td>
+      <td>0.000430</td>
+      <td>0.000432</td>
       <td>7</td>
-      <td>0.004908</td>
+      <td>0.003159</td>
     </tr>
     <tr>
       <th>42</th>
@@ -1444,10 +1384,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>115188</td>
-      <td>0.007659</td>
-      <td>0.007324</td>
+      <td>0.006567</td>
+      <td>0.006794</td>
       <td>7</td>
-      <td>0.054239</td>
+      <td>0.046063</td>
     </tr>
     <tr>
       <th>43</th>
@@ -1460,10 +1400,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>115188</td>
-      <td>0.000177</td>
+      <td>0.000174</td>
       <td>0.000175</td>
       <td>7</td>
-      <td>0.001430</td>
+      <td>0.001444</td>
     </tr>
     <tr>
       <th>44</th>
@@ -1476,10 +1416,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>206338</td>
-      <td>0.011118</td>
-      <td>0.009635</td>
+      <td>0.009754</td>
+      <td>0.009427</td>
       <td>7</td>
-      <td>0.080058</td>
+      <td>0.069542</td>
     </tr>
     <tr>
       <th>45</th>
@@ -1492,10 +1432,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>206338</td>
-      <td>0.000376</td>
-      <td>0.000372</td>
+      <td>0.000309</td>
+      <td>0.000298</td>
       <td>7</td>
-      <td>0.002772</td>
+      <td>0.002365</td>
     </tr>
     <tr>
       <th>46</th>
@@ -1508,10 +1448,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>321591</td>
-      <td>0.013835</td>
-      <td>0.013905</td>
+      <td>0.013553</td>
+      <td>0.013157</td>
       <td>7</td>
-      <td>0.099340</td>
+      <td>0.095630</td>
     </tr>
     <tr>
       <th>47</th>
@@ -1524,10 +1464,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>321591</td>
-      <td>0.000491</td>
-      <td>0.000488</td>
+      <td>0.000645</td>
+      <td>0.000649</td>
       <td>7</td>
-      <td>0.003665</td>
+      <td>0.004497</td>
     </tr>
     <tr>
       <th>48</th>
@@ -1540,10 +1480,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>11527</td>
-      <td>0.001336</td>
-      <td>0.001321</td>
+      <td>0.001613</td>
+      <td>0.001609</td>
       <td>7</td>
-      <td>0.009368</td>
+      <td>0.011519</td>
     </tr>
     <tr>
       <th>49</th>
@@ -1556,10 +1496,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>11527</td>
-      <td>0.000272</td>
-      <td>0.000271</td>
+      <td>0.000301</td>
+      <td>0.000295</td>
       <td>7</td>
-      <td>0.001935</td>
+      <td>0.002174</td>
     </tr>
     <tr>
       <th>50</th>
@@ -1572,10 +1512,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>35181</td>
-      <td>0.001307</td>
-      <td>0.001291</td>
+      <td>0.001426</td>
+      <td>0.001380</td>
       <td>7</td>
-      <td>0.009515</td>
+      <td>0.010524</td>
     </tr>
     <tr>
       <th>51</th>
@@ -1588,10 +1528,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>35181</td>
-      <td>0.000331</td>
-      <td>0.000331</td>
+      <td>0.000322</td>
+      <td>0.000316</td>
       <td>7</td>
-      <td>0.002349</td>
+      <td>0.002378</td>
     </tr>
     <tr>
       <th>52</th>
@@ -1604,10 +1544,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>69863</td>
-      <td>0.001439</td>
-      <td>0.001430</td>
+      <td>0.001542</td>
+      <td>0.001527</td>
       <td>7</td>
-      <td>0.010137</td>
+      <td>0.010840</td>
     </tr>
     <tr>
       <th>53</th>
@@ -1620,10 +1560,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>69863</td>
-      <td>0.000450</td>
-      <td>0.000448</td>
+      <td>0.000422</td>
+      <td>0.000418</td>
       <td>7</td>
-      <td>0.003211</td>
+      <td>0.003022</td>
     </tr>
     <tr>
       <th>54</th>
@@ -1636,10 +1576,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>110504</td>
-      <td>0.001469</td>
-      <td>0.001454</td>
+      <td>0.001771</td>
+      <td>0.001779</td>
       <td>7</td>
-      <td>0.010462</td>
+      <td>0.013240</td>
     </tr>
     <tr>
       <th>55</th>
@@ -1652,10 +1592,10 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
       <td>1000</td>
       <td>10</td>
       <td>110504</td>
-      <td>0.000504</td>
-      <td>0.000490</td>
+      <td>0.000507</td>
+      <td>0.000500</td>
       <td>7</td>
-      <td>0.003574</td>
+      <td>0.003619</td>
     </tr>
   </tbody>
 </table>
@@ -1709,11 +1649,15 @@ J=1 E=10 D=10 predictO: 100%|██████████| 36/36 [00:05&lt;00:
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_benchmark_rf_001.png" srcset="../_images/sphx_glr_plot_benchmark_rf_001.png" alt="RandomForestRegressor X.shape=(1000, 10), jobs=8, trees=10, jobs=8, trees=20, jobs=8, trees=30, jobs=4, trees=10, jobs=4, trees=20, jobs=4, trees=30, jobs=1, trees=10" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0it [00:00, ?it/s]
-4it [00:00, 32.09it/s]
-9it [00:00, 40.54it/s]
+1it [00:00,  3.24it/s]
+4it [00:00, 11.16it/s]
+7it [00:00, 15.23it/s]
+9it [00:00, 16.06it/s]
+2024-04-18 15:37:51,091 matplotlib.legend [WARNING] - No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+2024-04-18 15:37:51,092 matplotlib.legend [WARNING] - No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.198 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.944 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-benchmark-rf-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/528d46d4794a3b874314130323a8d4a9/plot_benchmark_rf.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_benchmark_rf.ipynb</span></code></a></p>

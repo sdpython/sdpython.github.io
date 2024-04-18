@@ -201,10 +201,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/torch_test.html">Testing</a></li>
 </ul>
@@ -226,8 +226,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -281,6 +283,7 @@
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
 <span class="kn">from</span> <span class="nn">.debug_backend</span> <span class="kn">import</span> <span class="n">onnx_debug_backend</span>
 <span class="kn">from</span> <span class="nn">.fast_backend</span> <span class="kn">import</span> <span class="n">onnx_custom_backend</span>
+<span class="kn">from</span> <span class="nn">.dynger_backend</span> <span class="kn">import</span> <span class="n">dynger_backend</span>
 
 
 <div class="viewcode-block" id="get_decomposition_table">
@@ -319,9 +322,41 @@
 
     <span class="n">new_table</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">_decomp</span><span class="o">.</span><span class="n">decomposition_table</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;aten::embedding_dense_backward&quot;</span><span class="p">,</span> <span class="s2">&quot;aten::rrelu_with_noise&quot;</span><span class="p">}:</span>
+        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;aten::embedding_dense_backward&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;aten::rrelu_with_noise&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;aten::native_layer_norm_backward&quot;</span><span class="p">,</span>
+        <span class="p">}:</span>
             <span class="n">new_table</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
     <span class="k">return</span> <span class="n">new_table</span></div>
+
+
+
+<div class="viewcode-block" id="get_decomposition_table_dynamo">
+<a class="viewcode-back" href="../../api/torch_dynamo.html#experimental_experiment.torch_dynamo.get_decomposition_table_dynamo">[docs]</a>
+<span class="k">def</span> <span class="nf">get_decomposition_table_dynamo</span><span class="p">(</span><span class="n">onnx_registry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the decomposition table needed for the dynamo exporter.</span>
+
+<span class="sd">    :param onnx_registry: instance of class</span>
+<span class="sd">        ``torch.onnx._internal.exporter.OnnxRegistry``</span>
+
+<span class="sd">    The value is:</span>
+
+<span class="sd">    .. runpython::</span>
+<span class="sd">        :showcode:</span>
+
+<span class="sd">        import pprint</span>
+<span class="sd">        from experimental_experiment.torch_dynamo import get_decomposition_table_dynamo</span>
+
+<span class="sd">        pprint.pprint(get_decomposition_table_dynamo())</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">torch.onnx._internal.fx.decomposition_table</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">create_onnx_friendly_decomposition_table</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">torch.onnx._internal.exporter</span> <span class="kn">import</span> <span class="n">OnnxRegistry</span>
+
+    <span class="k">return</span> <span class="n">create_onnx_friendly_decomposition_table</span><span class="p">(</span><span class="n">onnx_registry</span> <span class="ow">or</span> <span class="n">OnnxRegistry</span><span class="p">())</span></div>
 
 
 

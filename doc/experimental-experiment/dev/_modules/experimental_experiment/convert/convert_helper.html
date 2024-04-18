@@ -8,7 +8,7 @@
         <title>experimental_experiment.convert.convert_helper - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -201,10 +201,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_test.html">Testing</a></li>
 </ul>
@@ -226,8 +226,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -277,9 +279,8 @@
         <article role="main">
           <h1>Source code for experimental_experiment.convert.convert_helper</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
+<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">helper</span> <span class="k">as</span> <span class="n">oh</span><span class="p">,</span> <span class="n">load</span> <span class="k">as</span> <span class="n">onnx_load</span>
 <span class="kn">from</span> <span class="nn">onnx.inliner</span> <span class="kn">import</span> <span class="n">inline_local_functions</span>
 
 
@@ -297,10 +298,49 @@
 
 
 
+<span class="k">def</span> <span class="nf">_fix_details</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelProto</span><span class="p">:</span>
+    <span class="c1"># ScatterND + Aten ops</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_fix_details] START&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;ScatterND&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_fix_details] ScatterND, add reduction to add&quot;</span><span class="p">)</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="s2">&quot;reduction&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">red</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">s</span>
+                <span class="k">if</span> <span class="n">red</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;add&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_fix_details] ScatterND, change reduction to add&quot;</span><span class="p">)</span>
+                    <span class="k">del</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">[:]</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="s2">&quot;reduction&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;ATen&quot;</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;operator&quot;</span><span class="p">:</span>
+                    <span class="n">fname</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">s</span>
+            <span class="k">if</span> <span class="n">fname</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;_scaled_dot_product_efficient_attention_backward&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;[_fix_details] ATen, delete last output for &quot;</span>
+                        <span class="s2">&quot;_scaled_dot_product_efficient_attention_backward&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[:]</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_fix_details] DONE&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+
 <div class="viewcode-block" id="optimize_model_proto">
 <a class="viewcode-back" href="../../../api/convert.html#experimental_experiment.convert.convert_helper.optimize_model_proto">[docs]</a>
 <span class="k">def</span> <span class="nf">optimize_model_proto</span><span class="p">(</span>
-    <span class="n">model_proto</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">onnx_shape_inference</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">model_proto</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">onnx_shape_inference</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelProto</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Optimizes a model proto to optimize onnxruntime.</span>
@@ -308,6 +348,7 @@
 <span class="sd">    :param model_proto: ModelProto</span>
 <span class="sd">    :param verbose: verbosity</span>
 <span class="sd">    :param onnx_shape_inference: enable shape inference</span>
+<span class="sd">    :param inplace: the function modifies the proto inplace as well</span>
 <span class="sd">    :return: optimized model</span>
 
 <span class="sd">    You should run that before calling this function</span>
@@ -321,8 +362,8 @@
 <span class="sd">        from experimental_experiment.convert.convert_helper import optimize_model_proto</span>
 <span class="sd">        onnx_model = optimize_model_proto(onnx_model)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">onnxrewriter.optimizer</span> <span class="kn">import</span> <span class="n">optimize</span>
-    <span class="kn">from</span> <span class="nn">onnxrewriter.rewriter</span> <span class="kn">import</span> <span class="n">rewrite</span>
+    <span class="kn">from</span> <span class="nn">onnxscript.optimizer</span> <span class="kn">import</span> <span class="n">optimize</span>
+    <span class="kn">from</span> <span class="nn">onnxscript.rewriter</span> <span class="kn">import</span> <span class="n">rewrite</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
@@ -331,43 +372,21 @@
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> local functions&quot;</span>
         <span class="p">)</span>
 
-    <span class="c1"># begin = time.perf_counter()</span>
-    <span class="c1"># model_proto = inline_model_proto(model_proto)</span>
-    <span class="c1"># if verbose:</span>
-    <span class="c1">#     print(</span>
-    <span class="c1">#         f&quot;[optimize_model_proto] inliner done in {time.perf_counter() - begin} seconds.&quot;</span>
-    <span class="c1">#     )</span>
-    <span class="c1">#     print(</span>
-    <span class="c1">#         f&quot;[optimize_model_proto] starts optimize with &quot;</span>
-    <span class="c1">#         f&quot;{len(model_proto.graph.node)} nodes and &quot;</span>
-    <span class="c1">#         f&quot;{len(model_proto.functions)} local functions&quot;</span>
-    <span class="c1">#     )</span>
+    <span class="n">first_model_proto</span> <span class="o">=</span> <span class="n">model_proto</span>
 
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">model_proto</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span>
-            <span class="n">model_proto</span><span class="p">,</span>
-            <span class="n">num_iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">onnx_shape_inference</span><span class="o">=</span><span class="n">onnx_shape_inference</span><span class="p">,</span>
-            <span class="c1"># function_aware_folding=True,</span>
-        <span class="p">)</span>
-        <span class="n">exc</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">exc</span> <span class="o">=</span> <span class="n">e</span>
-        <span class="k">pass</span>
+    <span class="n">model_proto</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span>
+        <span class="n">model_proto</span><span class="p">,</span>
+        <span class="n">num_iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">onnx_shape_inference</span><span class="o">=</span><span class="n">onnx_shape_inference</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] optimize failed in &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> seconds due to </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] optimize done in &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
-            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] optimize done in &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+        <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] starts rewrite with &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and &quot;</span>
@@ -376,28 +395,40 @@
 
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">model_proto</span> <span class="o">=</span> <span class="n">rewrite</span><span class="p">(</span><span class="n">model_proto</span><span class="p">)</span>
+    <span class="n">model_proto</span> <span class="o">=</span> <span class="n">rewrite</span><span class="p">(</span><span class="n">model_proto</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] rewrite done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;seconds with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> local functions&quot;</span>
-            <span class="p">)</span>
-
-    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;onnxrewrite.rewrite failed due to </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;saving the model into &#39;bug-onnxrewriter.onnx&#39;&quot;</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] rewrite done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;seconds with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> local functions&quot;</span>
         <span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;bug-onnxrewriter.onnx&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] failed in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;seconds (see &#39;bug-onnxrewriter.onnx&#39;).&quot;</span>
-            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] starts inlining with &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> local functions&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="n">model_proto</span> <span class="o">=</span> <span class="n">inline_local_functions</span><span class="p">(</span><span class="n">model_proto</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[optimize_model_proto] inlining done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;seconds with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes and &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> local functions&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># _fix_details(model_proto)</span>
+    <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">first_model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[:]</span>
+        <span class="k">del</span> <span class="n">first_model_proto</span><span class="o">.</span><span class="n">functions</span><span class="p">[:]</span>
+        <span class="k">del</span> <span class="n">first_model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">[:]</span>
+
+        <span class="n">first_model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">first_model_proto</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span>
+        <span class="n">first_model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">model_proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">model_proto</span></div>
 
@@ -420,6 +451,7 @@
 <span class="sd">    :param disable_aot: disable AOT</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">onnxruntime</span>
+    <span class="kn">from</span> <span class="nn">.ort_helper</span> <span class="kn">import</span> <span class="n">append_custom_libraries</span>
 
     <span class="n">opts</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">SessionOptions</span><span class="p">()</span>
     <span class="n">opts</span><span class="o">.</span><span class="n">optimized_model_filepath</span> <span class="o">=</span> <span class="n">output</span>
@@ -431,12 +463,14 @@
     <span class="k">elif</span> <span class="n">providers</span> <span class="o">==</span> <span class="s2">&quot;cuda&quot;</span><span class="p">:</span>
         <span class="n">providers</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;CUDAExecutionProvider&quot;</span><span class="p">,</span> <span class="p">{}),</span> <span class="p">(</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">,</span> <span class="p">{})]</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">providers</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for providers=</span><span class="si">{</span><span class="n">providers</span><span class="si">!r}</span><span class="s2">&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">onnx_model</span> <span class="o">=</span> <span class="n">onnx_load</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span>
+
+    <span class="n">append_custom_libraries</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+
     <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
-        <span class="p">(</span>
-            <span class="n">onnx_model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">)</span>
-            <span class="k">else</span> <span class="n">onnx_model</span>
-        <span class="p">),</span>
+        <span class="n">onnx_model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span>
         <span class="n">opts</span><span class="p">,</span>
         <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">,</span>
     <span class="p">)</span></div>

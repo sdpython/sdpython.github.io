@@ -447,7 +447,7 @@ And visually.
 Optimization
 ============
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-56
+.. GENERATED FROM PYTHON SOURCE LINES 44-59
 
 .. code-block:: Python
 
@@ -455,7 +455,10 @@ Optimization
     gr = GraphBuilder(
         proto,
         infer_shapes=True,
-        optimization_options=OptimizationOptions(patterns="default"),
+        optimization_options=OptimizationOptions(
+            patterns="default",
+            verbose=1,  # a higher value increases the verbosity when optimizations for patterns
+        ),
     )
     stats = gr.optimize()
     df = pandas.DataFrame(stats)
@@ -466,6 +469,94 @@ Optimization
 
 
 
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    [GraphBuilderPatternOptimization.optimize] start with 214 nodes and 20 patterns
+    [GraphBuilderPatternOptimization.optimize] use pattern 1/20 - CastPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 2/20 - CastCastBinaryPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 3/20 - ExpandPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 4/20 - ExpandBroadcastPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 5/20 - ExpandSwapPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 6/20 - MulMulMulScalarPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 7/20 - ReduceReshapePattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 8/20 - ReshapeMatMulReshapePattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 9/20 - Reshape2Of3Pattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 10/20 - ReshapeReshapeBinaryPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 11/20 - MatMulReshape2Of3Pattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 12/20 - ReshapeReshapePattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 13/20 - RotaryConcatPartPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 14/20 - SlicesSplitPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 15/20 - Sub1MulPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 16/20 - SwitchOrderBinaryPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 17/20 - TransposeMatMulPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 18/20 - TransposeReshapeMatMulPattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 19/20 - TransposeTransposePattern
+    [GraphBuilderPatternOptimization.optimize] use pattern 20/20 - UnsqueezeUnsqueezePattern
+    [GraphBuilderPatternOptimization.optimize] iteration 0: 214 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 55 matches, 37*CastPattern, 3*ReduceReshapePattern, 1*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 4*ReshapeReshapePattern, 2*SlicesSplitPattern, 7*TransposeTransposePattern - time=0.006 | max_time=Sub1MulPattern:0.002
+    [GraphBuilderPatternOptimization.optimize] iteration 1: 152 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 5 matches, 3*MulMulMulScalarPattern, 1*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern - time=0.003 | max_time=Reshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 2: 148 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 4 matches, 3*ExpandBroadcastPattern, 1*MatMulReshape2Of3Pattern - time=0.003 | max_time=Reshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 3: 145 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MatMulReshape2Of3Pattern replaces ['Reshape', 'MatMul', 'Reshape'] - time=0.003 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 4: 144 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MatMulReshape2Of3Pattern replaces ['Reshape', 'MatMul', 'Reshape'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 5: 144 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MatMulReshape2Of3Pattern replaces ['Reshape', 'MatMul', 'Reshape'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 6: 143 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: RotaryConcatPartPattern replaces ['ConstantOfShape', 'Split', 'Neg', 'Concat', 'ConstantOfShape', 'Concat', 'Add'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 7: 140 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: RotaryConcatPartPattern replaces ['ConstantOfShape', 'Split', 'Neg', 'Concat', 'ConstantOfShape', 'Concat', 'Add'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 8: 137 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: Sub1MulPattern replaces ['Mul', 'Sub'] - time=0.002 | max_time=Reshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 9: 137 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: SwitchOrderBinaryPattern replaces ['Mul', 'Mul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 10: 137 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: SwitchOrderBinaryPattern replaces ['Mul', 'Mul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 11: 137 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: SwitchOrderBinaryPattern replaces ['Mul', 'Mul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 12: 137 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 13: 136 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 14: 135 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 15: 134 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 16: 133 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 17: 132 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 18: 131 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=Reshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 19: 130 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 20: 129 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 21: 128 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 22: 127 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.003 | max_time=ReshapeReshapePattern:0.001
+    [GraphBuilderPatternOptimization.optimize] iteration 23: 126 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 24: 125 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 25: 124 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces ['Transpose', 'MatMul'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 26: 123 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeReshapeMatMulPattern replaces ['MatMul', 'Reshape', 'Transpose'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 27: 123 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeReshapeMatMulPattern replaces ['MatMul', 'Reshape', 'Transpose'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 28: 123 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeReshapeMatMulPattern replaces ['MatMul', 'Reshape', 'Transpose'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 29: 123 nodes
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: TransposeReshapeMatMulPattern replaces ['MatMul', 'Reshape', 'Transpose'] - time=0.002 | max_time=SwitchOrderBinaryPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 30: 123 nodes
+    [GraphBuilderPatternOptimization.optimize] done after 31 iterations with 123 nodes in 0.149
 
 
 .. raw:: html
@@ -502,7 +593,7 @@ Optimization
         <tr>
           <th>0</th>
           <td>check_A</td>
-          <td>0.000319</td>
+          <td>0.000369</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -512,7 +603,7 @@ Optimization
         <tr>
           <th>1</th>
           <td>remove_identity_nodes</td>
-          <td>0.000399</td>
+          <td>0.000442</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -522,7 +613,7 @@ Optimization
         <tr>
           <th>2</th>
           <td>check_B</td>
-          <td>0.000296</td>
+          <td>0.000318</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -532,7 +623,7 @@ Optimization
         <tr>
           <th>3</th>
           <td>remove_unused</td>
-          <td>0.000721</td>
+          <td>0.000853</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -542,7 +633,7 @@ Optimization
         <tr>
           <th>4</th>
           <td>check_C</td>
-          <td>0.000312</td>
+          <td>0.000324</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -560,29 +651,29 @@ Optimization
           <td>...</td>
         </tr>
         <tr>
-          <th>704</th>
+          <th>899</th>
           <td>build_for_pattern</td>
-          <td>0.000326</td>
-          <td>0.0</td>
-          <td>27.0</td>
+          <td>0.000329</td>
+          <td>NaN</td>
+          <td>30.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>705</th>
+          <th>900</th>
           <td>pattern_optimization</td>
-          <td>0.113490</td>
-          <td>89.0</td>
+          <td>0.150636</td>
+          <td>91.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>706</th>
+          <th>901</th>
           <td>check_F</td>
-          <td>0.000174</td>
+          <td>0.000180</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -590,19 +681,19 @@ Optimization
           <td>NaN</td>
         </tr>
         <tr>
-          <th>707</th>
+          <th>902</th>
           <td>remove_unused</td>
-          <td>0.000425</td>
-          <td>1.0</td>
+          <td>0.000414</td>
+          <td>3.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>708</th>
+          <th>903</th>
           <td>check_G</td>
-          <td>0.000172</td>
+          <td>0.000170</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -611,17 +702,17 @@ Optimization
         </tr>
       </tbody>
     </table>
-    <p>709 rows × 7 columns</p>
+    <p>904 rows × 7 columns</p>
     </div>
     </div>
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-58
+.. GENERATED FROM PYTHON SOURCE LINES 60-61
 
 Summary
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-73
+.. GENERATED FROM PYTHON SOURCE LINES 61-76
 
 .. code-block:: Python
 
@@ -648,56 +739,65 @@ Summary
 
  .. code-block:: none
 
-                                          time_in  added  removed  iteration  match_index  instances
-    pattern                                                                                         
-    apply_CastPattern                    0.002938     37       37          0           36         37
-    apply_ExpandBroadcastPattern         0.000238      3        6          2            2          3
-    apply_MatMulReshape2Of3Pattern       0.001530     10       12          5            3          4
-    apply_MulMulMulScalarPattern         0.001133      6        9          1            2          3
-    apply_ReduceReshapePattern           0.000336      3        6          0           39          3
-    apply_Reshape2Of3Pattern             0.000865      5        6          1           40          2
-    apply_ReshapeReshapePattern          0.000386      4        8          0           44          4
-    apply_RotaryConcatPartPattern        0.000959      8       16          7            0          2
-    apply_Sub1MulPattern                 0.000353      2        2          8            0          1
-    apply_TransposeMatMulPattern         0.002035     14       28         22            0         14
-    apply_TransposeReshapeMatMulPattern  0.000869     12       12         26            0          4
-    apply_TransposeTransposePattern      0.002475      7       14          0           51          7
-    build_for_pattern                    0.010776      0       44         27            0          0
-    check_A                              0.000319      0        0          0            0          0
-    check_B                              0.000296      0        0          0            0          0
-    check_C                              0.000312      0        0          0            0          0
-    check_F                              0.000174      0        0          0            0          0
-    check_G                              0.000172      0        0          0            0          0
-    check_pattern_A                      0.022172      0        0         26            0          0
-    check_pattern_B                      0.005817      0        0         27            0          0
-    match_CastPattern                    0.001426      0        0         27           37         37
-    match_ExpandBroadcastPattern         0.001277      0        0         27           37          3
-    match_ExpandPattern                  0.001393      0        0         27           37          0
-    match_ExpandSwapPattern              0.001230      0        0         27           37          0
-    match_MatMulReshape2Of3Pattern       0.005609      0        0         27           41          4
-    match_MulMulMulScalarPattern         0.003460      0        0         27           37          3
-    match_ReduceReshapePattern           0.002751      0        0         27           40          3
-    match_Reshape2Of3Pattern             0.009622      0        0         27           41          2
-    match_ReshapeMatMulReshapePattern    0.001979      0        0         27           40          0
-    match_ReshapeReshapePattern          0.002163      0        0         27           45          4
-    match_RotaryConcatPartPattern        0.003173      0        0         27           45          2
-    match_Sub1MulPattern                 0.004112      0        0         27           45          1
-    match_TransposeMatMulPattern         0.004958      0        0         27           45         14
-    match_TransposeReshapeMatMulPattern  0.003232      0        0         27           45          4
-    match_TransposeTransposePattern      0.002258      0        0         27           52          7
-    match_UnsqueezeUnsqueezePattern      0.001332      0        0         27           52          0
-    pattern_optimization                 0.113490      0       89          0            0          0
-    remove_identity_nodes                0.008593      0       44         27            0          0
-    remove_unused                        0.001146      0        1          0            0          0
+                                          time_in  ...  instances
+    pattern                                        ...           
+    apply_CastPattern                    0.003240  ...         37
+    apply_ExpandBroadcastPattern         0.000341  ...          3
+    apply_MatMulReshape2Of3Pattern       0.001726  ...          4
+    apply_MulMulMulScalarPattern         0.001253  ...          3
+    apply_ReduceReshapePattern           0.000350  ...          3
+    apply_Reshape2Of3Pattern             0.000820  ...          2
+    apply_ReshapeReshapeBinaryPattern    0.000237  ...          2
+    apply_ReshapeReshapePattern          0.000430  ...          4
+    apply_RotaryConcatPartPattern        0.003891  ...          2
+    apply_SlicesSplitPattern             0.000887  ...          2
+    apply_Sub1MulPattern                 0.000349  ...          1
+    apply_SwitchOrderBinaryPattern       0.000420  ...          3
+    apply_TransposeMatMulPattern         0.001636  ...         14
+    apply_TransposeReshapeMatMulPattern  0.000770  ...          4
+    apply_TransposeTransposePattern      0.002484  ...          7
+    build_for_pattern                    0.011141  ...          0
+    check_A                              0.000369  ...          0
+    check_B                              0.000318  ...          0
+    check_C                              0.000324  ...          0
+    check_F                              0.000180  ...          0
+    check_G                              0.000170  ...          0
+    check_pattern_A                      0.024054  ...          0
+    check_pattern_B                      0.005938  ...          0
+    match_CastCastBinaryPattern          0.005830  ...          0
+    match_CastPattern                    0.001434  ...         37
+    match_ExpandBroadcastPattern         0.001290  ...          3
+    match_ExpandPattern                  0.001465  ...          0
+    match_ExpandSwapPattern              0.001215  ...          0
+    match_MatMulReshape2Of3Pattern       0.005099  ...          4
+    match_MulMulMulScalarPattern         0.003237  ...          3
+    match_ReduceReshapePattern           0.002717  ...          3
+    match_Reshape2Of3Pattern             0.010424  ...          2
+    match_ReshapeMatMulReshapePattern    0.001981  ...          0
+    match_ReshapeReshapeBinaryPattern    0.004620  ...          2
+    match_ReshapeReshapePattern          0.003068  ...          4
+    match_RotaryConcatPartPattern        0.003231  ...          2
+    match_SlicesSplitPattern             0.001529  ...          2
+    match_Sub1MulPattern                 0.004499  ...          1
+    match_SwitchOrderBinaryPattern       0.011525  ...          3
+    match_TransposeMatMulPattern         0.004925  ...         14
+    match_TransposeReshapeMatMulPattern  0.003558  ...          4
+    match_TransposeTransposePattern      0.002230  ...          7
+    match_UnsqueezeUnsqueezePattern      0.001330  ...          0
+    pattern_optimization                 0.150636  ...          0
+    remove_identity_nodes                0.008686  ...          0
+    remove_unused                        0.001267  ...          0
+
+    [46 rows x 6 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-75
+.. GENERATED FROM PYTHON SOURCE LINES 77-78
 
 The total is:
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-80
+.. GENERATED FROM PYTHON SOURCE LINES 78-83
 
 .. code-block:: Python
 
@@ -714,20 +814,22 @@ The total is:
 
  .. code-block:: none
 
-    number of removed nodes: 223
+    number of removed nodes: 185
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-82
+.. GENERATED FROM PYTHON SOURCE LINES 84-85
 
 Conversion to onnx.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-87
+.. GENERATED FROM PYTHON SOURCE LINES 85-92
 
 .. code-block:: Python
 
     optimized_proto = gr.to_onnx(optimize=False)
+    with open("plot_optimize_101.onnx", "wb") as f:
+        f.write(optimized_proto.SerializeToString())
 
     print(f"number of new nodes: {len(optimized_proto.graph.node)}")
 
@@ -740,16 +842,16 @@ Conversion to onnx.
 
  .. code-block:: none
 
-    number of new nodes: 124
+    number of new nodes: 120
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-89
+.. GENERATED FROM PYTHON SOURCE LINES 93-94
 
 It gives the following.
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-92
+.. GENERATED FROM PYTHON SOURCE LINES 94-97
 
 .. code-block:: Python
 
@@ -817,21 +919,9 @@ It gives the following.
     init: name='init7_s1_-1' type=dtype('int64') shape=(1,) -- array([-1])
     init: name='init7_s1_-12' type=dtype('int64') shape=(1,) -- array([-1])
     init: name='init7_s1_-13' type=dtype('int64') shape=(1,) -- array([-1])
-    init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
-    init: name='init7_s1_02' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init7_s1_2' type=dtype('int64') shape=(1,) -- array([2])
     init: name='init7_s1_22' type=dtype('int64') shape=(1,) -- array([2])
     init: name='init7_s1_23' type=dtype('int64') shape=(1,) -- array([2])
-    init: name='init7_s1_256' type=dtype('int64') shape=(1,) -- array([256])
-    init: name='init7_s1_2562' type=dtype('int64') shape=(1,) -- array([256])
-    init: name='init7_s1_2563' type=dtype('int64') shape=(1,) -- array([256])
-    init: name='init7_s1_2564' type=dtype('int64') shape=(1,) -- array([256])
-    init: name='init7_s1_3' type=dtype('int64') shape=(1,) -- array([3])
-    init: name='init7_s1_32' type=dtype('int64') shape=(1,) -- array([3])
-    init: name='init7_s1_33' type=dtype('int64') shape=(1,) -- array([3])
-    init: name='init7_s1_34' type=dtype('int64') shape=(1,) -- array([3])
-    init: name='init7_s1_512' type=dtype('int64') shape=(1,) -- array([512])
-    init: name='init7_s1_5122' type=dtype('int64') shape=(1,) -- array([512])
     init: name='init7_s2_0_1' type=dtype('int64') shape=(2,) -- array([0, 1])
     init: name='init7_s2_0_12' type=dtype('int64') shape=(2,) -- array([0, 1])
     init: name='init7_s2_0_13' type=dtype('int64') shape=(2,) -- array([0, 1])
@@ -844,15 +934,14 @@ It gives the following.
     init: name='init7_s2_2048_10246' type=dtype('int64') shape=(2,) -- array([2048, 1024])
     init: name='init7_s2_2048_10247' type=dtype('int64') shape=(2,) -- array([2048, 1024])
     init: name='init7_s3_2_1024_102413' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
-    init: name='init7_s3_2_1024_102414' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_10242' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s3_2_1024_10243' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
-    init: name='init7_s3_2_1024_10246' type=dtype('int64') shape=(3,) -- array([   2, 1024, 1024])
     init: name='init7_s4_2_1024_2_512' type=dtype('int64') shape=(4,) -- array([   2, 1024,    2,  512])
     init: name='init7_s4_2_2_1024_1024' type=dtype('int64') shape=(4,) -- array([   2,    2, 1024, 1024])
     init: name='init7_s4_2_2_1024_512' type=dtype('int64') shape=(4,) -- array([   2,    2, 1024,  512])
     init: name='init7_s4_2_2_512_1024' type=dtype('int64') shape=(4,) -- array([   2,    2,  512, 1024])
     init: name='init7_s_-1' type=dtype('int64') shape=() -- array([-1])
+    init: name='init7_s2_256_256' type=dtype('int64') shape=(2,) -- array([256, 256])
     init: name='init1_s_12' type=dtype('float32') shape=() -- array([0.00195312], dtype=float32)
     init: name='init1_s_13' type=dtype('float32') shape=() -- array([0.00195312], dtype=float32)
     init: name='init1_s_14' type=dtype('float32') shape=() -- array([0.00195312], dtype=float32)
@@ -868,8 +957,8 @@ It gives the following.
     Mul(_onx_mul0, input35) -> _onx_mul04
     Pow(input35, init1_s1_) -> pow_4
       Mul(_onx_mul05, pow_4) -> _onx_mul06
-        Mul(_onx_mul06, input34) -> type--_onx_mul08
-          Mul(type--_onx_mul08, init1_s_12) -> _onx_mul08
+        Mul(_onx_mul06, init1_s_12) -> mul-_onx_mul06
+          Mul(mul-_onx_mul06, input34) -> _onx_mul08
       Add(_onx_mul04, _onx_mul08) -> add_8
         Reshape(add_8, init7_s2_2048_1024) -> view_22
           Gemm(view_22, input33, transA=1, transB=0) -> output_10
@@ -879,7 +968,6 @@ It gives the following.
       Mul(mm_9, typeR_input28) -> view_24
         Gemm(view_24, input30, transA=1, transB=0) -> output_9
     Gemm(view_24, input29, transA=0, transB=1) -> mm_11
-      Reshape(mm_11, init7_s3_2_1024_10243) -> view_25
     Sigmoid(input27) -> sigmoid
       Mul(input27, sigmoid) -> type--_onx_mul011
         Sub(input27, type--_onx_mul011) -> _onx_mul011
@@ -889,8 +977,8 @@ It gives the following.
           Reshape(_onx_mul013, init7_s2_2048_10243) -> view_26
             Gemm(view_26, input26, transA=1, transB=0) -> output_8
     Gemm(view_26, input25, transA=0, transB=1) -> mm_13
-      Reshape(mm_13, init7_s3_2_1024_10246) -> view_27
-        Add(view_25, view_27) -> add_10
+      Add(mm_11, mm_13) -> add-mm_11
+        Reshape(add-mm_11, init7_s3_2_1024_10243) -> add_10
           Mul(add_10, input1) -> _onx_mul014
             Mul(_onx_mul014, input22) -> _onx_mul016
               ReduceSum(_onx_mul016, init7_s1_22, keepdims=1) -> sum_4
@@ -901,8 +989,8 @@ It gives the following.
       Add(add_8, _onx_mul017) -> add_11
     Pow(input23, init1_s1_2) -> pow_6
       Mul(_onx_mul018, pow_6) -> _onx_mul019
-        Mul(_onx_mul019, input22) -> type--_onx_mul021
-          Mul(type--_onx_mul021, init1_s_13) -> _onx_mul021
+        Mul(_onx_mul019, init1_s_13) -> mul-_onx_mul019
+          Mul(mul-_onx_mul019, input22) -> _onx_mul021
         Add(add_11, _onx_mul021) -> add_12
           Reshape(add_12, init7_s2_2048_10244) -> view_29
             Gemm(view_29, input21, transA=1, transB=0) -> output_7
@@ -930,35 +1018,32 @@ It gives the following.
           Transpose(view_35, perm=[0,1,3,2]) -> transpose_10
             Add(input38, transpose_10) -> add_14
               Mul(add_14, input14) -> _onx_mul024
-                Slice(_onx_mul024, init7_s1_0, init7_s1_256, init7_s1_3) -> slice_10
+                Split(_onx_mul024, init7_s2_256_256, axis=3) -> slice_10, slice_11
                   Neg(slice_10) -> neg_2
+                  Concat(slice_11, neg_2, axis=3) -> add_15
     Reshape(input16, init7_s4_2_2_512_1024) -> typeL_input16
       Transpose(typeL_input16, perm=[0,1,3,2]) -> typeL_view_34
         MatMul(div_3, typeL_view_34) -> view_36
           Mul(view_36, input14) -> _onx_mul026
-            Slice(_onx_mul026, init7_s1_02, init7_s1_2563, init7_s1_33) -> slice_12
+            Split(_onx_mul026, init7_s2_256_256, axis=3) -> slice_12, slice_13
               Neg(slice_12) -> neg_3
-    Slice(_onx_mul024, init7_s1_2562, init7_s1_512, init7_s1_32) -> slice_11
-      Concat(slice_11, neg_2, axis=3) -> add_15
+              Concat(slice_13, neg_3, axis=3) -> add_17
     Mul(add_14, input13) -> _onx_mul025
       Add(add_15, _onx_mul025) -> add_16
         Transpose(add_16, perm=[0,2,1,3]) -> transpose_12
           Reshape(transpose_12, init7_s2_2048_10246) -> view_39
             Gemm(view_39, input10, transA=1, transB=0) -> output_5
-    Slice(_onx_mul026, init7_s1_2564, init7_s1_5122, init7_s1_34) -> slice_13
-      Concat(slice_13, neg_3, axis=3) -> add_17
-    Mul(view_36, input13) -> _onx_mul027
-      Add(add_17, _onx_mul027) -> add_18
-        Transpose(add_18, perm=[0,2,1,3]) -> transpose_13
-          Reshape(transpose_13, init7_s2_2048_10247) -> view_41
-            Gemm(view_41, input8, transA=1, transB=0) -> output_4
-    Gemm(view_37, input11, transA=0, transB=1) -> mm_17
-    Gemm(view_39, input9, transA=0, transB=1) -> mm_19
-      Add(mm_17, mm_19) -> typeL_add_19
-        Reshape(typeL_add_19, init7_s3_2_1024_102413) -> add_19
+          Mul(view_36, input13) -> _onx_mul027
+            Add(add_17, _onx_mul027) -> add_18
+              Transpose(add_18, perm=[0,2,1,3]) -> transpose_13
+                Reshape(transpose_13, init7_s2_2048_10247) -> view_41
+                  Gemm(view_41, input8, transA=1, transB=0) -> output_4
+                Gemm(view_37, input11, transA=0, transB=1) -> mm_17
+            Gemm(view_39, input9, transA=0, transB=1) -> mm_19
+              Add(mm_17, mm_19) -> typeL_add_19
     Gemm(view_41, input7, transA=0, transB=1) -> mm_21
-      Reshape(mm_21, init7_s3_2_1024_102414) -> view_42
-        Add(add_19, view_42) -> add_20
+      Add(typeL_add_19, mm_21) -> add-typeL_add_19
+        Reshape(add-typeL_add_19, init7_s3_2_1024_102413) -> add_20
           Mul(add_20, input0) -> _onx_mul028
             Mul(_onx_mul028, input4) -> _onx_mul030
               ReduceSum(_onx_mul030, init7_s1_23, keepdims=1) -> sum_6
@@ -969,8 +1054,8 @@ It gives the following.
       Add(add_12, _onx_mul031) -> add_21
     Pow(input5, init1_s1_3) -> pow_8
       Mul(_onx_mul032, pow_8) -> _onx_mul033
-        Mul(_onx_mul033, input4) -> type--_onx_mul035
-          Mul(type--_onx_mul035, init1_s_14) -> _onx_mul035
+        Mul(_onx_mul033, init1_s_14) -> mul-_onx_mul033
+          Mul(mul-_onx_mul033, input4) -> _onx_mul035
         Add(add_21, _onx_mul035) -> add_22
     Equal(input3, init7_s_-1) -> eq_2
       Unsqueeze(eq_2, init7_s1_-12) -> unsqueeze_6
@@ -999,11 +1084,11 @@ It gives the following.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-94
+.. GENERATED FROM PYTHON SOURCE LINES 98-99
 
 And visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-97
+.. GENERATED FROM PYTHON SOURCE LINES 99-102
 
 .. code-block:: Python
 
@@ -1028,17 +1113,228 @@ And visually.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-102
+.. GENERATED FROM PYTHON SOURCE LINES 103-110
 
 The first list of patterns optimizes the graph with only
 standard onnx operators: :ref:`l-pattern-optimization-onnx`.
 The second list is specific to :epkg:`onnxruntime`:
 :ref:`l-pattern-optimization-ort`.
 
+Focus on one optimizer
+======================
+
+.. GENERATED FROM PYTHON SOURCE LINES 110-124
+
+.. code-block:: Python
+
+
+    gr = GraphBuilder(
+        optimized_proto,
+        infer_shapes=True,
+        optimization_options=OptimizationOptions(
+            patterns="SwitchOrderBinary",
+            verbose=10,
+        ),
+    )
+    stats = gr.optimize()
+    df = pandas.DataFrame(stats)
+    df.to_csv("plot_optimize.csv")
+    df.to_excel("plot_optimize.xlsx")
+    df
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    [GraphBuilderPatternOptimization.optimize] start with 120 nodes and 1 patterns
+    [GraphBuilderPatternOptimization.optimize] use pattern 1/1 - SwitchOrderBinaryPattern
+    [GraphBuilderPatternOptimization.optimize] iteration 0: 120 nodes
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 203:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul
+    [SwitchOrderBinaryPattern.match] NONE - line: 192:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add
+    [GraphBuilderPatternOptimization.optimize] done all: -0 +0 nodes
+    [GraphBuilderPatternOptimization.optimize] done after 1 iterations with 120 nodes in 0.002
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>pattern</th>
+          <th>time_in</th>
+          <th>removed</th>
+          <th>iteration</th>
+          <th>instances</th>
+          <th>match_index</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0</th>
+          <td>check_A</td>
+          <td>0.000195</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>remove_identity_nodes</td>
+          <td>0.000240</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <td>check_B</td>
+          <td>0.000178</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>3</th>
+          <td>remove_unused</td>
+          <td>0.000430</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>4</th>
+          <td>check_C</td>
+          <td>0.000175</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>5</th>
+          <td>match_SwitchOrderBinaryPattern</td>
+          <td>0.000913</td>
+          <td>NaN</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+        </tr>
+        <tr>
+          <th>6</th>
+          <td>remove_identity_nodes</td>
+          <td>0.000235</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>7</th>
+          <td>check_pattern_B</td>
+          <td>0.000199</td>
+          <td>NaN</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>8</th>
+          <td>build_for_pattern</td>
+          <td>0.000341</td>
+          <td>NaN</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>9</th>
+          <td>pattern_optimization</td>
+          <td>0.002288</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>10</th>
+          <td>check_F</td>
+          <td>0.000181</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>11</th>
+          <td>remove_unused</td>
+          <td>0.000414</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>12</th>
+          <td>check_G</td>
+          <td>0.000175</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+    <br />
+    <br />
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.325 seconds)
+   **Total running time of the script:** (0 minutes 3.689 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:

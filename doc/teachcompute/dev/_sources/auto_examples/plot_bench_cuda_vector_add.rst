@@ -111,13 +111,13 @@ Vector Add
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:01<00:04,  1.37s/it]     50%|█████     | 2/4 [00:02<00:02,  1.22s/it]     75%|███████▌  | 3/4 [00:03<00:01,  1.13s/it]    100%|██████████| 4/4 [00:04<00:00,  1.25s/it]    100%|██████████| 4/4 [00:04<00:00,  1.23s/it]
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:01<00:04,  1.46s/it]     50%|█████     | 2/4 [00:02<00:02,  1.29s/it]     75%|███████▌  | 3/4 [00:04<00:01,  1.34s/it]    100%|██████████| 4/4 [00:06<00:00,  1.82s/it]    100%|██████████| 4/4 [00:06<00:00,  1.65s/it]
     fct               CUDA         numpy
     dim                                 
-    1024      1.955280e-07  8.839573e-10
-    32768     8.102909e-09  2.250989e-10
-    1048576   2.158285e-09  4.125454e-10
-    33554432  2.306463e-09  1.278177e-09
+    1024      1.271343e-06  6.823135e-10
+    32768     5.698531e-08  1.918299e-10
+    1048576   1.995813e-08  6.269388e-10
+    33554432  1.787547e-08  1.253388e-09
 
 
 
@@ -155,7 +155,7 @@ Plots
 
  .. code-block:: none
 
-    /opt/mamba/lib/python3.11/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
@@ -172,7 +172,7 @@ in moving the data from the CPU memory (Host) to the GPU memory (device).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.203 seconds)
+   **Total running time of the script:** (0 minutes 12.149 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cuda_vector_add.py:

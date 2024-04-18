@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Measuring CPU performance with a parallelized vector sum" href="plot_bench_cpu_vector_sum_parallel.html" /><link rel="prev" title="Parallelization of a vector sum with C++" href="../index_vector_sum.html" />
 
-    <!-- Generated with Sphinx 7.3.5 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Measuring CPU performance with a vector sum - Documentation teachcompute 0.2.0</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -247,8 +247,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_benchmark_parallel_process_concurrent.html">Parallelization of a dot product with processes (concurrent.futures)</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../index_torch.html">Torch Extensions</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Torch Extensions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_torch.html">pytorch</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of pytorch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 </ul>
 </li>
 </ul>
@@ -324,12 +325,12 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="measuring-cpu-performance-with-a-vector-sum">
-<span id="sphx-glr-auto-examples-plot-bench-cpu-vector-sum-py"></span><h1>Measuring CPU performance with a vector sum<a class="headerlink" href="#measuring-cpu-performance-with-a-vector-sum" title="Lien vers cette rubrique">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-bench-cpu-vector-sum-py"></span><h1>Measuring CPU performance with a vector sum<a class="headerlink" href="#measuring-cpu-performance-with-a-vector-sum" title="Link to this heading">#</a></h1>
 <p>The example compares the time spend in computing the sum of all
 coefficients of a matrix when the function walks through the coefficients
 by rows or by columns.</p>
 <section id="vector-sum">
-<h2>Vector Sum<a class="headerlink" href="#vector-sum" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Vector Sum<a class="headerlink" href="#vector-sum" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -379,42 +380,42 @@ by rows or by columns.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/14 [00:00&lt;?, ?it/s]
-  7%|▋         | 1/14 [00:01&lt;00:15,  1.17s/it]
- 14%|█▍        | 2/14 [00:02&lt;00:12,  1.08s/it]
- 21%|██▏       | 3/14 [00:03&lt;00:11,  1.05s/it]
- 29%|██▊       | 4/14 [00:04&lt;00:11,  1.16s/it]
- 36%|███▌      | 5/14 [00:05&lt;00:11,  1.24s/it]
- 43%|████▎     | 6/14 [00:07&lt;00:09,  1.22s/it]
- 50%|█████     | 7/14 [00:08&lt;00:08,  1.20s/it]
- 57%|█████▋    | 8/14 [00:09&lt;00:07,  1.23s/it]
- 64%|██████▍   | 9/14 [00:10&lt;00:06,  1.23s/it]
- 71%|███████▏  | 10/14 [00:11&lt;00:04,  1.18s/it]
- 79%|███████▊  | 11/14 [00:13&lt;00:03,  1.18s/it]
- 86%|████████▌ | 12/14 [00:14&lt;00:02,  1.15s/it]
- 93%|█████████▎| 13/14 [00:15&lt;00:01,  1.15s/it]
-100%|██████████| 14/14 [00:16&lt;00:00,  1.17s/it]
-100%|██████████| 14/14 [00:16&lt;00:00,  1.18s/it]
+  7%|▋         | 1/14 [00:01&lt;00:14,  1.08s/it]
+ 14%|█▍        | 2/14 [00:02&lt;00:14,  1.23s/it]
+ 21%|██▏       | 3/14 [00:03&lt;00:14,  1.28s/it]
+ 29%|██▊       | 4/14 [00:04&lt;00:12,  1.26s/it]
+ 36%|███▌      | 5/14 [00:06&lt;00:11,  1.25s/it]
+ 43%|████▎     | 6/14 [00:07&lt;00:10,  1.26s/it]
+ 50%|█████     | 7/14 [00:08&lt;00:09,  1.29s/it]
+ 57%|█████▋    | 8/14 [00:10&lt;00:07,  1.27s/it]
+ 64%|██████▍   | 9/14 [00:11&lt;00:06,  1.29s/it]
+ 71%|███████▏  | 10/14 [00:12&lt;00:05,  1.28s/it]
+ 79%|███████▊  | 11/14 [00:13&lt;00:03,  1.24s/it]
+ 86%|████████▌ | 12/14 [00:15&lt;00:02,  1.25s/it]
+ 93%|█████████▎| 13/14 [00:16&lt;00:01,  1.21s/it]
+100%|██████████| 14/14 [00:17&lt;00:00,  1.21s/it]
+100%|██████████| 14/14 [00:17&lt;00:00,  1.24s/it]
 direction          cols          rows
 dim
-500        1.837474e-09  1.836847e-09
-700        1.864568e-09  1.838624e-09
-800        1.964193e-09  1.835724e-09
-900        1.840605e-09  1.831452e-09
-1000       1.222896e-09  1.302787e-09
-1100       1.281346e-09  1.240912e-09
-1200       1.401569e-09  1.281654e-09
-1300       1.298511e-09  1.306707e-09
-1400       1.287969e-09  1.373643e-09
-1500       1.270746e-09  1.297794e-09
-1600       1.455713e-09  1.231076e-09
-1700       1.273558e-09  1.370398e-09
-1800       1.300369e-09  1.332009e-09
-2000       1.935624e-09  1.282417e-09
+500        1.125726e-09  1.278846e-09
+700        1.488420e-09  1.148282e-09
+800        1.140735e-09  1.351736e-09
+900        1.458899e-09  1.121927e-09
+1000       1.511043e-09  1.473863e-09
+1100       1.953898e-09  1.377475e-09
+1200       1.528615e-09  1.157154e-09
+1300       2.381678e-09  1.219445e-09
+1400       1.898999e-09  1.525794e-09
+1500       2.736938e-09  1.757406e-09
+1600       4.575156e-09  1.142311e-09
+1700       6.412007e-09  1.280492e-09
+1800       5.874604e-09  1.197260e-09
+2000       6.639695e-09  1.258228e-09
 </pre></div>
 </div>
 </section>
 <section id="plots">
-<h2>Plots<a class="headerlink" href="#plots" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Plots<a class="headerlink" href="#plots" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv_diff</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">pivot</span></a><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a><span class="o">=</span><span class="s2">&quot;diff&quot;</span><span class="p">)</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv_time</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">pivot</span></a><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">values</span></a><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
 
@@ -426,14 +427,14 @@ dim
 <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a><span class="p">(</span><span class="s2">&quot;plot_bench_cpu_vector_sum.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_bench_cpu_vector_sum_001.png" srcset="../_images/sphx_glr_plot_bench_cpu_vector_sum_001.png" alt="Comparison between two summation, Summation errors, Total time" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/mamba/lib/python3.11/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+<img src="../_images/sphx_glr_plot_bench_cpu_vector_sum_001.png" srcset="../_images/sphx_glr_plot_bench_cpu_vector_sum_001.png" alt="Comparison between two summation, Summation errors, Total time" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
   labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 </pre></div>
 </div>
 <p>The summation by rows is much faster as expected.
 That explains why it is usually more efficient to
 transpose the first matrix before a matrix multiplication.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 17.156 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 19.234 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-bench-cpu-vector-sum-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/98637670c342dd983fa5e48811608bb4/plot_bench_cpu_vector_sum.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bench_cpu_vector_sum.ipynb</span></code></a></p>
@@ -516,10 +517,10 @@ transpose the first matrix before a matrix multiplication.</p>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=9313ea4c"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="../_static/translations.js?v=bf059b8c"></script>
+    <script src="../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

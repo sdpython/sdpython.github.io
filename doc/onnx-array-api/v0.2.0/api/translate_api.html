@@ -9,7 +9,7 @@
         <title>onnx_array_api.translate_api - onnx-array-api 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -284,7 +284,8 @@ to describe the ONNX graph.</p>
 default is <cite>“light”</cite> and this is handle by class
 <a class="reference internal" href="#onnx_array_api.translate_api.light_emitter.LightEmitter" title="onnx_array_api.translate_api.light_emitter.LightEmitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx_array_api.translate_api.light_emitter.LightEmitter</span></code></a>,
 another value is <cite>“onnx”</cite> which is the inner API implemented
-in onnx package.</p></li>
+in onnx package, <cite>“builder”</cite> follows the syntax for the
+class <a class="reference internal" href="graph_api.html#onnx_array_api.graph_api.GraphBuilder" title="onnx_array_api.graph_api.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">onnx_array_api.graph_api.GraphBuilder</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -310,7 +311,7 @@ in onnx package.</p></li>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">(</span>
-        <span class="n">start</span><span class="p">(</span><span class="n">opset</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">start</span><span class="p">(</span><span class="n">opset</span><span class="o">=</span><span class="mi">21</span><span class="p">)</span>
         <span class="o">.</span><span class="n">cst</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
         <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
         <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">elem_type</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">)</span>
@@ -326,7 +327,7 @@ in onnx package.</p></li>
     <span class="p">)</span>
 </pre></div>
 </div>
-<p>The inner API from onnx packahe is also available.</p>
+<p>The inner API from onnx package is also available.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnx_array_api.light_api</span> <span class="kn">import</span> <span class="n">start</span>
 <span class="kn">from</span> <span class="nn">onnx_array_api.translate_api</span> <span class="kn">import</span> <span class="n">translate</span>
@@ -346,7 +347,7 @@ in onnx package.</p></li>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset_imports</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">make_opsetid</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+        <span class="n">make_opsetid</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="n">inputs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -390,6 +391,43 @@ in onnx package.</p></li>
         <span class="n">functions</span><span class="o">=</span><span class="n">functions</span><span class="p">,</span>
         <span class="n">opset_imports</span><span class="o">=</span><span class="n">opset_imports</span>
     <span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="graph_api.html#onnx_array_api.graph_api.GraphBuilder" title="onnx_array_api.graph_api.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a> API returns this:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnx_array_api.light_api</span> <span class="kn">import</span> <span class="n">start</span>
+<span class="kn">from</span> <span class="nn">onnx_array_api.translate_api</span> <span class="kn">import</span> <span class="n">translate</span>
+
+<span class="n">onx</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">start</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">vin</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">vout</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">code</span> <span class="o">=</span> <span class="n">translate</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="s2">&quot;builder&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
+    <span class="k">def</span> <span class="nf">light_api</span><span class="p">(</span>
+        <span class="n">op</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">:</span> <span class="s2">&quot;FLOAT[]&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">r0_0</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">Reshape</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">r0_0</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">Y</span>
+    
+    <span class="n">g</span> <span class="o">=</span> <span class="n">GraphBuilder</span><span class="p">({</span><span class="s1">&#39;&#39;</span><span class="p">:</span> <span class="mi">21</span><span class="p">})</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">())</span>
+    <span class="n">light_api</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">make_tensor_output</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">())</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>

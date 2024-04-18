@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="torch_helper" href="torch_helper.html" /><link rel="prev" title="aten_prims" href="prims_function.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="torch_dynamo" href="torch_dynamo.html" /><link rel="prev" title="aten_prims" href="prims_function.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>convert - experimental-experiment 0.1.0 documentation</title>
+        <title>convert_tools - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
@@ -202,10 +202,10 @@
 <li class="toctree-l2"><a class="reference internal" href="aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prims_function.html">aten_prims</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_test.html">Testing</a></li>
 </ul>
@@ -227,8 +227,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -277,8 +279,8 @@
           </label>
         </div>
         <article role="main">
-          <section id="convert">
-<h1>convert<a class="headerlink" href="#convert" title="Link to this heading">#</a></h1>
+          <section id="convert-tools">
+<h1>convert_tools<a class="headerlink" href="#convert-tools" title="Link to this heading">#</a></h1>
 <section id="convert-helper">
 <h2>convert_helper<a class="headerlink" href="#convert-helper" title="Link to this heading">#</a></h2>
 <section id="inline-model-proto">
@@ -302,7 +304,7 @@
 <h3>optimize_model_proto<a class="headerlink" href="#optimize-model-proto" title="Link to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="experimental_experiment.convert.convert_helper.optimize_model_proto">
-<span class="sig-prename descclassname"><span class="pre">experimental_experiment.convert.convert_helper.</span></span><span class="sig-name descname"><span class="pre">optimize_model_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_proto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onnx_shape_inference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/convert/convert_helper.html#optimize_model_proto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.convert.convert_helper.optimize_model_proto" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.convert.convert_helper.</span></span><span class="sig-name descname"><span class="pre">optimize_model_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_proto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onnx_shape_inference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/convert/convert_helper.html#optimize_model_proto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.convert.convert_helper.optimize_model_proto" title="Link to this definition">#</a></dt>
 <dd><p>Optimizes a model proto to optimize onnxruntime.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -310,6 +312,7 @@
 <li><p><strong>model_proto</strong> – ModelProto</p></li>
 <li><p><strong>verbose</strong> – verbosity</p></li>
 <li><p><strong>onnx_shape_inference</strong> – enable shape inference</p></li>
+<li><p><strong>inplace</strong> – the function modifies the proto inplace as well</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -348,6 +351,57 @@
 
 </section>
 </section>
+<section id="onnx-tools">
+<h2>onnx_tools<a class="headerlink" href="#onnx-tools" title="Link to this heading">#</a></h2>
+<section id="onnx-lighten">
+<h3>onnx_lighten<a class="headerlink" href="#onnx-lighten" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.onnx_tools.onnx_lighten">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.onnx_tools.</span></span><span class="sig-name descname"><span class="pre">onnx_lighten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/experimental_experiment/onnx_tools.html#onnx_lighten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.onnx_tools.onnx_lighten" title="Link to this definition">#</a></dt>
+<dd><p>Creates a model without big initializers but stores statistics
+into dictionaries. The function can be reversed with
+<a class="reference internal" href="#experimental_experiment.onnx_tools.onnx_unlighten" title="experimental_experiment.onnx_tools.onnx_unlighten"><code class="xref py py-func docutils literal notranslate"><span class="pre">experimental_experiment.onnx_tools.onnx_unlighten()</span></code></a>.
+The model is modified inplace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onx</strong> – model</p></li>
+<li><p><strong>verbose</strong> – verbosity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>new model, statistics</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="onnx-unlighten">
+<h3>onnx_unlighten<a class="headerlink" href="#onnx-unlighten" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="experimental_experiment.onnx_tools.onnx_unlighten">
+<span class="sig-prename descclassname"><span class="pre">experimental_experiment.onnx_tools.</span></span><span class="sig-name descname"><span class="pre">onnx_unlighten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.12)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="(in ONNX v1.17.0)"><span class="pre">ModelProto</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/onnx_tools.html#onnx_unlighten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.onnx_tools.onnx_unlighten" title="Link to this definition">#</a></dt>
+<dd><p>Function fixing the model produced by function
+<a class="reference internal" href="#experimental_experiment.onnx_tools.onnx_lighten" title="experimental_experiment.onnx_tools.onnx_lighten"><code class="xref py py-func docutils literal notranslate"><span class="pre">experimental_experiment.onnx_tools.onnx_lighten()</span></code></a>.
+The model is modified inplace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onx</strong> – model</p></li>
+<li><p><strong>stats</strong> – statics, can be None if onx is a file,
+then it loads the file <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;.stats</span></code>,
+it assumes it is json format</p></li>
+<li><p><strong>verbose</strong> – verbosity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>new model, statistics</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
 </section>
 
         </article>
@@ -355,12 +409,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="torch_helper.html">
+          <a class="next-page" href="torch_dynamo.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">torch_helper</div>
+                <div class="title">torch_dynamo</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -405,7 +459,7 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">convert</a><ul>
+<li><a class="reference internal" href="#">convert_tools</a><ul>
 <li><a class="reference internal" href="#convert-helper">convert_helper</a><ul>
 <li><a class="reference internal" href="#inline-model-proto">inline_model_proto</a><ul>
 <li><a class="reference internal" href="#experimental_experiment.convert.convert_helper.inline_model_proto"><code class="docutils literal notranslate"><span class="pre">inline_model_proto()</span></code></a></li>
@@ -417,6 +471,17 @@
 </li>
 <li><a class="reference internal" href="#ort-optimize">ort_optimize</a><ul>
 <li><a class="reference internal" href="#experimental_experiment.convert.convert_helper.ort_optimize"><code class="docutils literal notranslate"><span class="pre">ort_optimize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#onnx-tools">onnx_tools</a><ul>
+<li><a class="reference internal" href="#onnx-lighten">onnx_lighten</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.onnx_tools.onnx_lighten"><code class="docutils literal notranslate"><span class="pre">onnx_lighten()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#onnx-unlighten">onnx_unlighten</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.onnx_tools.onnx_unlighten"><code class="docutils literal notranslate"><span class="pre">onnx_unlighten()</span></code></a></li>
 </ul>
 </li>
 </ul>

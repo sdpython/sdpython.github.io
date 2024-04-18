@@ -202,10 +202,10 @@
 <li class="toctree-l2"><a class="reference internal" href="aten_function.html">aten_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aten_method.html">aten_methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="prims_function.html">aten_prims</a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert.html">convert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_dynamo.html">torch_dynamo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Others…</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="torch_test.html">Testing</a></li>
 </ul>
@@ -227,8 +227,10 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/example_bug.html">A script to report a bug</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/phi.html">Phi</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -330,10 +332,10 @@ the gradient is saved to that path</p></li>
 from <a class="reference external" href="https://onnxruntime.ai/docs/get-started/training-on-device.html">onnxruntime-training</a>. This graph is meant to be used
 with &#64;see cl OrtGradientForwardBackward and includes
 operator <cite>YieldOp</cite>. That’s the graph looks this way:</p>
-<div class="graphviz"><img src="../_images/graphviz-33350956f7d3bae4a3145ab188234e88aa6c04e2.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../_images/graphviz-de26884cdd56de614ba0dbca1b6bab18249da6c8.png" alt="digraph{
   size=7;
+  nodesep=0.05;
+  orientation=portrait;
   ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -398,10 +400,10 @@ operator <cite>YieldOp</cite>. That’s the graph looks this way:</p>
 initial graph and must be replaced by the gradient of these
 outputs to compute the gradient of the weights and the inputs.
 After they are replaced, it looks this way:</p>
-<div class="graphviz"><img src="../_images/graphviz-ca4f2dd5c47fac2a14e9079d43b842563589f760.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../_images/graphviz-6c3f1ee65d7634c7c4ebd0019eb6d8f79654ce25.png" alt="digraph{
   size=7;
+  nodesep=0.05;
+  orientation=portrait;
   ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -453,10 +455,10 @@ After they are replaced, it looks this way:</p>
   Ad_Add_Grad_Reshape_4 -&gt; X_grad;
 }" class="graphviz" /></div>
 <p>The user can still compute the outputs.</p>
-<div class="graphviz"><img src="../_images/graphviz-81ac07ed552ce6a57c9f5a52db81e700f7f100b6.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../_images/graphviz-c91edb234b45cd23632bfa616bd5c9f5787254f6.png" alt="digraph{
   size=7;
+  nodesep=0.05;
+  orientation=portrait;
   ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -515,10 +517,10 @@ After they are replaced, it looks this way:</p>
 }" class="graphviz" /></div>
 <p>The input gradient can be filled with a constant matrix
 filled with one and with the expected shape.</p>
-<div class="graphviz"><img src="../_images/graphviz-da875b75b80057c3fdf60a398f97a8e97dfb254c.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../_images/graphviz-bcb39bee49baa1ea0e203e2b9541ab4570154fc8.png" alt="digraph{
   size=7;
+  nodesep=0.05;
+  orientation=portrait;
   ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -641,10 +643,10 @@ columns, the sum on every line is 1.</p>
 </li>
 </ul>
 <p>Next example shows the loss with L1 and L2 loss.</p>
-<div class="graphviz"><img src="../_images/graphviz-7b361a83fb3deb854a027582e6286c3c1444efee.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../_images/graphviz-2647e9531fbbb22953645e49d51e0b8caeda28e4.png" alt="digraph{
   size=7;
+  nodesep=0.05;
+  orientation=portrait;
   ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -654,8 +656,8 @@ columns, the sum on every line is 1.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474785 ]\n [ 1.4252148]\n [34.210365 ]\n [61.477...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.0000038]&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474754 ]\n [ 1.4250488]\n [34.210335 ]\n [61.476...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999847]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.1]&quot; fontsize=10];
   l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.9]&quot; fontsize=10];
   shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
@@ -724,10 +726,10 @@ columns, the sum on every line is 1.</p>
 }" class="graphviz" /></div>
 <p>Next example shows how to add a L2 loss with L1 and L2 penalties
 on the coefficients.</p>
-<div class="graphviz"><img src="../_images/graphviz-1b98e958cd724f6b7386f71a30df73db6ea0080e.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../_images/graphviz-f593c0e6129850d6c915e16dd7e02a07e7acce39.png" alt="digraph{
   size=7;
+  nodesep=0.05;
+  orientation=portrait;
   ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -737,8 +739,8 @@ on the coefficients.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47477  ]\n [ 1.4251099]\n [34.21039  ]\n [61.476...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999905]&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47475  ]\n [ 1.4251137]\n [34.210396 ]\n [61.476...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999771]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
   l1_weight_coef [shape=box label=&quot;l1_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];
   l1_weight_intercept [shape=box label=&quot;l1_weight_intercept\nfloat32((1,))\n[0.5]&quot; fontsize=10];

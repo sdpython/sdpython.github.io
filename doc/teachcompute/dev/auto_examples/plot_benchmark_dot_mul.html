@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Compares matrix multiplication implementations with timeit" href="plot_benchmark_dot_mul_timeit.html" /><link rel="prev" title="Compares dot implementations (numpy, c++, sse, openmp)" href="plot_benchmark_dot_cython_omp.html" />
 
-    <!-- Generated with Sphinx 7.3.5 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
         <title>Compares matrix multiplication implementations - Documentation teachcompute 0.2.0</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -247,8 +247,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_benchmark_parallel_process_concurrent.html">Parallelization of a dot product with processes (concurrent.futures)</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../index_torch.html">Torch Extensions</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Torch Extensions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../index_torch.html">pytorch</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of pytorch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 </ul>
 </li>
 </ul>
@@ -324,7 +325,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="compares-matrix-multiplication-implementations">
-<span id="sphx-glr-auto-examples-plot-benchmark-dot-mul-py"></span><h1>Compares matrix multiplication implementations<a class="headerlink" href="#compares-matrix-multiplication-implementations" title="Lien vers cette rubrique">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-benchmark-dot-mul-py"></span><h1>Compares matrix multiplication implementations<a class="headerlink" href="#compares-matrix-multiplication-implementations" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://www.numpy.org/">numpy</a> has a very fast implementation of
 matrix multiplication. There are many ways to be slower.</p>
 <p>Compared implementations:</p>
@@ -348,7 +349,7 @@ matrix multiplication. There are many ways to be slower.</p>
 </pre></div>
 </div>
 <section id="numpy-mul">
-<h2>numpy mul<a class="headerlink" href="#numpy-mul" title="Lien vers cette rubrique">¶</a></h2>
+<h2>numpy mul<a class="headerlink" href="#numpy-mul" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ctxs</span></a> <span class="o">=</span> <span class="p">[</span>
     <span class="nb">dict</span><span class="p">(</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">va</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span></a><span class="p">),</span>
@@ -366,16 +367,18 @@ matrix multiplication. There are many ways to be slower.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/8 [00:00&lt;?, ?it/s]
- 88%|████████▊ | 7/8 [00:00&lt;00:00, 58.08it/s]
-100%|██████████| 8/8 [00:00&lt;00:00, 47.61it/s]
-    average     deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name    fct
-6  0.000097  1.951100e-06  0.000093  0.000099      10      50  0.000967           184     0.000118     122  numpy
-7  0.000094  4.998209e-07  0.000093  0.000094      10      50  0.000935           184     0.000124     142  numpy
+ 62%|██████▎   | 5/8 [00:00&lt;00:00, 35.20it/s]
+100%|██████████| 8/8 [00:04&lt;00:00,  1.84it/s]
+    average  deviation  min_exec  ...  warmup_time  x_name    fct
+6  0.002392   0.002224  0.000062  ...     0.003768     122  numpy
+7  0.003237   0.003153  0.000350  ...     0.014093     142  numpy
+
+[2 rows x 11 columns]
 </pre></div>
 </div>
 </section>
 <section id="simple-multiplication">
-<h2>Simple multiplication<a class="headerlink" href="#simple-multiplication" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Simple multiplication<a class="headerlink" href="#simple-multiplication" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ctxs</span></a> <span class="o">=</span> <span class="p">[</span>
     <span class="nb">dict</span><span class="p">(</span>
         <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">va</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span></a><span class="p">),</span>
@@ -391,24 +394,26 @@ matrix multiplication. There are many ways to be slower.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/8 [00:00&lt;?, ?it/s]
- 50%|█████     | 4/8 [00:00&lt;00:00, 22.28it/s]
- 88%|████████▊ | 7/8 [00:02&lt;00:00,  2.76it/s]
-100%|██████████| 8/8 [00:03&lt;00:00,  2.28it/s]
-{&#39;average&#39;: 0.0027063118629157548,
- &#39;context_size&#39;: 184,
- &#39;deviation&#39;: 0.00017595801149480333,
- &#39;max_exec&#39;: 0.0031397583708167075,
- &#39;min_exec&#39;: 0.002544899322092533,
+ 50%|█████     | 4/8 [00:00&lt;00:00, 16.14it/s]
+ 75%|███████▌  | 6/8 [00:01&lt;00:00,  4.28it/s]
+ 88%|████████▊ | 7/8 [00:02&lt;00:00,  2.49it/s]
+100%|██████████| 8/8 [00:03&lt;00:00,  1.40it/s]
+100%|██████████| 8/8 [00:03&lt;00:00,  2.08it/s]
+{&#39;average&#39;: 0.003347606799999994,
+ &#39;context_size&#39;: 232,
+ &#39;deviation&#39;: 0.0001002722410258464,
+ &#39;max_exec&#39;: 0.003453190000000177,
+ &#39;min_exec&#39;: 0.0030643179999970014,
  &#39;number&#39;: 50,
  &#39;repeat&#39;: 10,
- &#39;ttime&#39;: 0.027063118629157546,
- &#39;warmup_time&#39;: 0.002733813598752022,
+ &#39;ttime&#39;: 0.03347606799999994,
+ &#39;warmup_time&#39;: 0.0032301000001098146,
  &#39;x_name&#39;: 142}
 </pre></div>
 </div>
 </section>
 <section id="other-scenarios">
-<h2>Other scenarios<a class="headerlink" href="#other-scenarios" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Other scenarios<a class="headerlink" href="#other-scenarios" title="Link to this heading">#</a></h2>
 <p>3 differents algorithms, each of them parallelized.
 See <a class="reference internal" href="../api/validation_cython.html#teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp" title="teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp"><code class="xref py py-func docutils literal notranslate"><span class="pre">dmul_cython_omp</span></code></a>.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">algo</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
@@ -433,57 +438,64 @@ See <a class="reference internal" href="../api/validation_cython.html#teachcompu
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>algo=0 parallel=0
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 50%|█████     | 4/8 [00:00&lt;00:00, 33.68it/s]
-100%|██████████| 8/8 [00:03&lt;00:00,  2.22it/s]
-100%|██████████| 8/8 [00:03&lt;00:00,  2.58it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name      fct
-6  0.001691   0.000090  0.001552  0.001819      10      50  0.016914           184     0.001775     122  a=0-p=0
-7  0.002835   0.000218  0.002550  0.003338      10      50  0.028353           184     0.002695     142  a=0-p=0
+ 50%|█████     | 4/8 [00:00&lt;00:00, 24.74it/s]
+ 88%|████████▊ | 7/8 [00:02&lt;00:00,  2.86it/s]
+100%|██████████| 8/8 [00:03&lt;00:00,  2.09it/s]
+   average  deviation  min_exec  ...  warmup_time  x_name      fct
+6  0.00201   0.000069  0.001909  ...     0.002264     122  a=0-p=0
+7  0.00350   0.000275  0.003198  ...     0.003187     142  a=0-p=0
+
+[2 rows x 11 columns]
 algo=0 parallel=1
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 12%|█▎        | 1/8 [00:00&lt;00:02,  2.37it/s]
- 25%|██▌       | 2/8 [00:01&lt;00:03,  1.60it/s]
- 38%|███▊      | 3/8 [00:01&lt;00:03,  1.48it/s]
- 50%|█████     | 4/8 [00:02&lt;00:02,  1.35it/s]
- 62%|██████▎   | 5/8 [00:03&lt;00:02,  1.42it/s]
- 75%|███████▌  | 6/8 [00:04&lt;00:01,  1.43it/s]
- 88%|████████▊ | 7/8 [00:04&lt;00:00,  1.43it/s]
-100%|██████████| 8/8 [00:05&lt;00:00,  1.32it/s]
-100%|██████████| 8/8 [00:05&lt;00:00,  1.41it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name      fct
-6  0.001386   0.000320  0.000839  0.001796      10      50  0.013860           184     0.000753     122  a=0-p=1
-7  0.001743   0.000253  0.001247  0.002272      10      50  0.017431           184     0.001224     142  a=0-p=1
+ 12%|█▎        | 1/8 [00:02&lt;00:16,  2.33s/it]
+ 25%|██▌       | 2/8 [00:04&lt;00:14,  2.45s/it]
+ 38%|███▊      | 3/8 [00:07&lt;00:13,  2.67s/it]
+ 50%|█████     | 4/8 [00:11&lt;00:12,  3.11s/it]
+ 62%|██████▎   | 5/8 [00:14&lt;00:09,  3.18s/it]
+ 75%|███████▌  | 6/8 [00:17&lt;00:06,  3.00s/it]
+ 88%|████████▊ | 7/8 [00:21&lt;00:03,  3.17s/it]
+100%|██████████| 8/8 [00:23&lt;00:00,  2.80s/it]
+100%|██████████| 8/8 [00:23&lt;00:00,  2.88s/it]
+    average  deviation  min_exec  ...  warmup_time  x_name      fct
+6  0.007013   0.001674  0.003740  ...     0.006802     122  a=0-p=1
+7  0.003995   0.002629  0.001525  ...     0.000819     142  a=0-p=1
+
+[2 rows x 11 columns]
 algo=1 parallel=0
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 50%|█████     | 4/8 [00:00&lt;00:00, 21.97it/s]
- 88%|████████▊ | 7/8 [00:02&lt;00:00,  2.53it/s]
-100%|██████████| 8/8 [00:03&lt;00:00,  1.71it/s]
-100%|██████████| 8/8 [00:03&lt;00:00,  2.16it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name      fct
-6  0.002336   0.000044  0.002307  0.002436      10      50  0.023364           184     0.002378     122  a=1-p=0
-7  0.002698   0.000192  0.002541  0.003169      10      50  0.026977           184     0.004061     142  a=1-p=0
+ 50%|█████     | 4/8 [00:00&lt;00:00, 27.83it/s]
+ 88%|████████▊ | 7/8 [00:01&lt;00:00,  3.04it/s]
+100%|██████████| 8/8 [00:03&lt;00:00,  2.27it/s]
+    average  deviation  min_exec  ...  warmup_time  x_name      fct
+6  0.001901   0.000141  0.001733  ...     0.001777     122  a=1-p=0
+7  0.003147   0.000174  0.002844  ...     0.002572     142  a=1-p=0
+
+[2 rows x 11 columns]
 algo=1 parallel=1
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 12%|█▎        | 1/8 [00:00&lt;00:04,  1.71it/s]
- 25%|██▌       | 2/8 [00:01&lt;00:04,  1.48it/s]
- 38%|███▊      | 3/8 [00:02&lt;00:03,  1.43it/s]
- 50%|█████     | 4/8 [00:02&lt;00:02,  1.48it/s]
- 62%|██████▎   | 5/8 [00:03&lt;00:02,  1.43it/s]
- 75%|███████▌  | 6/8 [00:04&lt;00:01,  1.31it/s]
- 88%|████████▊ | 7/8 [00:05&lt;00:00,  1.27it/s]
-100%|██████████| 8/8 [00:06&lt;00:00,  1.22it/s]
-100%|██████████| 8/8 [00:06&lt;00:00,  1.32it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name      fct
-6  0.001660   0.000242  0.001330  0.002188      10      50  0.016595           184     0.000885     122  a=1-p=1
-7  0.001789   0.000465  0.001035  0.002787      10      50  0.017889           184     0.002669     142  a=1-p=1
+ 12%|█▎        | 1/8 [00:00&lt;00:05,  1.37it/s]
+ 25%|██▌       | 2/8 [00:01&lt;00:03,  1.63it/s]
+ 38%|███▊      | 3/8 [00:01&lt;00:02,  1.95it/s]
+ 50%|█████     | 4/8 [00:02&lt;00:01,  2.08it/s]
+ 62%|██████▎   | 5/8 [00:02&lt;00:01,  1.96it/s]
+ 75%|███████▌  | 6/8 [00:03&lt;00:01,  1.51it/s]
+ 88%|████████▊ | 7/8 [00:04&lt;00:00,  1.47it/s]
+100%|██████████| 8/8 [00:05&lt;00:00,  1.34it/s]
+100%|██████████| 8/8 [00:05&lt;00:00,  1.54it/s]
+    average  deviation  min_exec  ...  warmup_time  x_name      fct
+6  0.001437   0.000166  0.001162  ...     0.000865     122  a=1-p=1
+7  0.001775   0.000353  0.001520  ...     0.000963     142  a=1-p=1
+
+[2 rows x 11 columns]
 </pre></div>
 </div>
 </section>
 <section id="one-left-issue">
-<h2>One left issue<a class="headerlink" href="#one-left-issue" title="Lien vers cette rubrique">¶</a></h2>
+<h2>One left issue<a class="headerlink" href="#one-left-issue" title="Link to this heading">#</a></h2>
 <p>Will you find it in <a class="reference internal" href="../api/validation_cython.html#teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp" title="teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp"><code class="xref py py-func docutils literal notranslate"><span class="pre">dmul_cython_omp</span></code></a>.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">va</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">vb</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span></a><span class="p">)</span>
@@ -502,19 +514,19 @@ algo=1 parallel=1
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Arrays are not almost equal to 7 decimals
 
 Mismatched elements: 3 / 15 (20%)
-Max absolute difference: 1.95960206
-Max relative difference: 2.8622679e-16
- x: array([[ 3.5026014,  1.1843984,  3.3666019, -3.6713302,  1.9596021],
-       [ 0.1630768,  0.7299838,  2.7027151, -0.9078025, -0.1672389],
-       [ 2.3259059,  2.5907322,  1.7346457, -0.3878823,  1.2806922]])
- y: array([[ 3.5026014,  1.1843984,  3.3666019, -3.6713302,  0.       ],
-       [ 0.1630768,  0.7299838,  2.7027151, -0.9078025,  0.       ],
-       [ 2.3259059,  2.5907322,  1.7346457, -0.3878823,  0.       ]])
+Max absolute difference: 7.92277843
+Max relative difference: 1.88696701e-16
+ x: array([[ 0.7306257,  3.4077594, -1.9691805,  3.2485642, -1.4901333],
+       [ 5.1295693,  0.8935477, -1.1767275, -2.6285682, -7.9227784],
+       [-1.6442586, -1.434684 , -0.0978686, -0.6146182,  1.8069683]])
+ y: array([[ 0.7306257,  3.4077594, -1.9691805,  3.2485642,  0.       ],
+       [ 5.1295693,  0.8935477, -1.1767275, -2.6285682,  0.       ],
+       [-1.6442586, -1.434684 , -0.0978686, -0.6146182,  0.       ]])
 </pre></div>
 </div>
 </section>
 <section id="other-scenarios-but-transposed">
-<h2>Other scenarios but transposed<a class="headerlink" href="#other-scenarios-but-transposed" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Other scenarios but transposed<a class="headerlink" href="#other-scenarios-but-transposed" title="Link to this heading">#</a></h2>
 <p>Same differents algorithms but the second matrix
 is transposed first: <code class="docutils literal notranslate"><span class="pre">b_trans=1</span></code>.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">algo</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
@@ -541,44 +553,59 @@ is transposed first: <code class="docutils literal notranslate"><span class="pre
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>algo=0 parallel=0 transposed
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 62%|██████▎   | 5/8 [00:00&lt;00:00, 21.00it/s]
-100%|██████████| 8/8 [00:01&lt;00:00,  3.40it/s]
-100%|██████████| 8/8 [00:01&lt;00:00,  4.04it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name        fct
-6  0.001094   0.000028  0.001080  0.001179      10      50  0.010941           184     0.001217     122  a=0-p=0-T
-7  0.001743   0.000040  0.001726  0.001863      10      50  0.017434           184     0.001793     142  a=0-p=0-T
+ 62%|██████▎   | 5/8 [00:00&lt;00:00, 21.14it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  3.86it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  4.56it/s]
+    average  deviation  min_exec  ...  warmup_time  x_name        fct
+6  0.000867   0.000089  0.000740  ...     0.001660     122  a=0-p=0-T
+7  0.001602   0.000201  0.001322  ...     0.001921     142  a=0-p=0-T
+
+[2 rows x 11 columns]
 algo=0 parallel=1 transposed
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 62%|██████▎   | 5/8 [00:00&lt;00:00, 44.05it/s]
-100%|██████████| 8/8 [00:00&lt;00:00, 19.34it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name        fct
-6  0.000200   0.000304  0.000091  0.001109      10      50  0.001998           184     0.000121     122  a=0-p=1-T
-7  0.000225   0.000304  0.000109  0.001136      10      50  0.002247           184     0.000147     142  a=0-p=1-T
+ 25%|██▌       | 2/8 [00:00&lt;00:01,  3.04it/s]
+ 38%|███▊      | 3/8 [00:01&lt;00:01,  2.99it/s]
+ 75%|███████▌  | 6/8 [00:01&lt;00:00,  5.54it/s]
+ 88%|████████▊ | 7/8 [00:01&lt;00:00,  5.69it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  5.32it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  4.79it/s]
+    average  deviation  min_exec  ...  warmup_time  x_name        fct
+6  0.000316   0.000066  0.000196  ...     0.000197     122  a=0-p=1-T
+7  0.000448   0.000082  0.000314  ...     0.000477     142  a=0-p=1-T
+
+[2 rows x 11 columns]
 algo=1 parallel=0 transposed
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 62%|██████▎   | 5/8 [00:00&lt;00:00, 20.91it/s]
-100%|██████████| 8/8 [00:01&lt;00:00,  3.39it/s]
-100%|██████████| 8/8 [00:01&lt;00:00,  4.02it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name        fct
-6  0.001108   0.000008  0.001096  0.001122      10      50  0.011084           184     0.001110     122  a=1-p=0-T
-7  0.001742   0.000016  0.001727  0.001778      10      50  0.017424           184     0.001898     142  a=1-p=0-T
+ 62%|██████▎   | 5/8 [00:00&lt;00:00, 24.13it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  4.44it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  5.24it/s]
+    average  deviation  min_exec  ...  warmup_time  x_name        fct
+6  0.000846   0.000053  0.000787  ...     0.000754     122  a=1-p=0-T
+7  0.001304   0.000049  0.001255  ...     0.001317     142  a=1-p=0-T
+
+[2 rows x 11 columns]
 algo=1 parallel=1 transposed
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 38%|███▊      | 3/8 [00:00&lt;00:00, 29.13it/s]
- 75%|███████▌  | 6/8 [00:00&lt;00:00, 13.77it/s]
-100%|██████████| 8/8 [00:00&lt;00:00,  9.71it/s]
-100%|██████████| 8/8 [00:00&lt;00:00, 11.17it/s]
-    average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  x_name        fct
-6  0.000250   0.000297  0.000149  0.001141      10      50  0.002498           184     0.000161     122  a=1-p=1-T
-7  0.000377   0.000398  0.000173  0.001179      10      50  0.003771           184     0.000163     142  a=1-p=1-T
+ 38%|███▊      | 3/8 [00:00&lt;00:00,  7.59it/s]
+ 50%|█████     | 4/8 [00:02&lt;00:02,  1.65it/s]
+ 62%|██████▎   | 5/8 [00:03&lt;00:02,  1.19it/s]
+ 75%|███████▌  | 6/8 [00:03&lt;00:01,  1.64it/s]
+ 88%|████████▊ | 7/8 [00:03&lt;00:00,  2.04it/s]
+100%|██████████| 8/8 [00:04&lt;00:00,  2.25it/s]
+100%|██████████| 8/8 [00:04&lt;00:00,  2.00it/s]
+    average  deviation  min_exec  ...  warmup_time  x_name        fct
+6  0.000431   0.000132  0.000254  ...     0.000255     122  a=1-p=1-T
+7  0.000672   0.000175  0.000408  ...     0.000373     142  a=1-p=1-T
+
+[2 rows x 11 columns]
 </pre></div>
 </div>
 </section>
 <section id="let-s-display-the-results">
-<h2>Let’s display the results<a class="headerlink" href="#let-s-display-the-results" title="Lien vers cette rubrique">¶</a></h2>
+<h2>Let’s display the results<a class="headerlink" href="#let-s-display-the-results" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.concat.html#pandas.concat" title="pandas.concat" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">concat</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dfs</span></a><span class="p">)</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span></a><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span></a><span class="p">[</span><span class="s2">&quot;x_name&quot;</span><span class="p">]</span>
 
@@ -613,7 +640,7 @@ algo=1 parallel=1 transposed
 <p>The results depends on the machine, its
 number of cores, the compilation settings
 of <a class="reference external" href="https://www.numpy.org/">numpy</a> or this module.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 28.942 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 55.111 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-benchmark-dot-mul-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/b94123fa6dd8f137e5c1df312853cb92/plot_benchmark_dot_mul.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_benchmark_dot_mul.ipynb</span></code></a></p>
@@ -700,10 +727,10 @@ of <a class="reference external" href="https://www.numpy.org/">numpy</a> or this
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=9313ea4c"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="../_static/translations.js?v=bf059b8c"></script>
+    <script src="../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>
