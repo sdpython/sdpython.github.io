@@ -72,6 +72,12 @@ CastCastBinaryPattern
 .. autoclass:: experimental_experiment.xoptim.patterns.CastCastBinaryPattern
     :members:
 
+CastOpCastPattern
++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.CastOpCastPattern
+    :members:
+
 ExpandPattern
 +++++++++++++
 
@@ -138,6 +144,12 @@ RotaryConcatPartPattern
 .. autoclass:: experimental_experiment.xoptim.patterns.RotaryConcatPartPattern
     :members:
 
+SameChildrenPattern
++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns.SameChildrenPattern
+    :members:
+
 SlicesSplitPattern
 ++++++++++++++++++
 
@@ -192,10 +204,52 @@ AddReductionScatterND
 Experimental Patterns
 =====================
 
+AddAddMulMulPattern
++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulPattern
+    :members:
+
+AddMulPattern
++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulPattern
+    :members:
+
 ConstantOfShapeScatterNDPattern
 +++++++++++++++++++++++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd.ConstantOfShapeScatterNDPattern
+    :members:
+
+MulSigmoidPattern
++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.binary_operators.MulSigmoidPattern
+    :members:
+
+NegXplus1Pattern
+++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.binary_operators.NegXplus1Pattern
+    :members:
+
+ReplaceZeroPattern
+++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.where_replace.ReplaceZeroPattern
+    :members:
+
+SimpleRotaryPattern
++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.simple_rotary.SimpleRotaryPattern
+    :members:
+
+TriMatrixPattern
+++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_exp.constants.TriMatrixPattern
     :members:
 
 .. _l-pattern-optimization-ort:
@@ -213,6 +267,18 @@ FusedMatMulPattern
 ++++++++++++++++++
 
 .. autoclass:: experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulPattern
+    :members:
+
+FusedMatMulx2Pattern
+++++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_ort.fused_matmul.FusedMatMulx2Pattern
+    :members:
+
+GatherGradPattern
++++++++++++++++++
+
+.. autoclass:: experimental_experiment.xoptim.patterns_ort.gather_grad.GatherGradPattern
     :members:
 
 SoftmaxGradPattern

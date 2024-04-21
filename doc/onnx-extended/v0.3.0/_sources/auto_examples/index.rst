@@ -120,6 +120,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This configuration happens in a Llama model.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_transpose_2d_cast_cuda_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_op_transpose_2d_cast_cuda.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Fuse Tranpose and Cast on CUDA</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example compares different equations for function numpy.einsum. It compares numpy implemen...">
 
 .. only:: html
@@ -285,6 +302,7 @@ Examples Gallery
    /auto_examples/plot_bench_sparse_access
    /auto_examples/plot_op_tfidfvectorizer_sparse
    /auto_examples/plot_bench_gemm_f8
+   /auto_examples/plot_op_transpose_2d_cast_cuda
    /auto_examples/plot_op_einsum
    /auto_examples/plot_op_mul_cuda
    /auto_examples/plot_op_conv_denorm

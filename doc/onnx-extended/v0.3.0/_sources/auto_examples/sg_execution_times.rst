@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:10.225** total execution time for 15 files **from auto_examples**:
+**00:10.035** total execution time for 16 files **from auto_examples**:
 
 .. container::
 
@@ -32,11 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``plot_bench_gemm_ort.py``)
-     - 01:54.521
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py` (``plot_op_tree_ensemble_implementations.py``)
-     - 00:15.704
+   * - :ref:`sphx_glr_auto_examples_plot_op_transpose_2d_cast_cuda.py` (``plot_op_transpose_2d_cast_cuda.py``)
+     - 00:10.035
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``plot_bench_cpu.py``)
      - 00:00.000
@@ -45,6 +42,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py` (``plot_bench_gemm_f8.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``plot_bench_gemm_ort.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_sparse_access.py` (``plot_bench_sparse_access.py``)
@@ -66,6 +66,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tfidfvectorizer_sparse.py` (``plot_op_tfidfvectorizer_sparse.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py` (``plot_op_tree_ensemble_implementations.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_optim.py` (``plot_op_tree_ensemble_optim.py``)

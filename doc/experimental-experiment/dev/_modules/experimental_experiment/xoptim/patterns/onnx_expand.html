@@ -434,6 +434,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_op_types</span> <span class="o">=</span> <span class="n">unary_like_op_types</span><span class="p">()</span>
+    <span class="n">_other_types</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;NegXplus1&quot;</span><span class="p">,</span> <span class="s2">&quot;ReplaceZero&quot;</span><span class="p">}</span>
 
 <div class="viewcode-block" id="ExpandSwapPattern.match">
 <a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.ExpandSwapPattern.match">[docs]</a>
@@ -462,7 +463,9 @@
         <span class="p">),</span> <span class="s2">&quot;The previous test should have cleared out this case.&quot;</span>
         <span class="n">next_node</span> <span class="o">=</span> <span class="n">next_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">next_node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_types</span> <span class="ow">or</span> <span class="n">next_node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">next_node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_types</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">next_node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_types</span> <span class="ow">or</span> <span class="n">next_node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">):</span>
             <span class="c1"># Not an unary wise operator.</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
@@ -483,6 +486,7 @@
             <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span>
             <span class="p">[</span><span class="n">new_name</span><span class="p">],</span>
             <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">domain</span><span class="o">=</span><span class="n">next_node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
             <span class="n">doc_string</span><span class="o">=</span><span class="n">next_node</span><span class="o">.</span><span class="n">doc_string</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">unary</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>

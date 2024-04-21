@@ -257,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_sparse_access.html">Evaluating random access for sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_transpose_2d_cast_cuda.html">Fuse Tranpose and Cast on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_op_conv_denorm.html">How float format has an impact on speed computation</a></li>
@@ -327,6 +328,27 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
+<section id="onnx-extended-ortops-optim-cuda-addmul">
+<h3>onnx_extended.ortops.optim.cuda.AddMul<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-addmul" title="Link to this heading">#</a></h3>
+<p>Two consecutive element-wise Add, Mul assuming
+all tensors have the same shape (no broadcast).</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>A (T): tensor of type T</p></li>
+<li><p>B (T): tensor of type T</p></li>
+<li><p>C (T): tensor of type T</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>(A+B)*C (T): element-wise matrix multiplication</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
 <section id="onnx-extended-ortops-optim-cuda-addadd">
 <h3>onnx_extended.ortops.optim.cuda.AddAdd<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-addadd" title="Link to this heading">#</a></h3>
 <p>Two consecutive element-wise addition assuming
@@ -335,13 +357,56 @@ all tensors have the same shape (no broadcast).</p>
 <p>CUDAExecutionProvider</p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>A: tensor of type T</p></li>
-<li><p>B: tensor of type T</p></li>
-<li><p>C: tensor of type T</p></li>
+<li><p>A (T): tensor of type T</p></li>
+<li><p>B (T): tensor of type T</p></li>
+<li><p>C (T): tensor of type T</p></li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
-<li><p>ABC (T): element-wise matrix multiplication</p></li>
+<li><p>A+B+C (T): element-wise matrix multiplication</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-addaddadd">
+<h3>onnx_extended.ortops.optim.cuda.AddAddAdd<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-addaddadd" title="Link to this heading">#</a></h3>
+<p>Three consecutive element-wise addition assuming
+all tensors have the same shape (no broadcast).</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>A (T): tensor of type T</p></li>
+<li><p>B (T): tensor of type T</p></li>
+<li><p>C (T): tensor of type T</p></li>
+<li><p>D (T): tensor of type T</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>A+B+C+D (T): element-wise matrix multiplication</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-muladd">
+<h3>onnx_extended.ortops.optim.cuda.MulAdd<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-muladd" title="Link to this heading">#</a></h3>
+<p>Two consecutive element-wise Mul, Add assuming
+all tensors have the same shape (no broadcast).</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>A (T): tensor of type T</p></li>
+<li><p>B (T): tensor of type T</p></li>
+<li><p>C (T): tensor of type T</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>A*B+C (T): element-wise matrix multiplication</p></li>
 </ul>
 <p><strong>Constraints</strong></p>
 <ul class="simple">
@@ -356,9 +421,9 @@ all tensors have the same shape (no broadcast).</p>
 <p>CUDAExecutionProvider</p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>A: tensor of type T</p></li>
-<li><p>B: tensor of type T</p></li>
-<li><p>C: tensor of type T</p></li>
+<li><p>A (T): tensor of type T</p></li>
+<li><p>B (T): tensor of type T</p></li>
+<li><p>C (T): tensor of type T</p></li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
@@ -369,6 +434,107 @@ all tensors have the same shape (no broadcast).</p>
 <li><p>T: float, float16</p></li>
 </ul>
 </section>
+<section id="onnx-extended-ortops-optim-cuda-mulmulmul">
+<h3>onnx_extended.ortops.optim.cuda.MulMulMul<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-mulmulmul" title="Link to this heading">#</a></h3>
+<p>Two consecutive element-wise multiplication assuming
+all tensors have the same shape (no broadcast).</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>A (T): tensor of type T</p></li>
+<li><p>B (T): tensor of type T</p></li>
+<li><p>C (T): tensor of type T</p></li>
+<li><p>D (T): tensor of type T</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>ABCD (T): element-wise matrix multiplication</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-mulsoftmax">
+<h3>onnx_extended.ortops.optim.cuda.MulSoftmax<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-mulsoftmax" title="Link to this heading">#</a></h3>
+<p>MulSoftmax, equivalent to Mul(X, Softmax(X))</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T): tensor</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Z (T): result</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-negxplus1">
+<h3>onnx_extended.ortops.optim.cuda.NegXplus1<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-negxplus1" title="Link to this heading">#</a></h3>
+<p>1 - X</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T): tensor of type T</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Z (T): result</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-replacezero">
+<h3>onnx_extended.ortops.optim.cuda.ReplaceZero<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-replacezero" title="Link to this heading">#</a></h3>
+<p>MulSoftmax, equivalent to Where(X == 0, cst, X)</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T): tensor of type T</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Z (T): updated tensor</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-rotary">
+<h3>onnx_extended.ortops.optim.cuda.Rotary<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-rotary" title="Link to this heading">#</a></h3>
+<p>Rotary, equivalent to (side==”RIGHT”)</p>
+<ul class="simple">
+<li><p>Split(X, axis=-1) -&gt; X1, X2</p></li>
+<li><p>Concat(-X2, X1)</p></li>
+</ul>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T): tensor</p></li>
+<li><p>splits (I): split size on the last dimension</p></li>
+</ul>
+<p>Only splitting in half is implemented.</p>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Z (T): result</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T: float, float16</p></li>
+<li><p>I: int64</p></li>
+</ul>
+</section>
 <section id="onnx-extended-ortops-optim-cuda-scatterndofshape">
 <h3>onnx_extended.ortops.optim.cuda.ScatterNDOfShape<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-scatterndofshape" title="Link to this heading">#</a></h3>
 <p>ConstantOfShape + ScatterND</p>
@@ -376,13 +542,78 @@ all tensors have the same shape (no broadcast).</p>
 <p>CUDAExecutionProvider</p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>shape: tensor of type I</p></li>
-<li><p>indices: tensor of type I</p></li>
-<li><p>updates: tensor of type I</p></li>
+<li><p>shape (I): tensor of type I</p></li>
+<li><p>indices (I): tensor of type I</p></li>
+<li><p>updates (T): tensor of type T</p></li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
-<li><p>Z (T): updates tensor</p></li>
+<li><p>Z (T): updated tensor</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>I: int64</p></li>
+<li><p>T: float, float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-transpose2dcast16">
+<h3>onnx_extended.ortops.optim.cuda.Transpose2DCast16<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-transpose2dcast16" title="Link to this heading">#</a></h3>
+<p>Transposes a 2D matrix the cast it into float16.</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T1): tensor</p></li>
+</ul>
+<p>Only splitting in half is implemented.</p>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Z (T2): result</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T1: float32</p></li>
+<li><p>T2: float16</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-transpose2dcast32">
+<h3>onnx_extended.ortops.optim.cuda.Transpose2DCast32<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-transpose2dcast32" title="Link to this heading">#</a></h3>
+<p>Transposes a 2D matrix the cast it into float32.</p>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>X (T1): tensor</p></li>
+</ul>
+<p>Only splitting in half is implemented.</p>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Z (T2): result</p></li>
+</ul>
+<p><strong>Constraints</strong></p>
+<ul class="simple">
+<li><p>T1: float16</p></li>
+<li><p>T2: float32</p></li>
+</ul>
+</section>
+<section id="onnx-extended-ortops-optim-cuda-trimatrix">
+<h3>onnx_extended.ortops.optim.cuda.TriMatrix<a class="headerlink" href="#onnx-extended-ortops-optim-cuda-trimatrix" title="Link to this heading">#</a></h3>
+<p>Creates a matrix.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span><span class="p">[</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">upper</span>
+<span class="n">mat</span><span class="p">[</span><span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">diag</span>
+<span class="n">mat</span><span class="p">[</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">lower</span>
+</pre></div>
+</div>
+<p><strong>Provider</strong></p>
+<p>CUDAExecutionProvider</p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>shape (I): tensor of type I</p></li>
+<li><p>cst (T): lower, diag, upper values</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>Z (T): matrix</p></li>
 </ul>
 <p><strong>Constraints</strong></p>
 <ul class="simple">
