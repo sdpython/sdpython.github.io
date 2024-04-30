@@ -15,6 +15,7 @@ Examples Gallery
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -287,6 +288,8 @@ Examples Gallery
       <div class="sphx-glr-thumbnail-title">Evaluate different implementation of TreeEnsemble</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

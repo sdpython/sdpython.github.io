@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Fusing multiplication operators on CUDA" href="plot_op_mul_cuda.html" /><link rel="prev" title="Profiles a simple onnx graph including a singleGemm" href="plot_profile_gemm_ort.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>Compares implementations of Einsum - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
@@ -117,6 +117,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -307,14 +309,14 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-op-einsum-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="compares-implementations-of-einsum">
-<span id="l-plot-op-einsum"></span><span id="sphx-glr-auto-examples-plot-op-einsum-py"></span><h1>Compares implementations of Einsum<a class="headerlink" href="#compares-implementations-of-einsum" title="Link to this heading">#</a></h1>
+<span id="l-plot-op-einsum"></span><span id="sphx-glr-auto-examples-plot-op-einsum-py"></span><h1>Compares implementations of Einsum<a class="headerlink" href="#compares-implementations-of-einsum" title="Link to this heading">¶</a></h1>
 <p>This example compares different equations for function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.einsum.html#numpy.einsum" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.einsum()</span></code></a>.
 It compares <em>numpy</em> implementation to a custom implementation,
 <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> implementation and <a class="reference external" href="https://optimized-einsum.readthedocs.io/en/stable/">opt-einsum</a> optimisation.
@@ -325,7 +327,7 @@ happens on the last axis of both matrices. It only implements
 matrix multiplication. We also measure the improvment made with
 function <a class="reference internal" href="../api/tools_einsum.html#onnx_extended.tools.einsum.einsum_fct.einsum" title="onnx_extended.tools.einsum.einsum_fct.einsum"><code class="xref py py-func docutils literal notranslate"><span class="pre">einsum</span></code></a>.</p>
 <section id="available-optimisation">
-<h2>Available optimisation<a class="headerlink" href="#available-optimisation" title="Link to this heading">#</a></h2>
+<h2>Available optimisation<a class="headerlink" href="#available-optimisation" title="Link to this heading">¶</a></h2>
 <p>The code shows which optimisation is used for the custom
 implementation, <em>AVX</em> or <em>SSE</em> and the number of available processors,
 equal to the default number of used threads to parallelize.</p>
@@ -355,7 +357,7 @@ equal to the default number of used threads to parallelize.</p>
 </div>
 </section>
 <section id="einsum-common-code">
-<h2>Einsum: common code<a class="headerlink" href="#einsum-common-code" title="Link to this heading">#</a></h2>
+<h2>Einsum: common code<a class="headerlink" href="#einsum-common-code" title="Link to this heading">¶</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">einsum</span> <span class="k">as</span> <span class="n">tf_einsum</span><span class="p">,</span> <span class="n">convert_to_tensor</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -520,7 +522,7 @@ equal to the default number of used threads to parallelize.</p>
 </div>
 </section>
 <section id="first-equation-bsnh-btnh-bnts">
-<h2>First equation: bsnh,btnh-&gt;bnts<a class="headerlink" href="#first-equation-bsnh-btnh-bnts" title="Link to this heading">#</a></h2>
+<h2>First equation: bsnh,btnh-&gt;bnts<a class="headerlink" href="#first-equation-bsnh-btnh-bnts" title="Link to this heading">¶</a></h2>
 <p>The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
@@ -594,7 +596,7 @@ node [shape=record];
 </div>
 </section>
 <section id="second-equation-bshn-bthn-bnts">
-<h2>Second equation: bshn,bthn-&gt;bnts<a class="headerlink" href="#second-equation-bshn-bthn-bnts" title="Link to this heading">#</a></h2>
+<h2>Second equation: bshn,bthn-&gt;bnts<a class="headerlink" href="#second-equation-bshn-bthn-bnts" title="Link to this heading">¶</a></h2>
 <p>The summation does not happen on the last axis but
 on the previous one.
 Is it worth transposing before doing the summation…
@@ -679,7 +681,7 @@ node [shape=record];
 </div>
 </section>
 <section id="third-equation-bhsn-bhtn-bnts">
-<h2>Third equation: bhsn,bhtn-&gt;bnts<a class="headerlink" href="#third-equation-bhsn-bhtn-bnts" title="Link to this heading">#</a></h2>
+<h2>Third equation: bhsn,bhtn-&gt;bnts<a class="headerlink" href="#third-equation-bhsn-bhtn-bnts" title="Link to this heading">¶</a></h2>
 <p>The summation does not happen on the last axis but
 on the second one. It is worth transposing before multiplying.
 The decomposition of this equation without einsum function gives
@@ -762,7 +764,7 @@ node [shape=record];
 </div>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">¶</a></h2>
 <p>pytorch seems quite efficient on these examples.
 The custom implementation was a way to investigate
 the implementation of einsum and find some ways to optimize it.</p>
@@ -864,6 +866,6 @@ the implementation of einsum and find some ways to optimize it.</p>
 </div><script src="../_static/documentation_options.js?v=83a61292"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

@@ -340,7 +340,8 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    Two consecutive element-wise Add, Mul assuming</span>
-<span class="sd">    all tensors have the same shape (no broadcast).</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
 
 <span class="sd">    **Provider**</span>
 <span class="sd">    </span>
@@ -354,7 +355,7 @@
 
 <span class="sd">    **Outputs**</span>
 
-<span class="sd">    * (A+B)*C (T): element-wise matrix multiplication</span>
+<span class="sd">    * (A+B)*C (T): element-wise</span>
 
 <span class="sd">    **Constraints**</span>
 
@@ -365,7 +366,8 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    Two consecutive element-wise addition assuming</span>
-<span class="sd">    all tensors have the same shape (no broadcast).</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
 
 <span class="sd">    **Provider**</span>
 <span class="sd">    </span>
@@ -379,7 +381,7 @@
 
 <span class="sd">    **Outputs**</span>
 
-<span class="sd">    * A+B+C (T): element-wise matrix multiplication</span>
+<span class="sd">    * A+B+C (T): element-wise</span>
 
 <span class="sd">    **Constraints**</span>
 
@@ -390,7 +392,8 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    Three consecutive element-wise addition assuming</span>
-<span class="sd">    all tensors have the same shape (no broadcast).</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
 
 <span class="sd">    **Provider**</span>
 <span class="sd">    </span>
@@ -405,7 +408,36 @@
 
 <span class="sd">    **Outputs**</span>
 
-<span class="sd">    * A+B+C+D (T): element-wise matrix multiplication</span>
+<span class="sd">    * A+B+C+D (T): element-wise</span>
+
+<span class="sd">    **Constraints**</span>
+
+<span class="sd">    * T: float, float16</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    onnx_extended.ortops.optim.cuda.AddSharedInput</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Parallel Additions with one common input.</span>
+<span class="sd">    Support for Broadcast is limited</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
+<span class="sd">    </span>
+<span class="sd">    Computes A + B, A + C.</span>
+
+<span class="sd">    **Provider**</span>
+<span class="sd">    </span>
+<span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">    </span>
+<span class="sd">    **Inputs**</span>
+<span class="sd">    </span>
+<span class="sd">    * A (T): tensor of type T</span>
+<span class="sd">    * B (T): tensor of type T</span>
+<span class="sd">    * C (T): tensor of type T</span>
+
+<span class="sd">    **Outputs**</span>
+
+<span class="sd">    * A+B (T): element-wise</span>
+<span class="sd">    * A+C (T): element-wise</span>
 
 <span class="sd">    **Constraints**</span>
 
@@ -416,7 +448,8 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    Two consecutive element-wise Mul, Add assuming</span>
-<span class="sd">    all tensors have the same shape (no broadcast).</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
 
 <span class="sd">    **Provider**</span>
 <span class="sd">    </span>
@@ -430,7 +463,7 @@
 
 <span class="sd">    **Outputs**</span>
 
-<span class="sd">    * A*B+C (T): element-wise matrix multiplication</span>
+<span class="sd">    * A*B+C (T): element-wise</span>
 
 <span class="sd">    **Constraints**</span>
 
@@ -441,7 +474,8 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    Two consecutive element-wise multiplication assuming</span>
-<span class="sd">    all tensors have the same shape (no broadcast).</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
 
 <span class="sd">    **Provider**</span>
 <span class="sd">    </span>
@@ -455,7 +489,7 @@
 
 <span class="sd">    **Outputs**</span>
 
-<span class="sd">    * ABC (T): element-wise matrix multiplication</span>
+<span class="sd">    * ABC (T): element-wise</span>
 
 <span class="sd">    **Constraints**</span>
 
@@ -466,7 +500,8 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    Two consecutive element-wise multiplication assuming</span>
-<span class="sd">    all tensors have the same shape (no broadcast).</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
 
 <span class="sd">    **Provider**</span>
 <span class="sd">    </span>
@@ -481,7 +516,7 @@
 
 <span class="sd">    **Outputs**</span>
 
-<span class="sd">    * ABCD (T): element-wise matrix multiplication</span>
+<span class="sd">    * ABCD (T): element-wise</span>
 
 <span class="sd">    **Constraints**</span>
 
@@ -504,6 +539,65 @@
 <span class="sd">    **Outputs**</span>
 
 <span class="sd">    * Z (T): result</span>
+
+<span class="sd">    **Constraints**</span>
+
+<span class="sd">    * T: float, float16</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    onnx_extended.ortops.optim.cuda.MulSharedInput</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Parallel Multiplications with one common input.</span>
+<span class="sd">    Support for Broadcast is limited</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
+<span class="sd">    </span>
+<span class="sd">    Computes A * B, A * C.</span>
+
+<span class="sd">    **Provider**</span>
+<span class="sd">    </span>
+<span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">    </span>
+<span class="sd">    **Inputs**</span>
+<span class="sd">    </span>
+<span class="sd">    * A (T): tensor of type T</span>
+<span class="sd">    * B (T): tensor of type T</span>
+<span class="sd">    * C (T): tensor of type T</span>
+
+<span class="sd">    **Outputs**</span>
+
+<span class="sd">    * A*B (T): element-wise</span>
+<span class="sd">    * A*C (T): element-wise</span>
+
+<span class="sd">    **Constraints**</span>
+
+<span class="sd">    * T: float, float16</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    onnx_extended.ortops.optim.cuda.MulSub</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Two consecutive element-wise Mul, Sub assuming</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
+
+<span class="sd">    **Provider**</span>
+<span class="sd">    </span>
+<span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">    </span>
+<span class="sd">    **Attribute**</span>
+<span class="sd">    </span>
+<span class="sd">    * negative: to switch the order of the subtraction</span>
+<span class="sd">    </span>
+<span class="sd">    **Inputs**</span>
+<span class="sd">    </span>
+<span class="sd">    * A (T): tensor of type T</span>
+<span class="sd">    * B (T): tensor of type T</span>
+<span class="sd">    * C (T): tensor of type T</span>
+
+<span class="sd">    **Outputs**</span>
+
+<span class="sd">    * (A*B)-C (T): element-wise</span>
 
 <span class="sd">    **Constraints**</span>
 
@@ -605,6 +699,36 @@
 <span class="sd">    **Constraints**</span>
 
 <span class="sd">    * I: int64</span>
+<span class="sd">    * T: float, float16</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    onnx_extended.ortops.optim.cuda.SubMul</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Two consecutive element-wise Sub, Mul assuming</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
+
+<span class="sd">    **Provider**</span>
+<span class="sd">    </span>
+<span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">    </span>
+<span class="sd">    **Attribute**</span>
+<span class="sd">    </span>
+<span class="sd">    * negative: to switch the order of the subtraction</span>
+<span class="sd">    </span>
+<span class="sd">    **Inputs**</span>
+<span class="sd">    </span>
+<span class="sd">    * A (T): tensor of type T</span>
+<span class="sd">    * B (T): tensor of type T</span>
+<span class="sd">    * C (T): tensor of type T</span>
+
+<span class="sd">    **Outputs**</span>
+
+<span class="sd">    * (A-B)*C (T): element-wise</span>
+
+<span class="sd">    **Constraints**</span>
+
 <span class="sd">    * T: float, float16</span>
 <span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
 <span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
