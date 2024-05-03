@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>experimental_experiment.torch_interpreter.onnx_export - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
@@ -117,6 +117,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -195,7 +197,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_model_container.html">TorchModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_pattern.html">graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_patterns.html">Optimization Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/order_optimization.html">order_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
@@ -216,8 +221,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
@@ -235,6 +240,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/scripts.html">Interesting scripts or command lines</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../times.html">Times</a></li>
@@ -276,13 +282,15 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter.onnx_export</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">time</span>
+<span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
 <span class="kn">from</span> <span class="nn">onnx.defs</span> <span class="kn">import</span> <span class="n">onnx_opset_version</span>
+<span class="kn">from</span> <span class="nn">onnx.model_container</span> <span class="kn">import</span> <span class="n">ModelContainer</span>
 <span class="kn">from</span> <span class="nn">..xbuilder.graph_builder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">OptimizationOptions</span>
 
 
@@ -516,6 +524,16 @@
     <span class="k">return</span> <span class="n">graph_module</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">interpreter</span>
 
 
+<span class="k">def</span> <span class="nf">_model_signature</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Signature</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">torch</span>
+
+    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">forward</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="k">else</span> <span class="n">model</span>
+    <span class="p">)</span>
+
+
 <div class="viewcode-block" id="to_onnx">
 <a class="viewcode-back" href="../../../api/onnx_export.html#experimental_experiment.torch_interpreter.onnx_export.to_onnx">[docs]</a>
 <span class="k">def</span> <span class="nf">to_onnx</span><span class="p">(</span>
@@ -531,8 +549,13 @@
     <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">dispatcher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Dispatcher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">large_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">external_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
     <span class="n">api_two</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">GraphBuilder</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">ModelContainer</span><span class="p">],</span>
+    <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">ModelContainer</span><span class="p">],</span> <span class="n">GraphBuilder</span><span class="p">],</span>
+<span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Exports a torch model into ONNX using</span>
 <span class="sd">    `dynamo export</span>
@@ -551,6 +574,11 @@
 <span class="sd">    :param dynamic_shapes: see :epkg:`torch.export.export`</span>
 <span class="sd">    :param optimize: optimize the model before exporting into onnx</span>
 <span class="sd">    :param dispatcher: see :class:`experimental_experiment.torch_interpreter.Dispatcher`</span>
+<span class="sd">    :param large_model: if True returns a :class:`onnx.model_container.ModelContainer`,</span>
+<span class="sd">        it lets the user to decide later if the weights should be part of the model</span>
+<span class="sd">        or saved as external weights</span>
+<span class="sd">    :param external_threshold: if large_model is True, every tensor above this limit</span>
+<span class="sd">        is stored as external</span>
 <span class="sd">    :param api_two: use ``torch._dynamo.export`` instead of ``torch.export.export``</span>
 <span class="sd">    :return: onnx model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -561,7 +589,25 @@
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[to_onnx] build the graph module&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] build the graph module with input_names=</span><span class="si">{</span><span class="n">input_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">input_names</span><span class="p">:</span>
+        <span class="c1"># Let&#39;s rewrite the dynamic shapes with the true name.</span>
+        <span class="n">new_dynamic_shapes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">_model_signature</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+        <span class="n">true_input_names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">name</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">default</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">replacements</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">input_names</span><span class="p">,</span> <span class="n">true_input_names</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">new_dynamic_shapes</span><span class="p">[</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">dynamic_shapes</span> <span class="o">=</span> <span class="n">new_dynamic_shapes</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">dynamic_shapes</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">graph_module</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">interpreter</span> <span class="o">=</span> <span class="n">_make_builder_interpreter</span><span class="p">(</span>
         <span class="n">mod</span><span class="o">=</span><span class="n">mod</span><span class="p">,</span>
@@ -591,12 +637,21 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[to_onnx] start conversion to onnx (before optimization)&quot;</span><span class="p">)</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">t</span>
 
-    <span class="n">onx</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span><span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">)</span>
+    <span class="n">onx</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span>
+        <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
+        <span class="n">large_model</span><span class="o">=</span><span class="n">large_model</span><span class="p">,</span>
+        <span class="n">external_threshold</span><span class="o">=</span><span class="n">external_threshold</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">proto</span> <span class="o">=</span> <span class="n">onx</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">)</span> <span class="k">else</span> <span class="n">onx</span><span class="o">.</span><span class="n">model_proto</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;[to_onnx] to_onnx done in </span><span class="si">{</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> s and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;[to_onnx] to_onnx done in </span><span class="si">{</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">s &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> nodes, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span><span class="si">}</span><span class="s2"> initializers, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">)</span><span class="si">}</span><span class="s2"> inputs, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">)</span><span class="si">}</span><span class="s2"> outputs&quot;</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">())</span>
@@ -640,6 +695,6 @@
 </div><script src="../../../_static/documentation_options.js?v=a1637f0b"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>experimental_experiment.torch_interpreter._aten_functions - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
@@ -117,6 +117,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -195,7 +197,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_model_container.html">TorchModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_pattern.html">graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_patterns.html">Optimization Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/order_optimization.html">order_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
@@ -216,8 +221,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
@@ -235,6 +240,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/scripts.html">Interesting scripts or command lines</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../times.html">Times</a></li>
@@ -276,12 +282,12 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter._aten_functions</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">TensorProto</span>
-<span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
+<span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span> <span class="n">make_tensor</span>
 <span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">from_array</span>
 <span class="kn">from</span> <span class="nn">..xbuilder.shape_helper</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">all_float</span><span class="p">,</span>
@@ -1871,6 +1877,46 @@
 
 
 
+<div class="viewcode-block" id="aten_layer_norm">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_layer_norm">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_layer_norm</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">normalized_shape</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bias</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-05</span><span class="p">,</span>
+    <span class="n">cudnn_enable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># not used</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;layer_norm&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="s2">&quot;layer_norm&quot;</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">normalized_shape</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+
+    <span class="n">two_cst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">eps_cst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">eps</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMeanAnyOpset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sub</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">variance</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ReduceMeanAnyOpset</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">two_cst</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span> <span class="n">axes</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">)</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="n">eps_cst</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">normalized</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">normalized</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">normalized</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">normalized</span><span class="p">,</span> <span class="n">bias</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># rdenominator = g.op.Reciprocal(denominator)</span>
+    <span class="k">return</span> <span class="n">normalized</span>  <span class="c1"># , mean, rdenominator</span></div>
+
+
+
 <div class="viewcode-block" id="aten_leaky_relu">
 <a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_leaky_relu">[docs]</a>
 <span class="k">def</span> <span class="nf">aten_leaky_relu</span><span class="p">(</span>
@@ -2922,6 +2968,249 @@
 
 
 
+<span class="k">def</span> <span class="nf">_attention_scale</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_attention_scale&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">last</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">scale</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">query</span><span class="p">)))</span>
+
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">clast</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">itype</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Reciprocal</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">clast</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_causal_attention_mask</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_causal_attention_mask&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+    <span class="n">attn_mask</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="ow">and</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="n">shape_query</span><span class="p">,</span> <span class="n">shape_key</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">query</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape_query</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape_key</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape_query</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">shape_key</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">attn_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">attn_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># dynamic path</span>
+        <span class="n">shape_query</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">shape_key</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">dquery</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">shape_query</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">dkey</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Gather</span><span class="p">(</span><span class="n">shape_key</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Concat</span><span class="p">(</span><span class="n">dquery</span><span class="p">,</span> <span class="n">dkey</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">attn_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
+            <span class="n">size</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">from_array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="p">)</span>
+
+    <span class="n">tri_attn_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Trilu</span><span class="p">(</span><span class="n">attn_mask</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">new_attn_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Equal</span><span class="p">(</span><span class="n">tri_attn_mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_attn_mask</span>
+
+
+<div class="viewcode-block" id="aten_scaled_dot_product_attention">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_scaled_dot_product_attention">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_scaled_dot_product_attention</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">attn_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dropout_p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">is_causal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;aten_scaled_dot_product_attention&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="s2">&quot;scaled_dot_product_attention&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="ow">not</span> <span class="n">is_causal</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">is_causal</span> <span class="ow">and</span> <span class="n">attn_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;is_causal and attn_mask cannot be set at the same time</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">_attention_scale</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_causal</span><span class="p">:</span>
+        <span class="n">attn_mask</span> <span class="o">=</span> <span class="n">_causal_attention_mask</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="n">key_transposed_axes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">key</span><span class="p">)))</span>
+    <span class="n">key_transposed_axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">key_transposed_axes</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">key_transposed_axes</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+        <span class="n">key_transposed_axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">key_transposed</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Transpose</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="n">key_transposed_axes</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">query_scaled</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">key_transposed_scaled</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">key_transposed</span><span class="p">,</span> <span class="n">sc</span><span class="p">)</span>
+    <span class="n">mul_qk</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">query_scaled</span><span class="p">,</span> <span class="n">key_transposed_scaled</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">itype</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">attn_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mul_qk_add</span> <span class="o">=</span> <span class="n">mul_qk</span>
+    <span class="k">elif</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">attn_mask</span><span class="p">)</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span>
+        <span class="n">attn_mask</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span>
+            <span class="n">attn_mask</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">mul_qk_add</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">mul_qk</span><span class="p">,</span> <span class="n">attn_mask</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mul_qk_add</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">mul_qk</span><span class="p">,</span> <span class="n">attn_mask</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">attn_weight</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">mul_qk_add</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dropout_p</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">attn_weight</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span>
+            <span class="n">attn_weight</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dropout_p</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">MatMul</span><span class="p">(</span><span class="n">attn_weight</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_aten__scaled_dot_product_flash_attention_fillin_empty_outputs</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_scaled_dot_product_flash_attention_fillin_empty_outputs&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+
+    <span class="n">query_first_three_dims</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">value_ints</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">value_ints</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">logsumexp</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">query</span><span class="p">))),</span>
+        <span class="n">query_first_three_dims</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">)</span>
+
+    <span class="n">empty_tensor_int</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="s2">&quot;Empty_INTS&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[]),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+            <span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">to</span><span class="o">=</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="p">)</span>
+    <span class="n">empty_tensor_float</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">ConstantOfShape</span><span class="p">(</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">make_tensor</span><span class="p">(</span><span class="s2">&quot;Empty_FLOATS&quot;</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[]),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">outputs</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+    <span class="p">)</span>
+    <span class="n">empty_int</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">value_int</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">outputs</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+
+    <span class="k">return</span> <span class="n">logsumexp</span><span class="p">,</span> <span class="n">empty_tensor_int</span><span class="p">,</span> <span class="n">empty_int</span><span class="p">,</span> <span class="n">empty_tensor_float</span>
+
+
+<div class="viewcode-block" id="aten__scaled_dot_product_flash_attention_for_cpu">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten__scaled_dot_product_flash_attention_for_cpu">[docs]</a>
+<span class="k">def</span> <span class="nf">aten__scaled_dot_product_flash_attention_for_cpu</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dropout_p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">is_causal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">attn_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_debug_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_scaled_dot_product_flash_attention_for_cpu_default&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_scaled_dot_product_flash_attention&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">return_debug_mask</span><span class="p">,</span> <span class="s2">&quot;Not implemented when return_debug_mask is false.&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">aten_scaled_dot_product_attention</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span>
+        <span class="n">sts</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="n">query</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+        <span class="n">attn_mask</span><span class="o">=</span><span class="n">attn_mask</span><span class="p">,</span>
+        <span class="n">dropout_p</span><span class="o">=</span><span class="n">dropout_p</span><span class="p">,</span>
+        <span class="n">is_causal</span><span class="o">=</span><span class="n">is_causal</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_scaled_dot_product_flash_attention_for_cpu_default&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># The followings are not comsumed by the graph on llama 3 at least.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># only need 2</span>
+        <span class="n">query_first_three_dims</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Slice</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Shape</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">value_ints</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">value_ints</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">logsumexp</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">query</span><span class="p">))),</span>
+            <span class="n">query_first_three_dims</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">logsumexp</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">8</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Unexpected number of outputs </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;outputs=</span><span class="si">{</span><span class="n">outputs</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="p">(</span>
+        <span class="n">logsumexp</span><span class="p">,</span>
+        <span class="n">empty_tensor_int</span><span class="p">,</span>
+        <span class="n">empty_int</span><span class="p">,</span>
+        <span class="n">empty_tensor_float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">_aten__scaled_dot_product_flash_attention_fillin_empty_outputs</span><span class="p">(</span>
+        <span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="p">[</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">8</span><span class="p">]],</span> <span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">)</span>
+
+    <span class="n">empty_tensor_int2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">empty_tensor_int</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">empty_int2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">empty_int</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">empty_tensor_int2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">empty_tensor_int</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">result</span><span class="p">,</span>  <span class="c1"># 0</span>
+        <span class="n">logsumexp</span><span class="p">,</span>  <span class="c1"># 1</span>
+        <span class="n">empty_tensor_int</span><span class="p">,</span>  <span class="c1"># 2</span>
+        <span class="n">empty_tensor_int2</span><span class="p">,</span>  <span class="c1"># 3</span>
+        <span class="n">empty_int</span><span class="p">,</span>  <span class="c1"># 4</span>
+        <span class="n">empty_int2</span><span class="p">,</span>  <span class="c1"># 5</span>
+        <span class="n">empty_tensor_int</span><span class="p">,</span>  <span class="c1"># 6</span>
+        <span class="n">empty_tensor_int2</span><span class="p">,</span>  <span class="c1"># 7</span>
+        <span class="n">empty_tensor_float</span><span class="p">,</span>  <span class="c1"># 8</span>
+    <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="aten_select_int">
 <a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_select_int">[docs]</a>
 <span class="k">def</span> <span class="nf">aten_select_int</span><span class="p">(</span>
@@ -3443,18 +3732,34 @@
     <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
     <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;softmax&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;softmax&quot;</span>
     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">itype</span> <span class="o">=</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
-        <span class="n">xc</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">)</span>
+        <span class="n">xc</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Cast</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">itype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">itype</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">xc</span> <span class="o">=</span> <span class="n">x</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
         <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">itype</span><span class="o">=</span><span class="n">itype</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span></div>
+
+
+
+<div class="viewcode-block" id="aten_softmax_int">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_softmax_int">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_softmax_int</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="s2">&quot;softmax&quot;</span>
+    <span class="k">return</span> <span class="n">aten_softmax</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;softmax_int&quot;</span><span class="p">)</span></div>
 
 
 
@@ -3785,30 +4090,6 @@
 
 
 
-<div class="viewcode-block" id="aten_threshold_backward">
-<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_threshold_backward">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_threshold_backward</span><span class="p">(</span>
-    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
-    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">grad_output</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
-    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;threshold_backward&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
-    <span class="s2">&quot;lessorequal&quot;</span>
-    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">grad_output</span><span class="p">))</span>
-    <span class="n">le</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">LessOrEqual</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span>
-        <span class="n">le</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">grad_output</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
-    <span class="p">)</span>
-    <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">le</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
-        <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">res</span></div>
-
-
-
 <div class="viewcode-block" id="aten_tan">
 <a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_tan">[docs]</a>
 <span class="k">def</span> <span class="nf">aten_tan</span><span class="p">(</span>
@@ -3948,6 +4229,30 @@
 
 
 
+<div class="viewcode-block" id="aten_threshold_backward">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_threshold_backward">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_threshold_backward</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">grad_output</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;threshold_backward&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="s2">&quot;lessorequal&quot;</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">grad_output</span><span class="p">))</span>
+    <span class="n">le</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">LessOrEqual</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">threshold</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Where</span><span class="p">(</span>
+        <span class="n">le</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">grad_output</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">)</span>
+    <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">le</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+        <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+
 <div class="viewcode-block" id="aten_transpose">
 <a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_transpose">[docs]</a>
 <span class="k">def</span> <span class="nf">aten_transpose</span><span class="p">(</span>
@@ -3986,6 +4291,29 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;transpose&quot;</span>
     <span class="k">return</span> <span class="n">aten_transpose</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">dim0</span><span class="p">,</span> <span class="n">dim1</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="aten_tril">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_tril">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_tril</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">diagonal</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;tril&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">diagonal</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Trilu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Trilu</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">upper</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+        <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
 
 
 
@@ -4152,6 +4480,6 @@
 </div><script src="../../../_static/documentation_options.js?v=a1637f0b"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

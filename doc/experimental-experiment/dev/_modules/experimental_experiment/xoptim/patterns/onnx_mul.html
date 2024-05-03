@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>experimental_experiment.xoptim.patterns.onnx_mul - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
@@ -117,6 +117,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -195,7 +197,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/torch_model_container.html">TorchModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/graph_builder_pattern.html">graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/graph_builder_patterns.html">Optimization Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/order_optimization.html">order_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/aten_function.html">aten_functions</a></li>
@@ -216,8 +221,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
@@ -235,6 +240,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../bench/scripts.html">Interesting scripts or command lines</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../times.html">Times</a></li>
@@ -276,7 +282,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns.onnx_mul</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
@@ -287,15 +293,53 @@
 <span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
+<div class="viewcode-block" id="DivByMulScalarPattern">
+<a class="viewcode-back" href="../../../../api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.DivByMulScalarPattern">[docs]</a>
+<span class="k">class</span> <span class="nc">DivByMulScalarPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replaces Div/Scalar by Mul*Scalar.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">matched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Div&quot;</span><span class="p">}</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+        <span class="n">csta</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cst_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cst</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">csta</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">csta</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="s2">&quot;Mul&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cst_name</span><span class="p">],</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-Cst&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span></div>
+
+
+
 <div class="viewcode-block" id="MulMulMulScalarPattern">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.MulMulMulScalarPattern">[docs]</a>
+<a class="viewcode-back" href="../../../../api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.MulMulMulScalarPattern">[docs]</a>
 <span class="k">class</span> <span class="nc">MulMulMulScalarPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces the sequence {Div | Mul} and {Div | Mul} + {Div | Mul} with {Div | Mul} Mul.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MulMulMulScalarPattern.match">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.MulMulMulScalarPattern.match">[docs]</a>
     <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
@@ -338,11 +382,8 @@
 
         <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">,</span> <span class="n">node_left</span><span class="p">,</span> <span class="n">node_right</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="MulMulMulScalarPattern.apply">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.MulMulMulScalarPattern.apply">[docs]</a>
     <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
@@ -384,12 +425,11 @@
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">[</span><span class="n">new_node</span><span class="p">,</span> <span class="n">new_node2</span><span class="p">]</span></div>
-</div>
 
 
 
 <div class="viewcode-block" id="SwitchOrderBinaryPattern">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern">[docs]</a>
+<a class="viewcode-back" href="../../../../api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern">[docs]</a>
 <span class="k">class</span> <span class="nc">SwitchOrderBinaryPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    If it makes sense, switches the order of two multiplications</span>
@@ -397,8 +437,6 @@
 <span class="sd">    a an insignificant number.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SwitchOrderBinaryPattern.BroadcastType">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.BroadcastType">[docs]</a>
     <span class="k">class</span> <span class="nc">BroadcastType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Kind of broadcast.</span>
@@ -407,11 +445,8 @@
         <span class="n">FALSE</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">TRUE</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">MAYBE</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="n">BOTH</span> <span class="o">=</span> <span class="mi">3</span></div>
+        <span class="n">BOTH</span> <span class="o">=</span> <span class="mi">3</span>
 
-
-<div class="viewcode-block" id="SwitchOrderBinaryPattern.match">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.match">[docs]</a>
     <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
@@ -506,8 +541,7 @@
 
         <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">,</span> <span class="n">left</span> <span class="k">if</span> <span class="n">choose</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="n">right</span> <span class="k">if</span> <span class="n">choose</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span></div>
-
+        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_align_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sh</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">rk</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -517,8 +551,6 @@
             <span class="k">return</span> <span class="n">sh</span>
         <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="n">rk</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">sh</span><span class="p">))</span> <span class="o">+</span> <span class="n">sh</span>
 
-<div class="viewcode-block" id="SwitchOrderBinaryPattern.switch_order">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.switch_order">[docs]</a>
     <span class="k">def</span> <span class="nf">switch_order</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">shape_left</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
@@ -596,11 +628,8 @@
             <span class="c1"># take place here.</span>
 
         <span class="c1"># No change.</span>
-        <span class="k">return</span> <span class="mi">0</span></div>
+        <span class="k">return</span> <span class="mi">0</span>
 
-
-<div class="viewcode-block" id="SwitchOrderBinaryPattern.apply">
-<a class="viewcode-back" href="../../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns.SwitchOrderBinaryPattern.apply">[docs]</a>
     <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
@@ -692,7 +721,6 @@
             <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">op1</span><span class="p">,</span> <span class="n">op2</span><span class="p">]</span></div>
-</div>
 
 </pre></div>
         </article>
@@ -729,6 +757,6 @@
 </div><script src="../../../../_static/documentation_options.js?v=a1637f0b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

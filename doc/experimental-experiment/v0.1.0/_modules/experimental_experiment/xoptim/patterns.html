@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>experimental_experiment.xoptim.patterns - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
@@ -117,6 +117,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -195,7 +197,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_model_container.html">TorchModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_pattern.html">graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_patterns.html">Optimization Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/order_optimization.html">order_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
@@ -216,8 +221,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
@@ -235,6 +240,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/scripts.html">Interesting scripts or command lines</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../times.html">Times</a></li>
@@ -276,7 +282,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
@@ -284,16 +290,26 @@
 <span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">MatchResult</span>
 
 <span class="c1"># onnx patterns</span>
-<span class="kn">from</span> <span class="nn">.onnx_any</span> <span class="kn">import</span> <span class="n">SameChildrenPattern</span>
-<span class="kn">from</span> <span class="nn">.onnx_cast</span> <span class="kn">import</span> <span class="n">CastPattern</span><span class="p">,</span> <span class="n">CastCastBinaryPattern</span><span class="p">,</span> <span class="n">CastOpCastPattern</span>
+<span class="kn">from</span> <span class="nn">.onnx_any</span> <span class="kn">import</span> <span class="n">IdentityPattern</span><span class="p">,</span> <span class="n">SameChildrenPattern</span>
+<span class="kn">from</span> <span class="nn">.onnx_cast</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CastPattern</span><span class="p">,</span>
+    <span class="n">CastCastBinaryPattern</span><span class="p">,</span>
+    <span class="n">CastOpCastPattern</span><span class="p">,</span>
+    <span class="n">ComputationCastOpCastPattern</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.onnx_expand</span> <span class="kn">import</span> <span class="n">ExpandPattern</span><span class="p">,</span> <span class="n">ExpandBroadcastPattern</span><span class="p">,</span> <span class="n">ExpandSwapPattern</span>
-<span class="kn">from</span> <span class="nn">.onnx_mul</span> <span class="kn">import</span> <span class="n">MulMulMulScalarPattern</span><span class="p">,</span> <span class="n">SwitchOrderBinaryPattern</span>
+<span class="kn">from</span> <span class="nn">.onnx_mul</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DivByMulScalarPattern</span><span class="p">,</span>
+    <span class="n">MulMulMulScalarPattern</span><span class="p">,</span>
+    <span class="n">SwitchOrderBinaryPattern</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.onnx_matmul</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">MatMulReshape2Of3Pattern</span><span class="p">,</span>
     <span class="n">ReshapeMatMulReshapePattern</span><span class="p">,</span>
     <span class="n">TransposeMatMulPattern</span><span class="p">,</span>
     <span class="n">TransposeReshapeMatMulPattern</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.onnx_reduce</span> <span class="kn">import</span> <span class="n">ReduceSumNormalizePattern</span>
 <span class="kn">from</span> <span class="nn">.onnx_reshape</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ReduceReshapePattern</span><span class="p">,</span>
     <span class="n">Reshape2Of3Pattern</span><span class="p">,</span>
@@ -361,11 +377,15 @@
         <span class="n">CastPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">CastCastBinaryPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">CastOpCastPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
+        <span class="n">ComputationCastOpCastPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
+        <span class="n">DivByMulScalarPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ExpandPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ExpandBroadcastPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ExpandSwapPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
+        <span class="n">IdentityPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">MulMulMulScalarPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ReduceReshapePattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
+        <span class="n">ReduceSumNormalizePattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ReshapeMatMulReshapePattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">Reshape2Of3Pattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
         <span class="n">ReshapeReshapeBinaryPattern</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">),</span>
@@ -417,6 +437,6 @@
 </div><script src="../../../_static/documentation_options.js?v=a1637f0b"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

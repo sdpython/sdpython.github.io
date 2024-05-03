@@ -9,7 +9,10 @@ API
     gradient
     reference
     graph_builder
+    torch_model_container
     graph_builder_pattern
+    graph_builder_patterns
+    order_optimization
     interpreter
     onnx_export
     aten_function

@@ -10,6 +10,7 @@ Gallerie d'exemples
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -333,6 +334,8 @@ Gallerie d'exemples
       <div class="sphx-glr-thumbnail-title">Sérialisation</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

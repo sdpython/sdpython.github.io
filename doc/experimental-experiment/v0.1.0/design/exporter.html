@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Pattern Optimizer" href="optimizer.html" /><link rel="prev" title="Design" href="index.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>Custom Exporter - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -118,6 +118,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -197,6 +199,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/graph_builder.html">graph_builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/graph_builder_pattern.html">graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_builder_patterns.html">Optimization Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/order_optimization.html">order_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
@@ -217,8 +221,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
@@ -236,6 +240,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bench/scripts.html">Interesting scripts or command lines</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../times.html">Times</a></li>
@@ -278,9 +283,9 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="custom-exporter">
-<h1>Custom Exporter<a class="headerlink" href="#custom-exporter" title="Link to this heading">#</a></h1>
+<h1>Custom Exporter<a class="headerlink" href="#custom-exporter" title="Link to this heading">¶</a></h1>
 <p>The exporter implemented in this package is built upon a classic
 architecture with two main classes:</p>
 <ul class="simple">
@@ -307,7 +312,7 @@ a backend using <a class="reference external" href="https://numpy.org/">numpy</a
 This class extends <a class="reference external" href="https://onnx.ai/onnx/api/reference.html#onnx.reference.ReferenceEvaluator" title="(in ONNX v1.17.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceEvaluator</span></code></a>
 from package <a class="reference external" href="https://onnx.ai/onnx/">onnx</a>.</p>
 <section id="one-objective-speed">
-<h2>One objective: SPEED<a class="headerlink" href="#one-objective-speed" title="Link to this heading">#</a></h2>
+<h2>One objective: SPEED<a class="headerlink" href="#one-objective-speed" title="Link to this heading">¶</a></h2>
 <p>The only objective for this exporter is <strong>speed</strong>. It must be fast as the
 size of the model to convert grows fast. The exporter may be one piece
 of the backend calling <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>. This only objective implies
@@ -335,12 +340,12 @@ there are not enabled by default. The user must know if the exporter
 follows a different way to produce the model.</p>
 </section>
 <section id="graphbuilder">
-<h2>GraphBuilder<a class="headerlink" href="#graphbuilder" title="Link to this heading">#</a></h2>
+<h2>GraphBuilder<a class="headerlink" href="#graphbuilder" title="Link to this heading">¶</a></h2>
 <p><a class="reference internal" href="../api/graph_builder.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>
 starts from empty or take an existing graph as an input.
 In that case, the builder is usually used by an optimizer.</p>
 <section id="internal-containers">
-<h3>Internal containers<a class="headerlink" href="#internal-containers" title="Link to this heading">#</a></h3>
+<h3>Internal containers<a class="headerlink" href="#internal-containers" title="Link to this heading">¶</a></h3>
 <p>Beside the onnx structure, the builder holds information about
 the requested opsets and the dynamic shapes.
 During the conversion, it stores informations about</p>
@@ -384,7 +389,7 @@ The following container keep track of this information.</p>
 </ul>
 </section>
 <section id="api">
-<h3>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h3>
+<h3>API<a class="headerlink" href="#api" title="Link to this heading">¶</a></h3>
 <p>The following methods are used to add onnx elements to the graph.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../api/graph_builder.html#experimental_experiment.xbuilder.GraphBuilder.get_opset" title="experimental_experiment.xbuilder.GraphBuilder.get_opset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_opset</span></code></a>:
@@ -452,7 +457,7 @@ makes a shape from a tuple having integer, string, or <cite>torch.SymInt</cite><
 </div>
 </section>
 <section id="example">
-<h3>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h3>
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h3>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">TensorProto</span>
@@ -488,11 +493,11 @@ makes a shape from a tuple having integer, string, or <cite>torch.SymInt</cite><
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[[</span><span class="mf">1.356</span> <span class="mf">1.456</span> <span class="mf">1.556</span><span class="p">]</span>
-     <span class="p">[</span><span class="mf">1.61</span>  <span class="mf">1.71</span>  <span class="mf">1.81</span> <span class="p">]</span>
-     <span class="p">[</span><span class="mf">1.009</span> <span class="mf">1.109</span> <span class="mf">1.209</span><span class="p">]</span>
-     <span class="p">[</span><span class="mf">0.918</span> <span class="mf">1.018</span> <span class="mf">1.118</span><span class="p">]</span>
-     <span class="p">[</span><span class="mf">1.021</span> <span class="mf">1.121</span> <span class="mf">1.221</span><span class="p">]]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[[</span><span class="mf">0.917</span> <span class="mf">1.017</span> <span class="mf">1.117</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.246</span> <span class="mf">1.346</span> <span class="mf">1.446</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.464</span> <span class="mf">1.564</span> <span class="mf">1.664</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.333</span> <span class="mf">1.433</span> <span class="mf">1.533</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.332</span> <span class="mf">1.432</span> <span class="mf">1.532</span><span class="p">]]</span>
     <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">18</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s3x1_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
@@ -516,7 +521,7 @@ only happens when method
 is called.</p>
 </section>
 <section id="debugging">
-<h3>Debugging<a class="headerlink" href="#debugging" title="Link to this heading">#</a></h3>
+<h3>Debugging<a class="headerlink" href="#debugging" title="Link to this heading">¶</a></h3>
 <p>An exception is raised an error is detected and it displays the result
 of <a class="reference internal" href="../api/graph_builder.html#experimental_experiment.xbuilder.GraphBuilder.get_debug_msg" title="experimental_experiment.xbuilder.GraphBuilder.get_debug_msg"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_debug_msg</span></code></a>.</p>
 <p>&lt;&lt;&lt;</p>
@@ -544,10 +549,10 @@ of <a class="reference internal" href="../api/graph_builder.html#experimental_ex
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">20</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">17</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140204390925504</span>
-      <span class="n">File</span> <span class="s2">&quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1892</span><span class="p">,</span> <span class="ow">in</span> <span class="n">make_node</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">17</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139655731452160</span>
+      <span class="n">File</span> <span class="s2">&quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1908</span><span class="p">,</span> <span class="ow">in</span> <span class="n">make_node</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="p">(</span>
-    <span class="ne">AssertionError</span><span class="p">:</span> <span class="n">Input</span> <span class="s1">&#39;bias&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">exist</span> <span class="k">for</span> <span class="n">operator</span> <span class="s1">&#39;Add&#39;</span> <span class="p">(</span><span class="n">IJO</span><span class="p">)</span>
+    <span class="ne">AssertionError</span><span class="p">:</span> <span class="n">Input</span> <span class="s1">&#39;bias&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">exist</span> <span class="k">for</span> <span class="n">operator</span> <span class="s1">&#39;Add&#39;</span> <span class="p">(</span><span class="n">WAY</span><span class="p">)</span>
     <span class="o">--</span><span class="n">DEBUG</span><span class="o">--</span>
     <span class="o">--</span><span class="n">SHAPE</span><span class="o">--</span>
     <span class="n">dynamic_objects</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">}</span>
@@ -555,14 +560,19 @@ of <a class="reference internal" href="../api/graph_builder.html#experimental_ex
     <span class="n">dynamic_alias</span><span class="o">=</span><span class="p">{}</span>
     <span class="n">dynamic_shapes</span><span class="o">=</span><span class="kc">None</span>
     <span class="n">_known_value_shape</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">_known_shapes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span>
+     <span class="s1">&#39;_onx_matmul0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+     <span class="s1">&#39;init1_s1x3_&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+     <span class="s1">&#39;init1_s3x1_&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">_known_ranks</span><span class="o">=</span><span class="p">{}</span>
     <span class="o">--</span><span class="n">TORCH</span><span class="o">-</span><span class="n">SHAPES</span><span class="o">--</span>
     <span class="o">--</span><span class="n">ONNX</span><span class="o">--</span>
     <span class="o">--</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">IJO</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">]</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">axb</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">IJO</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s3x1_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">IJO</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s1x3_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">IJO</span><span class="o">.</span><span class="n">make_node</span><span class="p">]</span> <span class="n">N1</span>              <span class="p">[</span><span class="c1">##:#  ] MatMul:[&#39;X&#39;, &#39;init1_s3x1_&#39;]-&gt;[&#39;_onx_matmul0&#39;]</span>
-    <span class="n">Completed</span> <span class="k">with</span> <span class="mi">2</span> <span class="n">initializers</span> <span class="ow">and</span> <span class="mi">1</span> <span class="n">nodes</span><span class="o">.</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">WAY</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">]</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">axb</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">WAY</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s3x1_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">WAY</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s1x3_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">WAY</span><span class="o">.</span><span class="n">make_node</span><span class="p">]</span> <span class="n">N1</span>              <span class="p">[</span><span class="c1">##:#  ] MatMul:[&#39;X&#39;, &#39;init1_s3x1_&#39;]-&gt;[&#39;_onx_matmul0&#39;]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">WAY</span><span class="p">]</span> <span class="n">Message</span> <span class="n">completed</span><span class="p">,</span> <span class="n">there</span> <span class="n">are</span> <span class="mi">2</span> <span class="n">initializers</span><span class="p">,</span> <span class="mi">1</span> <span class="n">nodes</span><span class="p">,</span> <span class="mi">1</span> <span class="n">inputs</span><span class="p">,</span> <span class="mi">1</span> <span class="n">outputs</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>It shows the information currently available while building the model.
@@ -599,10 +609,10 @@ When the type is specified, it shows the following:</p>
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">21</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">18</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140202447393600</span>
-      <span class="n">File</span> <span class="s2">&quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1892</span><span class="p">,</span> <span class="ow">in</span> <span class="n">make_node</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">18</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139655730585280</span>
+      <span class="n">File</span> <span class="s2">&quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1908</span><span class="p">,</span> <span class="ow">in</span> <span class="n">make_node</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="p">(</span>
-    <span class="ne">AssertionError</span><span class="p">:</span> <span class="n">Input</span> <span class="s1">&#39;bias&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">exist</span> <span class="k">for</span> <span class="n">operator</span> <span class="s1">&#39;Add&#39;</span> <span class="p">(</span><span class="n">POA</span><span class="p">)</span>
+    <span class="ne">AssertionError</span><span class="p">:</span> <span class="n">Input</span> <span class="s1">&#39;bias&#39;</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">exist</span> <span class="k">for</span> <span class="n">operator</span> <span class="s1">&#39;Add&#39;</span> <span class="p">(</span><span class="n">EOM</span><span class="p">)</span>
     <span class="o">--</span><span class="n">DEBUG</span><span class="o">--</span>
     <span class="o">--</span><span class="n">SHAPE</span><span class="o">--</span>
     <span class="n">dynamic_objects</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">}</span>
@@ -610,14 +620,19 @@ When the type is specified, it shows the following:</p>
     <span class="n">dynamic_alias</span><span class="o">=</span><span class="p">{}</span>
     <span class="n">dynamic_shapes</span><span class="o">=</span><span class="kc">None</span>
     <span class="n">_known_value_shape</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">_known_shapes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span>
+     <span class="s1">&#39;_onx_matmul0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+     <span class="s1">&#39;init1_s1x3_&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+     <span class="s1">&#39;init1_s3x1_&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+    <span class="n">_known_ranks</span><span class="o">=</span><span class="p">{}</span>
     <span class="o">--</span><span class="n">TORCH</span><span class="o">-</span><span class="n">SHAPES</span><span class="o">--</span>
     <span class="o">--</span><span class="n">ONNX</span><span class="o">--</span>
     <span class="o">--</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">POA</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">]</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">axb</span><span class="p">]</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">POA</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s3x1_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">POA</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s1x3_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
-    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">POA</span><span class="o">.</span><span class="n">make_node</span><span class="p">]</span> <span class="n">N1</span>              <span class="p">[</span><span class="c1">##:#  ] MatMul:[&#39;X&#39;, &#39;init1_s3x1_&#39;]-&gt;[&#39;_onx_matmul0&#39;]</span>
-    <span class="n">Completed</span> <span class="k">with</span> <span class="mi">2</span> <span class="n">initializers</span> <span class="ow">and</span> <span class="mi">1</span> <span class="n">nodes</span><span class="o">.</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">EOM</span><span class="o">.</span><span class="n">make_tensor_input</span><span class="p">]</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">axb</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">EOM</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s3x1_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">EOM</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">]</span> <span class="n">init1_s1x3_</span><span class="p">[</span><span class="n">float32</span><span class="p">:</span><span class="n">float32</span><span class="p">:[</span><span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6000000238418579</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">EOM</span><span class="o">.</span><span class="n">make_node</span><span class="p">]</span> <span class="n">N1</span>              <span class="p">[</span><span class="c1">##:#  ] MatMul:[&#39;X&#39;, &#39;init1_s3x1_&#39;]-&gt;[&#39;_onx_matmul0&#39;]</span>
+    <span class="p">[</span><span class="n">GraphBuilder</span><span class="o">-</span><span class="n">EOM</span><span class="p">]</span> <span class="n">Message</span> <span class="n">completed</span><span class="p">,</span> <span class="n">there</span> <span class="n">are</span> <span class="mi">2</span> <span class="n">initializers</span><span class="p">,</span> <span class="mi">1</span> <span class="n">nodes</span><span class="p">,</span> <span class="mi">1</span> <span class="n">inputs</span><span class="p">,</span> <span class="mi">1</span> <span class="n">outputs</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>It shows <code class="docutils literal notranslate"><span class="pre">U</span></code> when the type and rank are known, <code class="docutils literal notranslate"><span class="pre">#</span></code> if the type and shape are known.</p>
@@ -626,7 +641,7 @@ When the type is specified, it shows the following:</p>
 </div>
 </section>
 <section id="simplified-api">
-<h3>Simplified API<a class="headerlink" href="#simplified-api" title="Link to this heading">#</a></h3>
+<h3>Simplified API<a class="headerlink" href="#simplified-api" title="Link to this heading">¶</a></h3>
 <p>For the most common nodes, there exists a shortcut
 to make the syntax shorter.</p>
 <p>&lt;&lt;&lt;</p>
@@ -654,11 +669,11 @@ to make the syntax shorter.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[[</span><span class="mf">1.18</span>  <span class="mf">1.28</span>  <span class="mf">1.38</span> <span class="p">]</span>
-     <span class="p">[</span><span class="mf">1.417</span> <span class="mf">1.517</span> <span class="mf">1.617</span><span class="p">]</span>
-     <span class="p">[</span><span class="mf">0.725</span> <span class="mf">0.825</span> <span class="mf">0.925</span><span class="p">]</span>
-     <span class="p">[</span><span class="mf">0.735</span> <span class="mf">0.835</span> <span class="mf">0.935</span><span class="p">]</span>
-     <span class="p">[</span><span class="mf">1.656</span> <span class="mf">1.756</span> <span class="mf">1.856</span><span class="p">]]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[[</span><span class="mf">1.408</span> <span class="mf">1.508</span> <span class="mf">1.608</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">1.507</span> <span class="mf">1.607</span> <span class="mf">1.707</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.679</span> <span class="mf">0.779</span> <span class="mf">0.879</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.924</span> <span class="mf">1.024</span> <span class="mf">1.124</span><span class="p">]</span>
+     <span class="p">[</span><span class="mf">0.968</span> <span class="mf">1.068</span> <span class="mf">1.168</span><span class="p">]]</span>
     <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">18</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;X&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
     <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;init1_s3x1_&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
@@ -670,7 +685,7 @@ to make the syntax shorter.</p>
 </div>
 </section>
 <section id="optimizations">
-<h3>Optimizations<a class="headerlink" href="#optimizations" title="Link to this heading">#</a></h3>
+<h3>Optimizations<a class="headerlink" href="#optimizations" title="Link to this heading">¶</a></h3>
 <p><a class="reference internal" href="../api/graph_builder.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>
 implements three basic optimizations algorithms not using patterns.
 Except constant folding, they are called by default.</p>
@@ -685,7 +700,7 @@ replaces constant whenever it is possible and it makes sense</p></li>
 </section>
 </section>
 <section id="dynamointerpreter">
-<h2>DynamoInterpreter<a class="headerlink" href="#dynamointerpreter" title="Link to this heading">#</a></h2>
+<h2>DynamoInterpreter<a class="headerlink" href="#dynamointerpreter" title="Link to this heading">¶</a></h2>
 <p>Class <a class="reference internal" href="../api/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter" title="experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a>
 walks through a graph module and selects the best translation
 for every part. It is a sequence of calls to internal functions
@@ -710,16 +725,34 @@ called <a class="reference external" href="https://pytorch.org/cppdocs/api/names
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">ExportedProgram</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/.</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.10</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">torch</span><span class="o">/</span><span class="n">_custom_ops</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">253</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="n">was</span> <span class="n">renamed</span> <span class="n">to</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">register_fake</span><span class="o">.</span> <span class="n">Please</span> <span class="n">use</span> <span class="n">that</span> <span class="n">instead</span><span class="p">;</span> <span class="n">we</span> <span class="n">will</span> <span class="n">remove</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">version</span> <span class="n">of</span> <span class="n">PyTorch</span><span class="o">.</span>
+      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">impl_abstract</span><span class="p">(</span><span class="n">qualname</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">_stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ExportedProgram</span><span class="p">:</span>
         <span class="k">class</span> <span class="nc">GraphModule</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-            <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg0_1</span><span class="p">:</span> <span class="s2">&quot;f32[1, 3]&quot;</span><span class="p">,</span> <span class="n">arg1_1</span><span class="p">:</span> <span class="s2">&quot;f32[1]&quot;</span><span class="p">,</span> <span class="n">arg2_1</span><span class="p">:</span> <span class="s2">&quot;f32[5, 3]&quot;</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_linear_weight</span><span class="p">:</span> <span class="s2">&quot;f32[1, 3]&quot;</span><span class="p">,</span> <span class="n">p_linear_bias</span><span class="p">:</span> <span class="s2">&quot;f32[1]&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;f32[5, 3]&quot;</span><span class="p">):</span>
                 <span class="c1"># </span>
-                <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;f32[3, 1]&quot;</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">arg0_1</span><span class="p">);</span>  <span class="n">arg0_1</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">addmm</span><span class="p">:</span> <span class="s2">&quot;f32[5, 1]&quot;</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">addmm</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">arg1_1</span><span class="p">,</span> <span class="n">arg2_1</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>  <span class="n">arg1_1</span> <span class="o">=</span> <span class="n">arg2_1</span> <span class="o">=</span> <span class="n">t</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">t</span><span class="p">:</span> <span class="s2">&quot;f32[3, 1]&quot;</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">p_linear_weight</span><span class="p">);</span>  <span class="n">p_linear_weight</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">addmm</span><span class="p">:</span> <span class="s2">&quot;f32[5, 1]&quot;</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">addmm</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">p_linear_bias</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>  <span class="n">p_linear_bias</span> <span class="o">=</span> <span class="n">x</span> <span class="o">=</span> <span class="n">t</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">sigmoid</span><span class="p">:</span> <span class="s2">&quot;f32[5, 1]&quot;</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">sigmoid</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">addmm</span><span class="p">);</span>  <span class="n">addmm</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">return</span> <span class="p">(</span><span class="n">sigmoid</span><span class="p">,)</span>
                 
-    <span class="n">Graph</span> <span class="n">signature</span><span class="p">:</span> <span class="n">ExportGraphSignature</span><span class="p">(</span><span class="n">input_specs</span><span class="o">=</span><span class="p">[</span><span class="n">InputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">InputKind</span><span class="o">.</span><span class="n">PARAMETER</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg0_1&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;linear.weight&#39;</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">InputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">InputKind</span><span class="o">.</span><span class="n">PARAMETER</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg1_1&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;linear.bias&#39;</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">InputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">InputKind</span><span class="o">.</span><span class="n">USER_INPUT</span><span class="p">:</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg2_1&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">None</span><span class="p">)],</span> <span class="n">output_specs</span><span class="o">=</span><span class="p">[</span><span class="n">OutputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">OutputKind</span><span class="o">.</span><span class="n">USER_OUTPUT</span><span class="p">:</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)])</span>
+    <span class="n">Graph</span> <span class="n">signature</span><span class="p">:</span> <span class="n">ExportGraphSignature</span><span class="p">(</span><span class="n">input_specs</span><span class="o">=</span><span class="p">[</span><span class="n">InputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">InputKind</span><span class="o">.</span><span class="n">PARAMETER</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_weight&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;linear.weight&#39;</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">InputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">InputKind</span><span class="o">.</span><span class="n">PARAMETER</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_bias&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;linear.bias&#39;</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">InputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">InputKind</span><span class="o">.</span><span class="n">USER_INPUT</span><span class="p">:</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">None</span><span class="p">)],</span> <span class="n">output_specs</span><span class="o">=</span><span class="p">[</span><span class="n">OutputSpec</span><span class="p">(</span><span class="n">kind</span><span class="o">=&lt;</span><span class="n">OutputKind</span><span class="o">.</span><span class="n">USER_OUTPUT</span><span class="p">:</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="n">TensorArgument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)])</span>
     <span class="n">Range</span> <span class="n">constraints</span><span class="p">:</span> <span class="p">{}</span>
 </pre></div>
 </div>
@@ -745,7 +778,7 @@ which includes the following piece of code:</p>
 </pre></div>
 </div>
 <section id="a-converting-function">
-<h3>A converting function<a class="headerlink" href="#a-converting-function" title="Link to this heading">#</a></h3>
+<h3>A converting function<a class="headerlink" href="#a-converting-function" title="Link to this heading">¶</a></h3>
 <p>Let’s consider the easy converting following function.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">aten_addmm</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
@@ -775,7 +808,7 @@ the output names to make sure the name are the same than the one in the graph
 provided by torch. It helps debugging.</p>
 </section>
 <section id="shapes-and-types">
-<h3>Shapes And Types<a class="headerlink" href="#shapes-and-types" title="Link to this heading">#</a></h3>
+<h3>Shapes And Types<a class="headerlink" href="#shapes-and-types" title="Link to this heading">¶</a></h3>
 <p>The function can assume the type is always filled.
 The shapes should be set but in this case, only the rank is provided.
 It is not mandatory but it helps the following functions to take
@@ -798,7 +831,7 @@ no information about shape and type. Otherwise, the interpreter
 gives them to the graph builder through <code class="docutils literal notranslate"><span class="pre">sts</span></code>.</p>
 </section>
 <section id="different-implementations">
-<h3>Different Implementations<a class="headerlink" href="#different-implementations" title="Link to this heading">#</a></h3>
+<h3>Different Implementations<a class="headerlink" href="#different-implementations" title="Link to this heading">¶</a></h3>
 <p>In the following case, the function adds a node <code class="docutils literal notranslate"><span class="pre">Identity</span></code>
 or <code class="docutils literal notranslate"><span class="pre">CastLike</span></code> depending on the types. <code class="docutils literal notranslate"><span class="pre">CastLike</span></code> is only needed when types
 are different. And the graph builder will remove the <code class="docutils literal notranslate"><span class="pre">Identity</span></code> node.</p>
@@ -819,13 +852,13 @@ are different. And the graph builder will remove the <code class="docutils liter
 </div>
 </section>
 <section id="conventions">
-<h3>Conventions<a class="headerlink" href="#conventions" title="Link to this heading">#</a></h3>
+<h3>Conventions<a class="headerlink" href="#conventions" title="Link to this heading">¶</a></h3>
 <p>The node should be given name based on the aten functions they
 are part of. Doing that helps the developper to find where a failing
 node comes from.</p>
 </section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h3>
 <p>All the available functions are listed in one the those three pages:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../api/aten_function.html#l-aten-functions"><span class="std std-ref">aten_functions</span></a>: functions</p></li>
@@ -837,9 +870,9 @@ to the list of known converter functions.</p>
 </section>
 </section>
 <section id="pratice">
-<h2>Pratice<a class="headerlink" href="#pratice" title="Link to this heading">#</a></h2>
+<h2>Pratice<a class="headerlink" href="#pratice" title="Link to this heading">¶</a></h2>
 <section id="id1">
-<h3>Example<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>Example<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
@@ -867,32 +900,32 @@ to the list of known converter functions.</p>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">18</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg0_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.567</span><span class="p">,</span>  <span class="mf">0.187</span><span class="p">,</span>  <span class="mf">0.044</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg1_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.45</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">Gemm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">arg0_1</span><span class="p">,</span> <span class="n">arg1_1</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">addmm</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_weight&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.508</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.353</span><span class="p">,</span>  <span class="mf">0.223</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_bias&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.008</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">Gemm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p_linear_weight</span><span class="p">,</span> <span class="n">p_linear_bias</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">addmm</span>
       <span class="n">Sigmoid</span><span class="p">(</span><span class="n">addmm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">output_0</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;output_0&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>And visually:</p>
-<div class="graphviz"><img src="../_images/graphviz-579ca1caa8f23e5e1cf2219f076a1b8818852090.png" alt="digraph{
-  orientation=portrait;
+<div class="graphviz"><img src="../_images/graphviz-271af6bad22d4f106bfbff8f287ddc01fb6bc4fe.png" alt="digraph{
   ranksep=0.25;
-  nodesep=0.05;
+  orientation=portrait;
   size=7;
+  nodesep=0.05;
 
   x [shape=box color=red label=&quot;x\nTensorProto.FLOAT\nshape=[5, 3]&quot; fontsize=10];
 
   output_0 [shape=box color=green label=&quot;output_0\nTensorProto.FLOAT\nshape=[5, 1]&quot; fontsize=10];
 
-  arg0_1 [shape=box label=&quot;arg0_1\nfloat32((1, 3))\n[[ 0.28860658  0.33027643 -0.00249651]]&quot; fontsize=10];
-  arg1_1 [shape=box label=&quot;arg1_1\nfloat32((1,))\n[-0.15329568]&quot; fontsize=10];
+  p_linear_weight [shape=box label=&quot;p_linear_weight\nfloat32((1, 3))\n[[-0.2969481   0.14678197  0.23269542]]&quot; fontsize=10];
+  p_linear_bias [shape=box label=&quot;p_linear_bias\nfloat32((1,))\n[0.20623834]&quot; fontsize=10];
 
   addmm [shape=box label=&quot;addmm&quot; fontsize=10];
   TransposeMatMulPattern__addmm [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Gemm\nalpha=1.0\nbeta=1.0\ntransA=0\ntransB=1&quot; fontsize=10];
   x -&gt; TransposeMatMulPattern__addmm;
-  arg0_1 -&gt; TransposeMatMulPattern__addmm;
-  arg1_1 -&gt; TransposeMatMulPattern__addmm;
+  p_linear_weight -&gt; TransposeMatMulPattern__addmm;
+  p_linear_bias -&gt; TransposeMatMulPattern__addmm;
   TransposeMatMulPattern__addmm -&gt; addmm;
 
   Opset [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sigmoid&quot; fontsize=10];
@@ -901,7 +934,7 @@ to the list of known converter functions.</p>
 }" class="graphviz" /></div>
 </section>
 <section id="id2">
-<h3>Debugging<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<h3>Debugging<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <p>There is no fallback by default. The converter fails if
 the conversion to ONNX cannot happen. In that case, it tries to
 give you some information why it failed.
@@ -934,14 +967,14 @@ give you some information why it failed.
     Traceback (most recent call last):
         exec(obj, globs, loc)
       File &quot;&quot;, line 20, in &lt;module&gt;
-      File &quot;&quot;, line 19, in run_python_script_140200554491072
+      File &quot;&quot;, line 19, in run_python_script_139655734465856
       File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 301, in to_onnx
         builder.process(graph_module, interpreter)
-      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;, line 2440, in process
+      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;, line 2494, in process
         interpreter.run_node(node)
       File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py&quot;, line 97, in run_node
         return self.call_function(node)
-      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py&quot;, line 759, in call_function
+      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py&quot;, line 781, in call_function
         raise FunctionNotFoundError(
     experimental_experiment.torch_interpreter._exceptions.FunctionNotFoundError: Unable to interpret function &lt;class &#39;torch._ops.OpOverload&#39;&gt;: &lt;OpOverload(op=&#39;aten.celu&#39;, overload=&#39;default&#39;)&gt;, searched for [&#39;aten::celu&#39;, &#39;celu_default&#39;] and attributes [&#39;__qualname__&#39;, &#39;__name__&#39;], args=(addmm,), kwargs={}
     --DEBUG--
@@ -951,33 +984,38 @@ give you some information why it failed.
     dynamic_alias={}
     dynamic_shapes=None
     _known_value_shape={}
+    _known_shapes={&#39;addmm&#39;: (5, 1),
+     &#39;p_linear_bias&#39;: (1,),
+     &#39;p_linear_weight&#39;: (1, 3),
+     &#39;t&#39;: (3, 1),
+     &#39;x&#39;: (5, 3)}
+    _known_ranks={}
     --TORCH-SHAPES--
-    arg0_1: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([5, 1])), (&#39;val&#39;, torch.float32, torch.Size([1, 3])))) --- 1:2:(1, 3):
-    arg1_1: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([5, 1])), (&#39;val&#39;, torch.float32, torch.Size([1])))) --- 1:1:(1,):
-    arg2_1: (&#39;run_node&#39;, (&#39;&#39;, (&#39;val&#39;, torch.float32, torch.Size([5, 3])))) --- 1:2:(5, 3):
+    p_linear_weight: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([5, 1])), (&#39;val&#39;, torch.float32, torch.Size([1, 3])))) --- 1:2:(1, 3):
+    p_linear_bias: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([5, 1])), (&#39;val&#39;, torch.float32, torch.Size([1])))) --- 1:1:(1,):
+    x: (&#39;run_node&#39;, (&#39;&#39;, (&#39;val&#39;, torch.float32, torch.Size([5, 3])))) --- 1:2:(5, 3):
     t: (&#39;run_node&#39;, (&#39;&#39;, (&#39;val&#39;, torch.float32, torch.Size([3, 1])))) --- 1:2:(3, 1):
     addmm: (&#39;run_node&#39;, (&#39;&#39;, (&#39;val&#39;, torch.float32, torch.Size([5, 1])))) --- 1:2:(5, 1):
     celu: (&#39;run_node&#39;, (&#39;&#39;, (&#39;val&#39;, torch.float32, torch.Size([5, 1])))) --- :::
     --ONNX--
     -- process.graph_module --
     graph():
-        %arg0_1 : [num_users=1] = placeholder[target=arg0_1]
-        %arg1_1 : [num_users=1] = placeholder[target=arg1_1]
-        %arg2_1 : [num_users=1] = placeholder[target=arg2_1]
-        %t : [num_users=1] = call_function[target=torch.ops.aten.t.default](args = (%arg0_1,), kwargs = {})
-        %addmm : [num_users=1] = call_function[target=torch.ops.aten.addmm.default](args = (%arg1_1, %arg2_1, %t), kwargs = {})
+        %p_linear_weight : [num_users=1] = placeholder[target=p_linear_weight]
+        %p_linear_bias : [num_users=1] = placeholder[target=p_linear_bias]
+        %x : [num_users=1] = placeholder[target=x]
+        %t : [num_users=1] = call_function[target=torch.ops.aten.t.default](args = (%p_linear_weight,), kwargs = {})
+        %addmm : [num_users=1] = call_function[target=torch.ops.aten.addmm.default](args = (%p_linear_bias, %x, %t), kwargs = {})
         %celu : [num_users=1] = call_function[target=torch.ops.aten.celu.default](args = (%addmm,), kwargs = {})
         return (celu,)
     -- process.progress --
     node 5/7 
     --
-    [GraphBuilder-BKQ.make_tensor_input] x[1:5x3]
-    [GraphBuilder-BKQ.make_initializer] arg0_1[torch.float32:torch.float32:[-0.38402482867240906, 0.34382927417755127, 0.34281107783317566]]
-    [GraphBuilder-BKQ.make_initializer] arg1_1[torch.float32:torch.float32:[-0.049956243485212326]]
-    [GraphBuilder-BKQ.make_node] make_tensor_input [#:#   ] Identity:[&#39;x&#39;]-&gt;[&#39;arg2_1&#39;]
-    [GraphBuilder-BKQ.make_node] t               [#:#   ] Transpose:[&#39;arg0_1&#39;]-&gt;[&#39;t&#39;]
-    [GraphBuilder-BKQ.make_node] addmm           [###:# ] Gemm:[&#39;arg2_1&#39;, &#39;t&#39;, &#39;arg1_1&#39;]-&gt;[&#39;addmm&#39;]
-    Completed with 2 initializers and 3 nodes.
+    [GraphBuilder-VOY.make_tensor_input] x[1:5x3]
+    [GraphBuilder-VOY.make_initializer] p_linear_weight[torch.float32:torch.float32:[0.35148969292640686, -0.25570812821388245, 0.3832724988460541]]
+    [GraphBuilder-VOY.make_initializer] p_linear_bias[torch.float32:torch.float32:[-0.20695143938064575]]
+    [GraphBuilder-VOY.make_node] t               [#:#   ] Transpose:[&#39;p_linear_weight&#39;]-&gt;[&#39;t&#39;]
+    [GraphBuilder-VOY.make_node] addmm           [###:# ] Gemm:[&#39;x&#39;, &#39;t&#39;, &#39;p_linear_bias&#39;]-&gt;[&#39;addmm&#39;]
+    [GraphBuilder-VOY] Message completed, there are 2 initializers, 2 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 <p>In particular, the first line of the error message. This one tells you there is currently no known
@@ -1026,7 +1064,7 @@ which shows which shapes are given by torch.</p>
 </div>
 </section>
 <section id="dynamic-shapes">
-<h3>Dynamic Shapes<a class="headerlink" href="#dynamic-shapes" title="Link to this heading">#</a></h3>
+<h3>Dynamic Shapes<a class="headerlink" href="#dynamic-shapes" title="Link to this heading">¶</a></h3>
 <p>It just needs to be added when calling function
 <a class="reference internal" href="../api/onnx_export.html#experimental_experiment.torch_interpreter.to_onnx" title="experimental_experiment.torch_interpreter.to_onnx"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_onnx</span></code></a>:
 <code class="docutils literal notranslate"><span class="pre">dynamic_shapes={&quot;x&quot;:</span> <span class="pre">{0:</span> <span class="pre">torch.export.Dim(&quot;batch&quot;)}}</span></code>.</p>
@@ -1062,16 +1100,16 @@ which shows which shapes are given by torch.</p>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">18</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg0_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.51</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.494</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.415</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg1_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">0.136</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">Gemm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">arg0_1</span><span class="p">,</span> <span class="n">arg1_1</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">addmm</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_weight&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.046</span><span class="p">,</span>  <span class="mf">0.134</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.558</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_bias&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.452</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">Gemm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p_linear_weight</span><span class="p">,</span> <span class="n">p_linear_bias</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">addmm</span>
       <span class="n">Sigmoid</span><span class="p">(</span><span class="n">addmm</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">output_0</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;output_0&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
 <section id="fallback">
-<h3>Fallback<a class="headerlink" href="#fallback" title="Link to this heading">#</a></h3>
+<h3>Fallback<a class="headerlink" href="#fallback" title="Link to this heading">¶</a></h3>
 <p>The current library does not always have a converting function
 for evert aten functions implemented in torch. A mechanism exists
 to intercept the function returned by the interpreter and replace it
@@ -1103,9 +1141,9 @@ by a function coming from another source such as <a class="reference external" h
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">opset</span><span class="p">:</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="n">version</span><span class="o">=</span><span class="mi">18</span>
     <span class="nb">input</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg0_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.222</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.395</span><span class="p">,</span>  <span class="mf">0.442</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;arg1_1&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.008</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">Gemm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">arg0_1</span><span class="p">,</span> <span class="n">arg1_1</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">addmm</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_weight&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.1</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">0.035</span><span class="p">,</span>  <span class="mf">0.293</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">init</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;p_linear_bias&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">--</span> <span class="n">array</span><span class="p">([</span><span class="mf">0.265</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">Gemm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p_linear_weight</span><span class="p">,</span> <span class="n">p_linear_bias</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">transB</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">addmm</span>
       <span class="n">Celu</span><span class="p">(</span><span class="n">addmm</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.00</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">output_0</span>
     <span class="n">output</span><span class="p">:</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;output_0&#39;</span> <span class="nb">type</span><span class="o">=</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
@@ -1209,6 +1247,6 @@ by a function coming from another source such as <a class="reference external" h
 </div><script src="../_static/documentation_options.js?v=a1637f0b"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

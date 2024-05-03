@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>experimental_experiment.torch_dynamo.fast_backend - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
@@ -117,6 +117,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -195,7 +197,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/gradient.html">gradient</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/reference.html">reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/torch_model_container.html">TorchModelContainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_pattern.html">graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/graph_builder_patterns.html">Optimization Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/order_optimization.html">order_optim</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/interpreter.html">interpreter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/onnx_export.html">onnx_export</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/aten_function.html">aten_functions</a></li>
@@ -216,8 +221,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
@@ -235,6 +240,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../bench/scripts.html">Interesting scripts or command lines</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../times.html">Times</a></li>
@@ -276,7 +282,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_dynamo.fast_backend</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
@@ -318,6 +324,13 @@
         <span class="n">opts</span><span class="o">.</span><span class="n">graph_optimization_level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
             <span class="n">onnxruntime</span><span class="o">.</span><span class="n">GraphOptimizationLevel</span><span class="p">,</span> <span class="n">ort_optimization_level</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">ort_optimization_level</span> <span class="o">==</span> <span class="s2">&quot;ORT_DISABLE_ALL&quot;</span><span class="p">:</span>
+            <span class="n">opts</span><span class="o">.</span><span class="n">enable_mem_pattern</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">opts</span><span class="o">.</span><span class="n">enable_mem_reuse</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">opts</span><span class="o">.</span><span class="n">enable_cpu_mem_arena</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># opts.add_session_config_entry(&quot;set_denormal_as_zero&quot;, &quot;1&quot;)</span>
+            <span class="n">opts</span><span class="o">.</span><span class="n">add_session_config_entry</span><span class="p">(</span><span class="s2">&quot;disable_prepacking&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+
     <span class="n">opts</span><span class="o">.</span><span class="n">add_session_config_entry</span><span class="p">(</span><span class="s2">&quot;session.disable_aot_function_inlining&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
     <span class="n">append_custom_libraries</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
 
@@ -686,6 +699,7 @@
     <span class="n">disable_pattern</span><span class="p">,</span>
     <span class="n">rename_inputs</span><span class="p">,</span>
     <span class="n">processor</span><span class="p">,</span>
+    <span class="n">order_algorithm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="n">input_names</span> <span class="o">=</span> <span class="n">input_names</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">create_input_names</span><span class="p">(</span><span class="n">graph_module</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">rename_inputs</span> <span class="k">else</span> <span class="kc">None</span>
@@ -697,12 +711,18 @@
 
     <span class="n">patterns</span> <span class="o">=</span> <span class="n">get_pattern_list</span><span class="p">(</span><span class="n">enable_pattern</span><span class="p">,</span> <span class="n">disable_pattern</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">order_algorithm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">..xoptim</span> <span class="kn">import</span> <span class="n">OrderAlgorithm</span>
+
+        <span class="n">order_algorithm</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">OrderAlgorithm</span><span class="p">,</span> <span class="n">order_algorithm</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
     <span class="n">options</span> <span class="o">=</span> <span class="n">OptimizationOptions</span><span class="p">(</span>
         <span class="n">remove_unused</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">constant_folding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">patterns</span><span class="o">=</span><span class="n">patterns</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_onnx</span><span class="p">,</span>
         <span class="n">processor</span><span class="o">=</span><span class="n">processor</span><span class="p">,</span>
+        <span class="n">order</span><span class="o">=</span><span class="n">order_algorithm</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">onx</span><span class="p">,</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
@@ -753,6 +773,7 @@
     <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">exporter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">processor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CPU&quot;</span><span class="p">,</span>
+    <span class="n">order_algorithm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom backend to export torch models into onnx</span>
@@ -781,6 +802,8 @@
 <span class="sd">    :param exporter: use a different exporter</span>
 <span class="sd">    :param processor: optimization should be made for this processor</span>
 <span class="sd">        or this list of processors (comma separated value)</span>
+<span class="sd">    :param order_algorithm: algorithm optimizing the order the onnx node,</span>
+<span class="sd">        none by default</span>
 <span class="sd">    :return: Callable</span>
 
 <span class="sd">    See :ref:`l-plot-onnxrt-diff` or :ref:`l-plot-custom-backend` for examples.</span>
@@ -826,6 +849,7 @@
             <span class="n">disable_pattern</span><span class="p">,</span>
             <span class="n">rename_inputs</span><span class="p">,</span>
             <span class="n">processor</span><span class="p">,</span>
+            <span class="n">order_algorithm</span><span class="o">=</span><span class="n">order_algorithm</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;dynamo&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">._dynamo_exporter</span> <span class="kn">import</span> <span class="n">_dynamo_export</span>
@@ -841,6 +865,7 @@
             <span class="n">disable_pattern</span><span class="p">,</span>
             <span class="n">rename_inputs</span><span class="p">,</span>
             <span class="n">processor</span><span class="p">,</span>
+            <span class="n">order_algorithm</span><span class="o">=</span><span class="n">order_algorithm</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown exporter </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -991,6 +1016,6 @@
 </div><script src="../../../_static/documentation_options.js?v=a1637f0b"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

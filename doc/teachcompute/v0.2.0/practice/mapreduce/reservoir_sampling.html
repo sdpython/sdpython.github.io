@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Reduce skew data" href="skewdata_reduce.html" /><link rel="prev" title="Reducers récursifs" href="recursive_reducers.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>Reservoir Sampling distribué - énoncé - Documentation teachcompute 0.2.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
@@ -118,6 +118,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -319,12 +321,12 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="Reservoir-Sampling-distribué---énoncé">
-<h1>Reservoir Sampling distribué - énoncé<a class="headerlink" href="#Reservoir-Sampling-distribué---énoncé" title="Link to this heading">#</a></h1>
+<h1>Reservoir Sampling distribué - énoncé<a class="headerlink" href="#Reservoir-Sampling-distribué---énoncé" title="Link to this heading">¶</a></h1>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Reservoir_sampling">Reservoir Sampling</a> sur Map/Reduce. Cet algorithme est un algorithme d’échantillonnage en streaming.</p>
 <section id="Reservoir-Sampling">
-<h2>Reservoir Sampling<a class="headerlink" href="#Reservoir-Sampling" title="Link to this heading">#</a></h2>
+<h2>Reservoir Sampling<a class="headerlink" href="#Reservoir-Sampling" title="Link to this heading">¶</a></h2>
 <p>Le <a class="reference external" href="https://en.wikipedia.org/wiki/Reservoir_sampling">reservoir sampling</a> est une façon de tirer un échantillon aléatoire de <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> nombres parmi <img class="math" src="../../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> nombres qui ne nécessite pas de conserver ces <img class="math" src="../../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> nombres en mémoire.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -396,10 +398,10 @@
 <p>Cet algorithme est intéressent lorsqu’on veut échantillonner sur une grande base de données car il nécessite de ne garder en mémoire que l’échantillon.</p>
 </section>
 <section id="Reservoir-Sampling-Distribué">
-<h2>Reservoir Sampling Distribué<a class="headerlink" href="#Reservoir-Sampling-Distribué" title="Link to this heading">#</a></h2>
+<h2>Reservoir Sampling Distribué<a class="headerlink" href="#Reservoir-Sampling-Distribué" title="Link to this heading">¶</a></h2>
 <p>Distribuer l’algorithme paraît simple : une partie des données ira sur une machine qui en tirera un échantillon, l’autre machine tirera un échantillon aléatoire sur l’autre partie des données. Par extension, sur <img class="math" src="../../_images/math/435b11e0dbea2eaa16cbb0b93b9266e88b4a5b4c.svg" alt="m"/> machines, on obtient <img class="math" src="../../_images/math/435b11e0dbea2eaa16cbb0b93b9266e88b4a5b4c.svg" alt="m"/> échantillons de tailles <img class="math" src="../../_images/math/9710b30adbbc6f3df7727abb63de16e8b823a3a5.svg" alt="k_1, ..., k_m"/> tirés sur des ensembles de tailles <img class="math" src="../../_images/math/998e572d3411cedc4457c5860b2cb85618c134ab.svg" alt="N_1, ..., N_m"/>. Il faut s’assurer que la version distribuée produit un échantillon avec les mêmes propriétés.</p>
 <section id="exercice-1-:-combinaison">
-<h3>exercice 1 : combinaison<a class="headerlink" href="#exercice-1-:-combinaison" title="Link to this heading">#</a></h3>
+<h3>exercice 1 : combinaison<a class="headerlink" href="#exercice-1-:-combinaison" title="Link to this heading">¶</a></h3>
 <p>Comment recombiner ces échantillons aléatoires ? Comment choisir les <img class="math" src="../../_images/math/04d6e96e8c66c02103a4834bb2fb18886731f766.svg" alt="k_i"/> sachant qu’on doit tirer un échantillon de taille <img class="math" src="../../_images/math/614e065414b128b3f026b409842116eb90cf874f.svg" alt="k \leqslant \sum_{i=1}^m k_i"/> parmi <img class="math" src="../../_images/math/bc92be4a6f833c1af2fb4851d47177a8a0955d04.svg" alt="N=\sum_{i=1}^m N_i"/> ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -411,7 +413,7 @@
 </div>
 </section>
 <section id="exercice-2-:-script-PIG,-Spark">
-<h3>exercice 2 : script PIG, Spark<a class="headerlink" href="#exercice-2-:-script-PIG,-Spark" title="Link to this heading">#</a></h3>
+<h3>exercice 2 : script PIG, Spark<a class="headerlink" href="#exercice-2-:-script-PIG,-Spark" title="Link to this heading">¶</a></h3>
 <p>Ecrire le script PIG correspondant à l’algorithme.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -424,11 +426,11 @@
 </section>
 </section>
 <section id="Petit-problème-théorique">
-<h2>Petit problème théorique<a class="headerlink" href="#Petit-problème-théorique" title="Link to this heading">#</a></h2>
+<h2>Petit problème théorique<a class="headerlink" href="#Petit-problème-théorique" title="Link to this heading">¶</a></h2>
 <p>Un <a class="reference external" href="https://fr.wikipedia.org/wiki/G%C3%A9n%C3%A9rateur_congruentiel_lin%C3%A9aire">Générateur congruentiel linéaire</a> imite seulement le hasard, ce n’est pas vraiment le hasard. La suite dépend d’une graine ou <em>seed</em>. Si deux machines partent de la même graine, elle produiront la même suite. Qu’en est-il du hasard ? La solution de l’exercice précédent est-elle correcte d’un point de statistique ?</p>
 </section>
 <section id="Reservoir-Sampling-pondéré">
-<h2>Reservoir Sampling pondéré<a class="headerlink" href="#Reservoir-Sampling-pondéré" title="Link to this heading">#</a></h2>
+<h2>Reservoir Sampling pondéré<a class="headerlink" href="#Reservoir-Sampling-pondéré" title="Link to this heading">¶</a></h2>
 <p>On serait tenter d’écrire… On suppose qu’on dispose un ensemble de points <img class="math" src="../../_images/math/27472567e50161aef46885272e223c61b9956296.svg" alt="(X_i)"/> pondéré par <img class="math" src="../../_images/math/986e27a15682807efe65caad7c6218636784c706.svg" alt="\omega_i \in \mathbb{R}"/>. On veut tirer un échantillon de <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> éléments. On procède de la même manière que pour le <em>reservoir sampling</em> non pondéré. A l’étape <img class="math" src="../../_images/math/ba547baa93dbae50702c10f2afbb3ed5a8610713.svg" alt="n-1"/>, on dispose d’un échantillon <img class="math" src="../../_images/math/365d60549cc630a927084bdf3df05c02ab31b141.svg" alt="E_{n-1}=(X_{i_1}, ..., X_{i_k})"/>. On tire un nombre <img class="math" src="../../_images/math/3ded7c5accc3db646e5a061facda1aef616d548f.svg" alt="u"/> selon une loi uniforme <img class="math" src="../../_images/math/5d6ef4de3a9f851a29bfae0016b7eadafffd99d7.svg" alt="[0,1]"/>. On ajoute l’élément <img class="math" src="../../_images/math/8b73b7c6d13877e25db3daacdc8f0db3dca467b9.svg" alt="X_n"/> si :</p>
 <div class="math-wrapper docutils container">
 <div class="math">
@@ -542,7 +544,7 @@
 </div><script src="../../_static/documentation_options.js?v=9313ea4c"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
