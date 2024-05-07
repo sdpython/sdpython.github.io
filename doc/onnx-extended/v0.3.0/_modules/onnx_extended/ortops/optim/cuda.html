@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
         <title>onnx_extended.ortops.optim.cuda - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
@@ -116,6 +116,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -305,7 +307,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for onnx_extended.ortops.optim.cuda</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
@@ -335,32 +337,6 @@
         <span class="nb">map</span><span class="p">(</span>
             <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">,</span>
             <span class="p">[</span>
-<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    onnx_extended.ortops.optim.cuda.AddMul</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Two consecutive element-wise Add, Mul assuming</span>
-<span class="sd">    all tensors have the same shape</span>
-<span class="sd">    (broadcast limited to the first dimensions).</span>
-
-<span class="sd">    **Provider**</span>
-<span class="sd">    </span>
-<span class="sd">    CUDAExecutionProvider</span>
-<span class="sd">    </span>
-<span class="sd">    **Inputs**</span>
-<span class="sd">    </span>
-<span class="sd">    * A (T): tensor of type T</span>
-<span class="sd">    * B (T): tensor of type T</span>
-<span class="sd">    * C (T): tensor of type T</span>
-
-<span class="sd">    **Outputs**</span>
-
-<span class="sd">    * (A+B)*C (T): element-wise</span>
-
-<span class="sd">    **Constraints**</span>
-
-<span class="sd">    * T: float, float16</span>
-<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
 <span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    onnx_extended.ortops.optim.cuda.AddAdd</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
@@ -415,6 +391,36 @@
 <span class="sd">    * T: float, float16</span>
 <span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
 <span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    onnx_extended.ortops.optim.cuda.AddMul</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Two consecutive element-wise Add, Mul assuming</span>
+<span class="sd">    all tensors have the same shape</span>
+<span class="sd">    (broadcast limited to the first dimensions).</span>
+
+<span class="sd">    **Provider**</span>
+<span class="sd">    </span>
+<span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">    </span>
+<span class="sd">    **Attributes**</span>
+<span class="sd">    </span>
+<span class="sd">    * transposeMiddle: bool, if True, applies transposition [0, 2, 1, 3] on the result</span>
+<span class="sd">    </span>
+<span class="sd">    **Inputs**</span>
+<span class="sd">    </span>
+<span class="sd">    * A (T): tensor of type T</span>
+<span class="sd">    * B (T): tensor of type T</span>
+<span class="sd">    * C (T): tensor of type T</span>
+
+<span class="sd">    **Outputs**</span>
+
+<span class="sd">    * (A+B)*C (T): element-wise</span>
+
+<span class="sd">    **Constraints**</span>
+
+<span class="sd">    * T: float, float16</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    onnx_extended.ortops.optim.cuda.AddSharedInput</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
@@ -454,7 +460,11 @@
 <span class="sd">    **Provider**</span>
 <span class="sd">    </span>
 <span class="sd">    CUDAExecutionProvider</span>
+<span class="sd">        </span>
+<span class="sd">    **Attributes**</span>
 <span class="sd">    </span>
+<span class="sd">    * transposeMiddle: bool, if True, applies transposition [0, 2, 1, 3] on the result</span>
+
 <span class="sd">    **Inputs**</span>
 <span class="sd">    </span>
 <span class="sd">    * A (T): tensor of type T</span>
@@ -849,6 +859,6 @@
 </div><script src="../../../../_static/documentation_options.js?v=83a61292"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>
