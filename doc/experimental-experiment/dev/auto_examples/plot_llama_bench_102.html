@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="201: Evaluate different ways to export a torch model to ONNX" href="plot_torch_export_201.html" /><link rel="prev" title="102: Convolution and Matrix Multiplication" href="plot_convolutation_matmul_102.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.05.06 -->
         <title>102: Measure LLAMA speed - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -74,7 +74,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -89,7 +89,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -97,7 +97,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -105,6 +105,60 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -137,7 +191,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -270,11 +325,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/auto_examples/plot_llama_bench_102.rst" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -463,7 +524,7 @@ to download the full example code.</p>
     <span class="p">)</span> <span class="ow">in</span> <a href="https://docs.python.org/3/library/itertools.html#itertools.product" title="itertools.product" class="sphx-glr-backref-module-itertools sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/itertools.html#itertools.product" title="itertools.product" class="sphx-glr-backref-module-itertools sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/itertools.html#itertools.product" title="itertools.product" class="sphx-glr-backref-module-itertools sphx-glr-backref-type-py-function"><span class="n">itertools</span><span class="o">.</span><span class="n">product</span></a></a></a><span class="p">(</span>
         <a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span></a></a></a><span class="o">.</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">backend</span></a></a></a><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">),</span>
         <a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span></a></a></a><span class="o">.</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">device</span></a></a></a><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">),</span>
-        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span></a></a></a><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_hidden_layers</span></a></a></a><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))),</span>
+        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">num_hidden_layers</span></a></a></a><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))),</span>
         <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">mixed</span></a></a></a><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))),</span>
         <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">dynamic</span></a></a></a><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))),</span>
         <a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="argparse.Namespace" class="sphx-glr-backref-module-argparse sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span></a></a></a><span class="o">.</span><span class="n">patterns</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">),</span>
@@ -513,7 +574,7 @@ to download the full example code.</p>
     <span class="p">]</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2024-05-03 10:42:11,740] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2024-05-08 14:04:05,281] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
 </pre></div>
 </div>
 <p>All configurations to consider.</p>
@@ -556,27 +617,27 @@ config 14: {&#39;model&#39;: &#39;llama&#39;, &#39;backend&#39;: &#39;ortmodule&
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/14 [00:00&lt;?, ?it/s]
-  7%|▋         | 1/14 [00:11&lt;02:25, 11.17s/it]
- 14%|█▍        | 2/14 [00:21&lt;02:11, 10.93s/it]
- 21%|██▏       | 3/14 [00:40&lt;02:38, 14.40s/it]
- 29%|██▊       | 4/14 [00:52&lt;02:14, 13.46s/it]
- 36%|███▌      | 5/14 [01:05&lt;01:58, 13.18s/it]
- 43%|████▎     | 6/14 [01:16&lt;01:40, 12.50s/it]
- 50%|█████     | 7/14 [01:30&lt;01:30, 13.00s/it]
- 57%|█████▋    | 8/14 [01:42&lt;01:15, 12.59s/it]
- 64%|██████▍   | 9/14 [01:52&lt;01:00, 12.06s/it]
- 71%|███████▏  | 10/14 [02:03&lt;00:46, 11.51s/it]
- 79%|███████▊  | 11/14 [02:13&lt;00:33, 11.02s/it]
- 86%|████████▌ | 12/14 [02:22&lt;00:20, 10.48s/it]
- 93%|█████████▎| 13/14 [02:31&lt;00:10, 10.16s/it]
-100%|██████████| 14/14 [02:40&lt;00:00,  9.59s/it]
-100%|██████████| 14/14 [02:40&lt;00:00, 11.43s/it]
+  7%|▋         | 1/14 [00:09&lt;02:03,  9.50s/it]
+ 14%|█▍        | 2/14 [00:19&lt;01:54,  9.53s/it]
+ 21%|██▏       | 3/14 [00:31&lt;01:57, 10.67s/it]
+ 29%|██▊       | 4/14 [00:43&lt;01:52, 11.23s/it]
+ 36%|███▌      | 5/14 [00:53&lt;01:38, 10.98s/it]
+ 43%|████▎     | 6/14 [01:04&lt;01:26, 10.77s/it]
+ 50%|█████     | 7/14 [01:14&lt;01:13, 10.53s/it]
+ 57%|█████▋    | 8/14 [01:25&lt;01:04, 10.73s/it]
+ 64%|██████▍   | 9/14 [01:33&lt;00:50, 10.09s/it]
+ 71%|███████▏  | 10/14 [01:42&lt;00:38,  9.61s/it]
+ 79%|███████▊  | 11/14 [01:50&lt;00:27,  9.21s/it]
+ 86%|████████▌ | 12/14 [01:59&lt;00:17,  8.93s/it]
+ 93%|█████████▎| 13/14 [02:11&lt;00:10, 10.05s/it]
+100%|██████████| 14/14 [02:21&lt;00:00,  9.89s/it]
+100%|██████████| 14/14 [02:21&lt;00:00, 10.09s/it]
 </pre></div>
 </div>
 <p>Let’s process the data.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prefix</span></a></a></a> <span class="o">=</span> <span class="p">(</span>
     <span class="sa">f</span><span class="s2">&quot;plot_</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">model</span></a></a></a><span class="si">}</span><span class="s2">-</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">with_mask</span></a></a></a><span class="si">}</span><span class="s2">-&quot;</span>
-    <span class="sa">f</span><span class="s2">&quot;m</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">mixed</span></a></a></a><span class="si">}</span><span class="s2">d</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">dynamic</span></a></a></a><span class="si">}</span><span class="s2">-&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;m</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">mixed</span></a></a></a><span class="si">}</span><span class="s2">d</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">dynamic</span></a></a></a><span class="si">}</span><span class="s2">h</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">num_hidden_layers</span></a></a></a><span class="si">}</span><span class="s2">-&quot;</span>
     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">parsed_args</span><span class="o">.</span><span class="n">implementation</span></a></a></a><span class="si">}</span><span class="s2">&quot;</span>
 <span class="p">)</span>
 
@@ -642,35 +703,35 @@ config 14: {&#39;model&#39;: &#39;llama&#39;, &#39;backend&#39;: &#39;ortmodule&
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                     llama  config  mixed  dynamic  ...                    enable_pattern disable_pattern                                             legend  increase
 0   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                                cuda-h1-eager-eager  0.000000
-1   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                               cuda-h1-eager-dynger  0.045714
-2   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                                  cuda-h1-eager-ort  0.339470
-3   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                           cuda-h1-eager-ort+-(+oo)  0.253580
-4   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                  cuda-h1-eager-ort+-(+default-+oo)  0.073614
-5   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  0.052982
-6   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.047415
-7   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.033424
-8   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                         cuda-h1-eager-custom-(+oo)  0.070651
-9   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                cuda-h1-eager-custom-(+default-+oo)  0.036665
-10  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN    cuda-h1-eager-custom-(+default+onnxruntime-+oo)  0.040598
-11  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.007824
-12  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.001319
+1   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                               cuda-h1-eager-dynger  0.048698
+2   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                                  cuda-h1-eager-ort  0.253650
+3   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                           cuda-h1-eager-ort+-(+oo)  0.251130
+4   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                  cuda-h1-eager-ort+-(+default-+oo)  0.061634
+5   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  0.021459
+6   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.016192
+7   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.010914
+8   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                         cuda-h1-eager-custom-(+oo)  0.069429
+9   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                cuda-h1-eager-custom-(+default-+oo)  0.047844
+10  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN    cuda-h1-eager-custom-(+default+onnxruntime-+oo)  0.017915
+11  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp...  0.000395
+12  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp...  0.013700
 13                                     NaN  medium      0        0  ...                               NaN             NaN                            cuda-h1-eager-ortmodule       NaN
 
 [14 rows x 25 columns]
       backend                               patterns  warmup_time      time  increase
-0       eager                                    NaN     0.882404  0.057711  0.000000
-1      dynger                                    NaN     1.905163  0.060349  0.045714
-2         ort                                    NaN     5.377042  0.077302  0.339470
-3        ort+                    +default-default+oo     3.834111  0.072345  0.253580
-4        ort+                           +default-+oo     3.697755  0.061959  0.073614
-5        ort+               +default+onnxruntime-+oo     3.775961  0.060769  0.052982
-6        ort+     +default+onnxruntime+experimental-     4.424988  0.060447  0.047415
-7        ort+  +default+onnxruntime+experimental-+oo     3.916638  0.059640  0.033424
-8      custom                    +default-default+oo     2.653533  0.061788  0.070651
-9      custom                           +default-+oo     1.708344  0.059827  0.036665
-10     custom               +default+onnxruntime-+oo     1.791893  0.060054  0.040598
-11     custom     +default+onnxruntime+experimental-     1.749524  0.057259 -0.007824
-12     custom  +default+onnxruntime+experimental-+oo     1.882076  0.057635 -0.001319
+0       eager                                    NaN     0.656028  0.057782  0.000000
+1      dynger                                    NaN     2.221376  0.060596  0.048698
+2         ort                                    NaN     4.558247  0.072439  0.253650
+3        ort+                    +default-default+oo     4.465371  0.072293  0.251130
+4        ort+                           +default-+oo     3.702030  0.061344  0.061634
+5        ort+               +default+onnxruntime-+oo     3.785458  0.059022  0.021459
+6        ort+     +default+onnxruntime+experimental-     3.669494  0.058718  0.016192
+7        ort+  +default+onnxruntime+experimental-+oo     4.152905  0.058413  0.010914
+8      custom                    +default-default+oo     1.735806  0.061794  0.069429
+9      custom                           +default-+oo     1.925915  0.060547  0.047844
+10     custom               +default+onnxruntime-+oo     1.819260  0.058817  0.017915
+11     custom     +default+onnxruntime+experimental-     1.842596  0.057805  0.000395
+12     custom  +default+onnxruntime+experimental-+oo     4.649349  0.058574  0.013700
 13  ortmodule                                    NaN          NaN       NaN       NaN
 </pre></div>
 </div>
@@ -693,8 +754,8 @@ with_mask                                               1                       
 implementation                                      eager                                   eager
 torch                             2.4.0.dev20240425+cu118                 2.4.0.dev20240425+cu118
 transformers                                       4.39.3                                  4.39.3
-warmup_time                                      0.882404                                1.905163
-time                                             0.057711                                0.060349
+warmup_time                                      0.656028                                2.221376
+time                                             0.057782                                0.060596
 model                                               llama                                   llama
 device                                               cuda                                    cuda
 num_hidden_layers                                       1                                       1
@@ -703,7 +764,7 @@ patterns                                              NaN                       
 enable_pattern                                        NaN                                     NaN
 disable_pattern                                       NaN                                     NaN
 legend                                cuda-h1-eager-eager                    cuda-h1-eager-dynger
-increase                                              0.0                                0.045714
+increase                                              0.0                                0.048698
 </pre></div>
 </div>
 <p>More simple</p>
@@ -717,19 +778,19 @@ increase                                              0.0                       
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                     llama  config  mixed  dynamic  ...                    enable_pattern disable_pattern                                             legend  increase
-11  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.007824
-12  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.001319
-10  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN    cuda-h1-eager-custom-(+default+onnxruntime-+oo)  0.040598
-9   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                cuda-h1-eager-custom-(+default-+oo)  0.036665
-8   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                         cuda-h1-eager-custom-(+oo)  0.070651
-1   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                               cuda-h1-eager-dynger  0.045714
+11  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp...  0.000395
+12  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp...  0.013700
+10  2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN    cuda-h1-eager-custom-(+default+onnxruntime-+oo)  0.017915
+9   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                cuda-h1-eager-custom-(+default-+oo)  0.047844
+8   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                         cuda-h1-eager-custom-(+oo)  0.069429
+1   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                               cuda-h1-eager-dynger  0.048698
 0   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                                cuda-h1-eager-eager  0.000000
-2   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                                  cuda-h1-eager-ort  0.339470
-6   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.047415
-7   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.033424
-5   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  0.052982
-4   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                  cuda-h1-eager-ort+-(+default-+oo)  0.073614
-3   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                           cuda-h1-eager-ort+-(+oo)  0.253580
+2   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                               NaN             NaN                                  cuda-h1-eager-ort  0.253650
+6   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.016192
+7   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...  default+onnxruntime+experimental             NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  0.010914
+5   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...               default+onnxruntime             NaN      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  0.021459
+4   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default             NaN                  cuda-h1-eager-ort+-(+default-+oo)  0.061634
+3   2x1024-1024-1-1024-1024-1024-2-eager-1  medium      0        0  ...                           default         default                           cuda-h1-eager-ort+-(+oo)  0.251130
 13                                     NaN  medium      0        0  ...                               NaN             NaN                            cuda-h1-eager-ortmodule       NaN
 
 [14 rows x 25 columns]
@@ -784,7 +845,7 @@ increase                                              0.0                       
     <a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure.savefig" title="matplotlib.figure.Figure.savefig" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-method"><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span></a></a></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plot_</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prefix</span></a></a></a><span class="si">}</span><span class="s2">_bench_relative.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_llama_bench_102_003.png" srcset="../_images/sphx_glr_plot_llama_bench_102_003.png" alt="comparison to eager % lower better llama - 2.4.0.dev20240425+cu118 - 4.39.3 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 50.481 seconds)</p>
+<img src="../_images/sphx_glr_plot_llama_bench_102_003.png" srcset="../_images/sphx_glr_plot_llama_bench_102_003.png" alt="comparison to eager % lower better llama - 2.4.0.dev20240425+cu118 - 4.39.3 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 30.437 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-llama-bench-102-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/f3ab9054a845e4c69ebfa759f2d1ffc8/plot_llama_bench_102.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_llama_bench_102.ipynb</span></code></a></p>

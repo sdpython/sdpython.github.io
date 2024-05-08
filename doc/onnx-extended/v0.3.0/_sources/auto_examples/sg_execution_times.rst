@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:10.035** total execution time for 16 files **from auto_examples**:
+**00:08.319** total execution time for 17 files **from auto_examples**:
 
 .. container::
 
@@ -32,8 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_op_transpose_2d_cast_cuda.py` (``plot_op_transpose_2d_cast_cuda.py``)
-     - 00:10.035
+   * - :ref:`sphx_glr_auto_examples_plot_op_scatternd_cuda.py` (``plot_op_scatternd_cuda.py``)
+     - 00:08.319
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``plot_bench_cpu.py``)
      - 00:00.000
@@ -62,10 +62,13 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_op_mul_cuda.py` (``plot_op_mul_cuda.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_scatternd_cuda.py` (``plot_op_scatternd_cuda.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_op_scatternd_mask_cuda.py` (``plot_op_scatternd_mask_cuda.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tfidfvectorizer_sparse.py` (``plot_op_tfidfvectorizer_sparse.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_transpose_2d_cast_cuda.py` (``plot_op_transpose_2d_cast_cuda.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_implementations.py` (``plot_op_tree_ensemble_implementations.py``)

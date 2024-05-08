@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_op_scatternd_cuda.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -37,7 +37,7 @@ This configuration happens in a :epkg:`Llama` model.
 
 Where the shapes are:
 
-* zeros: 32000x4906
+* zeros: 32000x4096
 * indices: 2x1024x1
 * updates: 2x1024x4096
 
@@ -412,6 +412,7 @@ With onnxruntime
 
  .. code-block:: none
 
+    [2024-05-08 13:59:21,164] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
     shape int64 (2,)
     indices int64 (20, 1)
     updates float32 (20, 7)
@@ -569,7 +570,7 @@ Benchmark
 
 Not Fused.
 
-.. GENERATED FROM PYTHON SOURCE LINES 334-342
+.. GENERATED FROM PYTHON SOURCE LINES 334-344
 
 .. code-block:: Python
 
@@ -579,7 +580,9 @@ Not Fused.
 
         print(f"sizes={sizes}")
 
-        data_nd1 = benchmark(sess1, sizes, script_args.config, "Atomic", itype=itype)
+        data_nd1 = benchmark(
+            sess1, sizes, script_args.config, "Atomic/Not Fused", itype=itype
+        )
 
 
 
@@ -590,23 +593,25 @@ Not Fused.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 21.03it/s]    100%|██████████| 3/3 [00:00<00:00, 20.99it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 60.71it/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 343-344
+.. GENERATED FROM PYTHON SOURCE LINES 345-346
 
 Fused.
 
-.. GENERATED FROM PYTHON SOURCE LINES 344-350
+.. GENERATED FROM PYTHON SOURCE LINES 346-354
 
 .. code-block:: Python
 
 
     if sess2 is not None:
 
-        data_nd2 = benchmark(sess2, sizes, script_args.config, "No Atomic", itype=itype)
+        data_nd2 = benchmark(
+            sess2, sizes, script_args.config, "No Atomic/Fused", itype=itype
+        )
 
 
 
@@ -617,17 +622,17 @@ Fused.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 25.80it/s]    100%|██████████| 3/3 [00:00<00:00, 25.74it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 61.35it/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 351-353
+.. GENERATED FROM PYTHON SOURCE LINES 355-357
 
 Data
 ++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 353-361
+.. GENERATED FROM PYTHON SOURCE LINES 357-365
 
 .. code-block:: Python
 
@@ -647,21 +652,21 @@ Data
 
  .. code-block:: none
 
-         warmup      time       std       min       max  repeat  size      label
-    0  0.004623  0.001527  0.000033  0.001463  0.001552       5   256     Atomic
-    1  0.010418  0.003246  0.000076  0.003180  0.003371       5   512     Atomic
-    2  0.020830  0.006690  0.000148  0.006479  0.006921       5  1024     Atomic
-    3  0.005700  0.001505  0.000066  0.001467  0.001635       5   256  No Atomic
-    4  0.009935  0.003245  0.000029  0.003210  0.003293       5   512  No Atomic
+         warmup      time       std       min       max  repeat  size             label
+    0  0.000525  0.000168  0.000015  0.000151  0.000193       5   256  Atomic/Not Fused
+    1  0.000859  0.000282  0.000013  0.000258  0.000295       5   512  Atomic/Not Fused
+    2  0.002151  0.000486  0.000006  0.000480  0.000498       5  1024  Atomic/Not Fused
+    3  0.000647  0.000264  0.000085  0.000162  0.000421       5   256   No Atomic/Fused
+    4  0.001076  0.000305  0.000009  0.000293  0.000319       5   512   No Atomic/Fused
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 362-363
+.. GENERATED FROM PYTHON SOURCE LINES 366-367
 
 Pivot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 363-377
+.. GENERATED FROM PYTHON SOURCE LINES 367-381
 
 .. code-block:: Python
 
@@ -669,10 +674,10 @@ Pivot.
     if sess2 is not None:
 
         pivot = df.pivot(index="size", columns="label", values="time")
-        pivot["ratio"] = pivot["Atomic"] / pivot["No Atomic"]
+        pivot["ratio"] = pivot["Atomic/Not Fused"] / pivot["No Atomic/Fused"]
         print(pivot)
 
-        ax = pivot[["Atomic", "No Atomic"]].plot(
+        ax = pivot[["Atomic/Not Fused", "No Atomic/Fused"]].plot(
             logx=True,
             logy=True,
             title=f"Atomic/No-Atomic implementation for ScatterND on CUDA\nitype={itype}",
@@ -692,16 +697,16 @@ Pivot.
 
  .. code-block:: none
 
-    label    Atomic  No Atomic     ratio
-    size                                
-    256    0.001527   0.001505  1.014791
-    512    0.003246   0.003245  1.000382
-    1024   0.006690   0.003889  1.720358
+    label  Atomic/Not Fused  No Atomic/Fused     ratio
+    size                                              
+    256            0.000168         0.000264  0.634576
+    512            0.000282         0.000305  0.926444
+    1024           0.000486         0.000524  0.927914
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 378-381
+.. GENERATED FROM PYTHON SOURCE LINES 382-385
 
 The best choice depends on the input sizes,
 For big matrices, the use of atomic is slowing down
@@ -710,7 +715,7 @@ the computation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.633 seconds)
+   **Total running time of the script:** (0 minutes 8.319 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_scatternd_cuda.py:
