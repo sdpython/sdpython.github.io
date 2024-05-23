@@ -87,7 +87,7 @@ Where the shapes are:
     elif config == "medium":
         sizes = (512, 1024, 2048)
     elif config == "large":
-        sizes = (1024, 2048, 4096, 8192)
+        sizes = (1024, 2048, 4096, 6144, 8192)
     elif config == "llama":
         sizes = (16000, 32000)
     else:
@@ -483,7 +483,7 @@ With onnxruntime
 Benchmark
 =========
 
-.. GENERATED FROM PYTHON SOURCE LINES 277-363
+.. GENERATED FROM PYTHON SOURCE LINES 277-362
 
 .. code-block:: Python
 
@@ -529,7 +529,7 @@ Benchmark
             else:
                 shape = (size, int(size * times_col))
                 shape_indices = (2, int(size * times_indices), 1)
-            shape_updates = (2, size, shape[-1])
+            shape_updates = (2, shape_indices[1], shape[-1])
 
             shape = np.array(shape, dtype=np.int64)
             indices = np.array(
@@ -547,7 +547,6 @@ Benchmark
                 bind, cuda_feeds = move_inputs(sess, feeds)
                 begin = time.perf_counter()
                 for i in range(script_args.warmup):
-                    # sess.run(None, feeds)
                     sess._sess.run_with_iobinding(bind, None)
                 warmup = time.perf_counter() - begin
 
@@ -580,11 +579,11 @@ Benchmark
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 364-365
+.. GENERATED FROM PYTHON SOURCE LINES 363-364
 
 Benchmark.
 
-.. GENERATED FROM PYTHON SOURCE LINES 365-373
+.. GENERATED FROM PYTHON SOURCE LINES 364-372
 
 .. code-block:: Python
 
@@ -594,7 +593,7 @@ Benchmark.
 
         print(f"sizes={sizes}")
 
-        data_nd = benchmark(sizes, script_args.config, itype=itype)
+        data_nd = benchmark(sizes, script_args.config, itype=itype, times_col=2)
 
 
 
@@ -605,17 +604,17 @@ Benchmark.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]     67%|██████▋   | 2/3 [00:00<00:00, 17.82it/s]    100%|██████████| 3/3 [00:00<00:00, 12.09it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]     67%|██████▋   | 2/3 [00:00<00:00, 16.12it/s]    100%|██████████| 3/3 [00:00<00:00,  3.79it/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 374-376
+.. GENERATED FROM PYTHON SOURCE LINES 373-375
 
 Data
 ++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 376-384
+.. GENERATED FROM PYTHON SOURCE LINES 375-383
 
 .. code-block:: Python
 
@@ -636,20 +635,20 @@ Data
  .. code-block:: none
 
                         label    warmup      time       std       min       max  repeat  size
-    0               ScatterND  0.001373  0.000200  0.000010  0.000191  0.000219       5   256
-    1        ScatterNDOfShape  0.001197  0.000186  0.000013  0.000168  0.000202       5   256
-    2  MaskedScatterNDOfShape  0.000920  0.000224  0.000005  0.000218  0.000231       5   256
-    3               ScatterND  0.002458  0.000351  0.000022  0.000336  0.000395       5   512
-    4        ScatterNDOfShape  0.002297  0.000340  0.000014  0.000325  0.000366       5   512
+    0               ScatterND  0.008493  0.000598  0.000054  0.000556  0.000696       5   256
+    1        ScatterNDOfShape  0.001895  0.000387  0.000012  0.000373  0.000410       5   256
+    2  MaskedScatterNDOfShape  0.000768  0.000186  0.000014  0.000174  0.000209       5   256
+    3               ScatterND  0.003423  0.000675  0.000005  0.000668  0.000680       5   512
+    4        ScatterNDOfShape  0.003804  0.000811  0.000009  0.000797  0.000822       5   512
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 385-386
+.. GENERATED FROM PYTHON SOURCE LINES 384-385
 
 Pivot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 386-402
+.. GENERATED FROM PYTHON SOURCE LINES 385-404
 
 .. code-block:: Python
 
@@ -658,8 +657,11 @@ Pivot.
 
         pivot = df.pivot(index="size", columns="label", values="time")
         col = pivot["ScatterND"].copy()
+        print("Time")
+        print(pivot)
         for c in pivot.columns:
             pivot[c] = col / pivot[c]
+        print("Speed up compare to the onnx standaed.")
         print(pivot)
 
         ax = pivot.plot(
@@ -682,25 +684,33 @@ Pivot.
 
  .. code-block:: none
 
+    Time
     label  MaskedScatterNDOfShape  ScatterND  ScatterNDOfShape
     size                                                      
-    256                  0.895043        1.0          1.074898
-    512                  0.498326        1.0          1.033475
-    1024                 0.665287        1.0          0.683443
+    256                  0.000186   0.000598          0.000387
+    512                  0.000329   0.000675          0.000811
+    1024                 0.000748   0.001529          0.001714
+    Speed up compare to the onnx standaed.
+    label  MaskedScatterNDOfShape  ScatterND  ScatterNDOfShape
+    size                                                      
+    256                  3.216077        1.0          1.542634
+    512                  2.051340        1.0          0.832626
+    1024                 2.044650        1.0          0.892008
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 403-406
+.. GENERATED FROM PYTHON SOURCE LINES 405-409
 
 It requires more test to determine when it is better.
 But the fused operator with mask seems more efficient in any case
 compare to the fused operator without mask.
+For big sizes, ScatterND seems very slow as it is using atomic addition.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.752 seconds)
+   **Total running time of the script:** (0 minutes 1.156 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_scatternd_mask_cuda.py:

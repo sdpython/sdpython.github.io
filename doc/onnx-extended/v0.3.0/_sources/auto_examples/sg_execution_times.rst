@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:08.319** total execution time for 17 files **from auto_examples**:
+**00:44.712** total execution time for 18 files **from auto_examples**:
 
 .. container::
 
@@ -32,8 +32,14 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_plot_op_gemm2_cuda.py` (``plot_op_gemm2_cuda.py``)
+     - 00:43.029
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_op_scatternd_mask_cuda.py` (``plot_op_scatternd_mask_cuda.py``)
+     - 00:01.156
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_scatternd_cuda.py` (``plot_op_scatternd_cuda.py``)
-     - 00:08.319
+     - 00:00.526
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``plot_bench_cpu.py``)
      - 00:00.000
@@ -60,9 +66,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_mul_cuda.py` (``plot_op_mul_cuda.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_op_scatternd_mask_cuda.py` (``plot_op_scatternd_mask_cuda.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tfidfvectorizer_sparse.py` (``plot_op_tfidfvectorizer_sparse.py``)

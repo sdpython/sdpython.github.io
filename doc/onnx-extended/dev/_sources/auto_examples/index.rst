@@ -121,6 +121,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="One big Gemm or two smaller gemm?">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_op_gemm2_cuda_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_op_gemm2_cuda.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Gemm Exploration with CUDA</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This configuration happens in a Llama model.">
 
 .. only:: html
@@ -322,6 +339,7 @@ Examples Gallery
    /auto_examples/plot_bench_sparse_access
    /auto_examples/plot_op_tfidfvectorizer_sparse
    /auto_examples/plot_bench_gemm_f8
+   /auto_examples/plot_op_gemm2_cuda
    /auto_examples/plot_op_transpose_2d_cast_cuda
    /auto_examples/plot_op_einsum
    /auto_examples/plot_op_mul_cuda

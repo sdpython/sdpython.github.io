@@ -412,7 +412,6 @@ With onnxruntime
 
  .. code-block:: none
 
-    [2024-05-08 13:59:21,164] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
     shape int64 (2,)
     indices int64 (20, 1)
     updates float32 (20, 7)
@@ -593,7 +592,7 @@ Not Fused.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 60.71it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 58.40it/s]
 
 
 
@@ -622,7 +621,7 @@ Fused.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 61.35it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 63.78it/s]
 
 
 
@@ -652,12 +651,12 @@ Data
 
  .. code-block:: none
 
-         warmup      time       std       min       max  repeat  size             label
-    0  0.000525  0.000168  0.000015  0.000151  0.000193       5   256  Atomic/Not Fused
-    1  0.000859  0.000282  0.000013  0.000258  0.000295       5   512  Atomic/Not Fused
-    2  0.002151  0.000486  0.000006  0.000480  0.000498       5  1024  Atomic/Not Fused
-    3  0.000647  0.000264  0.000085  0.000162  0.000421       5   256   No Atomic/Fused
-    4  0.001076  0.000305  0.000009  0.000293  0.000319       5   512   No Atomic/Fused
+         warmup      time           std       min       max  repeat  size             label
+    0  0.000576  0.000159  1.121428e-06  0.000158  0.000161       5   256  Atomic/Not Fused
+    1  0.001155  0.000392  9.668631e-06  0.000373  0.000398       5   512  Atomic/Not Fused
+    2  0.002914  0.000636  1.666577e-05  0.000609  0.000658       5  1024  Atomic/Not Fused
+    3  0.000717  0.000206  9.147109e-06  0.000188  0.000213       5   256   No Atomic/Fused
+    4  0.000950  0.000296  5.966584e-07  0.000295  0.000297       5   512   No Atomic/Fused
 
 
 
@@ -666,7 +665,7 @@ Data
 
 Pivot.
 
-.. GENERATED FROM PYTHON SOURCE LINES 367-381
+.. GENERATED FROM PYTHON SOURCE LINES 367-382
 
 .. code-block:: Python
 
@@ -675,6 +674,7 @@ Pivot.
 
         pivot = df.pivot(index="size", columns="label", values="time")
         pivot["ratio"] = pivot["Atomic/Not Fused"] / pivot["No Atomic/Fused"]
+        print("Speed up compare to the onnx standaed.")
         print(pivot)
 
         ax = pivot[["Atomic/Not Fused", "No Atomic/Fused"]].plot(
@@ -697,16 +697,17 @@ Pivot.
 
  .. code-block:: none
 
+    Speed up compare to the onnx standaed.
     label  Atomic/Not Fused  No Atomic/Fused     ratio
     size                                              
-    256            0.000168         0.000264  0.634576
-    512            0.000282         0.000305  0.926444
-    1024           0.000486         0.000524  0.927914
+    256            0.000159         0.000206  0.772643
+    512            0.000392         0.000296  1.325651
+    1024           0.000636         0.000719  0.884669
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 382-385
+.. GENERATED FROM PYTHON SOURCE LINES 383-386
 
 The best choice depends on the input sizes,
 For big matrices, the use of atomic is slowing down
@@ -715,7 +716,7 @@ the computation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.319 seconds)
+   **Total running time of the script:** (0 minutes 0.526 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_scatternd_cuda.py:

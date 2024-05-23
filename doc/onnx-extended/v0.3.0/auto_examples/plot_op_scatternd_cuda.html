@@ -9,7 +9,7 @@
         <title>Optimizing ScatterND operator on CUDA - onnx-extended 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=387cc868" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -314,6 +314,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_sparse_access.html">Evaluating random access for sparse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_tfidfvectorizer_sparse.html">Measuring performance of TfIdfVectorizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_bench_gemm_f8.html">Measuring Gemm performance with different input and output tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_op_gemm2_cuda.html">Gemm Exploration with CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_transpose_2d_cast_cuda.html">Fuse Tranpose and Cast on CUDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_einsum.html">Compares implementations of Einsum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_op_mul_cuda.html">Fusing multiplication operators on CUDA</a></li>
@@ -678,8 +679,7 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;a&#39;, &#39;
     <a href="https://numpy.org/doc/stable/reference/generated/numpy.testing.assert_almost_equal.html#numpy.testing.assert_almost_equal" title="numpy.testing.assert_almost_equal" class="sphx-glr-backref-module-numpy-testing sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/generated/numpy.testing.assert_almost_equal.html#numpy.testing.assert_almost_equal" title="numpy.testing.assert_almost_equal" class="sphx-glr-backref-module-numpy-testing sphx-glr-backref-type-py-function"><span class="n">assert_almost_equal</span></a></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">expected</span></a></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">got</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[2024-05-08 13:59:21,164] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-shape int64 (2,)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>shape int64 (2,)
 indices int64 (20, 1)
 updates float32 (20, 7)
 [[10. 10. 10. 10. 10. 10. 10.]
@@ -811,7 +811,7 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;a&#39;, &#39;
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>sizes=(256, 512, 1024)
 
   0%|          | 0/3 [00:00&lt;?, ?it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 60.71it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 58.40it/s]
 </pre></div>
 </div>
 <p>Fused.</p>
@@ -823,7 +823,7 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;a&#39;, &#39;
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/3 [00:00&lt;?, ?it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 61.35it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 63.78it/s]
 </pre></div>
 </div>
 <section id="data">
@@ -836,12 +836,12 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;a&#39;, &#39;
     <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">head</span></a></a><span class="p">())</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>     warmup      time       std       min       max  repeat  size             label
-0  0.000525  0.000168  0.000015  0.000151  0.000193       5   256  Atomic/Not Fused
-1  0.000859  0.000282  0.000013  0.000258  0.000295       5   512  Atomic/Not Fused
-2  0.002151  0.000486  0.000006  0.000480  0.000498       5  1024  Atomic/Not Fused
-3  0.000647  0.000264  0.000085  0.000162  0.000421       5   256   No Atomic/Fused
-4  0.001076  0.000305  0.000009  0.000293  0.000319       5   512   No Atomic/Fused
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>     warmup      time           std       min       max  repeat  size             label
+0  0.000576  0.000159  1.121428e-06  0.000158  0.000161       5   256  Atomic/Not Fused
+1  0.001155  0.000392  9.668631e-06  0.000373  0.000398       5   512  Atomic/Not Fused
+2  0.002914  0.000636  1.666577e-05  0.000609  0.000658       5  1024  Atomic/Not Fused
+3  0.000717  0.000206  9.147109e-06  0.000188  0.000213       5   256   No Atomic/Fused
+4  0.000950  0.000296  5.966584e-07  0.000295  0.000297       5   512   No Atomic/Fused
 </pre></div>
 </div>
 <p>Pivot.</p>
@@ -849,6 +849,7 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;a&#39;, &#39;
 
     <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pivot</span></a></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html#pandas.DataFrame.pivot" title="pandas.DataFrame.pivot" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">pivot</span></a></a><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
     <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pivot</span></a></a><span class="p">[</span><span class="s2">&quot;ratio&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pivot</span></a></a><span class="p">[</span><span class="s2">&quot;Atomic/Not Fused&quot;</span><span class="p">]</span> <span class="o">/</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pivot</span></a></a><span class="p">[</span><span class="s2">&quot;No Atomic/Fused&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Speed up compare to the onnx standaed.&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pivot</span></a></a><span class="p">)</span>
 
     <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pivot</span></a></a><span class="p">[[</span><span class="s2">&quot;Atomic/Not Fused&quot;</span><span class="p">,</span> <span class="s2">&quot;No Atomic/Fused&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
@@ -859,17 +860,18 @@ output: name=&#39;Y&#39; type=dtype(&#39;float32&#39;) shape=[&#39;a&#39;, &#39;
     <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.artist.Artist.get_figure.html#matplotlib.artist.Artist.get_figure" title="matplotlib.artist.Artist.get_figure" class="sphx-glr-backref-module-matplotlib-artist sphx-glr-backref-type-py-method"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.artist.Artist.get_figure.html#matplotlib.artist.Artist.get_figure" title="matplotlib.artist.Artist.get_figure" class="sphx-glr-backref-module-matplotlib-artist sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span></a></a><span class="p">()</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;plot_op_scatternd_cuda.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_op_scatternd_cuda_001.png" srcset="../_images/sphx_glr_plot_op_scatternd_cuda_001.png" alt="Atomic/No-Atomic implementation for ScatterND on CUDA itype=1" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>label  Atomic/Not Fused  No Atomic/Fused     ratio
+<img src="../_images/sphx_glr_plot_op_scatternd_cuda_001.png" srcset="../_images/sphx_glr_plot_op_scatternd_cuda_001.png" alt="Atomic/No-Atomic implementation for ScatterND on CUDA itype=1" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Speed up compare to the onnx standaed.
+label  Atomic/Not Fused  No Atomic/Fused     ratio
 size
-256            0.000168         0.000264  0.634576
-512            0.000282         0.000305  0.926444
-1024           0.000486         0.000524  0.927914
+256            0.000159         0.000206  0.772643
+512            0.000392         0.000296  1.325651
+1024           0.000636         0.000719  0.884669
 </pre></div>
 </div>
 <p>The best choice depends on the input sizes,
 For big matrices, the use of atomic is slowing down
 the computation.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.319 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.526 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-scatternd-cuda-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c4801211286a10a171e1632c1a0f810b/plot_op_scatternd_cuda.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_scatternd_cuda.ipynb</span></code></a></p>

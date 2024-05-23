@@ -369,6 +369,7 @@ if sess2 is not None:
 
     pivot = df.pivot(index="size", columns="label", values="time")
     pivot["ratio"] = pivot["Atomic/Not Fused"] / pivot["No Atomic/Fused"]
+    print("Speed up compare to the onnx standaed.")
     print(pivot)
 
     ax = pivot[["Atomic/Not Fused", "No Atomic/Fused"]].plot(
