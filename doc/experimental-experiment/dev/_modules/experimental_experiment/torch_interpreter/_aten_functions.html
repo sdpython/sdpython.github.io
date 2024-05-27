@@ -264,10 +264,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/prims_function.html">aten_prims</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/convert.html">convert_tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_dynamo.html">torch_dynamo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_helper.html">torch_models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/dimension.html">Dimension</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/torch_test.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/misc.html">Others…</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -291,6 +291,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/phi.html">Phi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/phi3.html">Phi3</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmark from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmark from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -867,6 +868,137 @@
 
 
 
+<span class="k">def</span> <span class="nf">_adjust_attributes_of_avg_pool</span><span class="p">(</span>
+    <span class="n">expand_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">padding</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adjust attributes of avg_pool to match ONNX specification.&quot;&quot;&quot;</span>
+
+    <span class="n">kernel_shape</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[</span><span class="n">kernel_size</span><span class="p">]</span> <span class="o">*</span> <span class="n">expand_size</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">kernel_size</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">padding</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">pads</span> <span class="o">=</span> <span class="p">[</span><span class="n">padding</span><span class="p">]</span> <span class="o">*</span> <span class="n">expand_size</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">pads</span> <span class="o">=</span> <span class="n">padding</span> <span class="o">*</span> <span class="n">expand_size</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">padding</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">pads</span> <span class="o">=</span> <span class="n">padding</span> <span class="o">*</span> <span class="n">expand_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pads</span> <span class="o">=</span> <span class="n">padding</span> <span class="o">*</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stride</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">strides</span> <span class="o">=</span> <span class="p">[</span><span class="n">stride</span><span class="p">]</span> <span class="o">*</span> <span class="n">expand_size</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">stride</span><span class="p">:</span>
+        <span class="n">strides</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">strides</span> <span class="o">=</span> <span class="n">stride</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">kernel_shape</span><span class="p">,</span> <span class="n">strides</span><span class="p">,</span> <span class="n">pads</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="aten_avg_pool2d">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_avg_pool2d">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_avg_pool2d</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">padding</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">ceil_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">count_include_pad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">divisor_override</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="s2">&quot;AveragePool&quot;</span>
+    <span class="k">assert</span> <span class="n">divisor_override</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;avg_pool2d not implemented for divisor_override=&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">divisor_override</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">expand_size</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="n">kernel_shape</span><span class="p">,</span> <span class="n">strides</span><span class="p">,</span> <span class="n">pads</span> <span class="o">=</span> <span class="n">_adjust_attributes_of_avg_pool</span><span class="p">(</span>
+        <span class="n">expand_size</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span>
+    <span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">AveragePool</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">ceil_mode</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">ceil_mode</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">count_include_pad</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">count_include_pad</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
+        <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
+        <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;avg_pool2d&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="aten_avg_pool2d_backward">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_avg_pool2d_backward">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_avg_pool2d_backward</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">grad_output</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
+    <span class="n">padding</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">ceil_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">count_include_pad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">divisor_override</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="s2">&quot;AveragePoolGrad (not a standard onnx operator)&quot;</span>
+    <span class="k">assert</span> <span class="n">divisor_override</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;avg_pool2d_backward not implemented for divisor_override=&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">divisor_override</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;avg_pool2d_backward not implemented for kwargs=&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kwargs</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">expand_size</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="n">kernel_shape</span><span class="p">,</span> <span class="n">strides</span><span class="p">,</span> <span class="n">pads</span> <span class="o">=</span> <span class="n">_adjust_attributes_of_avg_pool</span><span class="p">(</span>
+        <span class="n">expand_size</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span>
+    <span class="p">)</span>
+
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+        <span class="s2">&quot;AveragePoolGrad&quot;</span><span class="p">,</span>
+        <span class="n">grad_output</span><span class="p">,</span>
+        <span class="n">auto_pad</span><span class="o">=</span><span class="s2">&quot;NOTSET&quot;</span><span class="p">,</span>
+        <span class="n">ceil_mode</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">ceil_mode</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">count_include_pad</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">count_include_pad</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">kernel_shape</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">,</span>
+        <span class="n">pads</span><span class="o">=</span><span class="n">pads</span><span class="p">,</span>
+        <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+        <span class="c1"># domain=&quot;com.microsoft&quot;,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;avg_pool2d_backward&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># It is an average, so x is not used to compute the gradient.</span>
+    <span class="c1"># result = g.op.Add(x, grad, name=&quot;avg_pool2d_backward&quot;, outputs=outputs)</span>
+    <span class="k">if</span> <span class="n">sts</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">grad</span></div>
+
+
+
 <div class="viewcode-block" id="aten_bmm">
 <a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_bmm">[docs]</a>
 <span class="k">def</span> <span class="nf">aten_bmm</span><span class="p">(</span>
@@ -1238,17 +1370,32 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;embedding&quot;</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="p">(</span><span class="n">padding_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">padding_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">padding_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">padding_idx</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="ow">or</span> <span class="n">scale_grad_by_freq</span>
         <span class="ow">or</span> <span class="n">sparse</span>
         <span class="ow">or</span> <span class="n">max_norm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Not implemented when padding_idx=</span><span class="si">{</span><span class="n">padding_idx</span><span class="si">}</span><span class="s2">, or &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;scale_grad_by_freq=</span><span class="si">{</span><span class="n">scale_grad_by_freq</span><span class="si">}</span><span class="s2"> or sparse=</span><span class="si">{</span><span class="n">sparse</span><span class="si">}</span><span class="s2"> &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;or max_norm=</span><span class="si">{</span><span class="n">max_norm</span><span class="si">}</span><span class="s2"> or norm_type=</span><span class="si">{</span><span class="n">norm_type</span><span class="si">}</span><span class="s2"> &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;are different from the default values.&quot;</span>
-        <span class="p">)</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">weight</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">padding_idx</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="c1"># padding_idx should probabily be -1, shape are probably dynamic</span>
+                <span class="n">padding_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">exc</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Not implemented when padding_idx=</span><span class="si">{</span><span class="n">padding_idx</span><span class="si">}</span><span class="s2">, or &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;scale_grad_by_freq=</span><span class="si">{</span><span class="n">scale_grad_by_freq</span><span class="si">}</span><span class="s2"> or sparse=</span><span class="si">{</span><span class="n">sparse</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;or max_norm=</span><span class="si">{</span><span class="n">max_norm</span><span class="si">}</span><span class="s2"> or norm_type=</span><span class="si">{</span><span class="n">norm_type</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;are different from the default values, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;weight: </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;indices: </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span><span class="p">,</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;indices be integer not </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
         <span class="sa">f</span><span class="s2">&quot;weight is </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -3905,6 +4052,22 @@
 
 
 
+<div class="viewcode-block" id="aten_split_Tensor">
+<a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_split_Tensor">[docs]</a>
+<span class="k">def</span> <span class="nf">aten_split_Tensor</span><span class="p">(</span>
+    <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
+    <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">split_sizes</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+    <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;split_Tensor&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="s2">&quot;split_to_sequence or split&quot;</span>
+    <span class="k">return</span> <span class="n">aten_split_with_sizes</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">split_sizes</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="aten_split_with_sizes">
 <a class="viewcode-back" href="../../../api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_split_with_sizes">[docs]</a>
 <span class="k">def</span> <span class="nf">aten_split_with_sizes</span><span class="p">(</span>
@@ -3918,9 +4081,54 @@
     <span class="n">use_sequence</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;split_to_sequence or split&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_sizes</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">all_int</span><span class="p">(</span>
-        <span class="n">split_sizes</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Implemented when split_sizes (</span><span class="si">{</span><span class="n">split_sizes</span><span class="si">}</span><span class="s2">) is a constant</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">use_sequence</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_sizes</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="c1"># Then torch means to split into equal chunk of this size</span>
+        <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Not implemented when split_sizes=</span><span class="si">{</span><span class="n">split_sizes</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;and x has not known shape &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Not implemented when split_sizes=</span><span class="si">{</span><span class="n">split_sizes</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;and x has dynamic shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">n_splits</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">size</span> <span class="o">//</span> <span class="n">split_sizes</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="o">%</span> <span class="n">split_sizes</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="p">(</span><span class="n">size</span> <span class="o">//</span> <span class="n">split_sizes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">o</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">o</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">)]</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+            <span class="s2">&quot;Split&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">num_outputs</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sts</span><span class="p">:</span>
+            <span class="n">new_shapes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">new_ranks</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">):</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="n">split_sizes</span><span class="p">,</span> <span class="n">split_sizes</span><span class="p">)</span>
+                <span class="n">new_shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+                <span class="n">size</span> <span class="o">-=</span> <span class="n">split_sizes</span>
+                <span class="n">new_shapes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">new_shape</span><span class="p">))</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">new_shapes</span><span class="p">:</span>
+                    <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">new_ranks</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_sizes</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">all_int</span><span class="p">(</span><span class="n">split_sizes</span><span class="p">),</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Not implemented when split_sizes (</span><span class="si">{</span><span class="n">split_sizes</span><span class="si">}</span><span class="s2">) &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;is a constant</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;dim=</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2"> is not an integer</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">split_sizes</span><span class="p">)),</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;split_with_sizes only implemented when all sizes are positive &quot;</span>
