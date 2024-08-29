@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_tsp.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -68,7 +68,7 @@ Des villes tirées au hasard
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f87dde1b820>]
+    [<matplotlib.lines.Line2D object at 0x7f59a21a3430>]
 
 
 
@@ -82,7 +82,7 @@ donnera quelque chose de très éloigné de la solution optimale :
 .. code-block:: Python
 
 
-    plt.plot(x + [x[0]], y + [y[0]], "o-")
+    plt.plot([*x, x[0]], [*y, y[0]], "o-")
 
 
 
@@ -99,7 +99,7 @@ donnera quelque chose de très éloigné de la solution optimale :
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f87ddd9cf70>]
+    [<matplotlib.lines.Line2D object at 0x7f5a4b149a50>]
 
 
 
@@ -144,7 +144,7 @@ C'est ce qui est implémenté ci-dessous.
 
  .. code-block:: none
 
-    longueur initiale 13.505907269186013
+    longueur initiale 11.312591688887213
 
 
 
@@ -167,7 +167,7 @@ Permutations.
             it += 1
             print("iteration", it, "d=", d)
             d0 = d
-            for i in range(0, len(ordre) - 1):
+            for i in range(len(ordre) - 1):
                 for j in range(i + 2, len(ordre)):
                     r = ordre[i:j].copy()
                     r.reverse()
@@ -181,8 +181,8 @@ Permutations.
 
     ordre = permutation(x, y, list(range(len(x))))
     print("longueur min", longueur(x, y, ordre))
-    xo = [x[o] for o in ordre + [ordre[0]]]
-    yo = [y[o] for o in ordre + [ordre[0]]]
+    xo = [x[o] for o in [*ordre, ordre[0]]]
+    yo = [y[o] for o in [*ordre, ordre[0]]]
     plt.plot(xo, yo, "o-")
 
 
@@ -198,12 +198,13 @@ Permutations.
 
  .. code-block:: none
 
-    iteration 2 d= 13.505907269186013
-    iteration 3 d= 1.691942421153962
-    iteration 4 d= 1.1903892598312495
-    longueur min 1.1903892598312495
+    iteration 2 d= 11.312591688887213
+    iteration 3 d= 1.7107475783886994
+    iteration 4 d= 1.2794757946485353
+    iteration 5 d= 1.2178995160424442
+    longueur min 1.2178995160424442
 
-    [<matplotlib.lines.Line2D object at 0x7f87dde1af50>]
+    [<matplotlib.lines.Line2D object at 0x7f59a1e948b0>]
 
 
 
@@ -242,7 +243,7 @@ arc qui boucle le chemin du dernier noeud au premier.
 
  .. code-block:: none
 
-    longueur initiale 13.078025608783923
+    longueur initiale 11.039864363841563
 
 
 
@@ -276,14 +277,16 @@ Et graphiquement.
 
  .. code-block:: none
 
-    iteration 2 d= 13.078025608783923
-    iteration 3 d= 1.6771876900613591
-    iteration 4 d= 1.1391250768731818
-    iteration 5 d= 1.1046501462201344
-    iteration 6 d= 1.0784484090749775
-    longueur min 1.0784484090749775
+    iteration 2 d= 11.039864363841563
+    iteration 3 d= 1.8321156015759406
+    iteration 4 d= 1.467394205778806
+    iteration 5 d= 1.1256076989055979
+    iteration 6 d= 0.9230177762890357
+    iteration 7 d= 0.8797229269967465
+    iteration 8 d= 0.8169506466078253
+    longueur min 0.8169506466078253
 
-    [<matplotlib.lines.Line2D object at 0x7f87ddd3e8f0>]
+    [<matplotlib.lines.Line2D object at 0x7f59a2111930>]
 
 
 
@@ -345,8 +348,8 @@ première position ne change rien et puis inverser une moitié, c'est
 
     ordre = permutation(x, y, list(range(len(x))))
     print("longueur min", longueur(x, y, ordre))
-    xo = [x[o] for o in ordre + [ordre[0]]]
-    yo = [y[o] for o in ordre + [ordre[0]]]
+    xo = [x[o] for o in [*ordre, ordre[0]]]
+    yo = [y[o] for o in [*ordre, ordre[0]]]
     plt.plot(xo, yo, "o-")
     plt.text(xo[0], yo[0], "0", color="r", weight="bold", size="x-large")
     plt.text(xo[-2], yo[-2], "N-1", color="r", weight="bold", size="x-large")
@@ -364,14 +367,16 @@ première position ne change rien et puis inverser une moitié, c'est
 
  .. code-block:: none
 
-    longueur initiale 13.505907269186013
-    iteration 2 d= 13.505907269186013 ordre[0] 0
-    iteration 3 d= 2.181581748314381 ordre[0] 0
-    iteration 4 d= 1.5243392021523936 ordre[0] 0
-    iteration 5 d= 1.4158660324899728 ordre[0] 0
-    longueur min 1.4158660324899728
+    longueur initiale 11.312591688887213
+    iteration 2 d= 11.312591688887213 ordre[0] 0
+    iteration 3 d= 2.2540708615042244 ordre[0] 0
+    iteration 4 d= 1.6683545902778474 ordre[0] 0
+    iteration 5 d= 1.4101112723158136 ordre[0] 0
+    iteration 6 d= 1.1748163185375535 ordre[0] 0
+    iteration 7 d= 1.1694667297496562 ordre[0] 0
+    longueur min 1.1694667297496562
 
-    Text(0.7332034403329302, 0.2868319034555752, 'N-1')
+    Text(0.8987461020321155, 0.5374739394626604, 'N-1')
 
 
 
@@ -421,8 +426,8 @@ jamais ! On s'empresse de corriger cela.
 
     ordre = permutation(x, y, list(range(len(x))))
     print("longueur min", longueur(x, y, ordre))
-    xo = [x[o] for o in ordre + [ordre[0]]]
-    yo = [y[o] for o in ordre + [ordre[0]]]
+    xo = [x[o] for o in [*ordre, ordre[0]]]
+    yo = [y[o] for o in [*ordre, ordre[0]]]
     plt.plot(xo, yo, "o-")
     plt.text(xo[0], yo[0], "0", color="r", weight="bold", size="x-large")
     plt.text(xo[-2], yo[-2], "N-1", color="r", weight="bold", size="x-large")
@@ -441,17 +446,14 @@ jamais ! On s'empresse de corriger cela.
 
  .. code-block:: none
 
-    longueur initiale 13.505907269186013
-    iteration 2 d= 13.505907269186013 ordre[0] 0
-    iteration 3 d= 2.443079572694948 ordre[0] 0
-    iteration 4 d= 1.523338179940478 ordre[0] 0
-    iteration 5 d= 1.3819249081186789 ordre[0] 0
-    iteration 6 d= 1.194186815206845 ordre[0] 0
-    iteration 7 d= 1.1883320298224307 ordre[0] 0
-    iteration 8 d= 1.0767649820540774 ordre[0] 0
-    longueur min 1.0767649820540774
+    longueur initiale 11.312591688887213
+    iteration 2 d= 11.312591688887213 ordre[0] 0
+    iteration 3 d= 1.4865523047304157 ordre[0] 0
+    iteration 4 d= 1.2530042497041134 ordre[0] 0
+    iteration 5 d= 1.2356397118682896 ordre[0] 0
+    longueur min 1.2356397118682896
 
-    Text(0.16329823208868144, 0.016637088361759367, 'N-1')
+    Text(0.39107895164942397, 0.8348361236700091, 'N-1')
 
 
 
@@ -493,7 +495,7 @@ Un peu d'aléa devrait l'aider à trouver de meilleures solutions après quelque
             print("iteration", it, "d=", d, "ordre[0]", ordre[0])
             d0 = d
             for i in range(1, len(ordre) - 1):
-                for j in range(i + 2, len(ordre) + 1):
+                for _j in range(i + 2, len(ordre) + 1):
                     ik = random.randint(1, len(ordre) - 1)
                     il = random.randint(ik + 1, len(ordre))
                     r = ordre[ik:il].copy()
@@ -508,8 +510,8 @@ Un peu d'aléa devrait l'aider à trouver de meilleures solutions après quelque
 
     ordre = permutation_rnd(x, y, list(range(len(x))))
     print("longueur min", longueur(x, y, ordre))
-    xo = [x[o] for o in ordre + [ordre[0]]]
-    yo = [y[o] for o in ordre + [ordre[0]]]
+    xo = [x[o] for o in [*ordre, ordre[0]]]
+    yo = [y[o] for o in [*ordre, ordre[0]]]
     plt.plot(xo, yo, "o-")
     plt.text(xo[0], yo[0], "0", color="r", weight="bold", size="x-large")
     plt.text(xo[-2], yo[-2], "N-1", color="r", weight="bold", size="x-large")
@@ -527,15 +529,13 @@ Un peu d'aléa devrait l'aider à trouver de meilleures solutions après quelque
 
  .. code-block:: none
 
-    longueur initiale 13.505907269186013
-    iteration 2 d= 13.505907269186013 ordre[0] 0
-    iteration 3 d= 2.4489424506049406 ordre[0] 0
-    iteration 4 d= 1.6524839602002874 ordre[0] 0
-    iteration 5 d= 1.5691003846597402 ordre[0] 0
-    iteration 6 d= 1.4629741018183848 ordre[0] 0
-    longueur min 1.4629741018183848
+    longueur initiale 11.312591688887213
+    iteration 2 d= 11.312591688887213 ordre[0] 0
+    iteration 3 d= 2.2556262996477003 ordre[0] 0
+    iteration 4 d= 1.2048240055229806 ordre[0] 0
+    longueur min 1.2048240055229806
 
-    Text(0.16329823208868144, 0.016637088361759367, 'N-1')
+    Text(0.4221227234044457, 0.5854222286130167, 'N-1')
 
 
 
@@ -553,8 +553,8 @@ Par conséquent, il peut rester des croisements :
 
     ordre = permutation_rnd(x, y, list(range(len(x))))
     print("longueur min", longueur(x, y, ordre))
-    xo = [x[o] for o in ordre + [ordre[0]]]
-    yo = [y[o] for o in ordre + [ordre[0]]]
+    xo = [x[o] for o in [*ordre, ordre[0]]]
+    yo = [y[o] for o in [*ordre, ordre[0]]]
     plt.plot(xo, yo, "o-")
     plt.text(xo[0], yo[0], "0", color="r", weight="bold", size="x-large")
     plt.text(xo[-2], yo[-2], "N-1", color="r", weight="bold", size="x-large")
@@ -573,13 +573,13 @@ Par conséquent, il peut rester des croisements :
 
  .. code-block:: none
 
-    iteration 2 d= 13.505907269186013 ordre[0] 0
-    iteration 3 d= 2.9657797307374083 ordre[0] 0
-    iteration 4 d= 1.8005404539463572 ordre[0] 0
-    iteration 5 d= 1.2436614330765459 ordre[0] 0
-    longueur min 1.2436614330765459
+    iteration 2 d= 11.312591688887213 ordre[0] 0
+    iteration 3 d= 1.9467204600588857 ordre[0] 0
+    iteration 4 d= 1.3402437762334727 ordre[0] 0
+    iteration 5 d= 1.286127955010898 ordre[0] 0
+    longueur min 1.286127955010898
 
-    Text(0.15328048902852542, 0.027303437404047504, 'N-1')
+    Text(0.39107895164942397, 0.8348361236700091, 'N-1')
 
 
 
@@ -602,7 +602,7 @@ et recommencer plusieurs à partir d'ordre initiaux aléatoires :
             it += 1
             d0 = d
             for i in range(1, len(ordre) - 1):
-                for j in range(i + 2, len(ordre) + 1):
+                for _j in range(i + 2, len(ordre) + 1):
                     ik = random.randint(1, len(ordre) - 1)
                     il = random.randint(ik + 1, len(ordre))
                     r = ordre[ik:il].copy()
@@ -619,7 +619,7 @@ et recommencer plusieurs à partir d'ordre initiaux aléatoires :
         ordre = list(range(len(x)))
         bordre = ordre.copy()
         d0 = longueur(x, y, ordre)
-        for i in range(0, 20):
+        for i in range(20):
             print("iteration", i, "d=", d0)
             random.shuffle(ordre)
             ordre = permutation_rnd(x, y, ordre, 20)
@@ -656,7 +656,7 @@ La distance initiale.
 
  .. code-block:: none
 
-    longueur initiale 13.505907269186013
+    longueur initiale 11.312591688887213
 
 
 
@@ -672,8 +672,8 @@ La longueur obtenue.
 
     ordre = n_permutation(x, y, 20)
     print("longueur min", longueur(x, y, ordre))
-    xo = [x[o] for o in ordre + [ordre[0]]]
-    yo = [y[o] for o in ordre + [ordre[0]]]
+    xo = [x[o] for o in [*ordre, ordre[0]]]
+    yo = [y[o] for o in [*ordre, ordre[0]]]
     plt.plot(xo, yo, "o-")
     plt.text(xo[0], yo[0], "0", color="r", weight="bold", size="x-large")
     plt.text(xo[-2], yo[-2], "N-1", color="r", weight="bold", size="x-large")
@@ -693,36 +693,36 @@ La longueur obtenue.
 
  .. code-block:: none
 
-    iteration 0 d= 13.505907269186013
-    iteration 1 d= 1.1380905804644303
-    iteration 2 d= 1.1380905804644303
-    iteration 3 d= 1.0971799688330344
-    iteration 4 d= 1.0971799688330344
-    iteration 5 d= 1.0971799688330344
-    iteration 6 d= 1.0971799688330344
-    iteration 7 d= 1.0971799688330344
-    iteration 8 d= 1.0971799688330344
-    iteration 9 d= 1.096552604587197
-    iteration 10 d= 1.096552604587197
-    iteration 11 d= 1.0873102647994237
-    iteration 12 d= 1.0873102647994237
-    iteration 13 d= 1.0873102647994237
-    iteration 14 d= 1.0873102647994237
-    iteration 15 d= 1.0873102647994237
-    iteration 16 d= 1.0873102647994237
-    iteration 17 d= 1.0873102647994237
-    iteration 18 d= 1.0873102647994237
-    iteration 19 d= 1.0873102647994237
-    longueur min 1.0873102647994237
+    iteration 0 d= 11.312591688887213
+    iteration 1 d= 0.9117732087185377
+    iteration 2 d= 0.9117732087185377
+    iteration 3 d= 0.9117732087185377
+    iteration 4 d= 0.9117732087185377
+    iteration 5 d= 0.9117732087185377
+    iteration 6 d= 0.9117732087185377
+    iteration 7 d= 0.9117732087185377
+    iteration 8 d= 0.9117732087185377
+    iteration 9 d= 0.9117732087185377
+    iteration 10 d= 0.9117732087185377
+    iteration 11 d= 0.9117732087185377
+    iteration 12 d= 0.9117732087185377
+    iteration 13 d= 0.9117732087185377
+    iteration 14 d= 0.9117732087185377
+    iteration 15 d= 0.9117732087185377
+    iteration 16 d= 0.9117732087185377
+    iteration 17 d= 0.9117732087185377
+    iteration 18 d= 0.9117732087185377
+    iteration 19 d= 0.9117732087185377
+    longueur min 0.9117732087185377
 
-    Text(0.6066673059897301, 0.29070487509552667, 'N-1')
+    Text(0.8169979606824221, 0.16445073346899686, 'N-1')
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.502 seconds)
+   **Total running time of the script:** (0 minutes 2.892 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_tsp.py:
@@ -738,6 +738,10 @@ La longueur obtenue.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_tsp.py <plot_tsp.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_tsp.zip <plot_tsp.zip>`
 
 
 .. only:: html

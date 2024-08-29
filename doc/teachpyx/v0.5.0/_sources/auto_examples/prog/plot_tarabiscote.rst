@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_tarabiscote.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -30,7 +30,7 @@ Copie de listes
 ===============
 
 La fonction ``somme`` est censée faire la concaténation de toutes les
-listes contenues dans ``ens``. Le résultat retourné est effectivement 
+listes contenues dans ``ens``. Le résultat retourné est effectivement
 celui désiré mais la fonction modifie également la liste ``ens``, pourquoi ?
 
 .. GENERATED FROM PYTHON SOURCE LINES 19-36
@@ -121,7 +121,7 @@ Il était possible, dans ce cas, de se passer de copie en écrivant :
 
     def somme(tab):
         li = []  ###### ligne modifiée
-        for i in range(0, len(tab)):  ###### ligne modifiée
+        for i in range(len(tab)):  ###### ligne modifiée
             li += tab[i]
         return li
 
@@ -160,7 +160,7 @@ Le programme suivant fonctionne mais le résultat n'est pas celui escompté.
 
     li = ["un", "deux", "trois", "quatre", "cinq"]
 
-    for i in range(0, len(li)):
+    for i in range(len(li)):
         mi = i
         for j in range(i, len(li)):
             if li[mi] < li[j]:
@@ -198,7 +198,7 @@ l'élément ``l[i]`` avec l'élément ``l[mi]``. Il faut donc écrire :
 
 
     li = ["un", "deux", "trois", "quatre", "cinq"]
-    for i in range(0, len(li)):
+    for i in range(len(li)):
         mi = i
         for j in range(i, len(li)):
             if li[mi] < li[j]:
@@ -536,7 +536,7 @@ et que la précision du résultat dépend de la méthode numérique employée.
 
 
     x = 1.0
-    for i in range(0, 19):
+    for i in range(19):
         x = x / 10
         print(i, "\t", 1.0 - x, "\t", x, "\t", x ** (0.5))
 
@@ -589,7 +589,7 @@ réel simple précision codé sur
 
 
     x = numpy.float32(1.0)
-    for i in range(0, 19):
+    for i in range(19):
         x = x / numpy.float32(10)
         print(i, "\t", 1.0 - x, "\t", x, "\t", x ** (0.5))
 
@@ -782,7 +782,7 @@ cette précision en fonction de la destination des calculs.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.014 seconds)
+   **Total running time of the script:** (0 minutes 0.019 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_tarabiscote.py:
@@ -798,6 +798,10 @@ cette précision en fonction de la destination des calculs.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_tarabiscote.py <plot_tarabiscote.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_tarabiscote.zip <plot_tarabiscote.zip>`
 
 
 .. only:: html

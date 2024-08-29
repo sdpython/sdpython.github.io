@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_hypercube.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -28,7 +28,7 @@ Exercices autour de tableaux en plusieurs dimensions et autres exercices.
 
 Q1 - triple récursivité
 =======================
- 
+
 Réécrire la fonction ``u`` de façon à ce qu'elle ne soit plus récurrente.
 
 .. GENERATED FROM PYTHON SOURCE LINES 17-28
@@ -436,7 +436,7 @@ La seconde à base de dictionnaire (plus facile à manipuler) :
 
     def hyper_cube_dico(n):
         r = {}
-        ind = [0 for i in range(0, n)]
+        ind = [0 for i in range(n)]
         while ind[0] <= 1:
             cle = tuple(ind)  # conversion d'une liste en tuple
             r[cle] = 0
@@ -507,7 +507,7 @@ compléter la fonction ``occurrence``.
 
     def occurrence(tu, n):
         d = hyper_cube_dico(n)
-        for i in range(0, len(tu) - n):
+        for i in range(len(tu) - n):
             cle = tu[i : i + n]
             d[cle] += 1
         return d
@@ -541,7 +541,7 @@ Il est même possible de se passer de la fonction ``hyper_cube_dico`` :
 
     def occurrence2(tu, n):
         d = {}
-        for i in range(0, len(tu) - n):
+        for i in range(len(tu) - n):
             cle = tu[i : i + n]
             if cle not in d:
                 d[cle] = 0
@@ -581,10 +581,10 @@ est plus une curiosité qu'un cas utile.
 
     def occurrence3(li, n):
         d = hyper_cube_liste(n)
-        for i in range(0, len(li) - n):
+        for i in range(len(li) - n):
             cle = li[i : i + n]
             t = d  #
-            for k in range(0, n - 1):  # point clé de la fonction :
+            for k in range(n - 1):  # point clé de la fonction :
                 t = t[cle[k]]  #                accès à un élément
             t[cle[n - 1]] += 1
         return d
@@ -616,7 +616,7 @@ Une autre écriture...
 
 
 
-    def hyper_cube_liste2(n, m=[0, 0], m2=[0, 0]):
+    def hyper_cube_liste2(n, m=[0, 0], m2=[0, 0]):  # noqa: B006
         if n > 1:
             m[0] = list(m2)
             m[1] = list(m2)
@@ -627,11 +627,11 @@ Une autre écriture...
 
     def occurrence4(li, n):
         d = hyper_cube_liste2(n)  # * remarque voir plus bas
-        for i in range(0, len(li) - n):
+        for i in range(len(li) - n):
             cle = li[i : i + n]
             t = d  #
-            for k in range(0, n - 1):  # point clé de la fonction :
-                t = t[cle[k]]  #                accès à un élément
+            for k in range(n - 1):  # point clé de la fonction :
+                t = t[cle[k]]  # accès à un élément
             t[cle[n - 1]] += 1
         return d
 
@@ -662,7 +662,7 @@ Et si on remplace ``list(m2)`` par ``m2``.
 
 
 
-    def hyper_cube_liste3(n, m=[0, 0], m2=[0, 0]):
+    def hyper_cube_liste3(n, m=[0, 0], m2=[0, 0]):  # noqa: B006
         if n > 1:
             m[0] = m2
             m[1] = m2
@@ -673,11 +673,11 @@ Et si on remplace ``list(m2)`` par ``m2``.
 
     def occurrence5(li, n):
         d = hyper_cube_liste3(n)  # * remarque voir plus bas
-        for i in range(0, len(li) - n):
+        for i in range(len(li) - n):
             cle = li[i : i + n]
             t = d  #
-            for k in range(0, n - 1):  # point clé de la fonction :
-                t = t[cle[k]]  #                accès à un élément
+            for k in range(n - 1):  # point clé de la fonction :
+                t = t[cle[k]]  # accès à un élément
             t[cle[n - 1]] += 1
         return d
 
@@ -708,7 +708,7 @@ Intéressant...
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.013 seconds)
+   **Total running time of the script:** (0 minutes 0.015 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_hypercube.py:
@@ -724,6 +724,10 @@ Intéressant...
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_hypercube.py <plot_hypercube.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_hypercube.zip <plot_hypercube.zip>`
 
 
 .. only:: html

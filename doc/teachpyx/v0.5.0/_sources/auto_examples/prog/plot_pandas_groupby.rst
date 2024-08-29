@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_pandas_groupby.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -21,7 +21,7 @@
 =================
 Pandas et groupby
 =================
- 
+
 Petit tour de passe passe autour d'un :meth:`pandas.DataFrame.groupby`
 et des valeurs manquantes qui ne sont plus prises en compte
 depuis les dernières versions.
@@ -226,7 +226,7 @@ Il est possible de corriger le tir avec l'argument `dropna`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.013 seconds)
+   **Total running time of the script:** (0 minutes 0.758 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_pandas_groupby.py:
@@ -242,6 +242,10 @@ Il est possible de corriger le tir avec l'argument `dropna`.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_pandas_groupby.py <plot_pandas_groupby.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_pandas_groupby.zip <plot_pandas_groupby.zip>`
 
 
 .. only:: html

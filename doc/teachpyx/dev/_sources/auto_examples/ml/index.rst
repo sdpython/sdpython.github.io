@@ -12,6 +12,7 @@ Gallerie d'exemples sur le machine learning
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -32,7 +33,7 @@ Gallerie d'exemples sur le machine learning
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Un problème de classification binaire consiste à trouver un moyen de séparer deux nuages de poi...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Un problème de classification binaire consiste à trouver un moyen de séparer deux nuages de points (voir classification) et on évalue le plus souvent sa pertinence à l&#x27;aide d&#x27;une courbe ROC. Cet exemple montre différente représentation de la même information.">
 
 .. only:: html
 
@@ -46,6 +47,8 @@ Gallerie d'exemples sur le machine learning
       <div class="sphx-glr-thumbnail-title">Receiver Operating Characteristic (ROC)</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

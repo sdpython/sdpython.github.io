@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_lambda_function.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -49,7 +49,7 @@ en fixer un.
     ################
     # Et dans une liste, cela donne ce qui suit.
 
-    print([oneargs(a) for a in range(0, 3)])
+    print([oneargs(a) for a in range(3)])
 
 
 
@@ -75,7 +75,7 @@ ce qui est quand même plus simple.
 .. code-block:: Python
 
 
-    fcts = [a + 5 for a in range(0, 3)]
+    fcts = [a + 5 for a in range(3)]
     print(fcts)
 
 
@@ -100,7 +100,7 @@ Ou encore...
 .. code-block:: Python
 
 
-    fcts = [oneargs(a) for a in range(0, 3)]
+    fcts = [oneargs(a) for a in range(3)]
     print(fcts)
 
 
@@ -128,7 +128,7 @@ lambda fonctions. La seconde les exécute.
 .. code-block:: Python
 
 
-    fcts_a = [lambda: oneargs(a) for a in range(0, 3)]
+    fcts_a = [lambda: oneargs(a) for a in range(3)]  # noqa: B023
     fcts_b = [f() for f in fcts_a]
     print(fcts_b)
 
@@ -161,7 +161,7 @@ distincte de a dans une valeur par défaut.
 .. code-block:: Python
 
 
-    fcts_a = [lambda a=a: oneargs(a) for a in range(0, 3)]
+    fcts_a = [lambda a=a: oneargs(a) for a in range(3)]
     fcts_b = [f() for f in fcts_a]
     print(fcts_b)
 
@@ -180,7 +180,7 @@ distincte de a dans une valeur par défaut.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.004 seconds)
+   **Total running time of the script:** (0 minutes 0.005 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_lambda_function.py:
@@ -196,6 +196,10 @@ distincte de a dans une valeur par défaut.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_lambda_function.py <plot_lambda_function.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_lambda_function.zip <plot_lambda_function.zip>`
 
 
 .. only:: html

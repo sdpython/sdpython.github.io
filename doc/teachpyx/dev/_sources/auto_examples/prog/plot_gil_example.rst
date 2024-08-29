@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_gil_example.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -22,15 +22,15 @@
 
 ======
 Le GIL
-====== 
+======
 
 Le GIL ou `Global Interpreter Lock <https://en.wikipedia.org/wiki/Global_interpreter_lock>`_
-est un verrou unique auquel l'interpréteur Python fait appel constamment 
+est un verrou unique auquel l'interpréteur Python fait appel constamment
 pour protéger tous les objets qu'il manipule contre des accès concurrentiels.
 
 Deux listes en parallel
 =======================
- 
+
 On mesure le temps nécessaire pour créer deux liste et comparer ce
 temps avec celui que cela prendrait en parallèle.
 
@@ -61,7 +61,7 @@ temps avec celui que cela prendrait en parallèle.
  .. code-block:: none
 
 
-    0.5017731000007188
+    0.5704424899995502
 
 
 
@@ -79,7 +79,7 @@ et deux appels à la même fonction.
 
     def run2(nb):
         with ThreadPoolExecutor(max_workers=2) as executor:
-            for res in executor.map(create_list, [nb, nb + 1]):
+            for _res in executor.map(create_list, [nb, nb + 1]):
                 pass
 
 
@@ -95,7 +95,7 @@ et deux appels à la même fonction.
  .. code-block:: none
 
 
-    1.0972130999998626
+    1.3598392990006687
 
 
 
@@ -136,7 +136,7 @@ qui ne fait rien qu'attendre. Donc le *GIL* n'est pas impliqué.
  .. code-block:: none
 
 
-    0.9519763000007515
+    0.9401214270001219
 
 
 
@@ -148,7 +148,7 @@ qui ne fait rien qu'attendre. Donc le *GIL* n'est pas impliqué.
 
     def run3(t):
         with ThreadPoolExecutor(max_workers=2) as executor:
-            for res in executor.map(attendre, [t, t + 0.001]):
+            for _res in executor.map(attendre, [t, t + 0.001]):
                 pass
 
 
@@ -164,7 +164,7 @@ qui ne fait rien qu'attendre. Donc le *GIL* n'est pas impliqué.
  .. code-block:: none
 
 
-    1.3304714000005333
+    1.3762400109999362
 
 
 
@@ -176,7 +176,7 @@ significativement inférieur à la somme des deux attentes.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.887 seconds)
+   **Total running time of the script:** (0 minutes 4.256 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_gil_example.py:
@@ -192,6 +192,10 @@ significativement inférieur à la somme des deux attentes.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_gil_example.py <plot_gil_example.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_gil_example.zip <plot_gil_example.zip>`
 
 
 .. only:: html

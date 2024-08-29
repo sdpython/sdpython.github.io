@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_matador.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -301,7 +301,7 @@ J'ai fait ça très vite. Il y a sans doute mieux.
     total = 28
 
     solution = []
-    parentheses = [(i, j) for i in range(0, 3) for j in range(i + 1, 4)]
+    parentheses = [(i, j) for i in range(3) for j in range(i + 1, 4)]
 
     # permutations sur les nombres
     for pn in permutations(nombres):
@@ -360,7 +360,7 @@ J'ai fait ça très vite. Il y a sans doute mieux.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.985 seconds)
+   **Total running time of the script:** (0 minutes 1.437 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_matador.py:
@@ -376,6 +376,10 @@ J'ai fait ça très vite. Il y a sans doute mieux.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_matador.py <plot_matador.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_matador.zip <plot_matador.zip>`
 
 
 .. only:: html

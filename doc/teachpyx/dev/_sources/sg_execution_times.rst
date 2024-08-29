@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:03.223** total execution time for 15 files **from all galleries**:
+**00:43.592** total execution time for 15 files **from all galleries**:
 
 .. container::
 
@@ -33,47 +33,47 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_prog_plot_float_and_double_rouding.py` (``examples/prog/plot_float_and_double_rouding.py``)
-     - 01:01.116
+     - 00:33.164
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_ml_plot_roc.py` (``examples/ml/plot_roc.py``)
-     - 00:02.107
+   * - :ref:`sphx_glr_auto_examples_prog_plot_gil_example.py` (``examples/prog/plot_gil_example.py``)
+     - 00:04.256
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_tsp.py` (``examples/prog/plot_tsp.py``)
+     - 00:02.892
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_matador.py` (``examples/prog/plot_matador.py``)
+     - 00:01.437
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_einstein_riddle.py` (``examples/prog/plot_einstein_riddle.py``)
+     - 00:01.038
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_pandas_groupby.py` (``examples/prog/plot_pandas_groupby.py``)
+     - 00:00.758
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_tarabiscote.py` (``examples/prog/plot_tarabiscote.py``)
+     - 00:00.019
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_hypercube.py` (``examples/prog/plot_hypercube.py``)
+     - 00:00.015
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_partie_dame.py` (``examples/prog/plot_partie_dame.py``)
+     - 00:00.008
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_lambda_function.py` (``examples/prog/plot_lambda_function.py``)
+     - 00:00.005
      - 0.0
    * - :ref:`sphx_glr_auto_examples_ml_plot_correlations.py` (``examples/ml/plot_correlations.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_einstein_riddle.py` (``examples/prog/plot_einstein_riddle.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_gil_example.py` (``examples/prog/plot_gil_example.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_hypercube.py` (``examples/prog/plot_hypercube.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_lambda_function.py` (``examples/prog/plot_lambda_function.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_matador.py` (``examples/prog/plot_matador.py``)
+   * - :ref:`sphx_glr_auto_examples_ml_plot_roc.py` (``examples/ml/plot_roc.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_numpy_tricks.py` (``examples/prog/plot_numpy_tricks.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_pandas_groupby.py` (``examples/prog/plot_pandas_groupby.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_partie_dame.py` (``examples/prog/plot_partie_dame.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_examples.py` (``examples/prog/plot_serialisation_examples.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_protobuf.py` (``examples/prog/plot_serialisation_protobuf.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_tarabiscote.py` (``examples/prog/plot_tarabiscote.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_tsp.py` (``examples/prog/plot_tsp.py``)
      - 00:00.000
      - 0.0

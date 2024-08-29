@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_einstein_riddle.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -29,12 +29,12 @@ Résolution de l'énigme `L'énigme d'Einstein
 Implémentatin d'une solution à base de règles.
 
 Je la reproduis ici :
- 
-Il y a cinq maisons de cinq couleurs différentes. Dans chacune de ces maisons, 
-vit une personne de nationalité différente. 
+
+Il y a cinq maisons de cinq couleurs différentes. Dans chacune de ces maisons,
+vit une personne de nationalité différente.
 Chacune de ces personnes boit une boisson différente,
 fume un cigare différent et a un animal domestique différent.
- 
+
 1. L'Anglais vit dans la maison rouge.
 2. Le Suédois a des chiens.
 3. Le Danois boit du thé.
@@ -50,63 +50,62 @@ fume un cigare différent et a un animal domestique différent.
 13. L'Allemand fume des prince.
 14. Le Norvégien vit juste à côté de la maison bleue.
 15. L'homme qui fume des Blend a un voisin qui boit de l'eau.
- 
+
 **Question : Qui a le poisson ?**
- 
+
 Après quelques essais, une bonne feuille de papier, on arrive à
-reconstituer la solution après de nombreuses déductions logiques 
+reconstituer la solution après de nombreuses déductions logiques
 et quelques essais. On peut voir aussi ce jeu comme un puzzle :
 chaque configuration est un pièce du puzzle dont la forme des bords
 est définie par toutes ces règles. Il faut trouver le seul emboîtement
-possible sachant que parfois, une pièce peut s'emboîter avec plusieurs 
+possible sachant que parfois, une pièce peut s'emboîter avec plusieurs
 mais qu'il n'existe qu'une façon de les emboîter toutes ensemble.
 Ecrire un programme qui résoud ce problème revient à s'intéresser à deux problèmes :
- 
+
 1. Comment définir une pièce du puzzle ?
 2. Comment parcourir toutes les combinaisons possibles ?
- 
+
 Chaque règle ou pièce de puzzle peut être exprimer comme une
 `clause <https://fr.wikipedia.org/wiki/Clause_de_Horn)>`_.
-Pour notre problème, chaque pièce du puzzle est simplement décrite par 
+Pour notre problème, chaque pièce du puzzle est simplement décrite par
 un attribut (rouge, norvégien) et un numéro de maisons (1 à 5).
 Les règles définissent la compatibilité de deux pièces. On peut
 regrouper ces règles en cinq catégories :
- 
+
 1. Un attribut est à la position p (règle 9).
 2. Deux attributs sont équivalents (règle 1).
 3. Deux attributs sont voisins (règle 11).
 4. Deux attributs sont ordonnés par rapport aux positions (règle 4).
 5. Deux attributs font partie du même ensemble et sont exclusives :
    on ne peut pas être l'un et l'autre à la fois (rouge et jaune par exemple).
- 
-Une fois que chaque règle a été exprimée dans une de ces cinq catégories, 
+
+Une fois que chaque règle a été exprimée dans une de ces cinq catégories,
 il faut définir l'association de deux règles (ou clause) pour
 former une clause plus complexe. Trois cas possibles :
- 
+
 1. Deux clauses sont compatibles : on peut avoir l'une et l'autre.
 2. Deux clauses sont incompatibles : on ne peut avoir l'une et l'autre.
- 
-Dans le premier cas, la clause résultante est simplement qu'on peut la clause A 
-et la clause B : :math:*A* et *B*. Dans le second cas, il existe deux
+
+Dans le premier cas, la clause résultante est simplement qu'on peut la clause A
+et la clause B : *A* et *B*. Dans le second cas, il existe deux
 possibilités, on peut avoir l'une et l'opposé de l'autre ou l'inverse :
 :math:`(A \, et\, non \, B) \, ou\, (non \, A \, et\, B)`.
 
-Avec cette description, il est plus facile d'exprimer le problème avec des 
+Avec cette description, il est plus facile d'exprimer le problème avec des
 objets informatiques ce que fait le programme suivant. Il explicite ensuite
 toutes les configurations compatibles avec une règle donnée
 (mais pas toutes ensembles).
- 
+
 .. note::
 
     L'énigme d'Einstein est une énigme comme celle que résoud
     Hermionne dans le premier tome de Harry Potter
     (voir :ref:`l-enigme-hermionne`).
-    
 
 On commence par la fonction `permutation`:
 qui énumère les permutations d'un ensemble :
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-96
+.. GENERATED FROM PYTHON SOURCE LINES 90-95
 
 .. code-block:: Python
 
@@ -122,12 +121,12 @@ qui énumère les permutations d'un ensemble :
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-99
+.. GENERATED FROM PYTHON SOURCE LINES 96-98
 
 Fonction permutation
 ====================
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-123
+.. GENERATED FROM PYTHON SOURCE LINES 98-122
 
 .. code-block:: Python
 
@@ -135,7 +134,7 @@ Fonction permutation
 
     def permutation(nb):
         per = []
-        p = [i for i in range(0, nb)]
+        p = list(range(nb))
         while p[0] < nb:
             cont = False
             for i in range(1, nb):
@@ -162,12 +161,12 @@ Fonction permutation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-126
+.. GENERATED FROM PYTHON SOURCE LINES 123-125
 
 La classe Rule
 ==============
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-230
+.. GENERATED FROM PYTHON SOURCE LINES 125-229
 
 .. code-block:: Python
 
@@ -282,12 +281,12 @@ La classe Rule
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 231-233
+.. GENERATED FROM PYTHON SOURCE LINES 230-232
 
 Explicit rules
 ==============
 
-.. GENERATED FROM PYTHON SOURCE LINES 233-334
+.. GENERATED FROM PYTHON SOURCE LINES 232-333
 
 .. code-block:: Python
 
@@ -324,7 +323,7 @@ Explicit rules
             overrides method ``genere``
             """
             li = []
-            for i in range(0, 5):
+            for i in range(5):
                 li.append([(i, self.set[0]), (i, self.set[1])])
             return li
 
@@ -343,7 +342,7 @@ Explicit rules
             overrides method ``genere``
             """
             li = []
-            for i in range(0, 4):
+            for i in range(4):
                 li.append([(i, self.set[0]), (i + 1, self.set[1])])
                 li.append([(i + 1, self.set[0]), (i, self.set[1])])
             return li
@@ -364,7 +363,7 @@ Explicit rules
             """
             li = []
             for j in range(1, 5):
-                for i in range(0, j):
+                for i in range(j):
                     li.append([(i, self.set[0]), (j, self.set[1])])
             return li
 
@@ -386,7 +385,7 @@ Explicit rules
             per = permutation(5)
             for p in per:
                 tl = []
-                for i in range(0, len(p)):
+                for i in range(len(p)):
                     tl.append((i, self.set[p[i]]))
                 li.append(tl)
             return li
@@ -399,19 +398,19 @@ Explicit rules
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 335-337
+.. GENERATED FROM PYTHON SOURCE LINES 334-336
 
 Description du problème avec ce code
 ====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 337-353
+.. GENERATED FROM PYTHON SOURCE LINES 336-352
 
 .. code-block:: Python
 
 
 
     def find(p):
-        for i in range(0, len(ensemble)):
+        for i in range(len(ensemble)):
             if p in ensemble[i]:
                 return (p, i)
         return None
@@ -431,11 +430,11 @@ Description du problème avec ce code
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 354-355
+.. GENERATED FROM PYTHON SOURCE LINES 353-354
 
 Les règles.
 
-.. GENERATED FROM PYTHON SOURCE LINES 355-387
+.. GENERATED FROM PYTHON SOURCE LINES 354-386
 
 .. code-block:: Python
 
@@ -634,7 +633,7 @@ Les règles.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 388-399
+.. GENERATED FROM PYTHON SOURCE LINES 387-398
 
 Parmi tous ces cas possibles, beaucoup sont incompatibles.
 L'objectif est d'éliminer tous ceux qui sont incompatibles pour ne
@@ -648,7 +647,7 @@ les clauses jusqu'à ce qu'il ne puisse plus continuer :
 2. Soit deux attributs apparaissent à la même position : incompatibilité.
 3. Soit il ne reste plus qu'une seule clause : c'est la solution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 399-536
+.. GENERATED FROM PYTHON SOURCE LINES 398-535
 
 .. code-block:: Python
 
@@ -703,14 +702,14 @@ les clauses jusqu'à ce qu'il ne puisse plus continuer :
             :param p: clause
             :return: tuple (clause, position)
             """
-            for i in range(0, len(ensemble)):
+            for i in range(len(ensemble)):
                 if p in ensemble[i]:
                     return (p, i)
             return None
 
         def to_dataframe(self):
             sr = []
-            matrix = [list(" " * 5) for _ in range(0, 5)]
+            matrix = [list(" " * 5) for _ in range(5)]
             for row in self.solution:
                 i = row[0]
                 j = row[1][1]
@@ -721,7 +720,7 @@ les clauses jusqu'à ce qu'il ne puisse plus continuer :
             text = "\n".join(sr)
             return pandas.read_csv(StringIO(text), header=None)
 
-        def solve(self, solution=[], logf=print):  # solution = [ ]) :
+        def solve(self, solution=[], logf=print):  # noqa: B006
             """
             Solves the enigma by eploring in deepness,
             the method is recursive
@@ -823,7 +822,7 @@ les clauses jusqu'à ce qu'il ne puisse plus continuer :
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.625 seconds)
+   **Total running time of the script:** (0 minutes 1.038 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_einstein_riddle.py:
@@ -839,6 +838,10 @@ les clauses jusqu'à ce qu'il ne puisse plus continuer :
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_einstein_riddle.py <plot_einstein_riddle.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_einstein_riddle.zip <plot_einstein_riddle.zip>`
 
 
 .. only:: html
