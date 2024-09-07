@@ -31,7 +31,7 @@ dans la pull request `Model trees (M5P and co)
 qui répond à au problème posée dans
 `Model trees (M5P) <https://github.com/scikit-learn/scikit-learn/pull/13732>`_
 et originellement implémentée dans
-`Building Model Trees <https://github.com/ankonzoid/LearningX/tree/master/advanced_ML/model_tree>`_.
+`Building Model Trees <https://github.com/ankonzoid/LearningX/tree/main/advanced_ML/model_tree>`_.
 Cette dernière implémentation réestime les modèles comme l'implémentation
 décrite au paragraphe :ref:`l-decisiontree-reglin-piecewise-naive`
 mais étendue à tout type de modèle.
@@ -232,7 +232,7 @@ on peut utiliser la librairie :epkg:`LAPACK`. Je ne vais pas plus loin
 ici car cela serait un peu hors sujet mais ce n'était pas une partie
 de plaisir. Cela donne :
 `piecewise_tree_regression_criterion_linear.pyx
-<https://github.com/sdpython/mlinsights/blob/master/mlinsights/mlmodel/piecewise_tree_regression_criterion_linear.pyx>`_
+<https://github.com/sdpython/mlinsights/blob/main/mlinsights/mlmodel/piecewise_tree_regression_criterion_linear.pyx>`_
 C'est illustré toujours par le notebook
 :epkg:`DecisionTreeRegressor optimized for Linear Regression`.
 

@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_profiling.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -25,7 +25,7 @@ This demonstrates one of the sphinx extension implemented here.
 
 * use of epkg, link to :epkg:`sphinx-gallery`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-13
+.. GENERATED FROM PYTHON SOURCE LINES 10-14
 
 
 
@@ -34,7 +34,7 @@ This demonstrates one of the sphinx extension implemented here.
 
  .. code-block:: none
 
-    0.1
+    0.3.0
 
 
 
@@ -43,7 +43,8 @@ This demonstrates one of the sphinx extension implemented here.
 
 |
 
-.. code-block:: default
+.. code-block:: Python
+
 
     import sphinx_runpython
 
@@ -52,7 +53,7 @@ This demonstrates one of the sphinx extension implemented here.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.004 seconds)
+   **Total running time of the script:** (0 minutes 0.002 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_profiling.py:
@@ -61,16 +62,17 @@ This demonstrates one of the sphinx extension implemented here.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_profiling.ipynb <plot_profiling.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_profiling.py <plot_profiling.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_profiling.ipynb <plot_profiling.ipynb>`
+      :download:`Download zipped: plot_profiling.zip <plot_profiling.zip>`
 
 
 .. only:: html

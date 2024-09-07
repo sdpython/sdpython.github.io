@@ -10,6 +10,7 @@ Gallery of Examples
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -27,6 +28,8 @@ Gallery of Examples
       <div class="sphx-glr-thumbnail-title">First steps with pandas_streaming</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

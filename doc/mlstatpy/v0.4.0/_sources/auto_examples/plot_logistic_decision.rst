@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_logistic_decision.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -39,9 +39,10 @@ Un cas simple et un cas compliqué
 Il faut choisir un seuil sur l'axe des abscisses qui
 permette de classer le jeu de données.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-61
+.. GENERATED FROM PYTHON SOURCE LINES 23-61
 
-.. code-block:: default
+.. code-block:: Python
+
 
     import numpy
     import matplotlib.pyplot as plt
@@ -114,7 +115,7 @@ en fonction des différents seuils possibles.
 
 .. GENERATED FROM PYTHON SOURCE LINES 73-121
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -173,11 +174,11 @@ en fonction des différents seuils possibles.
  .. code-block:: none
 
               X    y   p1        p2      Gini      Gain        lr     LL-10
-    0 -0.995951  0.0  0.0  0.642643  0.459306  0.940468  0.000047  0.661460
-    1 -0.987573  0.0  0.0  0.643287  0.458938  0.939921  0.000051  0.662687
-    2 -0.984942  0.0  0.0  0.643932  0.458567  0.939371  0.000053  0.663084
-    3 -0.978904  0.0  0.0  0.644578  0.458194  0.938817  0.000056  0.664014
-    4 -0.973345  0.0  0.0  0.645226  0.457819  0.938259  0.000059  0.664896
+    0 -0.995300  0.0  0.0  0.655656  0.451543  0.928915  0.000048  0.676040
+    1 -0.993960  0.0  0.0  0.656313  0.451133  0.928304  0.000048  0.676247
+    2 -0.993660  0.0  0.0  0.656971  0.450720  0.927688  0.000048  0.676293
+    3 -0.989649  0.0  0.0  0.657631  0.450305  0.927068  0.000050  0.676923
+    4 -0.987887  0.0  0.0  0.658291  0.449888  0.926444  0.000051  0.677204
 
 
 
@@ -188,7 +189,7 @@ Et visuellement...
 
 .. GENERATED FROM PYTHON SOURCE LINES 123-143
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -244,7 +245,7 @@ constante. C'est donc inutile.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.235 seconds)
+   **Total running time of the script:** (0 minutes 0.945 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_logistic_decision.py:
@@ -253,16 +254,17 @@ constante. C'est donc inutile.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_logistic_decision.ipynb <plot_logistic_decision.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_logistic_decision.py <plot_logistic_decision.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_logistic_decision.ipynb <plot_logistic_decision.ipynb>`
+      :download:`Download zipped: plot_logistic_decision.zip <plot_logistic_decision.zip>`
 
 
 .. only:: html

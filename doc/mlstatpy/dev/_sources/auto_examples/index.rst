@@ -12,10 +12,11 @@ Gallery of examples
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="La construction d&#x27;un arbre de décision appliqué à une classification binaire suppose qu&#x27;on puis...">
+    <div class="sphx-glr-thumbcontainer" tooltip="La construction d&#x27;un arbre de décision appliqué à une classification binaire suppose qu&#x27;on puisse déterminer un seuil qui sépare les deux classes ou tout du moins qui aboutisse à deux sous-ensemble dans lesquels une classe est majoritaire. Mais certains cas, c&#x27;est une chose compliquée.">
 
 .. only:: html
 
@@ -29,6 +30,8 @@ Gallery of examples
       <div class="sphx-glr-thumbnail-title">Arbre d'indécision</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

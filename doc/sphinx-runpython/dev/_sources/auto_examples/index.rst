@@ -18,6 +18,7 @@ of dot product (see also :epkg:`sphinx-gallery`).
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -35,6 +36,8 @@ of dot product (see also :epkg:`sphinx-gallery`).
       <div class="sphx-glr-thumbnail-title">Empty example</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

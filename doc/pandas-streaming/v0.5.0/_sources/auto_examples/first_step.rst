@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_first_step.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -26,9 +26,10 @@ A few difference between :epkg:`pandas` and *pandas_streaming*.
 pandas to pandas_streaming
 ++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-19
+.. GENERATED FROM PYTHON SOURCE LINES 10-20
 
 .. code-block:: Python
+
 
     import glob
     from pandas import DataFrame
@@ -40,11 +41,11 @@ pandas to pandas_streaming
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
+.. GENERATED FROM PYTHON SOURCE LINES 21-22
 
 We create a streaming dataframe:
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-27
+.. GENERATED FROM PYTHON SOURCE LINES 22-28
 
 .. code-block:: Python
 
@@ -55,7 +56,7 @@ We create a streaming dataframe:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-33
+.. GENERATED FROM PYTHON SOURCE LINES 30-34
 
 .. code-block:: Python
 
@@ -64,14 +65,14 @@ We create a streaming dataframe:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-38
+.. GENERATED FROM PYTHON SOURCE LINES 35-39
 
 Internally, StreamingDataFrame implements an iterator on
 dataframes and then tries to replicate the same interface as
 :class:`pandas.DataFrame` possibly wherever it is possible to
 manipulate data without loading everything into memory.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-44
+.. GENERATED FROM PYTHON SOURCE LINES 39-45
 
 .. code-block:: Python
 
@@ -82,7 +83,7 @@ manipulate data without loading everything into memory.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-51
+.. GENERATED FROM PYTHON SOURCE LINES 47-52
 
 .. code-block:: Python
 
@@ -92,7 +93,7 @@ manipulate data without loading everything into memory.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-58
+.. GENERATED FROM PYTHON SOURCE LINES 54-59
 
 .. code-block:: Python
 
@@ -102,7 +103,7 @@ manipulate data without loading everything into memory.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-64
+.. GENERATED FROM PYTHON SOURCE LINES 61-65
 
 .. code-block:: Python
 
@@ -111,11 +112,11 @@ manipulate data without loading everything into memory.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-66
+.. GENERATED FROM PYTHON SOURCE LINES 66-67
 
 The order might be different.
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-72
+.. GENERATED FROM PYTHON SOURCE LINES 67-73
 
 .. code-block:: Python
 
@@ -126,7 +127,7 @@ The order might be different.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-79
+.. GENERATED FROM PYTHON SOURCE LINES 75-80
 
 .. code-block:: Python
 
@@ -136,12 +137,12 @@ The order might be different.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-82
+.. GENERATED FROM PYTHON SOURCE LINES 81-83
 
 split a big file
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-87
+.. GENERATED FROM PYTHON SOURCE LINES 83-88
 
 .. code-block:: Python
 
@@ -151,7 +152,7 @@ split a big file
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-95
+.. GENERATED FROM PYTHON SOURCE LINES 90-96
 
 .. code-block:: Python
 
@@ -162,7 +163,7 @@ split a big file
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-99
+.. GENERATED FROM PYTHON SOURCE LINES 98-100
 
 .. code-block:: Python
 
@@ -183,6 +184,10 @@ split a big file
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: first_step.py <first_step.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: first_step.zip <first_step.zip>`
 
 
 .. only:: html
