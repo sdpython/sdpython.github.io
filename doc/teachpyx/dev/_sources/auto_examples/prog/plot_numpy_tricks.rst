@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_numpy_tricks.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -98,7 +98,7 @@ accéder à un élément en particulier
  .. code-block:: none
 
 
-    2.1400001060101204e-05
+    1.330699979007477e-05
 
 
 
@@ -119,7 +119,7 @@ accéder à un élément en particulier
  .. code-block:: none
 
 
-    3.9200000173877925e-05
+    2.441400010866346e-05
 
 
 
@@ -152,7 +152,7 @@ Les éléments ne sont pas recopiés mais un objet intermédiaire est créé.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.004 seconds)
+   **Total running time of the script:** (0 minutes 0.003 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_numpy_tricks.py:
@@ -168,6 +168,10 @@ Les éléments ne sont pas recopiés mais un objet intermédiaire est créé.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_numpy_tricks.py <plot_numpy_tricks.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_numpy_tricks.zip <plot_numpy_tricks.zip>`
 
 
 .. only:: html

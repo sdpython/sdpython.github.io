@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_ml_plot_roc.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -96,7 +96,7 @@ On représente ces données.
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7fad63981360>]
+    [<matplotlib.lines.Line2D object at 0x7f1658341750>]
 
 
 
@@ -139,7 +139,8 @@ On apprend sur la base d'apprentissage.
     <div class="output_subarea output_html rendered_html output_result">
     <style>#sk-container-id-1 {
       /* Definition of color scheme common for light and dark mode */
-      --sklearn-color-text: black;
+      --sklearn-color-text: #000;
+      --sklearn-color-text-muted: #666;
       --sklearn-color-line: gray;
       /* Definition of color scheme for unfitted estimators */
       --sklearn-color-unfitted-level-0: #fff5e6;
@@ -284,12 +285,21 @@ On apprend sur la base d'apprentissage.
     /* Toggleable label */
     #sk-container-id-1 label.sk-toggleable__label {
       cursor: pointer;
-      display: block;
+      display: flex;
       width: 100%;
       margin-bottom: 0;
       padding: 0.5em;
       box-sizing: border-box;
       text-align: center;
+      align-items: start;
+      justify-content: space-between;
+      gap: 0.5em;
+    }
+
+    #sk-container-id-1 label.sk-toggleable__label .caption {
+      font-size: 0.6rem;
+      font-weight: lighter;
+      color: var(--sklearn-color-text-muted);
     }
 
     #sk-container-id-1 label.sk-toggleable__label-arrow:before {
@@ -442,7 +452,8 @@ On apprend sur la base d'apprentissage.
       height: 1em;
       width: 1em;
       text-decoration: none !important;
-      margin-left: 1ex;
+      margin-left: 0.5em;
+      text-align: center;
       /* unfitted */
       border: var(--sklearn-color-unfitted-level-1) 1pt solid;
       color: var(--sklearn-color-unfitted-level-1);
@@ -541,7 +552,7 @@ On apprend sur la base d'apprentissage.
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
     }
-    </style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;LogisticRegression<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/dev/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>LogisticRegression()</pre></div> </div></div></div></div>
+    </style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>LogisticRegression</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/dev/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>LogisticRegression()</pre></div> </div></div></div></div>
     </div>
     <br />
     <br />
@@ -583,8 +594,8 @@ On calcule la :epkg:`matrice de confusion`.
 
  .. code-block:: none
 
-    [[15  1]
-     [ 3  6]]
+    [[12  0]
+     [ 3 10]]
 
 
 
@@ -678,7 +689,7 @@ Et on les représente.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fad63684040>
+    <matplotlib.legend.Legend object at 0x7f16578bab00>
 
 
 
@@ -744,7 +755,7 @@ On recommence avec la seconde fonction.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fad633e70a0>
+    <matplotlib.legend.Legend object at 0x7f16586430d0>
 
 
 
@@ -811,7 +822,7 @@ sklearn.metrics.precision_recall_curve>`_.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fad630fc610>
+    <matplotlib.legend.Legend object at 0x7f1657df0220>
 
 
 
@@ -875,7 +886,7 @@ propose une pondération entre les deux :
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fad62b0c220>
+    <matplotlib.legend.Legend object at 0x7f1657047820>
 
 
 
@@ -933,7 +944,7 @@ et :math:`S_T` la variable aléatoire
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7fad5ff94100>
+    <matplotlib.legend.Legend object at 0x7f1657004eb0>
 
 
 
@@ -954,7 +965,7 @@ lorsque le seuil *s* varie.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.107 seconds)
+   **Total running time of the script:** (0 minutes 6.840 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ml_plot_roc.py:
@@ -970,6 +981,10 @@ lorsque le seuil *s* varie.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_roc.py <plot_roc.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_roc.zip <plot_roc.zip>`
 
 
 .. only:: html

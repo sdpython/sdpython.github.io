@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -1015,7 +1015,7 @@ addition 5290/21316 = 0.248170388440608
 2023-08-19 09:10:57.197202 iteration 12 modif 0 # 6874/21316=32.25%
 </pre></div></div>
 </div>
-<p>L’algorithme consiste à regarder les chemins <img class="math" src="../../_images/math/7c0b314b2b1d77045cbe5b68036d7d755216f9cc.svg" alt="a \rightarrow b \rightarrow c"/> et à comparer s’il est plus rapide que <img class="math" src="../../_images/math/65fd1db07588facbf0ca7d6027086d930f7018d2.svg" alt="a \rightarrow c"/>.</p>
+<p>L’algorithme consiste à regarder les chemins <span class="math notranslate nohighlight">\(a \rightarrow b \rightarrow c\)</span> et à comparer s’il est plus rapide que <span class="math notranslate nohighlight">\(a \rightarrow c\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -1085,7 +1085,7 @@ longueur initiale 15.661698849016764
 </pre></div></div>
 </div>
 <p>Le nombre de noeuds impairs obtenus à la fin doit être inférieur à 2 pour être sûr de trouver un chemin (mais on choisira 0 pour avoir un circuit eulérien). Mon premier essai n’a pas donné satisfaction car j’avais choisi un seuil trop petit lors de la sélection des arcs à ajouter. J’ai augmenté le seuil par la suite. S’il reste encore des noeuds de degré impairs, on a le choix entre augmenter ce seuil - mais l’algorithme est déjà long - ou chercher dans une autre direction comme laisser
-l’algorithme de Bellman explorer les noeuds de degré impairs. Ca ne veut pas forcément dire qu’il manque des arcs mais que peut-être ils sont mal choisis. Si l’arc <img class="math" src="../../_images/math/111466d0e3b8fe8720873a5eb19d8eb77406c8e1.svg" alt="i \rightarrow j"/> est choisi, l’arc <img class="math" src="../../_images/math/66c842720dd8049f1b7276ed714a274942ca053e.svg" alt="j \rightarrow k"/> ne le sera pas car <img class="math" src="../../_images/math/c2ca7da683b1e0aa549bb4675efbd6008c4ffa6e.svg" alt="j"/> aura un degré pair. Mais dans ce cas, si l’arc <img class="math" src="../../_images/math/66c842720dd8049f1b7276ed714a274942ca053e.svg" alt="j \rightarrow k"/> était le dernier arc disponible pour combler <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/>, on est coincé. On peut augmenter le seuil encore mais cela risquee de prendre du temps et puis cela ne
+l’algorithme de Bellman explorer les noeuds de degré impairs. Ca ne veut pas forcément dire qu’il manque des arcs mais que peut-être ils sont mal choisis. Si l’arc <span class="math notranslate nohighlight">\(i \rightarrow j\)</span> est choisi, l’arc <span class="math notranslate nohighlight">\(j \rightarrow k\)</span> ne le sera pas car <span class="math notranslate nohighlight">\(j\)</span> aura un degré pair. Mais dans ce cas, si l’arc <span class="math notranslate nohighlight">\(j \rightarrow k\)</span> était le dernier arc disponible pour combler <span class="math notranslate nohighlight">\(k\)</span>, on est coincé. On peut augmenter le seuil encore mais cela risquee de prendre du temps et puis cela ne
 fonctionnerait pas toujours sur tous les jeux de données.</p>
 <p>On pourait alors écrire une sorte d’algorithme itératif qui exécute l’algorithme de Bellman, puis lance celui qui ajoute les arcs. Puis on revient au premier en ajoutant plus d’arcs autour des noeuds problèmatique lors de la seconde étape. L’ensemble est un peu long pour tenir dans un notebook mais le code est celui de la fonction <a class="reference external" href="https://github.com/sdpython/teachpyx/blob/main/teachpyx/practice/rues_paris.py#L313">eulerien_extension</a>. Je conseille également la lecture de cet article :
 <a class="reference external" href="https://fpt.akt.tu-berlin.de/publications/Eulerian_Extension_and_Rural_Postman_SIDMA.pdf">Efficient Algorithms for Eulerian Extension</a> (voir également <a class="reference external" href="http://arxiv.org/abs/1101.4283">On Making Directed Graphs Eulerian</a>). L’exécution qui suit prend une vingtaine de minutes.</p>
@@ -1300,5 +1300,7 @@ dichotomique. Couper en deux, recouper en deux chaque intervalle et minimiser su
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

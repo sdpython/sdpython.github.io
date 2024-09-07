@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -329,6 +329,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -538,7 +539,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -647,9 +647,9 @@ langage python à l’aide des types standards qu’il propose,
 <li><p>Une liste de listes, chaque ligne est représentée par une liste.
 Toutes ces listes sont elles-mêmes assemblées dans une liste globale.</p></li>
 <li><p>Une seule liste, il suffit de numéroter les cases du damier de 0 à 99,
-en utilisant comme indice pour la case <img class="math" src="../../_images/math/457cf55c41d44acab03689bbc4a4b3e2bbb840fc.svg" alt="(i,j)"/> : <img class="math" src="../../_images/math/52da63236d85c1fb9b9ee444083f9f92cc84e8a1.svg" alt="k = 10*i+j"/>.
+en utilisant comme indice pour la case <span class="math notranslate nohighlight">\((i,j)\)</span> : <span class="math notranslate nohighlight">\(k = 10*i+j\)</span>.
 Réciproquement, la case d’indice $k$ aura pour coordonnées
-<img class="math" src="../../_images/math/827b91924d066b9768ced4084203d011379f5b37.svg" alt="(k / 10, \, k \% 10)"/>.</p></li>
+<span class="math notranslate nohighlight">\((k / 10, \, k \% 10)\)</span>.</p></li>
 <li><p>Un dictionnaire dont la clé est un couple d’entiers.</p></li>
 </ul>
 </section>
@@ -659,10 +659,10 @@ Réciproquement, la case d’indice $k$ aura pour coordonnées
 est un mesure de prendre un pion. Quels sont les paramètres
 d’entrées et les résultats de cet algorithme ?</p>
 <p><strong>réponse</strong></p>
-<p>On désire savoir si le pion de la case <img class="math" src="../../_images/math/457cf55c41d44acab03689bbc4a4b3e2bbb840fc.svg" alt="(i,j)"/>
+<p>On désire savoir si le pion de la case <span class="math notranslate nohighlight">\((i,j)\)</span>
 peut en prendre un autre. On suppose que le tableau à deux dimensions
 est une liste de dix listes appelée <code class="docutils literal notranslate"><span class="pre">damier</span></code>. <code class="docutils literal notranslate"><span class="pre">damier[i][j]</span></code>
-est donc la couleur du pion de la case <img class="math" src="../../_images/math/457cf55c41d44acab03689bbc4a4b3e2bbb840fc.svg" alt="(i,j)"/>,
+est donc la couleur du pion de la case <span class="math notranslate nohighlight">\((i,j)\)</span>,
 à savoir 0 si la case est vide, 1 si le pion est blanc, 2 si le pion est noir.
 Pour ces deux derniers cas, la couleur des pions de l’adversaire sera donc
 <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">-</span> <span class="pre">damier[i][j]</span></code>. Les entrées de la fonctions sont donc les indices
@@ -791,7 +791,7 @@ True
 </div>
 <p>Pour ces trois cas, aucun effet de bord n’a été envisagé.
 Si la case est trop près d’un des bords, un des indices
-<img class="math" src="../../_images/math/b253b0f7072fefc3612d806bd7ded1bd846faa66.svg" alt="i,\;j,\;i-1,\;j-1,\;i+1,\;j+1,\;i-2,\;j-2,\;i+2,\;j+2"/>
+<span class="math notranslate nohighlight">\(i,\;j,\;i-1,\;j-1,\;i+1,\;j+1,\;i-2,\;j-2,\;i+2,\;j+2\)</span>
 désignera une case hors du damier. Le code de la fonction
 <code class="docutils literal notranslate"><span class="pre">pion_prendre</span></code> devra donc vérifier que chaque case dont elle
 vérifie le contenu appartient au damier.</p>
@@ -846,7 +846,7 @@ vérifie le contenu appartient au damier.</p>
 <p>La fonction <code class="docutils literal notranslate"><span class="pre">pion_prendre(1,</span> <span class="pre">3,</span> <span class="pre">damier)</span></code> fonctionne parce que le
 langage python accepte indices négatifs : <code class="docutils literal notranslate"><span class="pre">damier[-1][-1]</span></code>
 mais le résultat n’est pas nécessairement celui souhaité.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.008 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.006 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-prog-plot-partie-dame-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/a88ba4a60ef8d445f15f8619e422148f/plot_partie_dame.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_partie_dame.ipynb</span></code></a></p>
@@ -939,5 +939,7 @@ mais le résultat n’est pas nécessairement celui souhaité.</p>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

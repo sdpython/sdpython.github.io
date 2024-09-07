@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -905,7 +905,7 @@ range indices must be integers or slices, not list
 </section>
 <section id="View-contre-Copy">
 <h3>View contre Copy<a class="headerlink" href="#View-contre-Copy" title="Link to this heading">¶</a></h3>
-<p>Créons un array <img class="math" src="../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/>. En plus de renvoyer directement un array, la fonction <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html">arange</a> permet aussi d’utiliser un step flottant. (Essayer avec le range de python pour voir)</p>
+<p>Créons un array <span class="math notranslate nohighlight">\(d\)</span>. En plus de renvoyer directement un array, la fonction <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html">arange</a> permet aussi d’utiliser un step flottant. (Essayer avec le range de python pour voir)</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -925,7 +925,7 @@ array([1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. , 5.5])
 </pre></div></div>
 </div>
 <p>Un point important est que l’on ne recopie pas un array lorsqu’on effectue une assignation ou un slicing d’un array. On travaille dans ce cas avec une View sur l’array d’origine (shallow copy). Toute modification sur la View affecte l’array d’origine.</p>
-<p>Dans l’exemple qui suit, <img class="math" src="../_images/math/a52a5cbf4e378c1f5b4401b55b3ed7cd1a281e1d.svg" alt="e"/> est une view sur <img class="math" src="../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/>. Lorsqu’on modifie <img class="math" src="../_images/math/a52a5cbf4e378c1f5b4401b55b3ed7cd1a281e1d.svg" alt="e"/>, <img class="math" src="../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/> aussi est modifié. (Remarquez au passage que numpy fournit quelques constantes bien pratiques….)</p>
+<p>Dans l’exemple qui suit, <span class="math notranslate nohighlight">\(e\)</span> est une view sur <span class="math notranslate nohighlight">\(d\)</span>. Lorsqu’on modifie <span class="math notranslate nohighlight">\(e\)</span>, <span class="math notranslate nohighlight">\(d\)</span> aussi est modifié. (Remarquez au passage que numpy fournit quelques constantes bien pratiques….)</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -964,7 +964,7 @@ array([-3.14159265,  1.5       , -3.14159265,  2.5       , -3.14159265,
         3.5       ,  4.        ,  4.5       ,  5.        ,  5.5       ])
 </pre></div></div>
 </div>
-<p>Si on ne veut pas modifier <img class="math" src="../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/> indirectement, il faut travailler sur une copie de <img class="math" src="../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/> (<a class="reference external" href="https://docs.python.org/3.4/library/copy.html#copy.deepcopy">deep copy</a>).</p>
+<p>Si on ne veut pas modifier <span class="math notranslate nohighlight">\(d\)</span> indirectement, il faut travailler sur une copie de <span class="math notranslate nohighlight">\(d\)</span> (<a class="reference external" href="https://docs.python.org/3.4/library/copy.html#copy.deepcopy">deep copy</a>).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -1223,17 +1223,17 @@ array([[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11],
 </li>
 <li><p>Exercice 1-B Piège lors d’une extraction 2d:</p>
 <ul>
-<li><p>Définir la matrice <img class="math" src="../_images/math/325859de3f420570f7dd8274c1850b1be67662e8.svg" alt="M = \left(\begin{array}{ccccc} 1 &amp; 5 &amp; 9 &amp; 13 &amp; 17 \\ 2 &amp; 6 &amp; 10 &amp; 14 &amp; 18 \\ 3 &amp; 7 &amp; 11 &amp; 15 &amp; 19 \\ 4 &amp; 8 &amp; 12 &amp; 16 &amp; 20 \\ \end{array}\right)"/></p></li>
-<li><p>En <strong>extraire</strong> la matrice <img class="math" src="../_images/math/80578318d4c98528250cc211c10874d78fc3c09e.svg" alt="\left(\begin{array}{ccc} 6 &amp; 18 &amp; 10 \\ 7 &amp; 19 &amp; 11 \\ 5 &amp; 17 &amp; 9 \\ \end{array}\right)"/></p></li>
+<li><p>Définir la matrice <span class="math notranslate nohighlight">\(M = \left(\begin{array}{ccccc} 1 &amp; 5 &amp; 9 &amp; 13 &amp; 17 \\ 2 &amp; 6 &amp; 10 &amp; 14 &amp; 18 \\ 3 &amp; 7 &amp; 11 &amp; 15 &amp; 19 \\ 4 &amp; 8 &amp; 12 &amp; 16 &amp; 20 \\ \end{array}\right)\)</span></p></li>
+<li><p>En <strong>extraire</strong> la matrice <span class="math notranslate nohighlight">\(\left(\begin{array}{ccc} 6 &amp; 18 &amp; 10 \\ 7 &amp; 19 &amp; 11 \\ 5 &amp; 17 &amp; 9 \\ \end{array}\right)\)</span></p></li>
 </ul>
 </li>
-<li><p>Exercice 1-C Crible d’Erathosthène: On souhaite implémenter un <a class="reference external" href="http://fr.wikipedia.org/wiki/Crible_d'%C3%89ratosth%C3%A8ne">crible d’Erathosthène</a> pour trouver les nombres premiers inférieurs à <img class="math" src="../_images/math/4ba6a210e4caef4658545e1b17ea0bad7da420a1.svg" alt="N=1000"/>.</p>
+<li><p>Exercice 1-C Crible d’Erathosthène: On souhaite implémenter un <a class="reference external" href="http://fr.wikipedia.org/wiki/Crible_d'%C3%89ratosth%C3%A8ne">crible d’Erathosthène</a> pour trouver les nombres premiers inférieurs à <span class="math notranslate nohighlight">\(N=1000\)</span>.</p>
 <ul>
 <li><p>partir d’un array de booléens de taille N+1, tous égaux à True.</p></li>
 <li><p>Mettre 0 et 1 à False car ils ne sont pas premiers</p></li>
-<li><p>pour chaque entier <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> entre 2 et <img class="math" src="../_images/math/d946d5f0e84f3b2fea989764b1696e301d5af8d7.svg" alt="\sqrt{N}"/>:</p>
+<li><p>pour chaque entier <span class="math notranslate nohighlight">\(k\)</span> entre 2 et <span class="math notranslate nohighlight">\(\sqrt{N}\)</span>:</p>
 <ul>
-<li><p>si <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> est premier: on passe ses multiples (entre <img class="math" src="../_images/math/86c742502944f9453297da2b6eccaf108a1f7a46.svg" alt="k^2"/> et <img class="math" src="../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/>) à False</p></li>
+<li><p>si <span class="math notranslate nohighlight">\(k\)</span> est premier: on passe ses multiples (entre <span class="math notranslate nohighlight">\(k^2\)</span> et <span class="math notranslate nohighlight">\(N\)</span>) à False</p></li>
 </ul>
 </li>
 <li><p>on print la liste des entiers premiers</p></li>
@@ -1247,7 +1247,7 @@ array([[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11],
 <p>Il existe un très grand nombre de <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.html">routines pour manipuler les arrays numpy</a>: Vous trouverez sans doute utiles les pages spécifiques aux routines de <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.statistics.html">stats</a> ou de <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.math.html">maths</a></p>
 <section id="Opérations-élément-par-élément">
 <h3>Opérations élément par élément<a class="headerlink" href="#Opérations-élément-par-élément" title="Link to this heading">¶</a></h3>
-<p>On déclare <img class="math" src="../_images/math/572741bd96a77a5e9be88fac9e2112044b64fc44.svg" alt="a"/> et <img class="math" src="../_images/math/85bff0a8f3a3d84c7bd09f610de6f10098f186d8.svg" alt="b"/> sur lesquelles nous allons illustrer quelques opérations</p>
+<p>On déclare <span class="math notranslate nohighlight">\(a\)</span> et <span class="math notranslate nohighlight">\(b\)</span> sur lesquelles nous allons illustrer quelques opérations</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
@@ -1280,7 +1280,7 @@ array([[0, 1],
        [4, 5]])
 </pre></div></div>
 </div>
-<p>Les opérations arithmétiques avec les scalaires, ou entre arrays s’effectuent élément par élément. Lorsque le dtype n’est pas le même (<img class="math" src="../_images/math/572741bd96a77a5e9be88fac9e2112044b64fc44.svg" alt="a"/> contient des float, <img class="math" src="../_images/math/85bff0a8f3a3d84c7bd09f610de6f10098f186d8.svg" alt="b"/> contient des int), numpy adopte le type le plus « grand » (au sens de l’inclusion).</p>
+<p>Les opérations arithmétiques avec les scalaires, ou entre arrays s’effectuent élément par élément. Lorsque le dtype n’est pas le même (<span class="math notranslate nohighlight">\(a\)</span> contient des float, <span class="math notranslate nohighlight">\(b\)</span> contient des int), numpy adopte le type le plus « grand » (au sens de l’inclusion).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
@@ -1599,7 +1599,7 @@ array([[1, 0, 0],
        [0, 0, 3]])
 </pre></div></div>
 </div>
-<p>On a vu que les multiplications entre array s’effectuaient élément par élement. Si l’on souhaite faire des multiplications matricielles, il faut utiliser la fonction <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html">dot</a>. La version 3.5 introduit un nouvel opérateur [&#64;](<a class="reference external" href="https://docs.python.org/3.6/whatsnew/3.5.html#pep-465-a-dedicated-infix-operator-for-matrix-multiplication">https://docs.python.org/3.6/whatsnew/3.5.html#pep-465-a-dedicated-infix-operator-for-matrix-multiplication</a>) qui désigne explicitement la multiplication matricielle.</p>
+<p>On a vu que les multiplications entre array s’effectuaient élément par élement. Si l’on souhaite faire des multiplications matricielles, il faut utiliser la fonction <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html">dot</a>. La version 3.5 introduit un nouvel opérateur <a class="reference external" href="https://docs.python.org/3.6/whatsnew/3.5.html#pep-465-a-dedicated-infix-operator-for-matrix-multiplication">&#64;</a> qui désigne explicitement la multiplication matricielle.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
@@ -1626,7 +1626,7 @@ print(A.dot(A))
  [3. 2. 1.]]
 </pre></div></div>
 </div>
-<p>On peut calculer l’inverse ou le déterminant de <img class="math" src="../_images/math/5fdb7ef407cf673109e4443028c7e8898ee8c89e.svg" alt="A"/></p>
+<p>On peut calculer l’inverse ou le déterminant de <span class="math notranslate nohighlight">\(A\)</span></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
@@ -1652,7 +1652,7 @@ print(inv_A.dot(A))
  [0. 0. 1.]]
 </pre></div></div>
 </div>
-<p>… résoudre des systèmes d’equations linéaires du type <img class="math" src="../_images/math/062cd03ece5d9309b2058ca7a300f889be179daf.svg" alt="Ax = b"/>…</p>
+<p>… résoudre des systèmes d’equations linéaires du type <span class="math notranslate nohighlight">\(Ax = b\)</span>…</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
@@ -1674,7 +1674,7 @@ print(A.dot(x))
 [1. 2. 3.]
 </pre></div></div>
 </div>
-<p>… ou encore obtenir les valeurs propres de <img class="math" src="../_images/math/5fdb7ef407cf673109e4443028c7e8898ee8c89e.svg" alt="A"/>.</p>
+<p>… ou encore obtenir les valeurs propres de <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
@@ -1857,7 +1857,7 @@ det 6.000000000000016 rank 3
 </section>
 <section id="Génération-de-nombres-aléatoires-et-statistiques">
 <h2>Génération de nombres aléatoires et statistiques<a class="headerlink" href="#Génération-de-nombres-aléatoires-et-statistiques" title="Link to this heading">¶</a></h2>
-<p>Le module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> apporte à python la possibilité de générer un échantillon de taille <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> directement, alors que le module natif de python ne produit des tirages que un par un. Le module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">https://numpy.org/doc/stable/reference/random/index.html#module-numpy.randomnumpy.random</a> est donc bien plus efficace si on veut tirer des échantillon conséquents. Par ailleurs,
+<p>Le module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">numpy.random</a> apporte à python la possibilité de générer un échantillon de taille <span class="math notranslate nohighlight">\(n\)</span> directement, alors que le module natif de python ne produit des tirages que un par un. Le module <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html">https://numpy.org/doc/stable/reference/random/index.html#module-numpy.randomnumpy.random</a> est donc bien plus efficace si on veut tirer des échantillon conséquents. Par ailleurs,
 <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/stats.html">scipy.stats</a> fournit des méthodes pour un très grand nombre de distributions et quelques fonctions classiques de statistiques.</p>
 <p>Par exemple, on peut obtenir un array 4x3 de tirages gaussiens standard (soit en utilisant <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html">randn</a> ou <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.normal.html#numpy.random.normal">normal</a>):</p>
 <div class="nbinput docutils container">
@@ -2001,7 +2001,7 @@ ax.set_zlim(-0.5, 0.5)
 <img alt="../_images/c_data_nb_array_120_1.png" src="../_images/c_data_nb_array_120_1.png" />
 </div>
 </div>
-<p>On voit que le minimum se trouve près de <img class="math" src="../_images/math/2823b50d1f52f73ce72cf3261aaaa4c879bb7140.svg" alt="[-\frac{1}{2}, 0]"/>. On va utiliser ce point pour initialiser l’optimisation. On va tester différentes méthodes et comparer les sorties obtenues.</p>
+<p>On voit que le minimum se trouve près de <span class="math notranslate nohighlight">\([-\frac{1}{2}, 0]\)</span>. On va utiliser ce point pour initialiser l’optimisation. On va tester différentes méthodes et comparer les sorties obtenues.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
@@ -2098,7 +2098,7 @@ Method:L-BFGS-B
 
 </pre></div></div>
 </div>
-<p>On trouve un minimum à <img class="math" src="../_images/math/6078dba6f28674e71bf39b8b7af7cb17f4c76e2b.svg" alt="-0.4052"/> en <img class="math" src="../_images/math/5672fbe21be300addae135627e4719e87422072f.svg" alt="[-0.669, 0.000]"/> pour toutes les méthodes qui convergent. Notez le message de sortie de “CG” qui signifie que le gradient ne varie plus assez. Personnellement, je ne trouve pas ce message de sortie très clair. Le point trouvé est bien l’optimum cherché pourtant. Notez aussi le nombre d’évaluations de la fonction (<em>nfev</em>) pour chaque méthode, et le nombre d’évaluation de gradient (<em>njev</em>) pour les méthodes qui reposent sur un calcul de gradient.</p>
+<p>On trouve un minimum à <span class="math notranslate nohighlight">\(-0.4052\)</span> en <span class="math notranslate nohighlight">\([-0.669, 0.000]\)</span> pour toutes les méthodes qui convergent. Notez le message de sortie de “CG” qui signifie que le gradient ne varie plus assez. Personnellement, je ne trouve pas ce message de sortie très clair. Le point trouvé est bien l’optimum cherché pourtant. Notez aussi le nombre d’évaluations de la fonction (<em>nfev</em>) pour chaque méthode, et le nombre d’évaluation de gradient (<em>njev</em>) pour les méthodes qui reposent sur un calcul de gradient.</p>
 <p>Remarquez aussi que si on relance <em>Anneal</em> plusieurs fois, on n’est pas assuré d’obtenir la même solution, puisqu’il s’agit d’une métaheuristique.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
@@ -2270,13 +2270,13 @@ print(optim_res)
 <section id="Exercice-4-:-simulation,-régression,-estimation-par-maximisation-de-la-vraisemblance">
 <h3>Exercice 4 : simulation, régression, estimation par maximisation de la vraisemblance<a class="headerlink" href="#Exercice-4-:-simulation,-régression,-estimation-par-maximisation-de-la-vraisemblance" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>On commence par simuler la variable <img class="math" src="../_images/math/40ea4993533a0f2d5988f3601ab43a488a27be9b.svg" alt="Y = 3 X_1 -2 X_2 +2 + \epsilon"/> où <img class="math" src="../_images/math/382268cfedff8e6d26f7a73da02e86bd079ad8b6.svg" alt="X_1,X_2,\epsilon \sim \mathcal{N}(0,1)"/></p></li>
-<li><p>On souhaite ensuite retrouver les coefficients dans la <a class="reference external" href="http://fr.wikipedia.org/wiki/R%C3%A9gression_lin%C3%A9aire">régression linéaire</a> de <img class="math" src="../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/> sur <img class="math" src="../_images/math/4bd4cb3c78851a33f8380b338de7ef126fb3c74d.svg" alt="X_1"/> et <img class="math" src="../_images/math/67272339af25058949d56a3a223501543e900227.svg" alt="X_2"/> dans un modèle avec constante, par la méthode des Moindres Carrés Ordinaires. On rappelle que la forme matricielle de l’estimateur des MCO est <img class="math" src="../_images/math/1c739387855e8132908303a020870e052cb805fb.svg" alt="\hat{\beta} = (X'X)^{-1}X'Y"/></p></li>
-<li><p>Enfin, <img class="math" src="../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/> étant normale, on souhaite estimer ses paramètres par maximisation de vraisemblance:</p>
+<li><p>On commence par simuler la variable <span class="math notranslate nohighlight">\(Y = 3 X_1 -2 X_2 +2 + \epsilon\)</span> où <span class="math notranslate nohighlight">\(X_1,X_2,\epsilon \sim \mathcal{N}(0,1)\)</span></p></li>
+<li><p>On souhaite ensuite retrouver les coefficients dans la <a class="reference external" href="http://fr.wikipedia.org/wiki/R%C3%A9gression_lin%C3%A9aire">régression linéaire</a> de <span class="math notranslate nohighlight">\(Y\)</span> sur <span class="math notranslate nohighlight">\(X_1\)</span> et <span class="math notranslate nohighlight">\(X_2\)</span> dans un modèle avec constante, par la méthode des Moindres Carrés Ordinaires. On rappelle que la forme matricielle de l’estimateur des MCO est <span class="math notranslate nohighlight">\(\hat{\beta} = (X'X)^{-1}X'Y\)</span></p></li>
+<li><p>Enfin, <span class="math notranslate nohighlight">\(Y\)</span> étant normale, on souhaite estimer ses paramètres par maximisation de vraisemblance:</p>
 <ul>
-<li><p>La densité s’écrit: <img class="math" src="../_images/math/d9c2a09f35b6002c4faec8f6d202ca6bfea34109.svg" alt="f(x, \mu, \sigma) = \frac{1}{\sigma \sqrt{2\pi} } e^{ -\frac{(x-\mu)^2}{2\sigma^2} }"/></p></li>
-<li><p>La log-vraisemblance: <img class="math" src="../_images/math/5e0c22acb0881c1638e0dea43a5792b70042c936.svg" alt="\ln\mathcal{L}(\mu,\sigma^2) = \sum_{i=1}^n \ln f(x_i;\,\mu,\sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2"/>.</p></li>
-<li><p>L’écriture des conditions au premier ordre donne une formule fermée pour les estimateurs du maximum de vraisemblance: <img class="math" src="../_images/math/1fe7b94f89d067a5a9af7c4c8d1ab55339a17f7d.svg" alt="\hat{\mu} = \overline{x} \equiv \frac{1}{n}\sum_{i=1}^n x_i"/>, <img class="math" src="../_images/math/9e4d10882b86c888dba94ab69dfbf1ec16577f5f.svg" alt="\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \overline{x})^2"/>.</p></li>
+<li><p>La densité s’écrit: <span class="math notranslate nohighlight">\(f(x, \mu, \sigma) = \frac{1}{\sigma \sqrt{2\pi} } e^{ -\frac{(x-\mu)^2}{2\sigma^2} }\)</span></p></li>
+<li><p>La log-vraisemblance: <span class="math notranslate nohighlight">\(\ln\mathcal{L}(\mu,\sigma^2) = \sum_{i=1}^n \ln f(x_i;\,\mu,\sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\)</span>.</p></li>
+<li><p>L’écriture des conditions au premier ordre donne une formule fermée pour les estimateurs du maximum de vraisemblance: <span class="math notranslate nohighlight">\(\hat{\mu} = \overline{x} \equiv \frac{1}{n}\sum_{i=1}^n x_i\)</span>, <span class="math notranslate nohighlight">\(\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \overline{x})^2\)</span>.</p></li>
 <li><p>Vérifiez en les implémentant directement que vous trouvez bien la même solution que le minimum obtenu en utilisant <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">scipy.optimize.minimize</a> pour minimiser l’opposé de la log-vraissemblance.</p></li>
 </ul>
 </li>
@@ -2347,8 +2347,8 @@ print(chess2)
 <ul class="simple">
 <li><p>Exercice 1-B Piège lors d’une extraction 2d:</p>
 <ul>
-<li><p>Définir la matrice <img class="math" src="../_images/math/325859de3f420570f7dd8274c1850b1be67662e8.svg" alt="M = \left(\begin{array}{ccccc} 1 &amp; 5 &amp; 9 &amp; 13 &amp; 17 \\ 2 &amp; 6 &amp; 10 &amp; 14 &amp; 18 \\ 3 &amp; 7 &amp; 11 &amp; 15 &amp; 19 \\ 4 &amp; 8 &amp; 12 &amp; 16 &amp; 20 \\ \end{array}\right)"/></p></li>
-<li><p>En <strong>extraire</strong> la matrice <img class="math" src="../_images/math/80578318d4c98528250cc211c10874d78fc3c09e.svg" alt="\left(\begin{array}{ccc} 6 &amp; 18 &amp; 10 \\ 7 &amp; 19 &amp; 11 \\ 5 &amp; 17 &amp; 9 \\ \end{array}\right)"/></p></li>
+<li><p>Définir la matrice <span class="math notranslate nohighlight">\(M = \left(\begin{array}{ccccc} 1 &amp; 5 &amp; 9 &amp; 13 &amp; 17 \\ 2 &amp; 6 &amp; 10 &amp; 14 &amp; 18 \\ 3 &amp; 7 &amp; 11 &amp; 15 &amp; 19 \\ 4 &amp; 8 &amp; 12 &amp; 16 &amp; 20 \\ \end{array}\right)\)</span></p></li>
+<li><p>En <strong>extraire</strong> la matrice <span class="math notranslate nohighlight">\(\left(\begin{array}{ccc} 6 &amp; 18 &amp; 10 \\ 7 &amp; 19 &amp; 11 \\ 5 &amp; 17 &amp; 9 \\ \end{array}\right)\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -2397,13 +2397,13 @@ WRONG: [ 6 19  9]
 </pre></div></div>
 </div>
 <ul class="simple">
-<li><p>Exercice 1-C Crible d’Erathosthene: On souhaite implémenter un <a class="reference external" href="http://fr.wikipedia.org/wiki/Crible_d'%C3%89ratosth%C3%A8ne">crible d’Erathosthène</a> pour trouver les nombres premiers inférieurs à <img class="math" src="../_images/math/4ba6a210e4caef4658545e1b17ea0bad7da420a1.svg" alt="N=1000"/>.</p>
+<li><p>Exercice 1-C Crible d’Erathosthene: On souhaite implémenter un <a class="reference external" href="http://fr.wikipedia.org/wiki/Crible_d'%C3%89ratosth%C3%A8ne">crible d’Erathosthène</a> pour trouver les nombres premiers inférieurs à <span class="math notranslate nohighlight">\(N=1000\)</span>.</p>
 <ul>
 <li><p>partir d’un array de booléens de taille N+1, tous égaux à True.</p></li>
 <li><p>Mettre 0 et 1 à False car ils ne sont pas premiers</p></li>
-<li><p>pour chaque entier <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> entre 2 et <img class="math" src="../_images/math/d946d5f0e84f3b2fea989764b1696e301d5af8d7.svg" alt="\sqrt{N}"/>:</p>
+<li><p>pour chaque entier <span class="math notranslate nohighlight">\(k\)</span> entre 2 et <span class="math notranslate nohighlight">\(\sqrt{N}\)</span>:</p>
 <ul>
-<li><p>si <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> est premier: on passe ses multiples (entre <img class="math" src="../_images/math/86c742502944f9453297da2b6eccaf108a1f7a46.svg" alt="k^2"/> et <img class="math" src="../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/>) à False</p></li>
+<li><p>si <span class="math notranslate nohighlight">\(k\)</span> est premier: on passe ses multiples (entre <span class="math notranslate nohighlight">\(k^2\)</span> et <span class="math notranslate nohighlight">\(N\)</span>) à False</p></li>
 </ul>
 </li>
 <li><p>on print la liste des entiers premiers</p></li>
@@ -2603,13 +2603,13 @@ array([[ 1, -1,  1,  1, -1, -1,  1,  1,  1,  1],
 <section id="Exercice-4-(simulation,-régression,-estimation-par-maximisation-de-la-vraisemblance)">
 <h3>Exercice 4 (simulation, régression, estimation par maximisation de la vraisemblance)<a class="headerlink" href="#Exercice-4-(simulation,-régression,-estimation-par-maximisation-de-la-vraisemblance)" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>On commence par simuler la variable <img class="math" src="../_images/math/40ea4993533a0f2d5988f3601ab43a488a27be9b.svg" alt="Y = 3 X_1 -2 X_2 +2 + \epsilon"/> où <img class="math" src="../_images/math/382268cfedff8e6d26f7a73da02e86bd079ad8b6.svg" alt="X_1,X_2,\epsilon \sim \mathcal{N}(0,1)"/></p></li>
-<li><p>On souhaite ensuite retrouver les coefficients dans la <a class="reference external" href="http://fr.wikipedia.org/wiki/R%C3%A9gression_lin%C3%A9aire">régression linéaire</a> de <img class="math" src="../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/> sur <img class="math" src="../_images/math/4bd4cb3c78851a33f8380b338de7ef126fb3c74d.svg" alt="X_1"/> et <img class="math" src="../_images/math/67272339af25058949d56a3a223501543e900227.svg" alt="X_2"/> dans un modèle avec constante, par la méthode des Moindres Carrés Ordinaires. On rappelle que la forme matricielle de l’estimateur des MCO est <img class="math" src="../_images/math/1c739387855e8132908303a020870e052cb805fb.svg" alt="\hat{\beta} = (X'X)^{-1}X'Y"/></p></li>
-<li><p>Enfin, <img class="math" src="../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/> étant normale, on souhaite estimer ses paramètres par maximisation de vraisemblance:</p>
+<li><p>On commence par simuler la variable <span class="math notranslate nohighlight">\(Y = 3 X_1 -2 X_2 +2 + \epsilon\)</span> où <span class="math notranslate nohighlight">\(X_1,X_2,\epsilon \sim \mathcal{N}(0,1)\)</span></p></li>
+<li><p>On souhaite ensuite retrouver les coefficients dans la <a class="reference external" href="http://fr.wikipedia.org/wiki/R%C3%A9gression_lin%C3%A9aire">régression linéaire</a> de <span class="math notranslate nohighlight">\(Y\)</span> sur <span class="math notranslate nohighlight">\(X_1\)</span> et <span class="math notranslate nohighlight">\(X_2\)</span> dans un modèle avec constante, par la méthode des Moindres Carrés Ordinaires. On rappelle que la forme matricielle de l’estimateur des MCO est <span class="math notranslate nohighlight">\(\hat{\beta} = (X'X)^{-1}X'Y\)</span></p></li>
+<li><p>Enfin, <span class="math notranslate nohighlight">\(Y\)</span> étant normale, on souhaite estimer ses paramètres par maximisation de vraisemblance:</p>
 <ul>
-<li><p>La densité s’écrit: <img class="math" src="../_images/math/d9c2a09f35b6002c4faec8f6d202ca6bfea34109.svg" alt="f(x, \mu, \sigma) = \frac{1}{\sigma \sqrt{2\pi} } e^{ -\frac{(x-\mu)^2}{2\sigma^2} }"/></p></li>
-<li><p>La log-vraisemblance: <img class="math" src="../_images/math/5e0c22acb0881c1638e0dea43a5792b70042c936.svg" alt="\ln\mathcal{L}(\mu,\sigma^2) = \sum_{i=1}^n \ln f(x_i;\,\mu,\sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2"/> ou encore en divisant par <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> : <img class="math" src="../_images/math/4478a075d1952cae9f415627a9ad0f30d22d6d56.svg" alt="-\frac{1}{2}\ln(2\pi) - \frac{1}{2}\ln\sigma^2 - \frac{1}{2n\sigma^2}\sum_{i=1}^n (x_i-\mu)^2"/></p></li>
-<li><p>L’écriture des conditions au premier ordre donne une formule fermée pour les estimateurs du maximum de vraisemblance: <img class="math" src="../_images/math/1fe7b94f89d067a5a9af7c4c8d1ab55339a17f7d.svg" alt="\hat{\mu} = \overline{x} \equiv \frac{1}{n}\sum_{i=1}^n x_i"/>, <img class="math" src="../_images/math/9e4d10882b86c888dba94ab69dfbf1ec16577f5f.svg" alt="\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \overline{x})^2"/>.</p></li>
+<li><p>La densité s’écrit: <span class="math notranslate nohighlight">\(f(x, \mu, \sigma) = \frac{1}{\sigma \sqrt{2\pi} } e^{ -\frac{(x-\mu)^2}{2\sigma^2} }\)</span></p></li>
+<li><p>La log-vraisemblance: <span class="math notranslate nohighlight">\(\ln\mathcal{L}(\mu,\sigma^2) = \sum_{i=1}^n \ln f(x_i;\,\mu,\sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\)</span> ou encore en divisant par <span class="math notranslate nohighlight">\(n\)</span> : <span class="math notranslate nohighlight">\(-\frac{1}{2}\ln(2\pi) - \frac{1}{2}\ln\sigma^2 - \frac{1}{2n\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\)</span></p></li>
+<li><p>L’écriture des conditions au premier ordre donne une formule fermée pour les estimateurs du maximum de vraisemblance: <span class="math notranslate nohighlight">\(\hat{\mu} = \overline{x} \equiv \frac{1}{n}\sum_{i=1}^n x_i\)</span>, <span class="math notranslate nohighlight">\(\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \overline{x})^2\)</span>.</p></li>
 <li><p>Vérifiez en les implémentant directement que vous trouvez bien la même solution que le minimum obtenu en utilisant <em>scipy.optimize.minimize</em> pour minimiser l’opposé de la log-vraissemblance.</p></li>
 </ul>
 </li>
@@ -2692,8 +2692,8 @@ optim_res
 </div>
 <p>Est-ce bien le résultat attendu :</p>
 <ul class="simple">
-<li><p><img class="math" src="../_images/math/ec32a0f2ad40d28757e040ed081da5aed6619cdc.svg" alt="\mathbb{E}Y = 3\mathbb{E}X_1 - 2\mathbb{E}X_2 + 2 + \mathbb{E}\epsilon = 2"/></p></li>
-<li><p><img class="math" src="../_images/math/e04f616ff0256a5910d0470cc76f680b7a454bdb.svg" alt="\mathbb{V}Y = 9\mathbb{V}X_1 + 4\mathbb{V}X_2 + \mathbb{V}\epsilon = 14"/></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E}Y = 3\mathbb{E}X_1 - 2\mathbb{E}X_2 + 2 + \mathbb{E}\epsilon = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{V}Y = 9\mathbb{V}X_1 + 4\mathbb{V}X_2 + \mathbb{V}\epsilon = 14\)</span></p></li>
 </ul>
 <p>Toutes les variables sont indépendantes. On vérifie que cela correspond aux réponses cherchées :</p>
 <div class="nbinput docutils container">
@@ -2828,5 +2828,7 @@ optim_res
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

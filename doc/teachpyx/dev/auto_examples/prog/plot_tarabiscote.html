@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -329,6 +329,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -538,7 +539,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -698,8 +698,8 @@ l’élément <code class="docutils literal notranslate"><span class="pre">l[i]<
 <p>Le coût d’un algorithme ou d’un programme est le nombre d’opérations
 (additions, multiplications, tests, …) qu’il effectue. Il s’exprime
 comme un multiple d’une fonction de la dimension des données que
-le programme manipule. Par exemple : <img class="math" src="../../_images/math/81b0a9fa49c0ad4095f564b409e94423ea3a174f.svg" alt="O(n)"/>,
-<img class="math" src="../../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/>, <img class="math" src="../../_images/math/dfc724f0133a687c5f3a6f9046aaf077496e1559.svg" alt="O(n\ln n)"/>, …</p>
+le programme manipule. Par exemple : <span class="math notranslate nohighlight">\(O(n)\)</span>,
+<span class="math notranslate nohighlight">\(O(n^2)\)</span>, <span class="math notranslate nohighlight">\(O(n\ln n)\)</span>, …</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">moyenne</span><span class="p">(</span><span class="n">tab</span><span class="p">):</span>
     <span class="n">s</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="k">for</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">x</span></a></a></a> <span class="ow">in</span> <span class="n">tab</span><span class="p">:</span>
@@ -727,12 +727,12 @@ le programme manipule. Par exemple : <img class="math" src="../../_images/math/8
 <p>Tout d’abord, le coût d’un algorithme est très souvent exprimé comme un
 multiple de la dimension des données qu’il traite. Ici, la dimension
 est la taille du tableau <code class="docutils literal notranslate"><span class="pre">tab</span></code>. Par exemple, si on note <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">len(tab)</span></code>,
-alors le coût de la fonction <code class="docutils literal notranslate"><span class="pre">moyenne</span></code> s’écrit <img class="math" src="../../_images/math/81b0a9fa49c0ad4095f564b409e94423ea3a174f.svg" alt="O(n)"/> car cette
+alors le coût de la fonction <code class="docutils literal notranslate"><span class="pre">moyenne</span></code> s’écrit <span class="math notranslate nohighlight">\(O(n)\)</span> car cette
 fonction fait la somme des <em>n</em> éléments du tableau.</p>
 <p>La fonction <code class="docutils literal notranslate"><span class="pre">variance</span></code> contient quant à elle un petit piège. Si elle
 contient elle aussi une boucle, chacun des $n$ passages dans cette boucle
 fait appel à la fonction <code class="docutils literal notranslate"><span class="pre">moyenne</span></code>. Le coût de la fonction <code class="docutils literal notranslate"><span class="pre">variance</span></code> est donc
-<img class="math" src="../../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/>.</p>
+<span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
 <p>Il est possible d’accélérer le programme car la fonction <code class="docutils literal notranslate"><span class="pre">moyenne</span></code>
 retourne le même résultat à chaque passage dans la boucle.
 Il suffit de mémoriser son résultat dans une variable avant d’entrer
@@ -752,7 +752,7 @@ dans la boucle comme suit :</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1.25
 </pre></div>
 </div>
-<p>Le coût de la fonction <code class="docutils literal notranslate"><span class="pre">variance</span></code> est alors <img class="math" src="../../_images/math/81b0a9fa49c0ad4095f564b409e94423ea3a174f.svg" alt="O(n)"/>.</p>
+<p>Le coût de la fonction <code class="docutils literal notranslate"><span class="pre">variance</span></code> est alors <span class="math notranslate nohighlight">\(O(n)\)</span>.</p>
 <p>Le coût d’un algorithme peut être évalué de manière plus précise et
 nécessiter un résultat comme $n^2 + 3n + 2$ mais cette exigence est
 rarement utile pour des langages comme <em>python</em>. L’expression
@@ -894,7 +894,7 @@ il y a souvent un héritage plus sensé qu’un autre.</p>
 </section>
 <section id="precision-des-calculs">
 <h2>Précision des calculs<a class="headerlink" href="#precision-des-calculs" title="Link to this heading">¶</a></h2>
-<p>Voici un aperçu de la précision des calculs pour le calcul <img class="math" src="../../_images/math/7509a67b6b42bf7c7f3f9a5bb35418a2886fa46c.svg" alt="1 - 10^{-n}"/>.
+<p>Voici un aperçu de la précision des calculs pour le calcul <span class="math notranslate nohighlight">\(1 - 10^{-n}\)</span>.
 L’exercice a pour but de montrer que l’ordinateur ne fait que des calculs approchés
 et que la précision du résultat dépend de la méthode numérique employée.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">x</span></a></a></a> <span class="o">=</span> <span class="mf">1.0</span>
@@ -925,9 +925,9 @@ et que la précision du résultat dépend de la méthode numérique employée.</
 </pre></div>
 </div>
 <p>Le programme montre que l’ordinateur affiche <code class="docutils literal notranslate"><span class="pre">1</span></code>
-lorsqu’il calcule <img class="math" src="../../_images/math/806ece87f292bc8d996e7c72b389b2ee4de951bf.svg" alt="1-10^{-17}"/>.
+lorsqu’il calcule <span class="math notranslate nohighlight">\(1-10^{-17}\)</span>.
 Cela signifie que la précision des calculs en <em>python</em>
-est au mieux de <img class="math" src="../../_images/math/cd7901328aea108beaaba112ccc2845c3d803303.svg" alt="10^{-16}"/>.
+est au mieux de <span class="math notranslate nohighlight">\(10^{-16}\)</span>.
 C’est encore moins bon dans le cas de <em>float</em> ou
 réel simple précision codé sur
 4 octets au lieu de 8 pour les <em>double</em>.</p>
@@ -979,30 +979,30 @@ qui représente une matrice carrée de dimension 2.</p>
 </pre></div>
 </div>
 <p>La seconde valeur est donc fausse. On considère maintenant la matrice
-<img class="math" src="../../_images/math/2abae8fd069aa78c5e474d3587f9f3b20812b4c8.svg" alt="M = \left(\begin{array}{cc} 1 &amp; 10^{-9} \\  10^{-9} &amp; 1 \end{array} \right)"/>.</p>
-<p>On pose <img class="math" src="../../_images/math/68b454750cf5063c9b41d9536e18bd9c80a1427a.svg" alt="D = \det(M) = 1 - 10^{-18}"/> et <img class="math" src="../../_images/math/d29c36b0a2957eb85b72d0ada71e3fad9a44b7fc.svg" alt="T = tr(M) = 2"/>. <img class="math" src="../../_images/math/c6046e7bcf09c4dc1fd021c7fed96080e1257282.svg" alt="\Delta"/>
+<span class="math notranslate nohighlight">\(M = \left(\begin{array}{cc} 1 &amp; 10^{-9} \\  10^{-9} &amp; 1 \end{array} \right)\)</span>.</p>
+<p>On pose <span class="math notranslate nohighlight">\(D = \det(M) = 1 - 10^{-18}\)</span> et <span class="math notranslate nohighlight">\(T = tr(M) = 2\)</span>. <span class="math notranslate nohighlight">\(\Delta\)</span>
 est le déterminant de <em>M</em> et <em>T</em> sa trace. On sait que les valeurs propres de
-<em>M</em> notées <img class="math" src="../../_images/math/73a087d25af7a13483c39ff28ca01c3d9986b07a.svg" alt="\lambda_1"/>, <img class="math" src="../../_images/math/05c99d58ef7000bc11d0ec0898c74ed8b077b787.svg" alt="\lambda_2"/> vérifient :</p>
+<em>M</em> notées <span class="math notranslate nohighlight">\(\lambda_1\)</span>, <span class="math notranslate nohighlight">\(\lambda_2\)</span> vérifient :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/68891469bfe7451240ab95ef5da1475c6d9812ac.svg" alt="\begin{array}{lll}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lll}
 D &amp;=&amp; \lambda_1 \lambda_2 \\
 T &amp;=&amp; \lambda_1 + \lambda_2
-\end{array}"/></p>
-</div></div>
-<p>On vérifie que <img class="math" src="../../_images/math/c0618d31d5bd1b82e9ab870496118c3fb46c0d91.svg" alt="(x - \lambda_1)(x - \lambda_2) = x^2 - x
-(\lambda_1 + \lambda_2) + \lambda_1 \lambda_2"/>.
+\end{array}\end{split}\]</div>
+</div>
+<p>On vérifie que <span class="math notranslate nohighlight">\((x - \lambda_1)(x - \lambda_2) = x^2 - x
+(\lambda_1 + \lambda_2) + \lambda_1 \lambda_2\)</span>.
 Les valeurs propres de $M$ sont donc solutions de l’équation :
-<img class="math" src="../../_images/math/ffb6dcce75fdadfe1346680c7fe7cdd508ac0329.svg" alt="x^2 - T x + D = 0"/>.</p>
-<p>Le discriminant de ce polynôme est <img class="math" src="../../_images/math/ceb9c48dc8a390a15a40df399a61c880d1720173.svg" alt="\Delta = T^2 - 4 D"/>.
+<span class="math notranslate nohighlight">\(x^2 - T x + D = 0\)</span>.</p>
+<p>Le discriminant de ce polynôme est <span class="math notranslate nohighlight">\(\Delta = T^2 - 4 D\)</span>.
 On peut donc exprimer les valeurs propres de la matrice <em>M</em> par :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/794069e61434bbb3d08d137e3e2ff537fab68dde.svg" alt="\begin{array}{lll}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lll}
 \lambda_1 &amp;=&amp; \frac{T - \sqrt{\Delta}}{2} \\
 \lambda_2 &amp;=&amp; \frac{T + \sqrt{\Delta}}{2}
-\end{array}"/></p>
-</div></div>
+\end{array}\end{split}\]</div>
+</div>
 <p>On ajoute donc la méthode suivante à la classe <code class="docutils literal notranslate"><span class="pre">matrice_carree_2</span></code> :</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">matrice_carree_2</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
@@ -1030,39 +1030,39 @@ On peut donc exprimer les valeurs propres de la matrice <em>M</em> par :</p>
 (1.0, 1.0)
 </pre></div>
 </div>
-<p>D’après l’énoncé, les valeurs propres de la matrice <img class="math" src="../../_images/math/e48f98cc1aae5697620af23b319e2e6611bdb867.svg" alt="M_2"/> sont les
-sommes de celles de la matrice <em>I</em> et de la matrice <img class="math" src="../../_images/math/f0275365632b40c8724839c361a70027db55f0f6.svg" alt="M'_2"/>.
+<p>D’après l’énoncé, les valeurs propres de la matrice <span class="math notranslate nohighlight">\(M_2\)</span> sont les
+sommes de celles de la matrice <em>I</em> et de la matrice <span class="math notranslate nohighlight">\(M'_2\)</span>.
 Par conséquent, ce second calcul mène au résultat suivant :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">l1</span>    <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-9</span>  <span class="o">=</span> <span class="mf">0.99999999900000002828</span>
 <span class="n">l2</span>    <span class="o">=</span> <span class="mi">1</span><span class="o">+</span> <span class="mf">1e-9</span> <span class="o">=</span> <span class="mf">1.000000001</span>
 </pre></div>
 </div>
 <p>La précision des calculs prend sont importance ici. On décompose la matrice
-<img class="math" src="../../_images/math/0b611090dd88d985a6e856e474c697cfda54ef5d.svg" alt="M =  \left(\begin{array}{cc} 1 &amp; 0 \\  0 &amp; 1 \end{array}\right) +
-\left(\begin{array}{cc} 0 &amp; 10^{-9} \\  10^{-9} &amp; 0 \end{array}\right) = I + M'"/>.</p>
-<p>On peut démontrer que si $lambda$ est une valeur propre de <img class="math" src="../../_images/math/fe4fe50f0877cd412ed6cd7f1a87e2ae67deca8e.svg" alt="M'"/>,
-alors <img class="math" src="../../_images/math/b2247ea91347b8172fdb0c10e083ff950a2f07f9.svg" alt="1 + \lambda"/> est une valeur propre de <em>M</em>.
+<span class="math notranslate nohighlight">\(M =  \left(\begin{array}{cc} 1 &amp; 0 \\  0 &amp; 1 \end{array}\right) +
+\left(\begin{array}{cc} 0 &amp; 10^{-9} \\  10^{-9} &amp; 0 \end{array}\right) = I + M'\)</span>.</p>
+<p>On peut démontrer que si $lambda$ est une valeur propre de <span class="math notranslate nohighlight">\(M'\)</span>,
+alors <span class="math notranslate nohighlight">\(1 + \lambda\)</span> est une valeur propre de <em>M</em>.
 Que donne le calcul des valeurs propres de $M”$ si on utilise la méthode
 <code class="docutils literal notranslate"><span class="pre">valeurs_propres</span></code> pour ces deux matrices ?</p>
 <p>On considère maintenant la matrice
-<img class="math" src="../../_images/math/da491aa746181ba0290c59a1d1b5e1acfa529eab.svg" alt="M'' = \left(\begin{array}{cc} 1 &amp; 10^{-9} \\  -10^{-9} &amp; 1 \end{array}\right)"/>.
-En décomposant la matrice <img class="math" src="../../_images/math/eb21acf3cad8d076495c332e7752056fbbfc124e.svg" alt="M''"/> de la même manière qu’à la question 4,
+<span class="math notranslate nohighlight">\(M'' = \left(\begin{array}{cc} 1 &amp; 10^{-9} \\  -10^{-9} &amp; 1 \end{array}\right)\)</span>.
+En décomposant la matrice <span class="math notranslate nohighlight">\(M''\)</span> de la même manière qu’à la question 4,
 quelles sont les valeurs propres retournées par le programme pour la matrice
-<img class="math" src="../../_images/math/eb21acf3cad8d076495c332e7752056fbbfc124e.svg" alt="M''"/> ? Quelles sont ses vraies valeurs propres ?</p>
-<p>La matrice <img class="math" src="../../_images/math/eb21acf3cad8d076495c332e7752056fbbfc124e.svg" alt="M''"/> n’est en fait pas diagonalisable, c’est-à-dire que
-<img class="math" src="../../_images/math/70c586e8a56837900cedba43928cdc7fa85adcf0.svg" alt="tr(M'')^2 - 4 \det{M''} = 4 - 4 (1 + 10^{-18}) &lt; 0"/>.
+<span class="math notranslate nohighlight">\(M''\)</span> ? Quelles sont ses vraies valeurs propres ?</p>
+<p>La matrice <span class="math notranslate nohighlight">\(M''\)</span> n’est en fait pas diagonalisable, c’est-à-dire que
+<span class="math notranslate nohighlight">\(tr(M'')^2 - 4 \det{M''} = 4 - 4 (1 + 10^{-18}) &lt; 0\)</span>.
 Or le calcul proposé par la question 3 aboutit au même résultat faux que pour
-la matrice <img class="math" src="../../_images/math/e48f98cc1aae5697620af23b319e2e6611bdb867.svg" alt="M_2"/>, les deux valeurs propres trouvées seront égales à 1.
+la matrice <span class="math notranslate nohighlight">\(M_2\)</span>, les deux valeurs propres trouvées seront égales à 1.
 Si on applique la décomposition proposée :
-<img class="math" src="../../_images/math/52d16580734bcdd9629b65f5e07dce27683e8ce0.svg" alt="M'' = I + \left(\begin{array}{cc}0&amp;-10^{-9}\\
-10^{-9}&amp;0\end{array}\right) = I + N''"/>.
-Le programme calcule sans erreur le discriminant négatif de la matrice <img class="math" src="../../_images/math/eec20f3361c682006fa41608da0c324d60b7b39f.svg" alt="N''"/>
+<span class="math notranslate nohighlight">\(M'' = I + \left(\begin{array}{cc}0&amp;-10^{-9}\\
+10^{-9}&amp;0\end{array}\right) = I + N''\)</span>.
+Le programme calcule sans erreur le discriminant négatif de la matrice <span class="math notranslate nohighlight">\(N''\)</span>
 qui n’est pas diagonalisable. Il est donc impossible d’obtenir des valeurs
-propres réelles pour la matrice <img class="math" src="../../_images/math/eb21acf3cad8d076495c332e7752056fbbfc124e.svg" alt="M''"/> avec cette seconde méthode.
+propres réelles pour la matrice <span class="math notranslate nohighlight">\(M''\)</span> avec cette seconde méthode.
 Cette question montre qu’une erreur d’approximation peut rendre une
 matrice diagonalisable alors qu’elle ne l’est pas. Il faut bien choisir
 cette précision en fonction de la destination des calculs.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.019 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.011 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-prog-plot-tarabiscote-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/a39a809c44cd27905c7ad4eb37178549/plot_tarabiscote.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_tarabiscote.ipynb</span></code></a></p>
@@ -1156,5 +1156,7 @@ cette précision en fonction de la destination des calculs.</p>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

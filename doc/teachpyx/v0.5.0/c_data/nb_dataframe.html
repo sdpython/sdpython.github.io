@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -624,7 +624,7 @@ Image(&quot;td2df.png&quot;)
 <p>Pour manipuler les dataframe, on utilise le module <a class="reference external" href="http://pandas.pydata.org/">pandas</a>. Il est prévu pour manipuler les données d’une table par <strong>bloc</strong> (une sous-table). Tant qu’on manipule des blocs, le module est rapide.</p>
 <section id="Series">
 <h3>Series<a class="headerlink" href="#Series" title="Link to this heading">¶</a></h3>
-<p>Une <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a> est un objet uni-dimensionnel similaire à un tableau, une liste ou une colonne d’une table. Chaque valeur est associée à un <strong>index</strong> qui est par défaut les entiers de 0 à <img class="math" src="../_images/math/5b7182a9e61cfdfecb16e3e366844540f84a51c9.svg" alt="N-1"/> (avec <img class="math" src="../_images/math/bceb9186b5004313ecccd0d22d07ea9617b62f98.svg" alt="N"/> la longueur de la <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a>).</p>
+<p>Une <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a> est un objet uni-dimensionnel similaire à un tableau, une liste ou une colonne d’une table. Chaque valeur est associée à un <strong>index</strong> qui est par défaut les entiers de 0 à <span class="math notranslate nohighlight">\(N-1\)</span> (avec <span class="math notranslate nohighlight">\(N\)</span> la longueur de la <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a>).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -1952,12 +1952,12 @@ sub
 <h2>Manipuler un DataFrame<a class="headerlink" href="#Manipuler-un-DataFrame" title="Link to this heading">¶</a></h2>
 <p>Si la structure <em>DataFrame</em> s’est imposée, c’est parce qu’on effectue toujours les mêmes opérations. Chaque fonction cache une boucle ou deux dont le coût est précisé en fin de ligne :</p>
 <ul class="simple">
-<li><p><strong>filter</strong> : on sélectionne un sous-ensemble de lignes qui vérifie une condition <img class="math" src="../_images/math/f95fc14850902a138c1b465fdf0745ccdb26a690.svg" alt="\rightarrow O(n)"/></p></li>
-<li><p><strong>union</strong> : concaténation de deux jeux de données <img class="math" src="../_images/math/ba9e7096fb58e187dbf39147aea760ea3ff11c65.svg" alt="\rightarrow O(n_1 + n_2)"/></p></li>
-<li><p><strong>sort</strong> : tri <img class="math" src="../_images/math/a4a3fa0eb48d327977e1afd9fbb911285da0d457.svg" alt="\rightarrow O(n \ln n)"/></p></li>
-<li><p><strong>group by</strong> : grouper des lignes qui partagent une valeur commune <img class="math" src="../_images/math/f95fc14850902a138c1b465fdf0745ccdb26a690.svg" alt="\rightarrow O(n)"/></p></li>
-<li><p><strong>join</strong> : fusionner deux jeux de données en associant les lignes qui partagent une valeur commune <img class="math" src="../_images/math/1942b3bf8ec31ae0bedba80daafaf1d9b1a4e4ab.svg" alt="\rightarrow \in [O(n_1 + n_2), O(n_1 n_2)]"/></p></li>
-<li><p><strong>pivot</strong> : utiliser des valeurs présentes dans colonne comme noms de colonnes <img class="math" src="../_images/math/f95fc14850902a138c1b465fdf0745ccdb26a690.svg" alt="\rightarrow O(n)"/></p></li>
+<li><p><strong>filter</strong> : on sélectionne un sous-ensemble de lignes qui vérifie une condition <span class="math notranslate nohighlight">\(\rightarrow O(n)\)</span></p></li>
+<li><p><strong>union</strong> : concaténation de deux jeux de données <span class="math notranslate nohighlight">\(\rightarrow O(n_1 + n_2)\)</span></p></li>
+<li><p><strong>sort</strong> : tri <span class="math notranslate nohighlight">\(\rightarrow O(n \ln n)\)</span></p></li>
+<li><p><strong>group by</strong> : grouper des lignes qui partagent une valeur commune <span class="math notranslate nohighlight">\(\rightarrow O(n)\)</span></p></li>
+<li><p><strong>join</strong> : fusionner deux jeux de données en associant les lignes qui partagent une valeur commune <span class="math notranslate nohighlight">\(\rightarrow \in [O(n_1 + n_2), O(n_1 n_2)]\)</span></p></li>
+<li><p><strong>pivot</strong> : utiliser des valeurs présentes dans colonne comme noms de colonnes <span class="math notranslate nohighlight">\(\rightarrow O(n)\)</span></p></li>
 </ul>
 <p>Les 5 premières opérations sont issues de la logique de manipulation des données avec le langage <a class="reference external" href="http://fr.wikipedia.org/wiki/Structured_Query_Language">SQL</a> (ou le logiciel <a class="reference external" href="http://www.sas.com">SAS</a>). La dernière correspond à un <a class="reference external" href="http://fr.wikipedia.org/wiki/Tableau_crois%C3%A9_dynamique">tableau croisé dynamique</a>. Pour illustrer ces opérations, on prendre le <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html">DataFrame</a> suivant :</p>
 <div class="nbinput docutils container">
@@ -2290,7 +2290,7 @@ tri.head()
 </section>
 <section id="group-by">
 <h4>group by<a class="headerlink" href="#group-by" title="Link to this heading">¶</a></h4>
-<p>Cette opération consiste à grouper les lignes qui partagent une caractéristique commune (une valeur dans une colonne ou plusieurs valeurs dans plusieurs colonnes). On peut conserver chaque groupe, ou calculer une somme, une moyenne, prendre la ou meilleures valeurs (top <img class="math" src="../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> per group)…</p>
+<p>Cette opération consiste à grouper les lignes qui partagent une caractéristique commune (une valeur dans une colonne ou plusieurs valeurs dans plusieurs colonnes). On peut conserver chaque groupe, ou calculer une somme, une moyenne, prendre la ou meilleures valeurs (top <span class="math notranslate nohighlight">\(k\)</span> per group)…</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a></p></li>
 <li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sum.html">sum</a>, <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.cumsum.html">cumsum</a>, <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.mean.html">mean</a>, <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.count.html">count</a></p></li>
@@ -3406,8 +3406,8 @@ riemann(0, 1, lambda x: x**2, 1000)
 </section>
 <section id="Avec-ou-sans-index">
 <h3>Avec ou sans index<a class="headerlink" href="#Avec-ou-sans-index" title="Link to this heading">¶</a></h3>
-<p>Une façon naïve de faire une jointure entre deux tables de taille <img class="math" src="../_images/math/435b11e0dbea2eaa16cbb0b93b9266e88b4a5b4c.svg" alt="m"/> et <img class="math" src="../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> et de regarder toutes les <img class="math" src="../_images/math/b689bc570606881e252aa30f7bfa8a3f6cfc0cb7.svg" alt="mn"/> combinaisons possibles. La taille de la table résultante dépend du type de jointure (<code class="docutils literal notranslate"><span class="pre">inner</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>) et de l’unicité des clés utilisées pour la jointure. Si les clés sont uniques, la table finale aura au plus <img class="math" src="../_images/math/4c5cd3f19c354dfb4e4c028034e59ef70b088fbb.svg" alt="m+n"/> lignes (une par clé).</p>
-<p>Dans la plupart des cas, <img class="math" src="../_images/math/5330328616340a9a56864adc669bbe596d6213e9.svg" alt="O(mn)"/> opérations est beaucoup trop long. On peut faire plus rapide en triant chacune des tables d’abord et en les fusionnant : <img class="math" src="../_images/math/c0266be19801f56e14ecd1161eed34eee57f59ff.svg" alt="O(n \ln n) + O(m \ln m) + O(n+m)"/>. Si <img class="math" src="../_images/math/58abd600b78c357f84b504bbf0d4e710d22d4f22.svg" alt="m=n"/>, il est évident que cette façon de faire est plus rapide. C’est une des choses que fait <a class="reference external" href="http://fr.slideshare.net/wesm/a-look-at-pandas-design-and-development">pandas (présentation)</a> (voir aussi <a class="reference external" href="https://github.com/attractivechaos/klib">klib</a>).</p>
+<p>Une façon naïve de faire une jointure entre deux tables de taille <span class="math notranslate nohighlight">\(m\)</span> et <span class="math notranslate nohighlight">\(n\)</span> et de regarder toutes les <span class="math notranslate nohighlight">\(mn\)</span> combinaisons possibles. La taille de la table résultante dépend du type de jointure (<code class="docutils literal notranslate"><span class="pre">inner</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>) et de l’unicité des clés utilisées pour la jointure. Si les clés sont uniques, la table finale aura au plus <span class="math notranslate nohighlight">\(m+n\)</span> lignes (une par clé).</p>
+<p>Dans la plupart des cas, <span class="math notranslate nohighlight">\(O(mn)\)</span> opérations est beaucoup trop long. On peut faire plus rapide en triant chacune des tables d’abord et en les fusionnant : <span class="math notranslate nohighlight">\(O(n \ln n) + O(m \ln m) + O(n+m)\)</span>. Si <span class="math notranslate nohighlight">\(m=n\)</span>, il est évident que cette façon de faire est plus rapide. C’est une des choses que fait <a class="reference external" href="http://fr.slideshare.net/wesm/a-look-at-pandas-design-and-development">pandas (présentation)</a> (voir aussi <a class="reference external" href="https://github.com/attractivechaos/klib">klib</a>).</p>
 <p>On peut trier une table selon une clé ou encore utiliser une <a class="reference external" href="https://fr.wikipedia.org/wiki/Table_de_hachage">table de hachage</a>), il est alors très rapide de retrouver la ligne ou les lignes qui partagent cette clé. On dit que la table est <strong>indexée</strong> selon cette clé. Indexer selon une ou plusieurs colonnes une table accélère toute opération s’appuyant sur ces colonnes comme la recherche d’un élément.</p>
 <p>On veut comparer le temps nécessaire pour une recherche. Pour cela on utilise la <code class="docutils literal notranslate"><span class="pre">%magic</span></code> function <code class="docutils literal notranslate"><span class="pre">%timeit</span></code> (ou <code class="docutils literal notranslate"><span class="pre">%%timeit</span></code> si on veut l”<a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/magics.html">appliquer à la cellule</a>) de Jupyter.</p>
 <div class="nbinput docutils container">
@@ -4385,10 +4385,10 @@ notnull.tail()
 <p><strong>Questions</strong></p>
 <ul class="simple">
 <li><p>Que changerait l’ajout du paramètre <code class="docutils literal notranslate"><span class="pre">how='outer'</span></code> dans ce cas ?</p></li>
-<li><p>On cherche à joindre deux tables A,B qui ont chacune trois clés distinctes : <img class="math" src="../_images/math/48135ae7d11b1d754eb2fe297768063719898f60.svg" alt="c_1, c_2, c_3"/>. Il y a respectivement dans chaque table <img class="math" src="../_images/math/b17601b9927788a9c3f97add13dc96da39ce04f3.svg" alt="A_i"/> et <img class="math" src="../_images/math/d2b100e8cb992470dc4fbff1d3f16e0f304aed86.svg" alt="B_i"/> lignes pour la clé <img class="math" src="../_images/math/fa4ae29716395f8ebb2444ec26b1c6da2f3b53db.svg" alt="c_i"/>. Combien la table finale issue de la fusion des deux tables contiendra-t-elle de lignes ?</p></li>
+<li><p>On cherche à joindre deux tables A,B qui ont chacune trois clés distinctes : <span class="math notranslate nohighlight">\(c_1, c_2, c_3\)</span>. Il y a respectivement dans chaque table <span class="math notranslate nohighlight">\(A_i\)</span> et <span class="math notranslate nohighlight">\(B_i\)</span> lignes pour la clé <span class="math notranslate nohighlight">\(c_i\)</span>. Combien la table finale issue de la fusion des deux tables contiendra-t-elle de lignes ?</p></li>
 </ul>
 <p>L’ajout du paramètres <code class="docutils literal notranslate"><span class="pre">how='outer'</span></code> ne changerait rien dans ce cas car les deux tables fusionnées contiennent exactement les mêmes clés.</p>
-<p>Le nombre de lignes obtenus serait <img class="math" src="../_images/math/24dc25c79386ea60518bf9aa644f2bbd9072bd74.svg" alt="\sum_{i=1}^{3} A_i B_i"/>. Il y a trois clés, chaque ligne de la table A doit être associée à toutes les lignes de la table B partageant la même clé.</p>
+<p>Le nombre de lignes obtenus serait <span class="math notranslate nohighlight">\(\sum_{i=1}^{3} A_i B_i\)</span>. Il y a trois clés, chaque ligne de la table A doit être associée à toutes les lignes de la table B partageant la même clé.</p>
 </section>
 <section id="Exercice-2-:-lambda-function">
 <h3>Exercice 2 : lambda function<a class="headerlink" href="#Exercice-2-:-lambda-function" title="Link to this heading">¶</a></h3>
@@ -5671,5 +5671,7 @@ ax.set_title(&quot;distribution des mariages par jour de la semaine&quot;);
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

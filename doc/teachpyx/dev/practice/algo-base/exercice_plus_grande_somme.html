@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -593,17 +593,17 @@
 </div>
 <section id="Enoncé">
 <h2>Enoncé<a class="headerlink" href="#Enoncé" title="Link to this heading">¶</a></h2>
-<p>On suppose qu’on a une liste <img class="math" src="../../_images/math/d23a489c6baec1ab2b6fa678fcdca3eb93d1bfc0.svg" alt="L=( l_1, l_2, ..., l_n)"/>. On souhaite trouver la sous-séquence de plus grande somme. En d’autres termes, on veut trouver <img class="math" src="../../_images/math/a97c88583e36e1eb902462579e0684a9da8f7b65.svg" alt="(i^*,j^*)"/> tels que :</p>
-<p><img class="math" src="../../_images/math/d5f823459cf716c6ac8df7236b43e91d2121d48e.svg" alt="\sum_{k=i^*}^{j^*} l_k = \max_{i,j} \sum_{k=i}^{j} l_k"/></p>
+<p>On suppose qu’on a une liste <span class="math notranslate nohighlight">\(L=( l_1, l_2, ..., l_n)\)</span>. On souhaite trouver la sous-séquence de plus grande somme. En d’autres termes, on veut trouver <span class="math notranslate nohighlight">\((i^*,j^*)\)</span> tels que :</p>
+<p><span class="math notranslate nohighlight">\(\sum_{k=i^*}^{j^*} l_k = \max_{i,j} \sum_{k=i}^{j} l_k\)</span></p>
 </section>
 <section id="Solution-naïve">
 <h2>Solution naïve<a class="headerlink" href="#Solution-naïve" title="Link to this heading">¶</a></h2>
-<p>La première solution consiste à calculer les sommes de toutes les sous-séquences et de garder les <img class="math" src="../../_images/math/9e31aabef52bf96d45f7221587a670cd7fdf3231.svg" alt="i,j"/> qui ont permis d’obtenir la meilleure sous-séquence. On divise le programme en deux fonctions :</p>
+<p>La première solution consiste à calculer les sommes de toutes les sous-séquences et de garder les <span class="math notranslate nohighlight">\(i,j\)</span> qui ont permis d’obtenir la meilleure sous-séquence. On divise le programme en deux fonctions :</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">somme_partielle</span></code> : calcule la somme de la sous-séquence <code class="docutils literal notranslate"><span class="pre">l[i:j]</span></code> (coût de la fonction : <img class="math" src="../../_images/math/81b0a9fa49c0ad4095f564b409e94423ea3a174f.svg" alt="O(n)"/>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">plus_grande_sous_liste</span></code> : passe en revue toutes les sous-séquences et retourne la meilleure (coût de la fonction <img class="math" src="../../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">somme_partielle</span></code> : calcule la somme de la sous-séquence <code class="docutils literal notranslate"><span class="pre">l[i:j]</span></code> (coût de la fonction : <span class="math notranslate nohighlight">\(O(n)\)</span>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plus_grande_sous_liste</span></code> : passe en revue toutes les sous-séquences et retourne la meilleure (coût de la fonction <span class="math notranslate nohighlight">\(O(n^2)\)</span>)</p></li>
 </ul>
-<p>Le coût de cet algorithme est en <img class="math" src="../../_images/math/1989c4047f1f691399b0ae1671182ae3ce045146.svg" alt="O(n^3)"/>.</p>
+<p>Le coût de cet algorithme est en <span class="math notranslate nohighlight">\(O(n^3)\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -648,12 +648,12 @@
 </pre></div></div>
 </div>
 <p>La ligne A contient l’instruction <code class="docutils literal notranslate"><span class="pre">meilleur</span> <span class="pre">=</span> <span class="pre">min(li)</span></code>. Pour une liste où tous les nombres sont négatifs, la meilleure sous-liste est constitué du plus petit élément de la liste. Remplacer cette instruction par <code class="docutils literal notranslate"><span class="pre">meilleur</span> <span class="pre">=</span> <span class="pre">0</span></code> a pour conséquence de retourner une liste vide dans ce cas précis.</p>
-<p><img class="math" src="../../_images/math/f7d7ed8e83d62854d5f4c482923f46ce21ca1ec5.svg" alt="cout(n) = \sum_{i=0}^n \sum_{j=i+1}^n j-i = \sum_{i=0}^n \sum_{j=0}^i j = \sum_{i=0}^n \frac{i(i+1)}{2} \sim O(n^3)"/></p>
+<p><span class="math notranslate nohighlight">\(cout(n) = \sum_{i=0}^n \sum_{j=i+1}^n j-i = \sum_{i=0}^n \sum_{j=0}^i j = \sum_{i=0}^n \frac{i(i+1)}{2} \sim O(n^3)\)</span></p>
 </section>
 <section id="Solution-plus-rapide">
 <h2>Solution plus rapide<a class="headerlink" href="#Solution-plus-rapide" title="Link to this heading">¶</a></h2>
-<p>Il est possible de modifier cette fonction de telle sorte que le coût soit en <img class="math" src="../../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/> car on évite la répétition de certains calculs lors du calcul de la somme des sous-séquences. On peut écrire :</p>
-<p><img class="math" src="../../_images/math/30bee9f1f92f4e4358ca235c28e4dd1108638858.svg" alt="\sum_{k=i}^{j+1} l_k = l_j + \sum_{k=i}^{j} l_k"/></p>
+<p>Il est possible de modifier cette fonction de telle sorte que le coût soit en <span class="math notranslate nohighlight">\(O(n^2)\)</span> car on évite la répétition de certains calculs lors du calcul de la somme des sous-séquences. On peut écrire :</p>
+<p><span class="math notranslate nohighlight">\(\sum_{k=i}^{j+1} l_k = l_j + \sum_{k=i}^{j} l_k\)</span></p>
 <p>Dans la seconde boucle, il suffit d’ajouter l’élément <code class="docutils literal notranslate"><span class="pre">li[j]</span></code> à la somme précédente.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -707,12 +707,12 @@
 </section>
 <section id="Solution-dichotomique">
 <h2>Solution dichotomique<a class="headerlink" href="#Solution-dichotomique" title="Link to this heading">¶</a></h2>
-<p>Il existe une dernière version plus rapide encore. Si on considère la liste <img class="math" src="../../_images/math/bc50bc6dd24325cb62ba94ec04c33dc4314d0802.svg" alt="L=(l_1, ..., l_n)"/> dont on cherche à extraire la sous-séquence de somme maximale. Supposons que <img class="math" src="../../_images/math/679e1ea8ca5f80c1dc0f4aae37fe3ba0c55cc4e2.svg" alt="l_a"/> appartienne à cette sous-séquence. On construit la fonction suivante :</p>
-<p><img class="math" src="../../_images/math/d6ddc9b3964c83c164110f67c0da9583be9cddc2.svg" alt="f(a,k) =\left \{ \begin{array}{ll} \sum_{i=a}^{k} l_i &amp;si \; k &gt; a \\ \sum_{i=k}^{a} l_i &amp;si \; k &lt; a \end{array} \right ."/></p>
-<p>On cherche alors les valeurs <img class="math" src="../../_images/math/96d51463cc39e3f8cd58ad9a8fcb4cf53832f96d.svg" alt="k_1"/> et <img class="math" src="../../_images/math/eb773f1198deb96cbd23c277ccc71474500093fa.svg" alt="k_2"/> telles que :</p>
-<p><img class="math" src="../../_images/math/6b6e9c11d1f7f2fcae4342241b3492b2a154a3a9.svg" alt="\begin{array}{rcl} f(a,k_1) &amp;=&amp; \max_{k&lt;a} f(a,k) \\ f(a,k_2) &amp;=&amp; \max_{k&gt;a} f(a,k) \end{array}"/></p>
-<p>La sous-séquence de somme maximale cherchée est <img class="math" src="../../_images/math/e4987562e5476bcef8bb8c77053e132e16fb661b.svg" alt="[k_1,k_2]"/> avec <img class="math" src="../../_images/math/572741bd96a77a5e9be88fac9e2112044b64fc44.svg" alt="a"/> dans cet intervalle et le coût de cette recherche est en <img class="math" src="../../_images/math/81b0a9fa49c0ad4095f564b409e94423ea3a174f.svg" alt="O(n)"/>. Mais ceci n’est vrai que si on sait que <img class="math" src="../../_images/math/679e1ea8ca5f80c1dc0f4aae37fe3ba0c55cc4e2.svg" alt="l_a"/> appartient à la sous-séquence de somme maximale.</p>
-<p>Autre considération : pour deux listes <img class="math" src="../../_images/math/043f96227bf06874424e1c711250727c01b73514.svg" alt="l_1"/> et <img class="math" src="../../_images/math/be95fc3ad0fd0983126cb9ec390a1311ac12901b.svg" alt="l_2"/>, la séquence maximale de la réunion des deux appartient soit à l’une, soit à l’autre, soit elle inclut le point de jonction.</p>
+<p>Il existe une dernière version plus rapide encore. Si on considère la liste <span class="math notranslate nohighlight">\(L=(l_1, ..., l_n)\)</span> dont on cherche à extraire la sous-séquence de somme maximale. Supposons que <span class="math notranslate nohighlight">\(l_a\)</span> appartienne à cette sous-séquence. On construit la fonction suivante :</p>
+<p><span class="math notranslate nohighlight">\(f(a,k) =\left \{ \begin{array}{ll} \sum_{i=a}^{k} l_i &amp;si \; k &gt; a \\ \sum_{i=k}^{a} l_i &amp;si \; k &lt; a  \end{array} \right .\)</span></p>
+<p>On cherche alors les valeurs <span class="math notranslate nohighlight">\(k_1\)</span> et <span class="math notranslate nohighlight">\(k_2\)</span> telles que :</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{rcl} f(a,k_1) &amp;=&amp; \max_{k&lt;a} f(a,k) \\ f(a,k_2) &amp;=&amp; \max_{k&gt;a} f(a,k) \end{array}\)</span></p>
+<p>La sous-séquence de somme maximale cherchée est <span class="math notranslate nohighlight">\([k_1,k_2]\)</span> avec <span class="math notranslate nohighlight">\(a\)</span> dans cet intervalle et le coût de cette recherche est en <span class="math notranslate nohighlight">\(O(n)\)</span>. Mais ceci n’est vrai que si on sait que <span class="math notranslate nohighlight">\(l_a\)</span> appartient à la sous-séquence de somme maximale.</p>
+<p>Autre considération : pour deux listes <span class="math notranslate nohighlight">\(l_1\)</span> et <span class="math notranslate nohighlight">\(l_2\)</span>, la séquence maximale de la réunion des deux appartient soit à l’une, soit à l’autre, soit elle inclut le point de jonction.</p>
 <p>Ces deux idées mises bout à bout donne l’algorithme suivant construit de façon récursive. On coupe la liste en deux parties de longueur égale :</p>
 <ul class="simple">
 <li><p>On calcule la meilleure séquence sur la première sous-séquence.</p></li>
@@ -807,13 +807,13 @@
 [7, -1, 8]
 </pre></div></div>
 </div>
-<p>Le coût de cette fonction est au pire en <img class="math" src="../../_images/math/fcdfe4c4bc864c8440d516c89c1197a8aaef104b.svg" alt="O(n \ln n)"/>. A chaque itération, on effectue trois calculs :</p>
+<p>Le coût de cette fonction est au pire en <span class="math notranslate nohighlight">\(O(n \ln n)\)</span>. A chaque itération, on effectue trois calculs :</p>
 <ul class="simple">
-<li><p>meilleure séquence à droite : <img class="math" src="../../_images/math/424379074dfc7b18e17cbea0e7b823ef7706cafb.svg" alt="f(n/2)"/></p></li>
-<li><p>meilleure séquence à gauche : <img class="math" src="../../_images/math/424379074dfc7b18e17cbea0e7b823ef7706cafb.svg" alt="f(n/2)"/></p></li>
-<li><p>meilleure séquence incluant <img class="math" src="../../_images/math/572741bd96a77a5e9be88fac9e2112044b64fc44.svg" alt="a"/> : <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/></p></li>
+<li><p>meilleure séquence à droite : <span class="math notranslate nohighlight">\(f(n/2)\)</span></p></li>
+<li><p>meilleure séquence à gauche : <span class="math notranslate nohighlight">\(f(n/2)\)</span></p></li>
+<li><p>meilleure séquence incluant <span class="math notranslate nohighlight">\(a\)</span> : <span class="math notranslate nohighlight">\(n\)</span></p></li>
 </ul>
-<p>Le coût de l’iteration <img class="math" src="../../_images/math/a5b5dc4891ce586bae4dd632d5cd833fbd1c26cc.svg" alt="n"/> est <img class="math" src="../../_images/math/df55340ba5e42ff9cc14ee1bf0242c2037c4eb5b.svg" alt="f(n)=n + 2f(n/2)"/> avec <img class="math" src="../../_images/math/8a58acc0aedb7d7abcad351d345e7954357677b3.svg" alt="f(1)=0"/>. On calcule les premières termes :</p>
+<p>Le coût de l’iteration <span class="math notranslate nohighlight">\(n\)</span> est <span class="math notranslate nohighlight">\(f(n)=n + 2f(n/2)\)</span> avec <span class="math notranslate nohighlight">\(f(1)=0\)</span>. On calcule les premières termes :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -840,11 +840,11 @@ f(256)=2048 --&gt; f(256)/256 = 8.0
 f(512)=4608 --&gt; f(512)/512 = 9.0
 </pre></div></div>
 </div>
-<p>On suppose que <img class="math" src="../../_images/math/22d93a271fd72f05133cf5845dc0aa94aee3ce25.svg" alt="f(2^n)=n2^n \Leftrightarrow f(n) = n \ln_2 n"/>. Il suffit de vérifier cela avec la récurrence :</p>
-<p><img class="math" src="../../_images/math/e0893d92b0acb897d12491e7553f4c7e06fbcce9.svg" alt="\begin{array}{rcl} f(n) &amp;=&amp; n + 2f(\frac{n}{2}) = n + 2 \frac{n}{2} \ln_2(\frac{n}{2}) \\ &amp;=&amp; n + n \ln_2(n) - n\ln_2(2) = n + n\ln_2(n) - n = n\ln_2 n\end{array}"/></p>
+<p>On suppose que <span class="math notranslate nohighlight">\(f(2^n)=n2^n \Leftrightarrow f(n) = n \ln_2 n\)</span>. Il suffit de vérifier cela avec la récurrence :</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{rcl} f(n) &amp;=&amp; n + 2f(\frac{n}{2}) = n + 2 \frac{n}{2} \ln_2(\frac{n}{2}) \\ &amp;=&amp; n + n \ln_2(n) - n\ln_2(2) = n + n\ln_2(n) - n = n\ln_2 n\end{array}\)</span></p>
 <p>C’est le coût d’une itération. Comme à chaque itération on coupe le problème en deux, le coût total de l’algorithme est :</p>
-<p><img class="math" src="../../_images/math/99400b56e3d90091c12b92f2ded2d88d0b9d916f.svg" alt="\begin{array}{rcl} C(2^n) &amp;=&amp; f(2^n) + 2f(2^{n-1}) + 4f(2^{n-2}) + ... + 2^{n-1}f(2) = \sum_{k=1}^{n} 2^{n-k} f(2^k) \\ &amp;=&amp; \sum_{k=1}^n 2^{n-k} 2^k k = \sum_{k=1}^n 2^n k = 2^{n-1}n(n-1) \leqslant 2^{n-1} n^2 \end{array}"/></p>
-<p>Par conséquent, le coût est en <img class="math" src="../../_images/math/e8c52b180a3fdb95dc9b16a831620d07f59275f3.svg" alt="C(n) \sim O(n \ln^2 n)"/>.</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{rcl} C(2^n) &amp;=&amp; f(2^n) + 2f(2^{n-1}) + 4f(2^{n-2}) + ... + 2^{n-1}f(2) = \sum_{k=1}^{n} 2^{n-k} f(2^k) \\ &amp;=&amp; \sum_{k=1}^n 2^{n-k} 2^k k = \sum_{k=1}^n 2^n k = 2^{n-1}n(n-1) \leqslant 2^{n-1} n^2 \end{array}\)</span></p>
+<p>Par conséquent, le coût est en <span class="math notranslate nohighlight">\(C(n) \sim O(n \ln^2 n)\)</span>.</p>
 </section>
 <section id="Solution-linéaire">
 <h2>Solution linéaire<a class="headerlink" href="#Solution-linéaire" title="Link to this heading">¶</a></h2>
@@ -877,9 +877,9 @@ f(512)=4608 --&gt; f(512)/512 = 9.0
 <img alt="../../_images/practice_algo-base_exercice_plus_grande_somme_14_0.png" src="../../_images/practice_algo-base_exercice_plus_grande_somme_14_0.png" />
 </div>
 </div>
-<p>La courbe devient négative au quatrième nombre. L’astuce consiste à dire qu’on peut traiter les deux ensembles séparément et que la meilleure sous-séquence n’inclura pas ce nombre en quatrième position. Si on cherche la meilleure sous-séquence se terminant à la position <img class="math" src="../../_images/math/6c9c36eeb0679ad71efe34ded19d79168983fb38.svg" alt="i"/>, il suffit juste de revenir en arrière et de trouver le minimum de la courbe cumulée avant la position <img class="math" src="../../_images/math/6c9c36eeb0679ad71efe34ded19d79168983fb38.svg" alt="i"/>. Pour <img class="math" src="../../_images/math/5c3b325c8f3aca566dcfd7945a169be9be868a53.svg" alt="i=5"/>, le point le plus bas qui précède est le point <img class="math" src="../../_images/math/f81c134148d1f7e75fda5878bf0889566c517228.svg" alt="k=3"/>. Au point <img class="math" src="../../_images/math/861f24e373603ace34b6a818d3cef2342010a6f5.svg" alt="i=3"/>, on
-sait qu’il n’existe pas de sous-séquence positive précédent <img class="math" src="../../_images/math/861f24e373603ace34b6a818d3cef2342010a6f5.svg" alt="i=3"/>.</p>
-<p>On découpe la courbe en segments <img class="math" src="../../_images/math/46cb54bb9754d0a2b0cb8db032ed21d7fc897581.svg" alt="[[i,j]]"/> vérifiant <img class="math" src="../../_images/math/9bae126337bdb0294e9abcec72075d4e584078f0.svg" alt="l_{i-1} &lt; 0 \leqslant l_i"/> et <img class="math" src="../../_images/math/e0e03654100a46260a01a61af802ecb9654ba1ef.svg" alt="\sum_{k=1}^{j} l_k &lt; 0"/> et <img class="math" src="../../_images/math/859e0c12a49fd02ed7f06a2cd4200a4e2962e735.svg" alt="l_{j+1} \geqslant 0"/>.</p>
+<p>La courbe devient négative au quatrième nombre. L’astuce consiste à dire qu’on peut traiter les deux ensembles séparément et que la meilleure sous-séquence n’inclura pas ce nombre en quatrième position. Si on cherche la meilleure sous-séquence se terminant à la position <span class="math notranslate nohighlight">\(i\)</span>, il suffit juste de revenir en arrière et de trouver le minimum de la courbe cumulée avant la position <span class="math notranslate nohighlight">\(i\)</span>. Pour <span class="math notranslate nohighlight">\(i=5\)</span>, le point le plus bas qui précède est le point <span class="math notranslate nohighlight">\(k=3\)</span>. Au point <span class="math notranslate nohighlight">\(i=3\)</span>, on
+sait qu’il n’existe pas de sous-séquence positive précédent <span class="math notranslate nohighlight">\(i=3\)</span>.</p>
+<p>On découpe la courbe en segments <span class="math notranslate nohighlight">\([[i,j]]\)</span> vérifiant <span class="math notranslate nohighlight">\(l_{i-1} &lt; 0 \leqslant l_i\)</span> et <span class="math notranslate nohighlight">\(\sum_{k=1}^{j} l_k &lt; 0\)</span> et <span class="math notranslate nohighlight">\(l_{j+1} \geqslant 0\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -898,7 +898,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
 <img alt="../../_images/practice_algo-base_exercice_plus_grande_somme_16_0.png" src="../../_images/practice_algo-base_exercice_plus_grande_somme_16_0.png" />
 </div>
 </div>
-<p>On parcourt la série cumulée. A chaque fois qu’on passe sous zéro, au premier nombre positif suivant, on redémarre à zéro. La sous-séquence de somme maximale est forcément dans un de ces tronçons, elle a pour point de départ le premier élément et pour point d’arrivée le maximum obtenu sur le tronçon en question : pour chaque point <img class="math" src="../../_images/math/719cfe2a94ff5e70877b842d0afaa8dadfdb379b.svg" alt="x,Cumul2(x)"/> d’un tronçon, le minimum de la courbe cumulée précédent <img class="math" src="../../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> est nécessairement le premier élément du tronçon.</p>
+<p>On parcourt la série cumulée. A chaque fois qu’on passe sous zéro, au premier nombre positif suivant, on redémarre à zéro. La sous-séquence de somme maximale est forcément dans un de ces tronçons, elle a pour point de départ le premier élément et pour point d’arrivée le maximum obtenu sur le tronçon en question : pour chaque point <span class="math notranslate nohighlight">\(x,Cumul2(x)\)</span> d’un tronçon, le minimum de la courbe cumulée précédent <span class="math notranslate nohighlight">\(x\)</span> est nécessairement le premier élément du tronçon.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -973,7 +973,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
 </pre></div>
 </div>
 </div>
-<p>Coût en <img class="math" src="../../_images/math/1989c4047f1f691399b0ae1671182ae3ce045146.svg" alt="O(n^3)"/> :</p>
+<p>Coût en <span class="math notranslate nohighlight">\(O(n^3)\)</span> :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -990,7 +990,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
 15.6 ms ± 1.19 ms per loop (mean ± std. dev. of 7 runs, 100 loops each)
 </pre></div></div>
 </div>
-<p>Coût en <img class="math" src="../../_images/math/86b90bfc7c2e15a155ca8e1c763b6d126738d534.svg" alt="O(n^2)"/> :</p>
+<p>Coût en <span class="math notranslate nohighlight">\(O(n^2)\)</span> :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -1007,7 +1007,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
 565 µs ± 33.7 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
-<p>Coût en <img class="math" src="../../_images/math/5429ddab5e97f5197b249efb5739fbae893d0ff0.svg" alt="O(n \ln^2 n)"/> :</p>
+<p>Coût en <span class="math notranslate nohighlight">\(O(n \ln^2 n)\)</span> :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -1024,7 +1024,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
 134 µs ± 12.9 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div></div>
 </div>
-<p>Coût en <img class="math" src="../../_images/math/81b0a9fa49c0ad4095f564b409e94423ea3a174f.svg" alt="O(n)"/> :</p>
+<p>Coût en <span class="math notranslate nohighlight">\(O(n)\)</span> :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
@@ -1138,5 +1138,7 @@ sait qu’il n’existe pas de sous-séquence positive précédent <img class="m
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -690,7 +690,7 @@ plt.bar(valeur, cum);
 <img alt="../../_images/practice_py-base_code_multinomial_9_1.png" src="../../_images/practice_py-base_code_multinomial_9_1.png" />
 </div>
 </div>
-<p>Cette fonction de répartition <img class="math" src="../../_images/math/0394d4dbd5c40237ed58745bf11e63400ac3bf99.svg" alt="(x,F(x))"/> est croissante. On définit les cinq intervalles : <img class="math" src="../../_images/math/02b40b566d7f90db6e745b36584f36d451c284a8.svg" alt="A_i=]F(i),F(i+1)]"/>. Pour simuler une loi multinomiale, il suffit de tirer un nombre aléatoire dans <img class="math" src="../../_images/math/5d6ef4de3a9f851a29bfae0016b7eadafffd99d7.svg" alt="[0,1]"/> puis de trouver l’intervalle <img class="math" src="../../_images/math/b17601b9927788a9c3f97add13dc96da39ce04f3.svg" alt="A_i"/> auquel il appartient. <img class="math" src="../../_images/math/6c9c36eeb0679ad71efe34ded19d79168983fb38.svg" alt="i"/> est le résultat cherché. Le calcul de la distribution cumulée utilise une autre alternative : <a class="reference external" href="https://docs.python.org/3.4/library/functools.html#functools.reduce">functools.reduce</a>.</p>
+<p>Cette fonction de répartition <span class="math notranslate nohighlight">\((x,F(x))\)</span> est croissante. On définit les cinq intervalles : <span class="math notranslate nohighlight">\(A_i=]F(i),F(i+1)]\)</span>. Pour simuler une loi multinomiale, il suffit de tirer un nombre aléatoire dans <span class="math notranslate nohighlight">\([0,1]\)</span> puis de trouver l’intervalle <span class="math notranslate nohighlight">\(A_i\)</span> auquel il appartient. <span class="math notranslate nohighlight">\(i\)</span> est le résultat cherché. Le calcul de la distribution cumulée utilise une autre alternative : <a class="reference external" href="https://docs.python.org/3.4/library/functools.html#functools.reduce">functools.reduce</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -810,10 +810,10 @@ passage 2
   trié 0.006804499997087987
 </pre></div></div>
 </div>
-<p>La seconde version est plus rapide.Son intérêt dépend du nombre d’observations aléatoire à tirer. En effet, si <img class="math" src="../../_images/math/2c1a946cef5763c39269198f722873a239852f50.svg" alt="K"/> est le nombre de valeurs distinctes, les coûts fixes des deux méthodes sont les suivants :</p>
+<p>La seconde version est plus rapide.Son intérêt dépend du nombre d’observations aléatoire à tirer. En effet, si <span class="math notranslate nohighlight">\(K\)</span> est le nombre de valeurs distinctes, les coûts fixes des deux méthodes sont les suivants :</p>
 <ul class="simple">
-<li><p>non trié : <img class="math" src="../../_images/math/ab19b17d3fa3c17bd530b3f5fbc7382df48f1734.svg" alt="O(K)"/> (distribution cumulative)</p></li>
-<li><p>trié : <img class="math" src="../../_images/math/57cc4c9e6cc1b16e88dcb3be37e22ab127fa5e0f.svg" alt="O(K + K\ln K)"/> ((distribution cumulative + tri)</p></li>
+<li><p>non trié : <span class="math notranslate nohighlight">\(O(K)\)</span> (distribution cumulative)</p></li>
+<li><p>trié : <span class="math notranslate nohighlight">\(O(K + K\ln K)\)</span> ((distribution cumulative + tri)</p></li>
 </ul>
 <p>Qu’en est-il pour la fonction <a class="reference external" href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.multinomial.html">numpy.random.multinomial</a> ?</p>
 <div class="nbinput docutils container">
@@ -855,7 +855,7 @@ passage 2
 </section>
 <section id="Optimisation-bootstrap">
 <h2>Optimisation bootstrap<a class="headerlink" href="#Optimisation-bootstrap" title="Link to this heading">¶</a></h2>
-<p>C’est une technique inspiré du <a class="reference external" href="http://fr.wikipedia.org/wiki/Bootstrap_%28statistiques%29">bootstrap</a> qui est un peu moins précise que la version précédente mais qui peut suffire dans bien des cas. Elle est intéressante si on tire un grand nomrbre d’observations aléatoire de la même loi et si <img class="math" src="../../_images/math/2c1a946cef5763c39269198f722873a239852f50.svg" alt="K"/> est grand (<img class="math" src="../../_images/math/2c1a946cef5763c39269198f722873a239852f50.svg" alt="K"/> = nombre de valeurs distinctes). L’idée consiste à générer un premier grand vecteur de nombres aléatoires puis à tirer des nombres aléatoire dans ce vecteur.</p>
+<p>C’est une technique inspiré du <a class="reference external" href="http://fr.wikipedia.org/wiki/Bootstrap_%28statistiques%29">bootstrap</a> qui est un peu moins précise que la version précédente mais qui peut suffire dans bien des cas. Elle est intéressante si on tire un grand nomrbre d’observations aléatoire de la même loi et si <span class="math notranslate nohighlight">\(K\)</span> est grand (<span class="math notranslate nohighlight">\(K\)</span> = nombre de valeurs distinctes). L’idée consiste à générer un premier grand vecteur de nombres aléatoires puis à tirer des nombres aléatoire dans ce vecteur.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
@@ -985,5 +985,7 @@ passage 2
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

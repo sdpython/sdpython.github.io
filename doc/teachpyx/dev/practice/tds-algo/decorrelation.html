@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -588,7 +588,7 @@
 <h2>Création d’un jeu de données<a class="headerlink" href="#Création-d'un-jeu-de-données" title="Link to this heading">¶</a></h2>
 <section id="Q1">
 <h3>Q1<a class="headerlink" href="#Q1" title="Link to this heading">¶</a></h3>
-<p>La première étape consiste à construire des variables aléatoires normales corrélées dans une matrice <img class="math" src="../../_images/math/c55b4d5885c309f2157cf1f6136a5bc94b9716c9.svg" alt="N \times 3"/>. On cherche à construire cette matrice au format <a class="reference external" href="https://numpy.org/">numpy</a>. Le programme suivant est un moyen de construire un tel ensemble à l’aide de combinaisons linéaires. Complétez les lignes contenant des <code class="docutils literal notranslate"><span class="pre">....</span></code>.</p>
+<p>La première étape consiste à construire des variables aléatoires normales corrélées dans une matrice <span class="math notranslate nohighlight">\(N \times 3\)</span>. On cherche à construire cette matrice au format <a class="reference external" href="https://numpy.org/">numpy</a>. Le programme suivant est un moyen de construire un tel ensemble à l’aide de combinaisons linéaires. Complétez les lignes contenant des <code class="docutils literal notranslate"><span class="pre">....</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -685,33 +685,33 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 </section>
 <section id="Un-peu-de-mathématiques">
 <h2>Un peu de mathématiques<a class="headerlink" href="#Un-peu-de-mathématiques" title="Link to this heading">¶</a></h2>
-<p>Pour la suite, un peu de mathématique. On note <img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code>. <img class="math" src="../../_images/math/3fe2f0f039729f674e5f560dc20a04e012adacdb.svg" alt="V=\frac{1}{n}M'M"/> correspond à la matrice des <em>covariances</em> et elle est nécessairement symétrique. C’est une matrice diagonale si et seulement si les variables normales sont indépendantes. Comme toute matrice symétrique, elle est diagonalisable. On peut écrire :</p>
+<p>Pour la suite, un peu de mathématique. On note <span class="math notranslate nohighlight">\(M\)</span> la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code>. <span class="math notranslate nohighlight">\(V=\frac{1}{n}M'M\)</span> correspond à la matrice des <em>covariances</em> et elle est nécessairement symétrique. C’est une matrice diagonale si et seulement si les variables normales sont indépendantes. Comme toute matrice symétrique, elle est diagonalisable. On peut écrire :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/2652996391c6f064c88cf32b213c8c7afea51889.svg" alt="\frac{1}{n}M'M = P \Lambda P'"/></p>
-</div></div>
-<p><img class="math" src="../../_images/math/2f2a105c289b01c226ad6e0f506d96386c48d440.svg" alt="P"/> vérifie <img class="math" src="../../_images/math/3ca6f4ffa6c0e4e5c4fc508756a90b5680dc66c8.svg" alt="P'P= PP' = I"/>. La matrice <img class="math" src="../../_images/math/b1af3dc07c90134c73c60fe7f1e002ccaced8485.svg" alt="\Lambda"/> est diagonale et on peut montrer que toutes les valeurs propres sont positives (<img class="math" src="../../_images/math/09a03a33d543ceb4178d04e612dd8ae50b148ea4.svg" alt="\Lambda = \frac{1}{n}P'M'MP = \frac{1}{n}(MP)'(MP)"/>).</p>
-<p>On définit alors la racine carrée de la matrice <img class="math" src="../../_images/math/b1af3dc07c90134c73c60fe7f1e002ccaced8485.svg" alt="\Lambda"/> par :</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{n}M'M = P \Lambda P'\]</div>
+</div>
+<p><span class="math notranslate nohighlight">\(P\)</span> vérifie <span class="math notranslate nohighlight">\(P'P= PP' = I\)</span>. La matrice <span class="math notranslate nohighlight">\(\Lambda\)</span> est diagonale et on peut montrer que toutes les valeurs propres sont positives (<span class="math notranslate nohighlight">\(\Lambda = \frac{1}{n}P'M'MP = \frac{1}{n}(MP)'(MP)\)</span>).</p>
+<p>On définit alors la racine carrée de la matrice <span class="math notranslate nohighlight">\(\Lambda\)</span> par :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/fc833e7d59c30f445ddfe2b040b3e49624ec8ac5.svg" alt="\begin{array}{rcl} \Lambda &amp;=&amp; diag(\lambda_1,\lambda_2,\lambda_3) \\ \Lambda^{\frac{1}{2}} &amp;=&amp; diag\left(\sqrt{\lambda_1},\sqrt{\lambda_2},\sqrt{\lambda_3}\right)\end{array}"/></p>
-</div></div>
-<p>On définit ensuite la racine carrée de la matrice <img class="math" src="../../_images/math/3f07e082745e744a189091767318aa64a01add9c.svg" alt="V"/> :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl} \Lambda &amp;=&amp; diag(\lambda_1,\lambda_2,\lambda_3) \\ \Lambda^{\frac{1}{2}} &amp;=&amp; diag\left(\sqrt{\lambda_1},\sqrt{\lambda_2},\sqrt{\lambda_3}\right)\end{array}\end{split}\]</div>
+</div>
+<p>On définit ensuite la racine carrée de la matrice <span class="math notranslate nohighlight">\(V\)</span> :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/653f47194e3f569623c8cdb096bc93364f164b13.svg" alt="V^{\frac{1}{2}} = P \Lambda^{\frac{1}{2}} P'"/></p>
-</div></div>
-<p>On vérifie que <img class="math" src="../../_images/math/843e8541e47dbc61b50d1776e2b0a7db143451cd.svg" alt="\left(V^{\frac{1}{2}}\right)^2 = P \Lambda^{\frac{1}{2}} P' P \Lambda^{\frac{1}{2}} P' = P \Lambda^{\frac{1}{2}}\Lambda^{\frac{1}{2}} P' = V = P \Lambda P' = V"/>.</p>
+<div class="math notranslate nohighlight">
+\[V^{\frac{1}{2}} = P \Lambda^{\frac{1}{2}} P'\]</div>
+</div>
+<p>On vérifie que <span class="math notranslate nohighlight">\(\left(V^{\frac{1}{2}}\right)^2 = P \Lambda^{\frac{1}{2}} P' P \Lambda^{\frac{1}{2}} P' = P \Lambda^{\frac{1}{2}}\Lambda^{\frac{1}{2}} P' = V = P \Lambda P' = V\)</span>.</p>
 </section>
 <section id="Calcul-de-la-racine-carrée">
 <h2>Calcul de la racine carrée<a class="headerlink" href="#Calcul-de-la-racine-carrée" title="Link to this heading">¶</a></h2>
 <section id="Q6">
 <h3>Q6<a class="headerlink" href="#Q6" title="Link to this heading">¶</a></h3>
-<p>Le module <a class="reference external" href="https://numpy.org/">numpy</a> propose une fonction qui retourne la matrice <img class="math" src="../../_images/math/2f2a105c289b01c226ad6e0f506d96386c48d440.svg" alt="P"/> et le vecteur des valeurs propres <img class="math" src="../../_images/math/7056772e5bdb6f5a322dc20ea2669bbc5dc5d6bb.svg" alt="L"/> :</p>
+<p>Le module <a class="reference external" href="https://numpy.org/">numpy</a> propose une fonction qui retourne la matrice <span class="math notranslate nohighlight">\(P\)</span> et le vecteur des valeurs propres <span class="math notranslate nohighlight">\(L\)</span> :</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>L,P = np.linalg.eig(a)
 </pre></div>
 </div>
-<p>Vérifier que <img class="math" src="../../_images/math/2d52c454a507ddbc882d1d8d3b61d240dcb181be.svg" alt="P'P=I"/>. Est-ce rigoureusement égal à la matrice identité ?</p>
+<p>Vérifier que <span class="math notranslate nohighlight">\(P'P=I\)</span>. Est-ce rigoureusement égal à la matrice identité ?</p>
 </section>
 <section id="Q7">
 <h3>Q7<a class="headerlink" href="#Q7" title="Link to this heading">¶</a></h3>
@@ -719,7 +719,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 </section>
 <section id="Q8">
 <h3>Q8<a class="headerlink" href="#Q8" title="Link to this heading">¶</a></h3>
-<p>Ecrire une fonction qui calcule la racine carrée de la matrice <img class="math" src="../../_images/math/a3894bb698526a6eac42b405799d7208a94fcba4.svg" alt="\frac{1}{n}M'M"/> (on rappelle que <img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> est la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code>). Voir aussi <a class="reference external" href="https://fr.wikipedia.org/wiki/Racine_carr%C3%A9e_d%27une_matrice">Racine carrée d’une matrice</a>.</p>
+<p>Ecrire une fonction qui calcule la racine carrée de la matrice <span class="math notranslate nohighlight">\(\frac{1}{n}M'M\)</span> (on rappelle que <span class="math notranslate nohighlight">\(M\)</span> est la matrice <code class="docutils literal notranslate"><span class="pre">npm</span></code>). Voir aussi <a class="reference external" href="https://fr.wikipedia.org/wiki/Racine_carr%C3%A9e_d%27une_matrice">Racine carrée d’une matrice</a>.</p>
 </section>
 </section>
 <section id="Décorrélation">
@@ -727,7 +727,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 <p><code class="docutils literal notranslate"><span class="pre">np.linalg.inv(a)</span></code> permet d’obtenir l’inverse de la matrice <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
 <section id="Q9">
 <h3>Q9<a class="headerlink" href="#Q9" title="Link to this heading">¶</a></h3>
-<p>Chaque ligne de la matrice <img class="math" src="../../_images/math/e5c619f0600e251cabb3318b03870bc6f2c4870f.svg" alt="M"/> représente un vecteur de trois variables corrélées. La matrice de covariance est <img class="math" src="../../_images/math/3fe2f0f039729f674e5f560dc20a04e012adacdb.svg" alt="V=\frac{1}{n}M'M"/>. Calculer la matrice de covariance de la matrice <img class="math" src="../../_images/math/c8f2416d73d165c8c22db6ca32ad0d50f405a7f5.svg" alt="N=M V^{-\frac{1}{2}}"/> (mathématiquement).</p>
+<p>Chaque ligne de la matrice <span class="math notranslate nohighlight">\(M\)</span> représente un vecteur de trois variables corrélées. La matrice de covariance est <span class="math notranslate nohighlight">\(V=\frac{1}{n}M'M\)</span>. Calculer la matrice de covariance de la matrice <span class="math notranslate nohighlight">\(N=M V^{-\frac{1}{2}}\)</span> (mathématiquement).</p>
 </section>
 <section id="Q10">
 <h3>Q10<a class="headerlink" href="#Q10" title="Link to this heading">¶</a></h3>
@@ -738,7 +738,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
 <h2>Simulation de variables corrélées<a class="headerlink" href="#Simulation-de-variables-corrélées" title="Link to this heading">¶</a></h2>
 <section id="Q11">
 <h3>Q11<a class="headerlink" href="#Q11" title="Link to this heading">¶</a></h3>
-<p>A partir du résultat précédent, proposer une méthode pour simuler un vecteur de variables corrélées selon une matrice de covariance <img class="math" src="../../_images/math/3f07e082745e744a189091767318aa64a01add9c.svg" alt="V"/> à partir d’un vecteur de lois normales indépendantes.</p>
+<p>A partir du résultat précédent, proposer une méthode pour simuler un vecteur de variables corrélées selon une matrice de covariance <span class="math notranslate nohighlight">\(V\)</span> à partir d’un vecteur de lois normales indépendantes.</p>
 </section>
 <section id="Q12">
 <h3>Q12<a class="headerlink" href="#Q12" title="Link to this heading">¶</a></h3>
@@ -865,5 +865,7 @@ a  /= npm.shape[0]<p>A quoi correspond la matrice <code class="docutils literal 
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

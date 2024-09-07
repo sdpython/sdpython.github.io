@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -663,15 +663,15 @@ r2_score(y_test, lin.predict(X_test))
 <h2>Régression Ridge<a class="headerlink" href="#Régression-Ridge" title="Link to this heading">¶</a></h2>
 <p>La régression <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html">Ridge</a> optimise le problème qui suit :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/82cc62eac8946b8a4415c6b73076d5d94e347fb3.svg" alt="\min_\beta E(\alpha, \beta) = \sum_{i=1}^n (y_i - X_i\beta)^2 + \alpha \lVert \beta \rVert ^2"/></p>
-</div></div>
+<div class="math notranslate nohighlight">
+\[\min_\beta E(\alpha, \beta) = \sum_{i=1}^n (y_i - X_i\beta)^2 + \alpha \lVert \beta \rVert ^2\]</div>
+</div>
 <p>C’est une régression linéaire avec une contrainte quadratique sur les coefficients. C’est utile lorsque les variables sont très corrélées, ce qui fausse souvent la résolution numérique. La solution peut s’exprimer de façon exacte.</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/180faa818e62faa47a4adad6f24ea2f6440fa734.svg" alt="\beta^* = (X'X + \alpha I)^{-1} X' Y"/></p>
-</div></div>
-<p>On voit qu’il est possible de choisir un <img class="math" src="../../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/> pour lequel la matrice <img class="math" src="../../_images/math/d526bda486b6c7ee681624421c0e59d1989b7cba.svg" alt="X'X + \alpha I"/> est inversible. C’est aussi utile lorsqu’il y a beaucoup de variables car la probabilité d’avoir des variables corrélées est grande. Il est possible de choisir un <img class="math" src="../../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/> suffisamment grand pour que la matrice <img class="math" src="../../_images/math/cc8728aa23505ff413ea714952fb1d5d239dbc62.svg" alt="(X'X + \alpha I)^{-1}"/> soit inversible et la solution unique.</p>
+<div class="math notranslate nohighlight">
+\[\beta^* = (X'X + \alpha I)^{-1} X' Y\]</div>
+</div>
+<p>On voit qu’il est possible de choisir un <span class="math notranslate nohighlight">\(\alpha\)</span> pour lequel la matrice <span class="math notranslate nohighlight">\(X'X + \alpha I\)</span> est inversible. C’est aussi utile lorsqu’il y a beaucoup de variables car la probabilité d’avoir des variables corrélées est grande. Il est possible de choisir un <span class="math notranslate nohighlight">\(\alpha\)</span> suffisamment grand pour que la matrice <span class="math notranslate nohighlight">\((X'X + \alpha I)^{-1}\)</span> soit inversible et la solution unique.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -790,9 +790,9 @@ r2_score(y_test, rid.predict(X_test))
 <h2>Régression Lasso<a class="headerlink" href="#Régression-Lasso" title="Link to this heading">¶</a></h2>
 <p>La régression <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html">Lasso</a> optimise le problème qui suit :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/76d533ed700263e95be8ea411447bca9523e37bb.svg" alt="\min_\beta E(\alpha, \beta) = \sum_{i=1}^n (y_i - X_i\beta)^2 + \alpha \lVert \beta \rVert"/></p>
-</div></div>
+<div class="math notranslate nohighlight">
+\[\min_\beta E(\alpha, \beta) = \sum_{i=1}^n (y_i - X_i\beta)^2 + \alpha \lVert \beta \rVert\]</div>
+</div>
 <p>C’est une régression linéaire avec une contrainte linéaire sur les coefficients. C’est utile lorsque les variables sont très corrélées, ce qui fausse souvent la résolution numérique. La solution ne s’exprime de façon exacte et la résolution utilise une méthode à base de gradient.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -850,7 +850,7 @@ array([ True,  True,  True,  True,  True,  True,  True,  True,  True,
 10
 </pre></div></div>
 </div>
-<p>Comme pour la régression Ridge, il est préférable de normaliser. On étudie également le nombre de coefficients nuls en fonction de la valeur <img class="math" src="../../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/>.</p>
+<p>Comme pour la régression Ridge, il est préférable de normaliser. On étudie également le nombre de coefficients nuls en fonction de la valeur <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -987,35 +987,35 @@ ax[1].legend();
 <img alt="../../_images/practice_ml_ridge_lasso_26_0.png" src="../../_images/practice_ml_ridge_lasso_26_0.png" />
 </div>
 </div>
-<p>La régression Lasso annule les coefficients, voire tous les coefficients si le paramètre <img class="math" src="../../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/> est assez grand. Voyons cela pour une régression avec une seule variable. On doit minimiser l’expression :</p>
+<p>La régression Lasso annule les coefficients, voire tous les coefficients si le paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> est assez grand. Voyons cela pour une régression avec une seule variable. On doit minimiser l’expression :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/e0811db17cbc7ac6da65056df03143ab7801a679.svg" alt="E(\beta) = \sum_{i=1}^n (y_i - \beta x_i)^2 + \alpha |\beta|"/></p>
-</div></div>
-<p>Trouver <img class="math" src="../../_images/math/36ff99a366c1ea3c8053819556802369baf22fd9.svg" alt="\beta^*"/> qui minimise l’expression nécessite de trouver le paramètre <img class="math" src="../../_images/math/bd898b02c226d1ce791865c51d30012165adf53d.svg" alt="\beta"/> tel que <img class="math" src="../../_images/math/14678a223fda6c04169917db40d783cf0e483b9b.svg" alt="E(\beta)=0"/>. On calcule la dérivée <img class="math" src="../../_images/math/5e898ebf943ac7bc14f3fb017b948673b329bcb1.svg" alt="E'(\beta)"/> :</p>
+<div class="math notranslate nohighlight">
+\[E(\beta) = \sum_{i=1}^n (y_i - \beta x_i)^2 + \alpha |\beta|\]</div>
+</div>
+<p>Trouver <span class="math notranslate nohighlight">\(\beta^*\)</span> qui minimise l’expression nécessite de trouver le paramètre <span class="math notranslate nohighlight">\(\beta\)</span> tel que <span class="math notranslate nohighlight">\(E(\beta)=0\)</span>. On calcule la dérivée <span class="math notranslate nohighlight">\(E'(\beta)\)</span> :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/fa068d12d5e8c2dbdd635b9b110d95a09449c15a.svg" alt="E'(\beta) = \left \{ \begin{array}{ll} \sum_{i=1}^n -x_i(y_i - \beta x_i) + \alpha &amp; \text{si } \beta &gt; 0 \\ \sum_{i=1}^n -x_i(y_i - \beta x_i) - \alpha &amp; \text{si } \beta &lt; 0 \end{array} \right ."/></p>
-</div></div>
+<div class="math notranslate nohighlight">
+\[\begin{split}E'(\beta) = \left \{ \begin{array}{ll} \sum_{i=1}^n -x_i(y_i - \beta x_i) + \alpha &amp; \text{si } \beta &gt; 0 \\ \sum_{i=1}^n -x_i(y_i - \beta x_i) - \alpha &amp; \text{si } \beta &lt; 0 \end{array} \right .\end{split}\]</div>
+</div>
 <p>Et :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/be26c3305c17cdc8778a0f7d569eaf649945092d.svg" alt="E'(\beta) = 0 \Leftrightarrow \left \{ \begin{array}{ll} \beta = \frac{-\alpha + \sum_{i=1}^n x_i y_i}{\sum_{i=1}^n{x_i^2}} &amp; \text{si } \beta &gt; 0 \\ \beta = \frac{\alpha + \sum_{i=1}^n x_i y_i}{\sum_{i=1}^n{x_i^2}}  &amp; \text{si } \beta &lt; 0 \end{array} \right ."/></p>
-</div></div>
-<p>On voit que pour une grande valeur de <img class="math" src="../../_images/math/ff462a09f9572ece5553fee66f7670762484df49.svg" alt="\alpha &gt; \sum_i x_i y_i"/>, le paramètre <img class="math" src="../../_images/math/bd898b02c226d1ce791865c51d30012165adf53d.svg" alt="\beta"/> n’a pas de solution. Dans le premier cas, la valeur est nécessairement négative alors que la solution ne fonctionne que si <img class="math" src="../../_images/math/bd898b02c226d1ce791865c51d30012165adf53d.svg" alt="\beta"/> est positive. C’est la même situation contradictoire dans l’autre cas. La seule option possible lorsque <img class="math" src="../../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/> est très grand, c’est <img class="math" src="../../_images/math/1563401857e6dbccfcd9fec7b31a51092ec94199.svg" alt="\beta = 0"/>. On montre donc que ce qu’on a observé ci-dessus est vrai pour une régression à une dimension.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}E'(\beta) = 0 \Leftrightarrow \left \{ \begin{array}{ll} \beta = \frac{-\alpha + \sum_{i=1}^n x_i y_i}{\sum_{i=1}^n{x_i^2}} &amp; \text{si } \beta &gt; 0 \\ \beta = \frac{\alpha + \sum_{i=1}^n x_i y_i}{\sum_{i=1}^n{x_i^2}}  &amp; \text{si } \beta &lt; 0 \end{array} \right .\end{split}\]</div>
+</div>
+<p>On voit que pour une grande valeur de <span class="math notranslate nohighlight">\(\alpha &gt; \sum_i x_i y_i\)</span>, le paramètre <span class="math notranslate nohighlight">\(\beta\)</span> n’a pas de solution. Dans le premier cas, la valeur est nécessairement négative alors que la solution ne fonctionne que si <span class="math notranslate nohighlight">\(\beta\)</span> est positive. C’est la même situation contradictoire dans l’autre cas. La seule option possible lorsque <span class="math notranslate nohighlight">\(\alpha\)</span> est très grand, c’est <span class="math notranslate nohighlight">\(\beta = 0\)</span>. On montre donc que ce qu’on a observé ci-dessus est vrai pour une régression à une dimension.</p>
 </section>
 <section id="Application-à-la-sélection-d'arbre-d'une-forêt-aléatoire">
 <h2>Application à la sélection d’arbre d’une forêt aléatoire<a class="headerlink" href="#Application-à-la-sélection-d'arbre-d'une-forêt-aléatoire" title="Link to this heading">¶</a></h2>
 <p>Une forêt aléatoire est simplement une moyenne des prédictions d’arbres de régression.</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/23f990a6cfa324d2d948c3bab938c282a4dd3c94.svg" alt="RF(X) = \sum_{i=1}^p T_i(X)"/></p>
-</div></div>
-<p>Pourquoi ne pas utiliser une régression Lasso pour réduire le nombre d’arbres et exprimer la forêt aléatoire avec des coefficients <img class="math" src="../../_images/math/bd898b02c226d1ce791865c51d30012165adf53d.svg" alt="\beta"/> estimés à l’aide d’une régression Lasso et choisis de telle sorte que beaucoup soient nuls.</p>
+<div class="math notranslate nohighlight">
+\[RF(X) = \sum_{i=1}^p T_i(X)\]</div>
+</div>
+<p>Pourquoi ne pas utiliser une régression Lasso pour réduire le nombre d’arbres et exprimer la forêt aléatoire avec des coefficients <span class="math notranslate nohighlight">\(\beta\)</span> estimés à l’aide d’une régression Lasso et choisis de telle sorte que beaucoup soient nuls.</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/348cee7aa1e98684d3de6dfd7be67eff0fa7f138.svg" alt="RF(X) = \sum_{i=1}^p \beta_i T_i(X)"/></p>
-</div></div>
+<div class="math notranslate nohighlight">
+\[RF(X) = \sum_{i=1}^p \beta_i T_i(X)\]</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
@@ -1080,7 +1080,7 @@ concatenate_prediction(X_test).shape
 (111, 100)
 </pre></div></div>
 </div>
-<p>Et on observe la performance en fonction du paramètre <img class="math" src="../../_images/math/a1e7b66a55fc77cebd91d9a1ebfa93a29c1736fb.svg" alt="\alpha"/> de la régression Lasso.</p>
+<p>Et on observe la performance en fonction du paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> de la régression Lasso.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
@@ -1216,7 +1216,7 @@ ax[1].legend();
 </section>
 <section id="Explication-géométrique-de-la-nullité-des-coefficients-dans-une-régression-Lasso">
 <h2>Explication géométrique de la nullité des coefficients dans une régression Lasso<a class="headerlink" href="#Explication-géométrique-de-la-nullité-des-coefficients-dans-une-régression-Lasso" title="Link to this heading">¶</a></h2>
-<p>On se place dans le cas d’un modèle très simple : <img class="math" src="../../_images/math/f7f2767f9f0cda45e9dd4c597bffdee1a9143387.svg" alt="y = \alpha_1 x_1 + \alpha_2 x_2 + \epsilon"/>. Les coefficients optimaux sont obtenus en minimisant l’erreur <img class="math" src="../../_images/math/34e3ede0ab2544ee4dd57885a962aeba650e43ab.svg" alt="\sum (y - (a_1 x_1 + a_2 x_2))^2 + \lambda (|a_1| + |a_2|)"/>. On note <img class="math" src="../../_images/math/e3932a734e62877d8574d0769709cd5fa7f98186.svg" alt="E(a_1, a_2) = E_r(a_1, a_2) + E_l(a_1, a_2)"/>. <img class="math" src="../../_images/math/773ee785540103a3971ce6f5dc99893b2d54410a.svg" alt="E_r"/> est l’erreur de régression, <img class="math" src="../../_images/math/a6e3a8c334a5b3deac92bd7cba8a495d44111f94.svg" alt="E_l"/> est l’erreur de Lasso. Les coefficients optimaux pour l’erreur <img class="math" src="../../_images/math/773ee785540103a3971ce6f5dc99893b2d54410a.svg" alt="E_r"/> sont <img class="math" src="../../_images/math/2b7524a638c955d1b304ef4e7455cbba914842f5.svg" alt="(a^*_1, a^*_2) = (\alpha_1 x_1 + \alpha_2)"/>. On représente
+<p>On se place dans le cas d’un modèle très simple : <span class="math notranslate nohighlight">\(y = \alpha_1 x_1 + \alpha_2 x_2 + \epsilon\)</span>. Les coefficients optimaux sont obtenus en minimisant l’erreur <span class="math notranslate nohighlight">\(\sum (y - (a_1 x_1 + a_2 x_2))^2 + \lambda (|a_1| + |a_2|)\)</span>. On note <span class="math notranslate nohighlight">\(E(a_1, a_2) = E_r(a_1, a_2) + E_l(a_1, a_2)\)</span>. <span class="math notranslate nohighlight">\(E_r\)</span> est l’erreur de régression, <span class="math notranslate nohighlight">\(E_l\)</span> est l’erreur de Lasso. Les coefficients optimaux pour l’erreur <span class="math notranslate nohighlight">\(E_r\)</span> sont <span class="math notranslate nohighlight">\((a^*_1, a^*_2) = (\alpha_1 x_1 + \alpha_2)\)</span>. On représente
 maintenant sur un graphe les courbes de niveaux de ces deux erreurs.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -1268,8 +1268,8 @@ ax.legend();
 <img alt="../../_images/practice_ml_ridge_lasso_39_0.png" src="../../_images/practice_ml_ridge_lasso_39_0.png" />
 </div>
 </div>
-<p><img class="math" src="../../_images/math/773ee785540103a3971ce6f5dc99893b2d54410a.svg" alt="E_r"/> reste constante sur un cercle. <img class="math" src="../../_images/math/a6e3a8c334a5b3deac92bd7cba8a495d44111f94.svg" alt="E_l"/> reste constante sur une droite. Le point optimal solution de la régression Ridge est sur la tangente entre le cercle et la droite. Lorsqu’on augmente <img class="math" src="../../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/>, il faut réduire l’erreur, donc passer sur une courbe de niveaux plus grande pour l’erreur <img class="math" src="../../_images/math/773ee785540103a3971ce6f5dc99893b2d54410a.svg" alt="E_r"/>. Il arrive un moment où ce point tangent est situé sur un des axes. Ensuite, ce point tangent est situé de l’autre côté de l’axe et en annulant le coefficient <img class="math" src="../../_images/math/c96a45d0db346615f406461a8a693f1ce7ae0f33.svg" alt="a_1"/>, on
-décroît à la fois <img class="math" src="../../_images/math/773ee785540103a3971ce6f5dc99893b2d54410a.svg" alt="E_r"/> et <img class="math" src="../../_images/math/a6e3a8c334a5b3deac92bd7cba8a495d44111f94.svg" alt="E_l"/>. Vérifions numériquement sur une exemple en estimant les coefficients d’une régression Lasso en deux dimensions <img class="math" src="../../_images/math/a40894103052230a0c90b6286b83cec99d6343ad.svg" alt="y = a_1 X_1 + a_2 X_2 + \epsilon"/> et en faisant varier la paramètre <img class="math" src="../../_images/math/15a3ea48c9262583d78f2931985b4fe6ef0b912e.svg" alt="\lambda"/> de la contrainte.</p>
+<p><span class="math notranslate nohighlight">\(E_r\)</span> reste constante sur un cercle. <span class="math notranslate nohighlight">\(E_l\)</span> reste constante sur une droite. Le point optimal solution de la régression Ridge est sur la tangente entre le cercle et la droite. Lorsqu’on augmente <span class="math notranslate nohighlight">\(\lambda\)</span>, il faut réduire l’erreur, donc passer sur une courbe de niveaux plus grande pour l’erreur <span class="math notranslate nohighlight">\(E_r\)</span>. Il arrive un moment où ce point tangent est situé sur un des axes. Ensuite, ce point tangent est situé de l’autre côté de l’axe et en annulant le coefficient <span class="math notranslate nohighlight">\(a_1\)</span>, on
+décroît à la fois <span class="math notranslate nohighlight">\(E_r\)</span> et <span class="math notranslate nohighlight">\(E_l\)</span>. Vérifions numériquement sur une exemple en estimant les coefficients d’une régression Lasso en deux dimensions <span class="math notranslate nohighlight">\(y = a_1 X_1 + a_2 X_2 + \epsilon\)</span> et en faisant varier la paramètre <span class="math notranslate nohighlight">\(\lambda\)</span> de la contrainte.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
@@ -2324,5 +2324,7 @@ os.stat(&quot;optimzed_rf.pickle&quot;).st_size, os.stat(&quot;lasso_rf.pickle&q
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

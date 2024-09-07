@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_serialisation_protobuf.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -120,7 +120,7 @@ le site de :epkg:`protobuf` ou sur Linux (Ubuntu/Debian)
  .. code-block:: none
 
 
-    '4.23.4'
+    '5.28.0'
 
 
 
@@ -188,7 +188,7 @@ Un fichier a été généré.
  .. code-block:: none
 
 
-    ['plot_lambda_function.py', 'plot_matador.py', 'plot_pandas_groupby.py', 'plot_tarabiscote.py', 'plot_serialisation_examples.py', 'plot_partie_dame.py', 'plot_serialisation_protobuf.py', 'plot_gil_example.py', 'plot_numpy_tricks.py', 'plot_float_and_double_rouding.py', 'plot_tsp.py', 'plot_hypercube.py', 'plot_einstein_riddle.py']
+    ['plot_pandas_groupby.py', 'plot_serialisation_examples.py', 'plot_tarabiscote.py', 'plot_serialisation_protobuf.py', 'plot_einstein_riddle.py', 'plot_hypercube.py', 'plot_float_and_double_rouding.py', 'plot_tsp.py', 'plot_lambda_function.py', 'plot_partie_dame.py', 'plot_numpy_tricks.py', 'plot_matador.py', 'plot_gil_example.py']
 
 
 
@@ -582,7 +582,7 @@ Sérialisation JSON
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.055 seconds)
+   **Total running time of the script:** (0 minutes 0.093 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_serialisation_protobuf.py:
@@ -598,6 +598,10 @@ Sérialisation JSON
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_serialisation_protobuf.py <plot_serialisation_protobuf.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_serialisation_protobuf.zip <plot_serialisation_protobuf.zip>`
 
 
 .. only:: html

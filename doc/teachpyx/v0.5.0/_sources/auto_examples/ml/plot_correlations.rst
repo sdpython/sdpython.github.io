@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_ml_plot_correlations.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -103,14 +103,14 @@ Les corrélations avec :epkg:`seaborn`.
  .. code-block:: none
 
 
-    <seaborn.matrix.ClusterGrid object at 0x7f8889b4b520>
+    <seaborn.matrix.ClusterGrid object at 0x7f165aa2c520>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.505 seconds)
+   **Total running time of the script:** (0 minutes 2.096 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ml_plot_correlations.py:
@@ -126,6 +126,10 @@ Les corrélations avec :epkg:`seaborn`.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_correlations.py <plot_correlations.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_correlations.zip <plot_correlations.zip>`
 
 
 .. only:: html

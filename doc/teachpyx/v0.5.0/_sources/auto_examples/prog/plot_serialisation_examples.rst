@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_prog_plot_serialisation_examples.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -257,7 +257,7 @@ Et la relecture avec la classe :class:`json.JSONDecoder`.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f87ddae8340>
+    <__main__.A object at 0x7f1656d86380>
 
 
 
@@ -312,7 +312,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.002849399999831803
+    0.001755029000378272
 
 
 
@@ -334,7 +334,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.00033690000054775737
+    0.00018962499962071888
 
 
 
@@ -364,7 +364,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0005795999986730749
+    0.0005293539998092456
 
 
 
@@ -385,7 +385,7 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0003201000017725164
+    0.00021988000025885412
 
 
 
@@ -411,7 +411,7 @@ On enlève le temps passé dans la creation du buffer.
  .. code-block:: none
 
 
-    3.570000080799218e-05
+    2.3614999918208923e-05
 
 
 
@@ -559,7 +559,7 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f8889b4b940>
+    <__main__.A object at 0x7f165832e7a0>
 
 
 
@@ -691,7 +691,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    <__main__.B object at 0x7f88877b2dd0>
+    <__main__.B object at 0x7f165832d8d0>
 
 
 
@@ -734,7 +734,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.000416300001234049
+    0.0002514369998607435
 
 
 
@@ -755,7 +755,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.00032219999957305845
+    0.00022162899949762505
 
 
 
@@ -788,7 +788,7 @@ Il est possible d'accélérer un peu les choses.
  .. code-block:: none
 
 
-    0.0003802999999606982
+    0.0003348099999129772
 
 
 
@@ -854,7 +854,7 @@ Binaire
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f8885f8b130>}
+    {'x': 5, 'f': <function myfunc at 0x7f16570f01f0>}
 
 
 
@@ -945,7 +945,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    b'\x80\x05\x95\x00\x02\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02KCC\x08|\x00d\x01\x17\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cO/home/xadupre/github/teachpyx/_doc/examples/prog/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94M\x97\x01C\x02\x08\x01\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94\x8c\x1ccloudpickle.cloudpickle_fast\x94\x8c\x12_function_setstate\x94\x93\x94h\x19}\x94}\x94(h\x16h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x17\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
+    b'\x80\x05\x95\xe3\x01\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02KCC\x08|\x00d\x01\x17\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cO/home/xadupre/github/teachpyx/_doc/examples/prog/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94M\x97\x01C\x02\x08\x01\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94h\x03\x8c\x12_function_setstate\x94\x93\x94h\x19}\x94}\x94(h\x16h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x17\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
 
 
 
@@ -970,7 +970,7 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f8885f895a0>}
+    {'x': 5, 'f': <function myfunc at 0x7f16570f0670>}
 
 
 
@@ -1056,7 +1056,7 @@ même si elle ne produit pas toujours d'erreur.
 
  .. code-block:: none
 
-    <function myfunc at 0x7f8885f8a560> is not JSON serializable
+    <function myfunc at 0x7f16570f04c0> is not JSON serializable
 
     ''
 
@@ -1119,7 +1119,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
  .. code-block:: none
 
 
-    {'x': 5, 'it': <list_iterator object at 0x7f8889b4b7c0>}
+    {'x': 5, 'it': <list_iterator object at 0x7f165832ce50>}
 
 
 
@@ -1209,7 +1209,7 @@ sérialiser un générateur mais on peut sérialiser la fonction qui crée le g�
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.030 seconds)
+   **Total running time of the script:** (0 minutes 0.021 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_serialisation_examples.py:
@@ -1225,6 +1225,10 @@ sérialiser un générateur mais on peut sérialiser la fonction qui crée le g�
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_serialisation_examples.py <plot_serialisation_examples.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_serialisation_examples.zip <plot_serialisation_examples.zip>`
 
 
 .. only:: html

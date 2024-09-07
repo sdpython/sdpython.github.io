@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -586,7 +586,7 @@
 <p>Un graphe est décrit par un ensemble <em>V</em> de noeuds (ou <em>vertices</em> en anglais) et un ensemble d’arcs (ou <em>edges</em> en anglais) reliant deux noeuds entre eux. Chaque arc peut être orienté - un seul chemin d’une extrémité à l’autre est possible - ou pas.</p>
 <p>L’algorithme proposé dans ce notebook calcule les composantes connexes dans un graphe non orienté. Un <a class="reference external" href="https://fr.wikipedia.org/wiki/Graphe_connexe">graphe connexe</a> vérifie la propriété suivante : pour tout couple de noeuds, il existe un chemin - une séquence d’arcs - reliant ces deux noeuds. Si un graphe est connexe, il contient une seule composante connexe, s’il ne l’est pas, alors on peut le diviser en sous-graphe connexe de telle sorte qu’il n’existe aucun arc reliant deux noeuds
 appartenant à des sous-graphes distincts.</p>
-<p>Un graphe est entièrement défini par sa <a class="reference external" href="https://fr.wikipedia.org/wiki/Matrice_d%27adjacence">matrice d’adjacence</a> <img class="math" src="../../_images/math/8238a702c12f033ac30d4d4d5f17c7aae479fe0f.svg" alt="M=(m_{ij})"/> : <img class="math" src="../../_images/math/d8e126752ce08b4f2ca52ee447e1cf327e7a4219.svg" alt="m_{ij} = 1"/> si les noeuds <img class="math" src="../../_images/math/f5553ccef28d3ecbef28d6984b5699a050a80bef.svg" alt="V_i"/> et <img class="math" src="../../_images/math/9eb2e4b34d4fc15302c02e43bef179d89b4946bc.svg" alt="V_j"/> sont reliés entre eux, 0 sinon. Si le graphe est orienté alors <img class="math" src="../../_images/math/e8c057809e28cf76cf3571f1499f629b657538e2.svg" alt="m_{ij} = m_{ji}"/> : la matrice est symétrique.</p>
+<p>Un graphe est entièrement défini par sa <a class="reference external" href="https://fr.wikipedia.org/wiki/Matrice_d%27adjacence">matrice d’adjacence</a> <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span> : <span class="math notranslate nohighlight">\(m_{ij} = 1\)</span> si les noeuds <span class="math notranslate nohighlight">\(V_i\)</span> et <span class="math notranslate nohighlight">\(V_j\)</span> sont reliés entre eux, 0 sinon. Si le graphe est orienté alors <span class="math notranslate nohighlight">\(m_{ij} = m_{ji}\)</span> : la matrice est symétrique.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -627,7 +627,7 @@ appartenant à des sous-graphes distincts.</p>
 <section id="Q3-:-que-fait-l'algorithme-suivant">
 <h3>Q3 : que fait l’algorithme suivant<a class="headerlink" href="#Q3-:-que-fait-l'algorithme-suivant" title="Link to this heading">¶</a></h3>
 <p>On crée un tableau <code class="docutils literal notranslate"><span class="pre">T=list(range(n))</span></code> où <code class="docutils literal notranslate"><span class="pre">n</span></code> est le nombre de noeuds.</p>
-<p>Pour tous les arcs <img class="math" src="../../_images/math/916af75f31a8f51fdb943d165b07e75cb7c3f30f.svg" alt="V=(E_i, E_j)"/> faire <code class="docutils literal notranslate"><span class="pre">T[i]</span> <span class="pre">=</span> <span class="pre">T[j]</span> <span class="pre">=</span> <span class="pre">min(T[i],</span> <span class="pre">T[j])</span></code>.</p>
+<p>Pour tous les arcs <span class="math notranslate nohighlight">\(V=(E_i, E_j)\)</span> faire <code class="docutils literal notranslate"><span class="pre">T[i]</span> <span class="pre">=</span> <span class="pre">T[j]</span> <span class="pre">=</span> <span class="pre">min(T[i],</span> <span class="pre">T[j])</span></code>.</p>
 <p>Recommencer tant qu’une valeur de <code class="docutils literal notranslate"><span class="pre">T</span></code> est mise à jour.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -808,7 +808,7 @@ array([-1.0000000e+01,  4.4408921e-16, -1.0000000e+01, -1.0000000e+01,
 <section id="id3">
 <h3>Q3 : que fait l’algorithme suivant<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <p>On crée un tableau <code class="docutils literal notranslate"><span class="pre">T=list(range(n))</span></code> où <code class="docutils literal notranslate"><span class="pre">n</span></code> est le nombre de noeuds.</p>
-<p>Pour tous les arcs <img class="math" src="../../_images/math/916af75f31a8f51fdb943d165b07e75cb7c3f30f.svg" alt="V=(E_i, E_j)"/> faire <code class="docutils literal notranslate"><span class="pre">T[i]</span> <span class="pre">=</span> <span class="pre">T[j]</span> <span class="pre">=</span> <span class="pre">min(T[i],</span> <span class="pre">T[j])</span></code>.</p>
+<p>Pour tous les arcs <span class="math notranslate nohighlight">\(V=(E_i, E_j)\)</span> faire <code class="docutils literal notranslate"><span class="pre">T[i]</span> <span class="pre">=</span> <span class="pre">T[j]</span> <span class="pre">=</span> <span class="pre">min(T[i],</span> <span class="pre">T[j])</span></code>.</p>
 <p>Recommencer tant qu’une valeur de <code class="docutils literal notranslate"><span class="pre">T</span></code> est mise à jour.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -1031,5 +1031,7 @@ array([0, 1, 0, 0, 4, 5, 0, 0, 8, 0])
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

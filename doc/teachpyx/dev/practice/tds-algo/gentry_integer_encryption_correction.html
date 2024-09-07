@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -585,26 +585,26 @@
 <p>Un cryptage homomorphe préserve l’addition et la multiplication : une addition sur des nombres cryptés est égale au résultat crypté de l’addition sur les nombres non cryptées. Craig Gentry a proposé un tel cryptage dans son article <a class="reference external" href="https://eprint.iacr.org/2009/616.pdf">Fully Homomorphic Encryption over the Integers</a>. Le système de cryptage encrypte et décrypte des bits (0 ou 1). Correction.</p>
 <section id="Définition-du-cryptage">
 <h2>Définition du cryptage<a class="headerlink" href="#Définition-du-cryptage" title="Link to this heading">¶</a></h2>
-<p><img class="math" src="../../_images/math/6d69a1d020d984de211632886e21f89ee57d837a.svg" alt="KeyGen(\lambda)"/></p>
+<p><span class="math notranslate nohighlight">\(KeyGen(\lambda)\)</span></p>
 <ul class="simple">
-<li><p>La clé secrète <img class="math" src="../../_images/math/0207ed4efc588005eb8750902c53cfbe896f7dea.svg" alt="sk"/> est un entier impair <img class="math" src="../../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/> codé sur <img class="math" src="../../_images/math/b3b84fabe7c42a7e9b77253ea0d56f2812634ba8.svg" alt="\eta"/> bits : <img class="math" src="../../_images/math/f4d1994f638109b9501ef55353a9c0f4582b57bd.svg" alt="p\in (2\mathbb{Z}+1) \cap [2^{\eta}, 2^{\eta+1}["/>.</p></li>
-<li><p>La clé publique <img class="math" src="../../_images/math/e7ac20b7a8e2393b4ab8730481d2e71f9abe538e.svg" alt="pk"/> est une séquence de <img class="math" src="../../_images/math/b3c70c622142f95c66d7a884b8e00022507e6642.svg" alt="\tau+1"/> entiers aléatoires tirés selon un loi <img class="math" src="../../_images/math/1b369b3f1cbfdb74c9bc93d777e7d9e090c8a6a3.svg" alt="\mathcal{D}_{\gamma,\rho}(p)"/>. La séquence <img class="math" src="../../_images/math/d588902dd429cbbf802a5134e311aa2e834090f9.svg" alt="(x_0, ..., x_{\tau})"/> (doit vérifier <img class="math" src="../../_images/math/97c4568f4c81437317fcedb2bfafe4ef3dcc5c33.svg" alt="x_0"/> est impair et <img class="math" src="../../_images/math/a93b52db730c813014887b57f9ec580c67a44155.svg" alt="r_p(x_0)"/> est pair. Il faut recommencer si ce n’est pas le cas. Chaque entier est codé sur au plus <img class="math" src="../../_images/math/9cb2be66ce34b1318cff6a46f5a75b890c734fa5.svg" alt="\gamma"/> bits.</p></li>
+<li><p>La clé secrète <span class="math notranslate nohighlight">\(sk\)</span> est un entier impair <span class="math notranslate nohighlight">\(p\)</span> codé sur <span class="math notranslate nohighlight">\(\eta\)</span> bits : <span class="math notranslate nohighlight">\(p\in (2\mathbb{Z}+1) \cap [2^{\eta}, 2^{\eta+1}[\)</span>.</p></li>
+<li><p>La clé publique <span class="math notranslate nohighlight">\(pk\)</span> est une séquence de <span class="math notranslate nohighlight">\(\tau+1\)</span> entiers aléatoires tirés selon un loi <span class="math notranslate nohighlight">\(\mathcal{D}_{\gamma,\rho}(p)\)</span>. La séquence <span class="math notranslate nohighlight">\((x_0, ..., x_{\tau})\)</span> (doit vérifier <span class="math notranslate nohighlight">\(x_0\)</span> est impair et <span class="math notranslate nohighlight">\(r_p(x_0)\)</span> est pair. Il faut recommencer si ce n’est pas le cas. Chaque entier est codé sur au plus <span class="math notranslate nohighlight">\(\gamma\)</span> bits.</p></li>
 </ul>
-<p><img class="math" src="../../_images/math/7c1be8adc41ceec4e20ba6adae74ed463a9b5ef9.svg" alt="Encrypt(pk, m\in \{0,1\})"/></p>
-<p>Choisir un ensemble aléatoire <img class="math" src="../../_images/math/cdd5285881f355af453e88ec7f0da45a8cee3a57.svg" alt="S \subset \{1, ..., \tau\}"/> et un entier aléatoire <img class="math" src="../../_images/math/836730797b102ff90290f17be16852086b5196e8.svg" alt="r"/> dans l’intervalle <img class="math" src="../../_images/math/06a6d9c458750c5b0c26ae57747a01a6208ca083.svg" alt="]-2^{\rho'}, 2^{\rho'}["/>. Calculer <img class="math" src="../../_images/math/df5287aa91123a851e6bb5e27f7ee210fc873b7f.svg" alt="c = (m + 2r + 2\sum_{i \in S} x_i) \mod x_0"/>.</p>
-<p><img class="math" src="../../_images/math/a87b5f7aee980139565261cfeafd59dac7c6ba46.svg" alt="Evaluate(pk, C, c_1, ..., c_t)"/></p>
-<p>La fonction <img class="math" src="../../_images/math/2c0e77bc741b692ecdf6e85966263a89422af4c8.svg" alt="C"/> effectue des opérations sur <img class="math" src="../../_images/math/09c7628f51842c683db31bd6826cff8cc447ece3.svg" alt="t"/> bits. Le résultat est <img class="math" src="../../_images/math/166b6078b84a177dff3a50cf6a23450bbfc70c5f.svg" alt="c"/>.</p>
-<p><img class="math" src="../../_images/math/e306763fe0d4919556610263e55a5e2981ef8751.svg" alt="Decrypt(sk, c)"/></p>
-<p>Le résultat cherché est <img class="math" src="../../_images/math/c0131a4fd96f22cb81fc60c28d01b2e611c33fcb.svg" alt="(c \mod p) \mod 2"/>.</p>
+<p><span class="math notranslate nohighlight">\(Encrypt(pk, m\in \{0,1\})\)</span></p>
+<p>Choisir un ensemble aléatoire <span class="math notranslate nohighlight">\(S \subset \{1, ..., \tau\}\)</span> et un entier aléatoire <span class="math notranslate nohighlight">\(r\)</span> dans l’intervalle <span class="math notranslate nohighlight">\(]-2^{\rho'}, 2^{\rho'}[\)</span>. Calculer <span class="math notranslate nohighlight">\(c = (m + 2r + 2\sum_{i \in S} x_i) \mod x_0\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(Evaluate(pk, C, c_1, ..., c_t)\)</span></p>
+<p>La fonction <span class="math notranslate nohighlight">\(C\)</span> effectue des opérations sur <span class="math notranslate nohighlight">\(t\)</span> bits. Le résultat est <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(Decrypt(sk, c)\)</span></p>
+<p>Le résultat cherché est <span class="math notranslate nohighlight">\((c \mod p) \mod 2\)</span>.</p>
 <p><strong>Avec :</strong> (valeurs suggérées par l’article mais d’autres sont possibles</p>
 <ul class="simple">
-<li><p><img class="math" src="../../_images/math/1ac2becc627ae4aa6bef2ce4e597a3821d399547.svg" alt="\rho = \lambda"/></p></li>
-<li><p><img class="math" src="../../_images/math/619a62c87c678e5d5c70325d01ffaa2c21957e74.svg" alt="\rho' = 2\lambda"/></p></li>
-<li><p><img class="math" src="../../_images/math/62c1d6e49a687a440f23291a700f082c699884a8.svg" alt="\eta \sim O(\lambda^2)"/></p></li>
-<li><p><img class="math" src="../../_images/math/a4b5bd73c8ab11da6241883cf40ba1d48311d01d.svg" alt="\gamma \sim O(\lambda^5)"/></p></li>
-<li><p><img class="math" src="../../_images/math/7ff8b004ba29a189e5880dbe71d22c242d553f15.svg" alt="\tau = \gamma + \lambda"/></p></li>
-<li><p>Pour simuler une loi <img class="math" src="../../_images/math/1b369b3f1cbfdb74c9bc93d777e7d9e090c8a6a3.svg" alt="\mathcal{D}_{\gamma,\rho}(p)"/>, choisir <img class="math" src="../../_images/math/53e75bcd7eafea2c0896729a913b09b70e220d12.svg" alt="q"/> tel que <img class="math" src="../../_images/math/a3c9520571805c226aadcb55baa2dae299959f07.svg" alt="q \in \mathbb{Z} \cap \left[0, \frac{2^{\gamma}}{p}\right["/>, <img class="math" src="../../_images/math/836730797b102ff90290f17be16852086b5196e8.svg" alt="r"/> tel que <img class="math" src="../../_images/math/43cd42e4f7989fb73b355c70fcd26526bbe822c8.svg" alt="r \in \mathbb{Z} \cap \left]-2^{\rho}, 2^{\rho}\right["/> et calculer <img class="math" src="../../_images/math/1e0b60ad01718952243341604bfb382d0b2b8b06.svg" alt="x = pq+r"/>.</p></li>
-<li><p><img class="math" src="../../_images/math/2bb64330131502f4967dd5858bfcee367db05478.svg" alt="r_p(x)"/> est le reste de la division entière de <img class="math" src="../../_images/math/cdd160a57af92571d6838c69c7bde600843a23bf.svg" alt="x"/> par <img class="math" src="../../_images/math/6fe7973e241cac84eec5598231dc7f6e68e88282.svg" alt="p"/>, reste choisi dans l’intervalle <img class="math" src="../../_images/math/fe42a882d57bf521c21f42b1b5760b026f1784d0.svg" alt="\left]-\frac{p}{2}, \frac{p}{2}\right]"/>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho = \lambda\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho' = 2\lambda\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\eta \sim  O(\lambda^2)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma \sim  O(\lambda^5)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau = \gamma + \lambda\)</span></p></li>
+<li><p>Pour simuler une loi <span class="math notranslate nohighlight">\(\mathcal{D}_{\gamma,\rho}(p)\)</span>, choisir <span class="math notranslate nohighlight">\(q\)</span> tel que <span class="math notranslate nohighlight">\(q \in \mathbb{Z} \cap \left[0, \frac{2^{\gamma}}{p}\right[\)</span>, <span class="math notranslate nohighlight">\(r\)</span> tel que <span class="math notranslate nohighlight">\(r \in \mathbb{Z} \cap \left]-2^{\rho}, 2^{\rho}\right[\)</span> et calculer <span class="math notranslate nohighlight">\(x = pq+r\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(r_p(x)\)</span> est le reste de la division entière de <span class="math notranslate nohighlight">\(x\)</span> par <span class="math notranslate nohighlight">\(p\)</span>, reste choisi dans l’intervalle <span class="math notranslate nohighlight">\(\left]-\frac{p}{2}, \frac{p}{2}\right]\)</span>.</p></li>
 </ul>
 </section>
 <section id="Exercice-1-:-implémenter-le-cryptage">
@@ -741,5 +741,7 @@
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

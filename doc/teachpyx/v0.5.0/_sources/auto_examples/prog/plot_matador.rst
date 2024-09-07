@@ -360,7 +360,7 @@ J'ai fait ça très vite. Il y a sans doute mieux.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.437 seconds)
+   **Total running time of the script:** (0 minutes 1.677 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_matador.py:

@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -329,6 +329,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -538,7 +539,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -635,7 +635,7 @@ sur un espace de dimension moindre. Dans le cas du problème du voyageur de comm
 il s’agit de projeter un nuage de points inclus dans un espace à deux dimensions vers
 un espace à une dimension. Chaque ville recevra une coordonnée~: son ordre dans le
 chemin le plus court. Les cartes de Kohonen sont plus fréquemment utilisées pour
-projeter un nuage de points inclus dans un espace à <img class="math" src="../../_images/math/bf4e0f48eb0ef6fc1dd8f5f685f171dc6a056c59.svg" alt="n &gt; 2"/> dimensions vers un espace
+projeter un nuage de points inclus dans un espace à <span class="math notranslate nohighlight">\(n &gt; 2\)</span> dimensions vers un espace
 à deux dimensions, soit un espace qui puissent être représenté graphiquement.
 Ceci explique leur désignation de cartes de Kohonen ou en anglais <em>Self Organized Map (SOM)</em>.
 Le document citeindex{Koivisto1999} (voir aussi citeindex{Vesanto2000})
@@ -658,56 +658,56 @@ villes tire vers elle un neurone et ses voisins. Au cours des itérations
 successives, la longueur du chemin s’agrandit et il se rapproche peu à
 peu des villes jusqu’à que chaque ville soit rejointe par un neurone.</p>
 <blockquote>
-<div><p>On note <em>n</em> villes par <img class="math" src="../../_images/math/de8a22a6091de59bdc96b61d16e48303a7b9c6f1.svg" alt="\vecteur{v_1}{v_n} \in \pa{\R^k}^n"/>
-avec <img class="math" src="../../_images/math/76e4122063104b05e3285be022c22cba561059e7.svg" alt="k \supegal 2"/>. Un chemin de longueur <em>l</em>
-est noté <img class="math" src="../../_images/math/7d4f6ac5d25ba316b1e7978caba819e1524ac729.svg" alt="\vecteur{p_1}{p_l} \in \pa{\R^k}^l"/>,
-on suppose que les voisins du neurone <img class="math" src="../../_images/math/b53d82ed63e53baa93757c9935e911d00deaad32.svg" alt="p_i"/> sont les neurones
-d’indices <img class="math" src="../../_images/math/d305ea6aa27f28ace8883d8fd6cf3d7a3a8aa6af.svg" alt="(i-1) \mod l"/> et <img class="math" src="../../_images/math/14ad0d9401a2bc09efb2aecc7fe8bc9e713b1ee4.svg" alt="(i+1) \mod l"/>.
-La fonction <img class="math" src="../../_images/math/b4e4a8e4e024d1ba29d5d2ee1942a2b16ea1c8d3.svg" alt="d : \R^k \times \R^k \longrightarrow \R"/>
+<div><p>On note <em>n</em> villes par <span class="math notranslate nohighlight">\(\vecteur{v_1}{v_n} \in \pa{\R^k}^n\)</span>
+avec <span class="math notranslate nohighlight">\(k \supegal 2\)</span>. Un chemin de longueur <em>l</em>
+est noté <span class="math notranslate nohighlight">\(\vecteur{p_1}{p_l} \in \pa{\R^k}^l\)</span>,
+on suppose que les voisins du neurone <span class="math notranslate nohighlight">\(p_i\)</span> sont les neurones
+d’indices <span class="math notranslate nohighlight">\((i-1) \mod l\)</span> et <span class="math notranslate nohighlight">\((i+1) \mod l\)</span>.
+La fonction <span class="math notranslate nohighlight">\(d : \R^k \times \R^k \longrightarrow \R\)</span>
 désigne une distance.</p>
 <p><strong>initialisation</strong></p>
 <p>Le chemin est constitué de trois neurones placés autour du barycentre de l’ensemble
-<img class="math" src="../../_images/math/eb332e5e6c9750373082ada8fcba991cfc5e9d8c.svg" alt="\vecteur{v_1}{v_n}"/>,
+<span class="math notranslate nohighlight">\(\vecteur{v_1}{v_n}\)</span>,
 <em>t</em> compte le nombre d’itérations.</p>
 <p><strong>étape 1</strong></p>
-<p>On définit le vecteur <img class="math" src="../../_images/math/ecc1f01592945c13dd5bfa85562ed66a2d2f0125.svg" alt="\vecteur{c_1}{c_l} = 0"/>
-et <img class="math" src="../../_images/math/c38192a0bf7fc25d58110b59ec881f89dae27bb7.svg" alt="t \longleftarrow t + 1"/></p>
+<p>On définit le vecteur <span class="math notranslate nohighlight">\(\vecteur{c_1}{c_l} = 0\)</span>
+et <span class="math notranslate nohighlight">\(t \longleftarrow t + 1\)</span></p>
 <p>Pour <em>i</em> allant de <em>1</em> à <em>n</em></p>
 <blockquote>
-<div><p>On détermine l’indice <img class="math" src="../../_images/math/3d48c83720f7d75a2d02d5652895ae2ddd7ea863.svg" alt="j^*"/> du neurone le plus proche de la ville <em>i</em>.</p>
+<div><p>On détermine l’indice <span class="math notranslate nohighlight">\(j^*\)</span> du neurone le plus proche de la ville <em>i</em>.</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/2ee1934ccdd7d453125384ae4bbdb98d3089b68f.svg" alt="\begin{array}{lll} c_{j^*} &amp;\longleftarrow&amp; c_{j^*} + 1 \\ p_{j^*} &amp;\longleftarrow&amp; p_{j^*} +
-\epsilon \pa{t, d\pa{ v_i, p_{j^*} }} \;\; \cro{ v_i - p_{j^*}} \end{array}"/></p>
-</div></div>
-<p>On met à jour chacun des voisins <em>q</em> de <img class="math" src="../../_images/math/db081fe82b1b52cd83f1e937c75af28350ac26ea.svg" alt="p_{j^*}"/> de la façon suivante :
-<img class="math" src="../../_images/math/8fdf170f24046364b46751ca26a40c925ef38a21.svg" alt="q \longleftarrow q + \eta \pa{t, d\pa{ v_i, p_{j^*}}, d\pa{q, p_{j^*}}} \;\; \cro{ v_i - p_{j^*}}"/>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{lll} c_{j^*} &amp;\longleftarrow&amp; c_{j^*} + 1 \\ p_{j^*} &amp;\longleftarrow&amp; p_{j^*} +
+\epsilon \pa{t, d\pa{ v_i, p_{j^*} }} \;\; \cro{ v_i - p_{j^*}} \end{array}\end{split}\]</div>
+</div>
+<p>On met à jour chacun des voisins <em>q</em> de <span class="math notranslate nohighlight">\(p_{j^*}\)</span> de la façon suivante :
+<span class="math notranslate nohighlight">\(q \longleftarrow q + \eta \pa{t, d\pa{ v_i, p_{j^*}}, d\pa{q, p_{j^*}}} \;\; \cro{ v_i - p_{j^*}}\)</span>.</p>
 </div></blockquote>
 <p><strong>étape 2</strong></p>
-<p>Pour chaque neurone d’indice <em>i</em> du chemin, si <img class="math" src="../../_images/math/b1f020e6d91b263ccedaa02c98342877cffd929a.svg" alt="c_i = 0"/> alors il est supprimé.
+<p>Pour chaque neurone d’indice <em>i</em> du chemin, si <span class="math notranslate nohighlight">\(c_i = 0\)</span> alors il est supprimé.
 Ceci signifie qu’aucune ville ne l’a choisi. Dans le cas contraire,
-si <img class="math" src="../../_images/math/292facebe574e3dc1c514c7f75501c75709dbdc8.svg" alt="c_i \supegal 2"/>, plus d’une ville l’a choisi, le neurone est dupliqué.
+si <span class="math notranslate nohighlight">\(c_i \supegal 2\)</span>, plus d’une ville l’a choisi, le neurone est dupliqué.
 C’est-à-dire qu’un autre neurone est inséré dans le chemin et placé à proximité du neurone dupliqué.</p>
 <p>Tant que les neurones bougent encore, on retourne à l’étape 1.</p>
 </div></blockquote>
 <p>Afin que l’algorithme converge, on choisit des fonctions
-<img class="math" src="../../_images/math/e3453ea6a8acde22743aba55f672fb041c3939ab.svg" alt="\epsilon \pa{t, x}"/> et <img class="math" src="../../_images/math/61d5d6e31a9d4e2957efe1e65516688d5bffbf8b.svg" alt="\eta \pa{t, x}"/> décroissantes par
+<span class="math notranslate nohighlight">\(\epsilon \pa{t, x}\)</span> et <span class="math notranslate nohighlight">\(\eta \pa{t, x}\)</span> décroissantes par
 rapport à <em>t</em>. Il est conseillé de choisir des fonctions qui vérifient :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/a3d0f88d22235336d11ccc4d67accd6da500d576.svg" alt="\begin{array}{rcl} \forall x \in \R^+, \;&amp;&amp; \sum_{t=1}^{\infty} \epsilon \pa{t,x} = \infty
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl} \forall x \in \R^+, \;&amp;&amp; \sum_{t=1}^{\infty} \epsilon \pa{t,x} = \infty
 et \sum_{t=1}^{\infty} \epsilon^2 \pa{t,x} &lt; \infty \\
 \forall t,x,y \in \N \times \R^+ \times \R^+, \; &amp;&amp; \eta \pa{t,x,y} &lt; \epsilon \pa{t,x}
-\end{array}"/></p>
-</div></div>
+\end{array}\end{split}\]</div>
+</div>
 <p>On peut choisir par exemple :</p>
 <div class="math-wrapper docutils container">
-<div class="math">
-<p><img src="../../_images/math/cd8c909129fc593e5fea74e8eaa096985433ceed.svg" alt="\begin{array}{rcl} \epsilon\pa{t,x} &amp;=&amp; \frac{\epsilon_0}{1+t} \; \frac{d_0}{d_0 + x} \\
-\eta\pa{t,x} &amp;=&amp; \frac{\eta_0}{1+t} \; \epsilon\pa{t,x} \end{array}"/></p>
-</div></div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{rcl} \epsilon\pa{t,x} &amp;=&amp; \frac{\epsilon_0}{1+t} \; \frac{d_0}{d_0 + x} \\
+\eta\pa{t,x} &amp;=&amp; \frac{\eta_0}{1+t} \; \epsilon\pa{t,x} \end{array}\end{split}\]</div>
+</div>
 <p>Il est souvent utile d’effectuer plusieurs essais pour déterminer les valeurs
-<img class="math" src="../../_images/math/dc266b4230c58f3677aad7d66b3cfb44876012a1.svg" alt="\epsilon_0"/>, <img class="math" src="../../_images/math/010b447481159e7f698dfde07a00b563a201471f.svg" alt="\eta_0"/>, <img class="math" src="../../_images/math/04e889fb0a0d7201aa1e507966570970b19de841.svg" alt="d_0"/>. Ces fonctions peuvent
+<span class="math notranslate nohighlight">\(\epsilon_0\)</span>, <span class="math notranslate nohighlight">\(\eta_0\)</span>, <span class="math notranslate nohighlight">\(d_0\)</span>. Ces fonctions peuvent
 également dépendre d’autres paramètres tels que l’angle formé par un neurone
 et ses deux voisins. Il est aussi possible qu’une ville attire un neurone,
 ses deux neurones les plus proches puis encore d’autres voisins plus éloignés.
@@ -723,7 +723,7 @@ dimensions, cette étape n’est pas incluse. L’initialisation consiste alors 
 un nombre de neurones fixe puis à appliquer l’étape 2.
 Le voisinage est simplement plus étendu.</p>
 <p>Le coût de cet algorithme dépend de la vitesse de convergence.
-Toutefois, l’étape 2 a un coût de <img class="math" src="../../_images/math/6458cd4798727140a32de74346463a8e1aa5062d.svg" alt="n^2"/> où <em>n</em> est le nombre de villes,
+Toutefois, l’étape 2 a un coût de <span class="math notranslate nohighlight">\(n^2\)</span> où <em>n</em> est le nombre de villes,
 coût à multiplier par le nombre d’itérations. Les paragraphes qui suivent
 proposent un autre algorithme permettant de construire une solution pour
 le problème du voyageur de commerce. Il est beaucoup plus
@@ -810,5 +810,7 @@ rapide mais il explore davantage l’ensemble des solutions.</p>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

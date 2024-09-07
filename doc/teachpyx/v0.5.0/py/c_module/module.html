@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -329,6 +329,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -538,7 +539,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -1195,11 +1195,11 @@ structurées de façon complexe en une structure linéaire facilement enregistra
 Le programme suivant par exemple utilise les modules
 <a class="reference external" href="https://docs.python.org/3/library/random.html#module-random" title="(disponible dans Python v3.12)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">random</span></code></a>
 <a class="reference external" href="https://docs.python.org/3/library/math.html#module-math" title="(disponible dans Python v3.12)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">math</span></code></a>
-pour estimer le nombre <img class="math" src="../../_images/math/b1ab0ed1cf940025a5f7975eae73ffe6b5dbb58e.svg" alt="\pi"/>.
-Pour cela, on tire aléatoirement deux nombres <img class="math" src="../../_images/math/1bc91b5e8bc43c7eabda1600a4e53955eb867a38.svg" alt="x,y"/> dans l’intervalle
-<img class="math" src="../../_images/math/5d6ef4de3a9f851a29bfae0016b7eadafffd99d7.svg" alt="[0,1]"/>, si <img class="math" src="../../_images/math/8d4a0637c81cef651b4dbff502f108c689bc54e9.svg" alt="\sqrt{x^2+y^2} \infegal 1"/>,
+pour estimer le nombre <span class="math notranslate nohighlight">\(\pi\)</span>.
+Pour cela, on tire aléatoirement deux nombres <span class="math notranslate nohighlight">\(x,y\)</span> dans l’intervalle
+<span class="math notranslate nohighlight">\([0,1]\)</span>, si <span class="math notranslate nohighlight">\(\sqrt{x^2+y^2} \infegal 1\)</span>,
 on compte 1 sinon 0. Au final,
-<img class="math" src="../../_images/math/7d5f5e15ce31412dfb8fc3c1f629085bbba9ac76.svg" alt="\hat{\pi} = \esp{\indicatrice{\sqrt{x^2+y^2} \infegal 1}}"/>.</p>
+<span class="math notranslate nohighlight">\(\hat{\pi} = \esp{\indicatrice{\sqrt{x^2+y^2} \infegal 1}}\)</span>.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -1218,15 +1218,15 @@ on compte 1 sinon 0. Au final,
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">estimation</span>  <span class="mf">3.143164</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">estimation</span>  <span class="mf">3.139508</span>
     <span class="n">PI</span> <span class="o">=</span>  <span class="mf">3.141592653589793</span>
 </pre></div>
 </div>
 <p>Le programme suivant calcule l’intégrale de
 <a class="reference external" href="https://fr.wikipedia.org/wiki/M%C3%A9thode_de_Monte-Carlo">Monte Carlo</a>
-de la fonction <img class="math" src="../../_images/math/9dd55342e1a65822f1474f5ff71cab20a9438a76.svg" alt="f(x)=\sqrt{x}"/> qui consiste à tirer des nombres
-aléatoires dans l’intervalle <img class="math" src="../../_images/math/fbbf85d1642412cc58376d8814668f6dc0f56b16.svg" alt="[a,b]"/>
-puis à faire la moyenne des <img class="math" src="../../_images/math/862b9a5d0b239f532cc5c3522a3498347c7c8b32.svg" alt="\sqrt{x}"/> obtenu.</p>
+de la fonction <span class="math notranslate nohighlight">\(f(x)=\sqrt{x}\)</span> qui consiste à tirer des nombres
+aléatoires dans l’intervalle <span class="math notranslate nohighlight">\([a,b]\)</span>
+puis à faire la moyenne des <span class="math notranslate nohighlight">\(\sqrt{x}\)</span> obtenu.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>  <span class="c1"># import du module random : simulation du hasard</span>
 <span class="kn">import</span> <span class="nn">math</span>  <span class="c1"># import du module math : fonctions mathématiques</span>
@@ -1249,7 +1249,7 @@ puis à faire la moyenne des <img class="math" src="../../_images/math/862b9a5d0
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">0.667434343138407</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">0.6656363410261761</span>
 </pre></div>
 </div>
 </section>
@@ -1394,5 +1394,7 @@ sur <a class="reference external" href="https://pypi.org/">PyPi</a>, le site de 
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

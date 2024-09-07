@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -585,7 +585,7 @@
 <p>Illustration de la méthode <a class="reference external" href="https://en.wikipedia.org/wiki/Singular_spectrum_analysis">SSA</a> pour les séries temporelles appliquée à la détection de points aberrants. La méthode est décrite dans <a class="reference external" href="http://perso.ens-lyon.fr/patrick.flandrin/hassani.pdf">Singular Spectrum Analysis: Methodology and Comparison</a>. Voir aussi <a class="reference external" href="https://www.statistics.gov.hk/wsc/CPS204-P35-S.pdf">Automated outlier detection in Singular Spectrum Analysis</a>.</p>
 <section id="Une-série-articielle">
 <h2>Une série articielle<a class="headerlink" href="#Une-série-articielle" title="Link to this heading">¶</a></h2>
-<p>On introduit quelques points aberrants, pour le reste, elle suit le modèle <img class="math" src="../../_images/math/c59bbaca1c00ede15de73b4acff73de532b0ba55.svg" alt="y_t = \frac{9}{10} y_{t-2} + \epsilon_t + a_t"/> où <img class="math" src="../../_images/math/fc46048767e73882bf5a12c356dc51fa1995fced.svg" alt="a_t"/> est le bruit aberrant qui survient quelques fois.</p>
+<p>On introduit quelques points aberrants, pour le reste, elle suit le modèle <span class="math notranslate nohighlight">\(y_t = \frac{9}{10} y_{t-2} + \epsilon_t + a_t\)</span> où <span class="math notranslate nohighlight">\(a_t\)</span> est le bruit aberrant qui survient quelques fois.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -672,7 +672,7 @@ ax[1].set_title(&quot;Même série temporelle simulée&quot;);
 </section>
 <section id="Autocorrélations">
 <h2>Autocorrélations<a class="headerlink" href="#Autocorrélations" title="Link to this heading">¶</a></h2>
-<p>L’autocorrélogramme est définie par la série <img class="math" src="../../_images/math/4afc7501cb6961bf7a65bb3337a60accf491f7ec.svg" alt="cor(Y_t, Y_{t-d})_d"/>. On le calcule sur la série nettoyée de sa tendance.</p>
+<p>L’autocorrélogramme est définie par la série <span class="math notranslate nohighlight">\(cor(Y_t, Y_{t-d})_d\)</span>. On le calcule sur la série nettoyée de sa tendance.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -840,7 +840,7 @@ ax.set_title(&quot;Autocorrélogramme&quot;);
 <img alt="../../_images/practice_ml_timeseries_ssa_12_0.png" src="../../_images/practice_ml_timeseries_ssa_12_0.png" />
 </div>
 </div>
-<p>Etant donnée que la série <img class="math" src="../../_images/math/90e58631958efd7818d01eb9313805d3cffce3be.svg" alt="Y_t"/> dépend de <img class="math" src="../../_images/math/39525cf7210c0cda5f86a39c0424a1f0d68406c0.svg" alt="Y_{t-2}"/>, on observe un pic pour <img class="math" src="../../_images/math/5caacbef4632c148160fb979a46b1854f774674b.svg" alt="cor(Y_t, Y_{t-2})_d"/> et pour tous les <img class="math" src="../../_images/math/2160a217243173398700954f681412f83f781a6e.svg" alt="d"/> pairs. <img class="math" src="../../_images/math/c654c3fb319a89b93447d0752ca3715cfa83353b.svg" alt="cor(Y_t, Y_{t-4}) \sim cor(Y_t, Y_{t-2})^2"/>. On enlève ces effets récursifs en calculant l’autocorrélogramme partiel qui correspond à l’estimation des coefficients d’un <a class="reference external" href="https://fr.wikipedia.org/wiki/Processus_autor%C3%A9gressif">modèle autorégressif</a> infini.</p>
+<p>Etant donnée que la série <span class="math notranslate nohighlight">\(Y_t\)</span> dépend de <span class="math notranslate nohighlight">\(Y_{t-2}\)</span>, on observe un pic pour <span class="math notranslate nohighlight">\(cor(Y_t, Y_{t-2})_d\)</span> et pour tous les <span class="math notranslate nohighlight">\(d\)</span> pairs. <span class="math notranslate nohighlight">\(cor(Y_t, Y_{t-4}) \sim cor(Y_t, Y_{t-2})^2\)</span>. On enlève ces effets récursifs en calculant l’autocorrélogramme partiel qui correspond à l’estimation des coefficients d’un <a class="reference external" href="https://fr.wikipedia.org/wiki/Processus_autor%C3%A9gressif">modèle autorégressif</a> infini.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -1027,7 +1027,7 @@ for n in range(np):
 </section>
 <section id="La-prédiction">
 <h2>La prédiction<a class="headerlink" href="#La-prédiction" title="Link to this heading">¶</a></h2>
-<p>On veut prédire <img class="math" src="../../_images/math/9a8987366d0b48094b3212009d1cd1781e709f88.svg" alt="Y_{t+1}"/>. L’idée consiste à appliquer la méthode en considérent <img class="math" src="../../_images/math/9a8987366d0b48094b3212009d1cd1781e709f88.svg" alt="Y_{t+1}"/> égale à <img class="math" src="../../_images/math/90e58631958efd7818d01eb9313805d3cffce3be.svg" alt="Y_t"/> puis à remplacer cette prédiction par la valeur de la série reconstruite. On peut même prédire à un horizon plus grand que la valeur suivante.</p>
+<p>On veut prédire <span class="math notranslate nohighlight">\(Y_{t+1}\)</span>. L’idée consiste à appliquer la méthode en considérent <span class="math notranslate nohighlight">\(Y_{t+1}\)</span> égale à <span class="math notranslate nohighlight">\(Y_t\)</span> puis à remplacer cette prédiction par la valeur de la série reconstruite. On peut même prédire à un horizon plus grand que la valeur suivante.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -1510,7 +1510,7 @@ ax.set_title(&quot;Points aberrants d&#39;une série temporelles.&quot;);
 <img alt="../../_images/practice_ml_timeseries_ssa_31_0.png" src="../../_images/practice_ml_timeseries_ssa_31_0.png" />
 </div>
 </div>
-<p>On observe des plages contiguës. Cela signifie que d’une valeur aberrante contamine des vecteurs décalées consécutifs de la série <img class="math" src="../../_images/math/b59453388a752e340d555df9064bfb27e7112e68.svg" alt="Y"/>. Il ne reste plus qu’à repérer la valeur incriminée.</p>
+<p>On observe des plages contiguës. Cela signifie que d’une valeur aberrante contamine des vecteurs décalées consécutifs de la série <span class="math notranslate nohighlight">\(Y\)</span>. Il ne reste plus qu’à repérer la valeur incriminée.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
@@ -1653,5 +1653,7 @@ ax.legend();
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

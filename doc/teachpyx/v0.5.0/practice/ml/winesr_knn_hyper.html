@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -330,6 +330,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../py-base/dame_prise.html">Exercices autour des dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../py-base/profiling_example.html">Exemple de profiling</a></li>
@@ -539,7 +540,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -582,7 +582,7 @@
         <article role="main" id="furo-main-content">
           <section id="Sélection-des-hyper-paramètres">
 <h1>Sélection des hyper-paramètres<a class="headerlink" href="#Sélection-des-hyper-paramètres" title="Link to this heading">¶</a></h1>
-<p>Le modèle des plus proches voisins <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html">KNeighborsRegressor</a> est paramétrable. Le nombre de voisins est variables, la prédiction peut dépendre du plus proche voisins ou des <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> plus proches proches. Comment choisir <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> ?</p>
+<p>Le modèle des plus proches voisins <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html">KNeighborsRegressor</a> est paramétrable. Le nombre de voisins est variables, la prédiction peut dépendre du plus proche voisins ou des <span class="math notranslate nohighlight">\(k\)</span> plus proches proches. Comment choisir <span class="math notranslate nohighlight">\(k\)</span> ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -664,7 +664,7 @@
 <img alt="../../_images/practice_ml_winesr_knn_hyper_7_0.png" src="../../_images/practice_ml_winesr_knn_hyper_7_0.png" />
 </div>
 </div>
-<p>La fonction <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a> automatise la recherche d’un optimum parmi les hyperparamètre, elle utilise notamment la validation croisée. On teste toutes les valeurs de <img class="math" src="../../_images/math/312028c07e271534bd0dbde5434e49e76880744f.svg" alt="k"/> de 1 à 20.</p>
+<p>La fonction <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a> automatise la recherche d’un optimum parmi les hyperparamètre, elle utilise notamment la validation croisée. On teste toutes les valeurs de <span class="math notranslate nohighlight">\(k\)</span> de 1 à 20.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -1237,7 +1237,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </table>
 </div></div>
 </div>
-<p>L’erreur sur la base d’apprentissage augmente de manière sensible (<img class="math" src="../../_images/math/a8daffb4a324830d6527f2af583a712b1d98e24b.svg" alt="R^2"/> baisse). Voyons ce qu’il en est un peu plus loin.</p>
+<p>L’erreur sur la base d’apprentissage augmente de manière sensible (<span class="math notranslate nohighlight">\(R^2\)</span> baisse). Voyons ce qu’il en est un peu plus loin.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
@@ -1740,7 +1740,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <img alt="../../_images/practice_ml_winesr_knn_hyper_17_0.png" src="../../_images/practice_ml_winesr_knn_hyper_17_0.png" />
 </div>
 </div>
-<p>Après 25 voisins, la pertinence du modèle décroît fortement, ce qui paraît normal car plus il y a de voisins, moins la prédiction est locale en quelque sorte. Pour ce modèle, les plus proches voisins, l’erreur sur la base d’apprentissage ne fait que décroître. <img class="math" src="../../_images/math/a8daffb4a324830d6527f2af583a712b1d98e24b.svg" alt="R^2"/> est maximal pour <img class="math" src="../../_images/math/a93fc678804463d20118c9d381587ffe845be391.svg" alt="k=1"/> puisqu’on prédit avec le plus proche voisin, c’est-à-dire lui-même.</p>
+<p>Après 25 voisins, la pertinence du modèle décroît fortement, ce qui paraît normal car plus il y a de voisins, moins la prédiction est locale en quelque sorte. Pour ce modèle, les plus proches voisins, l’erreur sur la base d’apprentissage ne fait que décroître. <span class="math notranslate nohighlight">\(R^2\)</span> est maximal pour <span class="math notranslate nohighlight">\(k=1\)</span> puisqu’on prédit avec le plus proche voisin, c’est-à-dire lui-même.</p>
 </section>
 <hr class="docutils" />
 <p><a class="reference external" href="https://github.com/sdpython/teachpyx/tree/main/_doc/practice/ml/winesr_knn_hyper.ipynb">Notebook on github</a></p>
@@ -1800,5 +1800,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>
